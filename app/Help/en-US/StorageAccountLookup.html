@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select File Account</title>
+    <style>
+        body { font-family: Segoe UI, Arial, sans-serif; max-width: 860px; margin: 0 auto; padding: 24px; color: #333; line-height: 1.6; }
+        h1 { border-bottom: 2px solid #0078d4; padding-bottom: 8px; }
+        h2 { color: #0078d4; margin-top: 32px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #f4f4f4; }
+        a { color: #0078d4; }
+        nav a { text-decoration: none; font-weight: 600; }
+        code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; }
+    </style>
+</head>
+<body>
+
+<nav style="margin-bottom: 16px; display: flex; gap: 12px; align-items: center;">
+    <a href="index.html">Home</a>
+    |
+    <span>Language:</span>
+    <a href="../is-IS/StorageAccountLookup.html">Íslenska</a>
+    |
+    <span>Related:</span>
+    <a href="StorageCard.html">Storage Connection Card</a>
+    <a href="StorageSetup.html">Storage Setup List</a>
+</nav>
+
+<h1>Select File Account</h1>
+
+<p>
+    <strong>Select File Account</strong> is a modal lookup that lists the Business Central file accounts
+    registered for the connector chosen on a
+    <a href="StorageCard.html">Bifrost Storage Connection</a> card. Choosing an account binds the storage
+    connection to it, so every Bifröst request that uses this connection's <code>storageCode</code> reads
+    and writes through that account.
+</p>
+<p>
+    Open it with the <strong>Select File Account</strong> action on the storage connection card. The list
+    is empty until at least one file account has been registered in the connector's own setup — for
+    example in the Azure Blob Storage Connector or the SharePoint Connector app. Use the standard
+    <strong>File Account Wizard</strong>, reachable from the <strong>Storage</strong> group on the Bifröst
+    Setup page, to register one.
+</p>
+
+<h2>Fields</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Name</td>
+            <td>The display name of the registered file account, as given when it was set up in the connector app.</td>
+        </tr>
+        <tr>
+            <td>Account Id</td>
+            <td>The identifier of the file account. This is what the storage connection stores; no credentials are copied.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Notes</h2>
+
+<ul>
+    <li>Only accounts belonging to the connector selected on the card are listed. Changing the connector clears the current selection.</li>
+    <li>The account's credentials stay in the connector app. This extension stores only the account id and name.</li>
+    <li>After choosing an account, run <strong>Test Connection</strong> on the card to confirm the backend is reachable.</li>
+</ul>
+
+</body>
+</html>

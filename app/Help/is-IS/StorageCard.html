@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bifröst geymslutenging</title>
+    <style>
+        body { font-family: Segoe UI, Arial, sans-serif; max-width: 860px; margin: 0 auto; padding: 24px; color: #333; line-height: 1.6; }
+        h1 { border-bottom: 2px solid #0078d4; padding-bottom: 8px; }
+        h2 { color: #0078d4; margin-top: 32px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #f4f4f4; }
+        a { color: #0078d4; }
+        nav a { text-decoration: none; font-weight: 600; }
+        code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; }
+    </style>
+</head>
+<body>
+
+<nav style="margin-bottom: 16px; display: flex; gap: 12px; align-items: center;">
+    <a href="index.html">Heim</a>
+    |
+    <span>Tungumál:</span>
+    <a href="../en-US/StorageCard.html">English</a>
+    |
+    <span>Tengt:</span>
+    <a href="StorageSetup.html">Uppsetningarlisti</a>
+</nav>
+
+<h1>Bifröst geymslutenging</h1>
+
+<p>
+    Spjaldið <strong>Bifröst geymslutenging</strong> stillir eina geymslutengingu.
+    Það bindur <code>storageCode</code> við ákveðinn Business Central skráareikning og tengil,
+    með valkvæðri grunnslóð fyrir allar aðgerðir.
+</p>
+
+<h2>Almennt</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Reitur</th>
+            <th>Lýsing</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Kóði</td>
+            <td>Einstakur kóði sem Bifrost beiðnir nota til að vísa í þessa tengingu.</td>
+        </tr>
+        <tr>
+            <td>Lýsing</td>
+            <td>Læsileg lýsing á geymslutengingunni.</td>
+        </tr>
+        <tr>
+            <td>Virkt</td>
+            <td>Hvort þessi tenging er virk. Óvirkar tengingar hafna öllum beiðnum.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Bakendi</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Reitur</th>
+            <th>Lýsing</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Geymslutegund</td>
+            <td>Hvernig geymsluaðgerðir eru framkvæmdar. Sjálfgefið leiðir í gegnum BC ytri skráageymslu.</td>
+        </tr>
+        <tr>
+            <td>Tengill</td>
+            <td>Tegund BC skráageymslutengilsins (Azure Blob Storage, Azure File Share eða SharePoint).</td>
+        </tr>
+        <tr>
+            <td>Heiti skráareiknings</td>
+            <td>Skráður skráareikningur til að nota. Veljið <strong>Velja skráareikning</strong> til að velja úr tiltækum reikningum.</td>
+        </tr>
+        <tr>
+            <td>Grunnslóð</td>
+            <td>Valkvæð rótarslóð sem er sett á undan öllum skráa- og möppuslóðum í Bifrost beiðnum.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Aðgerðir</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Aðgerð</th>
+            <th>Lýsing</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Velja skráareikning</td>
+            <td>Opnar uppflettingu á skráareikningum sem skráðir eru fyrir valda tengilinn.</td>
+        </tr>
+        <tr>
+            <td>Prófa tengingu</td>
+            <td>Staðfestir að hægt sé að ná í uppsetta geymslubakendann. Sýnir árangur eða villuskilaboð.</td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

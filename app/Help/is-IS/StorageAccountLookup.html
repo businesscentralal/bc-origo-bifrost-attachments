@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velja skráareikning</title>
+    <style>
+        body { font-family: Segoe UI, Arial, sans-serif; max-width: 860px; margin: 0 auto; padding: 24px; color: #333; line-height: 1.6; }
+        h1 { border-bottom: 2px solid #0078d4; padding-bottom: 8px; }
+        h2 { color: #0078d4; margin-top: 32px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #f4f4f4; }
+        a { color: #0078d4; }
+        nav a { text-decoration: none; font-weight: 600; }
+        code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; }
+    </style>
+</head>
+<body>
+
+<nav style="margin-bottom: 16px; display: flex; gap: 12px; align-items: center;">
+    <a href="index.html">Heim</a>
+    |
+    <span>Tungumál:</span>
+    <a href="../en-US/StorageAccountLookup.html">English</a>
+    |
+    <span>Tengt:</span>
+    <a href="StorageCard.html">Geymslutengingarspjald</a>
+    <a href="StorageSetup.html">Uppsetningarlisti</a>
+</nav>
+
+<h1>Velja skráareikning</h1>
+
+<p>
+    <strong>Velja skráareikning</strong> er uppfletting sem sýnir þá Business Central skráareikninga
+    sem eru skráðir fyrir tengilinn sem valinn er á spjaldinu
+    <a href="StorageCard.html">Bifröst geymslutenging</a>. Þegar reikningur er valinn er
+    geymslutengingin bundin honum, þannig að allar Bifröst-beiðnir sem nota <code>storageCode</code>
+    þessarar tengingar lesa og skrifa í gegnum þann reikning.
+</p>
+<p>
+    Opnið uppflettinguna með aðgerðinni <strong>Velja skráareikning</strong> á geymslutengingarspjaldinu.
+    Listinn er tómur þar til að minnsta kosti einn skráareikningur hefur verið skráður í uppsetningu
+    tengilsins sjálfs — til dæmis í Azure Blob Storage tenglinum eða SharePoint tenglinum. Notið
+    staðlaða <strong>leiðsagnarforritið fyrir skráareikninga</strong>, aðgengilegt úr flokknum
+    <strong>Geymsla</strong> á Uppsetningarsíðu Bifrastar, til að skrá einn.
+</p>
+
+<h2>Reitir</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Reitur</th>
+            <th>Lýsing</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Heiti</td>
+            <td>Birtingarheiti skráða skráareikningsins, eins og það var gefið upp þegar hann var
+                stilltur í tengilsforritinu.</td>
+        </tr>
+        <tr>
+            <td>Auðkenni reiknings</td>
+            <td>Auðkenni skráareikningsins. Þetta er það sem geymslutengingin vistar; engin
+                auðkenni eru afrituð.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Athugasemdir</h2>
+
+<ul>
+    <li>Aðeins reikningar sem tilheyra tenglinum sem er valinn á spjaldinu eru sýndir. Ef tenglinum
+        er breytt hreinsast núverandi val.</li>
+    <li>Auðkenni reikningsins eru áfram í tengilsforritinu. Þessi viðbót geymir aðeins auðkenni og
+        heiti reikningsins.</li>
+    <li>Eftir að reikningur hefur verið valinn skal keyra <strong>Prófa tengingu</strong> á
+        spjaldinu til að staðfesta að bakendinn sé aðgengilegur.</li>
+    </ul>
+
+</body>
+</html>

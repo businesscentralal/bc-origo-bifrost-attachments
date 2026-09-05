@@ -1,0 +1,59 @@
+{
+  "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
+  "name": "Bifrost Hnitbjorg",
+  "publisher": "Origo",
+  "version": "28.0.0.0",
+  "brief": "Bifrost Hnitbjorg - external storage connectors",
+  "description": "Bifrost Hnitbjorg: Azure Blob, Azure File Share and SharePoint storage message types on top of Bifrost Foundation. Gives Business Central and any external caller direct read/write access to cloud storage, chunked uploads and attachment offloading.",
+  "platform": "28.0.0.0",
+  "application": "28.0.0.0",
+  "runtime": "17.0",
+  "logo": "assets/Logo250x250.png",
+  "url": "https://www.origo.is/",
+  "EULA": "https://new-origo.cdn.prismic.io/new-origo/lp1r1WElZFfmWAJU_Origo_BC_Cloud_Events_Terms_of_Use_-1-.pdf",
+  "privacyStatement": "https://www.origo.is/um-origo/stefnur/personuverndarstefna",
+  "help": "https://origopublic.blob.core.windows.net/help/BifrostHnitbjorg/bc28/en-US/index.html",
+  "target": "Cloud",
+  "screenshots": [],
+  "dependencies": [
+    {
+      "id": "7505e808-6e52-4b96-a328-82573391297a",
+      "name": "Bifrost Foundation",
+      "publisher": "Origo",
+      "version": "28.0.0.0"
+    }
+  ],
+  "idRanges": [
+    {
+      "from": 10035635,
+      "to": 10035684
+    }
+  ],
+  "features": [
+    "TranslationFile"
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "applicationInsightsConnectionString": "InstrumentationKey=63429e28-30b0-4eae-a20f-e9893d943e4a;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=de70b671-472a-491c-8da2-7f991dd6d7ad",
+  "contextSensitiveHelpUrl": "https://origopublic.blob.core.windows.net/help/BifrostHnitbjorg/bc28/{0}/",
+  "supportedLocales": [
+    "en-US",
+    "is-IS"
+  ],
+  "internalsVisibleTo": [
+    {
+      "id": "7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+      "publisher": "Origo",
+      "name": "Bifrost Hnitbjorg - Tests"
+    }
+  ],
+  "suppressWarnings": [
+    "AS0081"
+  ],
+  "keyVaultUrls": [
+    "https://kv-bc-ktahn486.vault.azure.net/"
+  ]
+}

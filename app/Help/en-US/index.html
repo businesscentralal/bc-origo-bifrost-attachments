@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bifröst Hnitbjörg – Help</title>
+    <style>
+        body { font-family: Segoe UI, Arial, sans-serif; max-width: 860px; margin: 0 auto; padding: 24px; color: #333; line-height: 1.6; }
+        h1 { border-bottom: 2px solid #0078d4; padding-bottom: 8px; }
+        h2 { color: #0078d4; margin-top: 32px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #f4f4f4; }
+        a { color: #0078d4; }
+        nav a { text-decoration: none; font-weight: 600; }
+        code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; }
+    </style>
+</head>
+<body>
+
+<nav style="margin-bottom: 16px; display: flex; gap: 12px; align-items: center;">
+    <span>Language:</span>
+    <a href="../is-IS/index.html">Íslenska</a>
+</nav>
+
+<h1>Bifröst Hnitbjörg – Help</h1>
+
+<p>
+    <strong>Bifröst Hnitbjörg</strong> is the storage module of the Bifröst platform, a Business Central
+    extension by Origo. It exposes the standard Business Central external file storage connectors
+    (Azure Blob Storage, Azure File Share and SharePoint) as Bifröst message types, so external systems
+    get direct read and write access to cloud storage through the Bifröst API.
+</p>
+<p>
+    The module adds file, directory, attachment and chunked upload operations to the Bifröst message
+    catalogue. Each operation is addressed by a <code>storageCode</code> that maps to a configured
+    storage connection. Credentials stay in the Business Central connector apps — this extension stores
+    only a reference to a registered file account.
+</p>
+
+<h2>Pages</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Page</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="StorageSetup.html">Bifrost Storage Setup</a></td>
+            <td>List of configured storage connections. Each row binds a storage code to a BC file account.</td>
+        </tr>
+        <tr>
+            <td><a href="StorageCard.html">Bifrost Storage Connection</a></td>
+            <td>Card for editing a single storage connection — connector, file account, base path, and test.</td>
+        </tr>
+        <tr>
+            <td><a href="StorageAccountLookup.html">Select File Account</a></td>
+            <td>Lookup of the file accounts registered for the chosen connector.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Message Types</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Message Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Help.Storage.Get</td><td>Returns a Markdown overview of the storage module and all its message types.</td></tr>
+        <tr><td>Storage.Account.List</td><td>Lists configured storage connections (codes and connectors; no secrets).</td></tr>
+        <tr><td>Storage.File.List</td><td>Lists the files in a directory.</td></tr>
+        <tr><td>Storage.File.Get</td><td>Downloads a file as base64.</td></tr>
+        <tr><td>Storage.File.Create</td><td>Uploads one small base64 file to storage.</td></tr>
+        <tr><td>Storage.File.Delete</td><td>Deletes a file.</td></tr>
+        <tr><td>Storage.File.Copy</td><td>Copies a file to a new path.</td></tr>
+        <tr><td>Storage.File.Move</td><td>Moves a file to a new path.</td></tr>
+        <tr><td>Storage.File.Exists</td><td>Checks whether a file exists.</td></tr>
+        <tr><td>Storage.Directory.List</td><td>Lists the directories in a path.</td></tr>
+        <tr><td>Storage.Directory.Create</td><td>Creates a directory.</td></tr>
+        <tr><td>Storage.Directory.Delete</td><td>Deletes a directory.</td></tr>
+        <tr><td>Storage.Directory.Exists</td><td>Checks whether a directory exists.</td></tr>
+        <tr><td>Storage.Attachment.Offload</td><td>Offloads an attachment file to storage and clears it from the database.</td></tr>
+        <tr><td>Storage.Attachment.Restore</td><td>Restores an offloaded attachment from storage back into the database.</td></tr>
+        <tr><td>Storage.Attachment.CreateLinked</td><td>Attaches a file already in storage to a new or existing incoming document.</td></tr>
+        <tr><td>Storage.Attachment.CreateForRecord</td><td>Creates a document attachment on any record from base64, from storage, or by copying an existing attachment.</td></tr>
+        <tr><td>Storage.Upload.Begin</td><td>Opens a chunked upload session for large files.</td></tr>
+        <tr><td>Storage.Upload.Append</td><td>Appends one base64 chunk to an open upload session.</td></tr>
+        <tr><td>Storage.Upload.Commit</td><td>Assembles the chunks and writes the file to storage.</td></tr>
+        <tr><td>Storage.Upload.Abort</td><td>Discards an upload session without writing to storage.</td></tr>
+        <tr><td>Storage.Upload.Status</td><td>Reports the progress and state of an upload session.</td></tr>
+        <tr><td>Storage.Upload.CommitToRecord</td><td>Assembles the chunks and attaches the file directly to a record, without external storage.</td></tr>
+    </tbody>
+</table>
+
+<p>
+    Send <code>Help.Storage.Get</code> for the full Markdown catalogue, or ask any single message type for
+    its own help document to see its exact request parameters, response fields and error cases.
+</p>
+
+<h2>Getting Started</h2>
+
+<ol>
+    <li>Install a BC file storage connector app (Azure Blob Storage, Azure File Share, or SharePoint).</li>
+    <li>Configure a file account in the connector's setup.</li>
+    <li>Run the <strong>Set up Bifrost Storage</strong> assisted setup to enable HTTP client requests for this extension.</li>
+    <li>Open <a href="StorageSetup.html">Bifrost Storage Setup</a> and create a connection binding a code to that account.</li>
+    <li>Use the <strong>Test Connection</strong> action on the <a href="StorageCard.html">storage connection card</a> to verify connectivity.</li>
+    <li>Send Bifröst messages with <code>"storageCode": "YOUR-CODE"</code> in the request payload.</li>
+</ol>
+
+</body>
+</html>

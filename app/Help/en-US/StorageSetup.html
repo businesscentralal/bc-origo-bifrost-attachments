@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bifrost Storage Setup</title>
+    <style>
+        body { font-family: Segoe UI, Arial, sans-serif; max-width: 860px; margin: 0 auto; padding: 24px; color: #333; line-height: 1.6; }
+        h1 { border-bottom: 2px solid #0078d4; padding-bottom: 8px; }
+        h2 { color: #0078d4; margin-top: 32px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #f4f4f4; }
+        a { color: #0078d4; }
+        nav a { text-decoration: none; font-weight: 600; }
+        code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.95em; }
+    </style>
+</head>
+<body>
+
+<nav style="margin-bottom: 16px; display: flex; gap: 12px; align-items: center;">
+    <a href="index.html">Home</a>
+    |
+    <span>Language:</span>
+    <a href="../is-IS/StorageSetup.html">Íslenska</a>
+    |
+    <span>Related:</span>
+    <a href="StorageCard.html">Storage Connection Card</a>
+</nav>
+
+<h1>Bifrost Storage Setup</h1>
+
+<p>
+    The <strong>Bifrost Storage Setup</strong> page lists all configured storage connections.
+    Each row binds a short <code>Code</code> — the value a Bifröst request passes as
+    <code>storageCode</code> — to a Business Central external file storage account.
+</p>
+<p>
+    The same page is reached from the <strong>Storage</strong> group on the Bifröst <strong>Setup</strong>
+    page, alongside the standard File Account Wizard and File Accounts list.
+</p>
+
+<h2>Fields</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Code</td>
+            <td>The code that Bifröst requests use to select this storage connection (for example <code>AZURE-MAIN</code>).</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>A human-readable description of the storage connection.</td>
+        </tr>
+        <tr>
+            <td>Connector</td>
+            <td>The type of BC file storage connector (Azure Blob Storage, Azure File Share, or SharePoint).</td>
+        </tr>
+        <tr>
+            <td>File Account Name</td>
+            <td>The name of the registered file account bound to this connection.</td>
+        </tr>
+        <tr>
+            <td>Base Path</td>
+            <td>Optional root path prepended to all file operations on this connection. Leave blank to address the account root.</td>
+        </tr>
+        <tr>
+            <td>Enabled</td>
+            <td>Whether this connection accepts Bifröst requests. Disabled connections return an error.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Actions</h2>
+
+<p>To edit a connection or test connectivity, choose a row to open the <a href="StorageCard.html">storage connection card</a>.</p>
+
+<h2>Setup wizard</h2>
+
+<p>
+    Before the first request can reach cloud storage, HTTP client requests must be enabled for this
+    extension. The <strong>Set up Bifrost Storage</strong> assisted setup walks through that step and
+    verifies the result. It is listed under Assisted Setup in the Extensions group.
+</p>
+
+</body>
+</html>
