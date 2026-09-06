@@ -12,7 +12,7 @@
   "url": "https://www.origo.is/",
   "EULA": "https://new-origo.cdn.prismic.io/new-origo/lp1r1WElZFfmWAJU_Origo_BC_Cloud_Events_Terms_of_Use_-1-.pdf",
   "privacyStatement": "https://www.origo.is/um-origo/stefnur/personuverndarstefna",
-  "help": "https://bifrost.origo.is/en-us/hnitbjorg/",
+  "help": "https://businesscentralal.github.io/bifrost/en-us/hnitbjorg/",
   "target": "Cloud",
   "screenshots": [],
   "dependencies": [
@@ -38,7 +38,7 @@
     "includeSourceInSymbolFile": true
   },
   "applicationInsightsConnectionString": "InstrumentationKey=63429e28-30b0-4eae-a20f-e9893d943e4a;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=de70b671-472a-491c-8da2-7f991dd6d7ad",
-  "contextSensitiveHelpUrl": "https://bifrost.origo.is/{0}/help/hnitbjorg/",
+  "contextSensitiveHelpUrl": "https://businesscentralal.github.io/bifrost/{0}/help/hnitbjorg/",
   "supportedLocales": [
     "en-US",
     "is-IS"

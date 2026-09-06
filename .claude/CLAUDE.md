@@ -65,9 +65,9 @@ Documentation lives in businesscentralal/bifrost (site bifrost.origo.is); no Hel
 folders in this repo - deviation from the Origo PR gateway check 8 approved by the user
 2026-09-06.
 
-- Product docs: https://bifrost.origo.is/en-us/hnitbjorg/
-- In-product help: https://bifrost.origo.is/en-us/help/hnitbjorg/
-- Extensibility guide: https://bifrost.origo.is/en-us/extensibility/
+- Product docs: https://businesscentralal.github.io/bifrost/en-us/hnitbjorg/
+- In-product help: https://businesscentralal.github.io/bifrost/en-us/help/hnitbjorg/
+- Extensibility guide: https://businesscentralal.github.io/bifrost/en-us/extensibility/
 
 Context-sensitive help pages are addressed by Docusaurus slug (`hnitbjorg-setup`,
 `storage-setup`, `storage-card`, `storage-account-lookup`), not by HTML file name. The
