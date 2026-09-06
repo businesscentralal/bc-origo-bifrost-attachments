@@ -13,7 +13,7 @@ page 10035637 "Storage Setup ori"
     SourceTable = "Storage Setup ori";
     CardPageId = "Storage Card ori";
     Editable = false;
-    ContextSensitiveHelpPage = 'StorageSetup.html';
+    ContextSensitiveHelpPage = 'storage-setup';
 
     layout
     {

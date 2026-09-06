@@ -14,7 +14,7 @@ page 10035636 "Storage Card ori"
     UsageCategory = None;
     Caption = 'Bifrost Storage Connection', Comment = 'is-IS=Bifröst geymslutenging';
     SourceTable = "Storage Setup ori";
-    ContextSensitiveHelpPage = 'StorageCard.html';
+    ContextSensitiveHelpPage = 'storage-card';
 
     layout
     {

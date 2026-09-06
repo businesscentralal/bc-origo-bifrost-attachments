@@ -18,7 +18,7 @@ page 10035635 "Storage Account Lookup ori"
     SourceTableTemporary = true;
     Editable = false;
     Extensible = false;
-    ContextSensitiveHelpPage = 'StorageAccountLookup.html';
+    ContextSensitiveHelpPage = 'storage-account-lookup';
 
     layout
     {

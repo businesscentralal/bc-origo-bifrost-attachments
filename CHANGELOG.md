@@ -9,6 +9,8 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Changed (2026-09-06)
 
 - `Storage Setup ori` is no longer searchable (`UsageCategory = None`). Dependent-app setup pages are reached only from the Bifröst Setup page so that Tell Me is not crowded (portfolio rule).
+- Help and documentation moved to <https://bifrost.origo.is>. The `app/Help/` and `app/docs/` folders were removed from this repository; all public content now lives in the businesscentralal/bifrost site repository. `help` in `app.json` points at <https://bifrost.origo.is/en-us/hnitbjorg/> and `contextSensitiveHelpUrl` at `https://bifrost.origo.is/{0}/help/hnitbjorg/`.
+- Context-sensitive help pages are now addressed by Docusaurus page slug instead of an HTML file name: `storage-setup` (Storage Setup ori, Storage Setup Wizard ori), `storage-card` (Storage Card ori) and `storage-account-lookup` (Storage Account Lookup ori).
 
 ### Rebrand: Origo Cloud Events Storage -> Bifröst Hnitbjörg
 

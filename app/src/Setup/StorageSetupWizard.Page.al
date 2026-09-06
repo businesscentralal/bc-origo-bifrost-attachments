@@ -13,7 +13,7 @@ page 10035638 "Storage Setup Wizard ori"
     Caption = 'Bifrost Storage Setup', Comment = 'is-IS=Uppsetning Bifröst geymslu';
     ApplicationArea = All;
     Editable = true;
-    ContextSensitiveHelpPage = 'StorageSetup.html';
+    ContextSensitiveHelpPage = 'storage-setup';
 
     layout
     {
