@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [28.0.0.0] - 2026-09-05
 
+### Changed (2026-09-06)
+
+- `Storage Setup ori` is no longer searchable (`UsageCategory = None`). Dependent-app setup pages are reached only from the Bifröst Setup page so that Tell Me is not crowded (portfolio rule).
+
 ### Rebrand: Origo Cloud Events Storage -> Bifröst Hnitbjörg
 
 This release replaces the published AppSource app *Origo Cloud Events Storage* with a new app,

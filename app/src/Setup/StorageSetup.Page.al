@@ -8,7 +8,7 @@ page 10035637 "Storage Setup ori"
 {
     PageType = List;
     ApplicationArea = All;
-    UsageCategory = Administration;
+    UsageCategory = None;
     Caption = 'Bifrost Storage Setup', Comment = 'is-IS=Uppsetning Bifröst geymslu';
     SourceTable = "Storage Setup ori";
     CardPageId = "Storage Card ori";
