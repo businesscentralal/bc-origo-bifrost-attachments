@@ -15,8 +15,14 @@ App:   10035635-10035684 (allocated in origo_cloudevents_object_ranges.xlsx; mig
        on bc28-is, so the coordinator reallocated this app to 10035635-10035684 in the workbook.)
 Tests: 96200-96299 (migrated from 92700-92799 with offset +3500)
 
-Highest object id currently used: 10035676. Register any further block in the workbook before
-using it - never squeeze objects into a neighbouring app's range.
+Highest object id currently used: 10035679. Free ids left in the block: 10035680-10035684.
+Register any further block in the workbook before using it - never squeeze objects into a
+neighbouring app's range.
+
+Ids taken by the setup migration (2026-09-06): page 10035677 `Hnitbjorg Setup ori`,
+page 10035678 `Storage Conn. Part ori`, codeunit 10035679 `Storage Upload Purge ori`.
+No id was freed - `Setup Ext. ori` keeps 10035635, it was only reduced in scope.
+Test app: codeunit 96207 `Storage Setup Page Tests` (next free test id 96208).
 
 ## App Identity
 App:      Bifrost Hnitbjorg, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
@@ -63,8 +69,10 @@ folders in this repo - deviation from the Origo PR gateway check 8 approved by t
 - In-product help: https://bifrost.origo.is/en-us/help/hnitbjorg/
 - Extensibility guide: https://bifrost.origo.is/en-us/extensibility/
 
-Context-sensitive help pages are addressed by Docusaurus slug (`storage-setup`,
-`storage-card`, `storage-account-lookup`), not by HTML file name.
+Context-sensitive help pages are addressed by Docusaurus slug (`hnitbjorg-setup`,
+`storage-setup`, `storage-card`, `storage-account-lookup`), not by HTML file name. The
+`hnitbjorg-setup` slug is new with the 2026-09-06 setup migration and still has to be created
+in the businesscentralal/bifrost site repository - this repository holds no help markdown.
 
 ## Development Standards
 
@@ -134,6 +142,16 @@ Key rules always in effect:
 - `Storage Upload Session ori` and `Storage Upload Chunk ori` are blocked from the generic
   `Data.Records.*` message types by `Storage Data Restriction ori` - use the dedicated
   `Storage.Upload.*` types.
+
+## Setup Surface
+- `Hnitbjorg Setup ori` (10035677) is the app's own setup page and the only place the module is
+  configured. It embeds `Storage Conn. Part ori` (10035678) for the storage connections, carries
+  the Storage Setup Wizard / File Accounts / Bifrost Storage Setup / Purge Upload Sessions
+  actions, and shows the "Allow HttpClient Requests" notification in its `OnOpenPage`.
+- `Setup Ext. ori` (10035635) must stay at exactly one `addlast(Apps)` action plus its
+  `addlast(Category_Apps)` actionref - no layout changes, no other group, no notification, no
+  `ContextSensitiveHelpPage` override. The shared `Setup ori` page belongs to Bifröst Foundation.
+- Purge logic lives in `Storage Upload Purge ori` (10035679), never inline on a page.
 
 ## Install and Take-over
 - `Storage Install ori` (10035637) registers the ChangeLog guard exception for the attachment

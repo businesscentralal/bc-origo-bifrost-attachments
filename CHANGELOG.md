@@ -8,6 +8,22 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-09-06)
 
+- **Own setup page, one entry on the Bifröst Setup page.** Bifröst Hnitbjörg now follows the
+  shared platform setup pattern. A new page `Hnitbjorg Setup ori` (10035677, help slug
+  `hnitbjorg-setup`) is the single place where the module is configured: it embeds the storage
+  connections in the new list part `Storage Conn. Part ori` (10035678) and carries the four
+  actions that used to sit on the shared Bifröst Setup page - Storage Setup Wizard, Storage
+  Setup (file accounts), Bifrost Storage Setup and Purge Upload Sessions - plus the
+  "HttpClient requests are not enabled" notification, which now appears when this page is
+  opened instead of on the shared page.
+- `Setup Ext. ori` (10035635) is reduced to exactly one action: a `Bifrost Hnitbjorg Setup`
+  entry in the Apps group that opens `Hnitbjorg Setup ori`, with the matching promoted
+  actionref in `Category_Apps`. The `Storage` navigation group, its four actions, the
+  `OnOpenPage` trigger and the notification were removed from the extension, so the shared
+  Bifröst Setup page stays owned by Bifröst Foundation.
+- The inline purge logic moved out of the page extension into the new codeunit
+  `Storage Upload Purge ori` (10035679), which deletes abandoned upload sessions and their
+  chunks and reports the counts. It is unit-tested; the page action only calls it.
 - `Storage Setup ori` is no longer searchable (`UsageCategory = None`). Dependent-app setup pages are reached only from the Bifröst Setup page so that Tell Me is not crowded (portfolio rule).
 - Help and documentation moved to <https://bifrost.origo.is>. The `app/Help/` and `app/docs/` folders were removed from this repository; all public content now lives in the businesscentralal/bifrost site repository. `help` in `app.json` points at <https://bifrost.origo.is/en-us/hnitbjorg/> and `contextSensitiveHelpUrl` at `https://bifrost.origo.is/{0}/help/hnitbjorg/`.
 - Context-sensitive help pages are now addressed by Docusaurus page slug instead of an HTML file name: `storage-setup` (Storage Setup ori, Storage Setup Wizard ori), `storage-card` (Storage Card ori) and `storage-account-lookup` (Storage Account Lookup ori).
