@@ -27,6 +27,7 @@ permissionsetextension 10035635 "Storage Full ori" extends "BIFROST Full ori"
         codeunit "Storage Att. Restore Impl ori" = X,
         codeunit "Storage Attach Link Impl ori" = X,
         codeunit "Storage Upload Mgt ori" = X,
+        codeunit "Storage Upload Purge ori" = X,
         codeunit "Storage Reten. Policy ori" = X,
         codeunit "Storage Data Restriction ori" = X,
         codeunit "Storage Upload Begin Impl ori" = X,
@@ -47,6 +48,8 @@ permissionsetextension 10035635 "Storage Full ori" extends "BIFROST Full ori"
         codeunit "Storage Dir Create Impl ori" = X,
         codeunit "Storage Dir Delete Impl ori" = X,
         codeunit "Storage Dir Exists Impl ori" = X,
+        page "Hnitbjorg Setup ori" = X,
+        page "Storage Conn. Part ori" = X,
         page "Storage Setup ori" = X,
         page "Storage Card ori" = X,
         page "Storage Account Lookup ori" = X;
