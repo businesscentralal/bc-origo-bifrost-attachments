@@ -52,8 +52,5 @@
   ],
   "suppressWarnings": [
     "AS0081"
-  ],
-  "keyVaultUrls": [
-    "https://kv-bc-ktahn486.vault.azure.net/"
   ]
 }

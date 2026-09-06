@@ -6,9 +6,11 @@ using System.Media;
 using System.Upgrade;
 
 /// <summary>
-/// Install codeunit for the Bifrost Storage connector. Registers the initial-release
-/// upgrade tag so later data upgrades can detect a fresh install. The connector keeps no
-/// singleton setup — storage connections are created as needed in
+/// The single install entry point of the app. It first hands over to
+/// <c>Storage Takeover ori</c>, which copies the data of the published Origo Cloud Events
+/// Storage app, and only then registers the change log guard exceptions, the assisted setup
+/// and the initial-release upgrade tag - so everything registered here sees the taken-over
+/// data. The connector keeps no singleton setup: storage connections are created as needed in
 /// <c>Bifrost Storage Setup</c>.
 /// </summary>
 codeunit 10035637 "Storage Install ori"
@@ -17,7 +19,10 @@ codeunit 10035637 "Storage Install ori"
     Access = Internal;
 
     trigger OnInstallAppPerCompany()
+    var
+        StorageTakeover: Codeunit "Storage Takeover ori";
     begin
+        StorageTakeover.TakeOverAll();
         RegisterChangeLogGuardExceptions();
         RegisterAssistedSetup();
         SetUpgradeTags();
