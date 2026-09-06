@@ -1,8 +1,8 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 /// <summary>
 /// List part showing the configured storage connections. It is embedded in
-/// <c>Hnitbjorg Setup ori</c> so an administrator sees every <c>storageCode</c> that Bifröst
+/// <c>Attachments Setup ori</c> so an administrator sees every <c>storageCode</c> that Bifröst
 /// requests can address without leaving the application setup page.
 /// </summary>
 page 10035678 "Storage Conn. Part ori"

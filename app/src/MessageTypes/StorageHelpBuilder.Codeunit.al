@@ -1,4 +1,4 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 /// <summary>
 /// Builds AI-optimised Markdown help documents for the storage connector message types.

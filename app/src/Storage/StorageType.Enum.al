@@ -1,4 +1,4 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 /// <summary>
 /// Selects the <see cref="Interface.StorageConnector"/> implementation used to carry out

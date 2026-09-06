@@ -1,11 +1,11 @@
-namespace Origo.Bifrost.Hnitbjorg.Test;
+namespace Origo.Bifrost.Attachments.Test;
 
 using Microsoft.EServices.EDocument;
 using Microsoft.FixedAssets.FixedAsset;
 using Microsoft.Foundation.Attachment;
 using Microsoft.Sales.Customer;
 using Origo.Bifrost;
-using Origo.Bifrost.Hnitbjorg;
+using Origo.Bifrost.Attachments;
 using System.Text;
 using System.Utilities;
 

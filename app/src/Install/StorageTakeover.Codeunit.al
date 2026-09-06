@@ -1,4 +1,4 @@
-﻿namespace Origo.Bifrost.Hnitbjorg;
+﻿namespace Origo.Bifrost.Attachments;
 
 using System.Reflection;
 using System.Security.AccessControl;
@@ -6,7 +6,7 @@ using System.Telemetry;
 
 /// <summary>
 /// Takes the data of the published <c>Origo Cloud Events Storage</c> app over into
-/// Bifrost Hnitbjorg the first time this app is installed in a company. For every
+/// Bifrost Attachments the first time this app is installed in a company. For every
 /// (old table, new table) pair the old table is copied with <c>DataTransfer</c> when it
 /// still exists in the database and the new table is empty, and every user that was
 /// assigned the old permission set is granted the Bifrost one. Each field is only added to
@@ -100,12 +100,12 @@ codeunit 10035676 "Storage Takeover ori"
         if OldAccessControl.FindSet() then
             repeat
                 if not NewAccessControl.Get(
-                    OldAccessControl."User Security ID", 'BIFROST Hnitbj. ori', OldAccessControl."Company Name",
+                    OldAccessControl."User Security ID", 'BIFROST Attach ori', OldAccessControl."Company Name",
                     OldAccessControl.Scope, NewAppId)
                 then begin
                     NewAccessControl.Init();
                     NewAccessControl."User Security ID" := OldAccessControl."User Security ID";
-                    NewAccessControl."Role ID" := 'BIFROST Hnitbj. ori';
+                    NewAccessControl."Role ID" := 'BIFROST Attach ori';
                     NewAccessControl."Company Name" := OldAccessControl."Company Name";
                     NewAccessControl.Scope := OldAccessControl.Scope;
                     NewAccessControl."App ID" := NewAppId;
@@ -171,5 +171,5 @@ codeunit 10035676 "Storage Takeover ori"
     end;
 
     var
-        TakeOverTelemetryTxt: Label 'Bifrost Hnitbjorg took data over from Origo Cloud Events Storage.', Locked = true;
+        TakeOverTelemetryTxt: Label 'Bifrost Attachments took data over from Origo Cloud Events Storage.', Locked = true;
 }

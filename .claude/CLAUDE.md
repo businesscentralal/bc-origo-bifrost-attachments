@@ -1,12 +1,12 @@
-# Extension: Bifrost Hnitbjorg
+# Extension: Bifrost Attachments
 
 ## Prefix
-(none - objects use raw names with the mandatory `ori` suffix inside the `Origo.Bifrost.Hnitbjorg`
+(none - objects use raw names with the mandatory `ori` suffix inside the `Origo.Bifrost.Attachments`
 namespace; every object name starts with `Storage` because that is what the module does, not
 because it is a brand prefix)
 
 ## Namespace
-Origo.Bifrost.Hnitbjorg (tests: Origo.Bifrost.Hnitbjorg.Test)
+Origo.Bifrost.Attachments (tests: Origo.Bifrost.Attachments.Test)
 
 ## Object ID Range
 App:   10035635-10035684 (allocated in origo_cloudevents_object_ranges.xlsx; migrated from the
@@ -19,17 +19,17 @@ Highest object id currently used: 10035679. Free ids left in the block: 10035680
 Register any further block in the workbook before using it - never squeeze objects into a
 neighbouring app's range.
 
-Ids taken by the setup migration (2026-09-06): page 10035677 `Hnitbjorg Setup ori`,
+Ids taken by the setup migration (2026-09-06): page 10035677 `Attachments Setup ori`,
 page 10035678 `Storage Conn. Part ori`, codeunit 10035679 `Storage Upload Purge ori`.
 No id was freed - `Setup Ext. ori` keeps 10035635, it was only reduced in scope.
 Test app: codeunit 96207 `Storage Setup Page Tests` (next free test id 96208).
 
 ## App Identity
-App:      Bifrost Hnitbjorg, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
-Test app: Bifrost Hnitbjorg - Tests, id `7cdb530b-b74b-446b-9ece-80e2b911bfb3`
+App:      Bifrost Attachments, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
+Test app: Bifrost Attachments - Tests, id `7cdb530b-b74b-446b-9ece-80e2b911bfb3`
 Publisher: Origo - target Cloud - runtime 17.0 - application/platform 28.0.0.0
-Display form in prose and captions: **Bifröst Hnitbjörg** (Norse module name; Hnitbjörg is the
-hall that stores the mead).
+Display form in prose and captions: **Bifröst viðhengi** (the Icelandic form of the app name;
+the app was called *Bifröst Hnitbjörg* before the first release).
 
 ## Target BC Version
 28.x (application/platform 28.0.0.0, runtime 17.0)
@@ -37,7 +37,7 @@ hall that stores the mead).
 ## Source Control
 Platform: GitHub
 Organization: businesscentralal
-Repository: bc-origo-bifrost-hnitbjorg
+Repository: bc-origo-bifrost-attachments
 Default branch: main
 Migration branch: feature/bifrost-hnitbjorg-migration
 
@@ -53,7 +53,7 @@ Those apps own the credentials - this app only stores a registered File Account 
   characters. Two names had to be abbreviated to fit: `Storage Att. Offload Impl ori` and
   `Storage Att. Restore Impl ori`.
 - The brand name "Bifrost" lives in the namespace, the app name, the permission set
-  (`BIFROST Hnitbj. ori`) and user-facing captions - never as an object-name prefix.
+  (`BIFROST Attach ori`) and user-facing captions - never as an object-name prefix.
 - Icelandic captions use "Bifröst". Any remaining "atburða í skýinu" wording is a Cloud Events
   leftover and must be replaced with Bifröst wording.
 - File names follow `<ObjectNameShort>.<ObjectTypeShortPascalCase>.al` with the suffix removed
@@ -89,7 +89,7 @@ Before writing any AL code, load the relevant skills:
 Agent context for this repository is in [AGENTS.md](../AGENTS.md).
 
 Key rules always in effect:
-- Namespace `Origo.Bifrost.Hnitbjorg` at the top of every file
+- Namespace `Origo.Bifrost.Attachments` at the top of every file
 - XML documentation on every object and non-local procedure
 - Bilingual captions (en-US + is-IS `Comment = 'is-IS=...'`) on all user-facing text
 - `SetLoadFields` on all record reads
@@ -144,7 +144,7 @@ Key rules always in effect:
   `Storage.Upload.*` types.
 
 ## Setup Surface
-- `Hnitbjorg Setup ori` (10035677) is the app's own setup page and the only place the module is
+- `Attachments Setup ori` (10035677) is the app's own setup page and the only place the module is
   configured. It embeds `Storage Conn. Part ori` (10035678) for the storage connections, carries
   the Storage Setup Wizard / File Accounts / Bifrost Storage Setup / Purge Upload Sessions
   actions, and shows the "Allow HttpClient Requests" notification in its `OnOpenPage`.
@@ -161,7 +161,7 @@ Key rules always in effect:
   *Origo Cloud Events Storage* app (`7acf9361-f558-442b-a516-f5e5dd92aecb`) on first install per
   company: `CE Storage Attachment Link` (10075985) -> `Storage Attachment Link ori` (10035635)
   and `Cloud Events Storage Setup` (10075986) -> `Storage Setup ori` (10035636) with
-  `DataTransfer`, plus the `Access Control` re-grant from `CE Storage` to `BIFROST Hnitbj. ori`.
+  `DataTransfer`, plus the `Access Control` re-grant from `CE Storage` to `BIFROST Attach ori`.
   The generator `gen_install.py` is archived in
   `bc-origo-bifrost-core/tools/migration/archive/hnitbjorg/` - regenerate from there, never
   hand-edit.
@@ -177,7 +177,7 @@ Key rules always in effect:
 - The test app exercises the whole pipeline without a live storage account through the `Mock`
   value that `Storage Type Test` (96200) adds to `Storage Type ori`.
 - Full message-type test reports live in
-  `test/reports/Bifrost_Hnitbjorg_MessageType_TestReport_<date>.md` (internal, not published).
+  `test/reports/Bifrost_Attachments_MessageType_TestReport_<date>.md` (internal, not published).
   The generator `make_report.py` and the type list `hnitbjorg_types.txt` are archived in
   `bc-origo-bifrost-core/tools/migration/archive/hnitbjorg/`. The open defect list from the last
   run is in that report's "Defects and observations" section - fix from there.

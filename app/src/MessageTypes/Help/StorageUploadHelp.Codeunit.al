@@ -1,10 +1,10 @@
-﻿namespace Origo.Bifrost.Hnitbjorg;
+﻿namespace Origo.Bifrost.Attachments;
 
 using Microsoft.Foundation.Attachment;
 using Origo.Bifrost;
 
 /// <summary>
-/// Shared help document builder for the chunked-upload message types of the Bifrost Hnitbjorg storage connector.
+/// Shared help document builder for the chunked-upload message types of the Bifrost Attachments storage connector.
 /// One codeunit per message-type domain: every <c>*Impl</c> codeunit of the domain routes its
 /// <c>GetMessageHelpAsMarkdownDocument</c> call here, so the Markdown contract for the whole
 /// domain lives in one place.

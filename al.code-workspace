@@ -1,11 +1,11 @@
 {
     "folders": [
         {
-            "name": "Bifröst Hnitbjörg",
+            "name": "Bifröst viðhengi",
             "path": "app"
         },
         {
-            "name": "Bifröst Hnitbjörg.Tests",
+            "name": "Bifröst viðhengi.Tests",
             "path": "test"
         },
         {
@@ -35,7 +35,7 @@
         "al.enableCodeActions": true,
         "al.incrementalBuild": true,
         "al.packageCachePath": "./.alpackages",
-        "al.namespaceTemplate": "Origo.Bifrost.Hnitbjorg",
+        "al.namespaceTemplate": "Origo.Bifrost.Attachments",
         "dotnetAcquisitionExtension.existingDotnetPath": []
     },
     "extensions": {

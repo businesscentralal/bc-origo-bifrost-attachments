@@ -1,4 +1,4 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 /// <summary>
 /// Lifecycle state of a chunked upload session (see <see cref="Table.StorageUploadSession"/>).

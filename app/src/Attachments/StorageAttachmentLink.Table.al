@@ -1,4 +1,4 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 /// <summary>
 /// Tracks attachment records whose file content has been offloaded to external storage.

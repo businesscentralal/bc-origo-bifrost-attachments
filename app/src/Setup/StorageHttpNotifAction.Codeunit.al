@@ -1,4 +1,4 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 /// <summary>
 /// Handles the notification action to open Extension Management for enabling HTTP client requests.

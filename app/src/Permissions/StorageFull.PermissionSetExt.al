@@ -1,11 +1,11 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
 
 /// <summary>
 /// Adds the storage connector to Foundation's "BIFROST Full ori" role, so a Bifröst
 /// administrator gets it without a second assignment. The grants are the same ones the
-/// assignable "BIFROST Hnitbj. ori" set carries - keep the two lists in step.
+/// assignable "BIFROST Attach ori" set carries - keep the two lists in step.
 /// </summary>
 permissionsetextension 10035635 "Storage Full ori" extends "BIFROST Full ori"
 {
@@ -57,7 +57,7 @@ permissionsetextension 10035635 "Storage Full ori" extends "BIFROST Full ori"
         codeunit "Storage Upload Mgt ori" = X,
         codeunit "Storage Upload Purge ori" = X,
         codeunit "Storage Upload Status Impl ori" = X,
-        page "Hnitbjorg Setup ori" = X,
+        page "Attachments Setup ori" = X,
         page "Storage Account Lookup ori" = X,
         page "Storage Card ori" = X,
         page "Storage Conn. Part ori" = X,

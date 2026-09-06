@@ -1,6 +1,6 @@
-namespace Origo.Bifrost.Hnitbjorg.Test;
+namespace Origo.Bifrost.Attachments.Test;
 
-using Origo.Bifrost.Hnitbjorg;
+using Origo.Bifrost.Attachments;
 
 /// <summary>
 /// Single-instance in-memory file system backing the <c>Bifrost Storage Mock Impl</c> test

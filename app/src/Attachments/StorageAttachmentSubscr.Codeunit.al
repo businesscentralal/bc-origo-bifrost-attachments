@@ -1,4 +1,4 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 using Microsoft.EServices.EDocument;
 using Microsoft.Foundation.Attachment;

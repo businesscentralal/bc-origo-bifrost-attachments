@@ -1,9 +1,9 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 /// <summary>
 /// Removes abandoned chunked-upload data. An upload session that is never committed or
 /// aborted leaves its session row and its chunks behind; this codeunit deletes both so an
-/// administrator can reclaim the space from the Bifröst Hnitbjörg setup page.
+/// administrator can reclaim the space from the Bifrost Attachments setup page.
 /// </summary>
 codeunit 10035679 "Storage Upload Purge ori"
 {

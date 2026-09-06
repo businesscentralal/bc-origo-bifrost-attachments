@@ -1,10 +1,10 @@
 {
   "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
-  "name": "Bifrost Hnitbjorg",
+  "name": "Bifrost Attachments",
   "publisher": "Origo",
   "version": "28.0.0.0",
-  "brief": "Bifrost Hnitbjorg - external storage connectors",
-  "description": "Bifrost Hnitbjorg: Azure Blob, Azure File Share and SharePoint storage message types on top of Bifrost Foundation. Gives Business Central and any external caller direct read/write access to cloud storage, chunked uploads and attachment offloading.",
+  "brief": "Bifrost Attachments - external storage connectors",
+  "description": "Bifrost Attachments: Azure Blob, Azure File Share and SharePoint storage message types on top of Bifrost Foundation. Gives Business Central and any external caller direct read/write access to cloud storage, chunked uploads and attachment offloading.",
   "platform": "28.0.0.0",
   "application": "28.0.0.0",
   "runtime": "17.0",
@@ -47,7 +47,7 @@
     {
       "id": "7cdb530b-b74b-446b-9ece-80e2b911bfb3",
       "publisher": "Origo",
-      "name": "Bifrost Hnitbjorg - Tests"
+      "name": "Bifrost Attachments - Tests"
     }
   ],
   "suppressWarnings": [

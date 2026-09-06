@@ -1,21 +1,21 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 using System.Apps;
 using System.Environment.Configuration;
 using System.ExternalFileStorage;
 
 /// <summary>
-/// Setup page of the Bifröst Hnitbjörg application. It is opened from the Apps group on the
+/// Setup page of the Bifrost Attachments application. It is opened from the Apps group on the
 /// Bifröst Setup page and gathers everything an administrator needs for this module: the list
 /// of configured storage connections, the standard file account setup, and the housekeeping
 /// action that removes abandoned upload sessions.
 /// </summary>
-page 10035677 "Hnitbjorg Setup ori"
+page 10035677 "Attachments Setup ori"
 {
     PageType = Card;
     ApplicationArea = All;
     UsageCategory = None;
-    Caption = 'Bifrost Hnitbjorg Setup', Comment = 'is-IS=Uppsetning Bifröst Hnitbjargar';
+    Caption = 'Bifrost Attachments Setup', Comment = 'is-IS=Uppsetning Bifröst viðhengja';
     InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;
@@ -125,7 +125,7 @@ page 10035677 "Hnitbjorg Setup ori"
     end;
 
     var
-        HttpClientDisabledMsg: Label 'HTTP client requests are not enabled for the Bifrost Hnitbjorg extension. Storage operations will not work until an administrator enables Allow HttpClient Requests in Extension Settings.', Comment = 'is-IS=HTTP-biðlarabeiðnir eru ekki virkar fyrir viðbótina Bifröst Hnitbjörg. Geymsluaðgerðir virka ekki fyrr en kerfisstjóri virkjar Leyfa HttpClient-beiðnir í stillingum viðbótar.';
+        HttpClientDisabledMsg: Label 'HTTP client requests are not enabled for the Bifrost Attachments extension. Storage operations will not work until an administrator enables Allow HttpClient Requests in Extension Settings.', Comment = 'is-IS=HTTP-biðlarabeiðnir eru ekki virkar fyrir viðbótina Bifröst viðhengi. Geymsluaðgerðir virka ekki fyrr en kerfisstjóri virkjar Leyfa HttpClient-beiðnir í stillingum viðbótar.';
         RunSetupWizardLbl: Label 'Run Setup Wizard', Comment = 'is-IS=Keyra leiðsagnarforrit';
         EnableHttpClientLbl: Label 'Open Extension Settings', Comment = 'is-IS=Opna stillingar viðbótar';
 }

@@ -1,4 +1,4 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
 using System.Environment.Configuration;
@@ -62,7 +62,7 @@ codeunit 10035637 "Storage Install ori"
     /// <returns>The initial-release upgrade tag.</returns>
     internal procedure GetInitialReleaseTag(): Code[250]
     begin
-        exit('Origo.Bifrost.Hnitbjorg-Initial-20260905');
+        exit('Origo.Bifrost.Attachments-Initial-20260905');
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Upgrade Tag", OnGetPerCompanyUpgradeTags, '', false, false)]

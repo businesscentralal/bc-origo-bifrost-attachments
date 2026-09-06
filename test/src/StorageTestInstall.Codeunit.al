@@ -1,6 +1,6 @@
-namespace Origo.Bifrost.Hnitbjorg.Test;
+namespace Origo.Bifrost.Attachments.Test;
 
-using Origo.Bifrost.Hnitbjorg;
+using Origo.Bifrost.Attachments;
 using System.TestTools.TestRunner;
 
 codeunit 96202 "Storage Test Install"

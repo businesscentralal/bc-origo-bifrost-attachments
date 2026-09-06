@@ -1,4 +1,4 @@
-namespace Origo.Bifrost.Hnitbjorg;
+namespace Origo.Bifrost.Attachments;
 
 /// <summary>
 /// Everything a user needs to work with the storage connector: the four tables, the setup and
@@ -8,7 +8,7 @@ namespace Origo.Bifrost.Hnitbjorg;
 /// "BIFROST Full ori". "Storage Full ori" adds the same grants to the Foundation Full role, so an
 /// administrator who already has that role does not have to be given this set as well.
 /// </summary>
-permissionset 10035666 "BIFROST Hnitbj. ori"
+permissionset 10035666 "BIFROST Attach ori"
 {
     Access = Public;
     Assignable = true;
@@ -62,7 +62,7 @@ permissionset 10035666 "BIFROST Hnitbj. ori"
         codeunit "Storage Upload Mgt ori" = X,
         codeunit "Storage Upload Purge ori" = X,
         codeunit "Storage Upload Status Impl ori" = X,
-        page "Hnitbjorg Setup ori" = X,
+        page "Attachments Setup ori" = X,
         page "Storage Account Lookup ori" = X,
         page "Storage Card ori" = X,
         page "Storage Conn. Part ori" = X,

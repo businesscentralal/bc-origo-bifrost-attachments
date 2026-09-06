@@ -1,11 +1,11 @@
-# Bifröst Hnitbjörg
+# Bifrost Attachments
 
-**App name:** Bifrost Hnitbjorg (display form *Bifröst Hnitbjörg*)  
+**App name:** Bifrost Attachments (display form *Bifröst viðhengi*)  
 **Publisher:** Origo — **Version:** 28.0.0.0 — **Target:** Cloud (BC 28, runtime 17.0)  
 **App ID:** `672df32a-a0c5-4a22-b591-0efa38023e95` — **Test app ID:** `7cdb530b-b74b-446b-9ece-80e2b911bfb3`  
-**Object ID range:** 10035635–10035684 (tests 96200–96299) — **Namespace:** `Origo.Bifrost.Hnitbjorg`
+**Object ID range:** 10035635–10035684 (tests 96200–96299) — **Namespace:** `Origo.Bifrost.Attachments`
 
-Hnitbjörg is the storage module of the Bifröst platform. It exposes the Business Central
+Bifrost Attachments is the storage module of the Bifröst platform. It exposes the Business Central
 External File Storage facade (Azure Blob Storage, Azure File Share, SharePoint) as 23 Bifröst
 message types, so any external caller can read and write cloud storage, upload large files in
 chunks and offload attachments through the same Queue → Task → Data pattern used by the rest of
@@ -39,13 +39,13 @@ Context-sensitive help pages are addressed by Docusaurus slug (`storage-setup`, 
 
 | Folder | Content |
 | --- | --- |
-| `app/` | The AppSource app (`Bifrost Hnitbjorg`) |
+| `app/` | The AppSource app (`Bifrost Attachments`) |
 | `app/src/MessageTypes/` | Message type implementations and the six domain help codeunits |
 | `app/src/Storage/` | Connector interface, production implementation, request helper |
 | `app/src/Attachments/` | Attachment offload/restore, link table, table extensions |
 | `app/src/Upload/` | Chunked upload session and chunk tables, upload manager, retention policy |
 | `app/src/Install/` | `Storage Takeover ori` — data take-over from the published legacy app |
-| `test/` | Test app (`Bifrost Hnitbjorg - Tests`) |
+| `test/` | Test app (`Bifrost Attachments - Tests`) |
 | `test/reports/` | End-to-end message-type test reports (internal, not published) |
 | `.AL-Go/`, `.github/` | AL-Go for GitHub / COSMO Alpaca pipeline configuration |
 
@@ -57,7 +57,7 @@ Context-sensitive help pages are addressed by Docusaurus slug (`storage-setup`, 
 | --- | --- | --- | --- |
 | Bifrost Foundation | `7505e808-6e52-4b96-a328-82573391297a` | Origo | 28.0.0.0 |
 
-The test app additionally depends on Bifrost Hnitbjorg itself and on Microsoft's
+The test app additionally depends on Bifrost Attachments itself and on Microsoft's
 Tests-TestLibraries, Application Test Library, Library Assert, Test Runner, Any and
 Library Variable Storage.
 

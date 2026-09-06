@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='utf-8'?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en-US" target-language="is-IS" original="Bifrost Hnitbjorg">
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="is-IS" original="Bifrost Attachments">
     <body>
       <group id="body">
         <trans-unit id="Table 4034440960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -138,7 +138,7 @@
         <trans-unit id="Table 3959677966 - NamedType 4100786335" size-unit="char" translate="yes" xml:space="preserve">
           <source>Select a file account before testing the connection.</source>
           <target state="translated">Veldu skráarreikning áður en tengingin er prófuð.</target>
-          <note from="Developer" annotates="general" priority="2" />
+          <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Setup ori - NamedType NoAccountErr</note>
         </trans-unit>
         <trans-unit id="Table 3959677966 - Method 4263468516 - NamedType 1388767349" size-unit="char" translate="yes" xml:space="preserve">
@@ -423,6 +423,102 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Setja upp Bifröst geymslu</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Install ori - NamedType SetupWizardTitleTok</note>
         </trans-unit>
+        <trans-unit id="Codeunit 1175196741 - NamedType 563474316" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purged %1 upload session(s) and %2 chunk(s).</source>
+          <target state="translated">Hreinsaði %1 upphleðslulotu/-lotur og %2 bita., %1 = session count, %2 = chunk count</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 bita., %1 = session count, %2 = chunk count</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Purge ori - NamedType PurgedMsg</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bifrost Attachments Setup</source>
+          <target state="translated">Uppsetning Bifröst viðhengja</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Uppsetning Bifröst viðhengja</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - NamedType 117150238" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Open Extension Settings</source>
+          <target state="translated">Opna stillingar viðbótar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Opna stillingar viðbótar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - NamedType EnableHttpClientLbl</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - NamedType 3548522468" size-unit="char" translate="yes" xml:space="preserve">
+          <source>HTTP client requests are not enabled for the Bifrost Attachments extension. Storage operations will not work until an administrator enables Allow HttpClient Requests in Extension Settings.</source>
+          <target state="translated">HTTP-biðlarabeiðnir eru ekki virkar fyrir viðbótina Bifröst viðhengi. Geymsluaðgerðir virka ekki fyrr en kerfisstjóri virkjar Leyfa HttpClient-beiðnir í stillingum viðbótar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=HTTP-biðlarabeiðnir eru ekki virkar fyrir viðbótina Bifröst viðhengi. Geymsluaðgerðir virka ekki fyrr en kerfisstjóri virkjar Leyfa HttpClient-beiðnir í stillingum viðbótar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - NamedType HttpClientDisabledMsg</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - NamedType 3746426553" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Setup Wizard</source>
+          <target state="translated">Keyra leiðsagnarforrit</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Keyra leiðsagnarforrit</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - NamedType RunSetupWizardLbl</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Control 707810663 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Storage Connections</source>
+          <target state="translated">Geymslutengingar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Geymslutengingar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Control Connections - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Control 1505505696 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Storage Connections</source>
+          <target state="translated">Geymslutengingar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Geymslutengingar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Control ConnectionList - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Action 3123095784 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View and manage the registered file storage accounts.</source>
+          <target state="translated">Skoða og stjórna skráðum skráargeymslureikningum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skoða og stjórna skráðum skráargeymslureikningum.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action FileAccounts - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Action 3123095784 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Storage Setup</source>
+          <target state="translated">Uppsetning geymslu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Uppsetning geymslu</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action FileAccounts - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Action 2633900544 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run the guided setup to add a new file storage account (Azure Blob, Azure File Share, SharePoint, etc.).</source>
+          <target state="translated">Keyra leiðsagnarforritið til að bæta við nýjum skráargeymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Keyra leiðsagnarforritið til að bæta við nýjum skráargeymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action FileAccountWizard - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Action 2633900544 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Storage Setup Wizard</source>
+          <target state="translated">Leiðsagnarforrit geymsluuppsetningar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Leiðsagnarforrit geymsluuppsetningar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action FileAccountWizard - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Action 336799701 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Deletes abandoned upload sessions and their chunks. Sessions that were never committed or aborted leave data behind; this action removes it.</source>
+          <target state="translated">Eyðir yfirgefnum upphleðslulotum og bitum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir yfirgefnum upphleðslulotum og bitum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action PurgeUploadSessions - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Action 336799701 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purge Upload Sessions</source>
+          <target state="translated">Hreinsa upphleðslulotur</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Hreinsa upphleðslulotur</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action PurgeUploadSessions - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Action 809289658 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View and manage storage connections used to route Bifrost file requests to file accounts.</source>
+          <target state="translated">Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action StorageSetup - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Action 809289658 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bifrost Storage Setup</source>
+          <target state="translated">Uppsetning Bifröst geymslu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Uppsetning Bifröst geymslu</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action StorageSetup - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1933601227 - Action 3383493608 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process</source>
+          <target state="translated">Vinnsla</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Vinnsla</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action Category_Process - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3449699506 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Select File Account</source>
           <target state="translated">Velja skráareikning</target>
@@ -500,6 +596,12 @@
           <target state="translated">Vinnsla</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Vinnsla</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Card ori - Action Category_Process - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1750482228 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Storage Connections</source>
+          <target state="translated">Geymslutengingar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Geymslutengingar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Storage Conn. Part ori - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3959677966 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bifrost Storage Setup</source>
@@ -627,83 +729,17 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Staðfesta</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Action ActionRefreshHttp - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - NamedType 117150238" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 1024008208">
-          <source>Open Extension Settings</source>
-          <target state="translated">Opna stillingar viðbótar</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Opna stillingar viðbótar</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - NamedType EnableHttpClientLbl</note>
+        <trans-unit id="PageExtension 1024008208 - Action 2692177247 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
+          <source>Open the setup page of Bifrost Attachments, where storage connections and file accounts are configured.</source>
+          <target state="translated">Opna uppsetningarsíðu Bifröst viðhengja þar sem geymslutengingar og skráareikningar eru stilltir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Opna uppsetningarsíðu Bifröst viðhengja þar sem geymslutengingar og skráareikningar eru stilltir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action AttachmentsSetup - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - NamedType 3548522468" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 1024008208">
-          <source>HTTP client requests are not enabled for the Bifrost Storage extension. Storage operations will not work until an administrator enables Allow HttpClient Requests in Extension Settings.</source>
-          <target state="translated">HTTP-biðlarabeiðnir eru ekki virkar fyrir viðbótina Bifröst geymsla. Geymsluaðgerðir virka ekki fyrr en kerfisstjóri virkjar Leyfa HttpClient-beiðnir í stillingum viðbótar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=HTTP-biðlarabeiðnir eru ekki virkar fyrir viðbótina Bifröst geymsla. Geymsluaðgerðir virka ekki fyrr en kerfisstjóri virkjar Leyfa HttpClient-beiðnir í stillingum viðbótar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - NamedType HttpClientDisabledMsg</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - NamedType 563474316" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 1024008208">
-          <source>Purged %1 upload session(s) and %2 chunk(s).</source>
-          <target state="translated">Hreinsaði %1 upphleðslulotu/-lotur og %2 bita.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 bita., %1 = session count, %2 = chunk count</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - NamedType PurgedMsg</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - NamedType 3746426553" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 1024008208">
-          <source>Run Setup Wizard</source>
-          <target state="translated">Keyra leiðsagnarforrit</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Keyra leiðsagnarforrit</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - NamedType RunSetupWizardLbl</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - Action 4007728778 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
-          <source>Storage</source>
-          <target state="translated">Geymsla</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Geymsla</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action StorageGroup - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - Action 3123095784 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
-          <source>View and manage the registered file storage accounts.</source>
-          <target state="translated">Skoða og stjórna skráðum skráargeymslureikningum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skoða og stjórna skráðum skráargeymslureikningum.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action FileAccounts - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - Action 3123095784 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
-          <source>Storage Setup</source>
-          <target state="translated">Uppsetning geymslu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Uppsetning geymslu</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action FileAccounts - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - Action 2633900544 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
-          <source>Run the guided setup to add a new file storage account (Azure Blob, Azure File Share, SharePoint, etc.).</source>
-          <target state="translated">Keyra leiðsagnarforritið til að bæta við nýjum skráargeymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Keyra leiðsagnarforritið til að bæta við nýjum skráargeymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action FileAccountWizard - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - Action 2633900544 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
-          <source>Storage Setup Wizard</source>
-          <target state="translated">Leiðsagnarforrit geymsluuppsetningar</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Leiðsagnarforrit geymsluuppsetningar</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action FileAccountWizard - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - Action 336799701 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
-          <source>Deletes abandoned upload sessions and their chunks. Sessions that were never committed or aborted leave data behind; this action removes it.</source>
-          <target state="translated">Eyðir yfirgefnum upphleðslulotum og bitum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir yfirgefnum upphleðslulotum og bitum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action PurgeUploadSessions - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - Action 336799701 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
-          <source>Purge Upload Sessions</source>
-          <target state="translated">Hreinsa upphleðslulotur</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hreinsa upphleðslulotur</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action PurgeUploadSessions - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - Action 809289658 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
-          <source>View and manage storage connections used to route Bifrost file requests to file accounts.</source>
-          <target state="translated">Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action StorageSetup - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 1024008208 - Action 809289658 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
-          <source>Bifrost Storage Setup</source>
-          <target state="translated">Uppsetning Bifröst geymslu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Uppsetning Bifröst geymslu</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action StorageSetup - Property Caption</note>
+        <trans-unit id="PageExtension 1024008208 - Action 2692177247 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
+          <source>Bifrost Attachments Setup</source>
+          <target state="translated">Uppsetning Bifröst viðhengja</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Uppsetning Bifröst viðhengja</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Setup Ext. ori - Action AttachmentsSetup - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3463026522 - Field 2669758464 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 282138634">
           <source>Specifies whether the attachment content has been offloaded to external storage.</source>
@@ -783,11 +819,11 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Opið</note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Storage Upload Status ori - EnumValue Open - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PermissionSet 1168217490 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="PermissionSet 3226296164 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bifrost Storage</source>
           <target state="translated">Bifröst geymsla</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Bifröst geymsla</note>
-          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet BIFROST Hnitbj. ori - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet BIFROST Attach ori - Property Caption</note>
         </trans-unit>
       </group>
     </body>

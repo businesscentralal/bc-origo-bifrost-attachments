@@ -1,6 +1,6 @@
-namespace Origo.Bifrost.Hnitbjorg.Test;
+namespace Origo.Bifrost.Attachments.Test;
 
-using Origo.Bifrost.Hnitbjorg;
+using Origo.Bifrost.Attachments;
 
 /// <summary>
 /// Adds an in-memory <c>Mock</c> backend to the <c>Bifrost Storage Type</c> enum so

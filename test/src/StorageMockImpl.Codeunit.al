@@ -1,6 +1,6 @@
-namespace Origo.Bifrost.Hnitbjorg.Test;
+namespace Origo.Bifrost.Attachments.Test;
 
-using Origo.Bifrost.Hnitbjorg;
+using Origo.Bifrost.Attachments;
 using System.ExternalFileStorage;
 using System.Text;
 using System.Utilities;

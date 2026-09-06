@@ -1,6 +1,6 @@
-# Bifrost Hnitbjorg - Message Type Test Report (2026-09-05)
+# Bifrost Attachments - Message Type Test Report (2026-09-05)
 
-Full end-to-end test of every message type of **Bifrost Hnitbjorg 28.0.0.0** deployed to the COSMO Alpaca container `bc28-is` (BC 28, company CRONUS IS, user GUNNAR / SUPER), alongside the published legacy *Origo Cloud Events Storage* app.
+Full end-to-end test of every message type of **Bifrost Attachments 28.0.0.0** deployed to the COSMO Alpaca container `bc28-is` (BC 28, company CRONUS IS, user GUNNAR / SUPER), alongside the published legacy *Origo Cloud Events Storage* app.
 
 ## Method
 

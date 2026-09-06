@@ -1,4 +1,4 @@
-# Bifröst Hnitbjörg — Agent Context
+# Bifrost Attachments — Agent Context
 
 This file gives AI agents the big-picture context needed to work in this repository correctly
 and safely.
@@ -7,7 +7,7 @@ and safely.
 
 ## What This Extension Does
 
-**Bifröst Hnitbjörg** is the storage module of the Bifröst platform. It is a Business Central AL
+**Bifrost Attachments** is the storage module of the Bifröst platform. It is a Business Central AL
 extension that exposes the standard BC **External File Storage** facade — Azure Blob Storage,
 Azure File Share and SharePoint — as **23 Bifröst message types**, so any external caller can
 read and write cloud storage through the same Queue → Task → Data pattern that Bifröst
@@ -18,7 +18,8 @@ On top of raw file access it adds three things the base platform does not have o
 offloading** (moving attachment content out of the BC database into storage while keeping it
 transparently readable in the UI), and **attachment creation** on arbitrary records.
 
-The module name is Norse: Hnitbjörg is the hall where the mead was stored.
+The app was called *Bifröst Hnitbjörg* while it was being built. It is named after what it
+does now: **Bifrost Attachments**, shown to Icelandic users as *Bifröst viðhengi*.
 
 ---
 
@@ -50,7 +51,7 @@ app/                Business Central AL extension (publisher: Origo, ID range 10
     Attachments/    Offload/restore management, link table, the two table extensions
     Upload/         Upload session + chunk tables, upload manager, retention policy, data guard
     Setup/          Storage Setup table/list/card/wizard, account lookup, Setup page extension
-    Permissions/    BIFROST Hnitbj. ori + Storage Full ori
+    Permissions/    BIFROST Attach ori + Storage Full ori
     Install/        Storage Takeover ori (generated data take-over from the legacy app)
     Lifecycle/      Storage Install ori, Storage Overview Subscr ori
   Help/             HTML help pages (en-US and is-IS) deployed to Azure Blob

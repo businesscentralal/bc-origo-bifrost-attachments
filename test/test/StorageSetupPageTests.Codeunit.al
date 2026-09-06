@@ -1,10 +1,10 @@
-namespace Origo.Bifrost.Hnitbjorg.Test;
+namespace Origo.Bifrost.Attachments.Test;
 
 using Origo.Bifrost;
-using Origo.Bifrost.Hnitbjorg;
+using Origo.Bifrost.Attachments;
 
 /// <summary>
-/// Tests for the Bifröst Hnitbjörg setup surface. They cover the new <c>Hnitbjorg Setup ori</c>
+/// Tests for the Bifröst viðhengi setup surface. They cover the new <c>Attachments Setup ori</c>
 /// page (it opens, lists the configured storage connections and offers the four setup actions),
 /// the single Apps action the app contributes to the shared <c>Setup ori</c> page, and the
 /// upload-purge housekeeping logic behind the page action.
@@ -20,9 +20,9 @@ codeunit 96207 "Storage Setup Page Tests"
 
     [Test]
     [HandlerFunctions('NotificationHandler')]
-    procedure HnitbjorgSetupPage_Opens_ListsStorageConnections()
+    procedure AttachmentsSetupPage_Opens_ListsStorageConnections()
     var
-        HnitbjorgSetup: TestPage "Hnitbjorg Setup ori";
+        AttachmentsSetup: TestPage "Attachments Setup ori";
     begin
         // [SCENARIO] The application setup page opens and shows the configured storage connections.
         Initialize();
@@ -30,33 +30,33 @@ codeunit 96207 "Storage Setup Page Tests"
         // [GIVEN] One configured storage connection
         InsertStorageConnection();
 
-        // [WHEN] The Bifröst Hnitbjörg setup page is opened
-        HnitbjorgSetup.OpenView();
+        // [WHEN] The Bifröst viðhengi setup page is opened
+        AttachmentsSetup.OpenView();
 
         // [THEN] The embedded connection list shows the connection
-        LibraryAssert.IsTrue(HnitbjorgSetup.ConnectionList.First(), 'The connection list should contain a row.');
-        LibraryAssert.AreEqual(MockCodeTok, HnitbjorgSetup.ConnectionList."Code".Value(), 'The connection list should show the configured storage code.');
-        HnitbjorgSetup.Close();
+        LibraryAssert.IsTrue(AttachmentsSetup.ConnectionList.First(), 'The connection list should contain a row.');
+        LibraryAssert.AreEqual(MockCodeTok, AttachmentsSetup.ConnectionList."Code".Value(), 'The connection list should show the configured storage code.');
+        AttachmentsSetup.Close();
     end;
 
     [Test]
     [HandlerFunctions('NotificationHandler')]
-    procedure HnitbjorgSetupPage_AllSetupActions_AreEnabled()
+    procedure AttachmentsSetupPage_AllSetupActions_AreEnabled()
     var
-        HnitbjorgSetup: TestPage "Hnitbjorg Setup ori";
+        AttachmentsSetup: TestPage "Attachments Setup ori";
     begin
         // [SCENARIO] The four actions moved off the shared setup page are present and usable here.
         Initialize();
 
-        // [WHEN] The Bifröst Hnitbjörg setup page is opened
-        HnitbjorgSetup.OpenView();
+        // [WHEN] The Bifröst viðhengi setup page is opened
+        AttachmentsSetup.OpenView();
 
         // [THEN] Every setup action is enabled
-        LibraryAssert.IsTrue(HnitbjorgSetup.FileAccountWizard.Enabled(), 'Storage Setup Wizard should be enabled.');
-        LibraryAssert.IsTrue(HnitbjorgSetup.FileAccounts.Enabled(), 'Storage Setup should be enabled.');
-        LibraryAssert.IsTrue(HnitbjorgSetup.StorageSetup.Enabled(), 'Bifrost Storage Setup should be enabled.');
-        LibraryAssert.IsTrue(HnitbjorgSetup.PurgeUploadSessions.Enabled(), 'Purge Upload Sessions should be enabled.');
-        HnitbjorgSetup.Close();
+        LibraryAssert.IsTrue(AttachmentsSetup.FileAccountWizard.Enabled(), 'Storage Setup Wizard should be enabled.');
+        LibraryAssert.IsTrue(AttachmentsSetup.FileAccounts.Enabled(), 'Storage Setup should be enabled.');
+        LibraryAssert.IsTrue(AttachmentsSetup.StorageSetup.Enabled(), 'Bifrost Storage Setup should be enabled.');
+        LibraryAssert.IsTrue(AttachmentsSetup.PurgeUploadSessions.Enabled(), 'Purge Upload Sessions should be enabled.');
+        AttachmentsSetup.Close();
     end;
 
     [Test]
@@ -74,8 +74,8 @@ codeunit 96207 "Storage Setup Page Tests"
         BifrostSetup.OpenView();
 
         // [THEN] The single Apps action is available
-        LibraryAssert.IsTrue(BifrostSetup.HnitbjorgSetup.Enabled(), 'The Hnitbjorg Apps action should be enabled.');
-        LibraryAssert.IsTrue(BifrostSetup.HnitbjorgSetup.Visible(), 'The Hnitbjorg Apps action should be visible.');
+        LibraryAssert.IsTrue(BifrostSetup.AttachmentsSetup.Enabled(), 'The Bifrost Attachments Apps action should be enabled.');
+        LibraryAssert.IsTrue(BifrostSetup.AttachmentsSetup.Visible(), 'The Bifrost Attachments Apps action should be visible.');
         BifrostSetup.Close();
     end;
 
@@ -128,7 +128,7 @@ codeunit 96207 "Storage Setup Page Tests"
     procedure PurgeAction_OnSetupPage_PurgesAndInformsTheUser()
     var
         UploadSession: Record "Storage Upload Session ori";
-        HnitbjorgSetup: TestPage "Hnitbjorg Setup ori";
+        AttachmentsSetup: TestPage "Attachments Setup ori";
     begin
         // [SCENARIO] The page action wires the purge codeunit up and reports the result.
         Initialize();
@@ -137,9 +137,9 @@ codeunit 96207 "Storage Setup Page Tests"
         InsertAbandonedUpload(1);
 
         // [WHEN] The purge action is invoked from the setup page
-        HnitbjorgSetup.OpenView();
-        HnitbjorgSetup.PurgeUploadSessions.Invoke();
-        HnitbjorgSetup.Close();
+        AttachmentsSetup.OpenView();
+        AttachmentsSetup.PurgeUploadSessions.Invoke();
+        AttachmentsSetup.Close();
 
         // [THEN] The session is gone (the message text is asserted in the handler)
         LibraryAssert.IsTrue(UploadSession.IsEmpty(), 'The abandoned session should have been purged.');
