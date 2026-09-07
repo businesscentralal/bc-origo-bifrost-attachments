@@ -6,6 +6,14 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [28.0.0.0] - 2026-09-07
 
+### Added (2026-09-07) - Setup Wizard action
+
+- **`Attachments Setup ori` gained a promoted `Setup Wizard` action** that opens Bifröst
+  Foundation's `Setup Wizard ori`, matching the pattern already shipped on the other Bifröst
+  apps' own setup pages. It enables outbound HTTP client requests for every registered Bifröst
+  app and walks through each app's credentials in one optional, skippable flow - the
+  administrator no longer has to find the shared **Bifröst Setup** page separately to run it.
+
 ### Changed (2026-09-07) - setup notifications and wizard
 
 Across the Bifröst family, a setup notification is now raised in exactly one place: Bifröst

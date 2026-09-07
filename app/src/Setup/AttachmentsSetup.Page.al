@@ -1,5 +1,6 @@
 namespace Origo.Bifrost.Attachments;
 
+using Origo.Bifrost;
 using System.ExternalFileStorage;
 
 /// <summary>
@@ -80,6 +81,14 @@ page 10035677 "Attachments Setup ori"
                     UploadPurge.PurgeAndNotify();
                 end;
             }
+            action(SetupWizard)
+            {
+                ApplicationArea = All;
+                Caption = 'Setup Wizard', Comment = 'is-IS=Uppsetningarleiðsögn';
+                ToolTip = 'Opens the Bifrost setup wizard, which enables HTTP client requests for all Bifrost apps and walks through the credentials of every app.', Comment = 'is-IS=Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir auðkenni hvers forrits.';
+                Image = Setup;
+                RunObject = page "Setup Wizard ori";
+            }
         }
         area(Promoted)
         {
@@ -91,6 +100,7 @@ page 10035677 "Attachments Setup ori"
                 actionref(StorageSetup_Promoted; StorageSetup) { }
                 actionref(FileAccounts_Promoted; FileAccounts) { }
                 actionref(PurgeUploadSessions_Promoted; PurgeUploadSessions) { }
+                actionref(SetupWizard_Promoted; SetupWizard) { }
             }
         }
     }
