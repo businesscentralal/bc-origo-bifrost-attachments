@@ -132,19 +132,25 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         RecSystemId := ParseSystemId(RequestJson);
         TableId := TableIdForTarget(Target);
 
+        Link.SetLoadFields("Storage Code", "Storage Path", "File Name");
         if not Link.Get(TableId, RecSystemId) then
             Error(NotOffloadedErr);
 
         GetConnector(Link."Storage Code", StorageSetup, Connector);
         Connector.GetFile(StorageSetup, Link."Storage Path", TempBlob);
         WriteAttachment(Target, RecSystemId, TempBlob, Link."File Name");
-        Connector.DeleteFile(StorageSetup, Link."Storage Path");
 
         ResultData.Add('target', TargetName(Target));
         ResultData.Add('systemId', Format(RecSystemId, 0, 4));
         ResultData.Add('contentLength', TempBlob.Length());
 
+        // Same discipline as Offload: every database write happens first and the irreversible
+        // remote step last. Deleting the remote copy before the link row is removed would, on any
+        // later failure, roll the database back to the offloaded state with the only copy of the
+        // file already gone. In this order a failing delete rolls the whole task back instead —
+        // the attachment stays offloaded and its remote copy stays where the link says it is.
         Link.Delete(true);
+        Connector.DeleteFile(StorageSetup, Link."Storage Path");
     end;
 
     /// <summary>
@@ -877,9 +883,13 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     end;
 
     local procedure NormalizeFolder(FolderPath: Text): Text
+    var
+        RequestMgt: Codeunit "Storage Request Mgt ori";
     begin
         FolderPath := ConvertStr(FolderPath, '\', '/');
         FolderPath := DelChr(FolderPath, '<>', ' /');
+        if not RequestMgt.PathIsSafe(FolderPath) then
+            RequestMgt.ThrowUnsafePath(FolderPath);
         exit(FolderPath);
     end;
 }

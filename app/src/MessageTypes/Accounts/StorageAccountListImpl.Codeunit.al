@@ -50,6 +50,7 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
+        StorageSetup.ReadIsolation := IsolationLevel::ReadCommitted;
         StorageSetup.SetLoadFields("Code", Description, Connector, "Base Path", Enabled);
         if StorageSetup.FindSet() then
             repeat

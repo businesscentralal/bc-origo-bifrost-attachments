@@ -7,6 +7,10 @@ codeunit 10035666 "Storage Http Notif. Action ori"
 {
     Access = Internal;
 
+    /// <summary>
+    /// Opens the storage setup wizard so the administrator can finish configuring the module.
+    /// </summary>
+    /// <param name="Notification">The notification that triggered the action.</param>
     internal procedure RunSetupWizard(Notification: Notification)
     begin
         Page.Run(Page::"Storage Setup Wizard ori");

@@ -398,6 +398,73 @@ codeunit 96204 "Storage Connector Tests"
     end;
 
     [Test]
+    procedure RelativePathSegmentIsRejected()
+    var
+        Argument: Record "Message Argument ori";
+    begin
+        // [SCENARIO] The base path is a connection's only confinement boundary, so a caller must
+        // not be able to walk out of it with a relative segment.
+        // [GIVEN] A request whose path climbs above the base path
+        Initialize();
+
+        // [WHEN] Storage.File.Get executes
+        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Get", PathRequest('../../secret.txt'));
+
+        // [THEN] The envelope reports an error instead of reaching the connector
+        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'A path with a ".." segment should be rejected.');
+    end;
+
+    [Test]
+    procedure RelativePathWithBackslashesIsRejected()
+    var
+        Argument: Record "Message Argument ori";
+    begin
+        // [GIVEN] A request that hides the relative segment behind Windows separators
+        Initialize();
+
+        // [WHEN] Storage.Directory.Create executes
+        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Directory.Create", PathRequest('reports\..\..\etc'));
+
+        // [THEN] The envelope reports an error - both slash directions are checked
+        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'A backslash path with a ".." segment should be rejected.');
+    end;
+
+    [Test]
+    procedure CurrentDirectorySegmentIsRejected()
+    var
+        Argument: Record "Message Argument ori";
+    begin
+        // [GIVEN] A request carrying a "." segment
+        Initialize();
+
+        // [WHEN] Storage.File.Exists executes
+        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Exists", PathRequest('docs/./hello.txt'));
+
+        // [THEN] The envelope reports an error
+        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'A path with a "." segment should be rejected.');
+    end;
+
+    [Test]
+    procedure DotsInsideAFileNameAreAccepted()
+    var
+        Argument: Record "Message Argument ori";
+        Base64Convert: Codeunit "Base64 Convert";
+        RequestJson: JsonObject;
+    begin
+        // [SCENARIO] Only whole path segments are rejected - dots inside a name are legitimate.
+        // [GIVEN] A file whose name contains dots
+        Initialize();
+        RequestJson := PathRequest('docs/my..archive.v1.txt');
+        RequestJson.Add('contentBase64', Base64Convert.ToBase64('ok'));
+
+        // [WHEN] Storage.File.Create executes
+        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Create", RequestJson);
+
+        // [THEN] The file is created
+        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Dots inside a file name should be allowed.');
+    end;
+
+    [Test]
     procedure GetMissingFileReturnsError()
     var
         Argument: Record "Message Argument ori";

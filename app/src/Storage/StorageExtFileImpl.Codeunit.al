@@ -166,7 +166,11 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
     /// "/" to mean the top-level directory.
     /// </remarks>
     local procedure ResolvePath(var ExternalFileStorage: Codeunit "External File Storage"; StorageSetup: Record "Storage Setup ori"; Path: Text): Text
+    var
+        RequestMgt: Codeunit "Storage Request Mgt ori";
     begin
+        if not RequestMgt.PathIsSafe(Path) then
+            RequestMgt.ThrowUnsafePath(Path);
         Path := Path.TrimStart('/').TrimEnd('/');
         if StorageSetup."Base Path" = '' then
             exit(Path);

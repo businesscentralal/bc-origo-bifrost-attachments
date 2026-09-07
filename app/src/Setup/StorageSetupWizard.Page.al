@@ -206,6 +206,7 @@ page 10035638 "Storage Setup Wizard ori"
         AppInfo: ModuleInfo;
     begin
         NavApp.GetCurrentModuleInfo(AppInfo);
+        NavAppSetting.SetLoadFields("Allow HttpClient Requests");
         HttpEnabled := NavAppSetting.Get(AppInfo.Id()) and NavAppSetting."Allow HttpClient Requests";
         if HttpEnabled then begin
             HttpStatusTxt := HttpEnabledTok;

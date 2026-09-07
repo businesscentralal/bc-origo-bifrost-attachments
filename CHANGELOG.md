@@ -4,7 +4,16 @@ All notable changes to Bifrost Attachments are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
 Business Central release versioning (`major.minor.build.revision`).
 
-## [28.0.0.0] - 2026-09-05
+## [28.0.0.0] - 2026-09-07
+
+### Changed (2026-09-07)
+
+- **Restoring an attachment now removes the database link before it deletes the remote copy** (`Storage.Attachment.Restore`). The remote delete is the only irreversible step, so it runs last: if anything after it had failed, the transaction would have rolled the record back to the offloaded state with the only copy of the file already gone. In this order a failing delete rolls the whole restore back instead — the attachment stays offloaded and its remote copy stays where the link says it is. The same discipline `Storage.Attachment.Offload` already followed.
+- **Reads narrowed.** `SetLoadFields` on every attachment-link lookup in `Storage Attachment Mgt ori` and `Storage Attachment Subscr ori` (the subscribers run on every attachment the user opens), on the `NAV App Setting` read behind the setup wizard's HTTP-client check, and `ReadIsolation = ReadCommitted` on the `Storage.Account.List` scan and the permission take-over scan.
+
+### Security (2026-09-07)
+
+- **Relative path segments are rejected.** A connection's `Base Path` is its only confinement boundary, so a caller-supplied path whose segments include `.` or `..` — in either slash direction — is now refused. `Storage.File.*` and `Storage.Directory.*` answer `status = Error` naming the rejected path; the attachment and upload folder helpers raise the same error. The production connector re-checks the path in `ResolvePath`, so every route into external file storage is covered, not just the message types. Dots inside a file name (`my..archive.v1.txt`) stay legal — only whole segments are rejected. Four unit tests cover it.
 
 ### Renamed before release (2026-09-06)
 
@@ -42,7 +51,7 @@ The app was called **Bifrost Hnitbjorg** while it was being built. Bifröst apps
   chunks and reports the counts. It is unit-tested; the page action only calls it.
 - `Storage Setup ori` is no longer searchable (`UsageCategory = None`). Dependent-app setup pages are reached only from the Bifröst Setup page so that Tell Me is not crowded (portfolio rule).
 - Help and documentation moved to <https://businesscentralal.github.io/bifrost>. The `app/Help/` and `app/docs/` folders were removed from this repository; all public content now lives in the businesscentralal/bifrost site repository. `help` in `app.json` points at <https://businesscentralal.github.io/bifrost/en-us/hnitbjorg/> and `contextSensitiveHelpUrl` at `https://businesscentralal.github.io/bifrost/{0}/help/hnitbjorg/`.
-- Context-sensitive help pages are now addressed by Docusaurus page slug instead of an HTML file name: `storage-setup` (Storage Setup ori, Storage Setup Wizard ori), `storage-card` (Storage Card ori) and `storage-account-lookup` (Storage Account Lookup ori).
+- Context-sensitive help pages are now addressed by Docusaurus page slug instead of an HTML file name: `hnitbjorg-setup` (Attachments Setup ori, Storage Conn. Part ori), `storage-setup` (Storage Setup ori, Storage Setup Wizard ori), `storage-card` (Storage Card ori) and `storage-account-lookup` (Storage Account Lookup ori).
 
 ### Rebrand: Origo Cloud Events Storage -> Bifrost Attachments
 
@@ -51,7 +60,7 @@ This release replaces the published AppSource app *Origo Cloud Events Storage* w
 side by side; the new app takes the old app's data over on its first install, so no manual data
 migration is needed before the old app is uninstalled.
 
-#### Added
+### Added
 
 - **Data take-over on first install.** A new install codeunit `Storage Takeover ori`
   (10035676) runs once per company when the app is installed. It copies
@@ -71,7 +80,7 @@ migration is needed before the old app is uninstalled.
   of its domain instead of building the document inline, so the request contract for a whole
   domain is described in one place and stays consistent across its message types.
 
-#### Changed
+### Changed
 
 - **New app identity.** App id `672df32a-a0c5-4a22-b591-0efa38023e95` (was
   `7acf9361-f558-442b-a516-f5e5dd92aecb`); test app `Bifrost Attachments - Tests`, id
@@ -107,10 +116,6 @@ migration is needed before the old app is uninstalled.
   existing paths — the link table records the full path, so offloaded attachments stay
   readable after the take-over. Only newly written files use the new defaults.
 - **Icelandic captions** now say "Bifröst".
-- **Help URLs** moved to the new module folder:
-  `https://origopublic.blob.core.windows.net/help/BifrostAttachments/bc28/en-US/index.html`, with
-  context-sensitive help served from
-  `https://origopublic.blob.core.windows.net/help/BifrostAttachments/bc28/{0}/`.
 - **Message type keys are unchanged.** All 23 keys — `Help.Storage.Get`,
   `Storage.Account.List`, the seven `Storage.File.*`, the four `Storage.Directory.*`, the four
   `Storage.Attachment.*` and the six `Storage.Upload.*` types — keep their names, so existing

@@ -95,6 +95,8 @@ codeunit 10035676 "Storage Takeover ori"
         Migrated: Integer;
     begin
         NewAppId := AppId();
+        OldAccessControl.ReadIsolation := IsolationLevel::ReadCommitted;
+        OldAccessControl.SetLoadFields("User Security ID", "Company Name", Scope);
         OldAccessControl.SetRange("Role ID", 'CE Storage');
         OldAccessControl.SetRange("App ID", OldAppId());
         if OldAccessControl.FindSet() then

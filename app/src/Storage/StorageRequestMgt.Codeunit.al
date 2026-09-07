@@ -20,6 +20,49 @@ codeunit 10035662 "Storage Request Mgt ori"
         MissingParamErr: Label 'Missing required ''%1'' in the request.', Comment = '%1 = parameter name', Locked = true;
         UnknownCodeErr: Label 'No storage connection is configured for storageCode ''%1''.', Comment = '%1 = storage code', Locked = true;
         DisabledCodeErr: Label 'The storage connection ''%1'' is disabled.', Comment = '%1 = storage code', Locked = true;
+        UnsafePathErr: Label 'The path ''%1'' is not allowed: no path segment may be ''.'' or ''..''.', Comment = '%1 = the rejected path', Locked = true;
+
+    /// <summary>
+    /// Rejects a caller-supplied path that tries to walk out of the connection's base path.
+    /// The base path is the only confinement boundary a storage connection has, so a relative
+    /// segment must never reach the connector. On rejection the error response is written onto
+    /// the argument and false is returned.
+    /// </summary>
+    /// <param name="Argument">The Bifrost argument (receives the error response on rejection).</param>
+    /// <param name="Path">The caller-supplied path to check.</param>
+    /// <returns>True when the path carries no relative segment.</returns>
+    procedure CheckPath(var Argument: Record "Message Argument ori"; Path: Text): Boolean
+    begin
+        if PathIsSafe(Path) then
+            exit(true);
+        Argument.RespondWithError(StrSubstNo(UnsafePathErr, Path));
+        exit(false);
+    end;
+
+    /// <summary>
+    /// Tests whether a path is free of relative segments. Both slash directions are considered,
+    /// because the connectors accept either.
+    /// </summary>
+    /// <param name="Path">The path to test.</param>
+    /// <returns>True when no segment of the path is '.' or '..'.</returns>
+    procedure PathIsSafe(Path: Text): Boolean
+    var
+        Segments: List of [Text];
+        Segment: Text;
+    begin
+        Segments := ConvertStr(Path, '\', '/').Split('/');
+        foreach Segment in Segments do
+            if (Segment = '.') or (Segment = '..') then
+                exit(false);
+        exit(true);
+    end;
+
+    /// <summary>Raises the "unsafe path" error. Used where a path is built rather than responded to.</summary>
+    /// <param name="Path">The rejected path.</param>
+    procedure ThrowUnsafePath(Path: Text)
+    begin
+        Error(UnsafePathErr, Path);
+    end;
 
     /// <summary>
     /// Resolves the request's <c>storageCode</c> to a configured, enabled storage setup row
@@ -97,6 +140,8 @@ codeunit 10035662 "Storage Request Mgt ori"
         DataObject: JsonObject;
         EntriesArray: JsonArray;
     begin
+        if not CheckPath(Argument, Path) then
+            exit;
         if not TryList(StorageSetup, Connector, Path, EntryType, TempFileAccountContent) then begin
             Argument.RespondWithError(GetLastErrorText());
             exit;
@@ -122,6 +167,8 @@ codeunit 10035662 "Storage Request Mgt ori"
         DataObject: JsonObject;
         ContentInStream: InStream;
     begin
+        if not CheckPath(Argument, Path) then
+            exit;
         if not TryGetFile(StorageSetup, Connector, Path, TempBlob) then begin
             Argument.RespondWithError(GetLastErrorText());
             exit;
@@ -146,6 +193,8 @@ codeunit 10035662 "Storage Request Mgt ori"
         DataObject: JsonObject;
         ContentOutStream: OutStream;
     begin
+        if not CheckPath(Argument, Path) then
+            exit;
         TempBlob.CreateOutStream(ContentOutStream);
         Base64Convert.FromBase64(ContentBase64, ContentOutStream);
         if not TryCreateFile(StorageSetup, Connector, Path, TempBlob) then begin
@@ -166,6 +215,8 @@ codeunit 10035662 "Storage Request Mgt ori"
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
     begin
+        if not CheckPath(Argument, Path) then
+            exit;
         if not TryAssertCanDeleteStorageFile(AttachmentMgt, StorageSetup."Code", Path) then begin
             Argument.RespondWithError(GetLastErrorText());
             exit;
@@ -183,6 +234,8 @@ codeunit 10035662 "Storage Request Mgt ori"
     /// <param name="Path">The directory path to create.</param>
     procedure ExecuteCreateDirectory(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text)
     begin
+        if not CheckPath(Argument, Path) then
+            exit;
         if TryCreateDirectory(StorageSetup, Connector, Path) then
             RespondPath(Argument, Path)
         else
@@ -198,6 +251,8 @@ codeunit 10035662 "Storage Request Mgt ori"
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
     begin
+        if not CheckPath(Argument, Path) then
+            exit;
         if not TryAssertCanDeleteStorageDirectory(AttachmentMgt, StorageSetup."Code", Path) then begin
             Argument.RespondWithError(GetLastErrorText());
             exit;
@@ -216,6 +271,10 @@ codeunit 10035662 "Storage Request Mgt ori"
     /// <param name="TargetPath">The target path.</param>
     procedure ExecuteCopyFile(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; SourcePath: Text; TargetPath: Text)
     begin
+        if not CheckPath(Argument, SourcePath) then
+            exit;
+        if not CheckPath(Argument, TargetPath) then
+            exit;
         if TryCopyFile(StorageSetup, Connector, SourcePath, TargetPath) then
             RespondTransfer(Argument, SourcePath, TargetPath)
         else
@@ -232,6 +291,10 @@ codeunit 10035662 "Storage Request Mgt ori"
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
     begin
+        if not CheckPath(Argument, SourcePath) then
+            exit;
+        if not CheckPath(Argument, TargetPath) then
+            exit;
         if not TryAssertCanMoveStorageFile(AttachmentMgt, StorageSetup."Code", SourcePath) then begin
             Argument.RespondWithError(GetLastErrorText());
             exit;
@@ -286,6 +349,8 @@ codeunit 10035662 "Storage Request Mgt ori"
         DataObject: JsonObject;
         Exists: Boolean;
     begin
+        if not CheckPath(Argument, Path) then
+            exit;
         if not TryExists(StorageSetup, Connector, EntryType, Path, Exists) then begin
             Argument.RespondWithError(GetLastErrorText());
             exit;

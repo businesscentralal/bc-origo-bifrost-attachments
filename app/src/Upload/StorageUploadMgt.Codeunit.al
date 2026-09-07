@@ -305,9 +305,13 @@ codeunit 10035665 "Storage Upload Mgt ori"
     end;
 
     local procedure NormalizeFolder(FolderPath: Text): Text
+    var
+        RequestMgt: Codeunit "Storage Request Mgt ori";
     begin
         FolderPath := ConvertStr(FolderPath, '\', '/');
         FolderPath := DelChr(FolderPath, '<>', ' /');
+        if not RequestMgt.PathIsSafe(FolderPath) then
+            RequestMgt.ThrowUnsafePath(FolderPath);
         exit(FolderPath);
     end;
 

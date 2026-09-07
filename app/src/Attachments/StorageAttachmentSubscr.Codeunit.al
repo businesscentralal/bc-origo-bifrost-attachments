@@ -23,6 +23,7 @@ codeunit 10035636 "Storage Attachment Subscr ori"
     begin
         if TempBlob.HasValue() then
             exit;
+        Link.SetLoadFields("Storage Code", "Storage Path");
         if not Link.Get(Database::"Incoming Document Attachment", Sender.SystemId) then
             exit;
         AttachmentMgt.FetchContent(Link."Storage Code", Link."Storage Path", TempBlob);
@@ -36,6 +37,7 @@ codeunit 10035636 "Storage Attachment Subscr ori"
     begin
         if IsHandled then
             exit;
+        Link.SetLoadFields("Storage Code", "Storage Path");
         if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then
             exit;
         AttachmentMgt.FetchContent(Link."Storage Code", Link."Storage Path", TempBlob);
@@ -52,6 +54,7 @@ codeunit 10035636 "Storage Attachment Subscr ori"
     begin
         if IsHandled then
             exit;
+        Link.SetLoadFields("Storage Code", "Storage Path");
         if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then
             exit;
         AttachmentMgt.FetchContent(Link."Storage Code", Link."Storage Path", TempBlob);
@@ -69,6 +72,7 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         // so the UI must keep treating them as having content (download/preview stay enabled).
         if IsHandled then
             exit;
+        Link.SetLoadFields("Storage Code");
         if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then
             exit;
         AttachmentIsAvailable := true;
@@ -96,6 +100,7 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         Link: Record "Storage Attachment Link ori";
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
     begin
+        Link.SetLoadFields("Storage Code", "Storage Path");
         if not Link.Get(TableId, RecSystemId) then
             exit;
         if not TryDeleteRemote(AttachmentMgt, Link."Storage Code", Link."Storage Path") then

@@ -60,7 +60,6 @@ codeunit 96207 "Storage Setup Page Tests"
     end;
 
     [Test]
-    [HandlerFunctions('NotificationHandler')]
     procedure BifrostSetupPage_ExposesOnlyTheAppsAction()
     var
         BifrostSetup: TestPage "Setup ori";
@@ -68,6 +67,8 @@ codeunit 96207 "Storage Setup Page Tests"
         // [SCENARIO] On the shared Bifröst Setup page this app contributes exactly one action:
         // the Apps entry that opens its own setup page. The former Storage navigation group and
         // its four actions are gone - a reference to any of them here would not compile.
+        // No notification handler is declared on purpose: the "Allow HttpClient Requests"
+        // notification moved to "Attachments Setup ori", so nothing this app owns raises one here.
         Initialize();
 
         // [WHEN] The shared Bifröst Setup page is opened
