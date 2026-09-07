@@ -19,7 +19,6 @@ codeunit 96207 "Storage Setup Page Tests"
         MockCodeTok: Label 'BIFTS-SETUP', Locked = true;
 
     [Test]
-    [HandlerFunctions('NotificationHandler')]
     procedure AttachmentsSetupPage_Opens_ListsStorageConnections()
     var
         AttachmentsSetup: TestPage "Attachments Setup ori";
@@ -40,7 +39,6 @@ codeunit 96207 "Storage Setup Page Tests"
     end;
 
     [Test]
-    [HandlerFunctions('NotificationHandler')]
     procedure AttachmentsSetupPage_AllSetupActions_AreEnabled()
     var
         AttachmentsSetup: TestPage "Attachments Setup ori";
@@ -67,8 +65,8 @@ codeunit 96207 "Storage Setup Page Tests"
         // [SCENARIO] On the shared Bifröst Setup page this app contributes exactly one action:
         // the Apps entry that opens its own setup page. The former Storage navigation group and
         // its four actions are gone - a reference to any of them here would not compile.
-        // No notification handler is declared on purpose: the "Allow HttpClient Requests"
-        // notification moved to "Attachments Setup ori", so nothing this app owns raises one here.
+        // No notification handler is declared on purpose: this app raises no setup notification
+        // anywhere. Foundation owns them, and reaches this app through "App Registry ori".
         Initialize();
 
         // [WHEN] The shared Bifröst Setup page is opened
@@ -125,7 +123,7 @@ codeunit 96207 "Storage Setup Page Tests"
     end;
 
     [Test]
-    [HandlerFunctions('NotificationHandler,PurgedMessageHandler')]
+    [HandlerFunctions('PurgedMessageHandler')]
     procedure PurgeAction_OnSetupPage_PurgesAndInformsTheUser()
     var
         UploadSession: Record "Storage Upload Session ori";
@@ -191,12 +189,6 @@ codeunit 96207 "Storage Setup Page Tests"
             UploadChunk.Size := 1;
             UploadChunk.Insert(true);
         end;
-    end;
-
-    [SendNotificationHandler]
-    procedure NotificationHandler(var TheNotification: Notification): Boolean
-    begin
-        exit(true);
     end;
 
     [MessageHandler]

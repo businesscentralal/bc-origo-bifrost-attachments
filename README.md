@@ -110,7 +110,7 @@ Supporting paths:
 
 | Step | Where | What |
 | --- | --- | --- |
-| 1 | Extension Management (page 2500) | Enable **Allow HttpClient Requests** for Bifrost Attachments. The setup page and the wizard both show a notification with a one-click action when it is off. |
+| 1 | Extension Management (page 2500) | Enable **Allow HttpClient Requests** for Bifrost Attachments. The shared **Bifröst Setup** page notifies the administrator when it is off — this app registers itself with Foundation's `App Registry ori` so that notification can name it and offer *Start setup wizard*. |
 | 2 | Business Central **File Accounts** | Register and configure the storage account in the Azure Blob Storage, Azure File Share or SharePoint connector app. That app owns the credentials. |
 | 3 | **Bifröst Setup** → *Apps* → **Bifröst viðhengi** | Open `Attachments Setup ori` (page 10035677), the single place this module is configured. |
 | 4 | `Storage Conn. Part ori` on that page | Add one row per connection. |
@@ -163,8 +163,9 @@ as `status = Error` with a message naming the cause; no exception escapes to the
 
 ## Objects
 
-63 objects, all inside range 10035635–10035684. Free ids left: 10035680–10035684. Every object
-carries the mandatory ` ori` affix.
+63 objects, all inside range 10035635–10035684. Free ids left: 10035681–10035684 (codeunit id
+10035666 was freed when `Storage Http Notif. Action ori` was removed and is not reused). Every
+object carries the mandatory ` ori` affix.
 
 ### Tables
 
@@ -254,7 +255,6 @@ carries the mandatory ` ori` affix.
 | 10035663 | `Storage Data Restriction ori` | Blocks the upload session and chunk tables from the generic `Data.Records.*` message types. |
 | 10035664 | `Storage Reten. Policy ori` | Registers the retention policy for spent upload sessions. |
 | 10035665 | `Storage Upload Mgt ori` | Owns the chunked-upload lifecycle and chunk assembly. |
-| 10035666 | `Storage Http Notif. Action ori` | Notification actions: run the setup wizard, open Extension Management. |
 | 10035667 | `Storage Attach Record Impl ori` | `Storage.Attachment.CreateForRecord` |
 | 10035668 | `Storage Attach Key Subscr ori` | Supplies the primary-key field for the attachment link table to the platform. |
 | 10035669 | `Storage Upload Commit Rec ori` | `Storage.Upload.CommitToRecord` |
@@ -266,6 +266,7 @@ carries the mandatory ` ori` affix.
 | 10035675 | `Storage Overview Help ori` | Module directory served by `Help.Storage.Get`. |
 | 10035676 | `Storage Takeover ori` | One-time data take-over from the published *Origo Cloud Events Storage* app. |
 | 10035679 | `Storage Upload Purge ori` | Purges spent upload sessions and their chunks. |
+| 10035680 | `Attachments Registration ori` | Registers this app with Foundation's `App Registry ori` so the shared Bifröst Setup page can list it and raise its setup notification. |
 
 ### Permission sets
 

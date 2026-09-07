@@ -15,14 +15,20 @@ App:   10035635-10035684 (allocated in origo_cloudevents_object_ranges.xlsx; mig
        on bc28-is, so the coordinator reallocated this app to 10035635-10035684 in the workbook.)
 Tests: 96200-96299 (migrated from 92700-92799 with offset +3500)
 
-Highest object id currently used: 10035679. Free ids left in the block: 10035680-10035684.
+Highest object id currently used: 10035680. Free ids left in the block: 10035681-10035684.
 Register any further block in the workbook before using it - never squeeze objects into a
 neighbouring app's range.
 
 Ids taken by the setup migration (2026-09-06): page 10035677 `Attachments Setup ori`,
 page 10035678 `Storage Conn. Part ori`, codeunit 10035679 `Storage Upload Purge ori`.
 No id was freed - `Setup Ext. ori` keeps 10035635, it was only reduced in scope.
-Test app: codeunit 96207 `Storage Setup Page Tests` (next free test id 96208).
+
+Ids changed by the setup-notification move (2026-09-07): codeunit 10035680
+`Attachments Registration ori` added; codeunit 10035666 `Storage Http Notif. Action ori`
+deleted - that codeunit id is free but is not reused (permission set 10035666
+`BIFROST Attach ori` keeps its own id, object types have separate id spaces).
+Test app: codeunit 96207 `Storage Setup Page Tests`, codeunit 96208
+`Storage App Registry Tests` (next free test id 96209).
 
 ## App Identity
 App:      Bifrost Attachments, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
@@ -145,9 +151,17 @@ Key rules always in effect:
 
 ## Setup Surface
 - `Attachments Setup ori` (10035677) is the app's own setup page and the only place the module is
-  configured. It embeds `Storage Conn. Part ori` (10035678) for the storage connections, carries
+  configured. It embeds `Storage Conn. Part ori` (10035678) for the storage connections and carries
   the Storage Setup Wizard / File Accounts / Bifrost Storage Setup / Purge Upload Sessions
-  actions, and shows the "Allow HttpClient Requests" notification in its `OnOpenPage`.
+  actions. It raises no notification and has no `OnOpenPage` trigger.
+- **Setup notifications live on Bifröst Foundation's `Setup ori` page only** - never on this app's
+  setup page, never on any other page of this app, and their only action is "Start setup wizard".
+  This app makes itself known to Foundation through `Attachments Registration ori` (10035680),
+  which subscribes to `App Registry ori.OnRegisterApps` and calls `AddApp` with the app id, the
+  app name and `Page::"Attachments Setup ori"`. The subscriber parameter must be named `Apps` -
+  the compiler matches it to the publisher's parameter name (AL0282), so the CodeCop `Temp`
+  prefix cannot be applied here. Notifications that are not about setup (business warnings) are
+  unaffected by this rule.
 - `Setup Ext. ori` (10035635) must stay at exactly one `addlast(Apps)` action plus its
   `addlast(Category_Apps)` actionref - no layout changes, no other group, no notification, no
   `ContextSensitiveHelpPage` override. The shared `Setup ori` page belongs to Bifröst Foundation.

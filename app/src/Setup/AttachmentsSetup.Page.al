@@ -1,14 +1,14 @@
 namespace Origo.Bifrost.Attachments;
 
-using System.Apps;
-using System.Environment.Configuration;
 using System.ExternalFileStorage;
 
 /// <summary>
 /// Setup page of the Bifrost Attachments application. It is opened from the Apps group on the
 /// Bifröst Setup page and gathers everything an administrator needs for this module: the list
 /// of configured storage connections, the standard file account setup, and the housekeeping
-/// action that removes abandoned upload sessions.
+/// action that removes abandoned upload sessions. It raises no setup notification of its own -
+/// those belong to the shared Bifröst Setup page, which reaches this app through
+/// <c>Attachments Registration ori</c>.
 /// </summary>
 page 10035677 "Attachments Setup ori"
 {
@@ -94,38 +94,4 @@ page 10035677 "Attachments Setup ori"
             }
         }
     }
-
-    trigger OnOpenPage()
-    begin
-        ShowHttpClientNotification();
-    end;
-
-    /// <summary>
-    /// Warns the administrator when the extension is not allowed to make HTTP client requests,
-    /// because every storage backend is reached over HTTP.
-    /// </summary>
-    local procedure ShowHttpClientNotification()
-    var
-        NavAppSetting: Record "NAV App Setting";
-        HttpNotification: Notification;
-        AppInfo: ModuleInfo;
-    begin
-        NavApp.GetCurrentModuleInfo(AppInfo);
-        NavAppSetting.SetLoadFields("Allow HttpClient Requests");
-        if NavAppSetting.Get(AppInfo.Id()) then
-            if NavAppSetting."Allow HttpClient Requests" then
-                exit;
-
-        HttpNotification.Id := 'e7f5a04b-9c1d-4e6f-d0b4-6a8a2f1e5d07';
-        HttpNotification.Scope := NotificationScope::LocalScope;
-        HttpNotification.Message := HttpClientDisabledMsg;
-        HttpNotification.AddAction(RunSetupWizardLbl, Codeunit::"Storage Http Notif. Action ori", 'RunSetupWizard');
-        HttpNotification.AddAction(EnableHttpClientLbl, Codeunit::"Storage Http Notif. Action ori", 'OpenExtensionSettings');
-        HttpNotification.Send();
-    end;
-
-    var
-        HttpClientDisabledMsg: Label 'HTTP client requests are not enabled for the Bifrost Attachments extension. Storage operations will not work until an administrator enables Allow HttpClient Requests in Extension Settings.', Comment = 'is-IS=HTTP-biðlarabeiðnir eru ekki virkar fyrir viðbótina Bifröst viðhengi. Geymsluaðgerðir virka ekki fyrr en kerfisstjóri virkjar Leyfa HttpClient-beiðnir í stillingum viðbótar.';
-        RunSetupWizardLbl: Label 'Run Setup Wizard', Comment = 'is-IS=Keyra leiðsagnarforrit';
-        EnableHttpClientLbl: Label 'Open Extension Settings', Comment = 'is-IS=Opna stillingar viðbótar';
 }

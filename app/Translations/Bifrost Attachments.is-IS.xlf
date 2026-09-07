@@ -435,24 +435,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Uppsetning Bifröst viðhengja</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 1933601227 - NamedType 117150238" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Open Extension Settings</source>
-          <target state="translated">Opna stillingar viðbótar</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Opna stillingar viðbótar</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - NamedType EnableHttpClientLbl</note>
-        </trans-unit>
-        <trans-unit id="Page 1933601227 - NamedType 3548522468" size-unit="char" translate="yes" xml:space="preserve">
-          <source>HTTP client requests are not enabled for the Bifrost Attachments extension. Storage operations will not work until an administrator enables Allow HttpClient Requests in Extension Settings.</source>
-          <target state="translated">HTTP-biðlarabeiðnir eru ekki virkar fyrir viðbótina Bifröst viðhengi. Geymsluaðgerðir virka ekki fyrr en kerfisstjóri virkjar Leyfa HttpClient-beiðnir í stillingum viðbótar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=HTTP-biðlarabeiðnir eru ekki virkar fyrir viðbótina Bifröst viðhengi. Geymsluaðgerðir virka ekki fyrr en kerfisstjóri virkjar Leyfa HttpClient-beiðnir í stillingum viðbótar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - NamedType HttpClientDisabledMsg</note>
-        </trans-unit>
-        <trans-unit id="Page 1933601227 - NamedType 3746426553" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Run Setup Wizard</source>
-          <target state="translated">Keyra leiðsagnarforrit</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Keyra leiðsagnarforrit</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - NamedType RunSetupWizardLbl</note>
-        </trans-unit>
         <trans-unit id="Page 1933601227 - Control 707810663 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Storage Connections</source>
           <target state="translated">Geymslutengingar</target>

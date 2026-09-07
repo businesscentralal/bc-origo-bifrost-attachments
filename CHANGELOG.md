@@ -6,6 +6,28 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [28.0.0.0] - 2026-09-07
 
+### Changed (2026-09-07) - setup notifications and wizard
+
+Across the Bifröst family, a setup notification is now raised in exactly one place: Bifröst
+Foundation's shared **Bifröst Setup** page, with a single action, *Start setup wizard*. A module
+no longer nags on its own setup page, so an administrator sees one list of what still needs
+configuring instead of one notification per app, each in a different place.
+
+- **New codeunit `Attachments Registration ori` (10035680).** It subscribes to Foundation's
+  `App Registry ori.OnRegisterApps` and registers this app with its id, its display name and
+  `Attachments Setup ori` as the page to open. Without it, the shared setup page cannot name this
+  module or point the administrator anywhere. Added to `BIFROST Attach ori` and `Storage Full ori`.
+- **`Attachments Setup ori` no longer raises the "Allow HttpClient Requests" notification.** Its
+  `OnOpenPage` trigger, the `ShowHttpClientNotification` procedure and the three labels behind it
+  are gone; Foundation reports the same condition through `App Registry ori.IsHttpEnabled`.
+- **Codeunit `Storage Http Notif. Action ori` (10035666) deleted.** It existed only to carry the
+  two notification actions. Its id is free but is not reused. (Permission set 10035666
+  `BIFROST Attach ori` is unaffected - object types have separate id spaces.)
+- **Tests.** New codeunit `Storage App Registry Tests` (96208) asserts that
+  `App Registry ori.GetApps` lists this app under the id from `NavApp.GetCurrentModuleInfo` and
+  points at page `Attachments Setup ori`. `Storage Setup Page Tests` (96207) dropped its
+  `SendNotificationHandler` - opening the setup page no longer sends anything to handle.
+
 ### Changed (2026-09-07) - tests run on Foundation's public API
 
 - The test app no longer depends on Bifröst Foundation's internals: Bifrost Attachments - Tests has been removed
