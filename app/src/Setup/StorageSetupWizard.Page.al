@@ -4,13 +4,13 @@ using System.Apps;
 using System.Environment.Configuration;
 
 /// <summary>
-/// Setup wizard for Bifrost Storage. Guides the user through enabling
+/// Setup wizard for Bifrost Attachments. Guides the user through enabling
 /// HTTP client requests so the extension can communicate with external storage.
 /// </summary>
 page 10035638 "Storage Setup Wizard ori"
 {
     PageType = NavigatePage;
-    Caption = 'Bifrost Storage Setup', Comment = 'is-IS=Uppsetning Bifröst geymslu';
+    Caption = 'Bifrost Attachments Setup', Comment = 'is-IS=Uppsetning Bifröst viðhengja';
     ApplicationArea = All;
     Editable = true;
     ContextSensitiveHelpPage = 'storage-setup';
@@ -24,7 +24,7 @@ page 10035638 "Storage Setup Wizard ori"
                 Visible = (CurrentStep = 1);
                 group(WelcomeHeader)
                 {
-                    Caption = 'Welcome to Bifrost Storage', Comment = 'is-IS=Velkomin í Bifröst geymslu';
+                    Caption = 'Welcome to Bifrost Attachments', Comment = 'is-IS=Velkomin í Bifröst viðhengi';
                     ShowCaption = true;
                     InstructionalText = 'This wizard helps you set up external storage for Bifrost. The extension exposes Azure Blob, Azure File Share and SharePoint connectors as Bifrost message types, giving read/write access to cloud storage from Business Central.', Comment = 'is-IS=Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðagerðir Bifrastar og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central.';
                 }
@@ -40,7 +40,7 @@ page 10035638 "Storage Setup Wizard ori"
                 group(HttpHeader)
                 {
                     Caption = 'Enable HTTP Client Requests', Comment = 'is-IS=Virkja HTTP-biðlarabeiðnir';
-                    InstructionalText = 'Bifrost Storage requires outbound HTTP to communicate with external storage providers. Please enable Allow HttpClient Requests for this extension.', Comment = 'is-IS=Bifröst geymsla þarf útleið HTTP til að eiga samskipti við ytri geymsluveitendur. Vinsamlegast virkjaðu Leyfa HttpClient-beiðnir fyrir þessa viðbót.';
+                    InstructionalText = 'Bifrost Attachments requires outbound HTTP to communicate with external storage providers. Please enable Allow HttpClient Requests for this extension.', Comment = 'is-IS=Bifröst viðhengi þarf útleið HTTP til að eiga samskipti við ytri geymsluveitendur. Vinsamlegast virkjaðu Leyfa HttpClient-beiðnir fyrir þessa viðbót.';
                 }
                 group(HttpStatus)
                 {

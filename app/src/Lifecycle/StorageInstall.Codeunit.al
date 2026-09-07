@@ -72,7 +72,7 @@ codeunit 10035637 "Storage Install ori"
     end;
 
     var
-        SetupWizardTitleTok: Label 'Set up Bifrost Storage', Comment = 'is-IS=Setja upp Bifröst geymslu';
-        SetupWizardShortTitleTok: Label 'Bifrost Storage', Comment = 'is-IS=Bifröst geymsla';
+        SetupWizardTitleTok: Label 'Set up Bifrost Attachments', Comment = 'is-IS=Setja upp Bifröst viðhengi';
+        SetupWizardShortTitleTok: Label 'Bifrost Attachments', Comment = 'is-IS=Bifröst viðhengi';
         SetupWizardDescriptionTok: Label 'Enable HTTP client requests and configure external storage connections for Bifrost.', Comment = 'is-IS=Virkja HTTP-biðlarabeiðnir og stilla ytri geymslutengingar fyrir Bifröst.';
 }

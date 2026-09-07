@@ -6,10 +6,21 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [28.0.0.0] - 2026-09-07
 
+### Changed (2026-09-07) - tests run on Foundation's public API
+
+- The test app no longer depends on Bifröst Foundation's internals: Bifrost Attachments - Tests has been removed
+  from Foundation's `internalsVisibleTo`, and the test suite compiles and runs against a Foundation
+  package that does not grant it. No test code had to change - the suite never touched a Foundation internal.
+
+
 ### Changed (2026-09-07)
 
 - **Restoring an attachment now removes the database link before it deletes the remote copy** (`Storage.Attachment.Restore`). The remote delete is the only irreversible step, so it runs last: if anything after it had failed, the transaction would have rolled the record back to the offloaded state with the only copy of the file already gone. In this order a failing delete rolls the whole restore back instead — the attachment stays offloaded and its remote copy stays where the link says it is. The same discipline `Storage.Attachment.Offload` already followed.
 - **Reads narrowed.** `SetLoadFields` on every attachment-link lookup in `Storage Attachment Mgt ori` and `Storage Attachment Subscr ori` (the subscribers run on every attachment the user opens), on the `NAV App Setting` read behind the setup wizard's HTTP-client check, and `ReadIsolation = ReadCommitted` on the `Storage.Account.List` scan and the permission take-over scan.
+
+### Fixed (2026-09-07)
+
+- **Assisted-setup wizard strings corrected to the app's current name.** The assisted setup entry registered by `Storage Install ori` (title and short title) and the wizard page `Storage Setup Wizard ori` itself (page caption, welcome step, HTTP step instructional text) still said "Bifrost Storage" / "Bifröst geymsla" - a leftover from before the app was renamed to Bifrost Attachments. They now say "Bifrost Attachments" / "Bifröst viðhengi", matching the rest of the app. References to the separate, still-named `Storage Setup ori` page and the shared Bifröst Setup page were left untouched, since those objects were not renamed.
 
 ### Security (2026-09-07)
 

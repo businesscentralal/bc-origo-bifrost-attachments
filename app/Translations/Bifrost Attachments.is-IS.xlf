@@ -412,15 +412,15 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Install ori - NamedType SetupWizardDescriptionTok</note>
         </trans-unit>
         <trans-unit id="Codeunit 934377432 - NamedType 3453183738" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Bifrost Storage</source>
-          <target state="translated">Bifröst geymsla</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Bifröst geymsla</note>
+          <source>Bifrost Attachments</source>
+          <target state="translated">Bifröst viðhengi</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Bifröst viðhengi</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Install ori - NamedType SetupWizardShortTitleTok</note>
         </trans-unit>
         <trans-unit id="Codeunit 934377432 - NamedType 3800631024" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Set up Bifrost Storage</source>
-          <target state="translated">Setja upp Bifröst geymslu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Setja upp Bifröst geymslu</note>
+          <source>Set up Bifrost Attachments</source>
+          <target state="translated">Setja upp Bifröst viðhengi</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Setja upp Bifröst viðhengi</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Install ori - NamedType SetupWizardTitleTok</note>
         </trans-unit>
         <trans-unit id="Codeunit 1175196741 - NamedType 563474316" size-unit="char" translate="yes" xml:space="preserve">
@@ -610,9 +610,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup ori - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3144968819 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Bifrost Storage Setup</source>
-          <target state="translated">Uppsetning Bifröst geymslu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Uppsetning Bifröst geymslu</note>
+          <source>Bifrost Attachments Setup</source>
+          <target state="translated">Uppsetning Bifröst viðhengja</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Uppsetning Bifröst viðhengja</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3144968819 - NamedType 802772300" size-unit="char" translate="yes" xml:space="preserve">
@@ -634,9 +634,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Control WelcomeHeader - Property InstructionalText</note>
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 2080860199 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Welcome to Bifrost Storage</source>
-          <target state="translated">Velkomin í Bifröst geymslu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Velkomin í Bifröst geymslu</note>
+          <source>Welcome to Bifrost Attachments</source>
+          <target state="translated">Velkomin í Bifröst viðhengi</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Velkomin í Bifröst viðhengi</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Control WelcomeHeader - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 1646251390 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
@@ -652,9 +652,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Control WelcomeNote - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 2902201321 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Bifrost Storage requires outbound HTTP to communicate with external storage providers. Please enable Allow HttpClient Requests for this extension.</source>
-          <target state="translated">Bifröst geymsla þarf útleið HTTP til að eiga samskipti við ytri geymsluveitendur. Vinsamlegast virkjaðu Leyfa HttpClient-beiðnir fyrir þessa viðbót.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Bifröst geymsla þarf útleið HTTP til að eiga samskipti við ytri geymsluveitendur. Vinsamlegast virkjaðu Leyfa HttpClient-beiðnir fyrir þessa viðbót.</note>
+          <source>Bifrost Attachments requires outbound HTTP to communicate with external storage providers. Please enable Allow HttpClient Requests for this extension.</source>
+          <target state="translated">Bifröst viðhengi þarf útleið HTTP til að eiga samskipti við ytri geymsluveitendur. Vinsamlegast virkjaðu Leyfa HttpClient-beiðnir fyrir þessa viðbót.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Bifröst viðhengi þarf útleið HTTP til að eiga samskipti við ytri geymsluveitendur. Vinsamlegast virkjaðu Leyfa HttpClient-beiðnir fyrir þessa viðbót.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Control HttpHeader - Property InstructionalText</note>
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 2902201321 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
