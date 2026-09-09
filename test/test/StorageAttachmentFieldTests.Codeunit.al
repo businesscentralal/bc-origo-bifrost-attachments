@@ -46,7 +46,7 @@ codeunit 96203 "Storage Attachment Field Tests"
     procedure Offloaded_TrueAfterOffload_IncDoc()
     var
         Attachment: Record "Incoming Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
         // [SCENARIO] After offloading, the Bifrost Offloaded FlowField reports true.
         Initialize();
@@ -55,7 +55,7 @@ codeunit 96203 "Storage Attachment Field Tests"
         CreateIncDocAttachment('to-offload.txt', 'offload me', Attachment);
 
         // [WHEN] The attachment is offloaded
-        OffloadAttachment(Argument, 'IncomingDocument', Attachment.SystemId);
+        OffloadAttachment(TempArgument, 'IncomingDocument', Attachment.SystemId);
         Attachment.GetBySystemId(Attachment.SystemId);
         Attachment.CalcFields("Offloaded ori");
 
@@ -67,18 +67,18 @@ codeunit 96203 "Storage Attachment Field Tests"
     procedure Offloaded_FalseAfterRestore_IncDoc()
     var
         Attachment: Record "Incoming Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
         // [SCENARIO] After restoring, the Bifrost Offloaded FlowField goes back to false.
         Initialize();
 
         // [GIVEN] An offloaded incoming document attachment
         CreateIncDocAttachment('restore-me.txt', 'restore me', Attachment);
-        OffloadAttachment(Argument, 'IncomingDocument', Attachment.SystemId);
+        OffloadAttachment(TempArgument, 'IncomingDocument', Attachment.SystemId);
 
         // [WHEN] The attachment is restored
-        Clear(Argument);
-        RestoreAttachment(Argument, 'IncomingDocument', Attachment.SystemId);
+        Clear(TempArgument);
+        RestoreAttachment(TempArgument, 'IncomingDocument', Attachment.SystemId);
         Attachment.GetBySystemId(Attachment.SystemId);
         Attachment.CalcFields("Offloaded ori");
 
@@ -110,7 +110,7 @@ codeunit 96203 "Storage Attachment Field Tests"
     procedure Offloaded_TrueAfterOffload_DocAttach()
     var
         DocAttachment: Record "Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
         // [SCENARIO] After offloading a document attachment, the Bifrost Offloaded FlowField reports true.
         Initialize();
@@ -119,7 +119,7 @@ codeunit 96203 "Storage Attachment Field Tests"
         CreateDocAttachment('offload-doc.txt', 'offload me', DocAttachment);
 
         // [WHEN] The attachment is offloaded
-        OffloadAttachment(Argument, 'DocumentAttachment', DocAttachment.SystemId);
+        OffloadAttachment(TempArgument, 'DocumentAttachment', DocAttachment.SystemId);
         DocAttachment.GetBySystemId(DocAttachment.SystemId);
         DocAttachment.CalcFields("Offloaded ori");
 
@@ -135,8 +135,8 @@ codeunit 96203 "Storage Attachment Field Tests"
         Att1: Record "Incoming Document Attachment";
         Att2: Record "Incoming Document Attachment";
         Att3: Record "Incoming Document Attachment";
-        Argument: Record "Message Argument ori";
-        OffloadArg: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
+        TempOffloadArg: Record "Message Argument ori";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         ResultArray: JsonArray;
@@ -150,17 +150,17 @@ codeunit 96203 "Storage Attachment Field Tests"
         CreateIncDocAttachmentForEntry(EntryNo, 'keep1.txt', 'a', Att1);
         CreateIncDocAttachmentForEntry(EntryNo, 'offloaded.txt', 'b', Att2);
         CreateIncDocAttachmentForEntry(EntryNo, 'keep2.txt', 'c', Att3);
-        OffloadAttachment(OffloadArg, 'IncomingDocument', Att2.SystemId);
+        OffloadAttachment(TempOffloadArg, 'IncomingDocument', Att2.SystemId);
 
         // [WHEN] Data.Records.Get filters by this entry and Offloaded ori = false
         RequestJson.Add('tableName', 'Incoming Document Attachment');
 #pragma warning disable AA0217
         RequestJson.Add('tableView', StrSubstNo('WHERE(Incoming Document Entry No.=CONST(%1),Offloaded ori=CONST(0))', EntryNo));
 #pragma warning restore AA0217
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Data.Records.Get", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Data.Records.Get", RequestJson);
 
         // [THEN] Only the 2 non-offloaded attachments are returned
-        ResponseJson := Argument.GetResponseJson();
+        ResponseJson := TempArgument.GetResponseJson();
         LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Data.Records.Get should succeed.');
         ResultArray := GetResultArray(ResponseJson);
         LibraryAssert.AreEqual(2, ResultArray.Count(), 'Only non-offloaded attachments should be returned.');
@@ -171,8 +171,8 @@ codeunit 96203 "Storage Attachment Field Tests"
     var
         DocAtt1: Record "Document Attachment";
         DocAtt2: Record "Document Attachment";
-        Argument: Record "Message Argument ori";
-        OffloadArg: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
+        TempOffloadArg: Record "Message Argument ori";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         ResultArray: JsonArray;
@@ -183,17 +183,17 @@ codeunit 96203 "Storage Attachment Field Tests"
         // [GIVEN] A customer with 2 document attachments, 1 offloaded
         CreateDocAttachment('keep-doc.txt', 'keep', DocAtt1);
         CreateDocAttachment('offload-doc2.txt', 'offload', DocAtt2);
-        OffloadAttachment(OffloadArg, 'DocumentAttachment', DocAtt2.SystemId);
+        OffloadAttachment(TempOffloadArg, 'DocumentAttachment', DocAtt2.SystemId);
 
         // [WHEN] Data.Records.Get filters by this customer and Offloaded ori = false
         RequestJson.Add('tableName', 'Document Attachment');
 #pragma warning disable AA0217
         RequestJson.Add('tableView', StrSubstNo('WHERE(Table ID=CONST(%1),No.=CONST(%2),Offloaded ori=CONST(0))', Database::Customer, TestCustNoTok));
 #pragma warning restore AA0217
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Data.Records.Get", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Data.Records.Get", RequestJson);
 
         // [THEN] Only the non-offloaded attachment is returned
-        ResponseJson := Argument.GetResponseJson();
+        ResponseJson := TempArgument.GetResponseJson();
         LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Data.Records.Get should succeed.');
         ResultArray := GetResultArray(ResponseJson);
         LibraryAssert.AreEqual(1, ResultArray.Count(), 'Only the non-offloaded document attachment should be returned.');
@@ -204,17 +204,17 @@ codeunit 96203 "Storage Attachment Field Tests"
     [Test]
     procedure OffloadHelp_DocumentsCandidateDiscovery()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         MsgInterface: Interface "Msg Interface ori";
         HelpText: Text;
     begin
         // [SCENARIO] The Storage.Attachment.Offload help documents how to find offload candidates using Data.Records.Get.
-        Argument.Init();
-        Argument."Type" := Argument."Type"::"Storage.Attachment.Offload";
-        Argument.Insert(true);
-        MsgInterface := Argument.GetMessageTypeInterface();
-        MsgInterface.GetMessageHelpAsMarkdownDocument(Argument);
-        HelpText := Argument.GetResponseText();
+        TempArgument.Init();
+        TempArgument."Type" := TempArgument."Type"::"Storage.Attachment.Offload";
+        TempArgument.Insert(true);
+        MsgInterface := TempArgument.GetMessageTypeInterface();
+        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
+        HelpText := TempArgument.GetResponseText();
 
         // [THEN] The help explains the Offloaded ori field and the get_records filter
         LibraryAssert.IsTrue(HelpText.Contains('Offloaded ori'), 'The help should reference the Offloaded ori field.');
@@ -307,28 +307,28 @@ codeunit 96203 "Storage Attachment Field Tests"
         DocAttachment.FindLast();
     end;
 
-    local procedure OffloadAttachment(var Argument: Record "Message Argument ori"; Target: Text; SystemId: Guid)
+    local procedure OffloadAttachment(var TempArgument: Record "Message Argument ori"; Target: Text; SystemId: Guid)
     var
         RequestJson: JsonObject;
     begin
         RequestJson.Add('target', Target);
         RequestJson.Add('systemId', Format(SystemId, 0, 4));
         RequestJson.Add('storageCode', MockCodeTok);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.Offload", RequestJson);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Offload should succeed.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.Offload", RequestJson);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Offload should succeed.');
     end;
 
-    local procedure RestoreAttachment(var Argument: Record "Message Argument ori"; Target: Text; SystemId: Guid)
+    local procedure RestoreAttachment(var TempArgument: Record "Message Argument ori"; Target: Text; SystemId: Guid)
     var
         RequestJson: JsonObject;
     begin
         RequestJson.Add('target', Target);
         RequestJson.Add('systemId', Format(SystemId, 0, 4));
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.Restore", RequestJson);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Restore should succeed.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.Restore", RequestJson);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Restore should succeed.');
     end;
 
-    local procedure ExecuteTypeWithRequest(var Argument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -344,10 +344,10 @@ codeunit 96203 "Storage Attachment Field Tests"
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
         ResponseContent.GetSubText(ResponseText, 1);
         ResponseJson.ReadFrom(ResponseText);
-        Argument.Init();
-        Argument."Type" := MessageType;
-        Argument.Insert(true);
-        Argument.SetResponseJson(ResponseJson);
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        TempArgument.SetResponseJson(ResponseJson);
     end;
 
     local procedure GetResultArray(ResponseJson: JsonObject) ResultArray: JsonArray

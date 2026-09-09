@@ -12,7 +12,7 @@ codeunit 10035640 "Storage Attach Link Impl ori" implements "Msg Interface ori"
 {
     Access = Internal;
 
-    internal procedure IsEnabled(): Boolean
+    procedure IsEnabled(): Boolean
     var
         StorageSetup: Record "Storage Setup ori";
         AttachmentLink: Record "Storage Attachment Link ori";
@@ -20,29 +20,29 @@ codeunit 10035640 "Storage Attach Link Impl ori" implements "Msg Interface ori"
         exit(StorageSetup.ReadPermission() and AttachmentLink.ReadPermission());
     end;
 
-    internal procedure GetFilterTableNo(): Integer
+    procedure GetFilterTableNo(): Integer
     begin
         exit(0);
     end;
 
-    internal procedure GetDescription(): Text[250]
+    procedure GetDescription(): Text[250]
     begin
         exit('Attaches a file already in storage to a new or existing incoming document, served transparently from storage.');
     end;
 
-    internal procedure GetMessageDirection(): Enum "Msg Direction ori"
+    procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
         exit(Enum::"Msg Direction ori"::Inbound);
     end;
 
-    internal procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
+    procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
     var
         AttachmentHelp: Codeunit "Storage Attachment Help ori";
     begin
         AttachmentHelp.GetHelp(Enum::"Message Type ori"::"Storage.Attachment.CreateLinked", Argument);
     end;
 
-    internal procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
+    procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";

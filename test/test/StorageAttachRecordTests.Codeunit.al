@@ -29,7 +29,7 @@ codeunit 96206 "Storage Attach Record Tests"
     procedure CreateForRecord_FromBase64_OnCustomer()
     var
         DocAttachment: Record "Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         RequestJson: JsonObject;
     begin
         // [SCENARIO] Inline base64 content becomes a document attachment on a customer.
@@ -42,11 +42,11 @@ codeunit 96206 "Storage Attach Record Tests"
         RequestJson.Add('content', ToBase64('hello world'));
 
         // [WHEN] The attachment is created
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
 
         // [THEN] The call succeeds and the attachment hangs on the customer
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Creating from base64 should succeed.');
-        LibraryAssert.AreEqual('contract.txt', ReadDataText(Argument.GetResponseJson(), 'fileName'), 'The response should echo the file name.');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Creating from base64 should succeed.');
+        LibraryAssert.AreEqual('contract.txt', ReadDataText(TempArgument.GetResponseJson(), 'fileName'), 'The response should echo the file name.');
 
         DocAttachment.SetRange("Table ID", Database::Customer);
         DocAttachment.SetRange("No.", TestCustNoTok);
@@ -62,7 +62,7 @@ codeunit 96206 "Storage Attach Record Tests"
     procedure CreateForRecord_OnFixedAsset()
     var
         DocAttachment: Record "Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A fixed asset carries an attachment just like a customer does.
@@ -75,10 +75,10 @@ codeunit 96206 "Storage Attach Record Tests"
         RequestJson.Add('content', ToBase64('purchase deed'));
 
         // [WHEN] The attachment is created
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
 
         // [THEN] It is attached to the fixed asset
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Creating on a fixed asset should succeed.');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Creating on a fixed asset should succeed.');
 
         DocAttachment.SetRange("Table ID", Database::"Fixed Asset");
         DocAttachment.SetRange("No.", TestFANoTok);
@@ -90,7 +90,7 @@ codeunit 96206 "Storage Attach Record Tests"
     var
         Customer: Record Customer;
         DocAttachment: Record "Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A record can be addressed by SystemId instead of by its number.
@@ -104,11 +104,11 @@ codeunit 96206 "Storage Attach Record Tests"
         RequestJson.Add('content', ToBase64('located by system id'));
 
         // [WHEN] The attachment is created
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
 
         // [THEN] The attachment lands on that customer's number
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Addressing by SystemId should succeed.');
-        LibraryAssert.AreEqual(TestCustNoTok, ReadDataText(Argument.GetResponseJson(), 'no'), 'The response should carry the resolved record number.');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Addressing by SystemId should succeed.');
+        LibraryAssert.AreEqual(TestCustNoTok, ReadDataText(TempArgument.GetResponseJson(), 'no'), 'The response should carry the resolved record number.');
 
         DocAttachment.SetRange("Table ID", Database::Customer);
         DocAttachment.SetRange("No.", TestCustNoTok);
@@ -120,7 +120,7 @@ codeunit 96206 "Storage Attach Record Tests"
     var
         IncDocAttachment: Record "Incoming Document Attachment";
         DocAttachment: Record "Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A file that is already in Business Central is copied onto a record without
@@ -135,11 +135,11 @@ codeunit 96206 "Storage Attach Record Tests"
         RequestJson.Add('no', TestCustNoTok);
         RequestJson.Add('sourceTarget', 'IncomingDocument');
         RequestJson.Add('sourceSystemId', Format(IncDocAttachment.SystemId, 0, 4));
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
 
         // [THEN] The attachment is created and inherits the source file name
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Copying an existing attachment should succeed.');
-        LibraryAssert.AreEqual('kaupsamningur.pdf', ReadDataText(Argument.GetResponseJson(), 'fileName'), 'The source file name should carry over.');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Copying an existing attachment should succeed.');
+        LibraryAssert.AreEqual('kaupsamningur.pdf', ReadDataText(TempArgument.GetResponseJson(), 'fileName'), 'The source file name should carry over.');
 
         DocAttachment.SetRange("Table ID", Database::Customer);
         DocAttachment.SetRange("No.", TestCustNoTok);
@@ -152,7 +152,7 @@ codeunit 96206 "Storage Attach Record Tests"
     procedure CreateForRecord_FromStorage_IsBornOffloaded()
     var
         DocAttachment: Record "Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         MockState: Codeunit "Storage Mock State";
         RequestJson: JsonObject;
         StoragePath: Text;
@@ -171,10 +171,10 @@ codeunit 96206 "Storage Attach Record Tests"
         RequestJson.Add('fileName', 'large.pdf');
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('path', StoragePath);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
 
         // [THEN] The attachment reports itself as offloaded
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Creating from storage should succeed.');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Creating from storage should succeed.');
 
         DocAttachment.SetRange("Table ID", Database::Customer);
         DocAttachment.SetRange("No.", TestCustNoTok);
@@ -187,7 +187,7 @@ codeunit 96206 "Storage Attach Record Tests"
     [Test]
     procedure CreateForRecord_RejectsTwoContentSources()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         RequestJson: JsonObject;
     begin
         // [SCENARIO] Ambiguity about where the bytes come from is refused rather than guessed at.
@@ -200,13 +200,13 @@ codeunit 96206 "Storage Attach Record Tests"
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('path', 'somewhere/else.txt');
 
-        asserterror ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
     end;
 
     [Test]
     procedure CreateForRecord_RejectsUnknownRecord()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         RequestJson: JsonObject;
     begin
         // [SCENARIO] An attachment cannot be hung on a record that does not exist.
@@ -217,7 +217,7 @@ codeunit 96206 "Storage Attach Record Tests"
         RequestJson.Add('fileName', 'orphan.txt');
         RequestJson.Add('content', ToBase64('orphan'));
 
-        asserterror ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
     end;
 
     // ————— Helpers —————
@@ -298,7 +298,7 @@ codeunit 96206 "Storage Attach Record Tests"
         exit(Base64Convert.ToBase64(InStr));
     end;
 
-    local procedure ExecuteTypeWithRequest(var Argument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -314,10 +314,10 @@ codeunit 96206 "Storage Attach Record Tests"
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
         ResponseContent.GetSubText(ResponseText, 1);
         ResponseJson.ReadFrom(ResponseText);
-        Argument.Init();
-        Argument."Type" := MessageType;
-        Argument.Insert(true);
-        Argument.SetResponseJson(ResponseJson);
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        TempArgument.SetResponseJson(ResponseJson);
     end;
 
     local procedure ReadText(JsonObj: JsonObject; PropertyName: Text): Text

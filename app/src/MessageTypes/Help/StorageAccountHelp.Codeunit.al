@@ -1,4 +1,4 @@
-﻿namespace Origo.Bifrost.Attachments;
+namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
 using System.ExternalFileStorage;
@@ -16,7 +16,7 @@ codeunit 10035670 "Storage Account Help ori"
     /// <summary>Renders the Markdown help document for one message type of this domain.</summary>
     /// <param name="MessageType">The message type to document.</param>
     /// <param name="Argument">The message argument the rendered Markdown is written to.</param>
-    internal procedure GetHelp(MessageType: Enum "Message Type ori"; var Argument: Record "Message Argument ori")
+    procedure GetHelp(MessageType: Enum "Message Type ori"; var Argument: Record "Message Argument ori")
     begin
         case MessageType of
             MessageType::"Storage.Account.List":

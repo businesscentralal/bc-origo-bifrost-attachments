@@ -26,7 +26,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure BeginAppendCommit_TwoChunks_RoundtripsContent()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         UploadId: Text;
         Path: Text;
     begin
@@ -39,8 +39,8 @@ codeunit 96205 "Storage Upload Tests"
         // [WHEN] Two ordered chunks are appended and the session is committed
         AppendChunk(UploadId, 1, 'Hello ');
         AppendChunk(UploadId, 2, 'world');
-        CommitUpload(Argument, UploadId);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Commit should succeed.');
+        CommitUpload(TempArgument, UploadId);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Commit should succeed.');
 
         // [THEN] The stored file is the concatenation of the chunks, in order
         LibraryAssert.AreEqual('Hello world', GetStoredText(Path), 'The assembled file should match the chunk sequence.');
@@ -49,7 +49,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Commit_OutOfOrderChunks_AssemblesInSequence()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         UploadId: Text;
         Path: Text;
     begin
@@ -60,7 +60,7 @@ codeunit 96205 "Storage Upload Tests"
         // [WHEN] The later chunk is appended before the earlier one
         AppendChunk(UploadId, 2, 'world');
         AppendChunk(UploadId, 1, 'Hello ');
-        CommitUpload(Argument, UploadId);
+        CommitUpload(TempArgument, UploadId);
 
         // [THEN] Sequence order wins
         LibraryAssert.AreEqual('Hello world', GetStoredText(Path), 'Chunks should assemble in sequence order.');
@@ -69,7 +69,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Append_DuplicateSequence_ReplacesChunk()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         UploadId: Text;
         Path: Text;
     begin
@@ -79,18 +79,18 @@ codeunit 96205 "Storage Upload Tests"
 
         // [WHEN] Sequence 1 is appended twice with different content
         AppendChunk(UploadId, 1, 'AAAA');
-        AppendChunk(Argument, UploadId, 1, 'BBBB');
+        AppendChunk(TempArgument, UploadId, 1, 'BBBB');
 
         // [THEN] Only one chunk is counted, and commit stores the replacement
-        LibraryAssert.AreEqual(1, ReadDataInt(Argument, 'chunkCount'), 'A duplicate sequence should replace, not add.');
-        CommitUpload(Argument, UploadId);
+        LibraryAssert.AreEqual(1, ReadDataInt(TempArgument, 'chunkCount'), 'A duplicate sequence should replace, not add.');
+        CommitUpload(TempArgument, UploadId);
         LibraryAssert.AreEqual('BBBB', GetStoredText(Path), 'The last write for a sequence should win.');
     end;
 
     [Test]
     procedure Commit_SizeMismatch_ReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         BeginReq: JsonObject;
         UploadId: Text;
     begin
@@ -101,20 +101,20 @@ codeunit 96205 "Storage Upload Tests"
         BeginReq.Add('storageCode', MockCodeTok);
         BeginReq.Add('fileName', 'short.txt');
         BeginReq.Add('declaredSize', 999);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Begin", BeginReq);
-        UploadId := ReadDataText(Argument, 'uploadId');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        UploadId := ReadDataText(TempArgument, 'uploadId');
         AppendChunk(UploadId, 1, 'x');
 
         // [WHEN] The session is committed
         // [THEN] It raises an error (the framework turns a raised error into an Error envelope at runtime)
-        asserterror CommitUpload(Argument, UploadId);
+        asserterror CommitUpload(TempArgument, UploadId);
         LibraryAssert.ExpectedError('does not match the declared size');
     end;
 
     [Test]
     procedure Commit_NoChunks_ReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         UploadId: Text;
         Path: Text;
     begin
@@ -124,14 +124,14 @@ codeunit 96205 "Storage Upload Tests"
 
         // [WHEN] Commit runs before any chunk is appended
         // [THEN] It raises an error (the framework turns a raised error into an Error envelope at runtime)
-        asserterror CommitUpload(Argument, UploadId);
+        asserterror CommitUpload(TempArgument, UploadId);
         LibraryAssert.ExpectedError('no chunks to commit');
     end;
 
     [Test]
     procedure Abort_OpenSession_RemovesSessionAndChunks()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Session: Record "Storage Upload Session ori";
         Chunk: Record "Storage Upload Chunk ori";
         AbortReq: JsonObject;
@@ -145,8 +145,8 @@ codeunit 96205 "Storage Upload Tests"
 
         // [WHEN] The session is aborted
         AbortReq.Add('uploadId', UploadId);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Abort", AbortReq);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Abort should succeed.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Abort", AbortReq);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Abort should succeed.');
 
         // [THEN] No session or chunk rows remain
         LibraryAssert.IsTrue(Session.IsEmpty(), 'The session should be deleted on abort.');
@@ -156,7 +156,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Append_UnknownUploadId_ReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Base64Convert: Codeunit "Base64 Convert";
         AppendReq: JsonObject;
     begin
@@ -170,14 +170,14 @@ codeunit 96205 "Storage Upload Tests"
 
         // [WHEN] Storage.Upload.Append executes
         // [THEN] It raises an error (the framework turns a raised error into an Error envelope at runtime)
-        asserterror ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Append", AppendReq);
+        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Append", AppendReq);
         LibraryAssert.ExpectedError('No upload session was found');
     end;
 
     [Test]
     procedure Status_OpenSession_ReportsProgress()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         StatusReq: JsonObject;
         UploadId: Text;
         Path: Text;
@@ -189,13 +189,13 @@ codeunit 96205 "Storage Upload Tests"
 
         // [WHEN] Storage.Upload.Status executes
         StatusReq.Add('uploadId', UploadId);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Status", StatusReq);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Status", StatusReq);
 
         // [THEN] It reports the progress so far
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Status should succeed.');
-        LibraryAssert.AreEqual('Open', ReadDataText(Argument, 'status'), 'The session should be open.');
-        LibraryAssert.AreEqual(5, ReadDataInt(Argument, 'received'), 'Five bytes were appended.');
-        LibraryAssert.AreEqual(1, ReadDataInt(Argument, 'chunkCount'), 'One chunk was appended.');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Status should succeed.');
+        LibraryAssert.AreEqual('Open', ReadDataText(TempArgument, 'status'), 'The session should be open.');
+        LibraryAssert.AreEqual(5, ReadDataInt(TempArgument, 'received'), 'Five bytes were appended.');
+        LibraryAssert.AreEqual(1, ReadDataInt(TempArgument, 'chunkCount'), 'One chunk was appended.');
     end;
 
     [Test]
@@ -203,7 +203,7 @@ codeunit 96205 "Storage Upload Tests"
     var
         IncomingDocumentAttachment: Record "Incoming Document Attachment";
         Link: Record "Storage Attachment Link ori";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         ContentBlob: Codeunit System.Utilities."Temp Blob";
         LinkReq: JsonObject;
         ContentInStream: InStream;
@@ -221,20 +221,20 @@ codeunit 96205 "Storage Upload Tests"
         BeginUpload('LS-SSQ08189.pdf', '', UploadId, Path);
         AppendChunk(UploadId, 1, 'PDF-');
         AppendChunk(UploadId, 2, 'BODY');
-        CommitUpload(Argument, UploadId);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Commit should succeed.');
+        CommitUpload(TempArgument, UploadId);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Commit should succeed.');
 
         // [WHEN] Storage.Attachment.CreateLinked attaches it to a new incoming document
-        Clear(Argument);
+        Clear(TempArgument);
         LinkReq.Add('storageCode', MockCodeTok);
         LinkReq.Add('path', Path);
         LinkReq.Add('fileName', 'LS-SSQ08189.pdf');
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.CreateLinked", LinkReq);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'CreateLinked should succeed.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", LinkReq);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'CreateLinked should succeed.');
 
         // [THEN] A new incoming document attachment exists, linked to storage
-        EntryNo := ReadDataInt(Argument, 'incomingDocumentEntryNo');
-        SystemIdText := ReadDataText(Argument, 'systemId');
+        EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
+        SystemIdText := ReadDataText(TempArgument, 'systemId');
         LibraryAssert.AreNotEqual(0, EntryNo, 'A new incoming document should have been created.');
         Evaluate(SystemIdGuid, SystemIdText);
         LibraryAssert.IsTrue(Link.Get(Database::"Incoming Document Attachment", SystemIdGuid), 'A storage link row should exist for the attachment.');
@@ -251,23 +251,23 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Begin_WithoutStorageCode_CreatesBufferSession()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         BeginReq: JsonObject;
     begin
         // [SCENARIO] Begin without storageCode creates a buffer-only session.
         Initialize();
         BeginReq.Add('fileName', 'buffer.txt');
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Begin", BeginReq);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
 
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Buffer-only begin should succeed.');
-        LibraryAssert.AreEqual('', ReadDataText(Argument, 'storageCode'), 'storageCode should be empty.');
-        LibraryAssert.AreEqual('', ReadDataText(Argument, 'path'), 'path should be empty for buffer sessions.');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Buffer-only begin should succeed.');
+        LibraryAssert.AreEqual('', ReadDataText(TempArgument, 'storageCode'), 'storageCode should be empty.');
+        LibraryAssert.AreEqual('', ReadDataText(TempArgument, 'path'), 'path should be empty for buffer sessions.');
     end;
 
     [Test]
     procedure Commit_BufferSession_ReturnsNoStorageCodeError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         BeginReq: JsonObject;
         CommitReq: JsonObject;
         UploadId: Text;
@@ -275,17 +275,17 @@ codeunit 96205 "Storage Upload Tests"
         // [SCENARIO] Commit on a buffer-only session fails because there is no storage target.
         Initialize();
         BeginReq.Add('fileName', 'buffer.txt');
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Begin", BeginReq);
-        UploadId := ReadDataText(Argument, 'uploadId');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        UploadId := ReadDataText(TempArgument, 'uploadId');
         AppendChunk(UploadId, 1, 'data');
 
         CommitReq.Add('uploadId', UploadId);
-        Clear(Argument);
-        Argument.Init();
-        Argument."Type" := Argument."Type"::"Storage.Upload.Commit";
-        Argument.Insert(true);
+        Clear(TempArgument);
+        TempArgument.Init();
+        TempArgument."Type" := TempArgument."Type"::"Storage.Upload.Commit";
+        TempArgument.Insert(true);
 
-        asserterror CommitUpload(Argument, UploadId);
+        asserterror CommitUpload(TempArgument, UploadId);
         LibraryAssert.ExpectedError('no storage connection');
     end;
 
@@ -293,7 +293,7 @@ codeunit 96205 "Storage Upload Tests"
     procedure CommitToRecord_OnCustomer_RoundtripsContent()
     var
         DocAttachment: Record "Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         BeginReq: JsonObject;
         CommitReq: JsonObject;
         UploadId: Text;
@@ -303,8 +303,8 @@ codeunit 96205 "Storage Upload Tests"
         EnsureTestCustomer();
 
         BeginReq.Add('fileName', 'commit-to-record.txt');
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Begin", BeginReq);
-        UploadId := ReadDataText(Argument, 'uploadId');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        UploadId := ReadDataText(TempArgument, 'uploadId');
 
         AppendChunk(UploadId, 1, 'Hello ');
         AppendChunk(UploadId, 2, 'from CommitToRecord');
@@ -312,12 +312,12 @@ codeunit 96205 "Storage Upload Tests"
         CommitReq.Add('uploadId', UploadId);
         CommitReq.Add('tableId', Database::Customer);
         CommitReq.Add('no', TestCustNoTok);
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
 
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'CommitToRecord should succeed.');
-        LibraryAssert.AreEqual('DocumentAttachment', ReadDataText(Argument, 'target'), 'target should be DocumentAttachment.');
-        LibraryAssert.AreEqual(Format(false), Format(ReadDataBool(Argument, 'offloaded')), 'Content should be in database.');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'CommitToRecord should succeed.');
+        LibraryAssert.AreEqual('DocumentAttachment', ReadDataText(TempArgument, 'target'), 'target should be DocumentAttachment.');
+        LibraryAssert.AreEqual(Format(false), Format(ReadDataBool(TempArgument, 'offloaded')), 'Content should be in database.');
 
         DocAttachment.SetRange("Table ID", Database::Customer);
         DocAttachment.SetRange("No.", TestCustNoTok);
@@ -329,7 +329,7 @@ codeunit 96205 "Storage Upload Tests"
     procedure CommitToRecord_IncomingDocument_CreatesAttachment()
     var
         IncomingDocAttachment: Record "Incoming Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         BeginReq: JsonObject;
         CommitReq: JsonObject;
         UploadId: Text;
@@ -339,19 +339,19 @@ codeunit 96205 "Storage Upload Tests"
         Initialize();
 
         BeginReq.Add('fileName', 'incoming-upload.txt');
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Begin", BeginReq);
-        UploadId := ReadDataText(Argument, 'uploadId');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        UploadId := ReadDataText(TempArgument, 'uploadId');
         AppendChunk(UploadId, 1, 'Incoming document content');
 
         CommitReq.Add('uploadId', UploadId);
         CommitReq.Add('target', 'IncomingDocument');
         CommitReq.Add('description', 'Test incoming');
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
 
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'CommitToRecord should succeed.');
-        LibraryAssert.AreEqual('IncomingDocument', ReadDataText(Argument, 'target'), 'target should be IncomingDocument.');
-        EntryNo := ReadDataInt(Argument, 'incomingDocumentEntryNo');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'CommitToRecord should succeed.');
+        LibraryAssert.AreEqual('IncomingDocument', ReadDataText(TempArgument, 'target'), 'target should be IncomingDocument.');
+        EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
         LibraryAssert.AreNotEqual(0, EntryNo, 'Should return an entry number.');
 
         IncomingDocAttachment.SetRange("Incoming Document Entry No.", EntryNo);
@@ -361,7 +361,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure CommitToRecord_UnknownTarget_ReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         BeginReq: JsonObject;
         CommitReq: JsonObject;
         UploadId: Text;
@@ -369,8 +369,8 @@ codeunit 96205 "Storage Upload Tests"
         // [SCENARIO] CommitToRecord with an invalid target returns an error.
         Initialize();
         BeginReq.Add('fileName', 'bad-target.txt');
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Begin", BeginReq);
-        UploadId := ReadDataText(Argument, 'uploadId');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        UploadId := ReadDataText(TempArgument, 'uploadId');
         AppendChunk(UploadId, 1, 'data');
 
         CommitReq.Add('uploadId', UploadId);
@@ -378,14 +378,14 @@ codeunit 96205 "Storage Upload Tests"
         CommitReq.Add('tableId', Database::Customer);
         CommitReq.Add('no', TestCustNoTok);
 
-        asserterror ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
+        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
         LibraryAssert.ExpectedError('Unknown target');
     end;
 
     [Test]
     procedure CommitToRecord_NoChunks_ReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         BeginReq: JsonObject;
         CommitReq: JsonObject;
         UploadId: Text;
@@ -393,30 +393,30 @@ codeunit 96205 "Storage Upload Tests"
         // [SCENARIO] CommitToRecord without appending any chunks fails.
         Initialize();
         BeginReq.Add('fileName', 'empty.txt');
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Begin", BeginReq);
-        UploadId := ReadDataText(Argument, 'uploadId');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        UploadId := ReadDataText(TempArgument, 'uploadId');
 
         CommitReq.Add('uploadId', UploadId);
         CommitReq.Add('tableId', Database::Customer);
         CommitReq.Add('no', TestCustNoTok);
 
-        asserterror ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
+        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
         LibraryAssert.ExpectedError('no chunks');
     end;
 
     [Test]
     procedure UploadTables_AreRestrictedFromDataRecords()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
         // [SCENARIO] The upload tables are blocked from the generic Data.Records.* message types.
         Initialize();
 
         // [THEN] Both tables report read- and write-restricted
-        LibraryAssert.IsTrue(Argument.IsTableReadRestrictedForDataRecords(Database::"Storage Upload Session ori"), 'Sessions must be read-restricted.');
-        LibraryAssert.IsTrue(Argument.IsTableWriteRestrictedForDataRecords(Database::"Storage Upload Session ori"), 'Sessions must be write-restricted.');
-        LibraryAssert.IsTrue(Argument.IsTableReadRestrictedForDataRecords(Database::"Storage Upload Chunk ori"), 'Chunks must be read-restricted.');
-        LibraryAssert.IsTrue(Argument.IsTableWriteRestrictedForDataRecords(Database::"Storage Upload Chunk ori"), 'Chunks must be write-restricted.');
+        LibraryAssert.IsTrue(TempArgument.IsTableReadRestrictedForDataRecords(Database::"Storage Upload Session ori"), 'Sessions must be read-restricted.');
+        LibraryAssert.IsTrue(TempArgument.IsTableWriteRestrictedForDataRecords(Database::"Storage Upload Session ori"), 'Sessions must be write-restricted.');
+        LibraryAssert.IsTrue(TempArgument.IsTableReadRestrictedForDataRecords(Database::"Storage Upload Chunk ori"), 'Chunks must be read-restricted.');
+        LibraryAssert.IsTrue(TempArgument.IsTableWriteRestrictedForDataRecords(Database::"Storage Upload Chunk ori"), 'Chunks must be write-restricted.');
     end;
 
     [Test]
@@ -436,7 +436,7 @@ codeunit 96205 "Storage Upload Tests"
 
     local procedure VerifyTypeMetadataAndHelp(Ordinal: Integer)
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         MessageType: Enum "Message Type ori";
         MsgInterface: Interface "Msg Interface ori";
         ExpectedDirection: Enum "Msg Direction ori";
@@ -449,10 +449,10 @@ codeunit 96205 "Storage Upload Tests"
     begin
         MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
         TypeName := MessageTypeName(MessageType);
-        Argument.Init();
-        Argument."Type" := MessageType;
-        Argument.Insert(true);
-        MsgInterface := Argument.GetMessageTypeInterface();
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        MsgInterface := TempArgument.GetMessageTypeInterface();
 
         // Begin/Append/Commit/Abort (72635-72638) write; Status (72639) reads.
         if Ordinal = 72639 then
@@ -461,8 +461,8 @@ codeunit 96205 "Storage Upload Tests"
             ExpectedDirection := ExpectedDirection::Inbound;
         LibraryAssert.AreEqual(ExpectedDirection, MsgInterface.GetMessageDirection(), StrSubstNo(WrongDirectionErr, MessageType));
 
-        MsgInterface.GetMessageHelpAsMarkdownDocument(Argument);
-        HelpText := Argument.GetResponseText();
+        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
+        HelpText := TempArgument.GetResponseText();
         LibraryAssert.AreNotEqual('', HelpText, StrSubstNo(NoHelpErr, MessageType));
         LibraryAssert.IsTrue(HelpText.StartsWith('#'), StrSubstNo(NotMarkdownErr, MessageType));
         LibraryAssert.IsTrue(HelpText.Contains(TypeName), StrSubstNo(NotSelfIdentifyingErr, MessageType));
@@ -498,27 +498,27 @@ codeunit 96205 "Storage Upload Tests"
 
     local procedure BeginUpload(FileName: Text; FolderPath: Text; var UploadId: Text; var Path: Text)
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         BeginReq: JsonObject;
     begin
         BeginReq.Add('storageCode', MockCodeTok);
         BeginReq.Add('fileName', FileName);
         if FolderPath <> '' then
             BeginReq.Add('folderPath', FolderPath);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Begin", BeginReq);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Begin should succeed.');
-        UploadId := ReadDataText(Argument, 'uploadId');
-        Path := ReadDataText(Argument, 'path');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Begin should succeed.');
+        UploadId := ReadDataText(TempArgument, 'uploadId');
+        Path := ReadDataText(TempArgument, 'path');
     end;
 
     local procedure AppendChunk(UploadId: Text; SequenceNo: Integer; ContentText: Text)
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
-        AppendChunk(Argument, UploadId, SequenceNo, ContentText);
+        AppendChunk(TempArgument, UploadId, SequenceNo, ContentText);
     end;
 
-    local procedure AppendChunk(var Argument: Record "Message Argument ori"; UploadId: Text; SequenceNo: Integer; ContentText: Text)
+    local procedure AppendChunk(var TempArgument: Record "Message Argument ori"; UploadId: Text; SequenceNo: Integer; ContentText: Text)
     var
         Base64Convert: Codeunit "Base64 Convert";
         AppendReq: JsonObject;
@@ -526,22 +526,22 @@ codeunit 96205 "Storage Upload Tests"
         AppendReq.Add('uploadId', UploadId);
         AppendReq.Add('sequence', SequenceNo);
         AppendReq.Add('contentBase64', Base64Convert.ToBase64(ContentText));
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Append", AppendReq);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Append should succeed.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Append", AppendReq);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Append should succeed.');
     end;
 
-    local procedure CommitUpload(var Argument: Record "Message Argument ori"; UploadId: Text)
+    local procedure CommitUpload(var TempArgument: Record "Message Argument ori"; UploadId: Text)
     var
         CommitReq: JsonObject;
     begin
-        Clear(Argument);
+        Clear(TempArgument);
         CommitReq.Add('uploadId', UploadId);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Upload.Commit", CommitReq);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Commit", CommitReq);
     end;
 
     local procedure GetStoredText(Path: Text): Text
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Base64Convert: Codeunit "Base64 Convert";
         TempBlob: Codeunit System.Utilities."Temp Blob";
         GetReq: JsonObject;
@@ -551,16 +551,16 @@ codeunit 96205 "Storage Upload Tests"
     begin
         GetReq.Add('storageCode', MockCodeTok);
         GetReq.Add('path', Path);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Get", GetReq);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'File get should succeed.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Get", GetReq);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'File get should succeed.');
         TempBlob.CreateOutStream(ContentOutStream);
-        Base64Convert.FromBase64(ReadDataText(Argument, 'contentBase64'), ContentOutStream);
+        Base64Convert.FromBase64(ReadDataText(TempArgument, 'contentBase64'), ContentOutStream);
         TempBlob.CreateInStream(ContentInStream);
         ContentInStream.ReadText(Result);
         exit(Result);
     end;
 
-    local procedure ExecuteTypeWithRequest(var Argument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -576,10 +576,10 @@ codeunit 96205 "Storage Upload Tests"
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
         ResponseContent.GetSubText(ResponseText, 1);
         ResponseJson.ReadFrom(ResponseText);
-        Argument.Init();
-        Argument."Type" := MessageType;
-        Argument.Insert(true);
-        Argument.SetResponseJson(ResponseJson);
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        TempArgument.SetResponseJson(ResponseJson);
     end;
 
     local procedure MessageTypeName(MessageType: Enum "Message Type ori"): Text
@@ -605,29 +605,29 @@ codeunit 96205 "Storage Upload Tests"
                 DataObject := Token.AsObject();
     end;
 
-    local procedure ReadDataText(var Argument: Record "Message Argument ori"; PropertyName: Text): Text
+    local procedure ReadDataText(var TempArgument: Record "Message Argument ori"; PropertyName: Text): Text
     begin
-        exit(ReadObjText(ReadData(Argument.GetResponseJson()), PropertyName));
+        exit(ReadObjText(ReadData(TempArgument.GetResponseJson()), PropertyName));
     end;
 
-    local procedure ReadDataInt(var Argument: Record "Message Argument ori"; PropertyName: Text): Integer
+    local procedure ReadDataInt(var TempArgument: Record "Message Argument ori"; PropertyName: Text): Integer
     var
         DataObject: JsonObject;
         Token: JsonToken;
     begin
-        DataObject := ReadData(Argument.GetResponseJson());
+        DataObject := ReadData(TempArgument.GetResponseJson());
         if DataObject.Get(PropertyName, Token) then
             if Token.IsValue() then
                 exit(Token.AsValue().AsInteger());
         exit(0);
     end;
 
-    local procedure ReadDataBool(var Argument: Record "Message Argument ori"; PropertyName: Text): Boolean
+    local procedure ReadDataBool(var TempArgument: Record "Message Argument ori"; PropertyName: Text): Boolean
     var
         DataObject: JsonObject;
         Token: JsonToken;
     begin
-        DataObject := ReadData(Argument.GetResponseJson());
+        DataObject := ReadData(TempArgument.GetResponseJson());
         if DataObject.Get(PropertyName, Token) then
             if Token.IsValue() then
                 exit(Token.AsValue().AsBoolean());

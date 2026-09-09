@@ -17,7 +17,7 @@ codeunit 10035679 "Storage Upload Purge ori"
     /// <summary>
     /// Deletes every upload session and chunk and tells the user how much was removed.
     /// </summary>
-    internal procedure PurgeAndNotify()
+    procedure PurgeAndNotify()
     var
         SessionCount: Integer;
         ChunkCount: Integer;
@@ -32,7 +32,7 @@ codeunit 10035679 "Storage Upload Purge ori"
     /// </summary>
     /// <param name="SessionCount">Returns the number of upload sessions that were deleted.</param>
     /// <param name="ChunkCount">Returns the number of upload chunks that were deleted.</param>
-    internal procedure Purge(var SessionCount: Integer; var ChunkCount: Integer)
+    procedure Purge(var SessionCount: Integer; var ChunkCount: Integer)
     var
         UploadSession: Record "Storage Upload Session ori";
         UploadChunk: Record "Storage Upload Chunk ori";

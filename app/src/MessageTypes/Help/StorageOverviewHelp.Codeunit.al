@@ -1,4 +1,4 @@
-﻿namespace Origo.Bifrost.Attachments;
+namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
 
@@ -15,7 +15,7 @@ codeunit 10035675 "Storage Overview Help ori"
     /// <summary>Renders the Markdown help document for one message type of this domain.</summary>
     /// <param name="MessageType">The message type to document.</param>
     /// <param name="Argument">The message argument the rendered Markdown is written to.</param>
-    internal procedure GetHelp(MessageType: Enum "Message Type ori"; var Argument: Record "Message Argument ori")
+    procedure GetHelp(MessageType: Enum "Message Type ori"; var Argument: Record "Message Argument ori")
     begin
         case MessageType of
             MessageType::"Help.Storage.Get":
@@ -30,7 +30,7 @@ codeunit 10035675 "Storage Overview Help ori"
 
     /// <summary>Builds the Markdown overview of the storage connector and all its message types.</summary>
     /// <returns>The overview document as Markdown.</returns>
-    internal procedure BuildOverview(): Text
+    procedure BuildOverview(): Text
     var
         Builder: TextBuilder;
     begin

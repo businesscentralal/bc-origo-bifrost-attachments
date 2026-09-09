@@ -10,36 +10,36 @@ codeunit 10035652 "Storage File Get Impl ori" implements "Msg Interface ori"
 {
     Access = Internal;
 
-    internal procedure IsEnabled(): Boolean
+    procedure IsEnabled(): Boolean
     var
         StorageSetup: Record "Storage Setup ori";
     begin
         exit(StorageSetup.ReadPermission());
     end;
 
-    internal procedure GetFilterTableNo(): Integer
+    procedure GetFilterTableNo(): Integer
     begin
         exit(0);
     end;
 
-    internal procedure GetDescription(): Text[250]
+    procedure GetDescription(): Text[250]
     begin
         exit('Downloads a file from the configured storage connection and returns its content as base64.');
     end;
 
-    internal procedure GetMessageDirection(): Enum "Msg Direction ori"
+    procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
         exit(Enum::"Msg Direction ori"::Outbound);
     end;
 
-    internal procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
+    procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
     var
         FileHelp: Codeunit "Storage File Help ori";
     begin
         FileHelp.GetHelp(Enum::"Message Type ori"::"Storage.File.Get", Argument);
     end;
 
-    internal procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
+    procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         StorageSetup: Record "Storage Setup ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
