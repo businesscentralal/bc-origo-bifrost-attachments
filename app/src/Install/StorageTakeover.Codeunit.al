@@ -1,4 +1,4 @@
-﻿namespace Origo.Bifrost.Attachments;
+namespace Origo.Bifrost.Attachments;
 
 using System.Reflection;
 using System.Security.AccessControl;
@@ -27,7 +27,7 @@ codeunit 10035676 "Storage Takeover ori"
     /// codeunit is deliberately not an install codeunit itself - the app has one install entry
     /// point and the order of the steps is visible there.
     /// </summary>
-    internal procedure TakeOverAll()
+    procedure TakeOverAll()
     begin
         TakeOverData();
         TakeOverAccessControl();

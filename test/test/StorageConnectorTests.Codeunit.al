@@ -55,7 +55,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure HelpStorageGetReturnsOverviewMarkdown()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         MessageType: Enum "Message Type ori";
         ResponseJson: JsonObject;
         DataObject: JsonObject;
@@ -68,10 +68,10 @@ codeunit 96204 "Storage Connector Tests"
         Initialize();
 
         // [WHEN] Help.Storage.Get executes (no request body required)
-        ExecuteType(Argument, Argument."Type"::"Help.Storage.Get");
+        ExecuteType(TempArgument, TempArgument."Type"::"Help.Storage.Get");
 
         // [THEN] The envelope is a success carrying markdown under data (same shape as every other message type)
-        ResponseJson := Argument.GetResponseJson();
+        ResponseJson := TempArgument.GetResponseJson();
         LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Help.Storage.Get should succeed.');
         DataObject := ReadData(ResponseJson);
         LibraryAssert.AreEqual('markdown', ReadObjText(DataObject, 'format'), 'The help format should be markdown.');
@@ -99,7 +99,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure AccountListReturnsConfiguredCode()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         ResponseJson: JsonObject;
         DataObject: JsonObject;
         AccountsToken: JsonToken;
@@ -108,10 +108,10 @@ codeunit 96204 "Storage Connector Tests"
         Initialize();
 
         // [WHEN] Storage.Account.List executes
-        ExecuteType(Argument, Argument."Type"::"Storage.Account.List");
+        ExecuteType(TempArgument, TempArgument."Type"::"Storage.Account.List");
 
         // [THEN] The envelope reports success and lists the configured code
-        ResponseJson := Argument.GetResponseJson();
+        ResponseJson := TempArgument.GetResponseJson();
         LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Account list should succeed.');
         DataObject := ReadData(ResponseJson);
         LibraryAssert.IsTrue(DataObject.Get('accounts', AccountsToken), 'The response should carry an accounts array.');
@@ -121,7 +121,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure FileCreateThenGetRoundtripsContent()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
@@ -133,16 +133,16 @@ codeunit 96204 "Storage Connector Tests"
         ExpectedBase64 := Base64Convert.ToBase64('Hello storage');
         RequestJson := PathRequest('docs/hello.txt');
         RequestJson.Add('contentBase64', ExpectedBase64);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Create", RequestJson);
-        ResponseJson := Argument.GetResponseJson();
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
+        ResponseJson := TempArgument.GetResponseJson();
         LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'File create should succeed.');
 
         // [WHEN] The same file is downloaded through Storage.File.Get
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Get", PathRequest('docs/hello.txt'));
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Get", PathRequest('docs/hello.txt'));
 
         // [THEN] The returned content matches what was uploaded
-        ResponseJson := Argument.GetResponseJson();
+        ResponseJson := TempArgument.GetResponseJson();
         LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'File get should succeed.');
         DataObject := ReadData(ResponseJson);
         LibraryAssert.AreEqual(ExpectedBase64, ReadObjText(DataObject, 'contentBase64'), 'The downloaded content should match the upload.');
@@ -151,7 +151,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure FileExistsReflectsCreateAndDelete()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
@@ -159,28 +159,28 @@ codeunit 96204 "Storage Connector Tests"
         Initialize();
         RequestJson := PathRequest('a/b.txt');
         RequestJson.Add('contentBase64', Base64Convert.ToBase64('x'));
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Create", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
 
         // [THEN] Storage.File.Exists reports it present
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Exists", PathRequest('a/b.txt'));
-        LibraryAssert.IsTrue(ReadDataBool(Argument, 'exists'), 'The file should exist after create.');
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Exists", PathRequest('a/b.txt'));
+        LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'exists'), 'The file should exist after create.');
 
         // [WHEN] It is deleted
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Delete", PathRequest('a/b.txt'));
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'File delete should succeed.');
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Delete", PathRequest('a/b.txt'));
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'File delete should succeed.');
 
         // [THEN] Storage.File.Exists reports it gone
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Exists", PathRequest('a/b.txt'));
-        LibraryAssert.IsFalse(ReadDataBool(Argument, 'exists'), 'The file should be gone after delete.');
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Exists", PathRequest('a/b.txt'));
+        LibraryAssert.IsFalse(ReadDataBool(TempArgument, 'exists'), 'The file should be gone after delete.');
     end;
 
     [Test]
     procedure FileDelete_LinkedAttachment_ReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
@@ -188,54 +188,54 @@ codeunit 96204 "Storage Connector Tests"
         Initialize();
         RequestJson := PathRequest('linked/doc.txt');
         RequestJson.Add('contentBase64', Base64Convert.ToBase64('linked content'));
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Create", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
         CreateLinkedIncomingAttachment('linked/doc.txt', 'doc.txt');
 
         // [WHEN] The linked file is deleted through Storage.File.Delete
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Delete", PathRequest('linked/doc.txt'));
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Delete", PathRequest('linked/doc.txt'));
 
         // [THEN] The operation is rejected before storage is changed
-        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'Linked file delete should fail.');
-        LibraryAssert.IsTrue(ReadText(Argument.GetResponseJson(), 'error').Contains('cannot be deleted'), 'The error should explain that the file is linked.');
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Exists", PathRequest('linked/doc.txt'));
-        LibraryAssert.IsTrue(ReadDataBool(Argument, 'exists'), 'The linked file should still exist after the blocked delete.');
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'Linked file delete should fail.');
+        LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains('cannot be deleted'), 'The error should explain that the file is linked.');
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Exists", PathRequest('linked/doc.txt'));
+        LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'exists'), 'The linked file should still exist after the blocked delete.');
     end;
 
     [Test]
     procedure DirectoryDelete_ContainsLinkedAttachment_ReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A directory containing a linked Business Central attachment file cannot be deleted directly.
         Initialize();
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Directory.Create", PathRequest('linked'));
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Directory.Create", PathRequest('linked'));
         RequestJson := PathRequest('linked/doc.txt');
         RequestJson.Add('contentBase64', Base64Convert.ToBase64('linked content'));
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Create", RequestJson);
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
         CreateLinkedIncomingAttachment('linked/doc.txt', 'doc.txt');
 
         // [WHEN] The parent directory is deleted through Storage.Directory.Delete
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Directory.Delete", PathRequest('linked'));
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Directory.Delete", PathRequest('linked'));
 
         // [THEN] The operation is rejected before storage is changed
-        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'Linked directory delete should fail.');
-        LibraryAssert.IsTrue(ReadText(Argument.GetResponseJson(), 'error').Contains('cannot be deleted'), 'The error should explain that the directory contains linked files.');
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Directory.Exists", PathRequest('linked'));
-        LibraryAssert.IsTrue(ReadDataBool(Argument, 'exists'), 'The linked directory should still exist after the blocked delete.');
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'Linked directory delete should fail.');
+        LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains('cannot be deleted'), 'The error should explain that the directory contains linked files.');
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Directory.Exists", PathRequest('linked'));
+        LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'exists'), 'The linked directory should still exist after the blocked delete.');
     end;
 
     [Test]
     procedure FileMove_LinkedAttachment_UpdatesLinkPath()
     var
         Link: Record "Storage Attachment Link ori";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
         MoveJson: JsonObject;
@@ -244,18 +244,18 @@ codeunit 96204 "Storage Connector Tests"
         Initialize();
         RequestJson := PathRequest('linked/doc.txt');
         RequestJson.Add('contentBase64', Base64Convert.ToBase64('linked content'));
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Create", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
         CreateLinkedIncomingAttachment('linked/doc.txt', 'doc.txt');
 
         // [WHEN] The linked file is moved through Storage.File.Move
         MoveJson.Add('storageCode', MockCodeTok);
         MoveJson.Add('sourcePath', 'linked/doc.txt');
         MoveJson.Add('targetPath', 'linked/archive/doc.txt');
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Move", MoveJson);
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Move", MoveJson);
 
         // [THEN] The move succeeds and the link row follows the file
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Linked file move should succeed.');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Linked file move should succeed.');
         Link.SetRange("Storage Code", MockCodeTok);
         Link.SetRange("Storage Path", 'linked/archive/doc.txt');
         LibraryAssert.IsTrue(Link.FindFirst(), 'The link should point to the moved file path.');
@@ -263,15 +263,15 @@ codeunit 96204 "Storage Connector Tests"
 #pragma warning disable AA0175
         LibraryAssert.IsFalse(Link.FindFirst(), 'No link should remain on the old file path.');
 #pragma warning restore AA0175
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Exists", PathRequest('linked/archive/doc.txt'));
-        LibraryAssert.IsTrue(ReadDataBool(Argument, 'exists'), 'The moved file should exist at the target path.');
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Exists", PathRequest('linked/archive/doc.txt'));
+        LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'exists'), 'The moved file should exist at the target path.');
     end;
 
     [Test]
     procedure CreateLinked_DuplicatePath_ReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
@@ -279,7 +279,7 @@ codeunit 96204 "Storage Connector Tests"
         Initialize();
         RequestJson := PathRequest('dup-link/doc.txt');
         RequestJson.Add('contentBase64', Base64Convert.ToBase64('dup content'));
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Create", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
         CreateLinkedIncomingAttachment('dup-link/doc.txt', 'doc.txt');
 
         // [WHEN] A second attachment is linked to the same path
@@ -288,14 +288,14 @@ codeunit 96204 "Storage Connector Tests"
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('path', 'dup-link/doc.txt');
         RequestJson.Add('fileName', 'doc2.txt');
-        asserterror ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
+        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
         LibraryAssert.ExpectedError('already linked');
     end;
 
     [Test]
     procedure FileListReturnsEntriesUnderPath()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
         DataObject: JsonObject;
@@ -305,19 +305,19 @@ codeunit 96204 "Storage Connector Tests"
         Initialize();
         RequestJson := PathRequest('dir/one.txt');
         RequestJson.Add('contentBase64', Base64Convert.ToBase64('1'));
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Create", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
         Clear(RequestJson);
         RequestJson := PathRequest('dir/two.txt');
         RequestJson.Add('contentBase64', Base64Convert.ToBase64('2'));
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Create", RequestJson);
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
 
         // [WHEN] The directory is listed
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.List", PathRequest('dir'));
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.List", PathRequest('dir'));
 
         // [THEN] Both files are returned
-        DataObject := ReadData(Argument.GetResponseJson());
+        DataObject := ReadData(TempArgument.GetResponseJson());
         LibraryAssert.IsTrue(DataObject.Get('entries', EntriesToken), 'The response should carry an entries array.');
         LibraryAssert.AreEqual(2, EntriesToken.AsArray().Count(), 'Both files should be listed.');
     end;
@@ -325,28 +325,28 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure DirectoryCreateExistsDelete()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
         // [GIVEN] A created directory
         Initialize();
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Directory.Create", PathRequest('reports'));
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Directory.Create", PathRequest('reports'));
 
         // [THEN] It is reported present, then absent after deletion
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Directory.Exists", PathRequest('reports'));
-        LibraryAssert.IsTrue(ReadDataBool(Argument, 'exists'), 'The directory should exist after create.');
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Directory.Exists", PathRequest('reports'));
+        LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'exists'), 'The directory should exist after create.');
 
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Directory.Delete", PathRequest('reports'));
-        Clear(Argument);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Directory.Exists", PathRequest('reports'));
-        LibraryAssert.IsFalse(ReadDataBool(Argument, 'exists'), 'The directory should be gone after delete.');
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Directory.Delete", PathRequest('reports'));
+        Clear(TempArgument);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Directory.Exists", PathRequest('reports'));
+        LibraryAssert.IsFalse(ReadDataBool(TempArgument, 'exists'), 'The directory should be gone after delete.');
     end;
 
     [Test]
     procedure UnknownStorageCodeReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         RequestJson: JsonObject;
     begin
         // [GIVEN] A request naming a storage code that is not configured
@@ -355,17 +355,17 @@ codeunit 96204 "Storage Connector Tests"
         RequestJson.Add('path', 'x.txt');
 
         // [WHEN] Storage.File.Exists executes
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Exists", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Exists", RequestJson);
 
         // [THEN] The envelope reports an error
-        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'An unknown storage code should error.');
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'An unknown storage code should error.');
     end;
 
     [Test]
     procedure DisabledConnectionIsRejected()
     var
         StorageSetup: Record "Storage Setup ori";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
         // [GIVEN] The mock connection is disabled
         Initialize();
@@ -374,16 +374,16 @@ codeunit 96204 "Storage Connector Tests"
         StorageSetup.Modify();
 
         // [WHEN] Storage.File.Exists executes against it
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Exists", PathRequest('x.txt'));
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Exists", PathRequest('x.txt'));
 
         // [THEN] The envelope reports an error
-        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'A disabled connection should be rejected.');
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'A disabled connection should be rejected.');
     end;
 
     [Test]
     procedure MissingPathReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         RequestJson: JsonObject;
     begin
         // [GIVEN] A request that omits the required path
@@ -391,16 +391,16 @@ codeunit 96204 "Storage Connector Tests"
         RequestJson.Add('storageCode', MockCodeTok);
 
         // [WHEN] Storage.File.Get executes
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Get", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Get", RequestJson);
 
         // [THEN] The envelope reports an error
-        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'A missing path should error.');
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'A missing path should error.');
     end;
 
     [Test]
     procedure RelativePathSegmentIsRejected()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
         // [SCENARIO] The base path is a connection's only confinement boundary, so a caller must
         // not be able to walk out of it with a relative segment.
@@ -408,46 +408,46 @@ codeunit 96204 "Storage Connector Tests"
         Initialize();
 
         // [WHEN] Storage.File.Get executes
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Get", PathRequest('../../secret.txt'));
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Get", PathRequest('../../secret.txt'));
 
         // [THEN] The envelope reports an error instead of reaching the connector
-        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'A path with a ".." segment should be rejected.');
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'A path with a ".." segment should be rejected.');
     end;
 
     [Test]
     procedure RelativePathWithBackslashesIsRejected()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
         // [GIVEN] A request that hides the relative segment behind Windows separators
         Initialize();
 
         // [WHEN] Storage.Directory.Create executes
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Directory.Create", PathRequest('reports\..\..\etc'));
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Directory.Create", PathRequest('reports\..\..\etc'));
 
         // [THEN] The envelope reports an error - both slash directions are checked
-        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'A backslash path with a ".." segment should be rejected.');
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'A backslash path with a ".." segment should be rejected.');
     end;
 
     [Test]
     procedure CurrentDirectorySegmentIsRejected()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
         // [GIVEN] A request carrying a "." segment
         Initialize();
 
         // [WHEN] Storage.File.Exists executes
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Exists", PathRequest('docs/./hello.txt'));
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Exists", PathRequest('docs/./hello.txt'));
 
         // [THEN] The envelope reports an error
-        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'A path with a "." segment should be rejected.');
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'A path with a "." segment should be rejected.');
     end;
 
     [Test]
     procedure DotsInsideAFileNameAreAccepted()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
@@ -458,25 +458,25 @@ codeunit 96204 "Storage Connector Tests"
         RequestJson.Add('contentBase64', Base64Convert.ToBase64('ok'));
 
         // [WHEN] Storage.File.Create executes
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Create", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
 
         // [THEN] The file is created
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Dots inside a file name should be allowed.');
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Dots inside a file name should be allowed.');
     end;
 
     [Test]
     procedure GetMissingFileReturnsError()
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
     begin
         // [GIVEN] An empty backend
         Initialize();
 
         // [WHEN] Storage.File.Get targets a file that does not exist
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.File.Get", PathRequest('missing.txt'));
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Get", PathRequest('missing.txt'));
 
         // [THEN] The backend error is surfaced in the envelope
-        LibraryAssert.AreEqual('Error', ReadText(Argument.GetResponseJson(), 'status'), 'Reading a missing file should error.');
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'Reading a missing file should error.');
     end;
 
     [Test]
@@ -484,7 +484,7 @@ codeunit 96204 "Storage Connector Tests"
     var
         DocumentAttachment: Record "Document Attachment";
         Customer: Record Customer;
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         TempBlob: Codeunit "Temp Blob";
         RecRef: RecordRef;
         OffloadReq: JsonObject;
@@ -517,11 +517,11 @@ codeunit 96204 "Storage Connector Tests"
         OffloadReq.Add('systemId', Format(SystemIdGuid, 0, 4));
         OffloadReq.Add('storageCode', MockCodeTok);
         OffloadReq.Add('folderPath', 'attachments/customer');
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.Offload", OffloadReq);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Offload should succeed.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.Offload", OffloadReq);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Offload should succeed.');
 
         // [THEN] The file is stored under the requested folder, with the file name appended
-        DataObject := ReadData(Argument.GetResponseJson());
+        DataObject := ReadData(TempArgument.GetResponseJson());
         LibraryAssert.AreEqual('attachments/customer/doc.txt', ReadObjText(DataObject, 'path'), 'Offload should honor the requested folderPath.');
 
         // [THEN] The local media is cleared from the database
@@ -536,11 +536,11 @@ codeunit 96204 "Storage Connector Tests"
         LibraryAssert.AreEqual(ExpectedContent, ReadBack, 'Offloaded content should be served transparently from storage.');
 
         // [WHEN] Storage.Attachment.Restore brings it back
-        Clear(Argument);
+        Clear(TempArgument);
         RestoreReq.Add('target', 'DocumentAttachment');
         RestoreReq.Add('systemId', Format(SystemIdGuid, 0, 4));
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.Restore", RestoreReq);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Restore should succeed.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.Restore", RestoreReq);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Restore should succeed.');
 
         // [THEN] The media is back in the database
         DocumentAttachment.GetBySystemId(SystemIdGuid);
@@ -552,7 +552,7 @@ codeunit 96204 "Storage Connector Tests"
     var
         DocumentAttachment: Record "Document Attachment";
         Customer: Record Customer;
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         SeedBlob: Codeunit "Temp Blob";
         ExportBlob: Codeunit "Temp Blob";
         RecRef: RecordRef;
@@ -592,8 +592,8 @@ codeunit 96204 "Storage Connector Tests"
         OffloadReq.Add('target', 'DocumentAttachment');
         OffloadReq.Add('systemId', Format(SystemIdGuid, 0, 4));
         OffloadReq.Add('storageCode', MockCodeTok);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.Offload", OffloadReq);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Offload should succeed.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.Offload", OffloadReq);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Offload should succeed.');
         DocumentAttachment.GetBySystemId(SystemIdGuid);
 
         // [THEN] The page gating is unchanged: still reports content and the same viewer support
@@ -619,7 +619,7 @@ codeunit 96204 "Storage Connector Tests"
     var
         IncomingDocument: Record "Incoming Document";
         Attachment: Record "Incoming Document Attachment";
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         SeedBlob: Codeunit "Temp Blob";
         ContentBlob: Codeunit "Temp Blob";
         OffloadReq: JsonObject;
@@ -649,8 +649,8 @@ codeunit 96204 "Storage Connector Tests"
         OffloadReq.Add('target', 'IncomingDocument');
         OffloadReq.Add('systemId', Format(SystemIdGuid, 0, 4));
         OffloadReq.Add('storageCode', MockCodeTok);
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.Offload", OffloadReq);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'Offload should succeed.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.Offload", OffloadReq);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Offload should succeed.');
         Attachment.GetBySystemId(SystemIdGuid);
 
         // [THEN] GetContent still reports content (Download stays enabled) and returns the original bytes
@@ -686,20 +686,20 @@ codeunit 96204 "Storage Connector Tests"
 
     local procedure CreateLinkedIncomingAttachment(Path: Text; FileName: Text)
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         RequestJson: JsonObject;
     begin
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('path', Path);
         RequestJson.Add('fileName', FileName);
         RequestJson.Add('description', 'X linked attachment');
-        ExecuteTypeWithRequest(Argument, Argument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
-        LibraryAssert.AreEqual('Success', ReadText(Argument.GetResponseJson(), 'status'), 'The linked incoming attachment should be created.');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'The linked incoming attachment should be created.');
     end;
 
     local procedure VerifyTypeMetadataAndHelp(Ordinal: Integer)
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         MessageType: Enum "Message Type ori";
         MsgInterface: Interface "Msg Interface ori";
         HelpText: Text;
@@ -712,10 +712,10 @@ codeunit 96204 "Storage Connector Tests"
     begin
         MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
         TypeName := MessageTypeName(MessageType);
-        Argument.Init();
-        Argument."Type" := MessageType;
-        Argument.Insert(true);
-        MsgInterface := Argument.GetMessageTypeInterface();
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        MsgInterface := TempArgument.GetMessageTypeInterface();
 
         // Attachment offload/restore write to the database, so they are inbound; everything else is outbound.
         if Ordinal >= 72633 then
@@ -730,8 +730,8 @@ codeunit 96204 "Storage Connector Tests"
                 StrSubstNo(WrongDirectionErr, MessageType));
         LibraryAssert.AreNotEqual('', MsgInterface.GetDescription(), StrSubstNo(NoDescriptionErr, MessageType));
 
-        MsgInterface.GetMessageHelpAsMarkdownDocument(Argument);
-        HelpText := Argument.GetResponseText();
+        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
+        HelpText := TempArgument.GetResponseText();
         LibraryAssert.AreNotEqual('', HelpText, StrSubstNo(NoHelpErr, MessageType));
         LibraryAssert.IsTrue(HelpText.StartsWith('#'), StrSubstNo(NotMarkdownErr, MessageType));
         LibraryAssert.IsTrue(HelpText.Contains(TypeName), StrSubstNo(NotSelfIdentifyingErr, MessageType));
@@ -739,7 +739,7 @@ codeunit 96204 "Storage Connector Tests"
 
     local procedure VerifyTypeHelpExplainsUsage(Ordinal: Integer)
     var
-        Argument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori";
         MessageType: Enum "Message Type ori";
         MsgInterface: Interface "Msg Interface ori";
         HelpText: Text;
@@ -748,12 +748,12 @@ codeunit 96204 "Storage Connector Tests"
         NoParamsErr: Label 'Type %1 help should document its parameters, including storageCode.', Comment = '%1 = message type';
     begin
         MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
-        Argument.Init();
-        Argument."Type" := MessageType;
-        Argument.Insert(true);
-        MsgInterface := Argument.GetMessageTypeInterface();
-        MsgInterface.GetMessageHelpAsMarkdownDocument(Argument);
-        HelpText := Argument.GetResponseText();
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        MsgInterface := TempArgument.GetMessageTypeInterface();
+        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
+        HelpText := TempArgument.GetResponseText();
 
         // [THEN] An agent can see how to call it and what it returns
         LibraryAssert.IsTrue(HelpText.Contains('```json'), StrSubstNo(NoExampleErr, MessageType));
@@ -783,14 +783,14 @@ codeunit 96204 "Storage Connector Tests"
         exit(Names.Get(Index));
     end;
 
-    local procedure ExecuteType(var Argument: Record "Message Argument ori"; MessageType: Enum "Message Type ori")
+    local procedure ExecuteType(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori")
     var
         RequestJson: JsonObject;
     begin
-        ExecuteTypeWithRequest(Argument, MessageType, RequestJson);
+        ExecuteTypeWithRequest(TempArgument, MessageType, RequestJson);
     end;
 
-    local procedure ExecuteTypeWithRequest(var Argument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -806,10 +806,10 @@ codeunit 96204 "Storage Connector Tests"
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
         ResponseContent.GetSubText(ResponseText, 1);
         ResponseJson.ReadFrom(ResponseText);
-        Argument.Init();
-        Argument."Type" := MessageType;
-        Argument.Insert(true);
-        Argument.SetResponseJson(ResponseJson);
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        TempArgument.SetResponseJson(ResponseJson);
     end;
 
     local procedure ReadData(ResponseJson: JsonObject) DataObject: JsonObject
@@ -821,12 +821,12 @@ codeunit 96204 "Storage Connector Tests"
                 DataObject := Token.AsObject();
     end;
 
-    local procedure ReadDataBool(var Argument: Record "Message Argument ori"; PropertyName: Text): Boolean
+    local procedure ReadDataBool(var TempArgument: Record "Message Argument ori"; PropertyName: Text): Boolean
     var
         DataObject: JsonObject;
         Token: JsonToken;
     begin
-        DataObject := ReadData(Argument.GetResponseJson());
+        DataObject := ReadData(TempArgument.GetResponseJson());
         if DataObject.Get(PropertyName, Token) then
             if Token.IsValue() then
                 exit(Token.AsValue().AsBoolean());

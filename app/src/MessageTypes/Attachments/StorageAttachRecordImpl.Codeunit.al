@@ -13,36 +13,36 @@ codeunit 10035667 "Storage Attach Record Impl ori" implements "Msg Interface ori
 {
     Access = Internal;
 
-    internal procedure IsEnabled(): Boolean
+    procedure IsEnabled(): Boolean
     var
         DocumentAttachment: Record "Document Attachment";
     begin
         exit(DocumentAttachment.WritePermission());
     end;
 
-    internal procedure GetFilterTableNo(): Integer
+    procedure GetFilterTableNo(): Integer
     begin
         exit(Database::"Document Attachment");
     end;
 
-    internal procedure GetDescription(): Text[250]
+    procedure GetDescription(): Text[250]
     begin
         exit('Creates a document attachment on any record - customer, vendor, fixed asset, document - from base64, from storage, or by copying an existing attachment.');
     end;
 
-    internal procedure GetMessageDirection(): Enum "Msg Direction ori"
+    procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
         exit(Enum::"Msg Direction ori"::Inbound);
     end;
 
-    internal procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
+    procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
     var
         AttachmentHelp: Codeunit "Storage Attachment Help ori";
     begin
         AttachmentHelp.GetHelp(Enum::"Message Type ori"::"Storage.Attachment.CreateForRecord", Argument);
     end;
 
-    internal procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
+    procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";

@@ -60,7 +60,7 @@ codeunit 10035637 "Storage Install ori"
 
     /// <summary>Returns the per-company upgrade tag for the initial storage connector release.</summary>
     /// <returns>The initial-release upgrade tag.</returns>
-    internal procedure GetInitialReleaseTag(): Code[250]
+    procedure GetInitialReleaseTag(): Code[250]
     begin
         exit('Origo.Bifrost.Attachments-Initial-20260905');
     end;
