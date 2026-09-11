@@ -4,6 +4,20 @@ All notable changes to Bifrost Attachments are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
 Business Central release versioning (`major.minor.build.revision`).
 
+## [Unreleased]
+
+### Fixed (2026-09-11) - install Setup ori read + Access Control take-over grant
+
+- **`Storage Install ori` grants `tabledata "Setup ori" = R`.** Deploy of 28.0.0.18 failed on
+  Bifrost with `TableData 10077901 Setup ori Read` denied at
+  `RegisterChangeLogGuardExceptions` during `OnInstallAppPerCompany`. The grant lives on the
+  install codeunit's `Permissions` property (not a user-assignable permission set).
+- **`Storage Takeover ori` grants `tabledata "Access Control" = RI`.** Legacy-tenant take-over
+  inserts matching `BIFROST Attach ori` rows for holders of `CE Storage`; without the grant the
+  whole publish rolls back. No delete of legacy rows, so R+I is sufficient.
+- **Take-over unit tests TC001–TC003** (`Storage Takeover Tests`, 96209) seed Access Control via
+  `RecordRef.Open(2000000053)` and cover grant, idempotent re-run, and empty-legacy exit.
+
 ## [28.0.0.0] - 2026-09-07
 
 ### Added (2026-09-07) - Setup Wizard action

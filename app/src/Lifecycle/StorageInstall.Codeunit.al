@@ -17,6 +17,7 @@ codeunit 10035637 "Storage Install ori"
 {
     Subtype = Install;
     Access = Internal;
+    Permissions = tabledata "Setup ori" = R;
 
     trigger OnInstallAppPerCompany()
     var
