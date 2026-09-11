@@ -17,7 +17,6 @@ codeunit 10035637 "Storage Install ori"
 {
     Subtype = Install;
     Access = Internal;
-    Permissions = tabledata "Setup ori" = R;
 
     trigger OnInstallAppPerCompany()
     var
@@ -33,8 +32,6 @@ codeunit 10035637 "Storage Install ori"
     var
         BifrostSetup: Record "Setup ori";
     begin
-        if not BifrostSetup.Get() then
-            exit;
         BifrostSetup.AddChangeLogGuardException(Database::"Storage Attachment Link ori", 0);
     end;
 
