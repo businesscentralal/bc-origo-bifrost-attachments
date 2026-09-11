@@ -20,6 +20,7 @@ using System.Telemetry;
 codeunit 10035676 "Storage Takeover ori"
 {
     Access = Internal;
+    Permissions = tabledata "Access Control" = RI;
 
     /// <summary>
     /// Runs the whole take-over. Called from "Storage Install ori".OnInstallAppPerCompany before
@@ -86,35 +87,40 @@ codeunit 10035676 "Storage Takeover ori"
         LogTakeOver('Storage Setup ori', Target.Count());
     end;
 
-    /// <summary>Grants the Bifrost permission set to every user that held the old one.</summary>
-    local procedure TakeOverAccessControl()
+    /// <summary>
+    /// Grants the Bifrost permission set to every user that held the old one.
+    /// Exposed as <c>internal</c> so unit tests can exercise the Access Control path directly
+    /// (same pattern as Foundation <c>MovePermissionSet</c>).
+    /// </summary>
+    /// <returns>The number of Access Control rows inserted.</returns>
+    internal procedure TakeOverAccessControl() Migrated: Integer
     var
         OldAccessControl: Record "Access Control";
         NewAccessControl: Record "Access Control";
         NewAppId: Guid;
-        Migrated: Integer;
     begin
         NewAppId := AppId();
         OldAccessControl.ReadIsolation := IsolationLevel::ReadCommitted;
         OldAccessControl.SetLoadFields("User Security ID", "Company Name", Scope);
         OldAccessControl.SetRange("Role ID", 'CE Storage');
         OldAccessControl.SetRange("App ID", OldAppId());
-        if OldAccessControl.FindSet() then
-            repeat
-                if not NewAccessControl.Get(
-                    OldAccessControl."User Security ID", 'BIFROST Attach ori', OldAccessControl."Company Name",
-                    OldAccessControl.Scope, NewAppId)
-                then begin
-                    NewAccessControl.Init();
-                    NewAccessControl."User Security ID" := OldAccessControl."User Security ID";
-                    NewAccessControl."Role ID" := 'BIFROST Attach ori';
-                    NewAccessControl."Company Name" := OldAccessControl."Company Name";
-                    NewAccessControl.Scope := OldAccessControl.Scope;
-                    NewAccessControl."App ID" := NewAppId;
-                    if NewAccessControl.Insert(true) then
-                        Migrated += 1;
-                end;
-            until OldAccessControl.Next() = 0;
+        if not OldAccessControl.FindSet() then
+            exit(0);
+        repeat
+            if not NewAccessControl.Get(
+                OldAccessControl."User Security ID", 'BIFROST Attach ori', OldAccessControl."Company Name",
+                OldAccessControl.Scope, NewAppId)
+            then begin
+                NewAccessControl.Init();
+                NewAccessControl."User Security ID" := OldAccessControl."User Security ID";
+                NewAccessControl."Role ID" := 'BIFROST Attach ori';
+                NewAccessControl."Company Name" := OldAccessControl."Company Name";
+                NewAccessControl.Scope := OldAccessControl.Scope;
+                NewAccessControl."App ID" := NewAppId;
+                if NewAccessControl.Insert(true) then
+                    Migrated += 1;
+            end;
+        until OldAccessControl.Next() = 0;
         if Migrated > 0 then
             LogTakeOver('Access Control', Migrated);
     end;
