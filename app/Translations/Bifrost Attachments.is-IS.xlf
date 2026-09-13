@@ -149,7 +149,7 @@
         </trans-unit>
         <trans-unit id="Table 3959677966 - Field 3235276164 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies an optional path prefix prepended to every path used through this connection. Leave blank to address the account root.</source>
-          <target state="translated">Tilgreinir valfrjálst slóðarforskeyti sem bætt er framan við hverja slóð sem notuð er um þessa tengingu. Skildu eftir autt til að vísa á rót reikningsins.</target>
+          <target state="translated">Tilgreinir valfrjálst slóðarforskeyti sem bætt er framan við hverja slóð sem notuð er um þessa tengingu. Skildu reitinn eftir auðan til að vísa á rót reikningsins.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir valfrjálst slóðarforskeyti sem bætt er framan við hverja slóð sem notuð er um þessa tengingu. Skildu eftir autt til að vísa á rót reikningsins.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Setup ori - Field Base Path - Property ToolTip</note>
         </trans-unit>
@@ -233,7 +233,7 @@
         </trans-unit>
         <trans-unit id="Table 3959677966 - Field 613473307 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies how storage actions are carried out. The default routes through the Business Central External File Storage facade.</source>
-          <target state="translated">Tilgreinir hvernig geymsluaðgerðir eru framkvæmdar. Sjálfgefið leiðir í gegnum ytri skráageymslu Business Central.</target>
+          <target state="translated">Tilgreinir hvernig geymsluaðgerðir eru framkvæmdar. Sjálfgefið er að þeim sé beint í gegnum ytri skráageymslu Business Central.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir hvernig geymsluaðgerðir eru framkvæmdar. Sjálfgefið leiðir í gegnum ytri skráageymslu Business Central.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Setup ori - Field Storage Type - Property ToolTip</note>
         </trans-unit>
@@ -263,7 +263,7 @@
         </trans-unit>
         <trans-unit id="Table 1181423367 - Field 3014885516 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the position of this chunk in the assembled file; chunks are concatenated in ascending sequence order.</source>
-          <target state="translated">Tilgreinir staðsetningu þessa bita í samsettu skránni; bitar eru tengdir saman í hækkandi raðnúmeri.</target>
+          <target state="translated">Tilgreinir staðsetningu þessa bita í samsettu skránni; bitarnir eru tengdir saman í hækkandi röð eftir raðnúmeri.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir staðsetningu þessa bita í samsettu skránni; bitar eru tengdir saman í hækkandi raðnúmeri.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Chunk ori - Field Sequence No. - Property ToolTip</note>
         </trans-unit>
@@ -305,7 +305,7 @@
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 3960290652 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies how many chunks have been appended to the session.</source>
-          <target state="translated">Tilgreinir hversu margir bitar hafa verið viðbættir lotunni.</target>
+          <target state="translated">Tilgreinir hversu mörgum bitum hefur verið bætt við lotuna.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir hversu margir bitar hafa verið viðbættir lotunni.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Session ori - Field Chunk Count - Property ToolTip</note>
         </trans-unit>
@@ -341,7 +341,7 @@
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 3022950110 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the total number of bytes received across all appended chunks.</source>
-          <target state="translated">Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta bita.</target>
+          <target state="translated">Tilgreinir heildarfjölda bæta sem hafa borist með öllum bitum sem bætt hefur verið við.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta bita.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Session ori - Field Received Size - Property ToolTip</note>
         </trans-unit>
@@ -389,7 +389,7 @@
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 2553504562 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the identifier returned when the upload session is created; it is passed back on every append, commit, abort and status call.</source>
-          <target state="translated">Tilgreinir kennið sem skilað er þegar upphleðslulotan er stofnuð; það er sent með í hverri viðbótar-, staðfestingar-, hættu- og stöðubeiðni.</target>
+          <target state="translated">Tilgreinir kennið sem skilað er þegar upphleðslulotan er stofnuð; það er sent með öllum beiðnum um að bæta við, staðfesta, hætta við eða sækja stöðu.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir kennið sem skilað er þegar upphleðslulotan er stofnuð; það er sent með í hverri viðbótar-, staðfestingar-, hættu- og stöðubeiðni.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Session ori - Field Upload Id - Property ToolTip</note>
         </trans-unit>
@@ -401,7 +401,7 @@
         </trans-unit>
         <trans-unit id="Codeunit 932189238 - NamedType 4100786335" size-unit="char" translate="yes" xml:space="preserve">
           <source>Storage connection '%1' has no file account selected.</source>
-          <target state="translated">Enginn skráarreikningur er valinn fyrir geymslutenginguna '%1'.</target>
+          <target state="translated">Enginn skráareikningur hefur verið valinn fyrir geymslutenginguna '%1'.</target>
           <note from="Developer" annotates="general" priority="2">%1 = storage code</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Ext File Impl ori - NamedType NoAccountErr</note>
         </trans-unit>
@@ -425,7 +425,7 @@
         </trans-unit>
         <trans-unit id="Codeunit 1175196741 - NamedType 563474316" size-unit="char" translate="yes" xml:space="preserve">
           <source>Purged %1 upload session(s) and %2 chunk(s).</source>
-          <target state="translated">Hreinsaði %1 upphleðslulotu/-lotur og %2 bita., %1 = session count, %2 = chunk count</target>
+          <target state="translated">Hreinsaði %1 upphleðslulotur og %2 bita.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 bita., %1 = session count, %2 = chunk count</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Purge ori - NamedType PurgedMsg</note>
         </trans-unit>
@@ -485,7 +485,7 @@
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 809289658 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>View and manage storage connections used to route Bifrost file requests to file accounts.</source>
-          <target state="translated">Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga.</target>
+          <target state="translated">Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar að skráargeymslureikningum.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action StorageSetup - Property ToolTip</note>
         </trans-unit>
@@ -623,7 +623,7 @@
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 1646251390 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
           <source>You need a configured file storage account (Azure Blob, Azure File Share, or SharePoint) and outbound HTTP must be enabled for this extension.</source>
-          <target state="translated">Þú þarft uppsettan skráargeymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.</target>
+          <target state="translated">Þú þarft uppsettan skráargeymslureikning (Azure Blob, Azure File Share eða SharePoint) og útsendar HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Þú þarft uppsettan skráargeymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Control WelcomeNote - Property InstructionalText</note>
         </trans-unit>
@@ -635,7 +635,7 @@
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 2902201321 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bifrost Attachments requires outbound HTTP to communicate with external storage providers. Please enable Allow HttpClient Requests for this extension.</source>
-          <target state="translated">Bifröst viðhengi þarf útleið HTTP til að eiga samskipti við ytri geymsluveitendur. Vinsamlegast virkjaðu Leyfa HttpClient-beiðnir fyrir þessa viðbót.</target>
+          <target state="translated">Bifröst viðhengi þarf útsendar HTTP-biðlarabeiðnir til að eiga samskipti við ytri geymsluveitendur. Vinsamlegast virkjaðu Leyfa HttpClient-beiðnir fyrir þessa viðbót.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Bifröst viðhengi þarf útleið HTTP til að eiga samskipti við ytri geymsluveitendur. Vinsamlegast virkjaðu Leyfa HttpClient-beiðnir fyrir þessa viðbót.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Control HttpHeader - Property InstructionalText</note>
         </trans-unit>
