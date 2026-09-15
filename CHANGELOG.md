@@ -6,6 +6,22 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-09-15) - permission-tolerant legacy take-over probe (#8)
+
+- **`Storage Takeover ori` probes legacy tabledata before copy** (`TryProbeTakeOverPermissions` /
+  `TryRunTakeOverAtInstall`), mirroring Foundation core#43. Sources remain only Cloud Events
+  tables 10075985 / 10075986; Access Control write is probed when `CE Storage` role pairs would
+  move. First denial skips the whole take-over with one telemetry event (`ORI-BIF-0002`), never
+  `Error`. Ambiguity A1: telemetry only + idempotent re-run (no pending flag on multi-row setup).
+- **`Storage Takeover State ori` (10035681)** — SingleInstance probe-denial / last-skip seam for
+  unit tests (same role as Foundation `Take-Over State ori`).
+- **`Storage Install ori`** calls `TryRunTakeOverAtInstall` instead of bare `TakeOverAll`.
+- **Tests** `Storage Takeover Probe Tests` (96210) cover AC01 probe-denied, AC02 probe-OK, AC03
+  legacy absent; permission set `Test No Source Read` (96211). Existing Access Control mapping
+  tests (96209) unchanged.
+- **Foundation dependency pin** raised to **28.0.0.87** (Cosmo-available build carrying core#43
+  APIs). App version stays **28.0.0.0**.
+
 ### Fixed (2026-09-11) - install Setup ori read + Access Control take-over grant
 
 - **`Storage Install ori` grants `tabledata "Setup ori" = R`.** Deploy of 28.0.0.18 failed on

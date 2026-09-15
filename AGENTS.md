@@ -200,3 +200,7 @@ repository.
   `Run-BifrostTests.ps1` on both `bc28-is` and `bc28-w1`.
 - Every message type needs at least one happy path (verified by reading the effect back) and one
   negative case that must return `status = Error` with a helpful message.
+
+## Agent Notes
+
+- #8 (2026-09-15): legacy take-over is permission-tolerant (`TryProbeTakeOverPermissions` / `TryRunTakeOverAtInstall`); skip = telemetry only (A1); never read Foundation `Setup ori` for migration.
