@@ -17,10 +17,11 @@ Business Central release versioning (`major.minor.build.revision`).
   unit tests (same role as Foundation `Take-Over State ori`).
 - **`Storage Install ori`** calls `TryRunTakeOverAtInstall` instead of bare `TakeOverAll`.
 - **Tests** `Storage Takeover Probe Tests` (96210) cover AC01 probe-denied, AC02 probe-OK, AC03
-  legacy absent; permission set `Test No Source Read` (96211). Existing Access Control mapping
-  tests (96209) unchanged.
-- **Foundation dependency pin** raised to **28.0.0.87** (Cosmo-available build carrying core#43
-  APIs). App version stays **28.0.0.0**.
+  legacy absent; probe-denial seam + `TestPermissions = Disabled` (standing HARD — no
+  `Test No Source Read`). Existing Access Control mapping tests (96209) unchanged.
+- **Dependencies**: Bifrost Foundation pin → **28.0.0.102** (app + test); `.AL-Go` core probing
+  `release_status` → **latestBuild** (prerelease only had 28.0.0.87). App version stays
+  **28.0.0.0**.
 
 ### Fixed (2026-09-11) - install Setup ori read + Access Control take-over grant
 
