@@ -28,7 +28,7 @@ Ids changed by the setup-notification move (2026-09-07): codeunit 10035680
 deleted - that codeunit id is free but is not reused (permission set 10035666
 `BIFROST Attach ori` keeps its own id, object types have separate id spaces).
 Test app: codeunit 96207 `Storage Setup Page Tests`, codeunit 96208
-`Storage App Registry Tests` (96208), `Storage Takeover Tests` (96209), `Storage Takeover Probe Tests` (96210); next free test id **96212** (`Test No Source Read` permission set uses 96211).
+`Storage App Registry Tests` (96208), `Storage Takeover Tests` (96209), `Storage Takeover Probe Tests` (96210); next free test id **96211**.
 
 ## App Identity
 App:      Bifrost Attachments, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
@@ -48,7 +48,7 @@ Default branch: main
 Migration branch: feature/bifrost-hnitbjorg-migration
 
 ## Dependencies
-- Bifrost Foundation, id `7505e808-6e52-4b96-a328-82573391297a`, publisher Origo, version **28.0.0.87** (≥ core#43)
+- Bifrost Foundation, id `7505e808-6e52-4b96-a328-82573391297a`, publisher Origo, version **28.0.0.102** (≥ core#43)
 
 At runtime the tenant must also have at least one Business Central external file storage
 connector app installed and configured (Azure Blob Storage, Azure File Share or SharePoint).

@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed - docs: CLAUDE.md Foundation pin + next free test id
+
+- **`.claude/CLAUDE.md`**: Bifrost Foundation dependency pin **28.0.0.87** → **28.0.0.102**; next free test id **96211** (drop stale `Test No Source Read` / 96212 bookkeeping after #29).
+
 ### Changed (2026-09-15) - permission-tolerant legacy take-over probe (#8)
 
 - **`Storage Takeover ori` probes legacy tabledata before copy** (`TryProbeTakeOverPermissions` /
