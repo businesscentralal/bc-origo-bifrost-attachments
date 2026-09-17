@@ -15,7 +15,7 @@ App:   10035635-10035684 (allocated in origo_cloudevents_object_ranges.xlsx; mig
        on bc28-is, so the coordinator reallocated this app to 10035635-10035684 in the workbook.)
 Tests: 96200-96299 (migrated from 92700-92799 with offset +3500)
 
-Highest object id currently used: 10035680. Free ids left in the block: 10035681-10035684.
+Highest object id currently used: 10035681 (`Storage Takeover State ori`, #8). Free ids left in the block: 10035682-10035684.
 Register any further block in the workbook before using it - never squeeze objects into a
 neighbouring app's range.
 
@@ -28,7 +28,7 @@ Ids changed by the setup-notification move (2026-09-07): codeunit 10035680
 deleted - that codeunit id is free but is not reused (permission set 10035666
 `BIFROST Attach ori` keeps its own id, object types have separate id spaces).
 Test app: codeunit 96207 `Storage Setup Page Tests`, codeunit 96208
-`Storage App Registry Tests` (next free test id 96209).
+`Storage App Registry Tests` (96208), `Storage Takeover Tests` (96209), `Storage Takeover Probe Tests` (96210); next free test id **96212** (`Test No Source Read` permission set uses 96211).
 
 ## App Identity
 App:      Bifrost Attachments, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
@@ -48,7 +48,7 @@ Default branch: main
 Migration branch: feature/bifrost-hnitbjorg-migration
 
 ## Dependencies
-- Bifrost Foundation, id `7505e808-6e52-4b96-a328-82573391297a`, publisher Origo, version 28.0.0.0
+- Bifrost Foundation, id `7505e808-6e52-4b96-a328-82573391297a`, publisher Origo, version **28.0.0.87** (≥ core#43)
 
 At runtime the tenant must also have at least one Business Central external file storage
 connector app installed and configured (Azure Blob Storage, Azure File Share or SharePoint).
@@ -172,6 +172,8 @@ Key rules always in effect:
   link table, the assisted setup entry for `Storage Setup Wizard ori`, and the initial-release
   upgrade tag.
 - `Storage Takeover ori` (10035676) takes data over from the published
+  (permission-tolerant probe via `TryProbeTakeOverPermissions` / `TryRunTakeOverAtInstall`, #8;
+  state seam `Storage Takeover State ori` 10035681 — telemetry-only skip, never Foundation Setup ori)
   *Origo Cloud Events Storage* app (`7acf9361-f558-442b-a516-f5e5dd92aecb`) on first install per
   company: `CE Storage Attachment Link` (10075985) -> `Storage Attachment Link ori` (10035635)
   and `Cloud Events Storage Setup` (10075986) -> `Storage Setup ori` (10035636) with

@@ -6,12 +6,13 @@ using System.Media;
 using System.Upgrade;
 
 /// <summary>
-/// The single install entry point of the app. It first hands over to
-/// <c>Storage Takeover ori</c>, which copies the data of the published Origo Cloud Events
-/// Storage app, and only then registers the change log guard exceptions, the assisted setup
-/// and the initial-release upgrade tag - so everything registered here sees the taken-over
-/// data. The connector keeps no singleton setup: storage connections are created as needed in
-/// <c>Bifrost Storage Setup</c>.
+/// The single install entry point of the app. It first calls
+/// <c>Storage Takeover ori.TryRunTakeOverAtInstall</c> (permission probe, then copy) for the
+/// published Origo Cloud Events Storage app, and only then registers the change log guard
+/// exceptions, the assisted setup and the initial-release upgrade tag - so everything
+/// registered here sees the taken-over data when the probe passed. A denied probe leaves the
+/// install running (telemetry only; A1). The connector keeps no singleton setup: storage
+/// connections are created as needed in <c>Bifrost Storage Setup</c>.
 /// </summary>
 codeunit 10035637 "Storage Install ori"
 {
@@ -22,7 +23,8 @@ codeunit 10035637 "Storage Install ori"
     var
         StorageTakeover: Codeunit "Storage Takeover ori";
     begin
-        StorageTakeover.TakeOverAll();
+        // Probe-first (core#43 / attachments#8): denial skips take-over with telemetry, never Error.
+        StorageTakeover.TryRunTakeOverAtInstall();
         RegisterChangeLogGuardExceptions();
         RegisterAssistedSetup();
         SetUpgradeTags();
