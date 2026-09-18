@@ -6,18 +6,9 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-### Fixed (2026-09-17) - main CI Success→Error after #29 / Message Argument reuse (#31)
+### Changed - docs: CLAUDE.md Foundation pin + next free test id
 
-- **Root cause:** `#29` switched Foundation probing to `latestBuild` + floor `28.0.0.102`.
-  Main CI then pulled Foundation **28.0.0.105** (post core#77 session/licensing), while the green
-  PR build had used **28.0.0.103**. Storage.* / buffer Begin returned `status: Error` (40/69);
-  take-over suites 96209/96210 stayed green (no Dispatcher path).
-- **Pin:** Bifrost Foundation → Exact **28.0.0.100** (`app` + `test`); `.AL-Go` probing
-  `version` → **1.0.0.100** + `nuGetFeedSelectMode: Exact` (same pattern as Iceland Treasury).
-  Stops latestBuild drift past the known-good artifact.
-- **Harness:** `ExecuteTypeWithRequest` helpers `Clear(TempArgument)` before `Init`/`Insert` so
-  reused Message Argument rows cannot raise `already exists` (ID kept by `Init` after Insert).
-
+- **`.claude/CLAUDE.md`**: Bifrost Foundation dependency pin **28.0.0.87** → **28.0.0.102**; next free test id **96211** (drop stale `Test No Source Read` / 96212 bookkeeping after #29).
 
 ### Changed (2026-09-15) - permission-tolerant legacy take-over probe (#8)
 
