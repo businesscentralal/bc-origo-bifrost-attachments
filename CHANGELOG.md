@@ -6,11 +6,9 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-### Changed (2026-09-17) - Bifrost Foundation Exact pin 28.0.0.100 (no float)
+### Changed - docs: CLAUDE.md Foundation pin + next free test id
 
-- App/test Bifrost Foundation dependency set to Exact `28.0.0.100`.
-- AL-Go `appDependencyProbingPaths` for bc-origo-bifrost-core: `release_status: latestBuild`, `version: 1.0.0.100`.
-- `nuGetFeedSelectMode: Exact` so NuGet does not resolve `[28.0.0.100,)` upward to colliding `.107`.
+- **`.claude/CLAUDE.md`**: Bifrost Foundation dependency pin **28.0.0.87** → **28.0.0.102**; next free test id **96211** (drop stale `Test No Source Read` / 96212 bookkeeping after #29).
 
 ### Changed (2026-09-15) - permission-tolerant legacy take-over probe (#8)
 
