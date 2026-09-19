@@ -344,6 +344,9 @@ codeunit 96203 "Storage Attachment Field Tests"
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
         ResponseContent.GetSubText(ResponseText, 1);
         ResponseJson.ReadFrom(ResponseText);
+        // Clear PK before Insert: Init keeps ID; reuse after a prior Insert raises
+        // "Message Argument ori already exists" (attachments#31 smoking gun).
+        Clear(TempArgument);
         TempArgument.Init();
         TempArgument."Type" := MessageType;
         TempArgument.Insert(true);
