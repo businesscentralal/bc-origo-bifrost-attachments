@@ -37,7 +37,7 @@
     "allowDownloadingSource": true,
     "includeSourceInSymbolFile": true
   },
-  "applicationInsightsConnectionString": "InstrumentationKey=63429e28-30b0-4eae-a20f-e9893d943e4a;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=de70b671-472a-491c-8da2-7f991dd6d7ad",
+  "applicationInsightsConnectionString": "InstrumentationKey=f4246d2d-4af0-4eab-9bda-6e20bca0bd5e;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=78ddd361-d5e9-45a4-b2d1-c5d4fa764606",
   "contextSensitiveHelpUrl": "https://businesscentralal.github.io/bifrost/{0}/help/hnitbjorg/",
   "supportedLocales": [
     "en-US",
