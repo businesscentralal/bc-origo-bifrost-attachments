@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed
+
+- App logo: new Bifröst wordmark with "Powered by origo." tagline; app-name line unchanged.
+
 ### Changed - docs: CLAUDE.md Foundation pin + next free test id
 
 - **`.claude/CLAUDE.md`**: Bifrost Foundation dependency pin **28.0.0.87** → **28.0.0.102**; next free test id **96211** (drop stale `Test No Source Read` / 96212 bookkeeping after #29).
