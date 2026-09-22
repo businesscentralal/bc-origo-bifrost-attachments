@@ -52,6 +52,7 @@ codeunit 10035672 "Storage Dir Help ori"
         HelpBuilder.AddParam('path', true, 'string', 'The directory path to create (relative to the connection base path).');
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "path": "invoices/2026" }');
         HelpBuilder.SetResponseNote('the created `path`');
+        HelpBuilder.SetSideEffects('Creates a directory in external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.SetNotes('Some connectors (for example Azure Blob) have no real directories; a directory may only become visible once it contains a file.');
         HelpBuilder.SetRelated('- **Delete a directory:** `Storage.Directory.Delete`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
@@ -67,6 +68,7 @@ codeunit 10035672 "Storage Dir Help ori"
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "path": "invoices/2026" }');
         HelpBuilder.SetResponseNote('the deleted `path`');
         HelpBuilder.AddError('Directory not found', 'Verify the directory exists with Storage.Directory.Exists.');
+        HelpBuilder.SetSideEffects('Deletes a directory from external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.SetRelated('- **Check existence first:** `Storage.Directory.Exists`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;

@@ -94,6 +94,23 @@ codeunit 96204 "Storage Connector Tests"
         // [THEN] It guides an automated caller to the discovery entry point (agent auto-navigation)
         LibraryAssert.IsTrue(Markdown.Contains('Getting started'), 'The overview should give an agent a starting flow.');
         LibraryAssert.IsTrue(Markdown.Contains('Storage.Account.List'), 'The overview should point to Storage.Account.List for code discovery.');
+
+        // [THEN] AC01 (#18): Overview states Direction is about BC data; Outbound file/dir mutate still change storage
+        LibraryAssert.IsTrue(
+            Markdown.Contains('Direction') and Markdown.Contains('external storage') and Markdown.Contains('Outbound') and Markdown.Contains('confirmation'),
+            'Help.Storage.Get must state that Outbound File/Directory Create/Delete/Copy/Move still change external storage and need confirmation.');
+    end;
+
+    [Test]
+    procedure MutatingOutboundStorageHelpDocumentsSideEffects()
+    begin
+        // [SCENARIO] #18 AC02 — File/Directory Create, Delete, Copy, Move help discloses external-storage Side effects.
+        AssertHelpHasSideEffects(Enum::"Message Type ori"::"Storage.File.Create");
+        AssertHelpHasSideEffects(Enum::"Message Type ori"::"Storage.File.Delete");
+        AssertHelpHasSideEffects(Enum::"Message Type ori"::"Storage.File.Copy");
+        AssertHelpHasSideEffects(Enum::"Message Type ori"::"Storage.File.Move");
+        AssertHelpHasSideEffects(Enum::"Message Type ori"::"Storage.Directory.Create");
+        AssertHelpHasSideEffects(Enum::"Message Type ori"::"Storage.Directory.Delete");
     end;
 
     [Test]
@@ -695,6 +712,24 @@ codeunit 96204 "Storage Connector Tests"
         RequestJson.Add('description', 'X linked attachment');
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'The linked incoming attachment should be created.');
+    end;
+
+    local procedure AssertHelpHasSideEffects(MessageType: Enum "Message Type ori")
+    var
+        TempArgument: Record "Message Argument ori";
+        MsgInterface: Interface "Msg Interface ori";
+        HelpText: Text;
+        MissingSideEffectsErr: Label 'Help for %1 must include a Side effects section (attachments#18 AC02).', Comment = '%1 = message type';
+    begin
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        MsgInterface := TempArgument.GetMessageTypeInterface();
+        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
+        HelpText := TempArgument.GetResponseText();
+        LibraryAssert.IsTrue(HelpText.Contains('## Side effects'), StrSubstNo(MissingSideEffectsErr, MessageType));
+        LibraryAssert.IsTrue(HelpText.Contains('external storage'), StrSubstNo(MissingSideEffectsErr, MessageType));
+        LibraryAssert.IsTrue(HelpText.Contains('confirmation'), StrSubstNo(MissingSideEffectsErr, MessageType));
     end;
 
     local procedure VerifyTypeMetadataAndHelp(Ordinal: Integer)
