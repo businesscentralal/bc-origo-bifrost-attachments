@@ -21,6 +21,7 @@ codeunit 10035643 "Storage Help Builder ori"
         ResponseNoteVar: Text;
         NotesVar: Text;
         RelatedVar: Text;
+        SideEffectsVar: Text;
         ParamsBuilder: TextBuilder;
         ErrorsBuilder: TextBuilder;
         ResponseFieldsBuilder: TextBuilder;
@@ -45,6 +46,7 @@ codeunit 10035643 "Storage Help Builder ori"
         ResponseNoteVar := '';
         NotesVar := '';
         RelatedVar := '';
+        SideEffectsVar := '';
         ParamCount := 0;
         ErrorCount := 0;
         ResponseFieldCount := 0;
@@ -160,6 +162,12 @@ codeunit 10035643 "Storage Help Builder ori"
         NextStepsBuilder.AppendLine('.');
     end;
 
+    /// <summary>Sets the Side effects section (Markdown). Use for Outbound ops that still mutate external storage.</summary>
+    procedure SetSideEffects(SideEffects: Text)
+    begin
+        SideEffectsVar := SideEffects;
+    end;
+
     /// <summary>Sets the Notes section content (Markdown).</summary>
     procedure SetNotes(Notes: Text)
     begin
@@ -231,6 +239,13 @@ codeunit 10035643 "Storage Help Builder ori"
             Builder.AppendLine('## Common errors');
             Builder.AppendLine('');
             Builder.Append(ErrorsBuilder.ToText());
+            Builder.AppendLine('');
+        end;
+
+        if SideEffectsVar <> '' then begin
+            Builder.AppendLine('## Side effects');
+            Builder.AppendLine('');
+            Builder.AppendLine(SideEffectsVar);
             Builder.AppendLine('');
         end;
 

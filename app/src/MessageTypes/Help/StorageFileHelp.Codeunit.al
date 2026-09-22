@@ -77,6 +77,7 @@ codeunit 10035671 "Storage File Help ori"
         HelpBuilder.SetResponseNote('`path` and `contentLength` (the number of bytes stored)');
         HelpBuilder.AddError('Invalid base64 content', 'Ensure contentBase64 is valid base64 with no surrounding whitespace or data-URI prefix.');
         HelpBuilder.AddError('Path not found', 'Create the parent directory first with Storage.Directory.Create where the connector requires it.');
+        HelpBuilder.SetSideEffects('Writes (and may overwrite) a file in external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.SetNotes('Use this message type for small files that fit comfortably in one Bifrost request. For predictable large-file uploads, use `Storage.Upload.Begin`, append chunks of at most 49152 RAW bytes each (about 64 KB base64), then call `Storage.Upload.Commit`. Creating a file at an existing path overwrites it on connectors that support overwrite (for example Azure Blob).');
         HelpBuilder.SetRelated('- **Upload a larger file in parts:** `Storage.Upload.Begin`' + '\' + '- **Download the file:** `Storage.File.Get`' + '\' + '- **Delete the file:** `Storage.File.Delete`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
@@ -92,6 +93,7 @@ codeunit 10035671 "Storage File Help ori"
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "path": "notes/hello.txt" }');
         HelpBuilder.SetResponseNote('the deleted `path`');
         HelpBuilder.AddError('File not found', 'Verify the file exists with Storage.File.Exists.');
+        HelpBuilder.SetSideEffects('Deletes a file from external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.SetRelated('- **Check existence first:** `Storage.File.Exists`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
@@ -107,6 +109,7 @@ codeunit 10035671 "Storage File Help ori"
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "sourcePath": "in/a.txt", "targetPath": "out/a.txt" }');
         HelpBuilder.SetResponseNote('the `sourcePath` and `targetPath`');
         HelpBuilder.AddError('Source not found', 'Verify the source file exists with Storage.File.Exists.');
+        HelpBuilder.SetSideEffects('Creates a copy in external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.SetRelated('- **Move instead of copy:** `Storage.File.Move`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
@@ -122,6 +125,7 @@ codeunit 10035671 "Storage File Help ori"
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "sourcePath": "in/a.txt", "targetPath": "done/a.txt" }');
         HelpBuilder.SetResponseNote('the `sourcePath` and `targetPath`');
         HelpBuilder.AddError('Source not found', 'Verify the source file exists with Storage.File.Exists.');
+        HelpBuilder.SetSideEffects('Moves (renames) a file in external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.SetRelated('- **Copy instead of move:** `Storage.File.Copy`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
