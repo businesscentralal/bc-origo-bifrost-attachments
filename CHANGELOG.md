@@ -6,6 +6,17 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-09-22) - Outbound storage Side effects in help (#18)
+
+- **`Help.Storage.Get` overview** states that Direction describes Business Central data;
+  File and Directory Create, Delete, Copy and Move still change external storage even though
+  they are Outbound, and agents should treat them as writes when asking for confirmation.
+- **Per-type help** for `Storage.File.Create`/`Delete`/`Copy`/`Move` and
+  `Storage.Directory.Create`/`Delete` adds a `## Side effects` section via
+  `Storage Help Builder ori`.`SetSideEffects`.
+- **Tests** extend `Storage Connector Tests` (96204): overview AC01 assertion +
+  `MutatingOutboundStorageHelpDocumentsSideEffects` for AC02.
+
 ### Changed
 
 - App logo: new Bifröst wordmark with "Powered by origo." tagline; app-name line unchanged.

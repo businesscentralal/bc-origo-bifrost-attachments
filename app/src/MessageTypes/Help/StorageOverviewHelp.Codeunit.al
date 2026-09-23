@@ -40,6 +40,8 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('');
         Builder.AppendLine('Message types are **outbound** (read/query) or **inbound** (write); all exchange JSON (`Content-Type: text/json`). Invoke any of them with the `call_message_type` tool, passing `type` = the message type name and `data` = its parameters.');
         Builder.AppendLine('');
+        Builder.AppendLine('**Direction** describes Business Central data. File and Directory Create, Delete, Copy and Move change the external storage even though they are Outbound; treat them as writes when asking for confirmation.');
+        Builder.AppendLine('');
         Builder.AppendLine('## Release information');
         Builder.AppendLine('');
         Builder.AppendLine('- **Release:** Initial release');
