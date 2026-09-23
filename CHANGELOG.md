@@ -9,6 +9,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Changed
 
 - App logo: new Bifröst wordmark with "Powered by origo." tagline; app-name line unchanged.
+- Generic `Data.Records.Set` writes to `Storage Setup ori` are now blocked by `Storage Data Restriction ori` (table-write restriction). Reads stay allowed, and callers must use the Bifrost Storage Setup page/flow for setup changes; `Storage.Account.List` behavior is unchanged.
 
 ### Changed - docs: CLAUDE.md Foundation pin + next free test id
 
@@ -213,3 +214,5 @@ migration is needed before the old app is uninstalled.
   are not carried over.
 - The old app remains installed and functional until it is removed; both apps read the same
   external storage accounts, so no files need to be moved.
+
+- Storage.Attachment.CreateForRecord now accepts canonical inline parameter ; legacy  remains supported as an alias.
