@@ -122,7 +122,7 @@ codeunit 10035674 "Storage Upload Help ori"
         HelpBuilder.AddResponseField('status', 'string', 'Always `Aborted` on success.');
         HelpBuilder.AddError('No upload session was found for the supplied uploadId', 'It may have already been committed, aborted, or pruned; a session is private to its creator.');
         HelpBuilder.AddError('The upload session is not open', 'Only an open session can be aborted; a committed upload is already stored.');
-        HelpBuilder.SetNotes('Aborting deletes the session and its chunks from the database. It does not touch storage, because nothing has been written there yet. Uncommitted sessions are also pruned automatically by a retention policy, so aborting is optional.');
+        HelpBuilder.SetNotes('Aborting deletes the session and its chunks from the database. After abort, `Storage.Upload.Status` for the same `uploadId` returns "No upload session was found for the supplied uploadId." It does not touch storage, because nothing has been written there yet. Uncommitted sessions are also pruned automatically by a retention policy, so aborting is optional.');
         HelpBuilder.AddNextStep('To start a fresh upload', 'Storage.Upload.Begin', '');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
@@ -143,7 +143,7 @@ codeunit 10035674 "Storage Upload Help ori"
         HelpBuilder.AddResponseField('declaredSize', 'integer', 'The expected size declared at Begin, or 0 if none was given.');
         HelpBuilder.AddResponseField('received', 'integer', 'Bytes accumulated across all chunks so far.');
         HelpBuilder.AddResponseField('chunkCount', 'integer', 'Number of chunks stored so far.');
-        HelpBuilder.AddError('No upload session was found for the supplied uploadId', 'It may have been committed, aborted, or pruned; a session is private to its creator.');
+        HelpBuilder.AddError('No upload session was found for the supplied uploadId', 'It may have been committed, aborted (aborted sessions disappear), or pruned; a session is private to its creator. Begin a new session with Storage.Upload.Begin.');
         HelpBuilder.SetNotes('Use this to confirm received bytes and chunk count before committing, or to check whether a session is still open. Aborting deletes the session, so status for an aborted upload is returned as not found. This is a read-only query and does not change the session.');
         HelpBuilder.AddNextStep('If status is Open and bytes remain', 'Storage.Upload.Append', 'send the next chunk');
         HelpBuilder.AddNextStep('If all bytes are received', 'Storage.Upload.Commit', 'pass the same `uploadId`');
