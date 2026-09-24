@@ -6,6 +6,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+- **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
+
 ### Changed (2026-09-22) - Outbound storage Side effects in help (#18)
 
 - **`Help.Storage.Get` overview** states that Direction describes Business Central data;
