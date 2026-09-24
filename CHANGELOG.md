@@ -6,6 +6,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+- **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
+
 ### Changed (2026-09-22) - Outbound storage Side effects in help (#18)
 
 - **`Help.Storage.Get` overview** states that Direction describes Business Central data;
