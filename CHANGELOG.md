@@ -6,6 +6,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+- Storage.Upload help: Status after Abort now documents the not-found error (the session is deleted), not an "Aborted" status.
+
 ### Changed (2026-09-22) - Outbound storage Side effects in help (#18)
 
 - **`Help.Storage.Get` overview** states that Direction describes Business Central data;
