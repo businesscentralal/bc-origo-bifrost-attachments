@@ -225,5 +225,3 @@ migration is needed before the old app is uninstalled.
   are not carried over.
 - The old app remains installed and functional until it is removed; both apps read the same
   external storage accounts, so no files need to be moved.
-
-- Storage.Attachment.CreateForRecord now accepts canonical inline parameter ; legacy  remains supported as an alias.

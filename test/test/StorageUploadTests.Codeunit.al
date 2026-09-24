@@ -11,7 +11,8 @@ using System.Text;
 /// Tests for the chunked-upload message types (<c>Storage.Upload.Begin/Append/Commit/Abort/Status</c>),
 /// driven through the in-memory mock storage backend. They cover the begin → append → commit
 /// roundtrip, out-of-order and duplicate chunks, size and contiguity guards, abort, status, the
-/// per-type help, and that the upload tables are blocked from the generic Data.Records API.
+/// per-type help, that the upload tables are blocked from the generic Data.Records API, and
+/// that <c>Data.Records.Set</c> on <c>Storage Setup ori</c> is refused while reads stay allowed.
 /// </summary>
 codeunit 96205 "Storage Upload Tests"
 {
@@ -417,6 +418,67 @@ codeunit 96205 "Storage Upload Tests"
         LibraryAssert.IsTrue(TempArgument.IsTableWriteRestrictedForDataRecords(Database::"Storage Upload Session ori"), 'Sessions must be write-restricted.');
         LibraryAssert.IsTrue(TempArgument.IsTableReadRestrictedForDataRecords(Database::"Storage Upload Chunk ori"), 'Chunks must be read-restricted.');
         LibraryAssert.IsTrue(TempArgument.IsTableWriteRestrictedForDataRecords(Database::"Storage Upload Chunk ori"), 'Chunks must be write-restricted.');
+    end;
+
+    [Test]
+    procedure DataRecordsSet_OnStorageSetup_ReturnsError()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori";
+        SetRequest: JsonObject;
+        GetRequest: JsonObject;
+        RecordObject: JsonObject;
+        PrimaryKey: JsonObject;
+        Fields: JsonObject;
+        DataArray: JsonArray;
+        ResponseJson: JsonObject;
+        ResultArray: JsonArray;
+        ResultToken: JsonToken;
+        RecordToken: JsonToken;
+        PrimaryKeyToken: JsonToken;
+        OriginalDescription: Text[100];
+    begin
+        // [SCENARIO] S6 AC01 (#19): Data.Records.Set on Storage Setup ori returns an error.
+        // Reading that table through Data.Records.Get still succeeds.
+        Initialize();
+        StorageSetup.Get(MockCodeTok);
+        OriginalDescription := StorageSetup.Description;
+
+        // [GIVEN] A generic write that would change the setup description
+        PrimaryKey.Add('Code', MockCodeTok);
+        Fields.Add('Description', 'tampered by Data.Records.Set');
+        RecordObject.Add('primaryKey', PrimaryKey);
+        RecordObject.Add('fields', Fields);
+        DataArray.Add(RecordObject);
+        SetRequest.Add('tableName', 'Storage Setup ori');
+        SetRequest.Add('data', DataArray);
+
+        // [WHEN] Data.Records.Set is invoked against Storage Setup ori
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Data.Records.Set", SetRequest);
+
+        // [THEN] The message type returns an error and the row is unchanged
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Error', ReadText(ResponseJson, 'status'), 'Data.Records.Set on Storage Setup ori must return an error.');
+        LibraryAssert.IsTrue(
+            ReadText(ResponseJson, 'error').Contains('cannot be written'),
+            'The error should say the table cannot be written via Data.Records.Set.');
+        StorageSetup.Get(MockCodeTok);
+        LibraryAssert.AreEqual(OriginalDescription, StorageSetup.Description, 'Storage Setup ori must be unchanged after the rejected write.');
+
+        // [WHEN] The same table is read through Data.Records.Get
+        GetRequest.Add('tableName', 'Storage Setup ori');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Data.Records.Get", GetRequest);
+
+        // [THEN] The read succeeds and returns the setup row
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Data.Records.Get on Storage Setup ori must succeed.');
+        LibraryAssert.IsTrue(ResponseJson.Get('result', ResultToken), 'The read response should contain result.');
+        ResultArray := ResultToken.AsArray();
+        LibraryAssert.AreEqual(1, ResultArray.Count(), 'The setup row should be returned.');
+        ResultArray.Get(0, RecordToken);
+        RecordObject := RecordToken.AsObject();
+        LibraryAssert.IsTrue(RecordObject.Get('primaryKey', PrimaryKeyToken), 'The returned row should include its primary key.');
+        LibraryAssert.AreEqual(MockCodeTok, ReadObjText(PrimaryKeyToken.AsObject(), 'Code'), 'The returned row should be the setup connection.');
     end;
 
     [Test]
