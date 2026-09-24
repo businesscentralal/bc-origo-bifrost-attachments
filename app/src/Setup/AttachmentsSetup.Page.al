@@ -20,7 +20,7 @@ page 10035677 "Attachments Setup ori"
     InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;
-    ContextSensitiveHelpPage = 'hnitbjorg-setup';
+    ContextSensitiveHelpPage = 'attachments-setup';
 
     layout
     {

@@ -14,7 +14,7 @@ page 10035678 "Storage Conn. Part ori"
     SourceTable = "Storage Setup ori";
     CardPageId = "Storage Card ori";
     Editable = false;
-    ContextSensitiveHelpPage = 'hnitbjorg-setup';
+    ContextSensitiveHelpPage = 'attachments-setup';
 
     layout
     {
