@@ -10,9 +10,9 @@
   "runtime": "17.0",
   "logo": "assets/Logo250x250.png",
   "url": "https://www.origo.is/",
-  "EULA": "https://new-origo.cdn.prismic.io/new-origo/lp1r1WElZFfmWAJU_Origo_BC_Cloud_Events_Terms_of_Use_-1-.pdf",
-  "privacyStatement": "https://www.origo.is/um-origo/stefnur/personuverndarstefna",
-  "help": "https://businesscentralal.github.io/bifrost/en-us/hnitbjorg/",
+  "EULA": "https://businesscentralal.github.io/bifrost/en-us/foundation/eula/",
+  "privacyStatement": "https://businesscentralal.github.io/bifrost/en-us/foundation/privacy/",
+  "help": "https://businesscentralal.github.io/bifrost/en-us/attachments/",
   "target": "Cloud",
   "screenshots": [],
   "dependencies": [
@@ -37,8 +37,8 @@
     "allowDownloadingSource": true,
     "includeSourceInSymbolFile": true
   },
-  "applicationInsightsConnectionString": "InstrumentationKey=f4246d2d-4af0-4eab-9bda-6e20bca0bd5e;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=78ddd361-d5e9-45a4-b2d1-c5d4fa764606",
-  "contextSensitiveHelpUrl": "https://businesscentralal.github.io/bifrost/{0}/help/hnitbjorg/",
+  "applicationInsightsConnectionString": "InstrumentationKey=71e55012-b22f-4ff7-a6e4-7b50d83f8cc2;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=d917dc45-172a-44ac-a0ba-85fd4ec5a725",
+  "contextSensitiveHelpUrl": "https://businesscentralal.github.io/bifrost/{0}/help/attachments/",
   "supportedLocales": [
     "en-US",
     "is-IS"
