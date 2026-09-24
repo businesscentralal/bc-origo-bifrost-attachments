@@ -6,6 +6,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+- **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
+
 ### Changed (2026-09-24) - Storage.Upload help after Abort (#17)
 
 - Storage.Upload help: Abort notes now point to the Status not-found result, and the not-found error names `Storage.Upload.Begin`.
