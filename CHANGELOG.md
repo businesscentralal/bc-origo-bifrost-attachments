@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-09-24) - Storage.Upload help after Abort (#17)
+
+- Storage.Upload help: Abort notes now point to the Status not-found result, and the not-found error names `Storage.Upload.Begin`.
+
 ### Changed (2026-09-22) - Outbound storage Side effects in help (#18)
 
 - **`Help.Storage.Get` overview** states that Direction describes Business Central data;
