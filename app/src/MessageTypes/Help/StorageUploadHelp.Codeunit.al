@@ -139,12 +139,12 @@ codeunit 10035674 "Storage Upload Help ori"
         HelpBuilder.AddResponseField('storageCode', 'string', 'The storage connection the file will be written to.');
         HelpBuilder.AddResponseField('fileName', 'string', 'The file name set at Begin.');
         HelpBuilder.AddResponseField('path', 'string', 'The destination path the committed file will be written to.');
-        HelpBuilder.AddResponseField('status', 'string', '`Open`, `Committed`, or `Aborted`.');
+        HelpBuilder.AddResponseField('status', 'string', '`Open` or `Committed` (aborted sessions disappear and are reported as not found).');
         HelpBuilder.AddResponseField('declaredSize', 'integer', 'The expected size declared at Begin, or 0 if none was given.');
         HelpBuilder.AddResponseField('received', 'integer', 'Bytes accumulated across all chunks so far.');
         HelpBuilder.AddResponseField('chunkCount', 'integer', 'Number of chunks stored so far.');
         HelpBuilder.AddError('No upload session was found for the supplied uploadId', 'It may have been committed, aborted, or pruned; a session is private to its creator.');
-        HelpBuilder.SetNotes('Use this to confirm received bytes and chunk count before committing, or to check whether a session is still open. This is a read-only query and does not change the session.');
+        HelpBuilder.SetNotes('Use this to confirm received bytes and chunk count before committing, or to check whether a session is still open. Aborting deletes the session, so status for an aborted upload is returned as not found. This is a read-only query and does not change the session.');
         HelpBuilder.AddNextStep('If status is Open and bytes remain', 'Storage.Upload.Append', 'send the next chunk');
         HelpBuilder.AddNextStep('If all bytes are received', 'Storage.Upload.Commit', 'pass the same `uploadId`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
