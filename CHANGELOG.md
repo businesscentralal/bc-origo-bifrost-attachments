@@ -7,6 +7,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ## [Unreleased]
 
 - **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
+- **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
 
 ### Changed (2026-09-24) - Storage.Upload help after Abort (#17)
 
