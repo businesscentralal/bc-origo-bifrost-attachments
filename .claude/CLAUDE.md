@@ -48,7 +48,7 @@ Default branch: main
 Migration branch: feature/bifrost-hnitbjorg-migration
 
 ## Dependencies
-- Bifrost Foundation, id `7505e808-6e52-4b96-a328-82573391297a`, publisher Origo, version **28.0.0.102** (≥ core#43)
+- Bifrost Foundation, id `7505e808-6e52-4b96-a328-82573391297a`, publisher Origo, version **28.0.0.0** in `app.json` (real symbol minimum is about 28.0.0.48, because `App Registry ori` and `Registered App ori` arrived in core `5819941`)
 
 At runtime the tenant must also have at least one Business Central external file storage
 connector app installed and configured (Azure Blob Storage, Azure File Share or SharePoint).
@@ -75,10 +75,9 @@ folders in this repo - deviation from the Origo PR gateway check 8 approved by t
 - In-product help: https://businesscentralal.github.io/bifrost/en-us/help/hnitbjorg/
 - Extensibility guide: https://businesscentralal.github.io/bifrost/en-us/extensibility/
 
-Context-sensitive help pages are addressed by Docusaurus slug (`hnitbjorg-setup`,
-`storage-setup`, `storage-card`, `storage-account-lookup`), not by HTML file name. The
-`hnitbjorg-setup` slug is new with the 2026-09-06 setup migration and still has to be created
-in the businesscentralal/bifrost site repository - this repository holds no help markdown.
+Context-sensitive help pages are addressed by Docusaurus slug (`attachments-setup`,
+`storage-setup`, `storage-card`, `storage-account-lookup`), not by HTML file name. The setup
+page slug was renamed from `hnitbjorg-setup` to `attachments-setup`; this repository holds no help markdown.
 
 ## Development Standards
 
