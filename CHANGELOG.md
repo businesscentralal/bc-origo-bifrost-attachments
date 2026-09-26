@@ -62,6 +62,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - **Take-over unit tests TC001–TC003** (`Storage Takeover Tests`, 96209) seed Access Control via
   `RecordRef.Open(2000000053)` and cover grant, idempotent re-run, and empty-legacy exit.
 
+### Security
+
+- Default (release) builds no longer ship the test app's internalsVisibleTo grant; the strip moved to PipelineInitialize.ps1 because Alpaca never ran PreCompileApp.ps1 (core#129).
+
 ## [28.0.0.0] - 2026-09-07
 
 ### Added (2026-09-07) - Setup Wizard action
