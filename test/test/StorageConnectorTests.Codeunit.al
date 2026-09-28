@@ -215,6 +215,7 @@ codeunit 96204 "Storage Connector Tests"
         // [THEN] The operation is rejected before storage is changed
         LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'Linked file delete should fail.');
         LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains('cannot be deleted'), 'The error should explain that the file is linked.');
+        AssertErrorResponse(TempArgument, 'PreconditionFailed', 'path');
         Clear(TempArgument);
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Exists", PathRequest('linked/doc.txt'));
         LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'exists'), 'The linked file should still exist after the blocked delete.');
@@ -243,6 +244,7 @@ codeunit 96204 "Storage Connector Tests"
         // [THEN] The operation is rejected before storage is changed
         LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'Linked directory delete should fail.');
         LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains('cannot be deleted'), 'The error should explain that the directory contains linked files.');
+        AssertErrorResponse(TempArgument, 'PreconditionFailed', 'path');
         Clear(TempArgument);
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Directory.Exists", PathRequest('linked'));
         LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'exists'), 'The linked directory should still exist after the blocked delete.');
@@ -300,13 +302,13 @@ codeunit 96204 "Storage Connector Tests"
         CreateLinkedIncomingAttachment('dup-link/doc.txt', 'doc.txt');
 
         // [WHEN] A second attachment is linked to the same path
-        // [THEN] The call fails with an already-linked error
+        // [THEN] The call answers PreconditionFailed on path
         Clear(RequestJson);
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('path', 'dup-link/doc.txt');
         RequestJson.Add('fileName', 'doc2.txt');
-        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
-        LibraryAssert.ExpectedError('already linked');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
+        AssertErrorResponse(TempArgument, 'PreconditionFailed', 'path');
     end;
 
     [Test]
@@ -719,7 +721,7 @@ codeunit 96204 "Storage Connector Tests"
         TempArgument: Record "Message Argument ori";
         MsgInterface: Interface "Msg Interface ori";
         HelpText: Text;
-        MissingSideEffectsErr: Label 'Help for %1 must include a Side effects section (attachments#18 AC02).', Comment = '%1 = message type';
+        MissingSideEffectsErr: Label 'Help for %1 must include a Side effects section (attachments issue 18, AC02).', Comment = '%1 = message type', Locked = true;
     begin
         TempArgument.Init();
         TempArgument."Type" := MessageType;
@@ -796,7 +798,7 @@ codeunit 96204 "Storage Connector Tests"
 
         // [THEN] All parameterised operations (file, directory, attachment) document their inputs
         if Ordinal >= 72622 then
-            LibraryAssert.IsTrue(HelpText.Contains('## Parameters'), StrSubstNo(NoParamsErr, MessageType));
+            LibraryAssert.IsTrue(HelpText.Contains('## Request Parameters'), StrSubstNo(NoParamsErr, MessageType));
 
         // [THEN] Operations that target a connection by code document storageCode.
         // Storage.Attachment.Restore (72634) is excluded: it derives the connection from the offload record.
@@ -891,5 +893,18 @@ codeunit 96204 "Storage Connector Tests"
         if not Token.IsValue() then
             exit('');
         exit(Token.AsValue().AsText());
+    end;
+
+    local procedure AssertErrorResponse(var TempArgument: Record "Message Argument ori"; ExpectedCode: Text; ExpectedParameter: Text)
+    var
+        ResponseJson: JsonObject;
+        WrongCodeErr: Label 'Expected an error with code %1.', Comment = '%1 = error code', Locked = true;
+        WrongParameterErr: Label 'Expected the error to name parameter %1.', Comment = '%1 = parameter', Locked = true;
+    begin
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Error', ReadText(ResponseJson, 'status'), 'The call should answer with an error response.');
+        LibraryAssert.AreEqual(ExpectedCode, ReadText(ResponseJson, 'code'), StrSubstNo(WrongCodeErr, ExpectedCode));
+        if ExpectedParameter <> '' then
+            LibraryAssert.AreEqual(ExpectedParameter, ReadText(ResponseJson, 'parameter'), StrSubstNo(WrongParameterErr, ExpectedParameter));
     end;
 }

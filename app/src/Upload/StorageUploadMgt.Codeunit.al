@@ -1,21 +1,23 @@
 namespace Origo.Bifrost.Attachments;
 
-using System.Text;
+using Origo.Bifrost;
 using System.Utilities;
 
 /// <summary>
 /// Drives chunked uploads to a storage connection. A caller begins a session, appends the file
-/// as a sequence of small base64 chunks, then commits — at which point the chunks are assembled
-/// in order and written to storage through the configured <c>Bifrost Storage Connector</c>. This
-/// lets large files be delivered across many small Bifrost requests instead of one
-/// oversized call.
+/// as a sequence of chunks, then commits — at which point the chunks are assembled in order and
+/// written to storage through the configured <c>Bifrost Storage Connector</c>. This lets a file
+/// larger than one request can carry be delivered across several Bifrost requests. A chunk may
+/// be as large as one request allows (<see cref="Codeunit.StorageRequestReader"/>, 240 MiB), so
+/// a file needs as few calls as possible.
 /// </summary>
 /// <remarks>
 /// Every session lookup applies a permanent <c>FilterGroup(2)</c> filter on <c>SystemCreatedBy</c>,
 /// so a caller can only ever see and act on the sessions it created — even with a leaked
-/// <c>uploadId</c>. The upload to storage is the last step of a commit, mirroring the offload
-/// transaction discipline: a failure before it rolls back the database work, and a failed upload
-/// rolls back the status change with it.
+/// <c>uploadId</c>. Every request value and every session state is checked before the first
+/// database write, and all problems are answered together with a stable code. The upload to
+/// storage is the last step of a commit, mirroring the offload transaction discipline: a failure
+/// before it rolls back the database work, and a failed upload rolls back the status change with it.
 /// </remarks>
 codeunit 10035665 "Storage Upload Mgt ori"
 {
@@ -23,74 +25,96 @@ codeunit 10035665 "Storage Upload Mgt ori"
 
     var
         UploadBasePathTok: Label 'bifrost-uploads', Locked = true;
-        MissingParamErr: Label 'Missing required ''%1'' in the request.', Comment = '%1 = parameter name', Locked = true;
-        InvalidIntegerErr: Label '''%1'' must be a whole number; got ''%2''.', Comment = '%1 = parameter name, %2 = value', Locked = true;
-        InvalidUploadIdErr: Label '''%1'' is not a valid uploadId.', Comment = '%1 = upload id text', Locked = true;
-        UnknownCodeErr: Label 'No storage connection is configured for storageCode ''%1''.', Comment = '%1 = storage code', Locked = true;
-        DisabledCodeErr: Label 'The storage connection ''%1'' is disabled.', Comment = '%1 = storage code', Locked = true;
-        UploadNotFoundErr: Label 'No upload session was found for the supplied uploadId.', Locked = true;
-        NotOpenErr: Label 'The upload session is not open; it has already been committed or aborted.', Locked = true;
-        NoChunksErr: Label 'The upload session has no chunks to commit.', Locked = true;
-        ChunkGapErr: Label 'The upload session is missing one or more chunks; the sequence numbers are not contiguous.', Locked = true;
-        SizeMismatchErr: Label 'The received size (%1 bytes) does not match the declared size (%2 bytes).', Comment = '%1 = received bytes, %2 = declared bytes', Locked = true;
-        NoStorageCodeErr: Label 'This upload session has no storage connection. Use Storage.Upload.CommitToRecord to attach it to a record, or begin a new session with a storageCode.', Locked = true;
-        UnknownTargetErr: Label 'Unknown target ''%1''. Use ''DocumentAttachment'' or ''IncomingDocument''.', Comment = '%1 = target', Locked = true;
+        DocumentAttachmentTok: Label 'DocumentAttachment', Locked = true;
+        IncomingDocumentTok: Label 'IncomingDocument', Locked = true;
+        UploadNotFoundErr: Label 'No upload session was found for uploadId "%1".', Comment = '%1 = upload id, is-IS=Engin upphleðslulota fannst fyrir uploadId "%1".';
+        UploadNotFoundNextStepLbl: Label 'Start a new upload with Storage.Upload.Begin. A session can only be used by the user who began it.', Comment = 'is-IS=Byrjaðu nýja upphleðslu með Storage.Upload.Begin. Aðeins notandinn sem byrjaði lotuna getur notað hana.';
+        NotOpenErr: Label 'The upload session is %1, not open; it has already been committed or aborted.', Comment = '%1 = session status, is-IS=Upphleðslulotan er %1, ekki opin; henni hefur þegar verið lokið eða hún verið hætt.';
+        NotOpenNextStepLbl: Label 'Begin a new session with Storage.Upload.Begin to upload the file again.', Comment = 'is-IS=Byrjaðu nýja lotu með Storage.Upload.Begin til að hlaða skránni upp aftur.';
+        OpenExpectedLbl: Label 'an open session', Comment = 'is-IS=opin lota';
+        NoChunksErr: Label 'The upload session has no chunks to commit.', Comment = 'is-IS=Upphleðslulotan hefur enga hluta til að ljúka.';
+        NoChunksNextStepLbl: Label 'Send the file with Storage.Upload.Append first.', Comment = 'is-IS=Sendu skrána fyrst með Storage.Upload.Append.';
+        ChunkGapErr: Label 'The upload session is missing one or more chunks: it holds %1 chunks, numbered %2 to %3.', Comment = '%1 = chunk count, %2 = first sequence, %3 = last sequence, is-IS=Það vantar einn eða fleiri hluta í upphleðslulotuna: hún hefur %1 hluta, númeraða %2 til %3.';
+        ChunkGapNextStepLbl: Label 'Call Storage.Upload.Status, append the missing sequence numbers, then commit again.', Comment = 'is-IS=Kallaðu á Storage.Upload.Status, bættu við þeim raðnúmerum sem vantar og ljúktu svo aftur.';
+        ContiguousExpectedLbl: Label 'contiguous sequence numbers', Comment = 'is-IS=samfelld raðnúmer';
+        SizeMismatchErr: Label 'The received size (%1 bytes) does not match the declared size (%2 bytes).', Comment = '%1 = received bytes, %2 = declared bytes, is-IS=Móttekin stærð (%1 bæti) passar ekki við uppgefna stærð (%2 bæti).';
+        SizeMismatchNextStepLbl: Label 'Append the missing chunks, or re-send a chunk whose content was wrong, then commit again.', Comment = 'is-IS=Bættu við hlutunum sem vantar eða sendu aftur hluta með röngu innihaldi og ljúktu svo aftur.';
+        NoStorageCodeErr: Label 'This upload session has no storage connection, so it cannot be written to storage.', Comment = 'is-IS=Þessi upphleðslulota hefur enga geymslutengingu og því er ekki hægt að skrifa hana í geymslu.';
+        NoStorageCodeNextStepLbl: Label 'Use Storage.Upload.CommitToRecord to attach the file to a record, or begin a new session with a storageCode.', Comment = 'is-IS=Notaðu Storage.Upload.CommitToRecord til að hengja skrána við færslu eða byrjaðu nýja lotu með storageCode.';
+        UnknownTargetErr: Label 'Parameter "target" has value "%1", which is not an attachment target.', Comment = '%1 = received value, is-IS=Færibreytan "target" hefur gildið "%1", sem er ekki viðhengjamarkmið.';
+        TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Locked = true;
 
     /// <summary>Opens a chunked upload session and returns its <c>uploadId</c>.</summary>
-    /// <param name="RequestJson">Request carrying <c>storageCode</c>, <c>fileName</c> and optional <c>path</c>/<c>folderPath</c>/<c>declaredSize</c>.</param>
+    /// <param name="Argument">The message argument carrying <c>fileName</c> and optional <c>storageCode</c>/<c>path</c>/<c>folderPath</c>/<c>declaredSize</c>; receives the error response.</param>
     /// <param name="ResultData">Out: the success payload describing the new session.</param>
-    procedure BeginUpload(RequestJson: JsonObject; var ResultData: JsonObject)
+    /// <returns>True when the session was opened; false when an error response was written.</returns>
+    procedure BeginUpload(var Argument: Record "Message Argument ori"; var ResultData: JsonObject): Boolean
     var
         StorageSetup: Record "Storage Setup ori";
         Session: Record "Storage Upload Session ori";
+        Reader: Codeunit "Storage Request Reader ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
         Connector: Interface "Storage Connector ori";
-        StorageCode: Code[20];
+        RequestJson: JsonObject;
+        StorageCode: Text;
         FileName: Text;
+        Path: Text;
+        FolderPath: Text;
+        DeclaredSize: Integer;
         UploadId: Guid;
     begin
-        StorageCode := CopyStr(GetText(RequestJson, 'storageCode'), 1, MaxStrLen(StorageCode));
+        RequestJson := Argument.GetRequestJson();
+        Reader.ReadText(Argument, RequestJson, 'storageCode', false, StorageCode);
         if StorageCode <> '' then
-            GetConnector(StorageCode, StorageSetup, Connector);
-        FileName := RequireText(RequestJson, 'fileName');
+            RequestMgt.ResolveSetup(Argument, StorageCode, 'storageCode', StorageSetup, Connector);
+        Reader.ReadText(Argument, RequestJson, 'fileName', true, FileName);
+        Reader.ReadPath(Argument, RequestJson, 'path', false, Path);
+        Reader.ReadPath(Argument, RequestJson, 'folderPath', false, FolderPath);
+        Reader.ReadNonNegativeInteger(Argument, RequestJson, 'declaredSize', false, DeclaredSize);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
 
         UploadId := CreateGuid();
         Session.Init();
         Session."Upload Id" := UploadId;
-        Session."Storage Code" := StorageCode;
+        Session."Storage Code" := StorageSetup."Code";
         Session."File Name" := CopyStr(FileName, 1, MaxStrLen(Session."File Name"));
         if StorageCode <> '' then
-            Session."Target Path" := CopyStr(ResolveTargetPath(RequestJson, FileName), 1, MaxStrLen(Session."Target Path"));
-        Session."Declared Size" := GetInteger(RequestJson, 'declaredSize');
+            Session."Target Path" := CopyStr(ResolveTargetPath(Path, FolderPath, FileName), 1, MaxStrLen(Session."Target Path"));
+        Session."Declared Size" := DeclaredSize;
         Session.Status := Session.Status::Open;
         Session.Insert(true);
 
         ResultData.Add('uploadId', Format(UploadId, 0, 4));
-        ResultData.Add('storageCode', StorageCode);
+        ResultData.Add('storageCode', Session."Storage Code");
         ResultData.Add('path', Session."Target Path");
         ResultData.Add('chunkSizeHint', RecommendedChunkBytes());
+        ResultData.Add('maxChunkBytes', Reader.MaxContentBytes());
+        exit(true);
     end;
 
     /// <summary>Appends one chunk to an open session. Re-appending the same sequence replaces it.</summary>
-    /// <param name="RequestJson">Request carrying <c>uploadId</c>, <c>sequence</c> and <c>contentBase64</c>.</param>
+    /// <param name="Argument">The message argument carrying <c>uploadId</c>, <c>sequence</c> and <c>contentBase64</c>; receives the error response.</param>
     /// <param name="ResultData">Out: the success payload describing progress so far.</param>
-    procedure AppendChunk(RequestJson: JsonObject; var ResultData: JsonObject)
+    /// <returns>True when the chunk was stored; false when an error response was written.</returns>
+    procedure AppendChunk(var Argument: Record "Message Argument ori"; var ResultData: JsonObject): Boolean
     var
         Session: Record "Storage Upload Session ori";
         Chunk: Record "Storage Upload Chunk ori";
         TempBlob: Codeunit "Temp Blob";
-        Base64Convert: Codeunit "Base64 Convert";
+        Reader: Codeunit "Storage Request Reader ori";
+        RequestJson: JsonObject;
         UploadId: Guid;
         SequenceNo: Integer;
-        ContentBase64: Text;
-        ContentOutStream: OutStream;
     begin
-        UploadId := ParseUploadId(RequestJson);
-        SequenceNo := RequireInteger(RequestJson, 'sequence');
-        ContentBase64 := RequireText(RequestJson, 'contentBase64');
-        GetOpenSession(UploadId, Session);
-
-        TempBlob.CreateOutStream(ContentOutStream);
-        Base64Convert.FromBase64(ContentBase64, ContentOutStream);
+        RequestJson := Argument.GetRequestJson();
+        Reader.ReadGuid(Argument, RequestJson, 'uploadId', true, UploadId);
+        Reader.ReadInteger(Argument, RequestJson, 'sequence', true, SequenceNo);
+        Reader.ReadBase64Content(Argument, RequestJson, 'contentBase64', true, TempBlob);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if not FindOpenSession(Argument, UploadId, Session) then
+            exit(false);
 
         if Chunk.Get(UploadId, SequenceNo) then begin
             Session."Received Size" -= Chunk.Size;
@@ -112,31 +136,40 @@ codeunit 10035665 "Storage Upload Mgt ori"
         ResultData.Add('sequence', SequenceNo);
         ResultData.Add('received', Session."Received Size");
         ResultData.Add('chunkCount', Session."Chunk Count");
+        exit(true);
     end;
 
     /// <summary>Assembles an open session's chunks and writes the file to storage.</summary>
-    /// <param name="RequestJson">Request carrying <c>uploadId</c>.</param>
+    /// <param name="Argument">The message argument carrying <c>uploadId</c>; receives the error response.</param>
     /// <param name="ResultData">Out: the success payload describing the stored file.</param>
-    procedure CommitUpload(RequestJson: JsonObject; var ResultData: JsonObject)
+    /// <returns>True when the file was written; false when an error response was written.</returns>
+    procedure CommitUpload(var Argument: Record "Message Argument ori"; var ResultData: JsonObject): Boolean
     var
         Session: Record "Storage Upload Session ori";
         StorageSetup: Record "Storage Setup ori";
         TempBlob: Codeunit "Temp Blob";
+        Reader: Codeunit "Storage Request Reader ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
         Connector: Interface "Storage Connector ori";
         UploadId: Guid;
     begin
-        UploadId := ParseUploadId(RequestJson);
-        GetOpenSession(UploadId, Session);
-
-        if Session."Chunk Count" = 0 then
-            Error(NoChunksErr);
-        if (Session."Declared Size" > 0) and (Session."Declared Size" <> Session."Received Size") then
-            Error(SizeMismatchErr, Session."Received Size", Session."Declared Size");
-
-        if Session."Storage Code" = '' then
-            Error(NoStorageCodeErr);
-        GetConnector(Session."Storage Code", StorageSetup, Connector);
-        AssembleChunks(UploadId, Session."Chunk Count", TempBlob);
+        Reader.ReadGuid(Argument, Argument.GetRequestJson(), 'uploadId', true, UploadId);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if not FindOpenSession(Argument, UploadId, Session) then
+            exit(false);
+        if not CheckReadyToCommit(Argument, Session) then
+            exit(false);
+        if Session."Storage Code" = '' then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, NoStorageCodeErr, 'uploadId', Format(UploadId, 0, 4), '', NoStorageCodeNextStepLbl);
+            exit(false);
+        end;
+        // The connection is the one named when the session began, not a request value.
+        if not RequestMgt.ResolveSetup(Argument, Session."Storage Code", '', StorageSetup, Connector) then begin
+            Reader.RespondIfErrors(Argument);
+            exit(false);
+        end;
+        AssembleChunks(UploadId, TempBlob);
 
         // Database work first, then the upload last: a failure before the upload rolls back the
         // status change, and a failed upload rolls it back too — leaving the session reusable.
@@ -151,69 +184,90 @@ codeunit 10035665 "Storage Upload Mgt ori"
         ResultData.Add('storageCode', Session."Storage Code");
         ResultData.Add('path', Session."Target Path");
         ResultData.Add('contentLength', TempBlob.Length());
+        exit(true);
     end;
 
     /// <summary>Assembles chunks and attaches the file to a BC record or incoming document without external storage.</summary>
-    procedure CommitToRecord(RequestJson: JsonObject; var ResultData: JsonObject)
+    /// <param name="Argument">The message argument carrying <c>uploadId</c>, optional <c>target</c> and the target's address; receives the error response.</param>
+    /// <param name="ResultData">Out: the success payload describing the new attachment.</param>
+    /// <returns>True when the attachment was created; false when an error response was written.</returns>
+    procedure CommitToRecord(var Argument: Record "Message Argument ori"; var ResultData: JsonObject): Boolean
     var
         Session: Record "Storage Upload Session ori";
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
         TempBlob: Codeunit "Temp Blob";
+        Reader: Codeunit "Storage Request Reader ori";
+        RequestJson: JsonObject;
         UploadId: Guid;
         Target: Text;
+        Created: Boolean;
     begin
-        UploadId := ParseUploadId(RequestJson);
-        GetOpenSession(UploadId, Session);
+        RequestJson := Argument.GetRequestJson();
+        Reader.ReadGuid(Argument, RequestJson, 'uploadId', true, UploadId);
+        Reader.ReadText(Argument, RequestJson, 'target', false, Target);
+        if (Target <> '') and (Target <> DocumentAttachmentTok) and (Target <> IncomingDocumentTok) then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(UnknownTargetErr, Target), 'target', Target, TargetExpectedLbl, '');
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if not FindOpenSession(Argument, UploadId, Session) then
+            exit(false);
+        if not CheckReadyToCommit(Argument, Session) then
+            exit(false);
 
-        if Session."Chunk Count" = 0 then
-            Error(NoChunksErr);
-        if (Session."Declared Size" > 0) and (Session."Declared Size" <> Session."Received Size") then
-            Error(SizeMismatchErr, Session."Received Size", Session."Declared Size");
-
-        AssembleChunks(UploadId, Session."Chunk Count", TempBlob);
-
-        Target := GetText(RequestJson, 'target');
-        if (Target = '') or (Target = 'DocumentAttachment') then
-            AttachmentMgt.CreateForRecordFromBlob(RequestJson, TempBlob, Session."File Name", ResultData)
+        AssembleChunks(UploadId, TempBlob);
+        if Target = IncomingDocumentTok then
+            Created := AttachmentMgt.CreateIncomingFromBlob(Argument, TempBlob, Session."File Name", ResultData)
         else
-            if Target = 'IncomingDocument' then
-                AttachmentMgt.CreateIncomingFromBlob(RequestJson, TempBlob, Session."File Name", ResultData)
-            else
-                Error(UnknownTargetErr, Target);
+            Created := AttachmentMgt.CreateForRecordFromBlob(Argument, TempBlob, Session."File Name", ResultData);
+        if not Created then
+            exit(false);
 
         Session.Status := Session.Status::Committed;
         Session."Received Size" := TempBlob.Length();
         Session.Modify(true);
         DeleteChunks(UploadId);
+        exit(true);
     end;
 
     /// <summary>Discards an open session and all its chunks without writing anything to storage.</summary>
-    /// <param name="RequestJson">Request carrying <c>uploadId</c>.</param>
+    /// <param name="Argument">The message argument carrying <c>uploadId</c>; receives the error response.</param>
     /// <param name="ResultData">Out: the success payload confirming the session was aborted.</param>
-    procedure AbortUpload(RequestJson: JsonObject; var ResultData: JsonObject)
+    /// <returns>True when the session was discarded; false when an error response was written.</returns>
+    procedure AbortUpload(var Argument: Record "Message Argument ori"; var ResultData: JsonObject): Boolean
     var
         Session: Record "Storage Upload Session ori";
+        Reader: Codeunit "Storage Request Reader ori";
         UploadId: Guid;
     begin
-        UploadId := ParseUploadId(RequestJson);
-        GetOpenSession(UploadId, Session);
+        Reader.ReadGuid(Argument, Argument.GetRequestJson(), 'uploadId', true, UploadId);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if not FindOpenSession(Argument, UploadId, Session) then
+            exit(false);
         Session.Delete(true);
 
         ResultData.Add('uploadId', Format(UploadId, 0, 4));
-        ResultData.Add('status', 'Aborted');
+        ResultData.Add('status', StatusName(Session.Status::Aborted));
+        exit(true);
     end;
 
     /// <summary>Reports the progress and state of a session.</summary>
-    /// <param name="RequestJson">Request carrying <c>uploadId</c>.</param>
+    /// <param name="Argument">The message argument carrying <c>uploadId</c>; receives the error response.</param>
     /// <param name="ResultData">Out: the success payload describing the session.</param>
-    procedure GetStatus(RequestJson: JsonObject; var ResultData: JsonObject)
+    /// <returns>True when the session was found; false when an error response was written.</returns>
+    procedure GetStatus(var Argument: Record "Message Argument ori"; var ResultData: JsonObject): Boolean
     var
         Session: Record "Storage Upload Session ori";
+        Reader: Codeunit "Storage Request Reader ori";
         UploadId: Guid;
     begin
-        UploadId := ParseUploadId(RequestJson);
-        if not FindOwnSession(UploadId, Session) then
-            Error(UploadNotFoundErr);
+        Reader.ReadGuid(Argument, Argument.GetRequestJson(), 'uploadId', true, UploadId);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if not FindOwnSession(UploadId, Session) then begin
+            RespondUploadNotFound(Argument, UploadId);
+            exit(false);
+        end;
 
         ResultData.Add('uploadId', Format(UploadId, 0, 4));
         ResultData.Add('storageCode', Session."Storage Code");
@@ -223,32 +277,67 @@ codeunit 10035665 "Storage Upload Mgt ori"
         ResultData.Add('declaredSize', Session."Declared Size");
         ResultData.Add('received', Session."Received Size");
         ResultData.Add('chunkCount', Session."Chunk Count");
+        exit(true);
     end;
 
-    /// <summary>Returns the recommended raw chunk size in bytes for callers to target.</summary>
+    /// <summary>
+    /// Returns the chunk size in bytes callers should target: the largest a single request can
+    /// carry, because every chunk is one billable message.
+    /// </summary>
     /// <returns>The suggested chunk size in bytes.</returns>
     procedure RecommendedChunkBytes(): Integer
+    var
+        Reader: Codeunit "Storage Request Reader ori";
     begin
-        exit(49152); // 48 KB raw (~64 KB as base64), well within a single request.
+        exit(Reader.MaxContentBytes());
     end;
 
-    local procedure AssembleChunks(UploadId: Guid; ExpectedCount: Integer; var TempBlob: Codeunit "Temp Blob")
+    local procedure CheckReadyToCommit(var Argument: Record "Message Argument ori"; Session: Record "Storage Upload Session ori"): Boolean
     var
-        Chunk: Record "Storage Upload Chunk ori";
-        ContentOutStream: OutStream;
         FirstSequence: Integer;
         LastSequence: Integer;
+        UploadIdText: Text;
     begin
-        Chunk.SetCurrentKey("Upload Id", "Sequence No.");
-        Chunk.Ascending(true);
+        UploadIdText := Format(Session."Upload Id", 0, 4);
+        if Session."Chunk Count" = 0 then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, NoChunksErr, 'uploadId', UploadIdText, '', NoChunksNextStepLbl);
+            exit(false);
+        end;
+        GetSequenceRange(Session."Upload Id", FirstSequence, LastSequence);
+        if (LastSequence - FirstSequence + 1) <> Session."Chunk Count" then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed,
+                StrSubstNo(ChunkGapErr, Session."Chunk Count", FirstSequence, LastSequence), 'uploadId', UploadIdText, ContiguousExpectedLbl, ChunkGapNextStepLbl);
+            exit(false);
+        end;
+        if (Session."Declared Size" > 0) and (Session."Declared Size" <> Session."Received Size") then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed,
+                StrSubstNo(SizeMismatchErr, Session."Received Size", Session."Declared Size"), 'declaredSize',
+                Format(Session."Received Size", 0, 9), Format(Session."Declared Size", 0, 9), SizeMismatchNextStepLbl);
+            exit(false);
+        end;
+        exit(true);
+    end;
+
+    local procedure GetSequenceRange(UploadId: Guid; var FirstSequence: Integer; var LastSequence: Integer)
+    var
+        Chunk: Record "Storage Upload Chunk ori";
+    begin
+        Chunk.SetLoadFields("Upload Id", "Sequence No.");
         Chunk.SetRange("Upload Id", UploadId);
         Chunk.FindFirst();
         FirstSequence := Chunk."Sequence No.";
         Chunk.FindLast();
         LastSequence := Chunk."Sequence No.";
-        if (LastSequence - FirstSequence + 1) <> ExpectedCount then
-            Error(ChunkGapErr);
+    end;
 
+    local procedure AssembleChunks(UploadId: Guid; var TempBlob: Codeunit "Temp Blob")
+    var
+        Chunk: Record "Storage Upload Chunk ori";
+        ContentOutStream: OutStream;
+    begin
+        Chunk.SetCurrentKey("Upload Id", "Sequence No.");
+        Chunk.Ascending(true);
+        Chunk.SetRange("Upload Id", UploadId);
         TempBlob.CreateOutStream(ContentOutStream);
         Chunk.FindSet();
         repeat
@@ -274,31 +363,32 @@ codeunit 10035665 "Storage Upload Mgt ori"
         exit(Session.FindFirst());
     end;
 
-    local procedure GetOpenSession(UploadId: Guid; var Session: Record "Storage Upload Session ori")
+    local procedure FindOpenSession(var Argument: Record "Message Argument ori"; UploadId: Guid; var Session: Record "Storage Upload Session ori"): Boolean
     begin
-        if not FindOwnSession(UploadId, Session) then
-            Error(UploadNotFoundErr);
-        if Session.Status <> Session.Status::Open then
-            Error(NotOpenErr);
+        if not FindOwnSession(UploadId, Session) then begin
+            RespondUploadNotFound(Argument, UploadId);
+            exit(false);
+        end;
+        if Session.Status = Session.Status::Open then
+            exit(true);
+        Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(NotOpenErr, StatusName(Session.Status)), 'uploadId',
+            Format(UploadId, 0, 4), OpenExpectedLbl, NotOpenNextStepLbl);
+        exit(false);
     end;
 
-    local procedure GetConnector(StorageCode: Code[20]; var StorageSetup: Record "Storage Setup ori"; var Connector: Interface "Storage Connector ori")
+    local procedure RespondUploadNotFound(var Argument: Record "Message Argument ori"; UploadId: Guid)
     begin
-        if not StorageSetup.Get(StorageCode) then
-            Error(UnknownCodeErr, StorageCode);
-        if not StorageSetup.Enabled then
-            Error(DisabledCodeErr, StorageCode);
-        Connector := StorageSetup."Storage Type";
+        Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(UploadNotFoundErr, Format(UploadId, 0, 4)), 'uploadId', Format(UploadId, 0, 4), '', UploadNotFoundNextStepLbl);
     end;
 
-    local procedure ResolveTargetPath(RequestJson: JsonObject; FileName: Text) Path: Text
+    local procedure ResolveTargetPath(Path: Text; FolderPath: Text; FileName: Text): Text
     var
         Folder: Text;
     begin
-        Path := NormalizeFolder(GetText(RequestJson, 'path'));
+        Path := NormalizeFolder(Path);
         if Path <> '' then
             exit(Path);
-        Folder := NormalizeFolder(GetText(RequestJson, 'folderPath'));
+        Folder := NormalizeFolder(FolderPath);
         if Folder <> '' then
             exit(StrSubstNo('%1/%2', Folder, FileName));
         exit(StrSubstNo('%1/%2', UploadBasePathTok, FileName));
@@ -325,53 +415,5 @@ codeunit 10035665 "Storage Upload Mgt ori"
             Status::Aborted:
                 exit('Aborted');
         end;
-    end;
-
-    local procedure ParseUploadId(RequestJson: JsonObject) UploadId: Guid
-    var
-        IdText: Text;
-    begin
-        IdText := RequireText(RequestJson, 'uploadId');
-        if not Evaluate(UploadId, IdText) then
-            Error(InvalidUploadIdErr, IdText);
-    end;
-
-    local procedure RequireText(RequestJson: JsonObject; PropertyName: Text): Text
-    var
-        Value: Text;
-    begin
-        Value := GetText(RequestJson, PropertyName);
-        if Value = '' then
-            Error(MissingParamErr, PropertyName);
-        exit(Value);
-    end;
-
-    local procedure GetText(RequestJson: JsonObject; PropertyName: Text): Text
-    var
-        RequestMgt: Codeunit "Storage Request Mgt ori";
-    begin
-        exit(RequestMgt.GetText(RequestJson, PropertyName));
-    end;
-
-    local procedure GetInteger(RequestJson: JsonObject; PropertyName: Text) Result: Integer
-    var
-        ValueText: Text;
-    begin
-        ValueText := GetText(RequestJson, PropertyName);
-        if ValueText = '' then
-            exit(0);
-        if not Evaluate(Result, ValueText, 9) then
-            Error(InvalidIntegerErr, PropertyName, ValueText);
-    end;
-
-    local procedure RequireInteger(RequestJson: JsonObject; PropertyName: Text) Result: Integer
-    var
-        ValueText: Text;
-    begin
-        ValueText := GetText(RequestJson, PropertyName);
-        if ValueText = '' then
-            Error(MissingParamErr, PropertyName);
-        if not Evaluate(Result, ValueText, 9) then
-            Error(InvalidIntegerErr, PropertyName, ValueText);
     end;
 }

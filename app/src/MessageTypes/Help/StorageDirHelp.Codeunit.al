@@ -39,7 +39,8 @@ codeunit 10035672 "Storage Dir Help ori"
         HelpBuilder.AddParam('path', false, 'string', 'The directory whose subdirectories are listed (relative to the connection base path). Omit or pass an empty string to list the root of the connection.');
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "path": "invoices" }');
         HelpBuilder.SetResponseNote('`path` and an `entries` array of `{ name, type, parentDirectory }` (type is always `Directory`)');
-        HelpBuilder.SetRelated('- **List files:** `Storage.File.List`' + '\' + '- **Create a directory:** `Storage.Directory.Create`');
+        HelpBuilder.AddRelated('Storage.File.List', 'List files');
+        HelpBuilder.AddRelated('Storage.Directory.Create', 'Create a directory');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
 
@@ -54,7 +55,7 @@ codeunit 10035672 "Storage Dir Help ori"
         HelpBuilder.SetResponseNote('the created `path`');
         HelpBuilder.SetSideEffects('Creates a directory in external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.SetNotes('Some connectors (for example Azure Blob) have no real directories; a directory may only become visible once it contains a file.');
-        HelpBuilder.SetRelated('- **Delete a directory:** `Storage.Directory.Delete`');
+        HelpBuilder.AddRelated('Storage.Directory.Delete', 'Delete a directory');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
 
@@ -67,9 +68,9 @@ codeunit 10035672 "Storage Dir Help ori"
         HelpBuilder.AddParam('path', true, 'string', 'The directory path to delete (relative to the connection base path).');
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "path": "invoices/2026" }');
         HelpBuilder.SetResponseNote('the deleted `path`');
-        HelpBuilder.AddError('Directory not found', 'Verify the directory exists with Storage.Directory.Exists.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::BusinessCentralError, 'The directory does not exist (connector error)', 'Verify the directory exists with Storage.Directory.Exists.');
         HelpBuilder.SetSideEffects('Deletes a directory from external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
-        HelpBuilder.SetRelated('- **Check existence first:** `Storage.Directory.Exists`');
+        HelpBuilder.AddRelated('Storage.Directory.Exists', 'Check existence first');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
 
@@ -82,7 +83,7 @@ codeunit 10035672 "Storage Dir Help ori"
         HelpBuilder.AddParam('path', true, 'string', 'The directory path to check (relative to the connection base path).');
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "path": "invoices/2026" }');
         HelpBuilder.SetResponseNote('`path` and `exists` (boolean)');
-        HelpBuilder.SetRelated('- **List subdirectories:** `Storage.Directory.List`');
+        HelpBuilder.AddRelated('Storage.Directory.List', 'List subdirectories');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
 }

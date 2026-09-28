@@ -200,7 +200,8 @@ codeunit 96206 "Storage Attach Record Tests"
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('path', 'somewhere/else.txt');
 
-        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        AssertErrorResponse(TempArgument, 'InvalidParameter', 'content, storageCode, sourceSystemId');
     end;
 
     [Test]
@@ -217,7 +218,8 @@ codeunit 96206 "Storage Attach Record Tests"
         RequestJson.Add('fileName', 'orphan.txt');
         RequestJson.Add('content', ToBase64('orphan'));
 
-        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        AssertErrorResponse(TempArgument, 'RecordNotFound', 'no');
     end;
 
     // ————— Helpers —————
@@ -343,5 +345,18 @@ codeunit 96206 "Storage Attach Record Tests"
         if not DataToken.IsObject() then
             exit('');
         exit(ReadText(DataToken.AsObject(), PropertyName));
+    end;
+
+    local procedure AssertErrorResponse(var TempArgument: Record "Message Argument ori"; ExpectedCode: Text; ExpectedParameter: Text)
+    var
+        ResponseJson: JsonObject;
+        WrongCodeErr: Label 'Expected an error with code %1.', Comment = '%1 = error code', Locked = true;
+        WrongParameterErr: Label 'Expected the error to name parameter %1.', Comment = '%1 = parameter', Locked = true;
+    begin
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Error', ReadText(ResponseJson, 'status'), 'The call should answer with an error response.');
+        LibraryAssert.AreEqual(ExpectedCode, ReadText(ResponseJson, 'code'), StrSubstNo(WrongCodeErr, ExpectedCode));
+        if ExpectedParameter <> '' then
+            LibraryAssert.AreEqual(ExpectedParameter, ReadText(ResponseJson, 'parameter'), StrSubstNo(WrongParameterErr, ExpectedParameter));
     end;
 }

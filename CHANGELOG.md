@@ -6,6 +6,44 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-09-28) - message types behave like Bifröst Foundation's (Foundation #138, #135, #136, #144, #146)
+
+- **Structured errors.** Every storage message type now answers a bad request the way Foundation does:
+  `status` = `Error` with a stable `code` (`MissingParameter`, `InvalidParameterFormat`, `InvalidParameter`,
+  `RecordNotFound`, `PreconditionFailed`, `PermissionDenied`, `LimitExceeded`, `BusinessCentralError`),
+  `parameter`, `received`, `expected` and `nextStep`. All problems of a request are reported at once
+  (`MultipleErrors` with `errors[]`). Examples: an unknown `storageCode` is `RecordNotFound` pointing to
+  `Storage.Account.List`; a disabled connection or a closed upload session is `PreconditionFailed`; a
+  path with a `..` segment is `InvalidParameter`. Storage connector failures stay `BusinessCentralError`
+  with the connector's own text. **Breaking for callers that matched error texts**: several messages were
+  reworded, and upload/attachment errors that used to be raised are now answered. Everything the request
+  and the data can show is checked before the first database write; a failure after a write is still
+  raised, so the write rolls back.
+- **Strict request values** (new `Storage Request Reader ori`, codeunit 10035682). Integers are a JSON
+  number or a string of digits, GUIDs must parse, base64 must decode. A present but invalid value never
+  falls back to a default any more (before, an invalid `incomingDocumentEntryNo` or `tableId` was treated
+  as "not given").
+- **Search keywords.** The 22 business types implement Foundation's `Msg Discovery ori`: English keywords
+  with Icelandic translations, and a selection description that separates each type from its siblings.
+  `Help.Storage.Get` stays technical and has none. The Icelandic keywords are a first draft for review.
+- **Chunks as large as one call allows.** A chunk (and a single `Storage.File.Create` or inline
+  `content`) may carry up to 240 MiB (251,658,240 bytes); the base64 text then stays under Business
+  Central online's 350 MB OData request limit. `Storage.Upload.Begin` returns `chunkSizeHint` (was
+  49,152) and the new `maxChunkBytes`, both 240 MiB, so a file takes as few billable messages as possible.
+  Larger content is refused with `LimitExceeded`.
+- **Filter tables.** `Storage.Attachment.Offload` and `Restore` report `Document Attachment`,
+  `Storage.Attachment.CreateLinked` reports `Incoming Document` (was 0).
+- **Help.** Every help document has Foundation's sections (Overview, Request Parameters, Response Shape,
+  Errors with a `code` column, Related Message Types); the old `{status, error}` failure block is gone
+  because Foundation appends the shared error section. Fixed: `invoke_message_type` tool name (was
+  `call_message_type`), line breaks that rendered as a literal `\`, and `→`/`—` shown as text in
+  the overview. `Help.Storage.Get`'s own help is now a standard help document followed by the overview.
+- **Tests.** New `Storage Msg Conformance Tests` (96211, Foundation's rules 1-6 plus keyword coverage for
+  every type, no allow-list) and `Storage Error Response Tests` (96212). Existing tests assert the
+  structured answers instead of raised texts.
+- **Foundation.** Requires a Foundation build with `Msg Discovery ori` and `Bifrost Error Code ori`
+  (#149, #153) and the structured-error hand-over of #161; built and tested against the stack up to #169.
+
 - **Foundation CI probe** (`.AL-Go/settings.json`): the `bc-origo-bifrost-core` `appDependencyProbingPaths` entry uses `"version": "latest"` (`release_status` stays `latestBuild`), so the app builds against the latest Foundation CI build with a Foundation floor of `28.0.0.0`.
 - **Install permission-probe diagnostics** in `Storage Takeover ori`: the `WriteDeniedErr` and `ReadDeniedErr` texts are now `Locked` labels. The text is identical, and they only feed telemetry, so there's no translation (xlf) change.
 - **Bifrost Foundation dependency** (`app/app.json` and `test/app.json`) is deliberately lowered from `28.0.0.100` to `28.0.0.0`, so it's no longer a pinned build. This was approved by Gunnar. The app uses `App Registry ori` and `Registered App ori` (core `5819941`), so the real symbol minimum is Foundation build 48 or later (about `28.0.0.48`), not `28.0.0.0`.

@@ -46,6 +46,7 @@ permissionsetextension 10035635 "Storage Full ori" extends "BIFROST Full ori"
         codeunit "Storage Overview Help ori" = X,
         codeunit "Storage Overview Subscr ori" = X,
         codeunit "Storage Request Mgt ori" = X,
+        codeunit "Storage Request Reader ori" = X,
         codeunit "Storage Reten. Policy ori" = X,
         codeunit "Storage Takeover ori" = X,
         codeunit "Storage Takeover State ori" = X,

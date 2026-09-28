@@ -17,27 +17,16 @@ codeunit 10035662 "Storage Request Mgt ori"
     Access = Internal;
 
     var
-        MissingParamErr: Label 'Missing required ''%1'' in the request.', Comment = '%1 = parameter name', Locked = true;
-        UnknownCodeErr: Label 'No storage connection is configured for storageCode ''%1''.', Comment = '%1 = storage code', Locked = true;
-        DisabledCodeErr: Label 'The storage connection ''%1'' is disabled.', Comment = '%1 = storage code', Locked = true;
         UnsafePathErr: Label 'The path ''%1'' is not allowed: no path segment may be ''.'' or ''..''.', Comment = '%1 = the rejected path', Locked = true;
-
-    /// <summary>
-    /// Rejects a caller-supplied path that tries to walk out of the connection's base path.
-    /// The base path is the only confinement boundary a storage connection has, so a relative
-    /// segment must never reach the connector. On rejection the error response is written onto
-    /// the argument and false is returned.
-    /// </summary>
-    /// <param name="Argument">The Bifrost argument (receives the error response on rejection).</param>
-    /// <param name="Path">The caller-supplied path to check.</param>
-    /// <returns>True when the path carries no relative segment.</returns>
-    procedure CheckPath(var Argument: Record "Message Argument ori"; Path: Text): Boolean
-    begin
-        if PathIsSafe(Path) then
-            exit(true);
-        Argument.RespondWithError(StrSubstNo(UnsafePathErr, Path));
-        exit(false);
-    end;
+        UnknownCodeErr: Label 'No storage connection is configured for storageCode "%1".', Comment = '%1 = storage code, is-IS=Engin geymslutenging er skilgreind fyrir storageCode "%1".';
+        DisabledCodeErr: Label 'The storage connection "%1" is disabled.', Comment = '%1 = storage code, is-IS=Geymslutengingin "%1" er óvirk.';
+        UnknownCodeNextStepLbl: Label 'Call Storage.Account.List to see the configured storage codes.', Comment = 'is-IS=Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.';
+        DisabledCodeNextStepLbl: Label 'Enable the connection on the Bifröst Attachments setup page, or use another storageCode.', Comment = 'is-IS=Virkjaðu tenginguna á uppsetningarsíðu Bifröst viðhengja eða notaðu annan storageCode.';
+        EnabledExpectedLbl: Label 'an enabled storage connection', Comment = 'is-IS=virk geymslutenging';
+        LinkedFileDeleteErr: Label 'File "%1" backs a Business Central attachment and cannot be deleted directly from storage.', Comment = '%1 = storage path, is-IS=Skráin "%1" geymir viðhengi í Business Central og ekki er hægt að eyða henni beint úr geymslunni.';
+        LinkedDirectoryDeleteErr: Label 'Directory "%1" contains files that back Business Central attachments and cannot be deleted directly from storage.', Comment = '%1 = directory path, is-IS=Mappan "%1" inniheldur skrár sem geyma viðhengi í Business Central og ekki er hægt að eyða henni beint úr geymslunni.';
+        LinkedDeleteNextStepLbl: Label 'Restore the attachment with Storage.Attachment.Restore, or delete the attachment in Business Central, then delete the file.', Comment = 'is-IS=Endurheimtu viðhengið með Storage.Attachment.Restore eða eyddu viðhenginu í Business Central og eyddu svo skránni.';
+        UnlinkedExpectedLbl: Label 'a file that no attachment is linked to', Comment = 'is-IS=skrá sem ekkert viðhengi er tengt við';
 
     /// <summary>
     /// Tests whether a path is free of relative segments. Both slash directions are considered,
@@ -57,7 +46,7 @@ codeunit 10035662 "Storage Request Mgt ori"
         exit(true);
     end;
 
-    /// <summary>Raises the "unsafe path" error. Used where a path is built rather than responded to.</summary>
+    /// <summary>Raises the "unsafe path" error. Used where a path is built rather than read from a request.</summary>
     /// <param name="Path">The rejected path.</param>
     procedure ThrowUnsafePath(Path: Text)
     begin
@@ -65,27 +54,43 @@ codeunit 10035662 "Storage Request Mgt ori"
     end;
 
     /// <summary>
-    /// Resolves the request's <c>storageCode</c> to a configured, enabled storage setup row
-    /// and its connector implementation. On failure it writes an error response onto the
-    /// argument and returns false.
+    /// Reads the required <c>storageCode</c> and resolves it to an enabled storage setup row and
+    /// its connector. Problems are collected on the argument, see <see cref="ResolveSetup"/>.
     /// </summary>
-    /// <param name="Argument">The Bifrost argument (receives the error response on failure).</param>
+    /// <param name="Argument">The message argument that collects the problems.</param>
     /// <param name="RequestJson">The request JSON.</param>
     /// <param name="StorageSetup">Out: the resolved setup row.</param>
     /// <param name="Connector">Out: the resolved connector implementation.</param>
     /// <returns>True when a usable storage connection was resolved.</returns>
-    procedure ResolveSetup(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; var StorageSetup: Record "Storage Setup ori"; var Connector: Interface "Storage Connector ori"): Boolean
+    procedure ReadSetup(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; var StorageSetup: Record "Storage Setup ori"; var Connector: Interface "Storage Connector ori"): Boolean
     var
+        Reader: Codeunit "Storage Request Reader ori";
         StorageCode: Text;
     begin
-        if not RequireParam(Argument, RequestJson, 'storageCode', StorageCode) then
+        if not Reader.ReadText(Argument, RequestJson, 'storageCode', true, StorageCode) then
             exit(false);
-        if not StorageSetup.Get(CopyStr(StorageCode, 1, MaxStrLen(StorageSetup."Code"))) then begin
-            Argument.RespondWithError(StrSubstNo(UnknownCodeErr, StorageCode));
+        exit(ResolveSetup(Argument, StorageCode, 'storageCode', StorageSetup, Connector));
+    end;
+
+    /// <summary>
+    /// Resolves a storage code to an enabled storage setup row and its connector. An unknown code
+    /// adds <c>RecordNotFound</c> and a disabled connection adds <c>PreconditionFailed</c>, both with
+    /// a next step; nothing is answered yet.
+    /// </summary>
+    /// <param name="Argument">The message argument that collects the problems.</param>
+    /// <param name="StorageCode">The storage code to resolve.</param>
+    /// <param name="ParameterName">The request parameter the code came from.</param>
+    /// <param name="StorageSetup">Out: the resolved setup row.</param>
+    /// <param name="Connector">Out: the resolved connector implementation.</param>
+    /// <returns>True when a usable storage connection was resolved.</returns>
+    procedure ResolveSetup(var Argument: Record "Message Argument ori"; StorageCode: Text; ParameterName: Text; var StorageSetup: Record "Storage Setup ori"; var Connector: Interface "Storage Connector ori"): Boolean
+    begin
+        if (StrLen(StorageCode) > MaxStrLen(StorageSetup."Code")) or (not StorageSetup.Get(CopyStr(StorageCode, 1, MaxStrLen(StorageSetup."Code")))) then begin
+            Argument.AddError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(UnknownCodeErr, StorageCode), ParameterName, StorageCode, '', UnknownCodeNextStepLbl);
             exit(false);
         end;
         if not StorageSetup.Enabled then begin
-            Argument.RespondWithError(StrSubstNo(DisabledCodeErr, StorageCode));
+            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(DisabledCodeErr, StorageCode), ParameterName, StorageCode, EnabledExpectedLbl, DisabledCodeNextStepLbl);
             exit(false);
         end;
         Connector := StorageSetup."Storage Type";
@@ -109,25 +114,6 @@ codeunit 10035662 "Storage Request Mgt ori"
         exit(Token.AsValue().AsText());
     end;
 
-    /// <summary>
-    /// Reads a required string parameter. On failure it writes an error response onto the
-    /// argument and returns false.
-    /// </summary>
-    /// <param name="Argument">The Bifrost argument (receives the error response on failure).</param>
-    /// <param name="RequestJson">The request JSON.</param>
-    /// <param name="PropertyName">The required property name.</param>
-    /// <param name="Value">Out: the parameter value.</param>
-    /// <returns>True when the parameter was present and non-empty.</returns>
-    procedure RequireParam(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; PropertyName: Text; var Value: Text): Boolean
-    begin
-        Value := GetText(RequestJson, PropertyName);
-        if Value = '' then begin
-            Argument.RespondWithError(StrSubstNo(MissingParamErr, PropertyName));
-            exit(false);
-        end;
-        exit(true);
-    end;
-
     /// <summary>Lists files or directories under a path and responds with an entries array.</summary>
     /// <param name="Argument">The Bifrost argument that receives the response.</param>
     /// <param name="StorageSetup">The resolved storage setup row.</param>
@@ -140,10 +126,8 @@ codeunit 10035662 "Storage Request Mgt ori"
         DataObject: JsonObject;
         EntriesArray: JsonArray;
     begin
-        if not CheckPath(Argument, Path) then
-            exit;
         if not TryList(StorageSetup, Connector, Path, EntryType, TempFileAccountContent) then begin
-            Argument.RespondWithError(GetLastErrorText());
+            Argument.RespondWithLastError();
             exit;
         end;
         if TempFileAccountContent.FindSet() then
@@ -167,10 +151,8 @@ codeunit 10035662 "Storage Request Mgt ori"
         DataObject: JsonObject;
         ContentInStream: InStream;
     begin
-        if not CheckPath(Argument, Path) then
-            exit;
         if not TryGetFile(StorageSetup, Connector, Path, TempBlob) then begin
-            Argument.RespondWithError(GetLastErrorText());
+            Argument.RespondWithLastError();
             exit;
         end;
         TempBlob.CreateInStream(ContentInStream);
@@ -180,25 +162,18 @@ codeunit 10035662 "Storage Request Mgt ori"
         RespondSuccess(Argument, DataObject);
     end;
 
-    /// <summary>Uploads base64 content to a file path and responds with the stored size.</summary>
+    /// <summary>Uploads decoded content to a file path and responds with the stored size.</summary>
     /// <param name="Argument">The Bifrost argument that receives the response.</param>
     /// <param name="StorageSetup">The resolved storage setup row.</param>
     /// <param name="Connector">The resolved connector implementation.</param>
     /// <param name="Path">The destination file path.</param>
-    /// <param name="ContentBase64">The base64-encoded content to store.</param>
-    procedure ExecuteCreateFile(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; ContentBase64: Text)
+    /// <param name="TempBlob">The content to store, decoded by the request reader.</param>
+    procedure ExecuteCreateFile(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; var TempBlob: Codeunit "Temp Blob")
     var
-        TempBlob: Codeunit "Temp Blob";
-        Base64Convert: Codeunit "Base64 Convert";
         DataObject: JsonObject;
-        ContentOutStream: OutStream;
     begin
-        if not CheckPath(Argument, Path) then
-            exit;
-        TempBlob.CreateOutStream(ContentOutStream);
-        Base64Convert.FromBase64(ContentBase64, ContentOutStream);
         if not TryCreateFile(StorageSetup, Connector, Path, TempBlob) then begin
-            Argument.RespondWithError(GetLastErrorText());
+            Argument.RespondWithLastError();
             exit;
         end;
         DataObject.Add('path', Path);
@@ -215,16 +190,14 @@ codeunit 10035662 "Storage Request Mgt ori"
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
     begin
-        if not CheckPath(Argument, Path) then
-            exit;
-        if not TryAssertCanDeleteStorageFile(AttachmentMgt, StorageSetup."Code", Path) then begin
-            Argument.RespondWithError(GetLastErrorText());
+        if AttachmentMgt.IsStorageFileLinked(StorageSetup."Code", Path) then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(LinkedFileDeleteErr, Path), 'path', Path, UnlinkedExpectedLbl, LinkedDeleteNextStepLbl);
             exit;
         end;
         if TryDeleteFile(StorageSetup, Connector, Path) then
             RespondPath(Argument, Path)
         else
-            Argument.RespondWithError(GetLastErrorText());
+            Argument.RespondWithLastError();
     end;
 
     /// <summary>Creates a directory and responds with the created path.</summary>
@@ -234,12 +207,10 @@ codeunit 10035662 "Storage Request Mgt ori"
     /// <param name="Path">The directory path to create.</param>
     procedure ExecuteCreateDirectory(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text)
     begin
-        if not CheckPath(Argument, Path) then
-            exit;
         if TryCreateDirectory(StorageSetup, Connector, Path) then
             RespondPath(Argument, Path)
         else
-            Argument.RespondWithError(GetLastErrorText());
+            Argument.RespondWithLastError();
     end;
 
     /// <summary>Deletes a directory and responds with the deleted path.</summary>
@@ -251,16 +222,14 @@ codeunit 10035662 "Storage Request Mgt ori"
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
     begin
-        if not CheckPath(Argument, Path) then
-            exit;
-        if not TryAssertCanDeleteStorageDirectory(AttachmentMgt, StorageSetup."Code", Path) then begin
-            Argument.RespondWithError(GetLastErrorText());
+        if AttachmentMgt.IsStorageDirectoryLinked(StorageSetup."Code", Path) then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(LinkedDirectoryDeleteErr, Path), 'path', Path, UnlinkedExpectedLbl, LinkedDeleteNextStepLbl);
             exit;
         end;
         if TryDeleteDirectory(StorageSetup, Connector, Path) then
             RespondPath(Argument, Path)
         else
-            Argument.RespondWithError(GetLastErrorText());
+            Argument.RespondWithLastError();
     end;
 
     /// <summary>Copies a file and responds with the source and target paths.</summary>
@@ -271,14 +240,10 @@ codeunit 10035662 "Storage Request Mgt ori"
     /// <param name="TargetPath">The target path.</param>
     procedure ExecuteCopyFile(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; SourcePath: Text; TargetPath: Text)
     begin
-        if not CheckPath(Argument, SourcePath) then
-            exit;
-        if not CheckPath(Argument, TargetPath) then
-            exit;
         if TryCopyFile(StorageSetup, Connector, SourcePath, TargetPath) then
             RespondTransfer(Argument, SourcePath, TargetPath)
         else
-            Argument.RespondWithError(GetLastErrorText());
+            Argument.RespondWithLastError();
     end;
 
     /// <summary>Moves a file and responds with the source and target paths.</summary>
@@ -290,17 +255,14 @@ codeunit 10035662 "Storage Request Mgt ori"
     procedure ExecuteMoveFile(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; SourcePath: Text; TargetPath: Text)
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
+        BlockReason: Text;
     begin
-        if not CheckPath(Argument, SourcePath) then
-            exit;
-        if not CheckPath(Argument, TargetPath) then
-            exit;
-        if not TryAssertCanMoveStorageFile(AttachmentMgt, StorageSetup."Code", SourcePath) then begin
-            Argument.RespondWithError(GetLastErrorText());
+        if not AttachmentMgt.CanUpdateLinksOf(StorageSetup."Code", SourcePath, BlockReason) then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::PermissionDenied, BlockReason, 'sourcePath', SourcePath, '', '');
             exit;
         end;
         if not TryMoveFile(StorageSetup, Connector, SourcePath, TargetPath) then begin
-            Argument.RespondWithError(GetLastErrorText());
+            Argument.RespondWithLastError();
             exit;
         end;
         AttachmentMgt.UpdateMovedStorageFile(StorageSetup."Code", SourcePath, TargetPath);
@@ -349,10 +311,8 @@ codeunit 10035662 "Storage Request Mgt ori"
         DataObject: JsonObject;
         Exists: Boolean;
     begin
-        if not CheckPath(Argument, Path) then
-            exit;
         if not TryExists(StorageSetup, Connector, EntryType, Path, Exists) then begin
-            Argument.RespondWithError(GetLastErrorText());
+            Argument.RespondWithLastError();
             exit;
         end;
         DataObject.Add('path', Path);
@@ -407,25 +367,6 @@ codeunit 10035662 "Storage Request Mgt ori"
     begin
         Connector.CreateFile(StorageSetup, Path, TempBlob);
     end;
-
-    [TryFunction]
-    local procedure TryAssertCanDeleteStorageFile(var AttachmentMgt: Codeunit "Storage Attachment Mgt ori"; StorageCode: Code[20]; Path: Text)
-    begin
-        AttachmentMgt.AssertCanDeleteStorageFile(StorageCode, Path);
-    end;
-
-    [TryFunction]
-    local procedure TryAssertCanDeleteStorageDirectory(var AttachmentMgt: Codeunit "Storage Attachment Mgt ori"; StorageCode: Code[20]; DirectoryPath: Text)
-    begin
-        AttachmentMgt.AssertCanDeleteStorageDirectory(StorageCode, DirectoryPath);
-    end;
-
-    [TryFunction]
-    local procedure TryAssertCanMoveStorageFile(var AttachmentMgt: Codeunit "Storage Attachment Mgt ori"; StorageCode: Code[20]; SourcePath: Text)
-    begin
-        AttachmentMgt.AssertCanMoveStorageFile(StorageCode, SourcePath);
-    end;
-
 
     [TryFunction]
     local procedure TryDeleteFile(StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text)
