@@ -93,6 +93,7 @@ codeunit 10035671 "Storage File Help ori"
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "path": "notes/hello.txt" }');
         HelpBuilder.SetResponseNote('the deleted `path`');
         HelpBuilder.AddError('File not found', 'Verify the file exists with Storage.File.Exists.');
+        HelpBuilder.AddError('File is linked to a Business Central attachment and cannot be deleted directly from storage', 'Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.');
         HelpBuilder.SetSideEffects('Deletes a file from external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.SetRelated('- **Check existence first:** `Storage.File.Exists`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());

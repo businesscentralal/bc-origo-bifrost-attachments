@@ -68,6 +68,7 @@ codeunit 10035672 "Storage Dir Help ori"
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "path": "invoices/2026" }');
         HelpBuilder.SetResponseNote('the deleted `path`');
         HelpBuilder.AddError('Directory not found', 'Verify the directory exists with Storage.Directory.Exists.');
+        HelpBuilder.AddError('Directory contains one or more files linked to Business Central attachments and cannot be deleted directly from storage', 'Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.');
         HelpBuilder.SetSideEffects('Deletes a directory from external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.SetRelated('- **Check existence first:** `Storage.Directory.Exists`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
