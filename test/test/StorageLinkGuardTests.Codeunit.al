@@ -1,5 +1,6 @@
 namespace Origo.Bifrost.Attachments.Test;
 
+using Microsoft.Sales.Customer;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 
