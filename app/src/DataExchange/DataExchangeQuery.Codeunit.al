@@ -357,7 +357,7 @@ codeunit 70013520 "Data Exchange Query ori"
                 Clear(Row);
                 Row.Add('columnNo', FieldMapping."Column No.");
                 Row.Add('fieldId', FieldMapping."Field ID");
-                Row.Add('fieldName', FieldName(TableId, FieldMapping."Field ID"));
+                Row.Add('fieldName', TableFieldName(TableId, FieldMapping."Field ID"));
                 Row.Add('optional', FieldMapping.Optional);
                 Row.Add('multiplier', FieldMapping.Multiplier);
                 Row.Add('overwriteValue', FieldMapping."Overwrite Value");
@@ -521,32 +521,57 @@ codeunit 70013520 "Data Exchange Query ori"
     local procedure TryReadBoolean(RequestJson: JsonObject; PropertyName: Text; DefaultValue: Boolean; var Value: Boolean): Boolean
     var
         Token: JsonToken;
+        Written: Text;
     begin
         Value := DefaultValue;
         if not RequestJson.Get(PropertyName, Token) then
             exit(true);
         if not Token.IsValue() or Token.AsValue().IsNull() then
             exit(true);
-        if not Token.AsValue().IsBoolean() then
-            exit(false);
-        Value := Token.AsValue().AsBoolean();
-        exit(true);
+        Token.WriteTo(Written);
+        if Written = 'true' then begin
+            Value := true;
+            exit(true);
+        end;
+        if Written = 'false' then begin
+            Value := false;
+            exit(true);
+        end;
+        exit(false);
     end;
 
     local procedure TryReadRequiredInteger(RequestJson: JsonObject; PropertyName: Text; var Value: Integer): Boolean
     var
         Token: JsonToken;
+        Written: Text;
     begin
         IntegerMissing := false;
         if not RequestJson.Get(PropertyName, Token) or (not Token.IsValue()) or Token.AsValue().IsNull() then begin
             IntegerMissing := true;
             exit(false);
         end;
-        if not Token.AsValue().IsInteger() then
+        Token.WriteTo(Written);
+        if not IsIntegerText(Written) then
             exit(false);
-        Value := Token.AsValue().AsInteger();
-        if Value = 0 then
+        exit(Evaluate(Value, Written, 9));
+    end;
+
+    local procedure IsIntegerText(Written: Text): Boolean
+    var
+        Index: Integer;
+        Digit: Text;
+    begin
+        if Written = '' then
             exit(false);
+        if Written.StartsWith('-') then
+            Written := CopyStr(Written, 2);
+        if Written = '' then
+            exit(false);
+        for Index := 1 to StrLen(Written) do begin
+            Digit := CopyStr(Written, Index, 1);
+            if (Digit < '0') or (Digit > '9') then
+                exit(false);
+        end;
         exit(true);
     end;
 
@@ -697,15 +722,15 @@ codeunit 70013520 "Data Exchange Query ori"
         exit('');
     end;
 
-    local procedure FieldName(TableId: Integer; FieldId: Integer): Text
+    local procedure TableFieldName(TableId: Integer; FieldId: Integer): Text
     var
         FieldRec: Record "Field";
     begin
         if (TableId = 0) or (FieldId = 0) then
             exit('');
-        FieldRec.SetLoadFields("Field Name");
+        FieldRec.SetLoadFields(FieldName);
         if FieldRec.Get(TableId, FieldId) then
-            exit(FieldRec."Field Name");
+            exit(FieldRec.FieldName);
         exit('');
     end;
 }
