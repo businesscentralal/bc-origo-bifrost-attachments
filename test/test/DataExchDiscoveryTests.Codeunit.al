@@ -5,7 +5,7 @@ using Microsoft.Sales.Customer;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
-using System.Utilities;
+using System.Reflection;
 
 /// <summary>
 /// Phase 0 discovery tests: a seeded definition renders in order, entry fields page,
@@ -16,7 +16,6 @@ codeunit 96213 "Data Exch Discovery Tests"
 {
     Subtype = Test;
     TestPermissions = Disabled;
-    TestIsolation = Function;
 
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
