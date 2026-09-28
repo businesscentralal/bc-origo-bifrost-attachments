@@ -32,8 +32,10 @@ codeunit 10035675 "Storage Overview Help ori"
     /// <returns>The overview document as Markdown.</returns>
     procedure BuildOverview(): Text
     var
+        ModuleInfo: ModuleInfo;
         Builder: TextBuilder;
     begin
+        NavApp.GetCurrentModuleInfo(ModuleInfo);
         Builder.AppendLine('# Bifrost Storage Connector — Message Types');
         Builder.AppendLine('');
         Builder.AppendLine('This connector exposes the Business Central **External File Storage** facade as Bifrost message types, giving read/write access to cloud storage (Azure Blob, Azure File Share, SharePoint, and any other registered External File Storage connector) from Business Central and from external callers.');
@@ -44,8 +46,8 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('');
         Builder.AppendLine('## Release information');
         Builder.AppendLine('');
-        Builder.AppendLine('- **Release:** Initial release');
-        Builder.AppendLine('- **Version:** 28.0.11.0');
+        Builder.Append('- **Version:** ');
+        Builder.AppendLine(Format(ModuleInfo.AppVersion, 0, 9));
         Builder.AppendLine('- **Supported locale(s):** en-US, is-IS');
         Builder.AppendLine('- **Supported runtime:** Business Central 28 / runtime 17.0');
         Builder.AppendLine('');
