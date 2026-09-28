@@ -137,7 +137,10 @@ codeunit 96205 "Storage Upload Tests"
         BeginReq: JsonObject;
     begin
         // [SCENARIO] #16 AC01 — a fileName that contains folders is rejected and creates no session.
+        // Commit the cleanup first: the expected Error rolls the write transaction back to the
+        // last commit, which would otherwise restore a session left by an earlier test.
         Initialize();
+        Commit();
 
         BeginReq.Add('storageCode', MockCodeTok);
         BeginReq.Add('fileName', 'bifrost-test/2026-09-12/chunked.bin');
