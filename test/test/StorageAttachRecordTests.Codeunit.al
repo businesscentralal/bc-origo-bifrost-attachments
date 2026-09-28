@@ -59,6 +59,75 @@ codeunit 96206 "Storage Attach Record Tests"
     end;
 
     [Test]
+    procedure CreateForRecord_FromContentBase64_OnCustomer()
+    var
+        DocAttachment: Record "Document Attachment";
+        TempArgument: Record "Message Argument ori";
+        RequestJson: JsonObject;
+    begin
+        // [SCENARIO] #15 AC01 — contentBase64 is the canonical inline name on CreateForRecord.
+        Initialize();
+
+        RequestJson.Add('tableId', Database::Customer);
+        RequestJson.Add('no', TestCustNoTok);
+        RequestJson.Add('fileName', 'contract-b64.txt');
+        RequestJson.Add('contentBase64', ToBase64('hello world'));
+
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Creating from contentBase64 should succeed.');
+        LibraryAssert.AreEqual('contract-b64.txt', ReadDataText(TempArgument.GetResponseJson(), 'fileName'), 'The response should echo the file name.');
+
+        DocAttachment.SetRange("Table ID", Database::Customer);
+        DocAttachment.SetRange("No.", TestCustNoTok);
+        LibraryAssert.AreEqual(1, DocAttachment.Count(), 'One attachment should exist on the customer.');
+        DocAttachment.FindFirst();
+        LibraryAssert.IsTrue(DocAttachment.HasContent(), 'The attachment created from contentBase64 should carry content.');
+    end;
+
+    [Test]
+    procedure CreateForRecord_RejectsContentAndContentBase64()
+    var
+        TempArgument: Record "Message Argument ori";
+        RequestJson: JsonObject;
+    begin
+        // [SCENARIO] #15 AC03 — sending both inline names is one clear error, not a guessed source.
+        Initialize();
+
+        RequestJson.Add('tableId', Database::Customer);
+        RequestJson.Add('no', TestCustNoTok);
+        RequestJson.Add('fileName', 'both.txt');
+        RequestJson.Add('content', ToBase64('alias'));
+        RequestJson.Add('contentBase64', ToBase64('canonical'));
+
+        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateForRecord", RequestJson);
+        LibraryAssert.ExpectedError('Supply contentBase64 or content, not both');
+    end;
+
+    [Test]
+    procedure CreateForRecordHelpDocumentsContentBase64First()
+    var
+        TempArgument: Record "Message Argument ori";
+        MsgInterface: Interface "Msg Interface ori";
+        HelpText: Text;
+        Base64Pos: Integer;
+        ContentPos: Integer;
+    begin
+        // [SCENARIO] #15 — CreateForRecord help lists contentBase64 first and content as an accepted alias.
+        TempArgument.Init();
+        TempArgument."Type" := TempArgument."Type"::"Storage.Attachment.CreateForRecord";
+        TempArgument.Insert(true);
+        MsgInterface := TempArgument.GetMessageTypeInterface();
+        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
+        HelpText := TempArgument.GetResponseText();
+        Base64Pos := StrPos(HelpText, '| `contentBase64` |');
+        ContentPos := StrPos(HelpText, '| `content` |');
+        LibraryAssert.IsTrue(Base64Pos > 0, 'CreateForRecord help should document contentBase64.');
+        LibraryAssert.IsTrue(ContentPos > Base64Pos, 'content should be documented after contentBase64.');
+        LibraryAssert.IsTrue(HelpText.Contains('Accepted alias of contentBase64'), 'content should be documented as an accepted alias of contentBase64.');
+    end;
+
+    [Test]
     procedure CreateForRecord_OnFixedAsset()
     var
         DocAttachment: Record "Document Attachment";

@@ -79,9 +79,9 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('5. `Incoming.Document.Get` with that entry no as `subject` → confirms the attachment; its content is served transparently from storage.');
         Builder.AppendLine('');
         Builder.AppendLine('**Attach a file to any master record** (customer, vendor, fixed asset, G/L account, bank account, ...):');
-        Builder.AppendLine('- Inline: `Storage.Attachment.CreateForRecord` with `tableId`/`tableName` + `no`/`recordSystemId` + `content` (base64) + `fileName`.');
-        Builder.AppendLine('- From storage (born offloaded): same call but pass `storageCode` + `path` instead of `content`. The file stays in storage and is served on demand.');
-        Builder.AppendLine('- Copy from existing attachment: same call but pass `sourceTarget` + `sourceSystemId` instead of `content`. Server-side copy, nothing crosses the wire.');
+        Builder.AppendLine('- Inline: `Storage.Attachment.CreateForRecord` with `tableId`/`tableName` + `no`/`recordSystemId` + `contentBase64` (base64; `content` is an accepted alias) + `fileName`.');
+        Builder.AppendLine('- From storage (born offloaded): same call but pass `storageCode` + `path` instead of `contentBase64`. The file stays in storage and is served on demand.');
+        Builder.AppendLine('- Copy from existing attachment: same call but pass `sourceTarget` + `sourceSystemId` instead of `contentBase64`. Server-side copy, nothing crosses the wire.');
         Builder.AppendLine('- Each storage path can only be linked to one attachment; use a separate upload per attachment.');
         Builder.AppendLine('');
         Builder.AppendLine('**Offload an existing BC attachment** then bring it back: `Storage.Attachment.Offload` → `Storage.Attachment.Restore`. Works for both `DocumentAttachment` and `IncomingDocument` targets.');

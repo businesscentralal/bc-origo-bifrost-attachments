@@ -44,7 +44,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         CompositeKeyErr: Label 'Table %1 has a composite primary key, so it cannot be addressed with ''no''. Use ''recordSystemId'' instead.', Comment = '%1 = table id', Locked = true;
         NonCodeKeyErr: Label 'The primary key of table %1 is not a code or text field, so it cannot be addressed with ''no''. Use ''recordSystemId'' instead.', Comment = '%1 = table id', Locked = true;
         RecordNoTooLongErr: Label 'The record identifier ''%1'' is longer than the 20 characters a document attachment can hold.', Comment = '%1 = record identifier', Locked = true;
-        ContentSourceErr: Label 'Supply exactly one content source: ''content'', ''storageCode'' with ''path'', or ''sourceTarget'' with ''sourceSystemId''.', Locked = true;
+        ContentSourceErr: Label 'Supply exactly one content source: ''contentBase64'' (or the alias ''content''), ''storageCode'' with ''path'', or ''sourceTarget'' with ''sourceSystemId''.', Locked = true;
+        BothInlineContentErr: Label 'Supply contentBase64 or content, not both.', Locked = true;
         NoAttachmentKeyErr: Label 'Business Central does not know which field identifies a record in table %1, so an attachment cannot be keyed to it. Subscribe to Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey for that table.', Comment = '%1 = table id', Locked = true;
         PathAlreadyLinkedErr: Label 'The storage path ''%1'' on connection ''%2'' is already linked to another attachment. Each storage file can only back one attachment.', Comment = '%1 = storage path, %2 = storage code', Locked = true;
 
@@ -485,13 +486,20 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         SourceLineNo: Integer;
         ContentOutStream: OutStream;
         ContentBase64: Text;
+        ContentAlias: Text;
         SourceSystemIdText: Text;
     begin
         Clear(TempBlob);
         FromStorage := false;
         SourceFileName := '';
 
-        ContentBase64 := RequestMgt.GetText(RequestJson, 'content');
+        // contentBase64 is canonical; content remains an accepted alias. Both names in one request is an error.
+        ContentBase64 := RequestMgt.GetText(RequestJson, 'contentBase64');
+        ContentAlias := RequestMgt.GetText(RequestJson, 'content');
+        if (ContentBase64 <> '') and (ContentAlias <> '') then
+            Error(BothInlineContentErr);
+        if ContentBase64 = '' then
+            ContentBase64 := ContentAlias;
         StorageCode := CopyStr(RequestMgt.GetText(RequestJson, 'storageCode'), 1, MaxStrLen(StorageCode));
         StoragePath := RequestMgt.GetText(RequestJson, 'path');
         SourceSystemIdText := RequestMgt.GetText(RequestJson, 'sourceSystemId');
