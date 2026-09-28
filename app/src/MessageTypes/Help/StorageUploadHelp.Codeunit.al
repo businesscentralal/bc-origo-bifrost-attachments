@@ -41,8 +41,8 @@ codeunit 10035674 "Storage Upload Help ori"
         HelpBuilder.Init('Storage.Upload.Begin', 'Opens a chunked upload session for delivering a large file as a sequence of small chunks.', 'CreateFile');
         HelpBuilder.SetDirection('Inbound (write)');
         HelpBuilder.AddParam('storageCode', false, 'string', 'The storage connection the file is written to on Storage.Upload.Commit. Omit to create a buffer-only session that can only be committed with Storage.Upload.CommitToRecord (attaches directly to a record without external storage).');
-        HelpBuilder.AddParam('fileName', true, 'string', 'File name of the upload, including extension. Used as the leaf of the default path.');
-        HelpBuilder.AddParam('path', false, 'string', 'Full destination path including the file name, relative to the connection base path. Overrides folderPath. Omit both to use the default `bifrost-uploads/{fileName}`.');
+        HelpBuilder.AddParam('fileName', true, 'string', 'Leaf file name, including extension. Must not contain a slash or backslash; use path or folderPath for the folder. When both are omitted the file is stored under the default root `bifrost-uploads/`.');
+        HelpBuilder.AddParam('path', false, 'string', 'Full destination path including the file name, relative to the connection base path. Overrides folderPath. Omit both to use the default root `bifrost-uploads/` plus the file name (`bifrost-uploads/{fileName}`).');
         HelpBuilder.AddParam('folderPath', false, 'string', 'Destination folder (forward-slash separated); the file name is appended automatically. Ignored when path is supplied.');
         HelpBuilder.AddParam('declaredSize', false, 'integer', 'Expected total size in bytes. When supplied it is verified against the assembled size on commit; a mismatch fails the commit. Recommended for integrity.');
         HelpBuilder.SetRequestExample('{ "storageCode": "BLOBTEST", "fileName": "invoice.pdf", "folderPath": "invoices/2026", "declaredSize": 212413 }');
@@ -51,6 +51,7 @@ codeunit 10035674 "Storage Upload Help ori"
         HelpBuilder.AddResponseField('path', 'string', 'The destination path the committed file will be written to.');
         HelpBuilder.AddResponseField('chunkSizeHint', 'integer', 'Recommended maximum RAW bytes per chunk (currently 49152). Read at most this many bytes per chunk, base64-encode that slice on its own, and send it with Append.');
         HelpBuilder.AddError('No storage connection is configured for storageCode', 'Resolve a valid, enabled code via Storage.Account.List.');
+        HelpBuilder.AddError('fileName must be a file name without folders', 'Use path or folderPath for the destination folder. The default root is `bifrost-uploads/`.');
         HelpBuilder.SetNotes('Use this when a file is too large to pass to Storage.File.Create in one call. Split the file into chunks of at most `chunkSizeHint` RAW bytes; base64-encode each chunk INDEPENDENTLY (do not base64 the whole file and then slice the text — the boundaries would not decode). Send chunks with sequence numbers 1, 2, 3, ..., then commit. A session is private to the user that created it and is pruned automatically if never committed.');
         HelpBuilder.AddNextStep('To send the file contents', 'Storage.Upload.Append', 'pass the returned `uploadId`, `sequence` starting at 1, and one base64 chunk');
         HelpBuilder.AddNextStep('To write the file to storage', 'Storage.Upload.Commit', 'pass the `uploadId` — requires a storageCode on the session');

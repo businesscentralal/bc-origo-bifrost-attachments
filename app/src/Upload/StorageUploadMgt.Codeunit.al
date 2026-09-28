@@ -35,6 +35,7 @@ codeunit 10035665 "Storage Upload Mgt ori"
         SizeMismatchErr: Label 'The received size (%1 bytes) does not match the declared size (%2 bytes).', Comment = '%1 = received bytes, %2 = declared bytes', Locked = true;
         NoStorageCodeErr: Label 'This upload session has no storage connection. Use Storage.Upload.CommitToRecord to attach it to a record, or begin a new session with a storageCode.', Locked = true;
         UnknownTargetErr: Label 'Unknown target ''%1''. Use ''DocumentAttachment'' or ''IncomingDocument''.', Comment = '%1 = target', Locked = true;
+        FileNameHasFolderErr: Label 'fileName must be a file name without folders; use path or folderPath for the destination folder.', Locked = true;
 
     /// <summary>Opens a chunked upload session and returns its <c>uploadId</c>.</summary>
     /// <param name="RequestJson">Request carrying <c>storageCode</c>, <c>fileName</c> and optional <c>path</c>/<c>folderPath</c>/<c>declaredSize</c>.</param>
@@ -52,6 +53,8 @@ codeunit 10035665 "Storage Upload Mgt ori"
         if StorageCode <> '' then
             GetConnector(StorageCode, StorageSetup, Connector);
         FileName := RequireText(RequestJson, 'fileName');
+        if (StrPos(FileName, '/') > 0) or (StrPos(FileName, '\') > 0) then
+            Error(FileNameHasFolderErr);
 
         UploadId := CreateGuid();
         Session.Init();

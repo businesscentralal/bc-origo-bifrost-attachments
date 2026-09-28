@@ -130,6 +130,60 @@ codeunit 96205 "Storage Upload Tests"
     end;
 
     [Test]
+    procedure Begin_FileNameWithFolder_ReturnsErrorAndCreatesNoSession()
+    var
+        Session: Record "Storage Upload Session ori";
+        TempArgument: Record "Message Argument ori";
+        BeginReq: JsonObject;
+    begin
+        // [SCENARIO] #16 AC01 — a fileName that contains folders is rejected and creates no session.
+        Initialize();
+
+        BeginReq.Add('storageCode', MockCodeTok);
+        BeginReq.Add('fileName', 'bifrost-test/2026-09-12/chunked.bin');
+        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        LibraryAssert.ExpectedError('fileName must be a file name without folders');
+
+        Clear(BeginReq);
+        BeginReq.Add('storageCode', MockCodeTok);
+        BeginReq.Add('fileName', 'bifrost-test\chunked.bin');
+        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        LibraryAssert.ExpectedError('fileName must be a file name without folders');
+
+        Session.Reset();
+        LibraryAssert.AreEqual(0, Session.Count(), 'A rejected fileName must not create an upload session.');
+    end;
+
+    [Test]
+    procedure Begin_LeafFileNameWithFolderPath_UsesFolderPath()
+    var
+        UploadId: Text;
+        Path: Text;
+    begin
+        // [SCENARIO] #16 AC02 — a leaf fileName plus folderPath stores the file at folderPath/fileName.
+        Initialize();
+        BeginUpload('chunked.bin', 'invoices/2026', UploadId, Path);
+        LibraryAssert.AreEqual('invoices/2026/chunked.bin', Path, 'path should be folderPath/fileName.');
+        LibraryAssert.AreNotEqual('', UploadId, 'Begin should return an uploadId.');
+    end;
+
+    [Test]
+    procedure UploadBeginHelpStatesDefaultRoot()
+    var
+        BeginHelp: Text;
+        Overview: Text;
+        LeafFileNameErr: Label 'fileName must be a file name without folders', Locked = true;
+        DefaultRootTok: Label 'bifrost-uploads/', Locked = true;
+    begin
+        // [SCENARIO] #16 — Upload.Begin help and the overview state the default root and the leaf-name rule.
+        BeginHelp := MessageHelp(Enum::"Message Type ori"::"Storage.Upload.Begin");
+        Overview := MessageHelp(Enum::"Message Type ori"::"Help.Storage.Get");
+        LibraryAssert.IsTrue(BeginHelp.Contains(DefaultRootTok), 'Upload.Begin help should state the default root bifrost-uploads/.');
+        LibraryAssert.IsTrue(BeginHelp.Contains(LeafFileNameErr), 'Upload.Begin help should document the leaf fileName error.');
+        LibraryAssert.IsTrue(Overview.Contains(DefaultRootTok), 'The overview should state the default root bifrost-uploads/.');
+    end;
+
+    [Test]
     procedure Abort_OpenSession_RemovesSessionAndChunks()
     var
         TempArgument: Record "Message Argument ori";
@@ -528,6 +582,19 @@ codeunit 96205 "Storage Upload Tests"
         LibraryAssert.AreNotEqual('', HelpText, StrSubstNo(NoHelpErr, MessageType));
         LibraryAssert.IsTrue(HelpText.StartsWith('#'), StrSubstNo(NotMarkdownErr, MessageType));
         LibraryAssert.IsTrue(HelpText.Contains(TypeName), StrSubstNo(NotSelfIdentifyingErr, MessageType));
+    end;
+
+    local procedure MessageHelp(MessageType: Enum "Message Type ori"): Text
+    var
+        TempArgument: Record "Message Argument ori";
+        MsgInterface: Interface "Msg Interface ori";
+    begin
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        MsgInterface := TempArgument.GetMessageTypeInterface();
+        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
+        exit(TempArgument.GetResponseText());
     end;
 
     local procedure Initialize()
