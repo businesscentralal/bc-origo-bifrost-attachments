@@ -122,7 +122,10 @@ codeunit 96204 "Storage Connector Tests"
         InstalledApp.SetRange(Name, AppNameTok);
         LibraryAssert.IsTrue(InstalledApp.FindFirst(), 'Bifrost Attachments must be installed for this test to run.');
         NavApp.GetModuleInfo(InstalledApp."App ID", ModuleInfo);
-        VersionText := Format(ModuleInfo.AppVersion, 0, 9);
+        VersionText := Format(ModuleInfo.AppVersion.Major, 0, 9) + '.' +
+            Format(ModuleInfo.AppVersion.Minor, 0, 9) + '.' +
+            Format(ModuleInfo.AppVersion.Build, 0, 9) + '.' +
+            Format(ModuleInfo.AppVersion.Revision, 0, 9);
 
         Initialize();
         ExecuteType(TempArgument, TempArgument."Type"::"Help.Storage.Get");

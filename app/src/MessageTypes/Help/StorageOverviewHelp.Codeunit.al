@@ -47,7 +47,13 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('## Release information');
         Builder.AppendLine('');
         Builder.Append('- **Version:** ');
-        Builder.AppendLine(Format(ModuleInfo.AppVersion, 0, 9));
+        Builder.Append(Format(ModuleInfo.AppVersion.Major, 0, 9));
+        Builder.Append('.');
+        Builder.Append(Format(ModuleInfo.AppVersion.Minor, 0, 9));
+        Builder.Append('.');
+        Builder.Append(Format(ModuleInfo.AppVersion.Build, 0, 9));
+        Builder.Append('.');
+        Builder.AppendLine(Format(ModuleInfo.AppVersion.Revision, 0, 9));
         Builder.AppendLine('- **Supported locale(s):** en-US, is-IS');
         Builder.AppendLine('- **Supported runtime:** Business Central 28 / runtime 17.0');
         Builder.AppendLine('');
