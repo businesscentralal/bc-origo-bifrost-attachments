@@ -693,24 +693,24 @@ codeunit 70013520 "Data Exchange Query ori"
     var
         AllObj: Record AllObjWithCaption;
     begin
-        exit(ObjectName(AllObj."Object Type"::Codeunit, CodeunitId));
+        exit(LookupObjectName(AllObj."Object Type"::Codeunit, CodeunitId));
     end;
 
     local procedure XmlPortName(XmlPortId: Integer): Text
     var
         AllObj: Record AllObjWithCaption;
     begin
-        exit(ObjectName(AllObj."Object Type"::XMLport, XmlPortId));
+        exit(LookupObjectName(AllObj."Object Type"::XMLport, XmlPortId));
     end;
 
     local procedure TableName(TableId: Integer): Text
     var
         AllObj: Record AllObjWithCaption;
     begin
-        exit(ObjectName(AllObj."Object Type"::Table, TableId));
+        exit(LookupObjectName(AllObj."Object Type"::Table, TableId));
     end;
 
-    local procedure ObjectName(ObjectType: Option; ObjectId: Integer): Text
+    local procedure LookupObjectName(ObjectType: Option; ObjectId: Integer): Text
     var
         AllObj: Record AllObjWithCaption;
     begin
