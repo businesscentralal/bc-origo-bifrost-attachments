@@ -6,13 +6,17 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-- **Data Exchange Phase 0** adds read-only discovery message types `Help.DataExchange.Get`, `DataExchange.Definition.List`, `DataExchange.Definition.Get`, `DataExchange.Type.List`, `DataExchange.Entry.List` and `DataExchange.Entry.Get`. Generic `Data.Records.Set` on `Data Exch.` is blocked and the error names `DataExchange.Import.Run / Storage.Upload.CommitToDataExchange`.
-
 - **Foundation CI probe** (`.AL-Go/settings.json`): the `bc-origo-bifrost-core` `appDependencyProbingPaths` entry uses `"version": "latest"` (`release_status` stays `latestBuild`), so the app builds against the latest Foundation CI build with a Foundation floor of `28.0.0.0`.
 - **Install permission-probe diagnostics** in `Storage Takeover ori`: the `WriteDeniedErr` and `ReadDeniedErr` texts are now `Locked` labels. The text is identical, and they only feed telemetry, so there's no translation (xlf) change.
 - **Bifrost Foundation dependency** (`app/app.json` and `test/app.json`) is deliberately lowered from `28.0.0.100` to `28.0.0.0`, so it's no longer a pinned build. This was approved by Gunnar. The app uses `App Registry ori` and `Registered App ori` (core `5819941`), so the real symbol minimum is Foundation build 48 or later (about `28.0.0.48`), not `28.0.0.0`.
 - **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
 - **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
+
+### Added (2026-09-28) - Data Exchange Phase 0 (#22)
+
+- Read-only discovery message types `Help.DataExchange.Get`, `DataExchange.Definition.List`, `DataExchange.Definition.Get`, `DataExchange.Type.List`, `DataExchange.Entry.List` and `DataExchange.Entry.Get`. Generic `Data.Records.Set` on `Data Exch.` is blocked and the error names `DataExchange.Import.Run / Storage.Upload.CommitToDataExchange`.
+- New permission set `BIFROST DataExch ori` (70013548), also granted through `Storage Full ori`.
+- `app.json` `idRanges` gains 70013500–70013549.
 
 ### Changed (2026-09-24) - Storage.Upload help after Abort (#17)
 
