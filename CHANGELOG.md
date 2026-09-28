@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-09-28) - Storage help uses the MCP tool names from Foundation (#12)
+
+- Storage help no longer names `call_message_type` or `get_message_type_help`. It uses `invoke_message_type` and `describe_message_type`, matching Bifrost Foundation after core#64.
+
 - **Foundation CI probe** (`.AL-Go/settings.json`): the `bc-origo-bifrost-core` `appDependencyProbingPaths` entry uses `"version": "latest"` (`release_status` stays `latestBuild`), so the app builds against the latest Foundation CI build with a Foundation floor of `28.0.0.0`.
 - **Install permission-probe diagnostics** in `Storage Takeover ori`: the `WriteDeniedErr` and `ReadDeniedErr` texts are now `Locked` labels. The text is identical, and they only feed telemetry, so there's no translation (xlf) change.
 - **Bifrost Foundation dependency** (`app/app.json` and `test/app.json`) is deliberately lowered from `28.0.0.100` to `28.0.0.0`, so it's no longer a pinned build. This was approved by Gunnar. The app uses `App Registry ori` and `Registered App ori` (core `5819941`), so the real symbol minimum is Foundation build 48 or later (about `28.0.0.48`), not `28.0.0.0`.

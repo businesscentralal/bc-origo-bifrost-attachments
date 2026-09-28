@@ -38,7 +38,7 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('');
         Builder.AppendLine('This connector exposes the Business Central **External File Storage** facade as Bifrost message types, giving read/write access to cloud storage (Azure Blob, Azure File Share, SharePoint, and any other registered External File Storage connector) from Business Central and from external callers.');
         Builder.AppendLine('');
-        Builder.AppendLine('Message types are **outbound** (read/query) or **inbound** (write); all exchange JSON (`Content-Type: text/json`). Invoke any of them with the `call_message_type` tool, passing `type` = the message type name and `data` = its parameters.');
+        Builder.AppendLine('Message types are **outbound** (read/query) or **inbound** (write); all exchange JSON (`Content-Type: text/json`). Invoke any of them with the `invoke_message_type` tool, passing `type` = the message type name and `data` = its parameters.');
         Builder.AppendLine('');
         Builder.AppendLine('**Direction** describes Business Central data. File and Directory Create, Delete, Copy and Move change the external storage even though they are Outbound; treat them as writes when asking for confirmation.');
         Builder.AppendLine('');
@@ -54,7 +54,7 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('Recommended order for an automated caller:');
         Builder.AppendLine('');
         Builder.AppendLine('1. Call `Storage.Account.List` to discover the `storageCode` values you may use. Do not guess a code.');
-        Builder.AppendLine('2. Request the per-type help (`get_message_type_help`) for the operation you intend to call to confirm its exact parameters and its **Next steps**.');
+        Builder.AppendLine('2. Request the per-type help (`describe_message_type`) for the operation you intend to call to confirm its exact parameters and its **Next steps**.');
         Builder.AppendLine('3. Call the operation with a chosen `storageCode` and the operation''s parameters.');
         Builder.AppendLine('4. Inspect `status` first: on `Error`, read `error` and correct the request before retrying; on `Success`, read `data`.');
         Builder.AppendLine('');
