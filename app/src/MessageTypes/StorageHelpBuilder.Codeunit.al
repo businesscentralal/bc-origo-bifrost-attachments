@@ -205,7 +205,7 @@ codeunit 10035643 "Storage Help Builder ori"
         Builder.AppendLine('## Metadata');
         Builder.AppendLine('- **Direction:** ' + DirectionVar);
         Builder.AppendLine('- **Content-Type:** text/json');
-        Builder.AppendLine('- **Invoke:** call the `call_message_type` tool with `type` = `' + TitleVar + '` and the parameters below as the `data` object.');
+        Builder.AppendLine('- **Invoke:** call the `invoke_message_type` tool with `type` = `' + TitleVar + '` and the parameters below as the `data` object.');
         if FacadeOpVar <> '' then
             Builder.AppendLine('- **External File Storage operation:** `' + FacadeOpVar + '`');
         if RoutingVar <> '' then

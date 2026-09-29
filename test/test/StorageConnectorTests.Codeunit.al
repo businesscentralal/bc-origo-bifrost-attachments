@@ -103,6 +103,37 @@ codeunit 96204 "Storage Connector Tests"
     end;
 
     [Test]
+    procedure StorageHelpUsesCurrentMcpToolNames()
+    var
+        MessageType: Enum "Message Type ori";
+        Ordinals: List of [Integer];
+        Ordinal: Integer;
+        Checked: Integer;
+        HelpText: Text;
+        Overview: Text;
+        StaleToolErr: Label 'Help for %1 still names a retired MCP tool (%2).', Comment = '%1 = message type, %2 = tool name';
+    begin
+        // [SCENARIO] #12 AC01 — rendered help for every storage message type names neither retired MCP tool.
+        // core#64 renamed call_message_type to invoke_message_type and get_message_type_help to describe_message_type.
+        Ordinals := MessageType.Ordinals();
+        foreach Ordinal in Ordinals do
+            if (Ordinal >= 10035635) and (Ordinal <= 10035657) then begin
+                MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
+                HelpText := MessageHelp(MessageType);
+                LibraryAssert.IsFalse(HelpText.Contains('call_message_type'), StrSubstNo(StaleToolErr, MessageType, 'call_message_type'));
+                LibraryAssert.IsFalse(HelpText.Contains('get_message_type_help'), StrSubstNo(StaleToolErr, MessageType, 'get_message_type_help'));
+                Checked += 1;
+            end;
+        LibraryAssert.AreEqual(23, Checked, 'Every storage message type (10035635-10035657) should be checked.');
+
+        // [THEN] AC02 — Getting started names the current tools and the message types, not the retired ones.
+        Overview := MessageHelp(Enum::"Message Type ori"::"Help.Storage.Get");
+        LibraryAssert.IsTrue(Overview.Contains('invoke_message_type'), 'The overview should name invoke_message_type.');
+        LibraryAssert.IsTrue(Overview.Contains('describe_message_type'), 'Getting started should name describe_message_type.');
+        LibraryAssert.IsTrue(Overview.Contains('Storage.Account.List'), 'Getting started should still name Storage.Account.List.');
+    end;
+
+    [Test]
     procedure HelpStorageGetReportsInstalledAppVersion()
     var
         TempArgument: Record "Message Argument ori";
@@ -771,18 +802,24 @@ codeunit 96204 "Storage Connector Tests"
 
     local procedure AssertHelpContains(MessageType: Enum "Message Type ori"; Expected: Text)
     var
-        TempArgument: Record "Message Argument ori";
-        MsgInterface: Interface "Msg Interface ori";
         HelpText: Text;
         MissingHelpTextErr: Label 'Help for %1 should contain "%2".', Comment = '%1 = message type, %2 = expected text';
+    begin
+        HelpText := MessageHelp(MessageType);
+        LibraryAssert.IsTrue(HelpText.Contains(Expected), StrSubstNo(MissingHelpTextErr, MessageType, Expected));
+    end;
+
+    local procedure MessageHelp(MessageType: Enum "Message Type ori"): Text
+    var
+        TempArgument: Record "Message Argument ori";
+        MsgInterface: Interface "Msg Interface ori";
     begin
         TempArgument.Init();
         TempArgument."Type" := MessageType;
         TempArgument.Insert(true);
         MsgInterface := TempArgument.GetMessageTypeInterface();
         MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-        HelpText := TempArgument.GetResponseText();
-        LibraryAssert.IsTrue(HelpText.Contains(Expected), StrSubstNo(MissingHelpTextErr, MessageType, Expected));
+        exit(TempArgument.GetResponseText());
     end;
 
     local procedure AssertHelpHasSideEffects(MessageType: Enum "Message Type ori")
