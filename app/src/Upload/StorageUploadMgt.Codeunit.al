@@ -43,6 +43,8 @@ codeunit 10035665 "Storage Upload Mgt ori"
         NoStorageCodeNextStepLbl: Label 'Use Storage.Upload.CommitToRecord to attach the file to a record, or begin a new session with a storageCode.', Comment = 'is-IS=Notaðu Storage.Upload.CommitToRecord til að hengja skrána við færslu eða byrjaðu nýja lotu með storageCode.';
         UnknownTargetErr: Label 'Parameter "target" has value "%1", which is not an attachment target.', Comment = '%1 = received value, is-IS=Færibreytan "target" hefur gildið "%1", sem er ekki viðhengjamarkmið.';
         TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Locked = true;
+        FileNameHasFolderErr: Label 'fileName must be a file name without folders; use path or folderPath for the destination folder.', Locked = true;
+        FileNameExpectedLbl: Label 'a file name with no slash or backslash', Locked = true;
 
     /// <summary>Opens a chunked upload session and returns its <c>uploadId</c>.</summary>
     /// <param name="Argument">The message argument carrying <c>fileName</c> and optional <c>storageCode</c>/<c>path</c>/<c>folderPath</c>/<c>declaredSize</c>; receives the error response.</param>
@@ -71,6 +73,8 @@ codeunit 10035665 "Storage Upload Mgt ori"
         Reader.ReadPath(Argument, RequestJson, 'path', false, Path);
         Reader.ReadPath(Argument, RequestJson, 'folderPath', false, FolderPath);
         Reader.ReadNonNegativeInteger(Argument, RequestJson, 'declaredSize', false, DeclaredSize);
+        if (StrPos(FileName, '/') > 0) or (StrPos(FileName, '\') > 0) then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, FileNameHasFolderErr, 'fileName', FileName, FileNameExpectedLbl, FileNameHasFolderErr);
         if Reader.RespondIfErrors(Argument) then
             exit(false);
 

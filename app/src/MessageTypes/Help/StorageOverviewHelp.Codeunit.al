@@ -180,6 +180,8 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('');
         Builder.AppendLine('Deliver a large file as a sequence of small chunks when it is too big for a single `Storage.File.Create` call or a single inline `content` parameter. Begin a session, append the file in pieces (up to 240 MiB of raw bytes each, base64-encoded), then commit — either to external storage or directly to a record attachment.');
         Builder.AppendLine('');
+        Builder.AppendLine('`fileName` on `Storage.Upload.Begin` is a leaf name with no folders. Omit `path` and `folderPath` and the file is stored under the default root `bifrost-uploads/`.');
+        Builder.AppendLine('');
         Builder.AppendLine('| Message type | Required parameters | Description |');
         Builder.AppendLine('|---|---|---|');
         Builder.AppendLine('| `Storage.Upload.Begin` | `fileName` (+ optional `storageCode`) | Opens a session and returns an `uploadId`. Omit `storageCode` for a buffer-only session. |');
