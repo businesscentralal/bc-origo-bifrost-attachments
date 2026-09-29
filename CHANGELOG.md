@@ -12,6 +12,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
 - **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
 
+### Changed (2026-09-28) - CreateForRecord accepts contentBase64 (#15)
+
+- `Storage.Attachment.CreateForRecord` accepts `contentBase64` as the canonical inline content name and keeps `content` as an alias. Sending both names returns "Supply contentBase64 or content, not both."
+
 ### Security (2026-09-29) - generic writes blocked on Storage Attachment Link ori; orphan links purged (#9)
 
 - Generic `Data.Records.Set` writes to `Storage Attachment Link ori` are refused. The error names `Storage.Attachment.Offload / Storage.Attachment.CreateLinked / Storage.Attachment.CreateForRecord`. Reads stay allowed.
