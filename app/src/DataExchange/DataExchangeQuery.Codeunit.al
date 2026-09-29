@@ -54,12 +54,12 @@ codeunit 70013520 "Data Exchange Query ori"
         TypeText := GetText(RequestJson, 'type');
         DirectionText := GetText(RequestJson, 'direction');
         if not DirectionIsValid(DirectionText) then begin
-            Argument.RespondWithError(UnknownDirectionErr);
+            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameter, UnknownDirectionErr, 'direction', DirectionText, 'Import or Export', '');
             exit;
         end;
         if TypeText <> '' then begin
             if not TryTypeFromName(TypeText, DefType) then begin
-                Argument.RespondWithError(StrSubstNo(UnknownTypeErr, TypeText));
+                Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(UnknownTypeErr, TypeText), 'type', TypeText, '', '');
                 exit;
             end;
             FilterByType := true;
@@ -91,14 +91,14 @@ codeunit 70013520 "Data Exchange Query ori"
         RequestJson := Argument.GetRequestJson();
         CodeText := GetText(RequestJson, 'code');
         if CodeText = '' then begin
-            Argument.RespondWithError(StrSubstNo(MissingParamErr, 'code'));
+            Argument.RespondWithError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(MissingParamErr, 'code'), 'code', '', '', '');
             exit;
         end;
 
         DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExchDef.SetLoadFields(Code, Name, Type, "File Type", "Reading/Writing Codeunit", "Reading/Writing XMLport", "Ext. Data Handling Codeunit");
         if not DataExchDef.Get(CopyStr(CodeText, 1, MaxStrLen(DataExchDef.Code))) then begin
-            Argument.RespondWithError(StrSubstNo(UnknownDefErr, CodeText));
+            Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(UnknownDefErr, CodeText), 'code', CodeText, '', '');
             exit;
         end;
 
@@ -148,11 +148,11 @@ codeunit 70013520 "Data Exchange Query ori"
         RequestJson := Argument.GetRequestJson();
         Argument.EvaluateSkipTake(RequestJson, Skip, Take);
         if not TryReadFilterDateTime(RequestJson, 'dateFrom', DateFrom, HasFrom) then begin
-            Argument.RespondWithError(StrSubstNo(DateParamErr, 'dateFrom'));
+            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(DateParamErr, 'dateFrom'), 'dateFrom', '', 'YYYY-MM-DD', '');
             exit;
         end;
         if not TryReadFilterDateTime(RequestJson, 'dateTo', DateTo, HasTo) then begin
-            Argument.RespondWithError(StrSubstNo(DateParamErr, 'dateTo'));
+            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(DateParamErr, 'dateTo'), 'dateTo', '', 'YYYY-MM-DD', '');
             exit;
         end;
 
@@ -208,25 +208,25 @@ codeunit 70013520 "Data Exchange Query ori"
         RequestJson := Argument.GetRequestJson();
         Argument.EvaluateSkipTake(RequestJson, Skip, Take);
         if not TryReadBoolean(RequestJson, 'includeFields', true, IncludeFields) then begin
-            Argument.RespondWithError(StrSubstNo(BooleanParamErr, 'includeFields'));
+            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(BooleanParamErr, 'includeFields'), 'includeFields', '', 'true or false', '');
             exit;
         end;
         if not TryReadBoolean(RequestJson, 'includeFileContent', false, IncludeFileContent) then begin
-            Argument.RespondWithError(StrSubstNo(BooleanParamErr, 'includeFileContent'));
+            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(BooleanParamErr, 'includeFileContent'), 'includeFileContent', '', 'true or false', '');
             exit;
         end;
         if not TryReadRequiredInteger(RequestJson, 'entryNo', EntryNo) then begin
             if IntegerMissing then
-                Argument.RespondWithError(StrSubstNo(MissingParamErr, 'entryNo'))
+                Argument.RespondWithError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(MissingParamErr, 'entryNo'), 'entryNo', '', '', '')
             else
-                Argument.RespondWithError(StrSubstNo(IntegerParamErr, 'entryNo'));
+                Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(IntegerParamErr, 'entryNo'), 'entryNo', '', 'integer', '');
             exit;
         end;
 
         DataExch.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExch.SetLoadFields("Entry No.", "File Name", "File Content", "Data Exch. Def Code", "Data Exch. Line Def Code", "Incoming Entry No.", "Related Record", SystemCreatedAt);
         if not DataExch.Get(EntryNo) then begin
-            Argument.RespondWithError(StrSubstNo(UnknownEntryErr, EntryNo));
+            Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(UnknownEntryErr, EntryNo), 'entryNo', Format(EntryNo, 0, 9), '', '');
             exit;
         end;
 
@@ -234,7 +234,7 @@ codeunit 70013520 "Data Exchange Query ori"
         if IncludeFileContent then begin
             ContentLength := FileContentLength(DataExch);
             if ContentLength > MaxInlineBytes() then begin
-                Argument.RespondWithError(StrSubstNo(FileTooLargeErr, ContentLength));
+                Argument.RespondWithError("Bifrost Error Code ori"::LimitExceeded, StrSubstNo(FileTooLargeErr, ContentLength), 'includeFileContent', Format(ContentLength, 0, 9), 'at most 1 MB', '');
                 exit;
             end;
             DataObject.Add('contentLength', ContentLength);

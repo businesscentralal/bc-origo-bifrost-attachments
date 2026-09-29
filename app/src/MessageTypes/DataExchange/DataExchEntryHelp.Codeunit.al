@@ -40,7 +40,7 @@ codeunit 70013529 "DataExch Entry Help ori"
         HelpBuilder.AddResponseField('take', 'integer', 'Applied take.');
         HelpBuilder.AddResponseField('entries', 'array', '`entryNo`, `dataExchDefCode`, `dataExchLineDefCode`, `fileName`, `createdAt`, `hasFileContent`, `fieldCount`, `incomingEntryNo` (0 when not linked), `relatedRecord`.');
         HelpBuilder.SetNotes(PaginationNotes());
-        HelpBuilder.AddError('Negative skip or take', 'Pass skip >= 0 and take >= 0.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameter, 'Negative skip or take', 'Pass skip >= 0 and take >= 0.');
         HelpBuilder.AddNextStep('To read fields for one entry', 'DataExchange.Entry.Get', 'pass the returned `entryNo`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
@@ -63,8 +63,8 @@ codeunit 70013529 "DataExch Entry Help ori"
         HelpBuilder.AddResponseField('contentBase64', 'string', 'Present only when `includeFileContent` is true and the file is at most 1 MB.');
         HelpBuilder.AddResponseField('contentLength', 'integer', 'Byte length, present together with `contentBase64`.');
         HelpBuilder.SetNotes(PaginationNotes());
-        HelpBuilder.AddError('Missing or unknown entryNo', 'Pass an `entryNo` from `DataExchange.Entry.List`.');
-        HelpBuilder.AddError('File content above 1 MB', 'Omit `includeFileContent`. The call returns an error and no content.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'Missing or unknown entryNo', 'Pass an `entryNo` from `DataExchange.Entry.List`.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::LimitExceeded, 'File content above 1 MB', 'Omit `includeFileContent`. The call returns an error and no content.');
         HelpBuilder.AddNextStep('To choose another entry', 'DataExchange.Entry.List', '');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
