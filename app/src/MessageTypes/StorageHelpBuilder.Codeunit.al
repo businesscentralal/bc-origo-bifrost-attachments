@@ -22,6 +22,7 @@ codeunit 10035643 "Storage Help Builder ori"
         NotesVar: Text;
         RelatedVar: Text;
         SideEffectsVar: Text;
+        ClosingVar: Text;
         ParamsBuilder: TextBuilder;
         ErrorsBuilder: TextBuilder;
         ResponseFieldsBuilder: TextBuilder;
@@ -47,6 +48,7 @@ codeunit 10035643 "Storage Help Builder ori"
         NotesVar := '';
         RelatedVar := '';
         SideEffectsVar := '';
+        ClosingVar := 'Connector overview and the list of configured connections: request help for `Help.Storage.Get` and call `Storage.Account.List`.';
         ParamCount := 0;
         ErrorCount := 0;
         ResponseFieldCount := 0;
@@ -174,6 +176,15 @@ codeunit 10035643 "Storage Help Builder ori"
         NotesVar := Notes;
     end;
 
+    /// <summary>
+    /// Replaces the closing line under the horizontal rule. The default points at the storage overview.
+    /// </summary>
+    /// <param name="Closing">The closing Markdown line.</param>
+    procedure SetClosing(Closing: Text)
+    begin
+        ClosingVar := Closing;
+    end;
+
     /// <summary>Sets the Related Operations section (Markdown).</summary>
     procedure SetRelated(Related: Text)
     begin
@@ -268,7 +279,8 @@ codeunit 10035643 "Storage Help Builder ori"
         end;
 
         Builder.AppendLine('---');
-        Builder.AppendLine('Connector overview and the list of configured connections: request help for `Help.Storage.Get` and call `Storage.Account.List`.');
+        if ClosingVar <> '' then
+            Builder.AppendLine(ClosingVar);
 
         exit(Builder.ToText());
     end;
