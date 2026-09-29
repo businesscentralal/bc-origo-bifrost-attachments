@@ -5,6 +5,7 @@ using Microsoft.Foundation.Attachment;
 using Microsoft.Sales.Customer;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
+using System.Apps;
 using System.Text;
 using System.Utilities;
 
@@ -130,6 +131,44 @@ codeunit 96204 "Storage Connector Tests"
         LibraryAssert.IsTrue(Overview.Contains('invoke_message_type'), 'The overview should name invoke_message_type.');
         LibraryAssert.IsTrue(Overview.Contains('describe_message_type'), 'Getting started should name describe_message_type.');
         LibraryAssert.IsTrue(Overview.Contains('Storage.Account.List'), 'Getting started should still name Storage.Account.List.');
+    end;
+
+    [Test]
+    procedure HelpStorageGetReportsInstalledAppVersion()
+    var
+        TempArgument: Record "Message Argument ori";
+        InstalledApp: Record "NAV App Installed App";
+        ModuleInfo: ModuleInfo;
+        ResponseJson: JsonObject;
+        DataObject: JsonObject;
+        Markdown: Text;
+        VersionText: Text;
+        AppNameTok: Label 'Bifrost Attachments', Locked = true;
+        VersionLineTok: Label '- **Version:** %1', Locked = true;
+    begin
+        // [SCENARIO] #13 AC01 — Help.Storage.Get prints the installed module version, not a hard-coded stamp.
+        // GetCurrentModuleInfo from this test codeunit would return the test app, so resolve Bifrost Attachments
+        // from the installed-extensions table and read that module's version.
+        InstalledApp.SetLoadFields("App ID");
+        InstalledApp.SetRange(Name, AppNameTok);
+        LibraryAssert.IsTrue(InstalledApp.FindFirst(), 'Bifrost Attachments must be installed for this test to run.');
+        NavApp.GetModuleInfo(InstalledApp."App ID", ModuleInfo);
+        VersionText := Format(ModuleInfo.AppVersion.Major, 0, 9) + '.' +
+            Format(ModuleInfo.AppVersion.Minor, 0, 9) + '.' +
+            Format(ModuleInfo.AppVersion.Build, 0, 9) + '.' +
+            Format(ModuleInfo.AppVersion.Revision, 0, 9);
+
+        Initialize();
+        ExecuteType(TempArgument, TempArgument."Type"::"Help.Storage.Get");
+
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Help.Storage.Get should succeed.');
+        DataObject := ReadData(ResponseJson);
+        Markdown := ReadObjText(DataObject, 'markdown');
+        LibraryAssert.IsTrue(
+            Markdown.Contains(StrSubstNo(VersionLineTok, VersionText)),
+            'The Version line should equal the deployed module version.');
+        LibraryAssert.IsFalse(Markdown.Contains('**Release:** Initial release'), 'The hard-coded Initial release line should be gone.');
     end;
 
     [Test]

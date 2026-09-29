@@ -12,6 +12,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
 - **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
 
+### Fixed (2026-09-28) - Help.Storage.Get reports the installed app version (#13)
+
+- `Help.Storage.Get` prints the installed module version (`NavApp.GetCurrentModuleInfo`, culture-invariant major.minor.build.revision) and drops the hard-coded `28.0.11.0` / "Initial release" line.
+
 ### Fixed (2026-09-28) - Storage help uses the MCP tool names from Foundation (#12)
 
 - Storage help no longer names `call_message_type` or `get_message_type_help`. It uses `invoke_message_type` and `describe_message_type`, matching Bifrost Foundation after core#64.
