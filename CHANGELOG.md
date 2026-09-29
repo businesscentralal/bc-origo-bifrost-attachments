@@ -16,6 +16,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - `Storage.File.Delete` and `Storage.Directory.Delete` help list the linked-attachment guard errors and the resolution: restore with `Storage.Attachment.Restore` or delete the BC attachment first, then delete the file. The overview Connector notes mention the same guard.
 
+### Fixed (2026-09-28) - Help.Storage.Get reports the installed app version (#13)
+
+- `Help.Storage.Get` prints the installed module version (`NavApp.GetCurrentModuleInfo`, culture-invariant major.minor.build.revision) and drops the hard-coded `28.0.11.0` / "Initial release" line.
+
 ### Changed (2026-09-24) - Storage.Upload help after Abort (#17)
 
 - Storage.Upload help: Abort notes now point to the Status not-found result, and the not-found error names `Storage.Upload.Begin`.
