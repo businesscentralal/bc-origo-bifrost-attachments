@@ -28,7 +28,7 @@ Ids changed by the setup-notification move (2026-09-07): codeunit 10035680
 deleted - that codeunit id is free but is not reused (permission set 10035666
 `BIFROST Attach ori` keeps its own id, object types have separate id spaces).
 Test app: codeunit 96207 `Storage Setup Page Tests`, codeunit 96208
-`Storage App Registry Tests` (96208), `Storage Takeover Tests` (96209), `Storage Takeover Probe Tests` (96210); next free test id **96211**.
+`Storage App Registry Tests` (96208), `Storage Takeover Tests` (96209), `Storage Takeover Probe Tests` (96210); on main through **96213** (`Storage DataExchange Tests`, #51); open PR #45 uses 96211–96212; open PR #52 uses 96214; next free test id **96215**.
 
 ## App Identity
 App:      Bifrost Attachments, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
