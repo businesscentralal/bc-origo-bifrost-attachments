@@ -1,11 +1,14 @@
 namespace Origo.Bifrost.Attachments;
 
+using Origo.Bifrost;
+
 /// <summary>
 /// Builds AI-optimised Markdown help documents for the storage connector message types.
 /// Uses a builder pattern: call <c>Init</c>, then <c>AddParam</c>/<c>AddError</c>/setters,
-/// then <c>Render</c> to produce the final document. Each section is designed for
-/// unambiguous machine parsing: structured parameter tables, explicit types, request and
-/// response examples, and common errors. Used by the initial-release help surface.
+/// then <c>Render</c> to produce the final document. The document carries the sections every
+/// Bifröst message type has - Overview, Request Parameters, Response Shape, Errors and Related
+/// Message Types - so an agent reads every type the same way. The shared description of the error
+/// shape is appended by Bifröst Foundation's <c>Help.Implementation.Get</c>, not here.
 /// </summary>
 codeunit 10035643 "Storage Help Builder ori"
 {
@@ -27,10 +30,15 @@ codeunit 10035643 "Storage Help Builder ori"
         ErrorsBuilder: TextBuilder;
         ResponseFieldsBuilder: TextBuilder;
         NextStepsBuilder: TextBuilder;
+        RelatedTypes: List of [Text];
+        RelatedPurposes: List of [Text];
         ParamCount: Integer;
-        ErrorCount: Integer;
         ResponseFieldCount: Integer;
         NextStepCount: Integer;
+        RoutedByStorageCode: Boolean;
+        HasPathParameter: Boolean;
+        HasRequiredParameter: Boolean;
+        HasFormattedParameter: Boolean;
 
     /// <summary>Initializes the builder for a single message type document.</summary>
     /// <param name="MessageType">The full message type name (e.g. 'Storage.File.Get').</param>
@@ -43,6 +51,7 @@ codeunit 10035643 "Storage Help Builder ori"
         DirectionVar := 'Outbound';
         FacadeOpVar := FacadeOperation;
         RoutingVar := 'The request''s `storageCode` selects a `Bifrost Storage Setup` row; the action runs against that row''s file account. Discover codes with `Storage.Account.List`.';
+        RoutedByStorageCode := true;
         RequestExampleVar := '';
         ResponseNoteVar := '';
         NotesVar := '';
@@ -50,16 +59,20 @@ codeunit 10035643 "Storage Help Builder ori"
         SideEffectsVar := '';
         ClosingVar := 'Connector overview and the list of configured connections: request help for `Help.Storage.Get` and call `Storage.Account.List`.';
         ParamCount := 0;
-        ErrorCount := 0;
         ResponseFieldCount := 0;
         NextStepCount := 0;
+        HasPathParameter := false;
+        HasRequiredParameter := false;
+        HasFormattedParameter := false;
         Clear(ParamsBuilder);
         Clear(ErrorsBuilder);
         Clear(ResponseFieldsBuilder);
         Clear(NextStepsBuilder);
+        Clear(RelatedTypes);
+        Clear(RelatedPurposes);
     end;
 
-    /// <summary>Adds one row to the Parameters table. Call once per request parameter.</summary>
+    /// <summary>Adds one row to the Request Parameters table. Call once per request parameter.</summary>
     /// <param name="ParamName">The JSON property name.</param>
     /// <param name="Required">Whether the parameter is required for a successful call.</param>
     /// <param name="DataType">The value type (string, base64 string, boolean, integer).</param>
@@ -71,6 +84,12 @@ codeunit 10035643 "Storage Help Builder ori"
             ParamsBuilder.AppendLine('| Parameter | Required | Type | Description |');
             ParamsBuilder.AppendLine('|---|---|---|---|');
         end;
+        if Required then
+            HasRequiredParameter := true;
+        if ParamName.EndsWith('ath') then
+            HasPathParameter := true;
+        if not DataType.StartsWith('string') or DataType.Contains('GUID') then
+            HasFormattedParameter := true;
         ParamsBuilder.Append('| `');
         ParamsBuilder.Append(ParamName);
         ParamsBuilder.Append('` | ');
@@ -85,50 +104,46 @@ codeunit 10035643 "Storage Help Builder ori"
         ParamsBuilder.AppendLine(' |');
     end;
 
-    /// <summary>Sets the message direction shown in the Metadata section. Defaults to <c>Outbound</c>.</summary>
+    /// <summary>Sets the message direction shown in the Overview section. Defaults to <c>Outbound</c>.</summary>
     /// <param name="Direction">The direction text, for example 'Inbound (write)'.</param>
     procedure SetDirection(Direction: Text)
     begin
         DirectionVar := Direction;
     end;
 
-    /// <summary>Sets the JSON request example shown in the Request section.</summary>
+    /// <summary>Sets the JSON request example. A backslash starts a new line.</summary>
+    /// <param name="Example">The request example.</param>
     procedure SetRequestExample(Example: Text)
     begin
-        RequestExampleVar := Example;
+        RequestExampleVar := ToLines(Example);
     end;
 
     /// <summary>Sets the one-line description of what <c>data</c> contains in a successful response.</summary>
+    /// <param name="Note">The note.</param>
     procedure SetResponseNote(Note: Text)
     begin
         ResponseNoteVar := Note;
     end;
 
-    /// <summary>Adds one row to the Common Errors table.</summary>
-    /// <param name="Condition">The error condition.</param>
+    /// <summary>Adds one row to the Errors table, specific to this message type.</summary>
+    /// <param name="ErrorCode">The <c>code</c> the caller receives.</param>
+    /// <param name="Condition">When the error occurs.</param>
     /// <param name="Resolution">What the caller should do to resolve it.</param>
-    procedure AddError(Condition: Text; Resolution: Text)
+    procedure AddError(ErrorCode: Enum "Bifrost Error Code ori"; Condition: Text; Resolution: Text)
     begin
-        ErrorCount += 1;
-        if ErrorCount = 1 then begin
-            ErrorsBuilder.AppendLine('| Error | Resolution |');
-            ErrorsBuilder.AppendLine('|---|---|');
-        end;
-        ErrorsBuilder.Append('| ');
-        ErrorsBuilder.Append(Condition);
-        ErrorsBuilder.Append(' | ');
-        ErrorsBuilder.Append(Resolution);
-        ErrorsBuilder.AppendLine(' |');
+        AppendErrorRow(ErrorCodeName(ErrorCode), Condition, Resolution);
     end;
 
     /// <summary>
-    /// Overrides the routing note shown in the Metadata section. Use it when the type is not
-    /// addressed by <c>storageCode</c> (for example a chunked-upload step keyed by <c>uploadId</c>).
+    /// Overrides the routing note shown in the Overview section. Use it when the type is not
+    /// addressed by <c>storageCode</c> (for example a chunked-upload step keyed by <c>uploadId</c>);
+    /// the standard storage-code errors are then left out of the Errors table.
     /// </summary>
     /// <param name="Routing">The routing/identification note (Markdown).</param>
     procedure SetRouting(Routing: Text)
     begin
         RoutingVar := Routing;
+        RoutedByStorageCode := false;
     end;
 
     /// <summary>
@@ -150,7 +165,8 @@ codeunit 10035643 "Storage Help Builder ori"
 
     /// <summary>
     /// Adds an explicit next-step pointer so an agent can auto-navigate from this message type to
-    /// the one it should call next, carrying the right value forward.
+    /// the one it should call next, carrying the right value forward. The type is also listed under
+    /// Related Message Types.
     /// </summary>
     /// <param name="WhenText">The condition or goal, e.g. 'To send the file contents'.</param>
     /// <param name="MessageType">The message type to call next, e.g. 'Storage.Upload.Append'.</param>
@@ -162,18 +178,32 @@ codeunit 10035643 "Storage Help Builder ori"
         if CarryText <> '' then
             NextStepsBuilder.Append(' (' + CarryText + ')');
         NextStepsBuilder.AppendLine('.');
+        AddRelated(MessageType, WhenText);
     end;
 
-    /// <summary>Sets the Side effects section (Markdown). Use for Outbound ops that still mutate external storage.</summary>
+    /// <summary>Adds a message type to the Related Message Types section. A type is listed once.</summary>
+    /// <param name="MessageType">The related message type, e.g. 'Storage.File.Get'.</param>
+    /// <param name="Purpose">Why a caller would use it, e.g. 'Download a file'.</param>
+    procedure AddRelated(MessageType: Text; Purpose: Text)
+    begin
+        if RelatedTypes.Contains(MessageType) then
+            exit;
+        RelatedTypes.Add(MessageType);
+        RelatedPurposes.Add(Purpose);
+    end;
+
+    /// <summary>Sets the Side effects section (Markdown). A backslash starts a new line.</summary>
+    /// <param name="SideEffects">The side effects.</param>
     procedure SetSideEffects(SideEffects: Text)
     begin
-        SideEffectsVar := SideEffects;
+        SideEffectsVar := ToLines(SideEffects);
     end;
 
-    /// <summary>Sets the Notes section content (Markdown).</summary>
+    /// <summary>Sets the Notes section content (Markdown). A backslash starts a new line.</summary>
+    /// <param name="Notes">The notes.</param>
     procedure SetNotes(Notes: Text)
     begin
-        NotesVar := Notes;
+        NotesVar := ToLines(Notes);
     end;
 
     /// <summary>
@@ -196,13 +226,14 @@ codeunit 10035643 "Storage Help Builder ori"
     procedure Render(): Text
     var
         Builder: TextBuilder;
+        Index: Integer;
     begin
-        Builder.AppendLine('# ' + TitleVar);
-        Builder.AppendLine('');
-        Builder.AppendLine(DescriptionVar);
+        Builder.AppendLine('# ' + TitleVar + ' - Help');
         Builder.AppendLine('');
 
-        Builder.AppendLine('## Metadata');
+        Builder.AppendLine('## Overview');
+        Builder.AppendLine(DescriptionVar);
+        Builder.AppendLine('');
         Builder.AppendLine('- **Direction:** ' + DirectionVar);
         Builder.AppendLine('- **Content-Type:** text/json');
         Builder.AppendLine('- **Invoke:** call the `invoke_message_type` tool with `type` = `' + TitleVar + '` and the parameters below as the `data` object.');
@@ -212,21 +243,20 @@ codeunit 10035643 "Storage Help Builder ori"
             Builder.AppendLine('- **Routing:** ' + RoutingVar);
         Builder.AppendLine('');
 
-        if ParamCount > 0 then begin
-            Builder.AppendLine('## Parameters');
-            Builder.AppendLine('');
-            Builder.Append(ParamsBuilder.ToText());
-            Builder.AppendLine('');
-        end;
-
-        Builder.AppendLine('## Request example');
+        Builder.AppendLine('## Request Parameters');
+        Builder.AppendLine('');
+        if ParamCount > 0 then
+            Builder.Append(ParamsBuilder.ToText())
+        else
+            Builder.AppendLine('This message type takes no parameters.');
+        Builder.AppendLine('');
+        Builder.AppendLine('### Example');
         Builder.AppendLine('```json');
         Builder.AppendLine(RequestExampleVar);
         Builder.AppendLine('```');
         Builder.AppendLine('');
 
-        Builder.AppendLine('## Response');
-        Builder.AppendLine('Success:');
+        Builder.AppendLine('## Response Shape');
         Builder.AppendLine('```json');
         Builder.AppendLine('{ "status": "Success", "data": ... }');
         Builder.AppendLine('```');
@@ -239,19 +269,18 @@ codeunit 10035643 "Storage Help Builder ori"
             if ResponseNoteVar <> '' then
                 Builder.AppendLine('`data` contains ' + ResponseNoteVar + '.');
         Builder.AppendLine('');
-        Builder.AppendLine('Failure (the framework wraps any raised error):');
-        Builder.AppendLine('```json');
-        Builder.AppendLine('{ "status": "Error", "error": "<message>" }');
-        Builder.AppendLine('```');
         Builder.AppendLine('Always branch on `status` before reading `data`.');
         Builder.AppendLine('');
 
-        if ErrorCount > 0 then begin
-            Builder.AppendLine('## Common errors');
-            Builder.AppendLine('');
-            Builder.Append(ErrorsBuilder.ToText());
-            Builder.AppendLine('');
-        end;
+        Builder.AppendLine('## Errors');
+        Builder.AppendLine('');
+        Builder.AppendLine('An error answers `status` = `Error` with a stable `code`, the `error` text and, where they apply, `parameter`, `received`, `expected` and `nextStep`. Every problem in the request values is reported at once.');
+        Builder.AppendLine('');
+        Builder.AppendLine('| Code | When | What to do |');
+        Builder.AppendLine('|---|---|---|');
+        Builder.Append(StandardErrorRows());
+        Builder.Append(ErrorsBuilder.ToText());
+        Builder.AppendLine('');
 
         if SideEffectsVar <> '' then begin
             Builder.AppendLine('## Side effects');
@@ -267,10 +296,17 @@ codeunit 10035643 "Storage Help Builder ori"
         end;
 
         if NextStepCount > 0 then begin
-            Builder.AppendLine('## Next steps');
+            Builder.AppendLine('## Next Steps');
             Builder.Append(NextStepsBuilder.ToText());
             Builder.AppendLine('');
         end;
+
+        Builder.AppendLine('## Related Message Types');
+        for Index := 1 to RelatedTypes.Count() do
+            Builder.AppendLine('- `' + RelatedTypes.Get(Index) + '` - ' + RelatedPurposes.Get(Index));
+        if not RelatedTypes.Contains('Help.Storage.Get') then
+            Builder.AppendLine('- `Help.Storage.Get` - Overview of the storage connector and all its message types');
+        Builder.AppendLine('');
 
         if RelatedVar <> '' then begin
             Builder.AppendLine('## Related operations');
@@ -283,5 +319,46 @@ codeunit 10035643 "Storage Help Builder ori"
             Builder.AppendLine(ClosingVar);
 
         exit(Builder.ToText());
+    end;
+
+    local procedure StandardErrorRows() Rows: Text
+    var
+        RowsBuilder: TextBuilder;
+    begin
+        if HasRequiredParameter then
+            AppendRow(RowsBuilder, 'MissingParameter', 'A required parameter is missing; `parameter` names it.', 'Send the parameter.');
+        if HasFormattedParameter then
+            AppendRow(RowsBuilder, 'InvalidParameterFormat', 'A value has the wrong form, for example text where an integer or a GUID is expected.', 'Send the value in the form `expected` shows.');
+        if HasPathParameter then
+            AppendRow(RowsBuilder, 'InvalidParameter', 'A path has a `.` or `..` segment.', 'Send a path inside the connection, relative to its base path.');
+        if RoutedByStorageCode then begin
+            AppendRow(RowsBuilder, 'RecordNotFound', 'No storage connection is configured for `storageCode`.', 'Call `Storage.Account.List` and use one of its codes.');
+            AppendRow(RowsBuilder, 'PreconditionFailed', 'The storage connection is disabled.', 'Enable it on the Bifröst Attachments setup page, or use another `storageCode`.');
+            AppendRow(RowsBuilder, 'BusinessCentralError', 'The storage service or its connector refused the call; `error` is the connector''s own text.', 'Check the path and the connection, then retry.');
+        end;
+        Rows := RowsBuilder.ToText();
+    end;
+
+    local procedure AppendErrorRow(CodeName: Text; Condition: Text; Resolution: Text)
+    begin
+        AppendRow(ErrorsBuilder, CodeName, Condition, Resolution);
+    end;
+
+    local procedure AppendRow(var RowsBuilder: TextBuilder; CodeName: Text; Condition: Text; Resolution: Text)
+    begin
+        RowsBuilder.AppendLine('| `' + CodeName + '` | ' + Condition + ' | ' + Resolution + ' |');
+    end;
+
+    local procedure ErrorCodeName(ErrorCode: Enum "Bifrost Error Code ori"): Text
+    begin
+        exit(Enum::"Bifrost Error Code ori".Names().Get(Enum::"Bifrost Error Code ori".Ordinals().IndexOf(ErrorCode.AsInteger())));
+    end;
+
+    local procedure ToLines(Value: Text): Text
+    var
+        LineFeed: Text[1];
+    begin
+        LineFeed[1] := 10;
+        exit(Value.Replace('\', LineFeed));
     end;
 }

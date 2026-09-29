@@ -26,8 +26,8 @@ codeunit 96209 "Storage Takeover Tests"
     [Test]
     procedure TakeOverAccessControl_LegacyRow_InsertsMatchingBifrostRole()
     var
-        AccessControl: RecordRef;
         Takeover: Codeunit "Storage Takeover ori";
+        AccessControl: RecordRef;
         UserId: Guid;
         Company: Text[30];
         Granted: Integer;
@@ -65,8 +65,8 @@ codeunit 96209 "Storage Takeover Tests"
     [Test]
     procedure TakeOverAccessControl_ExistingBifrostRow_DoesNotDuplicate()
     var
-        AccessControl: RecordRef;
         Takeover: Codeunit "Storage Takeover ori";
+        AccessControl: RecordRef;
         UserId: Guid;
         Company: Text[30];
         FirstRun: Integer;

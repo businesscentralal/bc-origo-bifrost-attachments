@@ -1,0 +1,292 @@
+namespace Origo.Bifrost.Attachments;
+
+using Origo.Bifrost;
+using System.Text;
+using System.Utilities;
+
+/// <summary>
+/// Reads the request values of the storage message types and collects every problem on the
+/// message argument instead of stopping at the first one. The answers use the same codes and
+/// wording as the typed readers of Bifröst Foundation: a missing required value is
+/// <c>MissingParameter</c>, a value of the wrong form is <c>InvalidParameterFormat</c> (with
+/// <c>received</c> and <c>expected</c>), a value of the right form that is not allowed is
+/// <c>InvalidParameter</c>, and content over the size a single call can carry is
+/// <c>LimitExceeded</c>. A present but invalid value never falls back to a default.
+/// Read every value of a request first, then call <see cref="RespondIfErrors"/> once.
+/// </summary>
+codeunit 10035682 "Storage Request Reader ori"
+{
+    Access = Internal;
+
+    var
+        RequiredParameterMissingErr: Label 'Required parameter "%1" is missing.', Comment = '%1 = parameter name, is-IS=Nauðsynleg færibreyta "%1" vantar.';
+        InvalidParameterFormatErr: Label 'Parameter "%1" has value "%2", which is not a valid %3. Expected %4.', Comment = '%1 = parameter, %2 = received value, %3 = type, %4 = expected format, is-IS=Færibreyta "%1" hefur gildið "%2", sem er ekki í gildu sniði (%3). Væntanlegt er %4.';
+        NotAValueErr: Label 'Parameter "%1" must be a single value, not a JSON object or array.', Comment = '%1 = parameter, is-IS=Færibreyta "%1" verður að vera eitt gildi, ekki JSON-hlutur eða fylki.';
+        UnsafePathErr: Label 'Parameter "%1" has the path "%2", which is not allowed: no path segment may be "." or "..".', Comment = '%1 = parameter, %2 = the rejected path, is-IS=Færibreyta "%1" hefur slóðina "%2", sem er ekki leyfð: enginn hluti slóðarinnar má vera "." eða "..".';
+        NegativeValueErr: Label 'Parameter "%1" has value %2, but it cannot be negative.', Comment = '%1 = parameter, %2 = received value, is-IS=Færibreyta "%1" hefur gildið %2 en það má ekki vera neikvætt.';
+        NotBase64Err: Label 'Parameter "%1" is not valid base64 content.', Comment = '%1 = parameter, is-IS=Færibreyta "%1" er ekki gilt base64-innihald.';
+        ContentTooLargeErr: Label 'Parameter "%1" carries about %2 bytes, more than the %3 bytes one call can carry.', Comment = '%1 = parameter, %2 = approximate size in bytes, %3 = maximum size in bytes, is-IS=Færibreyta "%1" ber um %2 bæti, meira en þau %3 bæti sem eitt kall getur borið.';
+        ProblemsInRequestErr: Label '%1 problems in the request. Nothing was changed.', Comment = '%1 = number of problems, is-IS=%1 vandamál í beiðninni. Engu var breytt.';
+        TextExpectedLbl: Label 'a JSON string', Comment = 'is-IS=JSON-strengur';
+        IntegerTypeLbl: Label 'integer', Comment = 'is-IS=heiltala';
+        IntegerExpectedLbl: Label 'an integer, e.g. 3', Comment = 'is-IS=heiltala, t.d. 3';
+        NonNegativeExpectedLbl: Label '0 or more', Comment = 'is-IS=0 eða meira';
+        GuidTypeLbl: Label 'GUID', Comment = 'is-IS=GUID';
+        GuidExpectedLbl: Label 'a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301', Comment = 'is-IS=GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301';
+        PathExpectedLbl: Label 'a path relative to the connection base path, without "." or ".." segments', Comment = 'is-IS=slóð miðað við grunnslóð tengingarinnar, án "." eða ".." hluta';
+        Base64ExpectedLbl: Label 'base64 content', Comment = 'is-IS=base64-innihald';
+        ContentLimitExpectedLbl: Label 'at most %1 bytes (240 MiB)', Comment = '%1 = maximum size in bytes, is-IS=í mesta lagi %1 bæti (240 MiB)';
+        SendIntegerFormatLbl: Label 'Send the value as an integer.', Comment = 'is-IS=Sendu gildið sem heiltölu.';
+        SendGuidFormatLbl: Label 'Send the value as a GUID, as returned by the call that created it.', Comment = 'is-IS=Sendu gildið sem GUID, eins og kallið sem stofnaði það skilaði því.';
+        SendRelativePathLbl: Label 'Send a path inside the connection, e.g. invoices/2026/INV-001.pdf.', Comment = 'is-IS=Sendu slóð innan tengingarinnar, t.d. invoices/2026/INV-001.pdf.';
+        SendBase64Lbl: Label 'Encode the file bytes as standard base64 and send them again.', Comment = 'is-IS=Kóðaðu bæti skrárinnar sem venjulegt base64 og sendu þau aftur.';
+        SplitIntoChunksLbl: Label 'Send the file in parts with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.', Comment = 'is-IS=Sendu skrána í hlutum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.';
+
+    /// <summary>
+    /// Reads a text value. Absent, JSON null and an empty string count as not given: a required
+    /// value then adds <c>MissingParameter</c>; an optional one leaves <paramref name="Value"/> empty.
+    /// </summary>
+    /// <param name="Argument">The message argument that collects the problems.</param>
+    /// <param name="RequestJson">The request JSON.</param>
+    /// <param name="ParameterName">The JSON property to read.</param>
+    /// <param name="Required">Whether the value must be given.</param>
+    /// <param name="Value">Out: the value, or an empty text.</param>
+    /// <returns>True when the value is usable (given, or optional and not given).</returns>
+    procedure ReadText(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Text): Boolean
+    var
+        Token: JsonToken;
+    begin
+        Value := '';
+        if not RequestJson.Get(ParameterName, Token) then
+            exit(AcceptAbsent(Argument, ParameterName, Required));
+        if not Token.IsValue() then begin
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(NotAValueErr, ParameterName), ParameterName, TokenText(Token), TextExpectedLbl, '');
+            exit(false);
+        end;
+        if Token.AsValue().IsNull() then
+            exit(AcceptAbsent(Argument, ParameterName, Required));
+        Value := Token.AsValue().AsText();
+        if Value = '' then
+            exit(AcceptAbsent(Argument, ParameterName, Required));
+        exit(true);
+    end;
+
+    /// <summary>
+    /// Reads a storage path and rejects a path with a <c>.</c> or <c>..</c> segment with
+    /// <c>InvalidParameter</c>, because the connection's base path is its only confinement boundary.
+    /// </summary>
+    /// <param name="Argument">The message argument that collects the problems.</param>
+    /// <param name="RequestJson">The request JSON.</param>
+    /// <param name="ParameterName">The JSON property to read.</param>
+    /// <param name="Required">Whether the value must be given.</param>
+    /// <param name="Path">Out: the path, or an empty text.</param>
+    /// <returns>True when the path is usable.</returns>
+    procedure ReadPath(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Path: Text): Boolean
+    begin
+        if not ReadText(Argument, RequestJson, ParameterName, Required, Path) then
+            exit(false);
+        exit(CheckPath(Argument, ParameterName, Path));
+    end;
+
+    /// <summary>Adds <c>InvalidParameter</c> for a path that walks out of the connection's base path.</summary>
+    /// <param name="Argument">The message argument that collects the problems.</param>
+    /// <param name="ParameterName">The request parameter the path came from.</param>
+    /// <param name="Path">The path to check.</param>
+    /// <returns>True when the path carries no relative segment.</returns>
+    procedure CheckPath(var Argument: Record "Message Argument ori"; ParameterName: Text; Path: Text): Boolean
+    var
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+    begin
+        if RequestMgt.PathIsSafe(Path) then
+            exit(true);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(UnsafePathErr, ParameterName, Path), ParameterName, Path, PathExpectedLbl, SendRelativePathLbl);
+        exit(false);
+    end;
+
+    /// <summary>
+    /// Reads an integer: a JSON number without a fraction, or a string of digits with an optional
+    /// leading minus. When the value is not given, <paramref name="Value"/> keeps the caller's default.
+    /// </summary>
+    /// <param name="Argument">The message argument that collects the problems.</param>
+    /// <param name="RequestJson">The request JSON.</param>
+    /// <param name="ParameterName">The JSON property to read.</param>
+    /// <param name="Required">Whether the value must be given.</param>
+    /// <param name="Value">In: the default. Out: the value read.</param>
+    /// <returns>True when the value is usable.</returns>
+    procedure ReadInteger(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Integer): Boolean
+    var
+        Token: JsonToken;
+        RawText: Text;
+        Parsed: Integer;
+    begin
+        if not RequestJson.Get(ParameterName, Token) then
+            exit(AcceptAbsent(Argument, ParameterName, Required));
+        if Token.IsValue() then
+            if Token.AsValue().IsNull() then
+                exit(AcceptAbsent(Argument, ParameterName, Required));
+        RawText := TokenText(Token);
+        if RawText = '' then
+            exit(AcceptAbsent(Argument, ParameterName, Required));
+        if Token.IsValue() and IsDigitRun(RawText) then
+            if Evaluate(Parsed, RawText, 9) then begin
+                Value := Parsed;
+                exit(true);
+            end;
+        AddFormatError(Argument, ParameterName, RawText, IntegerTypeLbl, IntegerExpectedLbl, SendIntegerFormatLbl);
+        exit(false);
+    end;
+
+    /// <summary>Reads an integer that may not be negative, see <see cref="ReadInteger"/>.</summary>
+    /// <param name="Argument">The message argument that collects the problems.</param>
+    /// <param name="RequestJson">The request JSON.</param>
+    /// <param name="ParameterName">The JSON property to read.</param>
+    /// <param name="Required">Whether the value must be given.</param>
+    /// <param name="Value">In: the default. Out: the value read.</param>
+    /// <returns>True when the value is usable.</returns>
+    procedure ReadNonNegativeInteger(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Integer): Boolean
+    begin
+        if not ReadInteger(Argument, RequestJson, ParameterName, Required, Value) then
+            exit(false);
+        if Value >= 0 then
+            exit(true);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(NegativeValueErr, ParameterName, Format(Value, 0, 9)), ParameterName, Format(Value, 0, 9), NonNegativeExpectedLbl, '');
+        exit(false);
+    end;
+
+    /// <summary>Reads a GUID such as an <c>uploadId</c> or a <c>systemId</c>.</summary>
+    /// <param name="Argument">The message argument that collects the problems.</param>
+    /// <param name="RequestJson">The request JSON.</param>
+    /// <param name="ParameterName">The JSON property to read.</param>
+    /// <param name="Required">Whether the value must be given.</param>
+    /// <param name="Value">Out: the GUID, or a null GUID when not given.</param>
+    /// <returns>True when the value is usable.</returns>
+    procedure ReadGuid(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Guid): Boolean
+    var
+        RawText: Text;
+    begin
+        Clear(Value);
+        if not ReadText(Argument, RequestJson, ParameterName, Required, RawText) then
+            exit(false);
+        if RawText = '' then
+            exit(true);
+        if Evaluate(Value, RawText) then
+            exit(true);
+        AddFormatError(Argument, ParameterName, RawText, GuidTypeLbl, GuidExpectedLbl, SendGuidFormatLbl);
+        exit(false);
+    end;
+
+    /// <summary>
+    /// Reads base64 content and decodes it into <paramref name="TempBlob"/>. Content over
+    /// <see cref="MaxContentBytes"/> adds <c>LimitExceeded</c> without decoding it; content that is
+    /// not base64 adds <c>InvalidParameterFormat</c>. The content itself is never echoed back.
+    /// </summary>
+    /// <param name="Argument">The message argument that collects the problems.</param>
+    /// <param name="RequestJson">The request JSON.</param>
+    /// <param name="ParameterName">The JSON property to read.</param>
+    /// <param name="Required">Whether the content must be given.</param>
+    /// <param name="TempBlob">Out: the decoded content.</param>
+    /// <returns>True when the content is usable (decoded, or optional and not given).</returns>
+    procedure ReadBase64Content(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var TempBlob: Codeunit "Temp Blob"): Boolean
+    var
+        ContentBase64: Text;
+        ApproximateBytes: BigInteger;
+    begin
+        Clear(TempBlob);
+        if not ReadText(Argument, RequestJson, ParameterName, Required, ContentBase64) then
+            exit(false);
+        if ContentBase64 = '' then
+            exit(true);
+        ApproximateBytes := StrLen(ContentBase64);
+        ApproximateBytes := ApproximateBytes div 4 * 3;
+        if not IsWithinContentLimit(ApproximateBytes) then begin
+            Argument.AddError("Bifrost Error Code ori"::LimitExceeded,
+                StrSubstNo(ContentTooLargeErr, ParameterName, Format(ApproximateBytes, 0, 9), Format(MaxContentBytes(), 0, 9)),
+                ParameterName, Format(ApproximateBytes, 0, 9), StrSubstNo(ContentLimitExpectedLbl, Format(MaxContentBytes(), 0, 9)), SplitIntoChunksLbl);
+            exit(false);
+        end;
+        if TryDecodeBase64(ContentBase64, TempBlob) then
+            exit(true);
+        Clear(TempBlob);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(NotBase64Err, ParameterName), ParameterName, '', Base64ExpectedLbl, SendBase64Lbl);
+        exit(false);
+    end;
+
+    /// <summary>
+    /// The most content one call can carry, in bytes: 240 MiB. The content travels as base64 in
+    /// the request body, which Business Central online caps at 350 MB per OData request; 240 MiB
+    /// encodes to about 336 MB and leaves room for the rest of the request.
+    /// </summary>
+    /// <returns>251,658,240.</returns>
+    procedure MaxContentBytes(): Integer
+    begin
+        exit(251658240);
+    end;
+
+    /// <summary>Tells whether a content size fits in one call, see <see cref="MaxContentBytes"/>.</summary>
+    /// <param name="ContentBytes">The (decoded) content size in bytes.</param>
+    /// <returns>True when the size is within the limit.</returns>
+    procedure IsWithinContentLimit(ContentBytes: BigInteger): Boolean
+    begin
+        exit(ContentBytes <= MaxContentBytes());
+    end;
+
+    /// <summary>
+    /// Answers every collected problem at once when there is at least one: a single problem is
+    /// answered on its own; several are listed in <c>errors[]</c> under <c>MultipleErrors</c>.
+    /// </summary>
+    /// <param name="Argument">The message argument that collected the problems.</param>
+    /// <returns>True when an error response was written; the caller then stops.</returns>
+    procedure RespondIfErrors(var Argument: Record "Message Argument ori"): Boolean
+    begin
+        if not Argument.HasCollectedErrors() then
+            exit(false);
+        Argument.RespondWithCollectedErrors("Bifrost Error Code ori"::MultipleErrors, StrSubstNo(ProblemsInRequestErr, Argument.GetCollectedErrorsJson().Count()));
+        exit(true);
+    end;
+
+    local procedure AcceptAbsent(var Argument: Record "Message Argument ori"; ParameterName: Text; Required: Boolean): Boolean
+    begin
+        if not Required then
+            exit(true);
+        Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(RequiredParameterMissingErr, ParameterName), ParameterName, '', '', '');
+        exit(false);
+    end;
+
+    local procedure AddFormatError(var Argument: Record "Message Argument ori"; ParameterName: Text; Received: Text; TypeName: Text; Expected: Text; NextStep: Text)
+    begin
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(InvalidParameterFormatErr, ParameterName, Received, TypeName, Expected), ParameterName, Received, Expected, NextStep);
+    end;
+
+    local procedure TokenText(Token: JsonToken) Result: Text
+    begin
+        if Token.IsValue() then
+            exit(Token.AsValue().AsText());
+        Token.WriteTo(Result);
+    end;
+
+    local procedure IsDigitRun(Value: Text): Boolean
+    var
+        Index: Integer;
+        FirstDigit: Integer;
+    begin
+        FirstDigit := 1;
+        if Value.StartsWith('-') then
+            FirstDigit := 2;
+        if StrLen(Value) < FirstDigit then
+            exit(false);
+        for Index := FirstDigit to StrLen(Value) do
+            if not (Value[Index] in ['0' .. '9']) then
+                exit(false);
+        exit(true);
+    end;
+
+    [TryFunction]
+    local procedure TryDecodeBase64(ContentBase64: Text; var TempBlob: Codeunit "Temp Blob")
+    var
+        Base64Convert: Codeunit "Base64 Convert";
+        ContentOutStream: OutStream;
+    begin
+        TempBlob.CreateOutStream(ContentOutStream);
+        Base64Convert.FromBase64(ContentBase64, ContentOutStream);
+    end;
+}

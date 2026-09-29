@@ -35,7 +35,7 @@ codeunit 10035670 "Storage Account Help ori"
         HelpBuilder.SetNotes('Use a returned `code` as the `storageCode` on every other storage message type. Disabled connections are listed but rejected at call time, so prefer ones with `enabled = true`.');
         HelpBuilder.AddNextStep('Once you have a storageCode', 'Storage.File.Create', 'pass the `code` as `storageCode` (or use any other Storage.* type)');
         HelpBuilder.AddNextStep('To upload a large file', 'Storage.Upload.Begin', 'pass the `code` as `storageCode`');
-        HelpBuilder.SetRelated('- **Connector overview:** `Help.Storage.Get`');
+        HelpBuilder.AddRelated('Help.Storage.Get', 'Connector overview');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;
 }
