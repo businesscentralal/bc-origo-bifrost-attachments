@@ -12,6 +12,9 @@ Business Central release versioning (`major.minor.build.revision`).
 - **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
 - **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
 
+### Fixed (2026-09-29) - Restore main build after #45/#47 AddError conflict (#55)
+
+- `Storage.Directory.Delete` and `Storage.File.Delete` help pass an error code and a resolution to `AddError`, so those calls compile against the three-parameter form.
 ### Fixed (2026-09-29) - help names current tools and characters (#12)
 
 - `Help.DataExchange.Get` tells the caller to use `invoke_message_type`. The tool-name test now covers every Data Exchange help type, and rendered Storage and Data Exchange help must not contain a literal `\u` escape.
