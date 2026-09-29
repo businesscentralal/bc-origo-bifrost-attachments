@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of the <c>Storage.Directory.Create</c> message type. Creates a directory
 /// in the configured storage connection.
 /// </summary>
-codeunit 10035644 "Storage Dir Create Impl ori" implements "Msg Interface ori"
+codeunit 10035644 "Storage Dir Create Impl ori" implements "Msg Interface ori", "Msg Discovery ori"
 {
     Access = Internal;
 
@@ -27,6 +27,27 @@ codeunit 10035644 "Storage Dir Create Impl ori" implements "Msg Interface ori"
         exit('Creates a directory in the configured storage connection.');
     end;
 
+    /// <summary>
+    /// Search terms users say for this type, English with the Icelandic translation. Used to rank
+    /// search results; never shown to the caller.
+    /// </summary>
+    /// <returns>Comma-separated keywords in the current language.</returns>
+    procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'create a folder, new folder, make a directory, add folder in storage, create sharepoint folder, new directory in cloud storage', Comment = 'is-IS=búa til möppu, stofna möppu, ný mappa, nýja möppu, bæta við möppu í geymslu, búa til sharepoint möppu, stofna möppu í skýinu';
+    begin
+        exit(KeywordsLbl);
+    end;
+
+    /// <summary>What separates this type from its siblings when a caller is choosing one.</summary>
+    /// <returns>One sentence.</returns>
+    procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Creates one empty folder at a path in a storage connection; it writes no files.', Locked = true;
+    begin
+        exit(SelectionDescriptionLbl);
+    end;
+
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
         exit(Enum::"Msg Direction ori"::Outbound);
@@ -42,6 +63,7 @@ codeunit 10035644 "Storage Dir Create Impl ori" implements "Msg Interface ori"
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         StorageSetup: Record "Storage Setup ori";
+        Reader: Codeunit "Storage Request Reader ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
         Connector: Interface "Storage Connector ori";
         RequestJson: JsonObject;
@@ -50,9 +72,9 @@ codeunit 10035644 "Storage Dir Create Impl ori" implements "Msg Interface ori"
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
         RequestJson := Argument.GetRequestJson();
-        if not RequestMgt.ResolveSetup(Argument, RequestJson, StorageSetup, Connector) then
-            exit;
-        if not RequestMgt.RequireParam(Argument, RequestJson, 'path', Path) then
+        RequestMgt.ReadSetup(Argument, RequestJson, StorageSetup, Connector);
+        Reader.ReadPath(Argument, RequestJson, 'path', true, Path);
+        if Reader.RespondIfErrors(Argument) then
             exit;
         RequestMgt.ExecuteCreateDirectory(Argument, StorageSetup, Connector, Path);
     end;
