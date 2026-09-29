@@ -7,7 +7,7 @@ using Origo.Bifrost;
 /// of the storage connector, release baseline, and every message type it exposes.
 /// No request body is required.
 /// </summary>
-codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori"
+codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 
@@ -25,6 +25,45 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori"
     begin
         exit('Returns a Markdown overview of the storage connector and all its message types. No request body is required.');
     end;
+
+    procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'storage help, storage message types, how to use storage, storage API overview, storage documentation', Comment = 'is-IS=geymslu hjálp, geymsluboðgerðir, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl';
+    begin
+        exit(KeywordsLbl);
+    end;
+
+    procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Returns the storage connector guide and message type map; use a specific storage type to perform an operation.', Locked = true;
+    begin
+        exit(SelectionDescriptionLbl);
+    end;
+
+    procedure GetEnvelope(var Envelope: JsonObject): Boolean
+    var ContractParts: Codeunit "Storage Contract Parts ori";
+    begin Envelope := ContractParts.GetEnvelope(false); exit(true); end;
+    procedure GetTarget(var Target: JsonArray): Boolean begin exit(false); end;
+    procedure GetParameters(var Parameters: JsonArray): Boolean begin exit(false); end;
+    procedure GetResponse(var Response: JsonObject): Boolean
+    var ContractParts: Codeunit "Storage Contract Parts ori";
+    begin Response := ContractParts.GetResponse('Help.Storage.Get'); exit(true); end;
+    procedure GetErrors(var Errors: JsonArray): Boolean
+    var ContractParts: Codeunit "Storage Contract Parts ori";
+    begin Errors := ContractParts.GetErrors('Help.Storage.Get'); exit(true); end;
+    procedure GetEffect(var Effect: JsonObject): Boolean
+    var ContractParts: Codeunit "Storage Contract Parts ori";
+    begin Effect := ContractParts.GetEffect('Help.Storage.Get'); exit(true); end;
+    procedure GetMetering(var Metering: JsonObject): Boolean begin exit(false); end;
+    procedure GetRelated(var Related: JsonArray): Boolean begin exit(false); end;
+    procedure GetWorkflow(var Workflow: JsonObject): Boolean begin exit(false); end;
+    procedure GetExamples(var Examples: JsonArray): Boolean begin exit(false); end;
+    procedure GetOverview(var Overview: Text): Boolean
+    begin
+        Overview := 'Returns the Markdown overview of the storage connector and its message types.';
+        exit(true);
+    end;
+    procedure GetNotes(var Notes: Text): Boolean begin exit(false); end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin

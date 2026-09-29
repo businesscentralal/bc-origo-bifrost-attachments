@@ -8,7 +8,7 @@ using System.ExternalFileStorage;
 /// storage connections — their codes, descriptions, connectors and enabled state — so a
 /// caller can discover the <c>storageCode</c> values to use. No secrets are exposed.
 /// </summary>
-codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori", "Msg Discovery ori"
+codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 
@@ -48,6 +48,84 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
         SelectionDescriptionLbl: Label 'Lists the configured storage connections to Azure Blob Storage, Azure File Share or SharePoint so a caller can pick the storage code; it reads no files.', Locked = true;
     begin
         exit(SelectionDescriptionLbl);
+    end;
+
+    procedure GetEnvelope(var Envelope: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Envelope := ContractParts.GetEnvelope(false);
+        exit(true);
+    end;
+
+    procedure GetTarget(var Target: JsonArray): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetParameters(var Parameters: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Parameters := ContractParts.GetParameters('Storage.Account.List');
+        exit(false);
+    end;
+
+    procedure GetResponse(var Response: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Response := ContractParts.GetResponse('Storage.Account.List');
+        exit(true);
+    end;
+
+    procedure GetErrors(var Errors: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Errors := ContractParts.GetErrors('Storage.Account.List');
+        exit(true);
+    end;
+
+    procedure GetEffect(var Effect: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Effect := ContractParts.GetEffect('Storage.Account.List');
+        exit(true);
+    end;
+
+    procedure GetMetering(var Metering: JsonObject): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetRelated(var Related: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Related := ContractParts.GetRelated('Storage.Account.List');
+        exit(true);
+    end;
+
+    procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetExamples(var Examples: JsonArray): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetOverview(var Overview: Text): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetNotes(var Notes: Text): Boolean
+    begin
+        exit(false);
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"

@@ -15,79 +15,79 @@ enumextension 10035635 "Storage Msg Type ori" extends "Message Type ori"
     value(10035635; "Help.Storage.Get")
     {
         Caption = 'Help.Storage.Get', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Help Get Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Help Get Impl ori", "Msg Discovery ori" = "Storage Help Get Impl ori", "Msg Contract ori" = "Storage Help Get Impl ori";
     }
     /// <summary>Lists the configured storage connections (codes and connectors; no secrets).</summary>
     value(10035636; "Storage.Account.List")
     {
         Caption = 'Storage.Account.List', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Account List Impl ori", "Msg Discovery ori" = "Storage Account List Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Account List Impl ori", "Msg Discovery ori" = "Storage Account List Impl ori", "Msg Contract ori" = "Storage Account List Impl ori";
     }
     /// <summary>Lists the files in a directory.</summary>
     value(10035637; "Storage.File.List")
     {
         Caption = 'Storage.File.List', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage File List Impl ori", "Msg Discovery ori" = "Storage File List Impl ori";
+        Implementation = "Msg Interface ori" = "Storage File List Impl ori", "Msg Discovery ori" = "Storage File List Impl ori", "Msg Contract ori" = "Storage File List Impl ori";
     }
     /// <summary>Downloads a file as base64.</summary>
     value(10035638; "Storage.File.Get")
     {
         Caption = 'Storage.File.Get', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage File Get Impl ori", "Msg Discovery ori" = "Storage File Get Impl ori";
+        Implementation = "Msg Interface ori" = "Storage File Get Impl ori", "Msg Discovery ori" = "Storage File Get Impl ori", "Msg Contract ori" = "Storage File Get Impl ori";
     }
     /// <summary>Uploads a base64 file.</summary>
     value(10035639; "Storage.File.Create")
     {
         Caption = 'Storage.File.Create', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage File Create Impl ori", "Msg Discovery ori" = "Storage File Create Impl ori";
+        Implementation = "Msg Interface ori" = "Storage File Create Impl ori", "Msg Discovery ori" = "Storage File Create Impl ori", "Msg Contract ori" = "Storage File Create Impl ori";
     }
     /// <summary>Deletes a file.</summary>
     value(10035640; "Storage.File.Delete")
     {
         Caption = 'Storage.File.Delete', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage File Delete Impl ori", "Msg Discovery ori" = "Storage File Delete Impl ori";
+        Implementation = "Msg Interface ori" = "Storage File Delete Impl ori", "Msg Discovery ori" = "Storage File Delete Impl ori", "Msg Contract ori" = "Storage File Delete Impl ori";
     }
     /// <summary>Copies a file.</summary>
     value(10035641; "Storage.File.Copy")
     {
         Caption = 'Storage.File.Copy', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage File Copy Impl ori", "Msg Discovery ori" = "Storage File Copy Impl ori";
+        Implementation = "Msg Interface ori" = "Storage File Copy Impl ori", "Msg Discovery ori" = "Storage File Copy Impl ori", "Msg Contract ori" = "Storage File Copy Impl ori";
     }
     /// <summary>Moves a file.</summary>
     value(10035642; "Storage.File.Move")
     {
         Caption = 'Storage.File.Move', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage File Move Impl ori", "Msg Discovery ori" = "Storage File Move Impl ori";
+        Implementation = "Msg Interface ori" = "Storage File Move Impl ori", "Msg Discovery ori" = "Storage File Move Impl ori", "Msg Contract ori" = "Storage File Move Impl ori";
     }
     /// <summary>Checks whether a file exists.</summary>
     value(10035643; "Storage.File.Exists")
     {
         Caption = 'Storage.File.Exists', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage File Exists Impl ori", "Msg Discovery ori" = "Storage File Exists Impl ori";
+        Implementation = "Msg Interface ori" = "Storage File Exists Impl ori", "Msg Discovery ori" = "Storage File Exists Impl ori", "Msg Contract ori" = "Storage File Exists Impl ori";
     }
     /// <summary>Lists the directories in a directory.</summary>
     value(10035644; "Storage.Directory.List")
     {
         Caption = 'Storage.Directory.List', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Dir List Impl ori", "Msg Discovery ori" = "Storage Dir List Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Dir List Impl ori", "Msg Discovery ori" = "Storage Dir List Impl ori", "Msg Contract ori" = "Storage Dir List Impl ori";
     }
     /// <summary>Creates a directory.</summary>
     value(10035645; "Storage.Directory.Create")
     {
         Caption = 'Storage.Directory.Create', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Dir Create Impl ori", "Msg Discovery ori" = "Storage Dir Create Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Dir Create Impl ori", "Msg Discovery ori" = "Storage Dir Create Impl ori", "Msg Contract ori" = "Storage Dir Create Impl ori";
     }
     /// <summary>Deletes a directory.</summary>
     value(10035646; "Storage.Directory.Delete")
     {
         Caption = 'Storage.Directory.Delete', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Dir Delete Impl ori", "Msg Discovery ori" = "Storage Dir Delete Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Dir Delete Impl ori", "Msg Discovery ori" = "Storage Dir Delete Impl ori", "Msg Contract ori" = "Storage Dir Delete Impl ori";
     }
     /// <summary>Checks whether a directory exists.</summary>
     value(10035647; "Storage.Directory.Exists")
     {
         Caption = 'Storage.Directory.Exists', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Dir Exists Impl ori", "Msg Discovery ori" = "Storage Dir Exists Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Dir Exists Impl ori", "Msg Discovery ori" = "Storage Dir Exists Impl ori", "Msg Contract ori" = "Storage Dir Exists Impl ori";
     }
     /// <summary>Offloads an attachment's file to storage and clears it from the database.</summary>
     value(10035648; "Storage.Attachment.Offload")
