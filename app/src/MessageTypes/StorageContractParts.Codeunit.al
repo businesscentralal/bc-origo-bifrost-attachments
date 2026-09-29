@@ -270,7 +270,7 @@ codeunit 70013500 "Storage Contract Parts ori"
             Effect.Add('effect', 'irreversible')
         else
             if MessageType in ['Storage.Attachment.Offload', 'Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Begin', 'Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord', 'Storage.File.Create', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.Directory.Create'] then
-            Effect.Add('effect', 'write')
+                Effect.Add('effect', 'write')
             else
                 Effect.Add('effect', 'read');
         Effect.Add('changes', 'The operation changes only the external storage state described by the message.');

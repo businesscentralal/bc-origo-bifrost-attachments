@@ -176,6 +176,8 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Section: Text;
         Sections: List of [Text];
     begin
+        if TypeName(Ordinal) = 'Help.DataExchange.Get' then
+            exit(ContractChapterOffenders(Ordinal));
         HelpText := HelpOf(Ordinal);
         if not HelpText.StartsWith('# ' + TypeName(Ordinal)) then
             Offenders += TypeName(Ordinal) + '|title ';
@@ -208,12 +210,18 @@ codeunit 96211 "Storage Msg Conformance Tests"
     var
         HelpText: Text;
         Related: Text;
+        RelatedStart: Integer;
         Candidate: Text;
         Parts: List of [Text];
         Index: Integer;
     begin
+        if TypeName(Ordinal) = 'Help.DataExchange.Get' then
+            exit(ContractRelatedTypeOffenders(Ordinal));
         HelpText := HelpOf(Ordinal);
-        Related := CopyStr(HelpText, StrPos(HelpText, '## Related Message Types'));
+        RelatedStart := StrPos(HelpText, '## Related Message Types');
+        if RelatedStart = 0 then
+            exit;
+        Related := CopyStr(HelpText, RelatedStart);
         if StrPos(Related, LineFeed() + '---') > 0 then
             Related := CopyStr(Related, 1, StrPos(Related, LineFeed() + '---'));
         Parts := Related.Split('`');
@@ -225,6 +233,46 @@ codeunit 96211 "Storage Msg Conformance Tests"
                     if not Enum::"Message Type ori".Names().Contains(Candidate) then
                         Offenders += TypeName(Ordinal) + '|related ' + Candidate + ' ';
             end;
+    end;
+
+    local procedure ContractChapterOffenders(Ordinal: Integer) Offenders: Text
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        MessageType: Enum "Message Type ori";
+        Chapter: Text;
+        Chapters: List of [Text];
+    begin
+        MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
+        ContractMgt.GetContract(MessageType, Contract);
+        Chapters.AddRange('envelope', 'response', 'errors', 'effect', 'metering', 'related');
+        foreach Chapter in Chapters do
+            if not Contract.Contains(Chapter) then
+                Offenders += TypeName(Ordinal) + '|contract ' + Chapter + ' ';
+    end;
+
+    local procedure ContractRelatedTypeOffenders(Ordinal: Integer) Offenders: Text
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        MessageType: Enum "Message Type ori";
+        RelatedToken: JsonToken;
+        EntryToken: JsonToken;
+        Entry: JsonObject;
+        NameToken: JsonToken;
+        Candidate: Text;
+    begin
+        MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
+        ContractMgt.GetContract(MessageType, Contract);
+        if not Contract.Get('related', RelatedToken) then
+            exit;
+        foreach EntryToken in RelatedToken.AsArray() do begin
+            Entry := EntryToken.AsObject();
+            Entry.Get('name', NameToken);
+            Candidate := NameToken.AsValue().AsText();
+            if not Enum::"Message Type ori".Names().Contains(Candidate) then
+                Offenders += TypeName(Ordinal) + '|related ' + Candidate + ' ';
+        end;
     end;
 
     local procedure IsTypeLikeName(Candidate: Text): Boolean

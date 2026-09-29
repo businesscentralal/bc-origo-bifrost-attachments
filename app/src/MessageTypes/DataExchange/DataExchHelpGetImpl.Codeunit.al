@@ -87,8 +87,11 @@ codeunit 70013521 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetRelated(var Related: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        exit(false);
+        Related := ContractParts.GetRelated('Help.DataExchange.Get');
+        exit(true);
     end;
 
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
