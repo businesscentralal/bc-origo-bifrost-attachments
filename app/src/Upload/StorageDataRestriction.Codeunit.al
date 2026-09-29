@@ -22,8 +22,8 @@ using System.IO;
 /// audit rows ahead of that.
 ///
 /// <c>Storage Attachment Link ori</c> is write-restricted the same way. Reads stay allowed
-/// for audits. Legitimate rows are written by the attachment and upload message types named
-/// in the write hint.
+/// for audits. Legitimate rows are written by the attachment message types named in the
+/// write hint.
 /// </summary>
 codeunit 10035663 "Storage Data Restriction ori"
 {
