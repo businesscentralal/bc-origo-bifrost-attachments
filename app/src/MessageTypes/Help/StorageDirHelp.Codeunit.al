@@ -68,8 +68,8 @@ codeunit 10035672 "Storage Dir Help ori"
         HelpBuilder.AddParam('path', true, 'string', 'The directory path to delete (relative to the connection base path).');
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "path": "invoices/2026" }');
         HelpBuilder.SetResponseNote('the deleted `path`');
-        HelpBuilder.AddError("Bifrost Error Code ori"::BusinessCentralError, 'Directory not found', 'Verify the directory exists with Storage.Directory.Exists.');
-        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'Directory contains one or more files linked to Business Central attachments and cannot be deleted directly from storage', 'Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.');
+        HelpBuilder.AddError('Directory not found', 'Verify the directory exists with Storage.Directory.Exists.');
+        HelpBuilder.AddError('Directory contains one or more files linked to Business Central attachments and cannot be deleted directly from storage', 'Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.');
         HelpBuilder.AddError("Bifrost Error Code ori"::BusinessCentralError, 'The directory does not exist (connector error)', 'Verify the directory exists with Storage.Directory.Exists.');
         HelpBuilder.SetSideEffects('Deletes a directory from external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.AddRelated('Storage.Directory.Exists', 'Check existence first');
