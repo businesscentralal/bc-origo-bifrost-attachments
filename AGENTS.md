@@ -148,8 +148,16 @@ offloaded records filterable.
   own the secrets; `Storage Setup ori` stores only a registered File Account id.
 - **Always** resolve `storageCode` through `Storage Request Mgt ori`, never by reading
   `Storage Setup ori` directly in an implementation.
-- **Always** return failures as `status = Error` with a helpful message. An unhandled exception
-  reaching the API is a defect.
+- **Always** return failures in Bifröst Foundation's structured shape: `status = Error` with a
+  stable `code` from `Bifrost Error Code ori` plus `parameter`, `received`, `expected` and
+  `nextStep`, all problems of a request at once. Read request values with
+  `Storage Request Reader ori` (it collects; `RespondIfErrors` answers once), check data states
+  before the first write, and raise with `RaiseCollectedErrors` only after a write. Never answer
+  with the plain `RespondWithError(Text)`, hand-built error JSON or a call stack, and never let
+  an invalid value fall back to a default.
+- **Always** give a new message type Foundation's discovery: implement `Msg Discovery ori`
+  (translatable keywords + a selection description) and bind it on the enum value. Test 96211
+  checks help sections, descriptions and keywords for every type, with no allow-list.
 - **Always** keep `Extensible = true` on `Storage Type ori` — the test app's `Mock` backend
   depends on it.
 - **Always** add new tables, pages and codeunits to `Storage Full ori`

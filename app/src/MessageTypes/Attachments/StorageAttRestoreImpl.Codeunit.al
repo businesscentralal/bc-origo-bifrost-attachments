@@ -1,5 +1,6 @@
 namespace Origo.Bifrost.Attachments;
 
+using Microsoft.Foundation.Attachment;
 using Origo.Bifrost;
 
 /// <summary>
@@ -7,7 +8,7 @@ using Origo.Bifrost;
 /// attachment's file back into the Business Central database from its storage connection and
 /// deletes the remote copy, reversing <c>Storage.Attachment.Offload</c>.
 /// </summary>
-codeunit 10035642 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
+codeunit 10035642 "Storage Att. Restore Impl ori" implements "Msg Interface ori", "Msg Discovery ori"
 {
     Access = Internal;
 
@@ -21,12 +22,33 @@ codeunit 10035642 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
 
     procedure GetFilterTableNo(): Integer
     begin
-        exit(0);
+        exit(Database::"Document Attachment");
     end;
 
     procedure GetDescription(): Text[250]
     begin
         exit('Restores an offloaded attachment''s file from storage back into the database and deletes the remote copy.');
+    end;
+
+    /// <summary>
+    /// Search terms users say for this type, English with the Icelandic translation. Used to rank
+    /// search results; never shown to the caller.
+    /// </summary>
+    /// <returns>Comma-separated keywords in the current language.</returns>
+    procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'restore attachment, bring attachment back into database, undo offload, move attachment back from cloud, reload attachment from storage, recall offloaded file', Comment = 'is-IS=endurheimta viðhengi, endurheimta viðhengið, sækja viðhengi aftur í gagnagrunn, afturkalla flutning viðhengis, færa viðhengi til baka úr skýinu, endurheimta skrá úr geymslu';
+    begin
+        exit(KeywordsLbl);
+    end;
+
+    /// <summary>What separates this type from its siblings when a caller is choosing one.</summary>
+    /// <returns>One sentence.</returns>
+    procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Brings an offloaded or storage-linked attachment back into the Business Central database and deletes the remote copy in storage.', Locked = true;
+    begin
+        exit(SelectionDescriptionLbl);
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"
@@ -47,12 +69,11 @@ codeunit 10035642 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
         RequestMgt: Codeunit "Storage Request Mgt ori";
         ResultData: JsonObject;
     begin
-        // This is an inbound (write) message type: the database work runs directly, not inside a
-        // TryFunction (AL forbids INSERT there). Any error propagates to the framework, which
-        // writes the standard { "status": "Error", "error": ... } response.
+        // Every problem the request or the data can show is answered before the first write.
+        // A failure after a write (for example the storage upload) is raised, so the write rolls back.
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
-        AttachmentMgt.Restore(Argument.GetRequestJson(), ResultData);
-        RequestMgt.RespondSuccess(Argument, ResultData);
+        if AttachmentMgt.Restore(Argument, ResultData) then
+            RequestMgt.RespondSuccess(Argument, ResultData);
     end;
 }

@@ -15,7 +15,7 @@ App:   10035635-10035684 (allocated in origo_cloudevents_object_ranges.xlsx; mig
        on bc28-is, so the coordinator reallocated this app to 10035635-10035684 in the workbook.)
 Tests: 96200-96299 (migrated from 92700-92799 with offset +3500)
 
-Highest object id currently used: 10035681 (`Storage Takeover State ori`, #8). Free ids left in the block: 10035682-10035684.
+Highest object id currently used: 10035682 (`Storage Request Reader ori`, 2026-09-28). Free ids left in the block: 10035683-10035684.
 Register any further block in the workbook before using it - never squeeze objects into a
 neighbouring app's range.
 
@@ -28,7 +28,8 @@ Ids changed by the setup-notification move (2026-09-07): codeunit 10035680
 deleted - that codeunit id is free but is not reused (permission set 10035666
 `BIFROST Attach ori` keeps its own id, object types have separate id spaces).
 Test app: codeunit 96207 `Storage Setup Page Tests`, codeunit 96208
-`Storage App Registry Tests` (96208), `Storage Takeover Tests` (96209), `Storage Takeover Probe Tests` (96210); next free test id **96211**.
+`Storage App Registry Tests` (96208), `Storage Takeover Tests` (96209), `Storage Takeover Probe Tests` (96210),
+`Storage Msg Conformance Tests` (96211), `Storage Error Response Tests` (96212); next free test id **96213**.
 
 ## App Identity
 App:      Bifrost Attachments, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
@@ -142,8 +143,31 @@ Key rules always in effect:
 - Every implementation resolves its request through `Storage Request Mgt ori`, which maps
   `storageCode` to a `Storage Setup ori` row and returns the `Storage Connector ori`
   implementation to use.
-- Errors must be returned as `status = Error` with a helpful message via
-  `Argument.RespondWithError`; never let an unhandled exception reach the API.
+- **Errors follow Foundation's structured shape** (Foundation #138/#135/#136): read every request
+  value with `Storage Request Reader ori` (10035682) and `Storage Request Mgt ori.ReadSetup` /
+  `ResolveSetup`, which *collect* problems on the Argument (`AddError` with a `Bifrost Error Code ori`
+  code, `parameter`, `received`, `expected`, `nextStep`); then call `Reader.RespondIfErrors` once so
+  all problems are answered together. Check data states (session open, attachment offloaded, file
+  linked) before the first database write and answer them with `RespondWithError(<code>, ...)`. A
+  problem that only shows after a write is raised with `Argument.AddError` + `RaiseCollectedErrors`, so
+  the write rolls back and the caller still gets the structured answer. Connector failures go through
+  `RespondWithLastError` (code `BusinessCentralError`, user decision 2026-09-28) or are raised. Never
+  answer with the plain `RespondWithError(Text)`, hand-built error JSON or a call stack; never let an
+  invalid value fall back to a default. Error texts are translatable labels (`is-IS=` comment).
+- **Discovery (Foundation #144):** every type except `Help.Storage.Get` implements `Msg Discovery ori`
+  on its Impl codeunit and binds it in the enum (`"Msg Discovery ori" = <same codeunit>`):
+  `GetKeywords` returns one translatable comma-separated `KeywordsLbl` (English + `is-IS=`),
+  `GetSelectionDescription` a `Locked` one-sentence label that tells the type apart from its siblings.
+  After changing labels, compile, then rebuild the Icelandic file with
+  `bc-origo-bifrost-core/tools/Update-IcelandicXlf.ps1 -TranslationsFolder app/Translations`.
+- **Help sections:** `Storage Help Builder ori` renders Foundation's required headings (Overview,
+  Request Parameters, Response Shape, Errors, Related Message Types) and the standard error rows;
+  `AddError` takes the error code. Test 96211 enforces Foundation's conformance rules for all 23 types
+  with no allow-list, and keyword coverage in English and Icelandic.
+- **Metering:** nothing to implement - every value falls back to Foundation's `Default Metering ori`.
+  Each successful call is one billable message (`Help.Storage.Get` is exempt), so a chunk may carry up to
+  240 MiB (`Storage Request Reader ori.MaxContentBytes`, under the 350 MB OData body limit) and
+  `Storage.Upload.Begin` advertises that as `chunkSizeHint`/`maxChunkBytes` (user decision 2026-09-28).
 - `Storage Upload Session ori` and `Storage Upload Chunk ori` are blocked from the generic
   `Data.Records.*` message types by `Storage Data Restriction ori` - use the dedicated
   `Storage.Upload.*` types.

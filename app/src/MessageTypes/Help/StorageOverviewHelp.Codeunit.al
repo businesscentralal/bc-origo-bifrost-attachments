@@ -24,8 +24,22 @@ codeunit 10035675 "Storage Overview Help ori"
     end;
 
     local procedure OverviewHelp(var Argument: Record "Message Argument ori")
+    var
+        HelpBuilder: Codeunit "Storage Help Builder ori";
+        Overview: Text;
     begin
-        Argument.SetResponseMarkdown(BuildOverview());
+        HelpBuilder.Init('Help.Storage.Get', 'Returns a Markdown overview of the storage connector and all its message types. No request body is required.', '');
+        HelpBuilder.SetRouting('Not addressed: the overview is the same for every caller and needs no storage connection.');
+        HelpBuilder.SetRequestExample('{}');
+        HelpBuilder.AddResponseField('format', 'string', 'Always `markdown`.');
+        HelpBuilder.AddResponseField('markdown', 'string', 'The connector overview: getting started, agent workflows, routing, and every storage message type by area. It is also shown below.');
+        HelpBuilder.AddRelated('Storage.Account.List', 'Find the storage codes the other types need');
+        HelpBuilder.AddRelated('Storage.Upload.Begin', 'Start a chunked upload of a large file');
+        HelpBuilder.AddRelated('Storage.Attachment.CreateForRecord', 'Attach a file to any Business Central record');
+        // The overview follows the standard sections, without its own title.
+        Overview := BuildOverview();
+        Overview := CopyStr(Overview, StrPos(Overview, '## '));
+        Argument.SetResponseMarkdown(HelpBuilder.Render() + Overview);
     end;
 
     /// <summary>Builds the Markdown overview of the storage connector and all its message types.</summary>
@@ -40,7 +54,7 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('');
         Builder.AppendLine('This connector exposes the Business Central **External File Storage** facade as Bifrost message types, giving read/write access to cloud storage (Azure Blob, Azure File Share, SharePoint, and any other registered External File Storage connector) from Business Central and from external callers.');
         Builder.AppendLine('');
-        Builder.AppendLine('Message types are **outbound** (read/query) or **inbound** (write); all exchange JSON (`Content-Type: text/json`). Invoke any of them with the `call_message_type` tool, passing `type` = the message type name and `data` = its parameters.');
+        Builder.AppendLine('Message types are **outbound** (read/query) or **inbound** (write); all exchange JSON (`Content-Type: text/json`). Invoke any of them with the `invoke_message_type` tool, passing `type` = the message type name and `data` = its parameters.');
         Builder.AppendLine('');
         Builder.AppendLine('**Direction** describes Business Central data. File and Directory Create, Delete, Copy and Move change the external storage even though they are Outbound; treat them as writes when asking for confirmation.');
         Builder.AppendLine('');
@@ -62,7 +76,7 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('Recommended order for an automated caller:');
         Builder.AppendLine('');
         Builder.AppendLine('1. Call `Storage.Account.List` to discover the `storageCode` values you may use. Do not guess a code.');
-        Builder.AppendLine('2. Request the per-type help (`get_message_type_help`) for the operation you intend to call to confirm its exact parameters and its **Next steps**.');
+        Builder.AppendLine('2. Request the per-type help (`describe_message_type`) for the operation you intend to call to confirm its exact parameters and its **Next steps**.');
         Builder.AppendLine('3. Call the operation with a chosen `storageCode` and the operation''s parameters.');
         Builder.AppendLine('4. Inspect `status` first: on `Error`, read `error` and correct the request before retrying; on `Success`, read `data`.');
         Builder.AppendLine('');
@@ -71,14 +85,14 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('Every per-type help document ends with a **Next steps** section naming the exact follow-up message type and the field to carry forward, so you can chain calls without guessing. The common journeys:');
         Builder.AppendLine('');
         Builder.AppendLine('**Upload a large file to external storage** (too big for a single `Storage.File.Create`):');
-        Builder.AppendLine('1. `Storage.Upload.Begin` with `storageCode` + `fileName` \u2192 returns `uploadId`, `path`, `chunkSizeHint`.');
-        Builder.AppendLine('2. `Storage.Upload.Append` once per chunk \u2014 read at most `chunkSizeHint` RAW bytes, base64-encode that slice on its own, send with `uploadId` and `sequence` = 1, 2, 3, ...');
-        Builder.AppendLine('3. `Storage.Upload.Commit` with `uploadId` \u2192 writes the file and returns the final `path` and `contentLength`.');
+        Builder.AppendLine('1. `Storage.Upload.Begin` with `storageCode` + `fileName` → returns `uploadId`, `path`, `chunkSizeHint`.');
+        Builder.AppendLine('2. `Storage.Upload.Append` once per chunk — read at most `chunkSizeHint` RAW bytes, base64-encode that slice on its own, send with `uploadId` and `sequence` = 1, 2, 3, ...');
+        Builder.AppendLine('3. `Storage.Upload.Commit` with `uploadId` → writes the file and returns the final `path` and `contentLength`.');
         Builder.AppendLine('');
         Builder.AppendLine('**Upload a large file directly to a record** (no external storage needed):');
-        Builder.AppendLine('1. `Storage.Upload.Begin` with just `fileName` (omit `storageCode`) \u2192 creates a buffer-only session.');
+        Builder.AppendLine('1. `Storage.Upload.Begin` with just `fileName` (omit `storageCode`) → creates a buffer-only session.');
         Builder.AppendLine('2. `Storage.Upload.Append` once per chunk (same as above).');
-        Builder.AppendLine('3. `Storage.Upload.CommitToRecord` with `uploadId` + record address (`tableId`/`no` or `recordSystemId`) \u2192 assembles chunks and stores in the database.');
+        Builder.AppendLine('3. `Storage.Upload.CommitToRecord` with `uploadId` + record address (`tableId`/`no` or `recordSystemId`) → assembles chunks and stores in the database.');
         Builder.AppendLine('   - Default target is `DocumentAttachment` (any master record, sales document, posted document).');
         Builder.AppendLine('   - Set `target` = `IncomingDocument` to create an incoming document instead.');
         Builder.AppendLine('');
@@ -96,7 +110,7 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('');
         Builder.AppendLine('### Chunking rules (precise)');
         Builder.AppendLine('');
-        Builder.AppendLine('- A chunk is at most `chunkSizeHint` **raw** bytes (currently 49152, about 48 KB).');
+        Builder.AppendLine('- A chunk is up to `chunkSizeHint` **raw** bytes (currently 251,658,240 = 240 MiB, the most one call can carry). Every call is one billable message, so use chunks as large as the file allows.');
         Builder.AppendLine('- Base64-encode each chunk **independently**; never base64 the whole file and slice the resulting text — the chunk boundaries would not decode.');
         Builder.AppendLine('- `sequence` is 1-based and must be contiguous with no gaps by commit; re-sending a sequence replaces that chunk (retries are safe).');
         Builder.AppendLine('- Pass `declaredSize` (total bytes) at Begin so commit verifies nothing was lost.');
@@ -164,7 +178,7 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('');
         Builder.AppendLine('### Chunked uploads');
         Builder.AppendLine('');
-        Builder.AppendLine('Deliver a large file as a sequence of small chunks when it is too big for a single `Storage.File.Create` call or a single inline `content` parameter. Begin a session, append the file in pieces (about 48 KB of raw bytes each, base64-encoded), then commit — either to external storage or directly to a record attachment.');
+        Builder.AppendLine('Deliver a large file as a sequence of small chunks when it is too big for a single `Storage.File.Create` call or a single inline `content` parameter. Begin a session, append the file in pieces (up to 240 MiB of raw bytes each, base64-encoded), then commit — either to external storage or directly to a record attachment.');
         Builder.AppendLine('');
         Builder.AppendLine('| Message type | Required parameters | Description |');
         Builder.AppendLine('|---|---|---|');
@@ -186,6 +200,7 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('- **Create overwrites.** `Storage.File.Create` replaces an existing file on connectors that support overwrite.');
         Builder.AppendLine('- **Paths can be case-sensitive** on cloud back ends — match the stored casing exactly.');
         Builder.AppendLine('- **Offloaded attachments stay transparent.** After `Storage.Attachment.Offload`, processes that read the file through the standard accessors keep working; the content is fetched from storage on demand. If the storage connection is unavailable the read fails rather than returning an empty file.');
+        Builder.AppendLine('- **Linked attachments block storage delete.** `Storage.File.Delete` and `Storage.Directory.Delete` refuse the path when a Business Central attachment still points at it: File is linked to a Business Central attachment and cannot be deleted directly from storage. Directory contains one or more files linked to Business Central attachments and cannot be deleted directly from storage. Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.');
         Builder.AppendLine('');
         Builder.AppendLine('## Initial release boundaries');
         Builder.AppendLine('');

@@ -47,9 +47,9 @@ codeunit 10035673 "Storage Attachment Help ori"
         HelpBuilder.AddResponseField('storageCode', 'string', 'The storage connection that now holds the file.');
         HelpBuilder.AddResponseField('path', 'string', 'The full storage path the file was stored at.');
         HelpBuilder.AddResponseField('contentLength', 'integer', 'The number of bytes uploaded to storage.');
-        HelpBuilder.AddError('The attachment is already offloaded', 'Restore it first with Storage.Attachment.Restore, then offload again if needed.');
-        HelpBuilder.AddError('The attachment has no content to offload', 'The record holds no file content; nothing to move.');
-        HelpBuilder.AddError('No attachment record was found for the supplied SystemId', 'Verify the target table and the SystemId.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The attachment is already offloaded', 'Restore it first with Storage.Attachment.Restore, then offload again if needed.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The attachment has no content to offload', 'The record holds no file content; nothing to move.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'No attachment has the given systemId in the target table', 'Verify the target table and the SystemId.');
 
         NotesBuilder.AppendLine('After a successful offload the file is removed from the Business Central database and served on demand from storage, so existing processes keep working. Reverse it with Storage.Attachment.Restore.');
         NotesBuilder.AppendLine('');
@@ -82,8 +82,8 @@ codeunit 10035673 "Storage Attachment Help ori"
         HelpBuilder.AddResponseField('target', 'string', 'Echo of the target table.');
         HelpBuilder.AddResponseField('systemId', 'string (GUID)', 'Echo of the restored attachment record.');
         HelpBuilder.AddResponseField('contentLength', 'integer', 'The number of bytes written back into the database.');
-        HelpBuilder.AddError('The attachment is not offloaded', 'Only attachments with a storage link (from Offload or CreateLinked) can be restored. Check the `Offloaded ori` field.');
-        HelpBuilder.AddError('No attachment record was found for the supplied SystemId', 'Verify the target table and the SystemId.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The attachment is not offloaded', 'Only attachments with a storage link (from Offload or CreateLinked) can be restored. Check the `Offloaded ori` field.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'No attachment has the given systemId in the target table', 'Verify the target table and the SystemId.');
         HelpBuilder.SetNotes(
             'Works for attachments produced by Storage.Attachment.Offload, Storage.Attachment.CreateLinked, and Storage.Attachment.CreateForRecord (when born offloaded from a storage source). ' +
             'The storage connection and path are read from the link record, so no storageCode is needed. ' +
@@ -115,9 +115,9 @@ codeunit 10035673 "Storage Attachment Help ori"
         HelpBuilder.AddResponseField('path', 'string', 'The storage path the attachment is served from.');
         HelpBuilder.AddResponseField('fileName', 'string', 'The attachment file name.');
         HelpBuilder.AddResponseField('contentLength', 'integer', 'The file size in bytes.');
-        HelpBuilder.AddError('No file was found in storage', 'Upload the file first (Storage.Upload.Begin/Append/Commit) and pass the committed path.');
-        HelpBuilder.AddError('No incoming document was found with entry no.', 'Omit incomingDocumentEntryNo to create a new document, or pass a valid entry number.');
-        HelpBuilder.AddError('is already linked to another attachment', 'Each storage file can only back one attachment. Upload a separate copy or use a different path.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'No file exists at `path` in the storage connection', 'Upload the file first (Storage.Upload.Begin/Append/Commit) and pass the committed path.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'No incoming document has the given incomingDocumentEntryNo', 'Omit incomingDocumentEntryNo to create a new document, or pass a valid entry number.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The storage file already backs another attachment', 'Each storage file can only back one attachment. Upload a separate copy or use a different path.');
         HelpBuilder.SetNotes('The attachment is created from the stored file and immediately linked, with its local content cleared, so it is served on demand from storage exactly like an offloaded attachment. The file is never copied into the database from the caller.');
         HelpBuilder.AddNextStep('To verify the attachment and read it back', 'Incoming.Document.Get', 'pass the returned `incomingDocumentEntryNo` as the `subject`');
         HelpBuilder.AddNextStep('To pull the file into the database (un-link)', 'Storage.Attachment.Restore', 'pass `target` = IncomingDocument and the returned `systemId`');
@@ -137,7 +137,7 @@ codeunit 10035673 "Storage Attachment Help ori"
         HelpBuilder.AddParam('recordSystemId', false, 'string (GUID)', 'SystemId of the record to attach to. Works for every table, including those with composite primary keys. Supply this or no.');
         HelpBuilder.AddParam('no', false, 'string', 'Primary key value of the record (e.g. ''10000'' for a customer, ''FA000010'' for a fixed asset). Only works for tables whose primary key is a single Code or Text field of 20 characters or less. Use recordSystemId for document tables and any table with a composite or integer key.');
         HelpBuilder.AddParam('fileName', false, 'string', 'File name including extension, e.g. ''contract.pdf''. Required unless copying from an existing attachment that already carries a name.');
-        HelpBuilder.AddParam('contentBase64', false, 'base64 string', 'Content source 1 (canonical): the file itself, base64-encoded inline. The content is stored in the BC database. Use for small files.');
+        HelpBuilder.AddParam('contentBase64', false, 'base64 string', 'Content source 1 (canonical): the file itself, base64-encoded inline; at most 240 MiB before encoding. The content is stored in the BC database. Use for small files.');
         HelpBuilder.AddParam('content', false, 'base64 string', 'Accepted alias of contentBase64. Send this or contentBase64, not both.');
         HelpBuilder.AddParam('storageCode', false, 'string', 'Content source 2 (with path): references a file already in storage. The attachment is born offloaded — content stays in storage and is served transparently. Use for files delivered via Storage.Upload.Commit.');
         HelpBuilder.AddParam('path', false, 'string', 'Required with storageCode. Path of the file within the storage connection — typically the `path` returned by Storage.Upload.Commit. Each path can only be linked to one attachment.');
@@ -170,14 +170,16 @@ codeunit 10035673 "Storage Attachment Help ori"
         HelpBuilder.AddResponseField('storageCode', 'string', 'Present only when offloaded. The storage connection serving the file.');
         HelpBuilder.AddResponseField('path', 'string', 'Present only when offloaded. The storage path of the file.');
 
-        HelpBuilder.AddError('Supply exactly one content source', 'Send contentBase64 (or the alias content), or storageCode with path, or sourceTarget with sourceSystemId — never combine two sources in the same request.');
-        HelpBuilder.AddError('Supply contentBase64 or content, not both', 'contentBase64 is the canonical inline name; content is an accepted alias. Do not send both names in one request.');
-        HelpBuilder.AddError('No record was found in table', 'The host record must exist before attaching. Check tableId and no/recordSystemId.');
-        HelpBuilder.AddError('has a composite primary key', 'The table has more than one key field. Address the record with recordSystemId instead of no.');
-        HelpBuilder.AddError('is not a code or text field', 'The primary key is an Integer or other non-text type. Use recordSystemId.');
-        HelpBuilder.AddError('does not know which field identifies a record', 'The table is not in the set BC can key an attachment to. This connector widens that set to all tables with a single Code key; others need a subscriber on Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey.');
-        HelpBuilder.AddError('is longer than the 20 characters', 'The record identifier exceeds the 20-character limit of Document Attachment.No.');
-        HelpBuilder.AddError('is already linked to another attachment', 'Each storage file can only back one attachment. Upload a separate copy or use a different path.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::LimitExceeded, 'The inline `contentBase64` (or the alias `content`) is larger than 240 MiB', 'Upload it with Storage.Upload.Begin, Append and Commit, then attach it as content source 2 (storageCode + path), or use Storage.Upload.CommitToRecord.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PermissionDenied, 'You cannot read the table of the record', 'Ask for read permission on that table.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameter, 'The request sends both `contentBase64` and `content`', 'Supply contentBase64 or content, not both. contentBase64 is the canonical inline name; content is an accepted alias.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameter, 'The request names no content source, or more than one', 'Send contentBase64 (or the alias content), or storageCode with path, or sourceTarget with sourceSystemId — never combine two sources in the same request.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'The record (or its table) does not exist', 'The host record must exist before attaching. Check tableId and no/recordSystemId.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameter, 'The table has a composite primary key, so `no` cannot address a record', 'The table has more than one key field. Address the record with recordSystemId instead of no.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameter, 'The primary key of the table is not a code or text field, so `no` cannot address a record', 'The primary key is an Integer or other non-text type. Use recordSystemId.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'Business Central does not know which field identifies a record of the table', 'The table is not in the set BC can key an attachment to. This connector widens that set to all tables with a single Code key; others need a subscriber on Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameter, '`no` is longer than the 20 characters a document attachment can hold', 'The record identifier exceeds the 20-character limit of Document Attachment.No.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The storage file already backs another attachment', 'Each storage file can only back one attachment. Upload a separate copy or use a different path.');
 
         HelpBuilder.SetNotes(
             'Document type and line number are derived from the host record — never supply them. ' +

@@ -356,7 +356,7 @@ folders in this repository — an approved deviation from Origo PR gateway check
 
 Message-type contracts are also served by the app itself at runtime: `Help.Storage.Get` returns
 the module directory, and every message type answers its own Markdown help through
-`get_message_type_help` / `Help.Implementation.Get`.
+`describe_message_type` / `Help.Implementation.Get`.
 
 ### Context-Sensitive Help
 
