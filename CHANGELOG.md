@@ -12,8 +12,6 @@ Business Central release versioning (`major.minor.build.revision`).
 - **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
 - **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
 
-## [Unreleased]
-
 ### Changed (2026-09-28) - message types behave like Bifröst Foundation's (Foundation #138, #135, #136, #144, #146)
 
 - **Structured errors.** Every storage message type now answers a bad request the way Foundation does:
@@ -50,7 +48,7 @@ Business Central release versioning (`major.minor.build.revision`).
   every type, no allow-list) and `Storage Error Response Tests` (96212). Existing tests assert the
   structured answers instead of raised texts.
 - **Foundation.** Requires a Foundation build with `Msg Discovery ori` and `Bifrost Error Code ori`
-  (#149, #153) and the structured-error hand-over of #161; built and tested against the stack up to #169.
+  (#149, #153) and the structured-error hand-over of core#153, #164 and #165; built and tested against the stack up to #169.
 
 ### Added (2026-09-28) - Data Exchange Phase 0 (#22)
 
