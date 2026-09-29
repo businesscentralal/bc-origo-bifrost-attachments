@@ -65,9 +65,11 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         UseRecordSystemIdLbl: Label 'Send recordSystemId instead.', Comment = 'is-IS=Sendu recordSystemId í staðinn.';
         RecordNoTooLongErr: Label 'The record identifier "%1" is longer than the 20 characters a document attachment can hold.', Comment = '%1 = record identifier, is-IS=Færsluauðkennið "%1" er lengra en þeir 20 stafir sem viðhengi skjals getur geymt.';
         RecordNoExpectedLbl: Label 'at most 20 characters', Comment = 'is-IS=í mesta lagi 20 stafir';
-        ContentSourceErr: Label 'Send exactly one content source: content, storageCode with path, or sourceTarget with sourceSystemId.', Comment = 'is-IS=Sendu nákvæmlega eina uppsprettu innihalds: content, storageCode með path eða sourceTarget með sourceSystemId.';
-        ContentSourceParameterTok: Label 'content, storageCode, sourceSystemId', Locked = true;
-        ContentSourceExpectedLbl: Label 'exactly one of content, storageCode with path, sourceTarget with sourceSystemId', Locked = true;
+        ContentSourceErr: Label 'Send exactly one content source: contentBase64 (or the alias content), storageCode with path, or sourceTarget with sourceSystemId.', Comment = 'is-IS=Sendu nákvæmlega eina uppsprettu innihalds: contentBase64 (eða samheitið content), storageCode með path eða sourceTarget með sourceSystemId.';
+        ContentSourceParameterTok: Label 'contentBase64, storageCode, sourceSystemId', Locked = true;
+        ContentSourceExpectedLbl: Label 'exactly one of contentBase64 (or the alias content), storageCode with path, sourceTarget with sourceSystemId', Locked = true;
+        BothInlineContentErr: Label 'Supply contentBase64 or content, not both.', Locked = true;
+        BothInlineContentExpectedLbl: Label 'contentBase64 or content, not both', Locked = true;
         NoAttachmentKeyErr: Label 'Business Central does not know which field identifies a record in table %1, so an attachment cannot be keyed to it.', Comment = '%1 = table id, is-IS=Business Central veit ekki hvaða reitur auðkennir færslu í töflu %1 og því er ekki hægt að tengja viðhengi við hana.';
         AttachmentGoneErr: Label 'The attachment was removed while it was being processed.', Comment = 'is-IS=Viðhenginu var eytt á meðan verið var að vinna með það.';
         NoAttachmentKeyNextStepLbl: Label 'Attach the file to a record of a table that supports attachments, or have a developer subscribe to Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey for this table.', Comment = 'is-IS=Hengdu skrána við færslu í töflu sem styður viðhengi eða láttu forritara gerast áskrifanda að Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey fyrir þessa töflu.';
@@ -606,13 +608,22 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         Reader: Codeunit "Storage Request Reader ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
         HasContent: Boolean;
+        HasContentBase64: Boolean;
+        HasContentAlias: Boolean;
         HasStorage: Boolean;
         HasSource: Boolean;
         SourceCount: Integer;
     begin
         Clear(TempBlob);
         FromStorage := false;
-        HasContent := RequestMgt.GetText(RequestJson, 'content') <> '';
+        // contentBase64 is canonical; content remains an accepted alias. Both names in one request is an error.
+        HasContentBase64 := RequestMgt.GetText(RequestJson, 'contentBase64') <> '';
+        HasContentAlias := RequestMgt.GetText(RequestJson, 'content') <> '';
+        if HasContentBase64 and HasContentAlias then begin
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, BothInlineContentErr, 'content', '', BothInlineContentExpectedLbl, '');
+            exit(false);
+        end;
+        HasContent := HasContentBase64 or HasContentAlias;
         HasStorage := (RequestMgt.GetText(RequestJson, 'storageCode') <> '') or (RequestMgt.GetText(RequestJson, 'path') <> '');
         HasSource := RequestMgt.GetText(RequestJson, 'sourceSystemId') <> '';
         if HasContent then
@@ -626,8 +637,11 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             exit(false);
         end;
 
-        if HasContent then
+        if HasContent then begin
+            if HasContentBase64 then
+                exit(Reader.ReadBase64Content(Argument, RequestJson, 'contentBase64', true, TempBlob));
             exit(Reader.ReadBase64Content(Argument, RequestJson, 'content', true, TempBlob));
+        end;
 
         if HasSource then begin
             ReadTarget(Argument, RequestJson, 'sourceTarget', SourceTarget);
