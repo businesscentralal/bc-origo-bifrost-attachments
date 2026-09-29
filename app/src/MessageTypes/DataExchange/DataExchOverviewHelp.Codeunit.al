@@ -30,7 +30,7 @@ codeunit 70013530 "DataExch Overview Help ori"
         Builder.AppendLine('');
         Builder.AppendLine('Read-only view of Business Central Data Exchange definitions, incoming-document types and processed entries. Nothing is uploaded or written.');
         Builder.AppendLine('');
-        Builder.AppendLine('Message types are outbound and exchange JSON. Invoke one with `call_message_type`, `type` = the message type name and `data` = its parameters.');
+        Builder.AppendLine('Message types are outbound and exchange JSON. Invoke one with the `invoke_message_type` tool, passing `type` = the message type name and `data` = its parameters.');
         Builder.AppendLine('');
         Builder.AppendLine('## Pipeline');
         Builder.AppendLine('');

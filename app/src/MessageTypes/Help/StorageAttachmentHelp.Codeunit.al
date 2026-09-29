@@ -57,12 +57,12 @@ codeunit 10035673 "Storage Attachment Help ori"
         NotesBuilder.AppendLine('');
         NotesBuilder.AppendLine('### Finding offload candidates (batch workflow)');
         NotesBuilder.AppendLine('');
-        NotesBuilder.AppendLine('Both attachment tables expose a calculated field **`Offloaded ori`** (Boolean) that is `true` when the record has a storage link and `false` when its content is still in the database. Use `get_records` to discover candidates:');
+        NotesBuilder.AppendLine('Both attachment tables expose a calculated field **`Offloaded ori`** (Boolean) that is `true` when the record has a storage link and `false` when its content is still in the database. Use `Data.Records.Get` to discover candidates:');
         NotesBuilder.AppendLine('');
-        NotesBuilder.AppendLine('- **Incoming document attachments:** `get_records` with table `Incoming Document Attachment` (133), filter `WHERE(Offloaded ori=CONST(0))`, fields `SystemId,Name,Content_Length,Incoming_Document_Entry_No`. Set target to `IncomingDocument`.');
-        NotesBuilder.AppendLine('- **Document attachments:** `get_records` with table `Document Attachment` (1173), filter `WHERE(Offloaded ori=CONST(0))`, fields `SystemId,File_Name,File_Extension,Table_ID,No`. Set target to `DocumentAttachment`.');
+        NotesBuilder.AppendLine('- **Incoming document attachments:** `Data.Records.Get` with `tableName` `Incoming Document Attachment` (133) and `tableView` `WHERE(Offloaded ori=CONST(0))`. The response `id` is the SystemId; also read `Name`, `Content_Length` and `Incoming_Document_Entry_No`. Set target to `IncomingDocument`.');
+        NotesBuilder.AppendLine('- **Document attachments:** `Data.Records.Get` with `tableName` `Document Attachment` (1173) and `tableView` `WHERE(Offloaded ori=CONST(0))`. The response `id` is the SystemId; also read `File_Name`, `File_Extension`, `Table_ID` and `No`. Set target to `DocumentAttachment`.');
         NotesBuilder.AppendLine('');
-        NotesBuilder.Append('Loop through the results and call this message type once per record, passing the returned `SystemId` as `systemId`. Already-offloaded records (if any slip through) are rejected safely.');
+        NotesBuilder.Append('Loop through the results and call this message type once per record, passing the returned `id` as `systemId`. Already-offloaded records (if any slip through) are rejected safely.');
         HelpBuilder.SetNotes(NotesBuilder.ToText());
 
         HelpBuilder.AddNextStep('To bring the file back into the database', 'Storage.Attachment.Restore', 'pass the same `target` and `systemId` — no storageCode needed, it is read from the link');
