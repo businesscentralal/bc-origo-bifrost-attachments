@@ -93,60 +93,60 @@ enumextension 10035635 "Storage Msg Type ori" extends "Message Type ori"
     value(10035648; "Storage.Attachment.Offload")
     {
         Caption = 'Storage.Attachment.Offload', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Att. Offload Impl ori", "Msg Discovery ori" = "Storage Att. Offload Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Att. Offload Impl ori", "Msg Discovery ori" = "Storage Att. Offload Impl ori", "Msg Contract ori" = "Storage Att. Offload Impl ori";
     }
     /// <summary>Restores an offloaded attachment's file from storage back into the database.</summary>
     value(10035649; "Storage.Attachment.Restore")
     {
         Caption = 'Storage.Attachment.Restore', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Att. Restore Impl ori", "Msg Discovery ori" = "Storage Att. Restore Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Att. Restore Impl ori", "Msg Discovery ori" = "Storage Att. Restore Impl ori", "Msg Contract ori" = "Storage Att. Restore Impl ori";
     }
     /// <summary>Opens a chunked upload session for delivering a large file in pieces.</summary>
     value(10035650; "Storage.Upload.Begin")
     {
         Caption = 'Storage.Upload.Begin', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Upload Begin Impl ori", "Msg Discovery ori" = "Storage Upload Begin Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Upload Begin Impl ori", "Msg Discovery ori" = "Storage Upload Begin Impl ori", "Msg Contract ori" = "Storage Upload Begin Impl ori";
     }
     /// <summary>Appends one base64 chunk to an open upload session.</summary>
     value(10035651; "Storage.Upload.Append")
     {
         Caption = 'Storage.Upload.Append', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Upload Append Impl ori", "Msg Discovery ori" = "Storage Upload Append Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Upload Append Impl ori", "Msg Discovery ori" = "Storage Upload Append Impl ori", "Msg Contract ori" = "Storage Upload Append Impl ori";
     }
     /// <summary>Assembles an upload session's chunks and writes the file to storage.</summary>
     value(10035652; "Storage.Upload.Commit")
     {
         Caption = 'Storage.Upload.Commit', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Upload Commit Impl ori", "Msg Discovery ori" = "Storage Upload Commit Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Upload Commit Impl ori", "Msg Discovery ori" = "Storage Upload Commit Impl ori", "Msg Contract ori" = "Storage Upload Commit Impl ori";
     }
     /// <summary>Discards an open upload session without writing to storage.</summary>
     value(10035653; "Storage.Upload.Abort")
     {
         Caption = 'Storage.Upload.Abort', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Upload Abort Impl ori", "Msg Discovery ori" = "Storage Upload Abort Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Upload Abort Impl ori", "Msg Discovery ori" = "Storage Upload Abort Impl ori", "Msg Contract ori" = "Storage Upload Abort Impl ori";
     }
     /// <summary>Reports the progress and state of an upload session.</summary>
     value(10035654; "Storage.Upload.Status")
     {
         Caption = 'Storage.Upload.Status', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Upload Status Impl ori", "Msg Discovery ori" = "Storage Upload Status Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Upload Status Impl ori", "Msg Discovery ori" = "Storage Upload Status Impl ori", "Msg Contract ori" = "Storage Upload Status Impl ori";
     }
     /// <summary>Attaches a file already in storage to a new or existing incoming document.</summary>
     value(10035655; "Storage.Attachment.CreateLinked")
     {
         Caption = 'Storage.Attachment.CreateLinked', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Attach Link Impl ori", "Msg Discovery ori" = "Storage Attach Link Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Attach Link Impl ori", "Msg Discovery ori" = "Storage Attach Link Impl ori", "Msg Contract ori" = "Storage Attach Link Impl ori";
     }
     /// <summary>Creates a document attachment on any record, from base64, from storage, or by copying an existing attachment.</summary>
     value(10035656; "Storage.Attachment.CreateForRecord")
     {
         Caption = 'Storage.Attachment.CreateForRecord', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Attach Record Impl ori", "Msg Discovery ori" = "Storage Attach Record Impl ori";
+        Implementation = "Msg Interface ori" = "Storage Attach Record Impl ori", "Msg Discovery ori" = "Storage Attach Record Impl ori", "Msg Contract ori" = "Storage Attach Record Impl ori";
     }
     /// <summary>Assembles uploaded chunks and attaches the file to a record without external storage.</summary>
     value(10035657; "Storage.Upload.CommitToRecord")
     {
         Caption = 'Storage.Upload.CommitToRecord', Locked = true;
-        Implementation = "Msg Interface ori" = "Storage Upload Commit Rec ori", "Msg Discovery ori" = "Storage Upload Commit Rec ori";
+        Implementation = "Msg Interface ori" = "Storage Upload Commit Rec ori", "Msg Discovery ori" = "Storage Upload Commit Rec ori", "Msg Contract ori" = "Storage Upload Commit Rec ori";
     }
 }

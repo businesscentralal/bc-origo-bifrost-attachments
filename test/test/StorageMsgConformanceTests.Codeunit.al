@@ -256,19 +256,14 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Ordinal: Integer;
     begin
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            if (Ordinal >= FirstOrdinal) and (Ordinal <= LastOrdinal) then
+            if ((Ordinal >= FirstOrdinal) and (Ordinal <= LastOrdinal)) or ((Ordinal >= 70013510) and (Ordinal <= 70013515)) then
                 Ordinals.Add(Ordinal);
-        LibraryAssert.AreEqual(23, Ordinals.Count(), 'Bifröst Attachments declares 23 message types.');
+        LibraryAssert.AreEqual(29, Ordinals.Count(), 'Bifröst Attachments declares 29 message types.');
     end;
 
     local procedure IsHelpType(Ordinal: Integer): Boolean
     begin
         exit(TypeName(Ordinal).StartsWith('Help.'));
-    end;
-
-    local procedure TypeName(Ordinal: Integer): Text
-    begin
-        exit(Enum::"Message Type ori".Names().Get(Enum::"Message Type ori".Ordinals().IndexOf(Ordinal)));
     end;
 
     local procedure LineFeed(): Text
