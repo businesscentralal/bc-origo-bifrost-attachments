@@ -22,6 +22,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - `Help.Storage.Get` prints the installed module version (`NavApp.GetCurrentModuleInfo`, culture-invariant major.minor.build.revision) and drops the hard-coded `28.0.11.0` / "Initial release" line.
 
+### Fixed (2026-09-28) - Storage help uses the MCP tool names from Foundation (#12)
+
+- Storage help no longer names `call_message_type` or `get_message_type_help`. It uses `invoke_message_type` and `describe_message_type`, matching Bifrost Foundation after core#64.
+
 ### Changed (2026-09-24) - Storage.Upload help after Abort (#17)
 
 - Storage.Upload help: Abort notes now point to the Status not-found result, and the not-found error names `Storage.Upload.Begin`.
