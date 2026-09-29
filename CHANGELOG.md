@@ -56,6 +56,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - New permission set `BIFROST DataExch ori` (70013548), also granted through `Storage Full ori`.
 - `app.json` `idRanges` gains 70013500–70013549.
 
+### Changed (2026-09-28) - document linked-attachment delete guards (#14)
+
+- `Storage.File.Delete` and `Storage.Directory.Delete` help list the linked-attachment guard errors and the resolution: restore with `Storage.Attachment.Restore` or delete the BC attachment first, then delete the file. The overview Connector notes mention the same guard.
+
 ### Fixed (2026-09-28) - Help.Storage.Get reports the installed app version (#13)
 
 - `Help.Storage.Get` prints the installed module version (`NavApp.GetCurrentModuleInfo`, culture-invariant major.minor.build.revision) and drops the hard-coded `28.0.11.0` / "Initial release" line.

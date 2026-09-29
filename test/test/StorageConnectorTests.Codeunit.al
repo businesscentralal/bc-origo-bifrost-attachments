@@ -184,6 +184,22 @@ codeunit 96204 "Storage Connector Tests"
     end;
 
     [Test]
+    procedure DeleteHelpDocumentsLinkedAttachmentGuards()
+    var
+        FileGuardTok: Label 'File is linked to a Business Central attachment and cannot be deleted directly from storage', Locked = true;
+        DirGuardTok: Label 'Directory contains one or more files linked to Business Central attachments and cannot be deleted directly from storage', Locked = true;
+        ResolutionTok: Label 'Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.', Locked = true;
+    begin
+        // [SCENARIO] #14 AC01 — File.Delete and Directory.Delete help list the linked-attachment guard and how to clear it.
+        AssertHelpContains(Enum::"Message Type ori"::"Storage.File.Delete", FileGuardTok);
+        AssertHelpContains(Enum::"Message Type ori"::"Storage.File.Delete", ResolutionTok);
+        AssertHelpContains(Enum::"Message Type ori"::"Storage.Directory.Delete", DirGuardTok);
+        AssertHelpContains(Enum::"Message Type ori"::"Storage.Directory.Delete", ResolutionTok);
+        AssertHelpContains(Enum::"Message Type ori"::"Help.Storage.Get", FileGuardTok);
+        AssertHelpContains(Enum::"Message Type ori"::"Help.Storage.Get", DirGuardTok);
+    end;
+
+    [Test]
     procedure AccountListReturnsConfiguredCode()
     var
         TempArgument: Record "Message Argument ori";
@@ -784,6 +800,15 @@ codeunit 96204 "Storage Connector Tests"
         RequestJson.Add('description', 'X linked attachment');
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'The linked incoming attachment should be created.');
+    end;
+
+    local procedure AssertHelpContains(MessageType: Enum "Message Type ori"; Expected: Text)
+    var
+        HelpText: Text;
+        MissingHelpTextErr: Label 'Help for %1 should contain "%2".', Comment = '%1 = message type, %2 = expected text';
+    begin
+        HelpText := MessageHelp(MessageType);
+        LibraryAssert.IsTrue(HelpText.Contains(Expected), StrSubstNo(MissingHelpTextErr, MessageType, Expected));
     end;
 
     local procedure MessageHelp(MessageType: Enum "Message Type ori"): Text

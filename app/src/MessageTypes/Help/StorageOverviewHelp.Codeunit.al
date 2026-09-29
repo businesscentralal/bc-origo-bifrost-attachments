@@ -200,6 +200,7 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('- **Create overwrites.** `Storage.File.Create` replaces an existing file on connectors that support overwrite.');
         Builder.AppendLine('- **Paths can be case-sensitive** on cloud back ends — match the stored casing exactly.');
         Builder.AppendLine('- **Offloaded attachments stay transparent.** After `Storage.Attachment.Offload`, processes that read the file through the standard accessors keep working; the content is fetched from storage on demand. If the storage connection is unavailable the read fails rather than returning an empty file.');
+        Builder.AppendLine('- **Linked attachments block storage delete.** `Storage.File.Delete` and `Storage.Directory.Delete` refuse the path when a Business Central attachment still points at it: File is linked to a Business Central attachment and cannot be deleted directly from storage. Directory contains one or more files linked to Business Central attachments and cannot be deleted directly from storage. Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.');
         Builder.AppendLine('');
         Builder.AppendLine('## Initial release boundaries');
         Builder.AppendLine('');
