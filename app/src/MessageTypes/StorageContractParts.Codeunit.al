@@ -268,10 +268,11 @@ codeunit 70013500 "Storage Contract Parts ori"
     begin
         if MessageType in ['Storage.Attachment.Restore', 'Storage.File.Delete', 'Storage.Directory.Delete'] then
             Effect.Add('effect', 'irreversible')
-        else if MessageType in ['Storage.Attachment.Offload', 'Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Begin', 'Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord', 'Storage.File.Create', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.Directory.Create'] then
-            Effect.Add('effect', 'write')
         else
-            Effect.Add('effect', 'read');
+            if MessageType in ['Storage.Attachment.Offload', 'Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Begin', 'Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord', 'Storage.File.Create', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.Directory.Create'] then
+            Effect.Add('effect', 'write')
+            else
+                Effect.Add('effect', 'read');
         Effect.Add('changes', 'The operation changes only the external storage state described by the message.');
         Effect.Add('idempotent', MessageType in ['Storage.Account.List', 'Storage.File.List', 'Storage.File.Get', 'Storage.File.Exists', 'Storage.Directory.List', 'Storage.Directory.Exists', 'Storage.Upload.Status', 'DataExchange.Definition.List', 'DataExchange.Definition.Get', 'DataExchange.Type.List', 'DataExchange.Entry.List', 'DataExchange.Entry.Get']);
         Effect.Add('permissionSet', 'BIFROST Attach ori');

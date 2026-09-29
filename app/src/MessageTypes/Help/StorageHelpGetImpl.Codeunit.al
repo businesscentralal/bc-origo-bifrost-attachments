@@ -110,6 +110,7 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
 
     procedure GetNotes(var Notes: Text): Boolean
     begin
+        Clear(Notes);
         exit(false);
     end;
 

@@ -109,6 +109,7 @@ codeunit 70013521 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
 
     procedure GetNotes(var Notes: Text): Boolean
     begin
+        Clear(Notes);
         exit(false);
     end;
 

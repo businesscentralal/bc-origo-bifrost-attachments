@@ -124,11 +124,13 @@ codeunit 10035642 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
 
     procedure GetOverview(var Overview: Text): Boolean
     begin
+        Clear(Overview);
         exit(false);
     end;
 
     procedure GetNotes(var Notes: Text): Boolean
     begin
+        Clear(Notes);
         exit(false);
     end;
 

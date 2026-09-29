@@ -111,11 +111,13 @@ codeunit 70013525 "DataExch Entry List Impl ori" implements "Msg Interface ori",
 
     procedure GetOverview(var Overview: Text): Boolean
     begin
+        Clear(Overview);
         exit(false);
     end;
 
     procedure GetNotes(var Notes: Text): Boolean
     begin
+        Clear(Notes);
         exit(false);
     end;
 

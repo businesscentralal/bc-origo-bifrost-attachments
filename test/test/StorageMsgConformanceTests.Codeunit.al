@@ -261,6 +261,17 @@ codeunit 96211 "Storage Msg Conformance Tests"
         LibraryAssert.AreEqual(29, Ordinals.Count(), 'Bifröst Attachments declares 29 message types.');
     end;
 
+    local procedure TypeName(Ordinal: Integer): Text
+    var
+        MessageType: Enum "Message Type ori";
+        Names: List of [Text];
+        Ordinals: List of [Integer];
+    begin
+        Names := MessageType.Names();
+        Ordinals := MessageType.Ordinals();
+        exit(Names.Get(Ordinals.IndexOf(Ordinal)));
+    end;
+
     local procedure IsHelpType(Ordinal: Integer): Boolean
     begin
         exit(TypeName(Ordinal).StartsWith('Help.'));

@@ -118,11 +118,13 @@ codeunit 10035658 "Storage Upload Begin Impl ori" implements "Msg Interface ori"
 
     procedure GetOverview(var Overview: Text): Boolean
     begin
+        Clear(Overview);
         exit(false);
     end;
 
     procedure GetNotes(var Notes: Text): Boolean
     begin
+        Clear(Notes);
         exit(false);
     end;
 
