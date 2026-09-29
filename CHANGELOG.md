@@ -16,6 +16,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - `Storage.Upload.Begin` rejects a `fileName` that contains `/` or `\` (`fileName must be a file name without folders; use path or folderPath for the destination folder.`) and does not create a session. Help states the default root `bifrost-uploads/`.
 
+### Security (2026-09-29) - generic writes blocked on Storage Attachment Link ori; orphan links purged (#9)
+
+- Generic `Data.Records.Set` writes to `Storage Attachment Link ori` are refused. The error names `Storage.Attachment.Offload / Storage.Attachment.CreateLinked / Storage.Attachment.CreateForRecord`. Reads stay allowed.
+- Install and the next per-company upgrade (`Storage Link Upgrade ori`, 10035683, tag `Origo.Bifrost.Attachments-PurgeOrphanLinks-20260928`) delete link rows whose Table ID is 0 or whose Record System Id is empty.
 ### Changed (2026-09-28) - message types behave like Bifröst Foundation's (Foundation #138, #135, #136, #144, #146)
 
 - **Structured errors.** Every storage message type now answers a bad request the way Foundation does:
