@@ -12,6 +12,12 @@ Business Central release versioning (`major.minor.build.revision`).
 - **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
 - **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
 
+### Added (2026-09-28) - Data Exchange Phase 0 (#22)
+
+- Read-only discovery message types `Help.DataExchange.Get`, `DataExchange.Definition.List`, `DataExchange.Definition.Get`, `DataExchange.Type.List`, `DataExchange.Entry.List` and `DataExchange.Entry.Get`. Generic `Data.Records.Set` on `Data Exch.` is blocked and the error names `DataExchange.Import.Run / Storage.Upload.CommitToDataExchange`.
+- New permission set `BIFROST DataExch ori` (70013548), also granted through `Storage Full ori`.
+- `app.json` `idRanges` gains 70013500–70013549.
+
 ### Fixed (2026-09-28) - Help.Storage.Get reports the installed app version (#13)
 
 - `Help.Storage.Get` prints the installed module version (`NavApp.GetCurrentModuleInfo`, culture-invariant major.minor.build.revision) and drops the hard-coded `28.0.11.0` / "Initial release" line.

@@ -807,6 +807,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Bifröst geymsla</note>
           <note from="Xliff Generator" annotates="general" priority="3">PermissionSet BIFROST Attach ori - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PermissionSet 782960799 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bifrost Data Exchange</source>
+          <target state="translated">Bifröst gagnaskipti</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Bifröst gagnaskipti</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet BIFROST DataExch ori - Property Caption</note>
+        </trans-unit>
       </group>
     </body>
   </file>
