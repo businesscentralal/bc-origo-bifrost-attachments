@@ -15,6 +15,16 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Fixed (2026-09-29) - Restore main build after #45/#47 AddError conflict (#55)
 
 - `Storage.Directory.Delete` and `Storage.File.Delete` help pass an error code and a resolution to `AddError`, so those calls compile against the three-parameter form.
+### Fixed (2026-09-29) - help names current tools and characters (#12)
+
+- `Help.DataExchange.Get` tells the caller to use `invoke_message_type`. The tool-name test now covers every Data Exchange help type, and rendered Storage and Data Exchange help must not contain a literal `\u` escape.
+- `Storage.Attachment.Offload` discovers candidates with `Data.Records.Get` (`tableName` and `tableView`) instead of `get_records`.
+### Fixed (2026-09-28) - Upload.Begin rejects a fileName that contains folders (#16)
+
+- `Storage.Upload.Begin` rejects a `fileName` that contains `/` or `\` (`fileName must be a file name without folders; use path or folderPath for the destination folder.`) and does not create a session. Help states the default root `bifrost-uploads/`.
+### Changed (2026-09-28) - CreateForRecord accepts contentBase64 (#15)
+
+- `Storage.Attachment.CreateForRecord` accepts `contentBase64` as the canonical inline content name and keeps `content` as an alias. Sending both names returns "Supply contentBase64 or content, not both."
 
 ### Security (2026-09-29) - generic writes blocked on Storage Attachment Link ori; orphan links purged (#9)
 

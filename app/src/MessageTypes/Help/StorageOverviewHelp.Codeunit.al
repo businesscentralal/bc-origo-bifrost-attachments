@@ -101,9 +101,9 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('5. `Incoming.Document.Get` with that entry no as `subject` → confirms the attachment; its content is served transparently from storage.');
         Builder.AppendLine('');
         Builder.AppendLine('**Attach a file to any master record** (customer, vendor, fixed asset, G/L account, bank account, ...):');
-        Builder.AppendLine('- Inline: `Storage.Attachment.CreateForRecord` with `tableId`/`tableName` + `no`/`recordSystemId` + `content` (base64) + `fileName`.');
-        Builder.AppendLine('- From storage (born offloaded): same call but pass `storageCode` + `path` instead of `content`. The file stays in storage and is served on demand.');
-        Builder.AppendLine('- Copy from existing attachment: same call but pass `sourceTarget` + `sourceSystemId` instead of `content`. Server-side copy, nothing crosses the wire.');
+        Builder.AppendLine('- Inline: `Storage.Attachment.CreateForRecord` with `tableId`/`tableName` + `no`/`recordSystemId` + `contentBase64` (base64; `content` is an accepted alias) + `fileName`.');
+        Builder.AppendLine('- From storage (born offloaded): same call but pass `storageCode` + `path` instead of `contentBase64`. The file stays in storage and is served on demand.');
+        Builder.AppendLine('- Copy from existing attachment: same call but pass `sourceTarget` + `sourceSystemId` instead of `contentBase64`. Server-side copy, nothing crosses the wire.');
         Builder.AppendLine('- Each storage path can only be linked to one attachment; use a separate upload per attachment.');
         Builder.AppendLine('');
         Builder.AppendLine('**Offload an existing BC attachment** then bring it back: `Storage.Attachment.Offload` → `Storage.Attachment.Restore`. Works for both `DocumentAttachment` and `IncomingDocument` targets.');
@@ -179,6 +179,8 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('### Chunked uploads');
         Builder.AppendLine('');
         Builder.AppendLine('Deliver a large file as a sequence of small chunks when it is too big for a single `Storage.File.Create` call or a single inline `content` parameter. Begin a session, append the file in pieces (up to 240 MiB of raw bytes each, base64-encoded), then commit — either to external storage or directly to a record attachment.');
+        Builder.AppendLine('');
+        Builder.AppendLine('`fileName` on `Storage.Upload.Begin` is a leaf name with no folders. Omit `path` and `folderPath` and the file is stored under the default root `bifrost-uploads/`.');
         Builder.AppendLine('');
         Builder.AppendLine('| Message type | Required parameters | Description |');
         Builder.AppendLine('|---|---|---|');

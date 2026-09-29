@@ -454,9 +454,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType CompositeKeyErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 3544305851" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Send exactly one content source: content, storageCode with path, or sourceTarget with sourceSystemId.</source>
-          <target>Sendu nákvæmlega eina uppsprettu innihalds: content, storageCode með path eða sourceTarget með sourceSystemId.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sendu nákvæmlega eina uppsprettu innihalds: content, storageCode með path eða sourceTarget með sourceSystemId.</note>
+          <source>Send exactly one content source: contentBase64 (or the alias content), storageCode with path, or sourceTarget with sourceSystemId.</source>
+          <target>Sendu nákvæmlega eina uppsprettu innihalds: contentBase64 (eða samheitið content), storageCode með path eða sourceTarget með sourceSystemId.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu nákvæmlega eina uppsprettu innihalds: contentBase64 (eða samheitið content), storageCode með path eða sourceTarget með sourceSystemId.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType ContentSourceErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 2011335988" size-unit="char" translate="yes" xml:space="preserve">
