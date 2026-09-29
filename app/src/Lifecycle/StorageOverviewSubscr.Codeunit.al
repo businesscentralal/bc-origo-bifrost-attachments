@@ -16,5 +16,6 @@ codeunit 10035638 "Storage Overview Subscr ori"
     local procedure OnAfterCreatingOverview(Overview: TextBuilder)
     begin
         Overview.AppendLine('| `Help.Storage.Get` | Storage connector directory - file, directory, upload, and attachment message types for Business Central external file storage. |');
+        Overview.AppendLine('| `Help.DataExchange.Get` | Data Exchange discovery - definitions, incoming-document types, and processed entries. |');
     end;
 }
