@@ -1,5 +1,6 @@
 namespace Origo.Bifrost.Attachments;
 
+using Microsoft.Foundation.Attachment;
 using Origo.Bifrost;
 
 /// <summary>
@@ -8,7 +9,7 @@ using Origo.Bifrost;
 /// the file stays transparently available to Business Central and can be brought back with
 /// <c>Storage.Attachment.Restore</c>.
 /// </summary>
-codeunit 10035641 "Storage Att. Offload Impl ori" implements "Msg Interface ori"
+codeunit 10035641 "Storage Att. Offload Impl ori" implements "Msg Interface ori", "Msg Discovery ori"
 {
     Access = Internal;
 
@@ -22,12 +23,33 @@ codeunit 10035641 "Storage Att. Offload Impl ori" implements "Msg Interface ori"
 
     procedure GetFilterTableNo(): Integer
     begin
-        exit(0);
+        exit(Database::"Document Attachment");
     end;
 
     procedure GetDescription(): Text[250]
     begin
         exit('Offloads an attachment''s file to a storage connection and clears it from the database, keeping it transparently available.');
+    end;
+
+    /// <summary>
+    /// Search terms users say for this type, English with the Icelandic translation. Used to rank
+    /// search results; never shown to the caller.
+    /// </summary>
+    /// <returns>Comma-separated keywords in the current language.</returns>
+    procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'offload attachments, move attachments to cloud, free up database space, reduce database size, archive attachments to storage, move pdfs out of the database, database capacity, shrink attachment storage', Comment = 'is-IS=færa viðhengi í skýið, færa viðhengi í geymslu, losa pláss í gagnagrunni, minnka gagnagrunn, minnka gagnagrunninn, geyma viðhengi utan gagnagrunns, færa pdf úr gagnagrunni, gagnagrunnsrými';
+    begin
+        exit(KeywordsLbl);
+    end;
+
+    /// <summary>What separates this type from its siblings when a caller is choosing one.</summary>
+    /// <returns>One sentence.</returns>
+    procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Moves an existing attachment file out of the Business Central database into storage while it stays openable; use restore to bring it back.', Locked = true;
+    begin
+        exit(SelectionDescriptionLbl);
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"
@@ -48,12 +70,11 @@ codeunit 10035641 "Storage Att. Offload Impl ori" implements "Msg Interface ori"
         RequestMgt: Codeunit "Storage Request Mgt ori";
         ResultData: JsonObject;
     begin
-        // This is an inbound (write) message type: the database work runs directly, not inside a
-        // TryFunction (AL forbids INSERT there). Any error propagates to the framework, which
-        // writes the standard { "status": "Error", "error": ... } response.
+        // Every problem the request or the data can show is answered before the first write.
+        // A failure after a write (for example the storage upload) is raised, so the write rolls back.
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
-        AttachmentMgt.Offload(Argument.GetRequestJson(), ResultData);
-        RequestMgt.RespondSuccess(Argument, ResultData);
+        if AttachmentMgt.Offload(Argument, ResultData) then
+            RequestMgt.RespondSuccess(Argument, ResultData);
     end;
 }

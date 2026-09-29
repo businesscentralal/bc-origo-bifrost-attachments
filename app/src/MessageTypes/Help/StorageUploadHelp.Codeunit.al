@@ -38,7 +38,7 @@ codeunit 10035674 "Storage Upload Help ori"
     var
         HelpBuilder: Codeunit "Storage Help Builder ori";
     begin
-        HelpBuilder.Init('Storage.Upload.Begin', 'Opens a chunked upload session for delivering a large file as a sequence of small chunks.', 'CreateFile');
+        HelpBuilder.Init('Storage.Upload.Begin', 'Opens a chunked upload session for a file larger than one call can carry, sent as chunks of up to 240 MiB each.', 'CreateFile');
         HelpBuilder.SetDirection('Inbound (write)');
         HelpBuilder.AddParam('storageCode', false, 'string', 'The storage connection the file is written to on Storage.Upload.Commit. Omit to create a buffer-only session that can only be committed with Storage.Upload.CommitToRecord (attaches directly to a record without external storage).');
         HelpBuilder.AddParam('fileName', true, 'string', 'Leaf file name, including extension. Must not contain a slash or backslash; use path or folderPath for the folder. When both are omitted the file is stored under the default root `bifrost-uploads/`.');
@@ -49,10 +49,10 @@ codeunit 10035674 "Storage Upload Help ori"
         HelpBuilder.AddResponseField('uploadId', 'string (GUID)', 'The session id. Pass it as `uploadId` on every Append, Commit, Abort and Status call for this upload.');
         HelpBuilder.AddResponseField('storageCode', 'string', 'Echo of the resolved storage connection.');
         HelpBuilder.AddResponseField('path', 'string', 'The destination path the committed file will be written to.');
-        HelpBuilder.AddResponseField('chunkSizeHint', 'integer', 'Recommended maximum RAW bytes per chunk (currently 49152). Read at most this many bytes per chunk, base64-encode that slice on its own, and send it with Append.');
-        HelpBuilder.AddError('No storage connection is configured for storageCode', 'Resolve a valid, enabled code via Storage.Account.List.');
-        HelpBuilder.AddError('fileName must be a file name without folders', 'Use path or folderPath for the destination folder. The default root is `bifrost-uploads/`.');
-        HelpBuilder.SetNotes('Use this when a file is too large to pass to Storage.File.Create in one call. Split the file into chunks of at most `chunkSizeHint` RAW bytes; base64-encode each chunk INDEPENDENTLY (do not base64 the whole file and then slice the text — the boundaries would not decode). Send chunks with sequence numbers 1, 2, 3, ..., then commit. A session is private to the user that created it and is pruned automatically if never committed.');
+        HelpBuilder.AddResponseField('maxChunkBytes', 'integer', 'The most RAW bytes one Append call accepts (currently 251,658,240 = 240 MiB). A larger chunk is refused with `LimitExceeded`.');
+        HelpBuilder.AddResponseField('chunkSizeHint', 'integer', 'The chunk size to target, in RAW bytes: the largest a single call can carry (currently 251,658,240 = 240 MiB). Read up to this many bytes per chunk, base64-encode that slice on its own, and send it with Append. Fewer chunks mean fewer billable messages.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameter, 'fileName must be a file name without folders; use path or folderPath for the destination folder.', 'Send the folder in path or folderPath, and only the file name in fileName. The default root is `bifrost-uploads/`.');
+        HelpBuilder.SetNotes('Use this when a file is too large to pass to Storage.File.Create in one call. Split the file into chunks of up to `chunkSizeHint` RAW bytes (240 MiB), so a file needs as few calls as possible - every call is one billable message; base64-encode each chunk INDEPENDENTLY (do not base64 the whole file and then slice the text — the boundaries would not decode). Send chunks with sequence numbers 1, 2, 3, ..., then commit. A session is private to the user that created it and is pruned automatically if never committed.');
         HelpBuilder.AddNextStep('To send the file contents', 'Storage.Upload.Append', 'pass the returned `uploadId`, `sequence` starting at 1, and one base64 chunk');
         HelpBuilder.AddNextStep('To write the file to storage', 'Storage.Upload.Commit', 'pass the `uploadId` — requires a storageCode on the session');
         HelpBuilder.AddNextStep('To attach the file to a record without storage', 'Storage.Upload.CommitToRecord', 'pass the `uploadId` + record address (tableId/no)');
@@ -63,20 +63,21 @@ codeunit 10035674 "Storage Upload Help ori"
     var
         HelpBuilder: Codeunit "Storage Help Builder ori";
     begin
-        HelpBuilder.Init('Storage.Upload.Append', 'Appends one base64 chunk to an open upload session.', 'CreateFile');
+        HelpBuilder.Init('Storage.Upload.Append', 'Appends one base64 chunk of up to 240 MiB to an open upload session.', 'CreateFile');
         HelpBuilder.SetDirection('Inbound (write)');
         HelpBuilder.SetRouting('Addressed by `uploadId` — the session created by `Storage.Upload.Begin`. No `storageCode` is needed here; the destination was fixed at Begin.');
         HelpBuilder.AddParam('uploadId', true, 'string (GUID)', 'The session returned by Storage.Upload.Begin.');
         HelpBuilder.AddParam('sequence', true, 'integer', '1-based position of this chunk. Sequences must be contiguous (1, 2, 3, ...) with no gaps by the time you commit. Re-sending the same sequence replaces that chunk, so retries are safe.');
-        HelpBuilder.AddParam('contentBase64', true, 'base64 string', 'This chunk''s raw bytes, base64-encoded on their own — no data-URI prefix, no whitespace. Keep each chunk at or below the chunkSizeHint raw bytes from Begin (~48 KB).');
+        HelpBuilder.AddParam('contentBase64', true, 'base64 string', 'This chunk''s raw bytes, base64-encoded on their own — no data-URI prefix, no whitespace. At most `maxChunkBytes` raw bytes (240 MiB); aim for `chunkSizeHint` so the file needs as few calls as possible.');
         HelpBuilder.SetRequestExample('{ "uploadId": "0f8e...-...", "sequence": 1, "contentBase64": "JVBERi0xLjQK..." }');
         HelpBuilder.AddResponseField('uploadId', 'string (GUID)', 'Echo of the session id.');
         HelpBuilder.AddResponseField('sequence', 'integer', 'Echo of the accepted chunk sequence.');
         HelpBuilder.AddResponseField('received', 'integer', 'Total bytes accumulated across all chunks so far. When this equals declaredSize (or the file size you intend), you are done appending.');
         HelpBuilder.AddResponseField('chunkCount', 'integer', 'Number of distinct chunks stored so far.');
-        HelpBuilder.AddError('No upload session was found for the supplied uploadId', 'Begin a session first; a session is private to its creator and may have been committed, aborted, or pruned.');
-        HelpBuilder.AddError('The upload session is not open', 'It was already committed or aborted; begin a new session.');
-        HelpBuilder.AddError('Invalid base64 content', 'Ensure contentBase64 is valid base64 with no surrounding whitespace or data-URI prefix.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'No upload session was found for the supplied uploadId', 'Begin a session first; a session is private to its creator and may have been committed, aborted, or pruned.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The upload session is not open', 'It was already committed or aborted; begin a new session.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameterFormat, 'Invalid base64 content', 'Ensure contentBase64 is valid base64 with no surrounding whitespace or data-URI prefix.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::LimitExceeded, 'The chunk is larger than `maxChunkBytes` (240 MiB)', 'Split it into smaller chunks.');
         HelpBuilder.SetNotes('Send chunks in order (sequence 1, 2, 3, ...). This call is idempotent per sequence — re-sending a sequence replaces that chunk.');
         HelpBuilder.AddNextStep('While more chunks remain', 'Storage.Upload.Append', 'increment `sequence` and send the next chunk');
         HelpBuilder.AddNextStep('When all chunks are sent (to external storage)', 'Storage.Upload.Commit', 'pass the same `uploadId` — requires a storageCode on the session');
@@ -98,11 +99,11 @@ codeunit 10035674 "Storage Upload Help ori"
         HelpBuilder.AddResponseField('storageCode', 'string', 'The storage connection the file was written to. Carry it into Storage.Attachment.CreateLinked or Storage.File.* calls.');
         HelpBuilder.AddResponseField('path', 'string', 'The full path the file was written to. Carry it into Storage.Attachment.CreateLinked, Storage.File.Get, etc.');
         HelpBuilder.AddResponseField('contentLength', 'integer', 'The assembled file size in bytes.');
-        HelpBuilder.AddError('The upload session has no chunks to commit', 'Append at least one chunk with Storage.Upload.Append before committing.');
-        HelpBuilder.AddError('The upload session is missing one or more chunks', 'Sequence numbers are not contiguous; re-append the missing sequence(s) before committing.');
-        HelpBuilder.AddError('The received size does not match the declared size', 'A chunk is missing or truncated; re-append it, or begin again without declaredSize.');
-        HelpBuilder.AddError('The upload session is not open', 'It was already committed or aborted; begin a new session.');
-        HelpBuilder.AddError('This upload session has no storage connection', 'The session was begun without a storageCode. Use Storage.Upload.CommitToRecord to attach it to a record without external storage, or begin a new session with a storageCode.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The upload session has no chunks to commit', 'Append at least one chunk with Storage.Upload.Append before committing.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The upload session is missing one or more chunks', 'Sequence numbers are not contiguous; re-append the missing sequence(s) before committing.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The received size does not match the declared size', 'A chunk is missing or truncated; re-append it, or begin again without declaredSize.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The upload session is not open', 'It was already committed or aborted; begin a new session.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'This upload session has no storage connection', 'The session was begun without a storageCode. Use Storage.Upload.CommitToRecord to attach it to a record without external storage, or begin a new session with a storageCode.');
         HelpBuilder.SetNotes('Commit assembles the chunks in ascending sequence order, writes the file last (after the database work, so a failure rolls back cleanly), and removes the chunks. Writing to an existing path overwrites it on connectors such as Azure Blob. This message type requires a storageCode on the session — use Storage.Upload.CommitToRecord instead if you want to attach the file directly to a record without external storage.');
         HelpBuilder.AddNextStep('To attach the file to a new or existing incoming document', 'Storage.Attachment.CreateLinked', 'pass the returned `storageCode` and `path`');
         HelpBuilder.AddNextStep('To attach the file to any master record (born offloaded)', 'Storage.Attachment.CreateForRecord', 'pass the returned `storageCode` and `path` as content source 2');
@@ -121,8 +122,8 @@ codeunit 10035674 "Storage Upload Help ori"
         HelpBuilder.SetRequestExample('{ "uploadId": "0f8e...-..." }');
         HelpBuilder.AddResponseField('uploadId', 'string (GUID)', 'Echo of the discarded session id.');
         HelpBuilder.AddResponseField('status', 'string', 'Always `Aborted` on success.');
-        HelpBuilder.AddError('No upload session was found for the supplied uploadId', 'It may have already been committed, aborted, or pruned; a session is private to its creator.');
-        HelpBuilder.AddError('The upload session is not open', 'Only an open session can be aborted; a committed upload is already stored.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'No upload session was found for the supplied uploadId', 'It may have already been committed, aborted, or pruned; a session is private to its creator.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The upload session is not open', 'Only an open session can be aborted; a committed upload is already stored.');
         HelpBuilder.SetNotes('Aborting deletes the session and its chunks from the database. After abort, `Storage.Upload.Status` for the same `uploadId` returns "No upload session was found for the supplied uploadId." It does not touch storage, because nothing has been written there yet. Uncommitted sessions are also pruned automatically by a retention policy, so aborting is optional.');
         HelpBuilder.AddNextStep('To start a fresh upload', 'Storage.Upload.Begin', '');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
@@ -144,7 +145,7 @@ codeunit 10035674 "Storage Upload Help ori"
         HelpBuilder.AddResponseField('declaredSize', 'integer', 'The expected size declared at Begin, or 0 if none was given.');
         HelpBuilder.AddResponseField('received', 'integer', 'Bytes accumulated across all chunks so far.');
         HelpBuilder.AddResponseField('chunkCount', 'integer', 'Number of chunks stored so far.');
-        HelpBuilder.AddError('No upload session was found for the supplied uploadId', 'It may have been committed, aborted, or pruned; a session is private to its creator. Begin a new session with Storage.Upload.Begin.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'No upload session was found for the supplied uploadId', 'It may have been committed, aborted, or pruned; a session is private to its creator. Begin a new session with Storage.Upload.Begin.');
         HelpBuilder.SetNotes('Use this to confirm received bytes and chunk count before committing, or to check whether a session is still open. Aborting deletes the session, so status for an aborted upload is returned as not found. This is a read-only query and does not change the session.');
         HelpBuilder.AddNextStep('If status is Open and bytes remain', 'Storage.Upload.Append', 'send the next chunk');
         HelpBuilder.AddNextStep('If all bytes are received', 'Storage.Upload.Commit', 'pass the same `uploadId`');
@@ -188,10 +189,12 @@ codeunit 10035674 "Storage Upload Help ori"
         HelpBuilder.AddResponseField('contentLength', 'integer', 'The file size in bytes.');
         HelpBuilder.AddResponseField('offloaded', 'boolean', 'Always false — content is stored in the database.');
 
-        HelpBuilder.AddError('No upload session was found', 'Begin a session first with Storage.Upload.Begin.');
-        HelpBuilder.AddError('The upload session is not open', 'It was already committed or aborted; begin a new session.');
-        HelpBuilder.AddError('No record was found in table', 'DocumentAttachment: the host record must exist.');
-        HelpBuilder.AddError('Unknown target', 'Use ''DocumentAttachment'' or ''IncomingDocument''.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'No upload session was found', 'Begin a session first with Storage.Upload.Begin.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The upload session is not open', 'It was already committed or aborted; begin a new session.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'The session has no chunks, a gap in its sequence numbers, or a size that does not match declaredSize', 'Append the missing chunks (see Storage.Upload.Status), then commit again.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'The table, the record or the incoming document does not exist', 'DocumentAttachment: the host record must exist. IncomingDocument: omit incomingDocumentEntryNo to create a new one.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PermissionDenied, 'You cannot read the table of the record', 'Ask for read permission on that table.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameter, '`target` is neither DocumentAttachment nor IncomingDocument', 'Use ''DocumentAttachment'' or ''IncomingDocument''.');
 
         HelpBuilder.SetNotes(
             'The storage-free alternative to Storage.Upload.Commit. Chunks are assembled and written directly into the database — no external storage connection is needed. ' +

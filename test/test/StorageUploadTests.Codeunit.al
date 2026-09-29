@@ -107,9 +107,10 @@ codeunit 96205 "Storage Upload Tests"
         AppendChunk(UploadId, 1, 'x');
 
         // [WHEN] The session is committed
-        // [THEN] It raises an error (the framework turns a raised error into an Error envelope at runtime)
-        asserterror CommitUpload(TempArgument, UploadId);
-        LibraryAssert.ExpectedError('does not match the declared size');
+        CommitUpload(TempArgument, UploadId);
+
+        // [THEN] It answers PreconditionFailed on declaredSize, and the session stays open for a retry
+        AssertErrorResponse(TempArgument, 'PreconditionFailed', 'declaredSize');
     end;
 
     [Test]
@@ -124,9 +125,10 @@ codeunit 96205 "Storage Upload Tests"
         BeginUpload('empty.txt', '', UploadId, Path);
 
         // [WHEN] Commit runs before any chunk is appended
-        // [THEN] It raises an error (the framework turns a raised error into an Error envelope at runtime)
-        asserterror CommitUpload(TempArgument, UploadId);
-        LibraryAssert.ExpectedError('no chunks to commit');
+        CommitUpload(TempArgument, UploadId);
+
+        // [THEN] It answers PreconditionFailed on uploadId
+        AssertErrorResponse(TempArgument, 'PreconditionFailed', 'uploadId');
     end;
 
     [Test]
@@ -135,23 +137,23 @@ codeunit 96205 "Storage Upload Tests"
         Session: Record "Storage Upload Session ori";
         TempArgument: Record "Message Argument ori";
         BeginReq: JsonObject;
+        LeafFileNameErr: Label 'fileName must be a file name without folders', Locked = true;
     begin
         // [SCENARIO] #16 AC01 — a fileName that contains folders is rejected and creates no session.
-        // Commit the cleanup first: the expected Error rolls the write transaction back to the
-        // last commit, which would otherwise restore a session left by an earlier test.
         Initialize();
-        Commit();
 
         BeginReq.Add('storageCode', MockCodeTok);
         BeginReq.Add('fileName', 'bifrost-test/2026-09-12/chunked.bin');
-        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
-        LibraryAssert.ExpectedError('fileName must be a file name without folders');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        AssertErrorResponse(TempArgument, 'InvalidParameter', 'fileName');
+        LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains(LeafFileNameErr), 'The error should say fileName must be a file name without folders.');
 
         Clear(BeginReq);
         BeginReq.Add('storageCode', MockCodeTok);
         BeginReq.Add('fileName', 'bifrost-test\chunked.bin');
-        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
-        LibraryAssert.ExpectedError('fileName must be a file name without folders');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        AssertErrorResponse(TempArgument, 'InvalidParameter', 'fileName');
+        LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains(LeafFileNameErr), 'The error should say fileName must be a file name without folders.');
 
         Session.Reset();
         LibraryAssert.AreEqual(0, Session.Count(), 'A rejected fileName must not create an upload session.');
@@ -227,9 +229,10 @@ codeunit 96205 "Storage Upload Tests"
         AppendReq.Add('contentBase64', Base64Convert.ToBase64('x'));
 
         // [WHEN] Storage.Upload.Append executes
-        // [THEN] It raises an error (the framework turns a raised error into an Error envelope at runtime)
-        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Append", AppendReq);
-        LibraryAssert.ExpectedError('No upload session was found');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Append", AppendReq);
+
+        // [THEN] It answers RecordNotFound on uploadId
+        AssertErrorResponse(TempArgument, 'RecordNotFound', 'uploadId');
     end;
 
     [Test]
@@ -343,8 +346,9 @@ codeunit 96205 "Storage Upload Tests"
         TempArgument."Type" := TempArgument."Type"::"Storage.Upload.Commit";
         TempArgument.Insert(true);
 
-        asserterror CommitUpload(TempArgument, UploadId);
-        LibraryAssert.ExpectedError('no storage connection');
+        CommitUpload(TempArgument, UploadId);
+        AssertErrorResponse(TempArgument, 'PreconditionFailed', 'uploadId');
+        LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'nextStep').Contains('Storage.Upload.CommitToRecord'), 'The next step should point to CommitToRecord.');
     end;
 
     [Test]
@@ -436,8 +440,8 @@ codeunit 96205 "Storage Upload Tests"
         CommitReq.Add('tableId', Database::Customer);
         CommitReq.Add('no', TestCustNoTok);
 
-        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
-        LibraryAssert.ExpectedError('Unknown target');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
+        AssertErrorResponse(TempArgument, 'InvalidParameter', 'target');
     end;
 
     [Test]
@@ -458,8 +462,8 @@ codeunit 96205 "Storage Upload Tests"
         CommitReq.Add('tableId', Database::Customer);
         CommitReq.Add('no', TestCustNoTok);
 
-        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
-        LibraryAssert.ExpectedError('no chunks');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.CommitToRecord", CommitReq);
+        AssertErrorResponse(TempArgument, 'PreconditionFailed', 'uploadId');
     end;
 
     [Test]
@@ -789,5 +793,18 @@ codeunit 96205 "Storage Upload Tests"
         if not Token.IsValue() then
             exit('');
         exit(Token.AsValue().AsText());
+    end;
+
+    local procedure AssertErrorResponse(var TempArgument: Record "Message Argument ori"; ExpectedCode: Text; ExpectedParameter: Text)
+    var
+        ResponseJson: JsonObject;
+        WrongCodeErr: Label 'Expected an error with code %1.', Comment = '%1 = error code', Locked = true;
+        WrongParameterErr: Label 'Expected the error to name parameter %1.', Comment = '%1 = parameter', Locked = true;
+    begin
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Error', ReadText(ResponseJson, 'status'), 'The call should answer with an error response.');
+        LibraryAssert.AreEqual(ExpectedCode, ReadText(ResponseJson, 'code'), StrSubstNo(WrongCodeErr, ExpectedCode));
+        if ExpectedParameter <> '' then
+            LibraryAssert.AreEqual(ExpectedParameter, ReadText(ResponseJson, 'parameter'), StrSubstNo(WrongParameterErr, ExpectedParameter));
     end;
 }

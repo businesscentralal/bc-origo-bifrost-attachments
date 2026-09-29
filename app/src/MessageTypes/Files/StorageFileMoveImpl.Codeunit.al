@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of the <c>Storage.File.Move</c> message type. Moves a file within the
 /// configured storage connection.
 /// </summary>
-codeunit 10035654 "Storage File Move Impl ori" implements "Msg Interface ori"
+codeunit 10035654 "Storage File Move Impl ori" implements "Msg Interface ori", "Msg Discovery ori"
 {
     Access = Internal;
 
@@ -27,6 +27,27 @@ codeunit 10035654 "Storage File Move Impl ori" implements "Msg Interface ori"
         exit('Moves a file within the configured storage connection.');
     end;
 
+    /// <summary>
+    /// Search terms users say for this type, English with the Icelandic translation. Used to rank
+    /// search results; never shown to the caller.
+    /// </summary>
+    /// <returns>Comma-separated keywords in the current language.</returns>
+    procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'move the file, rename the file, move to another folder, relocate document in storage, archive the file to a folder, rename blob', Comment = 'is-IS=færa skrá, færa skrána, endurnefna skrá, endurnefna skrána, færa í aðra möppu, flytja skjal í geymslu, setja skrá í safnmöppu';
+    begin
+        exit(KeywordsLbl);
+    end;
+
+    /// <summary>What separates this type from its siblings when a caller is choosing one.</summary>
+    /// <returns>One sentence.</returns>
+    procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Moves or renames a file within the same storage connection so the original path no longer exists; use the copy type to keep the original.', Locked = true;
+    begin
+        exit(SelectionDescriptionLbl);
+    end;
+
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
         exit(Enum::"Msg Direction ori"::Outbound);
@@ -42,6 +63,7 @@ codeunit 10035654 "Storage File Move Impl ori" implements "Msg Interface ori"
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         StorageSetup: Record "Storage Setup ori";
+        Reader: Codeunit "Storage Request Reader ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
         Connector: Interface "Storage Connector ori";
         RequestJson: JsonObject;
@@ -51,11 +73,10 @@ codeunit 10035654 "Storage File Move Impl ori" implements "Msg Interface ori"
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
         RequestJson := Argument.GetRequestJson();
-        if not RequestMgt.ResolveSetup(Argument, RequestJson, StorageSetup, Connector) then
-            exit;
-        if not RequestMgt.RequireParam(Argument, RequestJson, 'sourcePath', SourcePath) then
-            exit;
-        if not RequestMgt.RequireParam(Argument, RequestJson, 'targetPath', TargetPath) then
+        RequestMgt.ReadSetup(Argument, RequestJson, StorageSetup, Connector);
+        Reader.ReadPath(Argument, RequestJson, 'sourcePath', true, SourcePath);
+        Reader.ReadPath(Argument, RequestJson, 'targetPath', true, TargetPath);
+        if Reader.RespondIfErrors(Argument) then
             exit;
         RequestMgt.ExecuteMoveFile(Argument, StorageSetup, Connector, SourcePath, TargetPath);
     end;

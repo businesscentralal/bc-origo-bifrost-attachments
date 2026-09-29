@@ -8,7 +8,7 @@ using System.ExternalFileStorage;
 /// storage connections — their codes, descriptions, connectors and enabled state — so a
 /// caller can discover the <c>storageCode</c> values to use. No secrets are exposed.
 /// </summary>
-codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
+codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori", "Msg Discovery ori"
 {
     Access = Internal;
 
@@ -27,6 +27,27 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
     procedure GetDescription(): Text[250]
     begin
         exit('Lists the configured storage connections (codes, descriptions, connectors and enabled state). No secrets are exposed.');
+    end;
+
+    /// <summary>
+    /// Search terms users say for this type, English with the Icelandic translation. Used to rank
+    /// search results; never shown to the caller.
+    /// </summary>
+    /// <returns>Comma-separated keywords in the current language.</returns>
+    procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'storage connections, which storage accounts, list storage accounts, configured storage, cloud storage setup, where are files stored, azure blob connection, sharepoint connection, file share connection, storage code', Comment = 'is-IS=geymslutengingar, geymslutenging, hvaða geymslur, geymslureikningar, uppsettar geymslur, skýjageymsla, skýjageymslu, hvar eru skrár geymdar, sharepoint tenging, geymslukóði';
+    begin
+        exit(KeywordsLbl);
+    end;
+
+    /// <summary>What separates this type from its siblings when a caller is choosing one.</summary>
+    /// <returns>One sentence.</returns>
+    procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Lists the configured storage connections to Azure Blob Storage, Azure File Share or SharePoint so a caller can pick the storage code; it reads no files.', Locked = true;
+    begin
+        exit(SelectionDescriptionLbl);
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"

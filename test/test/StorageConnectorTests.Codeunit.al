@@ -103,6 +103,37 @@ codeunit 96204 "Storage Connector Tests"
     end;
 
     [Test]
+    procedure StorageHelpUsesCurrentMcpToolNames()
+    var
+        MessageType: Enum "Message Type ori";
+        Ordinals: List of [Integer];
+        Ordinal: Integer;
+        Checked: Integer;
+        HelpText: Text;
+        Overview: Text;
+        StaleToolErr: Label 'Help for %1 still names a retired MCP tool (%2).', Comment = '%1 = message type, %2 = tool name';
+    begin
+        // [SCENARIO] #12 AC01 — rendered help for every storage message type names neither retired MCP tool.
+        // core#64 renamed call_message_type to invoke_message_type and get_message_type_help to describe_message_type.
+        Ordinals := MessageType.Ordinals();
+        foreach Ordinal in Ordinals do
+            if (Ordinal >= 10035635) and (Ordinal <= 10035657) then begin
+                MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
+                HelpText := MessageHelp(MessageType);
+                LibraryAssert.IsFalse(HelpText.Contains('call_message_type'), StrSubstNo(StaleToolErr, MessageType, 'call_message_type'));
+                LibraryAssert.IsFalse(HelpText.Contains('get_message_type_help'), StrSubstNo(StaleToolErr, MessageType, 'get_message_type_help'));
+                Checked += 1;
+            end;
+        LibraryAssert.AreEqual(23, Checked, 'Every storage message type (10035635-10035657) should be checked.');
+
+        // [THEN] AC02 — Getting started names the current tools and the message types, not the retired ones.
+        Overview := MessageHelp(Enum::"Message Type ori"::"Help.Storage.Get");
+        LibraryAssert.IsTrue(Overview.Contains('invoke_message_type'), 'The overview should name invoke_message_type.');
+        LibraryAssert.IsTrue(Overview.Contains('describe_message_type'), 'Getting started should name describe_message_type.');
+        LibraryAssert.IsTrue(Overview.Contains('Storage.Account.List'), 'Getting started should still name Storage.Account.List.');
+    end;
+
+    [Test]
     procedure HelpStorageGetReportsInstalledAppVersion()
     var
         TempArgument: Record "Message Argument ori";
@@ -150,6 +181,22 @@ codeunit 96204 "Storage Connector Tests"
         AssertHelpHasSideEffects(Enum::"Message Type ori"::"Storage.File.Move");
         AssertHelpHasSideEffects(Enum::"Message Type ori"::"Storage.Directory.Create");
         AssertHelpHasSideEffects(Enum::"Message Type ori"::"Storage.Directory.Delete");
+    end;
+
+    [Test]
+    procedure DeleteHelpDocumentsLinkedAttachmentGuards()
+    var
+        FileGuardTok: Label 'File is linked to a Business Central attachment and cannot be deleted directly from storage', Locked = true;
+        DirGuardTok: Label 'Directory contains one or more files linked to Business Central attachments and cannot be deleted directly from storage', Locked = true;
+        ResolutionTok: Label 'Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.', Locked = true;
+    begin
+        // [SCENARIO] #14 AC01 — File.Delete and Directory.Delete help list the linked-attachment guard and how to clear it.
+        AssertHelpContains(Enum::"Message Type ori"::"Storage.File.Delete", FileGuardTok);
+        AssertHelpContains(Enum::"Message Type ori"::"Storage.File.Delete", ResolutionTok);
+        AssertHelpContains(Enum::"Message Type ori"::"Storage.Directory.Delete", DirGuardTok);
+        AssertHelpContains(Enum::"Message Type ori"::"Storage.Directory.Delete", ResolutionTok);
+        AssertHelpContains(Enum::"Message Type ori"::"Help.Storage.Get", FileGuardTok);
+        AssertHelpContains(Enum::"Message Type ori"::"Help.Storage.Get", DirGuardTok);
     end;
 
     [Test]
@@ -254,6 +301,7 @@ codeunit 96204 "Storage Connector Tests"
         // [THEN] The operation is rejected before storage is changed
         LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'Linked file delete should fail.');
         LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains('cannot be deleted'), 'The error should explain that the file is linked.');
+        AssertErrorResponse(TempArgument, 'PreconditionFailed', 'path');
         Clear(TempArgument);
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Exists", PathRequest('linked/doc.txt'));
         LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'exists'), 'The linked file should still exist after the blocked delete.');
@@ -282,6 +330,7 @@ codeunit 96204 "Storage Connector Tests"
         // [THEN] The operation is rejected before storage is changed
         LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'Linked directory delete should fail.');
         LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains('cannot be deleted'), 'The error should explain that the directory contains linked files.');
+        AssertErrorResponse(TempArgument, 'PreconditionFailed', 'path');
         Clear(TempArgument);
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Directory.Exists", PathRequest('linked'));
         LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'exists'), 'The linked directory should still exist after the blocked delete.');
@@ -339,13 +388,13 @@ codeunit 96204 "Storage Connector Tests"
         CreateLinkedIncomingAttachment('dup-link/doc.txt', 'doc.txt');
 
         // [WHEN] A second attachment is linked to the same path
-        // [THEN] The call fails with an already-linked error
+        // [THEN] The call answers PreconditionFailed on path
         Clear(RequestJson);
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('path', 'dup-link/doc.txt');
         RequestJson.Add('fileName', 'doc2.txt');
-        asserterror ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
-        LibraryAssert.ExpectedError('already linked');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
+        AssertErrorResponse(TempArgument, 'PreconditionFailed', 'path');
     end;
 
     [Test]
@@ -753,12 +802,34 @@ codeunit 96204 "Storage Connector Tests"
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'The linked incoming attachment should be created.');
     end;
 
+    local procedure AssertHelpContains(MessageType: Enum "Message Type ori"; Expected: Text)
+    var
+        HelpText: Text;
+        MissingHelpTextErr: Label 'Help for %1 should contain "%2".', Comment = '%1 = message type, %2 = expected text';
+    begin
+        HelpText := MessageHelp(MessageType);
+        LibraryAssert.IsTrue(HelpText.Contains(Expected), StrSubstNo(MissingHelpTextErr, MessageType, Expected));
+    end;
+
+    local procedure MessageHelp(MessageType: Enum "Message Type ori"): Text
+    var
+        TempArgument: Record "Message Argument ori";
+        MsgInterface: Interface "Msg Interface ori";
+    begin
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        MsgInterface := TempArgument.GetMessageTypeInterface();
+        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
+        exit(TempArgument.GetResponseText());
+    end;
+
     local procedure AssertHelpHasSideEffects(MessageType: Enum "Message Type ori")
     var
         TempArgument: Record "Message Argument ori";
         MsgInterface: Interface "Msg Interface ori";
         HelpText: Text;
-        MissingSideEffectsErr: Label 'Help for %1 must include a Side effects section (attachments#18 AC02).', Comment = '%1 = message type';
+        MissingSideEffectsErr: Label 'Help for %1 must include a Side effects section (attachments issue 18, AC02).', Comment = '%1 = message type', Locked = true;
     begin
         TempArgument.Init();
         TempArgument."Type" := MessageType;
@@ -835,7 +906,7 @@ codeunit 96204 "Storage Connector Tests"
 
         // [THEN] All parameterised operations (file, directory, attachment) document their inputs
         if Ordinal >= 72622 then
-            LibraryAssert.IsTrue(HelpText.Contains('## Parameters'), StrSubstNo(NoParamsErr, MessageType));
+            LibraryAssert.IsTrue(HelpText.Contains('## Request Parameters'), StrSubstNo(NoParamsErr, MessageType));
 
         // [THEN] Operations that target a connection by code document storageCode.
         // Storage.Attachment.Restore (72634) is excluded: it derives the connection from the offload record.
@@ -930,5 +1001,18 @@ codeunit 96204 "Storage Connector Tests"
         if not Token.IsValue() then
             exit('');
         exit(Token.AsValue().AsText());
+    end;
+
+    local procedure AssertErrorResponse(var TempArgument: Record "Message Argument ori"; ExpectedCode: Text; ExpectedParameter: Text)
+    var
+        ResponseJson: JsonObject;
+        WrongCodeErr: Label 'Expected an error with code %1.', Comment = '%1 = error code', Locked = true;
+        WrongParameterErr: Label 'Expected the error to name parameter %1.', Comment = '%1 = parameter', Locked = true;
+    begin
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Error', ReadText(ResponseJson, 'status'), 'The call should answer with an error response.');
+        LibraryAssert.AreEqual(ExpectedCode, ReadText(ResponseJson, 'code'), StrSubstNo(WrongCodeErr, ExpectedCode));
+        if ExpectedParameter <> '' then
+            LibraryAssert.AreEqual(ExpectedParameter, ReadText(ResponseJson, 'parameter'), StrSubstNo(WrongParameterErr, ExpectedParameter));
     end;
 }
