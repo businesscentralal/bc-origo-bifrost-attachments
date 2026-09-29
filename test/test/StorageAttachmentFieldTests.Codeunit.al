@@ -216,9 +216,11 @@ codeunit 96203 "Storage Attachment Field Tests"
         MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
         HelpText := TempArgument.GetResponseText();
 
-        // [THEN] The help explains the Offloaded ori field and the get_records filter
+        // [THEN] The help explains the Offloaded ori field and the Data.Records.Get filter
         LibraryAssert.IsTrue(HelpText.Contains('Offloaded ori'), 'The help should reference the Offloaded ori field.');
-        LibraryAssert.IsTrue(HelpText.Contains('get_records'), 'The help should reference the get_records tool for candidate discovery.');
+        LibraryAssert.IsTrue(HelpText.Contains('Data.Records.Get'), 'The help should reference Data.Records.Get for candidate discovery.');
+        LibraryAssert.IsFalse(HelpText.Contains('get_records'), 'The help should not name get_records.');
+        LibraryAssert.IsTrue(HelpText.Contains('tableView'), 'The help should name the Data.Records.Get tableView parameter.');
         LibraryAssert.IsTrue(HelpText.Contains('CONST(0)'), 'The help should show the language-independent filter syntax.');
         LibraryAssert.IsTrue(HelpText.Contains('batch'), 'The help should describe the batch workflow.');
     end;

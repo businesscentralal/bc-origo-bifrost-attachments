@@ -131,6 +131,45 @@ codeunit 96204 "Storage Connector Tests"
         LibraryAssert.IsTrue(Overview.Contains('invoke_message_type'), 'The overview should name invoke_message_type.');
         LibraryAssert.IsTrue(Overview.Contains('describe_message_type'), 'Getting started should name describe_message_type.');
         LibraryAssert.IsTrue(Overview.Contains('Storage.Account.List'), 'Getting started should still name Storage.Account.List.');
+
+        // [THEN] #12 reopen — every Data Exchange help type is held to the same retired-name rule.
+        Checked := 0;
+        foreach Ordinal in Ordinals do
+            if (Ordinal >= 70013510) and (Ordinal <= 70013515) then begin
+                MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
+                HelpText := MessageHelp(MessageType);
+                LibraryAssert.IsFalse(HelpText.Contains('call_message_type'), StrSubstNo(StaleToolErr, MessageType, 'call_message_type'));
+                LibraryAssert.IsFalse(HelpText.Contains('get_message_type_help'), StrSubstNo(StaleToolErr, MessageType, 'get_message_type_help'));
+                Checked += 1;
+            end;
+        LibraryAssert.AreEqual(6, Checked, 'Every Data Exchange help type (70013510-70013515) should be checked.');
+        LibraryAssert.IsTrue(
+            MessageHelp(Enum::"Message Type ori"::"Help.DataExchange.Get").Contains('invoke_message_type'),
+            'Help.DataExchange.Get should name invoke_message_type.');
+    end;
+
+    [Test]
+    procedure HelpTextContainsNoLiteralUnicodeEscapes()
+    var
+        MessageType: Enum "Message Type ori";
+        Ordinals: List of [Integer];
+        Ordinal: Integer;
+        Checked: Integer;
+        HelpText: Text;
+        EscapeErr: Label 'Help for %1 contains a literal backslash-u escape.', Comment = '%1 = message type';
+    begin
+        // [SCENARIO] #12 — Storage and Data Exchange help render real characters. AL does not interpret \u escapes.
+        Ordinals := MessageType.Ordinals();
+        foreach Ordinal in Ordinals do
+            if ((Ordinal >= 10035635) and (Ordinal <= 10035657)) or
+               ((Ordinal >= 70013510) and (Ordinal <= 70013515))
+            then begin
+                MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
+                HelpText := MessageHelp(MessageType);
+                LibraryAssert.IsFalse(HelpText.Contains('\u'), StrSubstNo(EscapeErr, MessageType));
+                Checked += 1;
+            end;
+        LibraryAssert.AreEqual(29, Checked, 'Every Storage and Data Exchange help type should be checked for unicode escapes.');
     end;
 
     [Test]
