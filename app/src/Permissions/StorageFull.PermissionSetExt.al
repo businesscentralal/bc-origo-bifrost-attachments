@@ -1,20 +1,41 @@
 namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
+using System.IO;
 
 /// <summary>
 /// Adds the storage connector to Foundation's "BIFROST Full ori" role, so a Bifröst
-/// administrator gets it without a second assignment. The grants are the same ones the
-/// assignable "BIFROST Attach ori" set carries - keep the two lists in step.
+/// administrator gets it without a second assignment. The storage grants match the
+/// assignable "BIFROST Attach ori" set. The Data Exchange read grants match
+/// "BIFROST DataExch ori".
 /// </summary>
 permissionsetextension 10035635 "Storage Full ori" extends "BIFROST Full ori"
 {
     Permissions =
+        tabledata "Data Exch." = R,
+        tabledata "Data Exch. Column Def" = R,
+        tabledata "Data Exch. Def" = R,
+        tabledata "Data Exch. Field" = R,
+        tabledata "Data Exch. Field Mapping" = R,
+        tabledata "Data Exch. Line Def" = R,
+        tabledata "Data Exch. Mapping" = R,
+        tabledata "Data Exchange Type" = R,
         tabledata "Storage Attachment Link ori" = RIMD,
         tabledata "Storage Setup ori" = RIMD,
         tabledata "Storage Upload Chunk ori" = RIMD,
         tabledata "Storage Upload Session ori" = RIMD,
         codeunit "Attachments Registration ori" = X,
+        codeunit "Data Exchange Query ori" = X,
+        codeunit "DataExch Def Get Impl ori" = X,
+        codeunit "DataExch Def Help ori" = X,
+        codeunit "DataExch Def List Impl ori" = X,
+        codeunit "DataExch Entry Get Impl ori" = X,
+        codeunit "DataExch Entry Help ori" = X,
+        codeunit "DataExch Entry List Impl ori" = X,
+        codeunit "DataExch Help Get Impl ori" = X,
+        codeunit "DataExch Overview Help ori" = X,
+        codeunit "DataExch Type Help ori" = X,
+        codeunit "DataExch Type List Impl ori" = X,
         codeunit "Storage Account Help ori" = X,
         codeunit "Storage Account List Impl ori" = X,
         codeunit "Storage Att. Offload Impl ori" = X,

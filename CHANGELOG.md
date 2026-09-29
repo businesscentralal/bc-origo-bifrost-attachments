@@ -6,6 +6,14 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+- **Foundation CI probe** (`.AL-Go/settings.json`): the `bc-origo-bifrost-core` `appDependencyProbingPaths` entry uses `"version": "latest"` (`release_status` stays `latestBuild`), so the app builds against the latest Foundation CI build with a Foundation floor of `28.0.0.0`.
+- **Install permission-probe diagnostics** in `Storage Takeover ori`: the `WriteDeniedErr` and `ReadDeniedErr` texts are now `Locked` labels. The text is identical, and they only feed telemetry, so there's no translation (xlf) change.
+- **Bifrost Foundation dependency** (`app/app.json` and `test/app.json`) is deliberately lowered from `28.0.0.100` to `28.0.0.0`, so it's no longer a pinned build. This was approved by Gunnar. The app uses `App Registry ori` and `Registered App ori` (core `5819941`), so the real symbol minimum is Foundation build 48 or later (about `28.0.0.48`), not `28.0.0.0`.
+- **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
+- **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
+
+## [Unreleased]
+
 ### Changed (2026-09-28) - message types behave like Bifröst Foundation's (Foundation #138, #135, #136, #144, #146)
 
 - **Structured errors.** Every storage message type now answers a bad request the way Foundation does:
@@ -44,11 +52,15 @@ Business Central release versioning (`major.minor.build.revision`).
 - **Foundation.** Requires a Foundation build with `Msg Discovery ori` and `Bifrost Error Code ori`
   (#149, #153) and the structured-error hand-over of #161; built and tested against the stack up to #169.
 
-- **Foundation CI probe** (`.AL-Go/settings.json`): the `bc-origo-bifrost-core` `appDependencyProbingPaths` entry uses `"version": "latest"` (`release_status` stays `latestBuild`), so the app builds against the latest Foundation CI build with a Foundation floor of `28.0.0.0`.
-- **Install permission-probe diagnostics** in `Storage Takeover ori`: the `WriteDeniedErr` and `ReadDeniedErr` texts are now `Locked` labels. The text is identical, and they only feed telemetry, so there's no translation (xlf) change.
-- **Bifrost Foundation dependency** (`app/app.json` and `test/app.json`) is deliberately lowered from `28.0.0.100` to `28.0.0.0`, so it's no longer a pinned build. This was approved by Gunnar. The app uses `App Registry ori` and `Registered App ori` (core `5819941`), so the real symbol minimum is Foundation build 48 or later (about `28.0.0.48`), not `28.0.0.0`.
-- **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
-- **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
+### Added (2026-09-28) - Data Exchange Phase 0 (#22)
+
+- Read-only discovery message types `Help.DataExchange.Get`, `DataExchange.Definition.List`, `DataExchange.Definition.Get`, `DataExchange.Type.List`, `DataExchange.Entry.List` and `DataExchange.Entry.Get`. Generic `Data.Records.Set` on `Data Exch.` is blocked and the error names `DataExchange.Import.Run / Storage.Upload.CommitToDataExchange`.
+- New permission set `BIFROST DataExch ori` (70013548), also granted through `Storage Full ori`.
+- `app.json` `idRanges` gains 70013500–70013549.
+
+### Fixed (2026-09-28) - Help.Storage.Get reports the installed app version (#13)
+
+- `Help.Storage.Get` prints the installed module version (`NavApp.GetCurrentModuleInfo`, culture-invariant major.minor.build.revision) and drops the hard-coded `28.0.11.0` / "Initial release" line.
 
 ### Changed (2026-09-24) - Storage.Upload help after Abort (#17)
 

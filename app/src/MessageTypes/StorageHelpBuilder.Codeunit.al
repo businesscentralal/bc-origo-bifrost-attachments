@@ -23,7 +23,9 @@ codeunit 10035643 "Storage Help Builder ori"
         RequestExampleVar: Text;
         ResponseNoteVar: Text;
         NotesVar: Text;
+        RelatedVar: Text;
         SideEffectsVar: Text;
+        ClosingVar: Text;
         ParamsBuilder: TextBuilder;
         ErrorsBuilder: TextBuilder;
         ResponseFieldsBuilder: TextBuilder;
@@ -53,7 +55,9 @@ codeunit 10035643 "Storage Help Builder ori"
         RequestExampleVar := '';
         ResponseNoteVar := '';
         NotesVar := '';
+        RelatedVar := '';
         SideEffectsVar := '';
+        ClosingVar := 'Connector overview and the list of configured connections: request help for `Help.Storage.Get` and call `Storage.Account.List`.';
         ParamCount := 0;
         ResponseFieldCount := 0;
         NextStepCount := 0;
@@ -202,6 +206,21 @@ codeunit 10035643 "Storage Help Builder ori"
         NotesVar := ToLines(Notes);
     end;
 
+    /// <summary>
+    /// Replaces the closing line under the horizontal rule. The default points at the storage overview.
+    /// </summary>
+    /// <param name="Closing">The closing Markdown line.</param>
+    procedure SetClosing(Closing: Text)
+    begin
+        ClosingVar := Closing;
+    end;
+
+    /// <summary>Sets the Related Operations section (Markdown).</summary>
+    procedure SetRelated(Related: Text)
+    begin
+        RelatedVar := Related;
+    end;
+
     /// <summary>Renders the final Markdown document from all accumulated builder state.</summary>
     /// <returns>The complete AI-optimised help document.</returns>
     procedure Render(): Text
@@ -289,8 +308,15 @@ codeunit 10035643 "Storage Help Builder ori"
             Builder.AppendLine('- `Help.Storage.Get` - Overview of the storage connector and all its message types');
         Builder.AppendLine('');
 
+        if RelatedVar <> '' then begin
+            Builder.AppendLine('## Related operations');
+            Builder.AppendLine(RelatedVar);
+            Builder.AppendLine('');
+        end;
+
         Builder.AppendLine('---');
-        Builder.AppendLine('Connector overview and the list of configured connections: request help for `Help.Storage.Get` and call `Storage.Account.List`.');
+        if ClosingVar <> '' then
+            Builder.AppendLine(ClosingVar);
 
         exit(Builder.ToText());
     end;
