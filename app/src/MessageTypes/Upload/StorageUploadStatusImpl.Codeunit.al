@@ -135,10 +135,8 @@ codeunit 10035660 "Storage Upload Status Impl ori" implements "Msg Interface ori
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        UploadHelp: Codeunit "Storage Upload Help ori";
     begin
-        UploadHelp.GetHelp(Enum::"Message Type ori"::"Storage.Upload.Status", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

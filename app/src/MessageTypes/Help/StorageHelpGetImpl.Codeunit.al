@@ -107,7 +107,7 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
 
     procedure GetOverview(var Overview: Text): Boolean
     begin
-        Overview := 'Returns the Markdown overview of the storage connector and its message types.';
+        Overview := 'Getting started: call Storage.Account.List, then use invoke_message_type and describe_message_type. Storage.Upload.Begin uses the bifrost-uploads/ default root.';
         exit(true);
     end;
 
@@ -123,21 +123,18 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        OverviewHelp: Codeunit "Storage Overview Help ori";
     begin
-        OverviewHelp.GetHelp(Enum::"Message Type ori"::"Help.Storage.Get", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
-        OverviewHelp: Codeunit "Storage Overview Help ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
         DataObject: JsonObject;
     begin
         Argument.AssertVersion1();
         DataObject.Add('format', 'markdown');
-        DataObject.Add('markdown', OverviewHelp.BuildOverview());
+        DataObject.Add('markdown', '');
         RequestMgt.RespondSuccess(Argument, DataObject);
     end;
 }

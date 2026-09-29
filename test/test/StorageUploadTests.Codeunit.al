@@ -591,17 +591,13 @@ codeunit 96205 "Storage Upload Tests"
         LibraryAssert.IsTrue(HelpText.Contains(TypeName), StrSubstNo(NotSelfIdentifyingErr, MessageType));
     end;
 
-    local procedure MessageHelp(MessageType: Enum "Message Type ori"): Text
+    local procedure MessageHelp(MessageType: Enum "Message Type ori") Result: Text
     var
-        TempArgument: Record "Message Argument ori";
-        MsgInterface: Interface "Msg Interface ori";
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
     begin
-        TempArgument.Init();
-        TempArgument."Type" := MessageType;
-        TempArgument.Insert(true);
-        MsgInterface := TempArgument.GetMessageTypeInterface();
-        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-        exit(TempArgument.GetResponseText());
+        ContractMgt.GetContract(MessageType, Contract);
+        Contract.WriteTo(Result);
     end;
 
     local procedure Initialize()

@@ -72,6 +72,8 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Parameters.Add(ContractMgt.Parameter('recordSystemId', 'string', false, 'The host record SystemId.'));
                     Parameters.Add(ContractMgt.Parameter('no', 'string', false, 'The host record primary key.'));
                     Parameters.Add(ContractMgt.Parameter('fileName', 'string', false, 'The attachment file name.'));
+                    Parameters.Add(ContractMgt.Parameter('contentBase64', 'string', false, 'Inline file content encoded as base64.'));
+                    Parameters.Add(ContractMgt.Parameter('content', 'string', false, 'Accepted alias of contentBase64. Do not send both.'));
                     Parameters.Add(ContractMgt.Parameter('path', 'string', false, 'The source file path in storage.'));
                 end;
             'Storage.Upload.Begin':

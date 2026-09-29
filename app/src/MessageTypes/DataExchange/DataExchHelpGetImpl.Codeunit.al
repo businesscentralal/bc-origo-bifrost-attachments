@@ -106,7 +106,7 @@ codeunit 70013521 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
 
     procedure GetOverview(var Overview: Text): Boolean
     begin
-        Overview := 'Returns the Data Exchange discovery overview.';
+        Overview := 'Returns the Data Exchange discovery overview. Use invoke_message_type to call a type and describe_message_type to inspect its contract.';
         exit(true);
     end;
 
@@ -122,21 +122,18 @@ codeunit 70013521 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        OverviewHelp: Codeunit "DataExch Overview Help ori";
     begin
-        OverviewHelp.GetHelp(Enum::"Message Type ori"::"Help.DataExchange.Get", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
-        OverviewHelp: Codeunit "DataExch Overview Help ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
         DataObject: JsonObject;
     begin
         Argument.AssertVersion1();
         DataObject.Add('format', 'markdown');
-        DataObject.Add('markdown', OverviewHelp.BuildOverview());
+        DataObject.Add('markdown', '');
         RequestMgt.RespondSuccess(Argument, DataObject);
     end;
 }

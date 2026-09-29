@@ -135,10 +135,8 @@ codeunit 10035647 "Storage Dir List Impl ori" implements "Msg Interface ori", "M
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        DirHelp: Codeunit "Storage Dir Help ori";
     begin
-        DirHelp.GetHelp(Enum::"Message Type ori"::"Storage.Directory.List", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

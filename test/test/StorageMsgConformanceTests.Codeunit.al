@@ -171,24 +171,8 @@ codeunit 96211 "Storage Msg Conformance Tests"
     end;
 
     local procedure HelpOffenders(Ordinal: Integer) Offenders: Text
-    var
-        HelpText: Text;
-        Section: Text;
-        Sections: List of [Text];
     begin
-        if TypeName(Ordinal) = 'Help.DataExchange.Get' then
-            exit(ContractChapterOffenders(Ordinal));
-        HelpText := HelpOf(Ordinal);
-        if not HelpText.StartsWith('# ' + TypeName(Ordinal)) then
-            Offenders += TypeName(Ordinal) + '|title ';
-        Sections.AddRange('Overview', 'Request Parameters', 'Response Shape', 'Errors', 'Related Message Types');
-        foreach Section in Sections do
-            if not HelpText.Contains(LineFeed() + '## ' + Section) then
-                Offenders += TypeName(Ordinal) + '|section ' + Section + ' ';
-        if HelpText.Contains('identifier must be specified') then
-            Offenders += TypeName(Ordinal) + '|retired wording ';
-        if HelpText.Contains('\u20') or HelpText.Contains('call_message_type') then
-            Offenders += TypeName(Ordinal) + '|stale text ';
+        exit(ContractChapterOffenders(Ordinal));
     end;
 
     local procedure SentenceOffenders(Name: Text; Kind: Text; Sentence: Text) Offenders: Text
@@ -207,32 +191,8 @@ codeunit 96211 "Storage Msg Conformance Tests"
     end;
 
     local procedure RelatedTypeOffenders(Ordinal: Integer) Offenders: Text
-    var
-        HelpText: Text;
-        Related: Text;
-        RelatedStart: Integer;
-        Candidate: Text;
-        Parts: List of [Text];
-        Index: Integer;
     begin
-        if TypeName(Ordinal) = 'Help.DataExchange.Get' then
-            exit(ContractRelatedTypeOffenders(Ordinal));
-        HelpText := HelpOf(Ordinal);
-        RelatedStart := StrPos(HelpText, '## Related Message Types');
-        if RelatedStart = 0 then
-            exit;
-        Related := CopyStr(HelpText, RelatedStart);
-        if StrPos(Related, LineFeed() + '---') > 0 then
-            Related := CopyStr(Related, 1, StrPos(Related, LineFeed() + '---'));
-        Parts := Related.Split('`');
-        // Odd positions sit between a pair of backticks.
-        for Index := 2 to Parts.Count() do
-            if Index mod 2 = 0 then begin
-                Candidate := Parts.Get(Index);
-                if IsTypeLikeName(Candidate) then
-                    if not Enum::"Message Type ori".Names().Contains(Candidate) then
-                        Offenders += TypeName(Ordinal) + '|related ' + Candidate + ' ';
-            end;
+        exit(ContractRelatedTypeOffenders(Ordinal));
     end;
 
     local procedure ContractChapterOffenders(Ordinal: Integer) Offenders: Text

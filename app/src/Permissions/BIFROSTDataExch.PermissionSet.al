@@ -24,13 +24,9 @@ permissionset 70013548 "BIFROST DataExch ori"
         tabledata "Data Exchange Type" = R,
         codeunit "Data Exchange Query ori" = X,
         codeunit "DataExch Def Get Impl ori" = X,
-        codeunit "DataExch Def Help ori" = X,
         codeunit "DataExch Def List Impl ori" = X,
         codeunit "DataExch Entry Get Impl ori" = X,
-        codeunit "DataExch Entry Help ori" = X,
         codeunit "DataExch Entry List Impl ori" = X,
         codeunit "DataExch Help Get Impl ori" = X,
-        codeunit "DataExch Overview Help ori" = X,
-        codeunit "DataExch Type Help ori" = X,
         codeunit "DataExch Type List Impl ori" = X;
 }

@@ -134,10 +134,8 @@ codeunit 10035656 "Storage Upload Abort Impl ori" implements "Msg Interface ori"
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        UploadHelp: Codeunit "Storage Upload Help ori";
     begin
-        UploadHelp.GetHelp(Enum::"Message Type ori"::"Storage.Upload.Abort", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

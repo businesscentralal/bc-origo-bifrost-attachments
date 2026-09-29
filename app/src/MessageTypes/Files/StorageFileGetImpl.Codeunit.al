@@ -134,10 +134,8 @@ codeunit 10035652 "Storage File Get Impl ori" implements "Msg Interface ori", "M
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        FileHelp: Codeunit "Storage File Help ori";
     begin
-        FileHelp.GetHelp(Enum::"Message Type ori"::"Storage.File.Get", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

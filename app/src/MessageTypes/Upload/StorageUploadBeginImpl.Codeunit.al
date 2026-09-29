@@ -124,8 +124,8 @@ codeunit 10035658 "Storage Upload Begin Impl ori" implements "Msg Interface ori"
 
     procedure GetNotes(var Notes: Text): Boolean
     begin
-        Clear(Notes);
-        exit(false);
+        Notes := 'The default root is bifrost-uploads/. fileName must be a file name without folders; use path or folderPath for directories.';
+        exit(true);
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"
@@ -134,10 +134,8 @@ codeunit 10035658 "Storage Upload Begin Impl ori" implements "Msg Interface ori"
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        UploadHelp: Codeunit "Storage Upload Help ori";
     begin
-        UploadHelp.GetHelp(Enum::"Message Type ori"::"Storage.Upload.Begin", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

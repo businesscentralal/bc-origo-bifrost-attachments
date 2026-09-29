@@ -131,8 +131,8 @@ codeunit 10035641 "Storage Att. Offload Impl ori" implements "Msg Interface ori"
 
     procedure GetNotes(var Notes: Text): Boolean
     begin
-        Clear(Notes);
-        exit(false);
+        Notes := 'Find candidates with Data.Records.Get on the attachment tables using the Offloaded ori field and tableView WHERE(Offloaded ori=CONST(0)). Run one offload call per record in a batch workflow.';
+        exit(true);
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"
@@ -141,10 +141,8 @@ codeunit 10035641 "Storage Att. Offload Impl ori" implements "Msg Interface ori"
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        AttachmentHelp: Codeunit "Storage Attachment Help ori";
     begin
-        AttachmentHelp.GetHelp(Enum::"Message Type ori"::"Storage.Attachment.Offload", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

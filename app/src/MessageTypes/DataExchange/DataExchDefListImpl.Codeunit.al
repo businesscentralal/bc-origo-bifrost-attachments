@@ -127,10 +127,8 @@ codeunit 70013522 "DataExch Def List Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        DefHelp: Codeunit "DataExch Def Help ori";
     begin
-        DefHelp.GetHelp(Enum::"Message Type ori"::"DataExchange.Definition.List", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

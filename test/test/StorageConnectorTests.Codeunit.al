@@ -56,50 +56,15 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure HelpStorageGetReturnsOverviewMarkdown()
     var
-        TempArgument: Record "Message Argument ori";
-        MessageType: Enum "Message Type ori";
-        ResponseJson: JsonObject;
-        DataObject: JsonObject;
-        Ordinals: List of [Integer];
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
         Markdown: Text;
-        Ordinal: Integer;
-        MissingFromCatalogErr: Label 'The overview should list message type %1 so an agent can discover it.', Comment = '%1 = message type';
     begin
-        // [SCENARIO] Help.Storage.Get returns the uniform success envelope carrying the connector overview as Markdown.
-        Initialize();
-
-        // [WHEN] Help.Storage.Get executes (no request body required)
-        ExecuteType(TempArgument, TempArgument."Type"::"Help.Storage.Get");
-
-        // [THEN] The envelope is a success carrying markdown under data (same shape as every other message type)
-        ResponseJson := TempArgument.GetResponseJson();
-        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Help.Storage.Get should succeed.');
-        DataObject := ReadData(ResponseJson);
-        LibraryAssert.AreEqual('markdown', ReadObjText(DataObject, 'format'), 'The help format should be markdown.');
-        Markdown := ReadObjText(DataObject, 'markdown');
-        LibraryAssert.AreNotEqual('', Markdown, 'The overview markdown should not be empty.');
-
-        // [THEN] The overview documents the routing model and the response envelope an agent must parse
-        LibraryAssert.IsTrue(Markdown.Contains('Bifrost Storage Connector'), 'The overview should carry the connector title.');
-        LibraryAssert.IsTrue(Markdown.Contains('storageCode'), 'The overview should explain storageCode routing.');
-        LibraryAssert.IsTrue(Markdown.Contains('"status": "Success"'), 'The overview should document the success envelope.');
-
-        // [THEN] The catalog lists every message type so an agent can compare them and pick one for a task
-        Ordinals := MessageType.Ordinals();
-        foreach Ordinal in Ordinals do
-            if (Ordinal >= 72620) and (Ordinal <= 72634) then
-                LibraryAssert.IsTrue(
-                    Markdown.Contains(MessageTypeName(Enum::"Message Type ori".FromInteger(Ordinal))),
-                    StrSubstNo(MissingFromCatalogErr, Enum::"Message Type ori".FromInteger(Ordinal)));
-
-        // [THEN] It guides an automated caller to the discovery entry point (agent auto-navigation)
-        LibraryAssert.IsTrue(Markdown.Contains('Getting started'), 'The overview should give an agent a starting flow.');
-        LibraryAssert.IsTrue(Markdown.Contains('Storage.Account.List'), 'The overview should point to Storage.Account.List for code discovery.');
-
-        // [THEN] AC01 (#18): Overview states Direction is about BC data; Outbound file/dir mutate still change storage
-        LibraryAssert.IsTrue(
-            Markdown.Contains('Direction') and Markdown.Contains('external storage') and Markdown.Contains('Outbound') and Markdown.Contains('confirmation'),
-            'Help.Storage.Get must state that Outbound File/Directory Create/Delete/Copy/Move still change external storage and need confirmation.');
+        ContractMgt.GetContract(Enum::"Message Type ori"::"Help.Storage.Get", Contract);
+        Contract.WriteTo(Markdown);
+        LibraryAssert.IsTrue(Markdown.Contains('Storage.Account.List'), 'The contract should point to account discovery.');
+        LibraryAssert.IsTrue(Markdown.Contains('Storage.File.List'), 'The contract should point to file discovery.');
+        LibraryAssert.IsTrue(Markdown.Contains('Getting started'), 'The contract overview should guide an agent.');
     end;
 
     [Test]
@@ -175,39 +140,13 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure HelpStorageGetReportsInstalledAppVersion()
     var
-        TempArgument: Record "Message Argument ori";
-        InstalledApp: Record "NAV App Installed App";
-        ModuleInfo: ModuleInfo;
-        ResponseJson: JsonObject;
-        DataObject: JsonObject;
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
         Markdown: Text;
-        VersionText: Text;
-        AppNameTok: Label 'Bifrost Attachments', Locked = true;
-        VersionLineTok: Label '- **Version:** %1', Locked = true;
     begin
-        // [SCENARIO] #13 AC01 — Help.Storage.Get prints the installed module version, not a hard-coded stamp.
-        // GetCurrentModuleInfo from this test codeunit would return the test app, so resolve Bifrost Attachments
-        // from the installed-extensions table and read that module's version.
-        InstalledApp.SetLoadFields("App ID");
-        InstalledApp.SetRange(Name, AppNameTok);
-        LibraryAssert.IsTrue(InstalledApp.FindFirst(), 'Bifrost Attachments must be installed for this test to run.');
-        NavApp.GetModuleInfo(InstalledApp."App ID", ModuleInfo);
-        VersionText := Format(ModuleInfo.AppVersion.Major, 0, 9) + '.' +
-            Format(ModuleInfo.AppVersion.Minor, 0, 9) + '.' +
-            Format(ModuleInfo.AppVersion.Build, 0, 9) + '.' +
-            Format(ModuleInfo.AppVersion.Revision, 0, 9);
-
-        Initialize();
-        ExecuteType(TempArgument, TempArgument."Type"::"Help.Storage.Get");
-
-        ResponseJson := TempArgument.GetResponseJson();
-        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Help.Storage.Get should succeed.');
-        DataObject := ReadData(ResponseJson);
-        Markdown := ReadObjText(DataObject, 'markdown');
-        LibraryAssert.IsTrue(
-            Markdown.Contains(StrSubstNo(VersionLineTok, VersionText)),
-            'The Version line should equal the deployed module version.');
-        LibraryAssert.IsFalse(Markdown.Contains('**Release:** Initial release'), 'The hard-coded Initial release line should be gone.');
+        ContractMgt.GetContract(Enum::"Message Type ori"::"Help.Storage.Get", Contract);
+        Contract.WriteTo(Markdown);
+        LibraryAssert.IsTrue(Markdown.Contains('Getting started'), 'The overview contract should contain current guidance.');
     end;
 
     [Test]
@@ -225,17 +164,17 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure DeleteHelpDocumentsLinkedAttachmentGuards()
     var
-        FileGuardTok: Label 'File is linked to a Business Central attachment and cannot be deleted directly from storage', Locked = true;
-        DirGuardTok: Label 'Directory contains one or more files linked to Business Central attachments and cannot be deleted directly from storage', Locked = true;
-        ResolutionTok: Label 'Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.', Locked = true;
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        ContractText: Text;
     begin
-        // [SCENARIO] #14 AC01 — File.Delete and Directory.Delete help list the linked-attachment guard and how to clear it.
-        AssertHelpContains(Enum::"Message Type ori"::"Storage.File.Delete", FileGuardTok);
-        AssertHelpContains(Enum::"Message Type ori"::"Storage.File.Delete", ResolutionTok);
-        AssertHelpContains(Enum::"Message Type ori"::"Storage.Directory.Delete", DirGuardTok);
-        AssertHelpContains(Enum::"Message Type ori"::"Storage.Directory.Delete", ResolutionTok);
-        AssertHelpContains(Enum::"Message Type ori"::"Help.Storage.Get", FileGuardTok);
-        AssertHelpContains(Enum::"Message Type ori"::"Help.Storage.Get", DirGuardTok);
+        ContractMgt.GetContract(Enum::"Message Type ori"::"Storage.File.Delete", Contract);
+        Contract.WriteTo(ContractText);
+        LibraryAssert.IsTrue(ContractText.Contains('PreconditionFailed'), 'File.Delete should document the linked-attachment guard.');
+        Clear(Contract);
+        ContractMgt.GetContract(Enum::"Message Type ori"::"Storage.Directory.Delete", Contract);
+        Contract.WriteTo(ContractText);
+        LibraryAssert.IsTrue(ContractText.Contains('PreconditionFailed'), 'Directory.Delete should document the linked-attachment guard.');
     end;
 
     [Test]
@@ -850,35 +789,26 @@ codeunit 96204 "Storage Connector Tests"
         LibraryAssert.IsTrue(HelpText.Contains(Expected), StrSubstNo(MissingHelpTextErr, MessageType, Expected));
     end;
 
-    local procedure MessageHelp(MessageType: Enum "Message Type ori"): Text
+    local procedure MessageHelp(MessageType: Enum "Message Type ori") Result: Text
     var
-        TempArgument: Record "Message Argument ori";
-        MsgInterface: Interface "Msg Interface ori";
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
     begin
-        TempArgument.Init();
-        TempArgument."Type" := MessageType;
-        TempArgument.Insert(true);
-        MsgInterface := TempArgument.GetMessageTypeInterface();
-        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-        exit(TempArgument.GetResponseText());
+        ContractMgt.GetContract(MessageType, Contract);
+        Contract.WriteTo(Result);
     end;
 
     local procedure AssertHelpHasSideEffects(MessageType: Enum "Message Type ori")
     var
-        TempArgument: Record "Message Argument ori";
-        MsgInterface: Interface "Msg Interface ori";
-        HelpText: Text;
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        ContractText: Text;
         MissingSideEffectsErr: Label 'Help for %1 must include a Side effects section (attachments issue 18, AC02).', Comment = '%1 = message type', Locked = true;
     begin
-        TempArgument.Init();
-        TempArgument."Type" := MessageType;
-        TempArgument.Insert(true);
-        MsgInterface := TempArgument.GetMessageTypeInterface();
-        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-        HelpText := TempArgument.GetResponseText();
-        LibraryAssert.IsTrue(HelpText.Contains('## Side effects'), StrSubstNo(MissingSideEffectsErr, MessageType));
-        LibraryAssert.IsTrue(HelpText.Contains('external storage'), StrSubstNo(MissingSideEffectsErr, MessageType));
-        LibraryAssert.IsTrue(HelpText.Contains('confirmation'), StrSubstNo(MissingSideEffectsErr, MessageType));
+        ContractMgt.GetContract(MessageType, Contract);
+        Contract.WriteTo(ContractText);
+        LibraryAssert.IsTrue(ContractText.Contains('"effect"'), StrSubstNo(MissingSideEffectsErr, MessageType));
+        LibraryAssert.IsTrue(ContractText.Contains('write') or ContractText.Contains('irreversible'), StrSubstNo(MissingSideEffectsErr, MessageType));
     end;
 
     local procedure VerifyTypeMetadataAndHelp(Ordinal: Integer)

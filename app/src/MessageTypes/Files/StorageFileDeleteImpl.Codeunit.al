@@ -134,10 +134,8 @@ codeunit 10035650 "Storage File Delete Impl ori" implements "Msg Interface ori",
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        FileHelp: Codeunit "Storage File Help ori";
     begin
-        FileHelp.GetHelp(Enum::"Message Type ori"::"Storage.File.Delete", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
