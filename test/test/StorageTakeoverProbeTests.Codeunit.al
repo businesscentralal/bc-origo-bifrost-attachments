@@ -90,8 +90,8 @@ codeunit 96210 "Storage Takeover Probe Tests"
     [Test]
     procedure AC03_LegacyAbsent_NoOpWithoutError()
     var
-        Takeover: Codeunit "Storage Takeover ori";
         TableMetadata: Record "Table Metadata";
+        Takeover: Codeunit "Storage Takeover ori";
         Succeeded: Boolean;
     begin
         // [SCENARIO] AC03: legacy CE Storage tables absent → take-over is a no-op, no error

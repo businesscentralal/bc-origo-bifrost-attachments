@@ -9,7 +9,7 @@ using Origo.Bifrost;
 /// asset, a posted document — from inline base64, from a file already in storage, or by copying
 /// an attachment that already exists elsewhere in Business Central.
 /// </summary>
-codeunit 10035667 "Storage Attach Record Impl ori" implements "Msg Interface ori"
+codeunit 10035667 "Storage Attach Record Impl ori" implements "Msg Interface ori", "Msg Discovery ori"
 {
     Access = Internal;
 
@@ -30,6 +30,27 @@ codeunit 10035667 "Storage Attach Record Impl ori" implements "Msg Interface ori
         exit('Creates a document attachment on any record - customer, vendor, fixed asset, document - from base64, from storage, or by copying an existing attachment.');
     end;
 
+    /// <summary>
+    /// Search terms users say for this type, English with the Icelandic translation. Used to rank
+    /// search results; never shown to the caller.
+    /// </summary>
+    /// <returns>Comma-separated keywords in the current language.</returns>
+    procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'attach a file, attach the invoice pdf to the vendor, add attachment to customer, attach document to sales order, document attachment, attach contract to fixed asset, copy attachment to another record', Comment = 'is-IS=hengja skrá við, hengja við skjal, hengja reikning við lánardrottin, bæta viðhengi við viðskiptamann, hengja skjal við sölupöntun, viðhengi skjals, viðhengi færslu, afrita viðhengi á aðra færslu';
+    begin
+        exit(KeywordsLbl);
+    end;
+
+    /// <summary>What separates this type from its siblings when a caller is choosing one.</summary>
+    /// <returns>One sentence.</returns>
+    procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Attaches a file of up to 240 MiB to any Business Central record as a document attachment, from base64, from storage or from another attachment.', Locked = true;
+    begin
+        exit(SelectionDescriptionLbl);
+    end;
+
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
         exit(Enum::"Msg Direction ori"::Inbound);
@@ -48,9 +69,11 @@ codeunit 10035667 "Storage Attach Record Impl ori" implements "Msg Interface ori
         RequestMgt: Codeunit "Storage Request Mgt ori";
         ResultData: JsonObject;
     begin
+        // Every problem the request or the data can show is answered before the first write.
+        // A failure after a write (for example the storage upload) is raised, so the write rolls back.
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
-        AttachmentMgt.CreateForRecord(Argument.GetRequestJson(), ResultData);
-        RequestMgt.RespondSuccess(Argument, ResultData);
+        if AttachmentMgt.CreateForRecord(Argument, ResultData) then
+            RequestMgt.RespondSuccess(Argument, ResultData);
     end;
 }

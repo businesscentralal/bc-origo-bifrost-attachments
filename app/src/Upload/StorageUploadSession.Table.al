@@ -2,7 +2,7 @@ namespace Origo.Bifrost.Attachments;
 
 /// <summary>
 /// Header for a chunked upload. A session lets a caller deliver a large file as a sequence of
-/// small base64 chunks (see <see cref="Table.StorageUploadChunk"/>) that are assembled and
+/// base64 chunks of up to 240 MiB each (see <see cref="Table.StorageUploadChunk"/>) that are assembled and
 /// written to storage on commit, working around the per-request size limit of a single Cloud
 /// Event. One row per in-progress or recently committed upload, keyed by a generated
 /// <c>Upload Id</c>.

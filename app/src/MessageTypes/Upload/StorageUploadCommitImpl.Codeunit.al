@@ -7,7 +7,7 @@ using Origo.Bifrost;
 /// chunks in order and writes the resulting file to the storage connection, then clears the
 /// chunks.
 /// </summary>
-codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori"
+codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori", "Msg Discovery ori"
 {
     Access = Internal;
 
@@ -28,6 +28,27 @@ codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori
         exit('Assembles an upload session''s chunks and writes the file to the storage connection.');
     end;
 
+    /// <summary>
+    /// Search terms users say for this type, English with the Icelandic translation. Used to rank
+    /// search results; never shown to the caller.
+    /// </summary>
+    /// <returns>Comma-separated keywords in the current language.</returns>
+    procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'finish upload to storage, complete the upload, save uploaded file to cloud, commit upload, assemble the chunks, finalise upload, finalize upload', Comment = 'is-IS=ljúka upphleðslu, klára upphleðslu, klára upphleðsluna, vista upphlaðna skrá í skýið, setja saman búta, staðfesta upphleðslu';
+    begin
+        exit(KeywordsLbl);
+    end;
+
+    /// <summary>What separates this type from its siblings when a caller is choosing one.</summary>
+    /// <returns>One sentence.</returns>
+    procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Assembles the chunks of an upload session and writes the file to its storage connection; it does not attach the file to any record.', Locked = true;
+    begin
+        exit(SelectionDescriptionLbl);
+    end;
+
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
         exit(Enum::"Msg Direction ori"::Inbound);
@@ -46,9 +67,11 @@ codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori
         RequestMgt: Codeunit "Storage Request Mgt ori";
         ResultData: JsonObject;
     begin
+        // Every problem the request or the data can show is answered before the first write.
+        // A failure after a write (for example the storage upload) is raised, so the write rolls back.
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
-        UploadMgt.CommitUpload(Argument.GetRequestJson(), ResultData);
-        RequestMgt.RespondSuccess(Argument, ResultData);
+        if UploadMgt.CommitUpload(Argument, ResultData) then
+            RequestMgt.RespondSuccess(Argument, ResultData);
     end;
 }

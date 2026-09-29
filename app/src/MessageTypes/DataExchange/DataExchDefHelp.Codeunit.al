@@ -34,8 +34,8 @@ codeunit 70013527 "DataExch Def Help ori"
         HelpBuilder.SetRequestExample('{ "direction": "Import" }');
         HelpBuilder.AddResponseField('count', 'integer', 'Number of definitions after filters.');
         HelpBuilder.AddResponseField('definitions', 'array', 'Rows with `code`, `name`, `type`, `fileType`, `readingWritingCodeunit`, `readingWritingXmlPort`, `extDataHandlingCodeunit`, `lineDefCount`, `mappingCount`, `usedByDataExchangeTypes`.');
-        HelpBuilder.AddError('Unknown type name', 'Pass a Data Exch. Def type enum name, or omit `type`.');
-        HelpBuilder.AddError('direction is not Import or Export', 'Omit `direction` or pass exactly one of those two words.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameter, 'Unknown type name', 'Pass a Data Exch. Def type enum name, or omit `type`.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::InvalidParameter, 'direction is not Import or Export', 'Omit `direction` or pass exactly one of those two words.');
         HelpBuilder.AddNextStep('To read columns and field mappings', 'DataExchange.Definition.Get', 'pass the returned `code`');
         HelpBuilder.AddNextStep('To see which incoming-document type uses a definition', 'DataExchange.Type.List', 'compare `dataExchDefCode` with `code`');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
@@ -54,8 +54,8 @@ codeunit 70013527 "DataExch Def Help ori"
         HelpBuilder.AddResponseField('lineDefs', 'array', '`code`, `name`, `columnCount`, `dataLineTag`, `namespace`, ordered by line code.');
         HelpBuilder.AddResponseField('columnDefs', 'array', '`lineDef`, `columnNo`, `name`, `dataType`, `dataFormat`, `dataFormattingCulture`, `path`, `negativeSign`, `constant`, ordered by line code then column number.');
         HelpBuilder.AddResponseField('mappings', 'array', '`lineDef`, `tableId`, `tableName`, `mappingCodeunit`, `preMappingCodeunit`, `postMappingCodeunit`, `dataExchNoFieldId`, `useAsIntermediateTable`, and `fieldMappings` (`columnNo`, `fieldId`, `fieldName`, `optional`, `multiplier`, `overwriteValue`, `transformationRule`).');
-        HelpBuilder.AddError('Missing code', 'Pass `code`.');
-        HelpBuilder.AddError('Unknown code', 'Call `DataExchange.Definition.List` and use a returned `code`.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::MissingParameter, 'Missing code', 'Pass `code`.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::RecordNotFound, 'Unknown code', 'Call `DataExchange.Definition.List` and use a returned `code`.');
         HelpBuilder.AddNextStep('To list definitions again', 'DataExchange.Definition.List', '');
         Argument.SetResponseMarkdown(HelpBuilder.Render());
     end;

@@ -24,8 +24,22 @@ codeunit 10035675 "Storage Overview Help ori"
     end;
 
     local procedure OverviewHelp(var Argument: Record "Message Argument ori")
+    var
+        HelpBuilder: Codeunit "Storage Help Builder ori";
+        Overview: Text;
     begin
-        Argument.SetResponseMarkdown(BuildOverview());
+        HelpBuilder.Init('Help.Storage.Get', 'Returns a Markdown overview of the storage connector and all its message types. No request body is required.', '');
+        HelpBuilder.SetRouting('Not addressed: the overview is the same for every caller and needs no storage connection.');
+        HelpBuilder.SetRequestExample('{}');
+        HelpBuilder.AddResponseField('format', 'string', 'Always `markdown`.');
+        HelpBuilder.AddResponseField('markdown', 'string', 'The connector overview: getting started, agent workflows, routing, and every storage message type by area. It is also shown below.');
+        HelpBuilder.AddRelated('Storage.Account.List', 'Find the storage codes the other types need');
+        HelpBuilder.AddRelated('Storage.Upload.Begin', 'Start a chunked upload of a large file');
+        HelpBuilder.AddRelated('Storage.Attachment.CreateForRecord', 'Attach a file to any Business Central record');
+        // The overview follows the standard sections, without its own title.
+        Overview := BuildOverview();
+        Overview := CopyStr(Overview, StrPos(Overview, '## '));
+        Argument.SetResponseMarkdown(HelpBuilder.Render() + Overview);
     end;
 
     /// <summary>Builds the Markdown overview of the storage connector and all its message types.</summary>
@@ -71,14 +85,14 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('Every per-type help document ends with a **Next steps** section naming the exact follow-up message type and the field to carry forward, so you can chain calls without guessing. The common journeys:');
         Builder.AppendLine('');
         Builder.AppendLine('**Upload a large file to external storage** (too big for a single `Storage.File.Create`):');
-        Builder.AppendLine('1. `Storage.Upload.Begin` with `storageCode` + `fileName` \u2192 returns `uploadId`, `path`, `chunkSizeHint`.');
-        Builder.AppendLine('2. `Storage.Upload.Append` once per chunk \u2014 read at most `chunkSizeHint` RAW bytes, base64-encode that slice on its own, send with `uploadId` and `sequence` = 1, 2, 3, ...');
-        Builder.AppendLine('3. `Storage.Upload.Commit` with `uploadId` \u2192 writes the file and returns the final `path` and `contentLength`.');
+        Builder.AppendLine('1. `Storage.Upload.Begin` with `storageCode` + `fileName` → returns `uploadId`, `path`, `chunkSizeHint`.');
+        Builder.AppendLine('2. `Storage.Upload.Append` once per chunk — read at most `chunkSizeHint` RAW bytes, base64-encode that slice on its own, send with `uploadId` and `sequence` = 1, 2, 3, ...');
+        Builder.AppendLine('3. `Storage.Upload.Commit` with `uploadId` → writes the file and returns the final `path` and `contentLength`.');
         Builder.AppendLine('');
         Builder.AppendLine('**Upload a large file directly to a record** (no external storage needed):');
-        Builder.AppendLine('1. `Storage.Upload.Begin` with just `fileName` (omit `storageCode`) \u2192 creates a buffer-only session.');
+        Builder.AppendLine('1. `Storage.Upload.Begin` with just `fileName` (omit `storageCode`) → creates a buffer-only session.');
         Builder.AppendLine('2. `Storage.Upload.Append` once per chunk (same as above).');
-        Builder.AppendLine('3. `Storage.Upload.CommitToRecord` with `uploadId` + record address (`tableId`/`no` or `recordSystemId`) \u2192 assembles chunks and stores in the database.');
+        Builder.AppendLine('3. `Storage.Upload.CommitToRecord` with `uploadId` + record address (`tableId`/`no` or `recordSystemId`) → assembles chunks and stores in the database.');
         Builder.AppendLine('   - Default target is `DocumentAttachment` (any master record, sales document, posted document).');
         Builder.AppendLine('   - Set `target` = `IncomingDocument` to create an incoming document instead.');
         Builder.AppendLine('');
@@ -96,7 +110,7 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('');
         Builder.AppendLine('### Chunking rules (precise)');
         Builder.AppendLine('');
-        Builder.AppendLine('- A chunk is at most `chunkSizeHint` **raw** bytes (currently 49152, about 48 KB).');
+        Builder.AppendLine('- A chunk is up to `chunkSizeHint` **raw** bytes (currently 251,658,240 = 240 MiB, the most one call can carry). Every call is one billable message, so use chunks as large as the file allows.');
         Builder.AppendLine('- Base64-encode each chunk **independently**; never base64 the whole file and slice the resulting text — the chunk boundaries would not decode.');
         Builder.AppendLine('- `sequence` is 1-based and must be contiguous with no gaps by commit; re-sending a sequence replaces that chunk (retries are safe).');
         Builder.AppendLine('- Pass `declaredSize` (total bytes) at Begin so commit verifies nothing was lost.');
@@ -164,7 +178,7 @@ codeunit 10035675 "Storage Overview Help ori"
         Builder.AppendLine('');
         Builder.AppendLine('### Chunked uploads');
         Builder.AppendLine('');
-        Builder.AppendLine('Deliver a large file as a sequence of small chunks when it is too big for a single `Storage.File.Create` call or a single inline `content` parameter. Begin a session, append the file in pieces (about 48 KB of raw bytes each, base64-encoded), then commit — either to external storage or directly to a record attachment.');
+        Builder.AppendLine('Deliver a large file as a sequence of small chunks when it is too big for a single `Storage.File.Create` call or a single inline `content` parameter. Begin a session, append the file in pieces (up to 240 MiB of raw bytes each, base64-encoded), then commit — either to external storage or directly to a record attachment.');
         Builder.AppendLine('');
         Builder.AppendLine('| Message type | Required parameters | Description |');
         Builder.AppendLine('|---|---|---|');
