@@ -12,6 +12,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
 - **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
 
+### Fixed (2026-09-29) - Restore main build after #45/#47 AddError conflict (#55)
+
+- `Storage.Directory.Delete` and `Storage.File.Delete` help pass an error code and a resolution to `AddError`, so those calls compile against the three-parameter form.
+
 ### Security (2026-09-29) - generic writes blocked on Storage Attachment Link ori; orphan links purged (#9)
 
 - Generic `Data.Records.Set` writes to `Storage Attachment Link ori` are refused. The error names `Storage.Attachment.Offload / Storage.Attachment.CreateLinked / Storage.Attachment.CreateForRecord`. Reads stay allowed.

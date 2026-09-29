@@ -96,8 +96,8 @@ codeunit 10035671 "Storage File Help ori"
         HelpBuilder.AddParam('path', true, 'string', 'The file path to delete (relative to the connection base path).');
         HelpBuilder.SetRequestExample('{ "storageCode": "ARCHIVE", "path": "notes/hello.txt" }');
         HelpBuilder.SetResponseNote('the deleted `path`');
-        HelpBuilder.AddError('File not found', 'Verify the file exists with Storage.File.Exists.');
-        HelpBuilder.AddError('File is linked to a Business Central attachment and cannot be deleted directly from storage', 'Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::BusinessCentralError, 'File not found', 'Verify the file exists with Storage.File.Exists.');
+        HelpBuilder.AddError("Bifrost Error Code ori"::PreconditionFailed, 'File is linked to a Business Central attachment and cannot be deleted directly from storage', 'Restore the attachment (`Storage.Attachment.Restore`) or delete the BC attachment first, then delete the file.');
         HelpBuilder.AddError("Bifrost Error Code ori"::BusinessCentralError, 'The file does not exist (connector error)', 'Verify the file exists with Storage.File.Exists.');
         HelpBuilder.SetSideEffects('Deletes a file from external storage even though Direction is Outbound. Treat as a write when asking for confirmation.');
         HelpBuilder.AddRelated('Storage.File.Exists', 'Check existence first');
