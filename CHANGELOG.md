@@ -6,6 +6,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+- Foundation dependency floor raised to 28.0.0.166 (Msg Contract objects), fixes #63.
 - **Message type contracts, Batch 1** (`Help.Storage.Get`, `Storage.Account.List`, all
   `Storage.File.*` and `Storage.Directory.*` types): added structured contract chapters,
   contract validation tests, and Foundation dependency pin `28.0.1.0` for the test app.
