@@ -7,15 +7,18 @@ Business Central release versioning (`major.minor.build.revision`).
 ## [Unreleased]
 
 - **Message type contracts, Batch 1** (`Help.Storage.Get`, `Storage.Account.List`, all
-  `Storage.File.*` and `Storage.Directory.*` types): added structured contract chapters,
-  contract validation tests, and Foundation dependency pin `28.0.1.0` for the test app.
+  `Storage.File.*` and `Storage.Directory.*` types): added structured contract chapters
+  and contract validation tests.
 - **Message type contracts, Batch 2** (Attachments, Upload and DataExchange types): added
   structured contract chapters, bilingual discovery keywords and contract validation tests.
 - **Foundation CI probe** (`.AL-Go/settings.json`): the `bc-origo-bifrost-core` `appDependencyProbingPaths` entry uses `"version": "latest"` (`release_status` stays `latestBuild`), so the app builds against the latest Foundation CI build with a Foundation floor of `28.0.0.0`.
 - **Install permission-probe diagnostics** in `Storage Takeover ori`: the `WriteDeniedErr` and `ReadDeniedErr` texts are now `Locked` labels. The text is identical, and they only feed telemetry, so there's no translation (xlf) change.
-- **Bifrost Foundation dependency** (`app/app.json` and `test/app.json`) is deliberately lowered from `28.0.0.100` to `28.0.0.0`, so it's no longer a pinned build. This was approved by Gunnar. The app uses `App Registry ori` and `Registered App ori` (core `5819941`), so the real symbol minimum is Foundation build 48 or later (about `28.0.0.48`), not `28.0.0.0`.
 - **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
 - **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
+
+### Fixed (2026-09-30) - pin Foundation to 28.0.0.166 (#63)
+
+- The app and the test app are both pinned to Bifrost Foundation 28.0.0.166. Contract batch tests resolve message types with `Enum::"Message Type ori".FromInteger`, so the test app compiles against that pin.
 
 ### Fixed (2026-09-29) - Restore main build after #45/#47 AddError conflict (#55)
 

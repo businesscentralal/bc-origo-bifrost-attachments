@@ -21,7 +21,7 @@ codeunit 96215 "Storage Contract Batch1 Tests"
         Chapter: Text;
     begin
         foreach TypeName in Batch1Types() do begin
-            MessageType := Enum::"Message Type ori"::FromInteger(OrdinalOf(TypeName));
+            MessageType := Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName));
             LibraryAssert.IsTrue(ContractMgt.GetContract(MessageType, Contract), TypeName + ' must declare a contract.');
             foreach Chapter in RequiredChapters(TypeName) do
                 LibraryAssert.IsTrue(Contract.Contains(Chapter), TypeName + ' must declare chapter ' + Chapter + '.');
@@ -54,7 +54,7 @@ codeunit 96215 "Storage Contract Batch1 Tests"
         Effect: JsonObject;
         EffectToken: JsonToken;
     begin
-        MessageType := Enum::"Message Type ori"::FromInteger(OrdinalOf(TypeName));
+        MessageType := Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName));
         ContractMgt.GetContract(MessageType, Contract);
         Contract.Get('effect', EffectToken);
         Effect := EffectToken.AsObject();
