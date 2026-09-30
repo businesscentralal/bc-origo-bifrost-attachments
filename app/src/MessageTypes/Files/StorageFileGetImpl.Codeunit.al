@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of the <c>Storage.File.Get</c> message type. Downloads a file from the
 /// configured storage connection and returns its content as base64.
 /// </summary>
-codeunit 10035652 "Storage File Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori"
+codeunit 10035652 "Storage File Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 
@@ -48,16 +48,94 @@ codeunit 10035652 "Storage File Get Impl ori" implements "Msg Interface ori", "M
         exit(SelectionDescriptionLbl);
     end;
 
+    procedure GetEnvelope(var Envelope: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Envelope := ContractParts.GetEnvelope(true);
+        exit(true);
+    end;
+
+    procedure GetTarget(var Target: JsonArray): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetParameters(var Parameters: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Parameters := ContractParts.GetParameters('Storage.File.Get');
+        exit(true);
+    end;
+
+    procedure GetResponse(var Response: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Response := ContractParts.GetResponse('Storage.File.Get');
+        exit(true);
+    end;
+
+    procedure GetErrors(var Errors: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Errors := ContractParts.GetErrors('Storage.File.Get');
+        exit(true);
+    end;
+
+    procedure GetEffect(var Effect: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Effect := ContractParts.GetEffect('Storage.File.Get');
+        exit(true);
+    end;
+
+    procedure GetMetering(var Metering: JsonObject): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetRelated(var Related: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Related := ContractParts.GetRelated('Storage.File.Get');
+        exit(true);
+    end;
+
+    procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetExamples(var Examples: JsonArray): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetOverview(var Overview: Text): Boolean
+    begin
+        Clear(Overview);
+        exit(false);
+    end;
+
+    procedure GetNotes(var Notes: Text): Boolean
+    begin
+        Clear(Notes);
+        exit(false);
+    end;
+
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
         exit(Enum::"Msg Direction ori"::Outbound);
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        FileHelp: Codeunit "Storage File Help ori";
     begin
-        FileHelp.GetHelp(Enum::"Message Type ori"::"Storage.File.Get", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

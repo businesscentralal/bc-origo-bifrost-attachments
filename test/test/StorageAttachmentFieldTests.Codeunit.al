@@ -205,16 +205,16 @@ codeunit 96203 "Storage Attachment Field Tests"
     procedure OffloadHelp_DocumentsCandidateDiscovery()
     var
         TempArgument: Record "Message Argument ori";
-        MsgInterface: Interface "Msg Interface ori";
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        MessageType: Enum "Message Type ori";
         HelpText: Text;
     begin
         // [SCENARIO] The Storage.Attachment.Offload help documents how to find offload candidates using Data.Records.Get.
         TempArgument.Init();
-        TempArgument."Type" := TempArgument."Type"::"Storage.Attachment.Offload";
-        TempArgument.Insert(true);
-        MsgInterface := TempArgument.GetMessageTypeInterface();
-        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-        HelpText := TempArgument.GetResponseText();
+        MessageType := MessageType::"Storage.Attachment.Offload";
+        ContractMgt.GetContract(MessageType, Contract);
+        Contract.WriteTo(HelpText);
 
         // [THEN] The help explains the Offloaded ori field and the Data.Records.Get filter
         LibraryAssert.IsTrue(HelpText.Contains('Offloaded ori'), 'The help should reference the Offloaded ori field.');

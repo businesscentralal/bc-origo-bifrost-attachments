@@ -171,22 +171,8 @@ codeunit 96211 "Storage Msg Conformance Tests"
     end;
 
     local procedure HelpOffenders(Ordinal: Integer) Offenders: Text
-    var
-        HelpText: Text;
-        Section: Text;
-        Sections: List of [Text];
     begin
-        HelpText := HelpOf(Ordinal);
-        if not HelpText.StartsWith('# ' + TypeName(Ordinal)) then
-            Offenders += TypeName(Ordinal) + '|title ';
-        Sections.AddRange('Overview', 'Request Parameters', 'Response Shape', 'Errors', 'Related Message Types');
-        foreach Section in Sections do
-            if not HelpText.Contains(LineFeed() + '## ' + Section) then
-                Offenders += TypeName(Ordinal) + '|section ' + Section + ' ';
-        if HelpText.Contains('identifier must be specified') then
-            Offenders += TypeName(Ordinal) + '|retired wording ';
-        if HelpText.Contains('\u20') or HelpText.Contains('call_message_type') then
-            Offenders += TypeName(Ordinal) + '|stale text ';
+        exit(ContractChapterOffenders(Ordinal));
     end;
 
     local procedure SentenceOffenders(Name: Text; Kind: Text; Sentence: Text) Offenders: Text
@@ -205,26 +191,48 @@ codeunit 96211 "Storage Msg Conformance Tests"
     end;
 
     local procedure RelatedTypeOffenders(Ordinal: Integer) Offenders: Text
-    var
-        HelpText: Text;
-        Related: Text;
-        Candidate: Text;
-        Parts: List of [Text];
-        Index: Integer;
     begin
-        HelpText := HelpOf(Ordinal);
-        Related := CopyStr(HelpText, StrPos(HelpText, '## Related Message Types'));
-        if StrPos(Related, LineFeed() + '---') > 0 then
-            Related := CopyStr(Related, 1, StrPos(Related, LineFeed() + '---'));
-        Parts := Related.Split('`');
-        // Odd positions sit between a pair of backticks.
-        for Index := 2 to Parts.Count() do
-            if Index mod 2 = 0 then begin
-                Candidate := Parts.Get(Index);
-                if IsTypeLikeName(Candidate) then
-                    if not Enum::"Message Type ori".Names().Contains(Candidate) then
-                        Offenders += TypeName(Ordinal) + '|related ' + Candidate + ' ';
-            end;
+        exit(ContractRelatedTypeOffenders(Ordinal));
+    end;
+
+    local procedure ContractChapterOffenders(Ordinal: Integer) Offenders: Text
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        MessageType: Enum "Message Type ori";
+        Chapter: Text;
+        Chapters: List of [Text];
+    begin
+        MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
+        ContractMgt.GetContract(MessageType, Contract);
+        Chapters.AddRange('envelope', 'response', 'errors', 'effect', 'metering', 'related');
+        foreach Chapter in Chapters do
+            if not Contract.Contains(Chapter) then
+                Offenders += TypeName(Ordinal) + '|contract ' + Chapter + ' ';
+    end;
+
+    local procedure ContractRelatedTypeOffenders(Ordinal: Integer) Offenders: Text
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        MessageType: Enum "Message Type ori";
+        RelatedToken: JsonToken;
+        EntryToken: JsonToken;
+        Entry: JsonObject;
+        NameToken: JsonToken;
+        Candidate: Text;
+    begin
+        MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
+        ContractMgt.GetContract(MessageType, Contract);
+        if not Contract.Get('related', RelatedToken) then
+            exit;
+        foreach EntryToken in RelatedToken.AsArray() do begin
+            Entry := EntryToken.AsObject();
+            Entry.Get('name', NameToken);
+            Candidate := NameToken.AsValue().AsText();
+            if not Enum::"Message Type ori".Names().Contains(Candidate) then
+                Offenders += TypeName(Ordinal) + '|related ' + Candidate + ' ';
+        end;
     end;
 
     local procedure IsTypeLikeName(Candidate: Text): Boolean
@@ -256,19 +264,25 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Ordinal: Integer;
     begin
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            if (Ordinal >= FirstOrdinal) and (Ordinal <= LastOrdinal) then
+            if ((Ordinal >= FirstOrdinal) and (Ordinal <= LastOrdinal)) or ((Ordinal >= 70013510) and (Ordinal <= 70013515)) then
                 Ordinals.Add(Ordinal);
-        LibraryAssert.AreEqual(23, Ordinals.Count(), 'Bifröst Attachments declares 23 message types.');
+        LibraryAssert.AreEqual(29, Ordinals.Count(), 'Bifröst Attachments declares 29 message types.');
+    end;
+
+    local procedure TypeName(Ordinal: Integer): Text
+    var
+        MessageType: Enum "Message Type ori";
+        Names: List of [Text];
+        Ordinals: List of [Integer];
+    begin
+        Names := MessageType.Names();
+        Ordinals := MessageType.Ordinals();
+        exit(Names.Get(Ordinals.IndexOf(Ordinal)));
     end;
 
     local procedure IsHelpType(Ordinal: Integer): Boolean
     begin
         exit(TypeName(Ordinal).StartsWith('Help.'));
-    end;
-
-    local procedure TypeName(Ordinal: Integer): Text
-    begin
-        exit(Enum::"Message Type ori".Names().Get(Enum::"Message Type ori".Ordinals().IndexOf(Ordinal)));
     end;
 
     local procedure LineFeed(): Text

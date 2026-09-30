@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en-US" target-language="is-IS" original="Bifrost Attachments">
+  <file datatype="xml" source-language="en-US" target-language="is-IS" original="Bifrost Attachments.g.xlf">
     <body>
       <group id="body">
         <trans-unit id="Table 4034440960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -399,6 +399,42 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Upphleðslukenni</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Session ori - Field Upload Id - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Codeunit 146493229 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>get data exchange definition, read mappings, definition columns</source>
+          <target>sækja skilgreiningu gagnaskipta, lesa vörpun, dálkar skilgreiningar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=sækja skilgreiningu gagnaskipta, lesa vörpun, dálkar skilgreiningar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Get Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2730585033 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>list data exchange definitions, import definitions, exchange formats</source>
+          <target>lista skilgreiningar gagnaskipta, skilgreiningar innflutnings, snið gagnaskipta</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=lista skilgreiningar gagnaskipta, skilgreiningar innflutnings, snið gagnaskipta</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def List Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 625919956 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>get data exchange entry, read imported fields, imported file content</source>
+          <target>sækja færslu gagnaskipta, lesa innflutta reiti, innihald innfluttrar skrár</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=sækja færslu gagnaskipta, lesa innflutta reiti, innihald innfluttrar skrár</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Get Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2017599976 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>list data exchange entries, processed imports, imported files</source>
+          <target>lista færslur gagnaskipta, unnar innflutningar, innfluttar skrár</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=lista færslur gagnaskipta, unnar innflutningar, innfluttar skrár</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry List Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2737179671 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>data exchange help, import discovery, data exchange overview</source>
+          <target>gagnaskiptahjálp, uppgötvun innflutnings, yfirlit gagnaskipta</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=gagnaskiptahjálp, uppgötvun innflutnings, yfirlit gagnaskipta</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Help Get Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2801241356 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>list data exchange types, incoming document types, exchange type codes</source>
+          <target>lista tegundir gagnaskipta, tegundir innkomandi skjala, tegundakóðar gagnaskipta</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=lista tegundir gagnaskipta, tegundir innkomandi skjala, tegundakóðar gagnaskipta</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type List Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2221252770 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>storage connections, which storage accounts, list storage accounts, configured storage, cloud storage setup, where are files stored, azure blob connection, sharepoint connection, file share connection, storage code</source>
           <target>geymslutengingar, geymslutenging, hvaða geymslur, geymslureikningar, uppsettar geymslur, skýjageymsla, skýjageymslu, hvar eru skrár geymdar, sharepoint tenging, geymslukóði</target>
@@ -710,6 +746,12 @@
           <target>færa skrá, færa skrána, endurnefna skrá, endurnefna skrána, færa í aðra möppu, flytja skjal í geymslu, setja skrá í safnmöppu</target>
           <note from="Developer" annotates="general" priority="2">is-IS=færa skrá, færa skrána, endurnefna skrá, endurnefna skrána, færa í aðra möppu, flytja skjal í geymslu, setja skrá í safnmöppu</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File Move Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 149655982 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>storage help, storage message types, how to use storage, storage API overview, storage documentation</source>
+          <target>geymslu hjálp, geymsluboðgerðir, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=geymslu hjálp, geymsluboðgerðir, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Help Get Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 934377432 - NamedType 1724580414" size-unit="char" translate="yes" xml:space="preserve">
           <source>Enable HTTP client requests and configure external storage connections for Bifrost.</source>
@@ -1037,8 +1079,9 @@
         </trans-unit>
         <trans-unit id="Codeunit 1175196741 - NamedType 563474316" size-unit="char" translate="yes" xml:space="preserve">
           <source>Purged %1 upload session(s) and %2 chunk(s).</source>
-          <target>Hreinsaði %1 upphleðslulotu/-lotur og %2 bita., %1 = session count, %2 = chunk count</target>
+          <target>[NAB: REVIEW]Hreinsaði %1 upphleðslulotu/-lotur og %2 bita., %1 = session count, %2 = chunk count</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 bita., %1 = session count, %2 = chunk count</note>
+          <note from="NAB AL Tool Refresh Xlf" annotates="general" priority="3">The placeholder "%2" was found in source 1 times, but 2 times in target.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Purge ori - NamedType PurgedMsg</note>
         </trans-unit>
         <trans-unit id="Codeunit 1103596966 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
@@ -1439,7 +1482,7 @@
         </trans-unit>
         <trans-unit id="PermissionSet 782960799 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bifrost Data Exchange</source>
-          <target state="translated">Bifröst gagnaskipti</target>
+          <target>Bifröst gagnaskipti</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Bifröst gagnaskipti</note>
           <note from="Xliff Generator" annotates="general" priority="3">PermissionSet BIFROST DataExch ori - Property Caption</note>
         </trans-unit>

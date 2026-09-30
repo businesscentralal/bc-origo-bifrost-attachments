@@ -8,7 +8,7 @@ using Origo.Bifrost;
 /// chunked upload session's data and attaches it directly to a Business Central record
 /// without writing to external storage — the content goes straight into the database.
 /// </summary>
-codeunit 10035669 "Storage Upload Commit Rec ori" implements "Msg Interface ori", "Msg Discovery ori"
+codeunit 10035669 "Storage Upload Commit Rec ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 
@@ -50,16 +50,94 @@ codeunit 10035669 "Storage Upload Commit Rec ori" implements "Msg Interface ori"
         exit(SelectionDescriptionLbl);
     end;
 
+    procedure GetEnvelope(var Envelope: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Envelope := ContractParts.GetEnvelope(true);
+        exit(true);
+    end;
+
+    procedure GetTarget(var Target: JsonArray): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetParameters(var Parameters: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Parameters := ContractParts.GetParameters('Storage.Upload.CommitToRecord');
+        exit(true);
+    end;
+
+    procedure GetResponse(var Response: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Response := ContractParts.GetResponse('Storage.Upload.CommitToRecord');
+        exit(true);
+    end;
+
+    procedure GetErrors(var Errors: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Errors := ContractParts.GetErrors('Storage.Upload.CommitToRecord');
+        exit(true);
+    end;
+
+    procedure GetEffect(var Effect: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Effect := ContractParts.GetEffect('Storage.Upload.CommitToRecord');
+        exit(true);
+    end;
+
+    procedure GetMetering(var Metering: JsonObject): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetRelated(var Related: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+    begin
+        Related := ContractParts.GetRelated('Storage.Upload.CommitToRecord');
+        exit(true);
+    end;
+
+    procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetExamples(var Examples: JsonArray): Boolean
+    begin
+        exit(false);
+    end;
+
+    procedure GetOverview(var Overview: Text): Boolean
+    begin
+        Clear(Overview);
+        exit(false);
+    end;
+
+    procedure GetNotes(var Notes: Text): Boolean
+    begin
+        Clear(Notes);
+        exit(false);
+    end;
+
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
         exit(Enum::"Msg Direction ori"::Inbound);
     end;
 
     procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    var
-        UploadHelp: Codeunit "Storage Upload Help ori";
     begin
-        UploadHelp.GetHelp(Enum::"Message Type ori"::"Storage.Upload.CommitToRecord", Argument);
+        Argument.SetResponseMarkdown('');
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

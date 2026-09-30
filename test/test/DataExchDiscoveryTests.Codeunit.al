@@ -232,29 +232,23 @@ codeunit 96213 "Data Exch Discovery Tests"
     [Test]
     procedure Help_NamesTypes_AndCarriesPaginationLimits()
     var
-        TempArgument: Record "Message Argument ori";
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
         MessageType: Enum "Message Type ori";
-        RequestJson: JsonObject;
         Markdown: Text;
     begin
-        // [SCENARIO] The overview describes the pipeline, and entry help carries Foundation pagination wording.
-        ExecuteType(TempArgument, MessageType::"Help.DataExchange.Get", RequestJson);
-        Markdown := ReadObjText(ReadData(TempArgument.GetResponseJson()), 'markdown');
-        LibraryAssert.IsTrue(Markdown.Contains('## Pipeline'), 'pipeline');
-        LibraryAssert.IsTrue(Markdown.Contains('## Phases'), 'phases');
-        LibraryAssert.IsTrue(Markdown.Contains('## Decision tree'), 'decision tree');
-        LibraryAssert.IsTrue(Markdown.Contains('## Chaining'), 'chaining');
+        // [SCENARIO] The contract exposes the overview relationships and paged entry parameters.
+        ContractMgt.GetContract(MessageType::"Help.DataExchange.Get", Contract);
+        Contract.WriteTo(Markdown);
+        LibraryAssert.IsTrue(Markdown.Contains('DataExchange.Definition.List'), 'overview related definitions');
+        LibraryAssert.IsTrue(Markdown.Contains('DataExchange.Entry.List'), 'overview related entries');
 
-        Clear(TempArgument);
-        TempArgument.Init();
-        TempArgument."Type" := MessageType::"DataExchange.Entry.List";
-        TempArgument.Insert(true);
-        GetHelp(TempArgument);
-        Markdown := TempArgument.GetResponseText();
-        LibraryAssert.IsTrue(Markdown.Contains('## Pagination Limits'), 'pagination heading');
-        LibraryAssert.IsTrue(
-            Markdown.Contains('`skip` defaults to 0 and rejects negative values. `take` defaults to 100 when omitted or zero, rejects negative values, and is clamped to the hard maximum of 1000.'),
-            'Foundation pagination wording');
+        Clear(Contract);
+        ContractMgt.GetContract(MessageType::"DataExchange.Entry.List", Contract);
+        Contract.WriteTo(Markdown);
+        LibraryAssert.IsTrue(Markdown.Contains('dataExchDefCode'), 'definition filter');
+        LibraryAssert.IsTrue(Markdown.Contains('skip'), 'skip parameter');
+        LibraryAssert.IsTrue(Markdown.Contains('take'), 'take parameter');
     end;
 
     local procedure SeedDefinition()

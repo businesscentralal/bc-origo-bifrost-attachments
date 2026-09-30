@@ -111,20 +111,20 @@ codeunit 96206 "Storage Attach Record Tests"
     procedure CreateForRecordHelpDocumentsContentBase64First()
     var
         TempArgument: Record "Message Argument ori";
-        MsgInterface: Interface "Msg Interface ori";
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        MessageType: Enum "Message Type ori";
         HelpText: Text;
         Base64Pos: Integer;
         ContentPos: Integer;
     begin
         // [SCENARIO] #15 — CreateForRecord help lists contentBase64 first and content as an accepted alias.
         TempArgument.Init();
-        TempArgument."Type" := TempArgument."Type"::"Storage.Attachment.CreateForRecord";
-        TempArgument.Insert(true);
-        MsgInterface := TempArgument.GetMessageTypeInterface();
-        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-        HelpText := TempArgument.GetResponseText();
-        Base64Pos := StrPos(HelpText, '| `contentBase64` |');
-        ContentPos := StrPos(HelpText, '| `content` |');
+        MessageType := MessageType::"Storage.Attachment.CreateForRecord";
+        ContractMgt.GetContract(MessageType, Contract);
+        Contract.WriteTo(HelpText);
+        Base64Pos := StrPos(HelpText, 'contentBase64');
+        ContentPos := StrPos(HelpText, '"content"');
         LibraryAssert.IsTrue(Base64Pos > 0, 'CreateForRecord help should document contentBase64.');
         LibraryAssert.IsTrue(ContentPos > Base64Pos, 'content should be documented after contentBase64.');
         LibraryAssert.IsTrue(HelpText.Contains('Accepted alias of contentBase64'), 'content should be documented as an accepted alias of contentBase64.');
