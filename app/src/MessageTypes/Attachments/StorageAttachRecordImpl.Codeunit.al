@@ -136,11 +136,6 @@ codeunit 10035667 "Storage Attach Record Impl ori" implements "Msg Interface ori
         exit(Enum::"Msg Direction ori"::Inbound);
     end;
 
-    procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    begin
-        Argument.SetResponseMarkdown('');
-    end;
-
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";

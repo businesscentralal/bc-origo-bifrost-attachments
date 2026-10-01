@@ -27,6 +27,10 @@ Ids changed by the setup-notification move (2026-09-07): codeunit 10035680
 `Attachments Registration ori` added; codeunit 10035666 `Storage Http Notif. Action ori`
 deleted - that codeunit id is free but is not reused (permission set 10035666
 `BIFROST Attach ori` keeps its own id, object types have separate id spaces).
+
+Ids freed by the move to message type contracts (attachments#60, #61): codeunits 10035643
+`Storage Help Builder ori` and 10035670-10035675 (`Storage Account/File/Dir/Attachment/Upload/Overview
+Help ori`). Contract content lives in `Storage Contract Parts ori` (70013500).
 Test app: codeunit 96207 `Storage Setup Page Tests`, codeunit 96208
 `Storage App Registry Tests` (96208), `Storage Takeover Tests` (96209), `Storage Takeover Probe Tests` (96210); on main through **96213** (`Storage DataExchange Tests`, #51); open PR #45 uses 96211–96212; open PR #52 uses 96214; next free test id **96215**.
 `Storage Msg Conformance Tests` (96211), `Storage Error Response Tests` (96212); next free test id **96213**.
@@ -134,12 +138,11 @@ Key rules always in effect:
   `Storage.Directory.{List,Create,Delete,Exists}`,
   `Storage.Attachment.{Offload,Restore,CreateLinked,CreateForRecord}` and
   `Storage.Upload.{Begin,Append,Commit,Abort,Status,CommitToRecord}`.
-- **Help lives per domain, not per type.** Six help codeunits - `Storage Account Help ori`,
-  `Storage File Help ori`, `Storage Dir Help ori`, `Storage Attachment Help ori`,
-  `Storage Upload Help ori`, `Storage Overview Help ori` - hold the Markdown contract for their
-  domain, built with `Storage Help Builder ori`. Every `* Impl ori` codeunit delegates its
-  `GetMessageHelpAsMarkdownDocument` to the help codeunit of its domain with a `case` on the
-  message type. Never build the help document inline in an implementation codeunit.
+- **Help is the contract.** Every `* Impl ori` codeunit implements Foundation's `Msg Contract ori`;
+  `Help.Implementation.Get` returns its chapters. Content shared across types is built once in
+  `Storage Contract Parts ori` with `Msg Contract Mgt ori`'s builders. There is no markdown help
+  (`GetMessageHelpAsMarkdownDocument` left Foundation with core#198); text without a chapter place
+  goes in `GetNotes`.
 - Every implementation resolves its request through `Storage Request Mgt ori`, which maps
   `storageCode` to a `Storage Setup ori` row and returns the `Storage Connector ori`
   implementation to use.
@@ -160,10 +163,9 @@ Key rules always in effect:
   `GetSelectionDescription` a `Locked` one-sentence label that tells the type apart from its siblings.
   After changing labels, compile, then rebuild the Icelandic file with
   `bc-origo-bifrost-core/tools/Update-IcelandicXlf.ps1 -TranslationsFolder app/Translations`.
-- **Help sections:** `Storage Help Builder ori` renders Foundation's required headings (Overview,
-  Request Parameters, Response Shape, Errors, Related Message Types) and the standard error rows;
-  `AddError` takes the error code. Test 96211 enforces Foundation's conformance rules for all 23 types
-  with no allow-list, and keyword coverage in English and Icelandic.
+- **Contract chapters:** test 96211 (`Storage Msg Conformance Tests`) enforces the envelope, response,
+  errors, effect, metering and related chapters for all 29 types with no allow-list, and keyword
+  coverage in English and Icelandic.
 - **Metering:** nothing to implement - every value falls back to Foundation's `Default Metering ori`.
   Each successful call is one billable message (`Help.Storage.Get` is exempt), so a chunk may carry up to
   240 MiB (`Storage Request Reader ori.MaxContentBytes`, under the 350 MB OData body limit) and

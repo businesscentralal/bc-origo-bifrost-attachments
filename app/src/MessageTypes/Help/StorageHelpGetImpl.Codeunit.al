@@ -122,11 +122,6 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         exit(Enum::"Msg Direction ori"::Outbound);
     end;
 
-    procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    begin
-        Argument.SetResponseMarkdown('');
-    end;
-
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         RequestMgt: Codeunit "Storage Request Mgt ori";

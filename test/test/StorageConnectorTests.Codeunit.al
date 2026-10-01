@@ -31,10 +31,10 @@ codeunit 96204 "Storage Connector Tests"
         Ordinals: List of [Integer];
         Ordinal: Integer;
     begin
-        // [SCENARIO] Every storage message type (72620-72634) exposes metadata and self-identifying help.
+        // [SCENARIO] Every storage message type (Help.Storage.Get to Storage.Attachment.Restore) exposes metadata and a contract.
         Ordinals := MessageType.Ordinals();
         foreach Ordinal in Ordinals do
-            if (Ordinal >= 72620) and (Ordinal <= 72634) then
+            if (Ordinal >= Enum::"Message Type ori"::"Help.Storage.Get".AsInteger()) and (Ordinal <= Enum::"Message Type ori"::"Storage.Attachment.Restore".AsInteger()) then
                 VerifyTypeMetadataAndHelp(Ordinal);
     end;
 
@@ -45,11 +45,11 @@ codeunit 96204 "Storage Connector Tests"
         Ordinals: List of [Integer];
         Ordinal: Integer;
     begin
-        // [SCENARIO] Each callable storage type (72621-72634) documents enough for an AI agent to invoke it:
-        // a JSON request example, the parameters it needs, and the response contract.
+        // [SCENARIO] Each callable storage type (Storage.Account.List to Storage.Attachment.Restore) documents enough for an
+        // AI agent to invoke it: the parameters it needs and the response contract.
         Ordinals := MessageType.Ordinals();
         foreach Ordinal in Ordinals do
-            if (Ordinal >= 72621) and (Ordinal <= 72634) then
+            if (Ordinal >= Enum::"Message Type ori"::"Storage.Account.List".AsInteger()) and (Ordinal <= Enum::"Message Type ori"::"Storage.Attachment.Restore".AsInteger()) then
                 VerifyTypeHelpExplainsUsage(Ordinal);
     end;
 
@@ -780,15 +780,6 @@ codeunit 96204 "Storage Connector Tests"
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'The linked incoming attachment should be created.');
     end;
 
-    local procedure AssertHelpContains(MessageType: Enum "Message Type ori"; Expected: Text)
-    var
-        HelpText: Text;
-        MissingHelpTextErr: Label 'Help for %1 should contain "%2".', Comment = '%1 = message type, %2 = expected text';
-    begin
-        HelpText := MessageHelp(MessageType);
-        LibraryAssert.IsTrue(HelpText.Contains(Expected), StrSubstNo(MissingHelpTextErr, MessageType, Expected));
-    end;
-
     local procedure MessageHelp(MessageType: Enum "Message Type ori") Result: Text
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
@@ -813,26 +804,19 @@ codeunit 96204 "Storage Connector Tests"
 
     local procedure VerifyTypeMetadataAndHelp(Ordinal: Integer)
     var
-        TempArgument: Record "Message Argument ori";
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
         MessageType: Enum "Message Type ori";
         MsgInterface: Interface "Msg Interface ori";
-        HelpText: Text;
-        TypeName: Text;
+        Contract: JsonObject;
         WrongDirectionErr: Label 'Type %1 has the wrong message direction.', Comment = '%1 = message type';
         NoDescriptionErr: Label 'Type %1 should have a description.', Comment = '%1 = message type';
-        NoHelpErr: Label 'Type %1 should produce help markdown.', Comment = '%1 = message type';
-        NotMarkdownErr: Label 'Type %1 help should start with a Markdown heading.', Comment = '%1 = message type';
-        NotSelfIdentifyingErr: Label 'Type %1 help should name the message type so an agent can map the document to the tool.', Comment = '%1 = message type';
+        NoContractErr: Label 'Type %1 should describe itself through its contract.', Comment = '%1 = message type';
     begin
         MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
-        TypeName := MessageTypeName(MessageType);
-        TempArgument.Init();
-        TempArgument."Type" := MessageType;
-        TempArgument.Insert(true);
-        MsgInterface := TempArgument.GetMessageTypeInterface();
+        MsgInterface := MessageType;
 
         // Attachment offload/restore write to the database, so they are inbound; everything else is outbound.
-        if Ordinal >= 72633 then
+        if Ordinal >= Enum::"Message Type ori"::"Storage.Attachment.Offload".AsInteger() then
             LibraryAssert.AreEqual(
                 Enum::"Msg Direction ori"::Inbound,
                 MsgInterface.GetMessageDirection(),
@@ -843,58 +827,36 @@ codeunit 96204 "Storage Connector Tests"
                 MsgInterface.GetMessageDirection(),
                 StrSubstNo(WrongDirectionErr, MessageType));
         LibraryAssert.AreNotEqual('', MsgInterface.GetDescription(), StrSubstNo(NoDescriptionErr, MessageType));
-
-        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-        HelpText := TempArgument.GetResponseText();
-        LibraryAssert.AreNotEqual('', HelpText, StrSubstNo(NoHelpErr, MessageType));
-        LibraryAssert.IsTrue(HelpText.StartsWith('#'), StrSubstNo(NotMarkdownErr, MessageType));
-        LibraryAssert.IsTrue(HelpText.Contains(TypeName), StrSubstNo(NotSelfIdentifyingErr, MessageType));
+        LibraryAssert.IsTrue(ContractMgt.GetContract(MessageType, Contract), StrSubstNo(NoContractErr, MessageType));
     end;
 
     local procedure VerifyTypeHelpExplainsUsage(Ordinal: Integer)
     var
-        TempArgument: Record "Message Argument ori";
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
         MessageType: Enum "Message Type ori";
-        MsgInterface: Interface "Msg Interface ori";
-        HelpText: Text;
-        NoExampleErr: Label 'Type %1 help should include a JSON request example so an agent can shape the call.', Comment = '%1 = message type';
-        NoResponseErr: Label 'Type %1 help should document the response contract.', Comment = '%1 = message type';
-        NoParamsErr: Label 'Type %1 help should document its parameters, including storageCode.', Comment = '%1 = message type';
+        Contract: JsonObject;
+        ParametersToken: JsonToken;
+        ParametersText: Text;
+        NoResponseErr: Label 'Type %1 contract should document the response.', Comment = '%1 = message type';
+        NoParamsErr: Label 'Type %1 contract should document its parameters, including storageCode.', Comment = '%1 = message type';
     begin
         MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
-        TempArgument.Init();
-        TempArgument."Type" := MessageType;
-        TempArgument.Insert(true);
-        MsgInterface := TempArgument.GetMessageTypeInterface();
-        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-        HelpText := TempArgument.GetResponseText();
+        ContractMgt.GetContract(MessageType, Contract);
 
-        // [THEN] An agent can see how to call it and what it returns
-        LibraryAssert.IsTrue(HelpText.Contains('```json'), StrSubstNo(NoExampleErr, MessageType));
-        LibraryAssert.IsTrue(HelpText.Contains('## Response'), StrSubstNo(NoResponseErr, MessageType));
+        // [THEN] An agent can see what it returns
+        LibraryAssert.IsTrue(Contract.Contains('response'), StrSubstNo(NoResponseErr, MessageType));
 
         // [THEN] All parameterised operations (file, directory, attachment) document their inputs
-        if Ordinal >= 72622 then
-            LibraryAssert.IsTrue(HelpText.Contains('## Request Parameters'), StrSubstNo(NoParamsErr, MessageType));
+        if Ordinal < Enum::"Message Type ori"::"Storage.File.List".AsInteger() then
+            exit;
+        LibraryAssert.IsTrue(Contract.Get('parameters', ParametersToken), StrSubstNo(NoParamsErr, MessageType));
 
         // [THEN] Operations that target a connection by code document storageCode.
-        // Storage.Attachment.Restore (72634) is excluded: it derives the connection from the offload record.
-        if (Ordinal >= 72622) and (Ordinal <> 72634) then
-            LibraryAssert.IsTrue(HelpText.Contains('storageCode'), StrSubstNo(NoParamsErr, MessageType));
-    end;
-
-    local procedure MessageTypeName(MessageType: Enum "Message Type ori"): Text
-    var
-        Ordinals: List of [Integer];
-        Names: List of [Text];
-        Index: Integer;
-    begin
-        Ordinals := MessageType.Ordinals();
-        Names := MessageType.Names();
-        Index := Ordinals.IndexOf(MessageType.AsInteger());
-        if Index = 0 then
-            exit('');
-        exit(Names.Get(Index));
+        // Storage.Attachment.Restore is excluded: it derives the connection from the offload record.
+        if MessageType = MessageType::"Storage.Attachment.Restore" then
+            exit;
+        ParametersToken.WriteTo(ParametersText);
+        LibraryAssert.IsTrue(ParametersText.Contains('"storageCode"'), StrSubstNo(NoParamsErr, MessageType));
     end;
 
     local procedure ExecuteType(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori")

@@ -133,11 +133,6 @@ codeunit 10035652 "Storage File Get Impl ori" implements "Msg Interface ori", "M
         exit(Enum::"Msg Direction ori"::Outbound);
     end;
 
-    procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    begin
-        Argument.SetResponseMarkdown('');
-    end;
-
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         StorageSetup: Record "Storage Setup ori";

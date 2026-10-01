@@ -28,8 +28,8 @@ SharePoint) owns the secrets.
    runs the setup wizard, enables *Allow HttpClient Requests* for the extension, picks a registered
    File Account and saves it as a `Storage Setup ori` row with a short `storageCode`.
 2. **Discover.** A caller invokes `Storage.Account.List` to learn which `storageCode` values exist,
-   and `Help.Storage.Get` (or `Help.Implementation.Get`) to read the Markdown contract of any
-   message type.
+   `Help.Storage.Get` for the module overview, and `Help.Implementation.Get` to read the contract
+   chapters of any message type.
 3. **Work with files and directories.** `Storage.File.*` and `Storage.Directory.*` list, read,
    write, copy, move, delete and probe entries under the connection's base path.
 4. **Upload large files in chunks.** `Storage.Upload.Begin` opens a session, `Storage.Upload.Append`
@@ -96,10 +96,9 @@ Supporting paths:
 - **Attachments** — `Storage Attachment Mgt ori` owns offload/restore and the
   `Storage Attachment Link ori` table; `Storage Attachment Subscr ori` serves offloaded content back
   to the standard BC pages through event subscribers.
-- **Help** — six domain codeunits (`Storage Account Help ori`, `Storage File Help ori`,
-  `Storage Dir Help ori`, `Storage Attachment Help ori`, `Storage Upload Help ori`,
-  `Storage Overview Help ori`) build their Markdown with `Storage Help Builder ori`. Every
-  implementation delegates its help to the codeunit of its domain — help is never built inline.
+- **Help** — every message type implements Foundation's `Msg Contract ori`; `Help.Implementation.Get`
+  returns its chapters (parameters, response, errors, effect, related and more). Shared chapter
+  content is built once in `Storage Contract Parts ori`.
 - **Lifecycle** — `Storage Install ori` registers the ChangeLog guard exception, the assisted setup
   entry and the upgrade tag; `Storage Takeover ori` copies data over from the published Cloud Events
   Storage app on first install per company.
@@ -232,7 +231,6 @@ object carries the mandatory ` ori` affix.
 | 10035640 | `Storage Attach Link Impl ori` | `Storage.Attachment.CreateLinked` |
 | 10035641 | `Storage Att. Offload Impl ori` | `Storage.Attachment.Offload` |
 | 10035642 | `Storage Att. Restore Impl ori` | `Storage.Attachment.Restore` |
-| 10035643 | `Storage Help Builder ori` | Builds the Markdown help document for the six domain help codeunits. |
 | 10035644 | `Storage Dir Create Impl ori` | `Storage.Directory.Create` |
 | 10035645 | `Storage Dir Delete Impl ori` | `Storage.Directory.Delete` |
 | 10035646 | `Storage Dir Exists Impl ori` | `Storage.Directory.Exists` |
@@ -258,15 +256,10 @@ object carries the mandatory ` ori` affix.
 | 10035667 | `Storage Attach Record Impl ori` | `Storage.Attachment.CreateForRecord` |
 | 10035668 | `Storage Attach Key Subscr ori` | Supplies the primary-key field for the attachment link table to the platform. |
 | 10035669 | `Storage Upload Commit Rec ori` | `Storage.Upload.CommitToRecord` |
-| 10035670 | `Storage Account Help ori` | Help contract for the `Storage.Account.*` domain. |
-| 10035671 | `Storage File Help ori` | Help contract for the `Storage.File.*` domain. |
-| 10035672 | `Storage Dir Help ori` | Help contract for the `Storage.Directory.*` domain. |
-| 10035673 | `Storage Attachment Help ori` | Help contract for the `Storage.Attachment.*` domain. |
-| 10035674 | `Storage Upload Help ori` | Help contract for the `Storage.Upload.*` domain. |
-| 10035675 | `Storage Overview Help ori` | Module directory served by `Help.Storage.Get`. |
 | 10035676 | `Storage Takeover ori` | One-time data take-over from the published *Origo Cloud Events Storage* app. |
 | 10035679 | `Storage Upload Purge ori` | Purges spent upload sessions and their chunks. |
 | 10035680 | `Attachments Registration ori` | Registers this app with Foundation's `App Registry ori` so the shared Bifröst Setup page can list it and raise its setup notification. |
+| 70013500 | `Storage Contract Parts ori` | Builds the contract chapters (`Msg Contract ori`) shared by the storage and Data Exchange message types. |
 
 ### Permission sets
 
@@ -355,7 +348,7 @@ folders in this repository — an approved deviation from Origo PR gateway check
 | Release notes | [CHANGELOG.md](CHANGELOG.md) |
 
 Message-type contracts are also served by the app itself at runtime: `Help.Storage.Get` returns
-the module directory, and every message type answers its own Markdown help through
+the module directory, and every message type answers its contract chapters through
 `describe_message_type` / `Help.Implementation.Get`.
 
 ### Context-Sensitive Help

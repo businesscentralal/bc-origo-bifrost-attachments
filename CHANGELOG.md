@@ -6,15 +6,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-- **Message type contracts, Batch 1** (`Help.Storage.Get`, `Storage.Account.List`, all
-  `Storage.File.*` and `Storage.Directory.*` types): added structured contract chapters
-  and contract validation tests.
-- **Message type contracts, Batch 2** (Attachments, Upload and DataExchange types): added
-  structured contract chapters, bilingual discovery keywords and contract validation tests.
-- **Foundation CI probe** (`.AL-Go/settings.json`): the `bc-origo-bifrost-core` `appDependencyProbingPaths` entry uses `"version": "latest"` (`release_status` stays `latestBuild`), so the app builds against the latest Foundation CI build with a Foundation floor of `28.0.0.0`.
-- **Install permission-probe diagnostics** in `Storage Takeover ori`: the `WriteDeniedErr` and `ReadDeniedErr` texts are now `Locked` labels. The text is identical, and they only feed telemetry, so there's no translation (xlf) change.
-- **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
-- **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
+### Removed (2026-10-01) - markdown help procedure (#61)
+
+- Every message type codeunit drops `GetMessageHelpAsMarkdownDocument`. Foundation removed it from `Msg Interface ori` (core#198); help is the contract chapters that `Help.Implementation.Get` returns. No chapter changed.
+- Bifrost Foundation dependency raised to 28.0.0.186, the first Foundation build without the procedure, in `app/app.json` and `test/app.json`.
+- The metadata tests in `Storage Connector Tests` and `Storage Upload Tests` iterated the legacy Cloud Events ordinals (72620-72641), so they ran no assertion. They now cover the real message types: direction, description, contract present, response chapter and `storageCode` parameter.
+- AGENTS.md, README.md and .claude/CLAUDE.md describe contracts instead of the deleted domain help codeunits; freed ids 10035643 and 10035670-10035675 are recorded.
 
 ### Fixed (2026-09-30) - pin Foundation to 28.0.0.166 (#63)
 

@@ -549,46 +549,34 @@ codeunit 96205 "Storage Upload Tests"
         Ordinals: List of [Integer];
         Ordinal: Integer;
     begin
-        // [SCENARIO] Every upload/link message type (72635-72641) exposes metadata and self-identifying help.
+        // [SCENARIO] Every upload/link message type (Storage.Upload.Begin to Storage.Upload.CommitToRecord) exposes metadata and a contract.
         Initialize();
         Ordinals := MessageType.Ordinals();
         foreach Ordinal in Ordinals do
-            if (Ordinal >= 72635) and (Ordinal <= 72641) then
+            if (Ordinal >= Enum::"Message Type ori"::"Storage.Upload.Begin".AsInteger()) and (Ordinal <= Enum::"Message Type ori"::"Storage.Upload.CommitToRecord".AsInteger()) then
                 VerifyTypeMetadataAndHelp(Ordinal);
     end;
 
     local procedure VerifyTypeMetadataAndHelp(Ordinal: Integer)
     var
-        TempArgument: Record "Message Argument ori";
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
         MessageType: Enum "Message Type ori";
         MsgInterface: Interface "Msg Interface ori";
         ExpectedDirection: Enum "Msg Direction ori";
-        HelpText: Text;
-        TypeName: Text;
+        Contract: JsonObject;
         WrongDirectionErr: Label 'Type %1 has the wrong message direction.', Comment = '%1 = message type';
-        NoHelpErr: Label 'Type %1 should produce help markdown.', Comment = '%1 = message type';
-        NotMarkdownErr: Label 'Type %1 help should start with a Markdown heading.', Comment = '%1 = message type';
-        NotSelfIdentifyingErr: Label 'Type %1 help should name the message type.', Comment = '%1 = message type';
+        NoContractErr: Label 'Type %1 should describe itself through its contract.', Comment = '%1 = message type';
     begin
         MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
-        TypeName := MessageTypeName(MessageType);
-        TempArgument.Init();
-        TempArgument."Type" := MessageType;
-        TempArgument.Insert(true);
-        MsgInterface := TempArgument.GetMessageTypeInterface();
+        MsgInterface := MessageType;
 
-        // Begin/Append/Commit/Abort (72635-72638) write; Status (72639) reads.
-        if Ordinal = 72639 then
+        // Every upload and link type writes Business Central data; only Storage.Upload.Status reads.
+        if MessageType = MessageType::"Storage.Upload.Status" then
             ExpectedDirection := ExpectedDirection::Outbound
         else
             ExpectedDirection := ExpectedDirection::Inbound;
         LibraryAssert.AreEqual(ExpectedDirection, MsgInterface.GetMessageDirection(), StrSubstNo(WrongDirectionErr, MessageType));
-
-        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-        HelpText := TempArgument.GetResponseText();
-        LibraryAssert.AreNotEqual('', HelpText, StrSubstNo(NoHelpErr, MessageType));
-        LibraryAssert.IsTrue(HelpText.StartsWith('#'), StrSubstNo(NotMarkdownErr, MessageType));
-        LibraryAssert.IsTrue(HelpText.Contains(TypeName), StrSubstNo(NotSelfIdentifyingErr, MessageType));
+        LibraryAssert.IsTrue(ContractMgt.GetContract(MessageType, Contract), StrSubstNo(NoContractErr, MessageType));
     end;
 
     local procedure MessageHelp(MessageType: Enum "Message Type ori") Result: Text
@@ -715,20 +703,6 @@ codeunit 96205 "Storage Upload Tests"
         TempArgument."Type" := MessageType;
         TempArgument.Insert(true);
         TempArgument.SetResponseJson(ResponseJson);
-    end;
-
-    local procedure MessageTypeName(MessageType: Enum "Message Type ori"): Text
-    var
-        Ordinals: List of [Integer];
-        Names: List of [Text];
-        Index: Integer;
-    begin
-        Ordinals := MessageType.Ordinals();
-        Names := MessageType.Names();
-        Index := Ordinals.IndexOf(MessageType.AsInteger());
-        if Index = 0 then
-            exit('');
-        exit(Names.Get(Index));
     end;
 
     local procedure ReadData(ResponseJson: JsonObject) DataObject: JsonObject
