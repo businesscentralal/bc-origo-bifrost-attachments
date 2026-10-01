@@ -13,6 +13,21 @@ Business Central release versioning (`major.minor.build.revision`).
 - The metadata tests in `Storage Connector Tests` and `Storage Upload Tests` iterated the legacy Cloud Events ordinals (72620-72641), so they ran no assertion. They now cover the real message types: direction, description, contract present, response chapter and `storageCode` parameter.
 - AGENTS.md, README.md and .claude/CLAUDE.md describe contracts instead of the deleted domain help codeunits; freed ids 10035643 and 10035670-10035675 are recorded.
 
+### Changed (2026-10-01) - external storage writes declare effect irreversible (#65)
+
+- `Storage.File.Create`, `Storage.File.Copy`, `Storage.File.Move`, `Storage.Directory.Create`, `Storage.Upload.Commit` and `Storage.Attachment.Offload` now declare effect `irreversible`: they write to the external storage outside the Business Central transaction, so the Orchestrator's Omit Commit guard refuses them in a rollback chain.
+- The effect `changes` text now says what each type changes: the external store, Business Central records only, or nothing.
+
+- **Message type contracts, Batch 1** (`Help.Storage.Get`, `Storage.Account.List`, all
+  `Storage.File.*` and `Storage.Directory.*` types): added structured contract chapters
+  and contract validation tests.
+- **Message type contracts, Batch 2** (Attachments, Upload and DataExchange types): added
+  structured contract chapters, bilingual discovery keywords and contract validation tests.
+- **Foundation CI probe** (`.AL-Go/settings.json`): the `bc-origo-bifrost-core` `appDependencyProbingPaths` entry uses `"version": "latest"` (`release_status` stays `latestBuild`), so the app builds against the latest Foundation CI build with a Foundation floor of `28.0.0.0`.
+- **Install permission-probe diagnostics** in `Storage Takeover ori`: the `WriteDeniedErr` and `ReadDeniedErr` texts are now `Locked` labels. The text is identical, and they only feed telemetry, so there's no translation (xlf) change.
+- **Page help links** (`ContextSensitiveHelpPage` on `Attachments Setup ori` and `Storage Conn. Part ori`) now use the renamed docs route `attachments-setup` (`hnitbjorg-setup` renamed to `attachments-setup`).
+- **`app.json`**: `help`, `privacyStatement`, `EULA` and `contextSensitiveHelpUrl` now point at the published Bifröst docs (`attachments` routes and Foundation privacy/EULA); `applicationInsightsConnectionString` now uses the shared Application Insights connection string.
+
 ### Fixed (2026-09-30) - pin Foundation to 28.0.0.166 (#63)
 
 - The app and the test app are both pinned to Bifrost Foundation 28.0.0.166. Contract batch tests resolve message types with `Enum::"Message Type ori".FromInteger`, so the test app compiles against that pin.

@@ -37,12 +37,12 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         AssertEffect('DataExchange.Entry.List', 'read');
         AssertEffect('DataExchange.Entry.Get', 'read');
         AssertEffect('Storage.Upload.Status', 'read');
-        AssertEffect('Storage.Attachment.Offload', 'write');
+        AssertEffect('Storage.Attachment.Offload', 'irreversible');
         AssertEffect('Storage.Attachment.CreateLinked', 'write');
         AssertEffect('Storage.Attachment.CreateForRecord', 'write');
         AssertEffect('Storage.Upload.Begin', 'write');
         AssertEffect('Storage.Upload.Append', 'write');
-        AssertEffect('Storage.Upload.Commit', 'write');
+        AssertEffect('Storage.Upload.Commit', 'irreversible');
         AssertEffect('Storage.Upload.CommitToRecord', 'write');
         AssertEffect('Storage.Upload.Abort', 'write');
         AssertEffect('Storage.Attachment.Restore', 'irreversible');
