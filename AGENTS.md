@@ -38,15 +38,16 @@ does now: **Bifrost Attachments**, shown to Icelandic users as *Bifröst viðhen
 ```
 app/                Business Central AL extension (publisher: Origo, ID range 10035635–10035684)
   src/
-    MessageTypes/   The 23 message-type implementations, grouped by domain
+    MessageTypes/   The 29 message-type implementations, grouped by domain
       Accounts/     Storage.Account.List
       Files/        Storage.File.*
       Directories/  Storage.Directory.*
       Attachments/  Storage.Attachment.*
       Upload/       Storage.Upload.*
-      Help/         Help.Storage.Get + the six domain help codeunits
+      DataExchange/ DataExchange.* + Help.DataExchange.Get
+      Help/         Help.Storage.Get
       StorageMsgType.EnumExt.al   Registers every type on Foundation's Message Type ori enum
-      StorageHelpBuilder.Codeunit.al  Markdown help builder used by the help codeunits
+      StorageContractParts.Codeunit.al  Contract chapters shared by every type
     Storage/        Storage Connector ori interface, production impl, request helper, type enum
     Attachments/    Offload/restore management, link table, the two table extensions
     Upload/         Upload session + chunk tables, upload manager, retention policy, data guard
@@ -84,25 +85,20 @@ writes its answer back onto the `Argument` and Foundation serves it from the dat
 Every message type is:
 - A **value** in `Storage Msg Type ori` (10035635), the enum extension on Foundation's
   `Message Type ori`, with a `Locked = true` caption — the key is the public wire contract.
-- An **impl codeunit** named `<Name> Impl ori` that satisfies `Msg Interface ori`.
-- Backed by a **domain help codeunit** that supplies `GetMessageHelpAsMarkdownDocument`.
+- An **impl codeunit** named `<Name> Impl ori` that satisfies `Msg Interface ori`,
+  `Msg Contract ori` and `Msg Discovery ori`.
 
-### Domain Help Codeunits
+### Message Type Contracts
 
-This is the pattern that differs from the older Cloud Events apps. Instead of one help codeunit
-per message type, there is **one per domain**:
+A message type describes itself only through the chapters of Foundation's `Msg Contract ori`
+(envelope, target, parameters, response, errors, effect, metering, related, workflow, examples,
+overview, notes), which `Help.Implementation.Get` returns. There is no markdown help document:
+Foundation removed `GetMessageHelpAsMarkdownDocument` (core#198). Text that has no chapter place
+goes in `GetNotes`.
 
-| Help codeunit | Covers |
-| --- | --- |
-| `Storage Account Help ori` | `Storage.Account.List` |
-| `Storage File Help ori` | the seven `Storage.File.*` types |
-| `Storage Dir Help ori` | the four `Storage.Directory.*` types |
-| `Storage Attachment Help ori` | the four `Storage.Attachment.*` types |
-| `Storage Upload Help ori` | the six `Storage.Upload.*` types |
-| `Storage Overview Help ori` | `Help.Storage.Get`, the module overview |
-
-Each help codeunit does a `case` on the message type and builds the document through
-`Storage Help Builder ori` (`Init` → `AddParam`/`AddError`/setters → `Render`).
+The chapter content shared by the storage and Data Exchange types is built once in
+`Storage Contract Parts ori` with the builders of Foundation's `Msg Contract Mgt ori`; each impl
+codeunit's contract procedures delegate to it with the type's name.
 
 ### Storage Connector Abstraction
 
@@ -139,9 +135,8 @@ offloaded records filterable.
 
 ## Key Design Rules
 
-- **Never** build a help document inline in an implementation codeunit — route
-  `GetMessageHelpAsMarkdownDocument` to the domain help codeunit.
-- **Never** use string concatenation to build markdown — use the builder / `TextBuilder`.
+- **Never** copy shared contract content into an implementation codeunit — build it once in
+  `Storage Contract Parts ori`.
 - **Never** rename or renumber a message type value. The keys are the public wire contract and
   are `Locked = true`.
 - **Never** put credentials, connection strings or SAS tokens in this app. The BC connector apps

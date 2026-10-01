@@ -424,14 +424,6 @@ codeunit 96213 "Data Exch Discovery Tests"
         TempArgument.SetResponseJson(ResponseJson);
     end;
 
-    local procedure GetHelp(var TempArgument: Record "Message Argument ori")
-    var
-        MsgInterface: Interface "Msg Interface ori";
-    begin
-        MsgInterface := TempArgument.GetMessageTypeInterface();
-        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-    end;
-
     local procedure ReadRow(Rows: JsonArray; Index: Integer) Row: JsonObject
     var
         Token: JsonToken;

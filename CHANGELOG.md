@@ -6,6 +6,18 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Removed (2026-10-01) - markdown help procedure (#61)
+
+- Every message type codeunit drops `GetMessageHelpAsMarkdownDocument`. Foundation removed it from `Msg Interface ori` (core#198); help is the contract chapters that `Help.Implementation.Get` returns. No chapter changed.
+- Bifrost Foundation dependency raised to 28.0.0.186, the first Foundation build without the procedure, in `app/app.json` and `test/app.json`.
+- The metadata tests in `Storage Connector Tests` and `Storage Upload Tests` iterated the legacy Cloud Events ordinals (72620-72641), so they ran no assertion. They now cover the real message types: direction, description, contract present, response chapter and `storageCode` parameter.
+- AGENTS.md, README.md and .claude/CLAUDE.md describe contracts instead of the deleted domain help codeunits; freed ids 10035643 and 10035670-10035675 are recorded.
+
+### Changed (2026-10-01) - external storage writes declare effect irreversible (#65)
+
+- `Storage.File.Create`, `Storage.File.Copy`, `Storage.File.Move`, `Storage.Directory.Create`, `Storage.Upload.Commit` and `Storage.Attachment.Offload` now declare effect `irreversible`: they write to the external storage outside the Business Central transaction, so the Orchestrator's Omit Commit guard refuses them in a rollback chain.
+- The effect `changes` text now says what each type changes: the external store, Business Central records only, or nothing.
+
 - **Message type contracts, Batch 1** (`Help.Storage.Get`, `Storage.Account.List`, all
   `Storage.File.*` and `Storage.Directory.*` types): added structured contract chapters
   and contract validation tests.

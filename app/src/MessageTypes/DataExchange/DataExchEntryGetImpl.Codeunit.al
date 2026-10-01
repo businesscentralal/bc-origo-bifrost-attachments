@@ -126,11 +126,6 @@ codeunit 70013526 "DataExch Entry Get Impl ori" implements "Msg Interface ori", 
         exit(Enum::"Msg Direction ori"::Outbound);
     end;
 
-    procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    begin
-        Argument.SetResponseMarkdown('');
-    end;
-
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         Query: Codeunit "Data Exchange Query ori";

@@ -170,7 +170,7 @@ codeunit 96211 "Storage Msg Conformance Tests"
         LibraryAssert.IsFalse(CreateKeywords.Contains('chunk'), 'Storage.File.Create should not be found by chunk terms.');
     end;
 
-    local procedure HelpOffenders(Ordinal: Integer) Offenders: Text
+    local procedure HelpOffenders(Ordinal: Integer): Text
     begin
         exit(ContractChapterOffenders(Ordinal));
     end;
@@ -190,7 +190,7 @@ codeunit 96211 "Storage Msg Conformance Tests"
             Offenders += Name + '|' + Kind + ' implementation detail ';
     end;
 
-    local procedure RelatedTypeOffenders(Ordinal: Integer) Offenders: Text
+    local procedure RelatedTypeOffenders(Ordinal: Integer): Text
     begin
         exit(ContractRelatedTypeOffenders(Ordinal));
     end;
@@ -235,30 +235,6 @@ codeunit 96211 "Storage Msg Conformance Tests"
         end;
     end;
 
-    local procedure IsTypeLikeName(Candidate: Text): Boolean
-    begin
-        if Candidate.Contains(' ') then
-            exit(false);
-        exit(Candidate.Split('.').Count() = 3);
-    end;
-
-    local procedure HelpOf(Ordinal: Integer): Text
-    var
-        TempArgument: Record "Message Argument ori";
-        MsgInterface: Interface "Msg Interface ori";
-        SavedLanguageId: Integer;
-    begin
-        SavedLanguageId := GlobalLanguage();
-        GlobalLanguage(1033);
-        TempArgument.Init();
-        TempArgument."Type" := Enum::"Message Type ori".FromInteger(Ordinal);
-        TempArgument.Insert(true);
-        MsgInterface := TempArgument.GetMessageTypeInterface();
-        MsgInterface.GetMessageHelpAsMarkdownDocument(TempArgument);
-        GlobalLanguage(SavedLanguageId);
-        exit(TempArgument.GetResponseText());
-    end;
-
     local procedure AppOrdinals() Ordinals: List of [Integer]
     var
         Ordinal: Integer;
@@ -283,14 +259,6 @@ codeunit 96211 "Storage Msg Conformance Tests"
     local procedure IsHelpType(Ordinal: Integer): Boolean
     begin
         exit(TypeName(Ordinal).StartsWith('Help.'));
-    end;
-
-    local procedure LineFeed(): Text
-    var
-        Character: Text[1];
-    begin
-        Character[1] := 10;
-        exit(Character);
     end;
 
     local procedure Initialize()

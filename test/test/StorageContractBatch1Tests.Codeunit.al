@@ -38,10 +38,10 @@ codeunit 96215 "Storage Contract Batch1 Tests"
         AssertEffect('Storage.File.Exists', 'read');
         AssertEffect('Storage.Directory.List', 'read');
         AssertEffect('Storage.Directory.Exists', 'read');
-        AssertEffect('Storage.File.Create', 'write');
-        AssertEffect('Storage.File.Copy', 'write');
-        AssertEffect('Storage.File.Move', 'write');
-        AssertEffect('Storage.Directory.Create', 'write');
+        AssertEffect('Storage.File.Create', 'irreversible');
+        AssertEffect('Storage.File.Copy', 'irreversible');
+        AssertEffect('Storage.File.Move', 'irreversible');
+        AssertEffect('Storage.Directory.Create', 'irreversible');
         AssertEffect('Storage.File.Delete', 'irreversible');
         AssertEffect('Storage.Directory.Delete', 'irreversible');
     end;

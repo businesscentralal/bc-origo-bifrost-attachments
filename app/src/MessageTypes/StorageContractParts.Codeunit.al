@@ -268,14 +268,42 @@ codeunit 70013500 "Storage Contract Parts ori"
     /// <summary>Builds the operation effect for one message type.</summary>
     procedure GetEffect(MessageType: Text) Effect: JsonObject
     begin
-        if MessageType in ['Storage.Attachment.Restore', 'Storage.File.Delete', 'Storage.Directory.Delete'] then
-            Effect.Add('effect', 'irreversible')
-        else
-            if MessageType in ['Storage.Attachment.Offload', 'Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Begin', 'Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord', 'Storage.File.Create', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.Directory.Create'] then
-                Effect.Add('effect', 'write')
-            else
+        case true of
+            MessageType in ['Storage.File.Delete', 'Storage.Directory.Delete']:
+                begin
+                    Effect.Add('effect', 'irreversible');
+                    Effect.Add('changes', 'Deletes the entry in the external storage. The delete happens outside the Business Central transaction and cannot be undone.');
+                end;
+            MessageType = 'Storage.Attachment.Restore':
+                begin
+                    Effect.Add('effect', 'irreversible');
+                    Effect.Add('changes', 'Writes the content back into the Business Central attachment, then deletes the offloaded file in the external storage. The delete happens outside the Business Central transaction and cannot be undone.');
+                end;
+            MessageType = 'Storage.Attachment.Offload':
+                begin
+                    Effect.Add('effect', 'irreversible');
+                    Effect.Add('changes', 'Links the Business Central attachment to the external file and clears its local content, then writes the file to the external storage. The external write happens outside the Business Central transaction and is not rolled back with it.');
+                end;
+            MessageType = 'Storage.Upload.Commit':
+                begin
+                    Effect.Add('effect', 'irreversible');
+                    Effect.Add('changes', 'Assembles the staged chunks and writes the file to the external storage. The external write happens outside the Business Central transaction and is not rolled back with it.');
+                end;
+            MessageType in ['Storage.File.Create', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.Directory.Create']:
+                begin
+                    Effect.Add('effect', 'irreversible');
+                    Effect.Add('changes', 'Writes to the external storage. The external write happens outside the Business Central transaction and is not rolled back with it.');
+                end;
+            MessageType in ['Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Begin', 'Storage.Upload.Append', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord']:
+                begin
+                    Effect.Add('effect', 'write');
+                    Effect.Add('changes', 'Writes Business Central records only (upload session, chunks or document attachments) inside the caller''s transaction; the external storage is not changed.');
+                end;
+            else begin
                 Effect.Add('effect', 'read');
-        Effect.Add('changes', 'The operation changes only the external storage state described by the message.');
+                Effect.Add('changes', 'Reads only; nothing is changed.');
+            end;
+        end;
         Effect.Add('idempotent', MessageType in ['Storage.Account.List', 'Storage.File.List', 'Storage.File.Get', 'Storage.File.Exists', 'Storage.Directory.List', 'Storage.Directory.Exists', 'Storage.Upload.Status', 'DataExchange.Definition.List', 'DataExchange.Definition.Get', 'DataExchange.Type.List', 'DataExchange.Entry.List', 'DataExchange.Entry.Get']);
         Effect.Add('permissionSet', 'BIFROST Attach ori');
         Effect.Add('preconditions', 'The storage connection exists, is enabled and permits the requested operation.');

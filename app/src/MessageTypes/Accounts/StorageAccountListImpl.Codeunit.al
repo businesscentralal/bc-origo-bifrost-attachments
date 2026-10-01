@@ -135,11 +135,6 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
         exit(Enum::"Msg Direction ori"::Outbound);
     end;
 
-    procedure GetMessageHelpAsMarkdownDocument(var Argument: Record "Message Argument ori")
-    begin
-        Argument.SetResponseMarkdown('');
-    end;
-
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         StorageSetup: Record "Storage Setup ori";
