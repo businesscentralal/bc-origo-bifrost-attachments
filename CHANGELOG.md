@@ -4,6 +4,12 @@ All notable changes to Bifrost Attachments are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
 Business Central release versioning (`major.minor.build.revision`).
 
+## Unreleased
+
+### Changed (2026-10-04) - CI/CD builds only main; every pull request gets a Pull Request Build
+
+- Build policy only, no app change. `CI/CD` runs on pushes to `main` only, and `Pull Request Build` runs for pull requests into any branch. `.github/AL-Go-Settings.json` sets `CICDPushBranches` to `main` and `CICDPullRequestBranches` to `**`, so Update AL-Go System Files keeps the triggers.
+
 ## [Unreleased]
 
 ### Removed (2026-10-01) - markdown help procedure (#61)
