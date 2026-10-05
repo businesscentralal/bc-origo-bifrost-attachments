@@ -140,6 +140,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         ClearAttachment(Target, RecSystemId);
 
         Connector.CreateFile(StorageSetup, Path, TempBlob);
+        if Target = Target::DocumentAttachment then
+            SetNativeExternalStorageFields(RecSystemId, StorageSetup.Code, Path);
 
         if TaskScheduler.CanCreateTask() then
             TaskScheduler.CreateTask(Codeunit::"Media Cleanup Runner", 0, true, CompanyName, CurrentDateTime() + 5000);
@@ -193,6 +195,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
 
         Connector.GetFile(StorageSetup, Link."Storage Path", TempBlob);
         WriteAttachment(Target, RecSystemId, TempBlob, Link."File Name");
+        if Target = Target::DocumentAttachment then
+            ClearNativeExternalStorageFields(RecSystemId);
 
         ResultData.Add('target', TargetName(Target));
         ResultData.Add('systemId', Format(RecSystemId, 0, 4));
@@ -374,6 +378,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
 
             Clear(DocumentAttachment."Document Reference ID");
             DocumentAttachment.Modify(true);
+            SetNativeExternalStorageFields(DocumentAttachment.SystemId, StorageSetup.Code, StoragePath);
         end;
 
         AddDocumentAttachmentResult(DocumentAttachment, TempBlob, FromStorage, ResultData);
@@ -1083,5 +1088,85 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         if not RequestMgt.PathIsSafe(FolderPath) then
             RequestMgt.ThrowUnsafePath(FolderPath);
         exit(FolderPath);
+    end;
+
+    /// <summary>
+    /// Mirrors BC 28 native external-storage fields on a document attachment after a successful offload.
+    /// No-op when Microsoft's External Storage - Document Attachments app is not installed (#11).
+    /// </summary>
+    internal procedure SetNativeExternalStorageFields(RecSystemId: Guid; StorageCode: Code[20]; Path: Text)
+    var
+        StoredExternallyFld: FieldRef;
+        ExternalUploadDateFld: FieldRef;
+        ExternalFilePathFld: FieldRef;
+        StoredInternallyFld: FieldRef;
+        RecRef: RecordRef;
+    begin
+        if not TryGetDocAttachExtStorFields(RecRef, StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld) then
+            exit;
+        if not RecRef.GetBySystemId(RecSystemId) then
+            exit;
+        if not TryAssignNativeExternalStorageFields(RecRef, StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld, true, StorageCode, Path) then
+            LogNativeFieldMirrorFailure(RecSystemId, GetLastErrorText());
+    end;
+
+    /// <summary>
+    /// Clears the BC 28 native external-storage fields after a restore. No-op when the fields do not exist (#11).
+    /// </summary>
+    internal procedure ClearNativeExternalStorageFields(RecSystemId: Guid)
+    var
+        StoredExternallyFld: FieldRef;
+        ExternalUploadDateFld: FieldRef;
+        ExternalFilePathFld: FieldRef;
+        StoredInternallyFld: FieldRef;
+        RecRef: RecordRef;
+    begin
+        if not TryGetDocAttachExtStorFields(RecRef, StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld) then
+            exit;
+        if not RecRef.GetBySystemId(RecSystemId) then
+            exit;
+        if not TryAssignNativeExternalStorageFields(RecRef, StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld, false, '', '') then
+            LogNativeFieldMirrorFailure(RecSystemId, GetLastErrorText());
+    end;
+
+    local procedure TryGetDocAttachExtStorFields(var RecRef: RecordRef; var StoredExternallyFld: FieldRef; var ExternalUploadDateFld: FieldRef; var ExternalFilePathFld: FieldRef; var StoredInternallyFld: FieldRef): Boolean
+    var
+        ModuleInfo: ModuleInfo;
+        ExternalStorageAppId: Guid;
+    begin
+        ExternalStorageAppId := '5f2e93a0-6083-4718-b05a-7ac89be5644d';
+        if not NavApp.GetModuleInfo(ExternalStorageAppId, ModuleInfo) then
+            exit(false);
+        RecRef.Open(Database::"Document Attachment");
+        if not RecRef.FieldExist(8750) or not RecRef.FieldExist(8751) or not RecRef.FieldExist(8752) or not RecRef.FieldExist(8753) then begin
+            RecRef.Close();
+            exit(false);
+        end;
+        StoredExternallyFld := RecRef.Field(8750);
+        ExternalUploadDateFld := RecRef.Field(8751);
+        ExternalFilePathFld := RecRef.Field(8752);
+        StoredInternallyFld := RecRef.Field(8753);
+        exit(true);
+    end;
+
+    [TryFunction]
+    local procedure TryAssignNativeExternalStorageFields(var RecRef: RecordRef; var StoredExternallyFld: FieldRef; var ExternalUploadDateFld: FieldRef; var ExternalFilePathFld: FieldRef; var StoredInternallyFld: FieldRef; Offloaded: Boolean; StorageCode: Code[20]; Path: Text)
+    begin
+        StoredExternallyFld.Value := Offloaded;
+        if Offloaded then
+            ExternalUploadDateFld.Value := CurrentDateTime()
+        else
+            ExternalUploadDateFld.Value := 0DT;
+        if Offloaded then
+            ExternalFilePathFld.Value := CopyStr(StrSubstNo('%1:%2', StorageCode, Path), 1, 2048)
+        else
+            ExternalFilePathFld.Value := '';
+        StoredInternallyFld.Value := not Offloaded;
+        RecRef.Modify(true);
+    end;
+
+    local procedure LogNativeFieldMirrorFailure(RecSystemId: Guid; ErrorText: Text)
+    begin
+        Session.LogMessage('BFA-EXTSTOR-01', 'Native external-storage field mirror failed.', Verbosity::Warning, DataClassification::SystemMetadata, TelemetryScope::ExtensionPublisher, 'systemId', Format(RecSystemId, 0, 4), 'error', ErrorText);
     end;
 }

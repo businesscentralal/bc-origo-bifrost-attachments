@@ -35,8 +35,10 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         Link: Record "Storage Attachment Link ori";
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
     begin
-        if IsHandled then
+        if IsHandled then begin
+            LogReadAlreadyHandled(DocumentAttachment.SystemId);
             exit;
+        end;
         Link.SetLoadFields("Storage Code", "Storage Path");
         if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then
             exit;
@@ -52,8 +54,10 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         TempBlob: Codeunit "Temp Blob";
         ContentInStream: InStream;
     begin
-        if IsHandled then
+        if IsHandled then begin
+            LogReadAlreadyHandled(DocumentAttachment.SystemId);
             exit;
+        end;
         Link.SetLoadFields("Storage Code", "Storage Path");
         if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then
             exit;
@@ -70,8 +74,10 @@ codeunit 10035636 "Storage Attachment Subscr ori"
     begin
         // Offloaded attachments have no local media, but the file is still available from storage,
         // so the UI must keep treating them as having content (download/preview stay enabled).
-        if IsHandled then
+        if IsHandled then begin
+            LogReadAlreadyHandled(DocumentAttachment.SystemId);
             exit;
+        end;
         Link.SetLoadFields("Storage Code");
         if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then
             exit;
@@ -112,5 +118,10 @@ codeunit 10035636 "Storage Attachment Subscr ori"
     local procedure TryDeleteRemote(var AttachmentMgt: Codeunit "Storage Attachment Mgt ori"; StorageCode: Code[20]; Path: Text)
     begin
         AttachmentMgt.DeleteRemote(StorageCode, Path);
+    end;
+
+    local procedure LogReadAlreadyHandled(RecSystemId: Guid)
+    begin
+        Session.LogMessage('BFA-EXTSTOR-02', 'Document Attachment read already handled before Bifrost subscriber ran.', Verbosity::Warning, DataClassification::SystemMetadata, TelemetryScope::ExtensionPublisher, 'systemId', Format(RecSystemId, 0, 4));
     end;
 }
