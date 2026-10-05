@@ -10,6 +10,7 @@ using System.ExternalFileStorage;
 /// </summary>
 page 10035635 "Storage Account Lookup ori"
 {
+    Extensible = false;
     PageType = List;
     ApplicationArea = All;
     UsageCategory = None;
@@ -17,7 +18,6 @@ page 10035635 "Storage Account Lookup ori"
     SourceTable = "File Account";
     SourceTableTemporary = true;
     Editable = false;
-    Extensible = false;
     ContextSensitiveHelpPage = 'storage-account-lookup';
 
     layout

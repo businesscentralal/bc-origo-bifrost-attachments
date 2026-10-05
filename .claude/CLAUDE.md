@@ -15,7 +15,7 @@ App:   10035635-10035684 (allocated in origo_cloudevents_object_ranges.xlsx; mig
        on bc28-is, so the coordinator reallocated this app to 10035635-10035684 in the workbook.)
 Tests: 96200-96299 (migrated from 92700-92799 with offset +3500)
 
-Highest object id currently used: 10035682 (`Storage Request Reader ori`, 2026-09-28). Free ids left in the block: 10035683-10035684.
+Object ids re-derived 05.10.2026 from main: app block 10035635-10035684 is in use through 10035682 (`Storage Request Reader ori`); free in that block 10035683-10035684. Second block 70013500-70013549 is in use for Data Exchange (enum values 70013510-70013515, codeunits 70013520-70013530, permission set 70013548). Free there: table ids 70013500-70013509, enum value 70013516, codeunits 70013531-70013547. Test ids in use include 96213 (`Storage DataExchange Tests`). Do not trust an older next-free number; grep `app/src` and `test` before taking an id. Open issues #23-#26 are not implemented on this branch.
 Register any further block in the workbook before using it - never squeeze objects into a
 neighbouring app's range.
 
@@ -53,7 +53,7 @@ Default branch: main
 Migration branch: feature/bifrost-hnitbjorg-migration
 
 ## Dependencies
-- Bifrost Foundation, id `7505e808-6e52-4b96-a328-82573391297a`, publisher Origo, version **28.0.0.0** in `app.json` (real symbol minimum is about 28.0.0.48, because `App Registry ori` and `Registered App ori` arrived in core `5819941`)
+- Bifrost Foundation, id `7505e808-6e52-4b96-a328-82573391297a`, publisher Origo, version **28.0.1.0** in `app/app.json` and `test/app.json` (Foundation 28.0.1 floor, aligned 05.10.2026). AL-Go still probes the latest core CI build.
 
 At runtime the tenant must also have at least one Business Central external file storage
 connector app installed and configured (Azure Blob Storage, Azure File Share or SharePoint).
@@ -76,8 +76,8 @@ Documentation lives in businesscentralal/bifrost (site bifrost.origo.is); no Hel
 folders in this repo - deviation from the Origo PR gateway check 8 approved by the user
 2026-09-06.
 
-- Product docs: https://businesscentralal.github.io/bifrost/en-us/hnitbjorg/
-- In-product help: https://businesscentralal.github.io/bifrost/en-us/help/hnitbjorg/
+- Product docs: https://businesscentralal.github.io/bifrost/en-us/attachments/
+- In-product help: https://businesscentralal.github.io/bifrost/en-us/help/attachments/
 - Extensibility guide: https://businesscentralal.github.io/bifrost/en-us/extensibility/
 
 Context-sensitive help pages are addressed by Docusaurus slug (`attachments-setup`,

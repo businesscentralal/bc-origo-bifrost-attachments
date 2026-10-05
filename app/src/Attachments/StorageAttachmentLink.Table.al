@@ -9,6 +9,7 @@ namespace Origo.Bifrost.Attachments;
 /// </summary>
 table 10035635 "Storage Attachment Link ori"
 {
+    Extensible = false;
     Caption = 'Bifrost Storage Attachment Link', Comment = 'is-IS=Viðhengjatenging Bifröst geymslu';
     DataClassification = CustomerContent;
     Access = Internal;

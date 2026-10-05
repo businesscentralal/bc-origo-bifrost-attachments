@@ -9,6 +9,7 @@ using System.ExternalFileStorage;
 /// </summary>
 page 10035636 "Storage Card ori"
 {
+    Extensible = false;
     PageType = Card;
     ApplicationArea = All;
     UsageCategory = None;

@@ -34,7 +34,7 @@ codeunit 10035646 "Storage Dir Exists Impl ori" implements "Msg Interface ori", 
     /// <returns>Comma-separated keywords in the current language.</returns>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'does the folder exist, is there a folder, check folder in storage, directory exists, folder already created, does the directory exist, is the sharepoint folder there', Comment = 'is-IS=er mappan til, er mappa til, athuga möppu í geymslu, er búið að búa til möppu, mappa þegar til, er mappan í geymslu';
+        KeywordsLbl: Label 'does the folder exist, is there a folder, check folder in storage, directory exists, folder already created, does the directory exist, is the sharepoint folder there', Comment = 'is-IS=er mappan til, er mappa til, athuga möppu í geymslu, mappa er til, er búið að búa til möppu, mappa þegar til, er SharePoint mappan til';
     begin
         exit(KeywordsLbl);
     end;

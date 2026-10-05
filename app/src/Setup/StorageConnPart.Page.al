@@ -7,6 +7,7 @@ namespace Origo.Bifrost.Attachments;
 /// </summary>
 page 10035678 "Storage Conn. Part ori"
 {
+    Extensible = false;
     PageType = ListPart;
     ApplicationArea = All;
     UsageCategory = None;

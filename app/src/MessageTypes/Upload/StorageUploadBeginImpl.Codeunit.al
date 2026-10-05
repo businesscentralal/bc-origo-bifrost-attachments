@@ -34,7 +34,7 @@ codeunit 10035658 "Storage Upload Begin Impl ori" implements "Msg Interface ori"
     /// <returns>Comma-separated keywords in the current language.</returns>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'start a large upload, upload a big file, chunked upload, upload in parts, stream a file, resumable upload, start upload session, file too large for one call', Comment = 'is-IS=hefja stóra upphleðslu, hlaða upp stórri skrá, upphleðsla í hlutum, hlaða upp í bútum, streyma skrá, hefja upphleðslulotu, skrá of stór fyrir eitt kall';
+        KeywordsLbl: Label 'start a large upload, upload a big file, chunked upload, upload in parts, stream a file, resumable upload, start upload session, file too large for one call', Comment = 'is-IS=hefja stóra upphleðslu, hlaða upp stórri skrá, upphleðsla í hlutum, hlaða upp í bútum, streyma skrá, upphleðsla sem má halda áfram, hefja upphleðslulotu, skrá of stór fyrir eitt kall';
     begin
         exit(KeywordsLbl);
     end;

@@ -17,6 +17,7 @@ namespace Origo.Bifrost.Attachments;
 /// </remarks>
 table 10035638 "Storage Upload Session ori"
 {
+    Extensible = false;
     Caption = 'Bifrost Storage Upload Session', Comment = 'is-IS=Upphleðslulota Bifröst geymslu';
     DataClassification = CustomerContent;
     Access = Internal;

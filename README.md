@@ -274,7 +274,7 @@ object carries the mandatory ` ori` affix.
 
 | App | ID | Purpose |
 | --- | --- | --- |
-| Bifrost Foundation | `7505e808-6e52-4b96-a328-82573391297a` | Origo 28.0.0.0 — the message-type kernel (`Message Type ori`, `Msg Interface ori`, `Message Argument ori`, the Queue → Task → Data API route). |
+| Bifrost Foundation | `7505e808-6e52-4b96-a328-82573391297a` | Origo 28.0.1.0 or later — the message-type kernel (`Message Type ori`, `Msg Interface ori`, `Message Argument ori`, the Queue → Task → Data API route). |
 
 The test app additionally depends on Bifrost Attachments itself and on Microsoft's
 Tests-TestLibraries, Application Test Library, Library Assert, Test Runner, Any and
@@ -342,8 +342,8 @@ folders in this repository — an approved deviation from Origo PR gateway check
 
 | What | Where |
 | --- | --- |
-| Product documentation (overview, message types, AppSource listing) | <https://businesscentralal.github.io/bifrost/en-us/hnitbjorg/> |
-| In-product help (context-sensitive help pages, en-US and is-IS) | <https://businesscentralal.github.io/bifrost/en-us/help/hnitbjorg/> |
+| Product documentation (overview, message types, AppSource listing) | <https://businesscentralal.github.io/bifrost/en-us/attachments/> |
+| In-product help (context-sensitive help pages, en-US and is-IS) | <https://businesscentralal.github.io/bifrost/en-us/help/attachments/> |
 | Building on Bifröst (extensibility guide) | <https://businesscentralal.github.io/bifrost/en-us/extensibility/> |
 | Release notes | [CHANGELOG.md](CHANGELOG.md) |
 
@@ -354,12 +354,12 @@ the module directory, and every message type answers its contract chapters throu
 ### Context-Sensitive Help
 
 `app.json` declares `contextSensitiveHelpUrl` =
-`https://businesscentralal.github.io/bifrost/{0}/help/hnitbjorg/` and `supportedLocales`
+`https://businesscentralal.github.io/bifrost/{0}/help/attachments/` and `supportedLocales`
 `["en-US", "is-IS"]`, so every help page must exist in both locales on the site.
 
 | Slug | Pages that use it |
 | --- | --- |
-| `hnitbjorg-setup` | `Attachments Setup ori`, `Storage Conn. Part ori` |
+| `attachments-setup` | `Attachments Setup ori`, `Storage Conn. Part ori` |
 | `storage-setup` | `Storage Setup ori`, `Storage Setup Wizard ori` |
 | `storage-card` | `Storage Card ori` |
 | `storage-account-lookup` | `Storage Account Lookup ori` |
