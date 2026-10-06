@@ -382,3 +382,7 @@ It is a customized version of the [AL-Go-AppSource](https://github.com/microsoft
 
 Please go to https://aka.ms/AL-Go and [COSMO Docs](https://docs.cosmoconsult.com/en-us/cloud-service/alpaca) to learn more.
 <!-- AUTO-UPDATE-END -->
+
+### Legacy take-over retry
+
+Each company upgrade retries the permission-probed legacy take-over before checking the orphan-link purge tag. If a required legacy grant is missing, the retry logs a skip; after the grant is corrected, a later app upgrade tries again. Existing destination tables and role assignments follow the original take-over preservation rules. The retry reads only the supported legacy Cloud Events sources.

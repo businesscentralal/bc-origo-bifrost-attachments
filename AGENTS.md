@@ -207,3 +207,5 @@ repository.
 ## Agent Notes
 
 - #8 (2026-09-15): legacy take-over is permission-tolerant (`TryProbeTakeOverPermissions` / `TryRunTakeOverAtInstall`); skip = telemetry only (A1); never read Foundation `Setup ori` for migration.
+
+- #76: company upgrades retry the existing permission-probed take-over before the orphan-purge tag check. Generated mapping and permission re-grant semantics remain unchanged; synthetic probe tests are not restricted-identity certification.
