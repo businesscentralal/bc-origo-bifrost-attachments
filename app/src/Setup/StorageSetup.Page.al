@@ -6,6 +6,7 @@ namespace Origo.Bifrost.Attachments;
 /// </summary>
 page 10035637 "Storage Setup ori"
 {
+    Extensible = false;
     PageType = List;
     ApplicationArea = All;
     UsageCategory = None;

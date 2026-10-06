@@ -12,6 +12,7 @@ using System.ExternalFileStorage;
 /// </summary>
 table 10035636 "Storage Setup ori"
 {
+    Extensible = false;
     Caption = 'Bifrost Storage Setup', Comment = 'is-IS=Uppsetning Bifröst geymslu';
     DataClassification = CustomerContent;
     LookupPageId = "Storage Setup ori";

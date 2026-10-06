@@ -35,7 +35,7 @@ codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori
     /// <returns>Comma-separated keywords in the current language.</returns>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'finish upload to storage, complete the upload, save uploaded file to cloud, commit upload, assemble the chunks, finalise upload, finalize upload', Comment = 'is-IS=ljúka upphleðslu, klára upphleðslu, klára upphleðsluna, vista upphlaðna skrá í skýið, setja saman búta, staðfesta upphleðslu';
+        KeywordsLbl: Label 'finish upload to storage, complete the upload, save uploaded file to cloud, commit upload, assemble the chunks, finalise upload, finalize upload', Comment = 'is-IS=ljúka upphleðslu í geymslu, klára upphleðslu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, ljúka upphleðslu, staðfesta upphleðsluna';
     begin
         exit(KeywordsLbl);
     end;

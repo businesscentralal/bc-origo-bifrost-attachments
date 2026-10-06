@@ -17,6 +17,7 @@ using System.Utilities;
 /// </remarks>
 table 10035637 "Storage Upload Chunk ori"
 {
+    Extensible = false;
     Caption = 'Bifrost Storage Upload Chunk', Comment = 'is-IS=Upphleðslubiti Bifröst geymslu';
     DataClassification = CustomerContent;
     Access = Internal;

@@ -13,6 +13,7 @@ using System.ExternalFileStorage;
 /// </summary>
 page 10035677 "Attachments Setup ori"
 {
+    Extensible = false;
     PageType = Card;
     ApplicationArea = All;
     UsageCategory = None;

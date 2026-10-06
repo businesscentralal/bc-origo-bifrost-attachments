@@ -9,6 +9,7 @@ using System.Environment.Configuration;
 /// </summary>
 page 10035638 "Storage Setup Wizard ori"
 {
+    Extensible = false;
     PageType = NavigatePage;
     Caption = 'Bifrost Attachments Setup', Comment = 'is-IS=Uppsetning Bifröst viðhengja';
     ApplicationArea = All;

@@ -61,6 +61,14 @@ codeunit 10035663 "Storage Data Restriction ori"
             Hint := LinkWriteHintTxt;
     end;
 
+
+    [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnAfterIsFieldWriteRestrictedForDataRecords', '', false, false)]
+    local procedure RestrictNativeExternalStorFieldsFromWrite(TableNo: Integer; FieldNo: Integer; var IsRestricted: Boolean)
+    begin
+        if (TableNo = Database::"Document Attachment") and (FieldNo in [8750, 8751, 8752, 8753]) then
+            IsRestricted := true;
+    end;
+
     local procedure IsProtectedTable(TableNo: Integer): Boolean
     begin
         exit(IsUploadTable(TableNo) or IsStorageSetupTable(TableNo) or IsDataExchTable(TableNo) or IsAttachmentLinkTable(TableNo));
