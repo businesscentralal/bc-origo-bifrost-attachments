@@ -1,0 +1,241 @@
+{
+  "status": "source-inventory-only-not-certified",
+  "sourceSha": "b42ad90eaee2803205408a1cac8b0d9752b91c0e",
+  "standardsSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
+  "foundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
+  "app": {
+    "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
+    "name": "Bifrost Attachments",
+    "publisher": "Origo",
+    "version": "28.0.0.4",
+    "application": "28.0.0.0",
+    "platform": "28.0.0.0",
+    "runtime": "17.0",
+    "target": "Cloud",
+    "dependencies": [
+      {
+        "id": "7505e808-6e52-4b96-a328-82573391297a",
+        "name": "Bifrost Foundation",
+        "publisher": "Origo",
+        "version": "28.0.1.0"
+      }
+    ],
+    "idRanges": [
+      {
+        "from": 10035635,
+        "to": 10035684
+      },
+      {
+        "from": 70013500,
+        "to": 70013549
+      }
+    ],
+    "help": "https://businesscentralal.github.io/bifrost/en-us/attachments/",
+    "EULA": "https://businesscentralal.github.io/bifrost/en-us/foundation/eula/",
+    "privacyStatement": "https://businesscentralal.github.io/bifrost/en-us/foundation/privacy/",
+    "url": "https://www.origo.is/",
+    "logo": "assets/Logo250x250.png",
+    "screenshots": [],
+    "supportedLocales": [
+      "en-US",
+      "is-IS"
+    ]
+  },
+  "markets": [
+    "IS",
+    "GB",
+    "DK",
+    "NO",
+    "SE",
+    "FI",
+    "DE",
+    "FR",
+    "NL",
+    "AT",
+    "CH",
+    "IE",
+    "PT",
+    "ES"
+  ],
+  "offerProductId": null,
+  "qaPassed": false,
+  "deployedAppVersion": null,
+  "runtimeTestsExecuted": 0,
+  "messageTypes": [
+    {
+      "name": "DataExchange.Definition.Delete",
+      "ordinal": 70013519,
+      "source": "app/src/MessageTypes/DataExchange/DataExchDefDeleteMsgType.EnumExt.al"
+    },
+    {
+      "name": "DataExchange.Definition.Export",
+      "ordinal": 70013521,
+      "source": "app/src/MessageTypes/DataExchange/DataExchDefExport.EnumExt.al"
+    },
+    {
+      "name": "DataExchange.Export.Run",
+      "ordinal": 70013519,
+      "source": "app/src/MessageTypes/DataExchange/DataExchExportRun.EnumExt.al"
+    },
+    {
+      "name": "DataExchange.Import.Run",
+      "ordinal": 70013516,
+      "source": "app/src/MessageTypes/DataExchange/DataExchImportMsgType.EnumExt.al"
+    },
+    {
+      "name": "Help.DataExchange.Get",
+      "ordinal": 70013510,
+      "source": "app/src/MessageTypes/DataExchange/DataExchMsgType.EnumExt.al"
+    },
+    {
+      "name": "DataExchange.Definition.List",
+      "ordinal": 70013511,
+      "source": "app/src/MessageTypes/DataExchange/DataExchMsgType.EnumExt.al"
+    },
+    {
+      "name": "DataExchange.Definition.Get",
+      "ordinal": 70013512,
+      "source": "app/src/MessageTypes/DataExchange/DataExchMsgType.EnumExt.al"
+    },
+    {
+      "name": "DataExchange.Type.List",
+      "ordinal": 70013513,
+      "source": "app/src/MessageTypes/DataExchange/DataExchMsgType.EnumExt.al"
+    },
+    {
+      "name": "DataExchange.Entry.List",
+      "ordinal": 70013514,
+      "source": "app/src/MessageTypes/DataExchange/DataExchMsgType.EnumExt.al"
+    },
+    {
+      "name": "DataExchange.Entry.Get",
+      "ordinal": 70013515,
+      "source": "app/src/MessageTypes/DataExchange/DataExchMsgType.EnumExt.al"
+    },
+    {
+      "name": "DataExchange.Type.Set",
+      "ordinal": 70013516,
+      "source": "app/src/MessageTypes/DataExchange/DataExchTypeSet.EnumExt.al"
+    },
+    {
+      "name": "Help.Storage.Get",
+      "ordinal": 10035635,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Account.List",
+      "ordinal": 10035636,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.File.List",
+      "ordinal": 10035637,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.File.Get",
+      "ordinal": 10035638,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.File.Create",
+      "ordinal": 10035639,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.File.Delete",
+      "ordinal": 10035640,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.File.Copy",
+      "ordinal": 10035641,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.File.Move",
+      "ordinal": 10035642,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.File.Exists",
+      "ordinal": 10035643,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Directory.List",
+      "ordinal": 10035644,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Directory.Create",
+      "ordinal": 10035645,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Directory.Delete",
+      "ordinal": 10035646,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Directory.Exists",
+      "ordinal": 10035647,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Attachment.Offload",
+      "ordinal": 10035648,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Attachment.Restore",
+      "ordinal": 10035649,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Upload.Begin",
+      "ordinal": 10035650,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Upload.Append",
+      "ordinal": 10035651,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Upload.Commit",
+      "ordinal": 10035652,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Upload.Abort",
+      "ordinal": 10035653,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Upload.Status",
+      "ordinal": 10035654,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Attachment.CreateLinked",
+      "ordinal": 10035655,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Attachment.CreateForRecord",
+      "ordinal": 10035656,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    },
+    {
+      "name": "Storage.Upload.CommitToRecord",
+      "ordinal": 10035657,
+      "source": "app/src/MessageTypes/StorageMsgType.EnumExt.al"
+    }
+  ],
+  "files": {
+    "app/app.json": "15d54517c79e623c4c57c061c59b0e4a194ebe346b4e7877f4cd0098bbd9a8b6",
+    "app/AppSourceCop.json": "3693ee0c9ff2b18b8528d8b9bc2ecb80610346762766e2d9c209e0742885f2e8",
+    ".AL-Go/settings.json": "56a157811bfe932f1629d0609c6f2d0dc612d1f2aa525fc6a5c7d566cbcc7141"
+  }
+}

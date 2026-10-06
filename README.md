@@ -382,3 +382,10 @@ It is a customized version of the [AL-Go-AppSource](https://github.com/microsoft
 
 Please go to https://aka.ms/AL-Go and [COSMO Docs](https://docs.cosmoconsult.com/en-us/cloud-service/alpaca) to learn more.
 <!-- AUTO-UPDATE-END -->
+
+## AppSource submission preparation
+
+The [submission working package](app/docs/appsource/README.md) contains the Attachments-specific
+release checklist, scenario plan, source market inventory and gated validator sandbox smoke script
+for #81. Formal scenarios follow exact-candidate internal QA; these planning files do not certify
+AppSource readiness. Published product/help documentation remains with its established owners.

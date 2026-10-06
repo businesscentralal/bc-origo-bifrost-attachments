@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## Unreleased
 
+### Added (2026-10-06) - AppSource submission planning (#81)
+
+- Add the Attachments release checklist, independent scenario coverage plan, source market inventory and gated validator sandbox smoke script in `app/docs/appsource/`. Formal scenarios await internal QA. No AL objects or IDs changed.
+
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
 - The Foundation dependency floor is **28.0.1.0** in `app/app.json` and `test/app.json`, the same floor Bifrost Language Models uses for Foundation 28.0.1. Every 28.0.1.x build is accepted.
