@@ -15,6 +15,8 @@ App:   10035635-10035684 (allocated in origo_cloudevents_object_ranges.xlsx; mig
        on bc28-is, so the coordinator reallocated this app to 10035635-10035684 in the workbook.)
 Tests: 96200-96299 (migrated from 92700-92799 with offset +3500)
 
+Issue #74 reserves test codeunit 96274 `Attachments Build Tests ori` for compilation-input and existing Data Exchange dispatch regression coverage.
+
 Object ids re-derived 05.10.2026 from main: app block 10035635-10035684 is in use through 10035682 (`Storage Request Reader ori`); free in that block 10035683-10035684. Second block 70013500-70013549 is in use for Data Exchange (enum values 70013510-70013515, codeunits 70013520-70013530, permission set 70013548). Free there: table ids 70013500-70013509, enum value 70013516, codeunits 70013531-70013547. Test ids in use include 96213 (`Storage DataExchange Tests`). Do not trust an older next-free number; grep `app/src` and `test` before taking an id. Open issues #23-#26 are not implemented on this branch.
 Register any further block in the workbook before using it - never squeeze objects into a
 neighbouring app's range.
