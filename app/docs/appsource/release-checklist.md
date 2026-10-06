@@ -20,7 +20,8 @@ locale: en-US
 | Countries | IS, GB, DK, NO, SE, FI, DE, FR, NL, AT, CH, IE, PT, ES | `app/AppSourceCop.json`; [CSV](partner-center-markets.csv). #80 / worker-8: fourteen-market evidence and Partner Center comparison |
 | Locales | `en-US`, `is-IS` | #71/#72: translations and runtime language proof; locales are not the market list |
 | Registered suffix/ranges | Source `ori`; `10035635–10035684` and `70013500–70013549` | Gunnar / offer owner: registration evidence for publisher suffix and both ranges. Source declarations alone do not prove registration |
-| Genuine offer/product ID | Pending operator input; no ID configured here | Gunnar / offer owner: supply Attachments ID securely and internal-review must confirm mapping before any `deliverToAppSource` change |
+| New Attachments offer | Gunnar confirmed on 2026-10-06: no Partner Center offer exists; no existing product ID is available | Gunnar / offer owner: future offer creation requires separate authorization; this assignment prepares the material only |
+| Genuine offer/product ID | Unavailable until the new Attachments offer is created; `deliverToAppSource` remains unconfigured | Gunnar / offer owner: supply the genuine new offer ID after authorized creation; internal-review must confirm its Attachments mapping before any separately approved configuration change. Never copy Foundation's ID or invent a dummy |
 
 ## Collect listing, asset and external-service evidence
 
@@ -47,7 +48,7 @@ The test app's in-memory Mock connector is internal automated-test infrastructur
 - [ ] Owned disposable COSMO environments deleted and deletion verified; provider fixtures cleaned without deleting customer or unrelated records.
 - [ ] Worker-6 generates formal scenarios after that QA, then dry-runs them on an owned sandbox and binds each result to the candidate.
 - [ ] Gateway Layer 1 and Layer 2, internal-review decisions, current-tip green CI and independent review recorded. No self-review counted as independent review.
-- [ ] Genuine Attachments product ID and all listing/legal/support/dependency assets accepted by named owners. Only then may a separately reviewed configuration change add `deliverToAppSource`.
+- [ ] Separately authorized new Attachments offer creation completed by Gunnar / offer owner and its genuine product ID supplied and internally reviewed; all listing/legal/support/dependency assets accepted by named owners. Keep `deliverToAppSource` unconfigured until these prerequisites are met.
 - [ ] Human release/submission authorization obtained separately. This issue does not authorize creating an offer, submitting it or publishing it.
 
 Foundation is the comparison for evidence discipline: compiler/compiled-artifact gates, immutable inputs and complete release evidence. Its product ID, credentials and approval evidence do not belong to Attachments.

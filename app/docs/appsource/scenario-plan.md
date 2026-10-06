@@ -9,6 +9,8 @@ locale: en-US
 
 **Planning only — none of these flows has been executed or certified by this artifact.** Issue #80 owns final internal QA; formal Microsoft-format documents follow its passing evidence. The [source inventory](source-inventory.json) records 34 declared message types, not 34 proven behaviors. In particular, source declarations include Data Exchange mutations that older context files omit. #69/#82 must reconcile their actual request/error contracts before exact examples and expected responses are frozen.
 
+The submission plan targets a new Attachments offer: Gunnar confirmed on 2026-10-06 that none currently exists. There is no existing offer ID to request. Offer creation and supplying its genuine ID are future operator-owned release prerequisites under separate authorization; `deliverToAppSource` stays unconfigured. Internal QA and formal scenario preparation retain their gates below.
+
 ## Prepare independent fixtures
 
 1. Reserve a disposable validator-owned BC sandbox and a fresh synthetic company for each destructive scenario, or reset the owned company to a recorded baseline between runs. Record owner, environment ID, company, BC release/country and language.

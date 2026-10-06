@@ -237,5 +237,17 @@
     "app/app.json": "15d54517c79e623c4c57c061c59b0e4a194ebe346b4e7877f4cd0098bbd9a8b6",
     "app/AppSourceCop.json": "3693ee0c9ff2b18b8528d8b9bc2ecb80610346762766e2d9c209e0742885f2e8",
     ".AL-Go/settings.json": "56a157811bfe932f1629d0609c6f2d0dc612d1f2aa525fc6a5c7d566cbcc7141"
+  },
+  "offerPlan": {
+    "kind": "new-offer",
+    "existingOffer": false,
+    "existingOfferProductId": null,
+    "decisionSource": "Gunnar direct Codex desktop clarification, 2026-10-06",
+    "configurationGate": "Keep deliverToAppSource unconfigured until the genuine Attachments offer is created and its ID supplied and internally reviewed.",
+    "releasePrerequisiteOwner": "Gunnar / offer owner",
+    "offerCreationAuthorized": false,
+    "submissionAuthorized": false,
+    "publicationAuthorized": false,
+    "historicalValidationBaseline": "Not established by the no-offer decision; verify independently."
   }
 }

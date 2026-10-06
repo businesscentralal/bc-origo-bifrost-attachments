@@ -7,7 +7,9 @@ locale: en-US
 
 # Prepare the Attachments submission package
 
-**Status: pre-QA planning material. Offer remains unsubmitted.** Issue [#81](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/81) owns these artifacts; [#83](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/83) coordinates release gates. This package does not certify a candidate.
+**Status: pre-QA planning material for a new Attachments offer. No Partner Center offer currently exists.** Issue [#81](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/81) owns these artifacts; [#83](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/83) coordinates release gates. This package does not certify a candidate.
+
+Gunnar confirmed on 2026-10-06 that Attachments has no Partner Center offer and no existing offer product ID. A future operator-owned release step must create the genuine Attachments offer under separate authorization and supply its ID for internal review. Keep `deliverToAppSource` unconfigured until then. Do not reuse Foundation's ID or invent a placeholder. Offer creation, submission and publication are outside this assignment. This decision does not establish whether a historical app validation baseline exists; verify that independently.
 
 | Artifact | Purpose |
 |---|---|

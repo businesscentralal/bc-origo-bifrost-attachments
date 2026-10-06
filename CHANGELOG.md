@@ -9,6 +9,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Added (2026-10-06) - AppSource submission planning (#81)
 
 - Add the Attachments release checklist, independent scenario coverage plan, source market inventory and gated validator sandbox smoke script in `app/docs/appsource/`. Formal scenarios await internal QA. No AL objects or IDs changed.
+- Record Gunnar's confirmed new-offer plan: Attachments has no Partner Center offer or existing product ID. Keep `deliverToAppSource` unconfigured until separately authorized offer creation supplies the genuine Attachments ID; creation, submission and publication remain outside #81. No AL objects or IDs changed.
 
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
