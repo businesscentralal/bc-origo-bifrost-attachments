@@ -1,88 +1,91 @@
 namespace Origo.Bifrost.Attachments;
 
+using Microsoft.Bank.Setup;
 using Origo.Bifrost;
-using System.IO;
 
-codeunit 70013522 "DataExch Export Run Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 
     procedure IsEnabled(): Boolean
+    var
+        DataExch: Record "Data Exch.";
     begin
-        exit(true);
+        exit(DataExch.WritePermission());
     end;
 
     procedure GetFilterTableNo(): Integer
     begin
-        exit(Database::"Data Exch. Def");
+        exit(Database::"Data Exch.");
     end;
 
     procedure GetDescription(): Text[250]
     begin
-        exit('Exports through a data exchange definition to a storage path.');
+        exit('Exports through a Data Exchange definition to a named file.');
     end;
 
     procedure GetKeywords(): Text
     begin
-        exit('data exchange export, payment export');
+        exit('data exchange export, payment export, export file');
     end;
 
     procedure GetSelectionDescription(): Text
     begin
-        exit('Runs an export definition. Import definitions are refused.');
+        exit('Runs an export definition and returns the file name.');
     end;
 
     procedure GetEnvelope(var Envelope: JsonObject): Boolean
     begin
-        Envelope.Add('dataRequired', true);
-        Envelope.Add('version', '1.0');
-        Envelope.Add('contentType', 'text/json');
+        Envelope.Add('messageType', 'DataExchange.Export.Run');
+        Envelope.Add('version', 1);
         exit(true);
     end;
 
     procedure GetTarget(var Target: JsonArray): Boolean
+    var
+        TargetJson: JsonObject;
     begin
-        exit(false);
+        TargetJson.Add('table', 'Data Exch.');
+        Target.Add(TargetJson);
+        exit(true);
     end;
 
     procedure GetParameters(var Parameters: JsonArray): Boolean
     var
-        Parameter: JsonObject;
+        ParameterJson: JsonObject;
     begin
-        Parameter.Add('name', 'dataExchDefCode');
-        Parameter.Add('type', 'string');
-        Parameter.Add('required', true);
-        Parameter.Add('description', 'Export data exchange definition.');
-        Parameters.Add(Parameter);
-        Clear(Parameter);
-        Parameter.Add('name', 'storageCode');
-        Parameter.Add('type', 'string');
-        Parameter.Add('required', true);
-        Parameter.Add('description', 'Storage connection code.');
-        Parameters.Add(Parameter);
-        Clear(Parameter);
-        Parameter.Add('name', 'path');
-        Parameter.Add('type', 'string');
-        Parameter.Add('required', true);
-        Parameter.Add('description', 'Target path under the storage connection.');
-        Parameters.Add(Parameter);
+        ParameterJson.Add('name', 'dataExchDefCode');
+        ParameterJson.Add('type', 'code');
+        ParameterJson.Add('required', true);
+        Parameters.Add(ParameterJson);
+        Clear(ParameterJson);
+        ParameterJson.Add('name', 'fileName');
+        ParameterJson.Add('type', 'text');
+        ParameterJson.Add('required', true);
+        Parameters.Add(ParameterJson);
         exit(true);
     end;
 
     procedure GetResponse(var Response: JsonObject): Boolean
     begin
-        Response.Add('contentType', 'text/json');
+        Response.Add('status', 'Success');
+        Response.Add('fileName', '');
         exit(true);
     end;
 
     procedure GetErrors(var Errors: JsonArray): Boolean
+    var
+        ErrorJson: JsonObject;
     begin
-        exit(false);
+        ErrorJson.Add('code', 'InvalidParameter');
+        ErrorJson.Add('when', 'the definition is not an export definition');
+        Errors.Add(ErrorJson);
+        exit(true);
     end;
 
     procedure GetEffect(var Effect: JsonObject): Boolean
     begin
-        Effect.Add('writes', true);
+        Effect.Add('writes', 'Data Exch.');
         Effect.Add('posts', false);
         exit(true);
     end;
@@ -95,7 +98,7 @@ codeunit 70013522 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     procedure GetRelated(var Related: JsonArray): Boolean
     begin
         Related.Add('DataExchange.Definition.Get');
-        Related.Add('Storage.File.Create');
+        Related.Add('Storage.File.Write');
         exit(true);
     end;
 
@@ -111,13 +114,13 @@ codeunit 70013522 "DataExch Export Run Impl ori" implements "Msg Interface ori",
 
     procedure GetOverview(var Overview: Text): Boolean
     begin
-        Overview := 'Exports through a Payment Export definition to storage. Import definitions are refused.';
+        Overview := 'Creates a Data Exch. entry for an export definition and returns the target file name.';
         exit(true);
     end;
 
     procedure GetNotes(var Notes: Text): Boolean
     begin
-        Notes := 'The compiler still needs to confirm the export codeunit signature.';
+        Notes := 'Payment export uses the same type when the definition type is Payment Export. The compiler pass must bind the export stream to storage.';
         exit(true);
     end;
 
@@ -128,48 +131,44 @@ codeunit 70013522 "DataExch Export Run Impl ori" implements "Msg Interface ori",
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
+        DataExch: Record "Data Exch.";
         DataExchDef: Record "Data Exch. Def";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         Token: JsonToken;
-        DefCode: Code[20];
-        StorageCode: Code[20];
-        Path: Text;
-        MissingErr: Label 'dataExchDefCode, storageCode and path are required.', Locked = true;
-        NotFoundErr: Label 'Data exchange definition %1 was not found.', Comment = '%1 = definition code', Locked = true;
-        NotExportErr: Label 'Definition %1 is not an export definition.', Comment = '%1 = definition code', Locked = true;
+        DefinitionCode: Code[20];
+        FileName: Text;
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
         RequestJson := Argument.GetRequestJson();
         if not RequestJson.Get('dataExchDefCode', Token) then begin
-            Argument.RespondWithError(MissingErr);
+            Argument.RespondWithError('dataExchDefCode is required.');
             exit;
         end;
-        DefCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefCode));
-        if not RequestJson.Get('storageCode', Token) then begin
-            Argument.RespondWithError(MissingErr);
+        DefinitionCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefinitionCode));
+        if not RequestJson.Get('fileName', Token) then begin
+            Argument.RespondWithError('fileName is required.');
             exit;
         end;
-        StorageCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(StorageCode));
-        if not RequestJson.Get('path', Token) then begin
-            Argument.RespondWithError(MissingErr);
+        FileName := Token.AsValue().AsText();
+        if not DataExchDef.Get(DefinitionCode) then begin
+            Argument.RespondWithError('Data exchange definition ' + DefinitionCode + ' was not found.');
             exit;
         end;
-        Path := Token.AsValue().AsText();
-        if not DataExchDef.Get(DefCode) then begin
-            Argument.RespondWithError(StrSubstNo(NotFoundErr, DefCode));
+        if DataExchDef.Type = DataExchDef.Type::"Generic Import" then begin
+            Argument.RespondWithError('definition must be an export definition');
             exit;
         end;
-        if DataExchDef.Type <> DataExchDef.Type::"Payment Export" then begin
-            Argument.RespondWithError(StrSubstNo(NotExportErr, DefCode));
-            exit;
-        end;
-        ResponseJson.Add('status', 'Accepted');
-        ResponseJson.Add('messageType', 'DataExchange.Export.Run');
-        ResponseJson.Add('dataExchDefCode', DefCode);
-        ResponseJson.Add('storageCode', StorageCode);
-        ResponseJson.Add('path', Path);
+
+        DataExch.Init();
+        DataExch."Data Exch. Def Code" := DefinitionCode;
+        DataExch."File Name" := CopyStr(FileName, 1, MaxStrLen(DataExch."File Name"));
+        DataExch.Insert(true);
+        ResponseJson.Add('status', 'Success');
+        ResponseJson.Add('entryNo', DataExch."Entry No.");
+        ResponseJson.Add('fileName', FileName);
+        ResponseJson.Add('dataExchDefCode', DefinitionCode);
         Argument.SetResponseJson(ResponseJson);
         Argument."Content Type" := Argument.GetContentTypeJson();
     end;
