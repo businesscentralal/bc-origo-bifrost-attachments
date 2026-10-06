@@ -102,7 +102,7 @@ table 10035636 "Storage Setup ori"
     procedure TestConnection()
     var
         StorageConnector: Interface "Storage Connector ori";
-        ConnectionOkMsg: Label 'The storage connection ''%1'' is reachable.', Comment = '%1 = storage code';
+        ConnectionOkMsg: Label 'The storage connection ''%1'' is reachable.', Comment = '%1 = storage code||is-IS=Hægt er að ná sambandi við geymslutenginguna ''%1''.';
     begin
         TestField("Code");
         if not HasFileAccount() then
@@ -113,5 +113,5 @@ table 10035636 "Storage Setup ori"
     end;
 
     var
-        NoAccountErr: Label 'Select a file account before testing the connection.';
+        NoAccountErr: Label 'Select a file account before testing the connection.', Comment = 'is-IS=Veldu skráarreikning áður en tengingin er prófuð.';
 }

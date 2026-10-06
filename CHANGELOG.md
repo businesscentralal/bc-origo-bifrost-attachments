@@ -6,6 +6,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## Unreleased
 
+### Fixed (2026-10-06) - localized storage refusals (#72)
+
+- Translate response prose and expected-value conjunctions in `Storage Upload Mgt ori` (10035665), `Storage Attachment Mgt ori` (10035635), and `Storage Request Mgt ori` (10035662), preserving embedded wire tokens.
+- Harvest the existing Icelandic connection-test messages into source comments in `Storage Setup ori` (table 10035636). Add bilingual dispatch regression cases to `Storage Error Response Tests` (96212) and setup-action TestPage cases to `Storage Setup Page Tests` (96207).
+- Correct the agent instructions to locate the archived Foundation takeover generator; generated takeover source remains subject to its separate owner and generator approval.
+
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
 - The Foundation dependency floor is **28.0.1.0** in `app/app.json` and `test/app.json`, the same floor Bifrost Language Models uses for Foundation 28.0.1. Every 28.0.1.x build is accepted.
@@ -99,7 +105,7 @@ Business Central release versioning (`major.minor.build.revision`).
   `call_message_type`), line breaks that rendered as a literal `\`, and `→`/`—` shown as text in
   the overview. `Help.Storage.Get`'s own help is now a standard help document followed by the overview.
 - **Tests.** New `Storage Msg Conformance Tests` (96211, Foundation's rules 1-6 plus keyword coverage for
-  every type, no allow-list) and `Storage Error Response Tests` (96212). Existing tests assert the
+  every type, no allow-list) and `Storage Error Response Tests` (96212) and setup-action TestPage cases to `Storage Setup Page Tests` (96207). Existing tests assert the
   structured answers instead of raised texts.
 - **Foundation.** Requires a Foundation build with `Msg Discovery ori` and `Bifrost Error Code ori`
   (#149, #153) and the structured-error hand-over of core#153, #164 and #165; built and tested against the stack up to #169.

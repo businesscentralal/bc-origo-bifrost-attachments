@@ -326,6 +326,112 @@ codeunit 96212 "Storage Error Response Tests"
 
     // ————— Helpers —————
 
+    /// <summary>Checks localized filename refusals through dispatch while preserving protocol fields.</summary>
+    [Test]
+    procedure Scenario_AC01_UploadFolder_BilingualRefusalPreservesKeys()
+    begin
+        // [SCENARIO] Invalid folder names produce localized prose with stable error keys.
+        Initialize();
+        AssertLocalizedUploadRefusal(1033,
+            'fileName must be a file name without folders; use path or folderPath for the destination folder.',
+            'a file name with no slash or backslash');
+        AssertLocalizedUploadRefusal(1039,
+            'fileName verður að vera skráarheiti án mappa; notaðu path eða folderPath fyrir áfangamöppuna.',
+            'skráarheiti án skástriks eða öfugs skástriks');
+    end;
+
+    /// <summary>Checks that localized expected text retains the attachment target identifiers.</summary>
+    [Test]
+    procedure Scenario_AC01_UnknownTarget_BilingualExpectedPreservesTokens()
+    begin
+        // [SCENARIO] Only the conjunction between wire target names changes with language.
+        Initialize();
+        AssertLocalizedTarget(1033, 'DocumentAttachment or IncomingDocument');
+        AssertLocalizedTarget(1039, 'DocumentAttachment eða IncomingDocument');
+    end;
+
+    /// <summary>Checks that upload success keys and stored filenames stay stable in both languages.</summary>
+    [Test]
+    procedure Scenario_AC02_UploadBegin_BilingualSuccessKeepsStoredFilename()
+    begin
+        // [SCENARIO] Localization does not change upload IDs, state tokens, or the persisted filename.
+        Initialize();
+        AssertLocalizedUploadSuccess(1033);
+        AssertLocalizedUploadSuccess(1039);
+    end;
+
+    local procedure AssertLocalizedUploadRefusal(LanguageId: Integer; ExpectedMessage: Text; ExpectedValue: Text)
+    var
+        TempArgument: Record "Message Argument ori";
+        UploadSession: Record "Storage Upload Session ori";
+        RequestJson: JsonObject;
+        SavedLanguageId: Integer;
+        BeforeCount: Integer;
+    begin
+        // [GIVEN] A configured mock backend and an invalid file name containing a folder.
+        BeforeCount := UploadSession.Count();
+        RequestJson.Add('storageCode', MockCodeTok);
+        RequestJson.Add('fileName', 'folder/file.txt');
+        SavedLanguageId := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        // [WHEN] Dispatching a real upload begin request.
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", RequestJson);
+        GlobalLanguage(SavedLanguageId);
+        // [THEN] The refusal is translated, keys are stable, and no session was created.
+        AssertErrorAnswer(TempArgument, 'InvalidParameter', 'fileName');
+        LibraryAssert.AreEqual(ExpectedMessage, ReadText(TempArgument.GetResponseJson(), 'message'), 'Localized refusal mismatch.');
+        LibraryAssert.AreEqual(ExpectedValue, ReadText(TempArgument.GetResponseJson(), 'expected'), 'Localized expected value mismatch.');
+        LibraryAssert.AreEqual('folder/file.txt', ReadText(TempArgument.GetResponseJson(), 'received'), 'The received filename must remain unchanged.');
+        LibraryAssert.AreEqual(BeforeCount, UploadSession.Count(), 'An invalid name must not create an upload session.');
+    end;
+
+    local procedure AssertLocalizedTarget(LanguageId: Integer; ExpectedValue: Text)
+    var
+        TempArgument: Record "Message Argument ori";
+        RequestJson: JsonObject;
+        SavedLanguageId: Integer;
+    begin
+        // [GIVEN] An unknown target and a valid identifier to isolate the target refusal.
+        RequestJson.Add('storageCode', MockCodeTok);
+        RequestJson.Add('target', 'Picture');
+        RequestJson.Add('systemId', Format(CreateGuid(), 0, 4));
+        SavedLanguageId := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        // [WHEN] Dispatching a real attachment offload request.
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.Offload", RequestJson);
+        GlobalLanguage(SavedLanguageId);
+        // [THEN] Protocol target names and error keys stay stable in the localized response.
+        AssertErrorAnswer(TempArgument, 'InvalidParameter', 'target');
+        LibraryAssert.AreEqual(ExpectedValue, ReadText(TempArgument.GetResponseJson(), 'expected'), 'Expected target names must retain their wire spelling.');
+        LibraryAssert.AreEqual('Picture', ReadText(TempArgument.GetResponseJson(), 'received'), 'The received target must not be translated.');
+    end;
+
+    local procedure AssertLocalizedUploadSuccess(LanguageId: Integer)
+    var
+        TempArgument: Record "Message Argument ori";
+        UploadSession: Record "Storage Upload Session ori";
+        RequestJson: JsonObject;
+        UploadId: Guid;
+        SavedLanguageId: Integer;
+    begin
+        // [GIVEN] A valid filename for the mock backend.
+        RequestJson.Add('storageCode', MockCodeTok);
+        RequestJson.Add('fileName', 'localized.txt');
+        SavedLanguageId := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        // [WHEN] Dispatching an upload begin request in either language.
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", RequestJson);
+        GlobalLanguage(SavedLanguageId);
+        // [THEN] A real session exists and the stable success payload identifies it.
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Success is a protocol token.');
+        Evaluate(UploadId, ReadDataText(TempArgument, 'uploadId'));
+        UploadSession.SetLoadFields("File Name", Status);
+        UploadSession.Get(UploadId);
+        LibraryAssert.AreEqual('localized.txt', UploadSession."File Name", 'The persisted filename must remain unchanged.');
+        LibraryAssert.AreEqual(UploadSession.Status::Open, UploadSession.Status, 'The session must be open.');
+        LibraryAssert.AreEqual(MockCodeTok, ReadDataText(TempArgument, 'storageCode'), 'storageCode is a protocol key.');
+    end;
+
     local procedure Initialize()
     var
         StorageSetup: Record "Storage Setup ori";

@@ -17,7 +17,7 @@ codeunit 10035662 "Storage Request Mgt ori"
     Access = Internal;
 
     var
-        UnsafePathErr: Label 'The path ''%1'' is not allowed: no path segment may be ''.'' or ''..''.', Comment = '%1 = the rejected path', Locked = true;
+        UnsafePathErr: Label 'The path ''%1'' is not allowed: no path segment may be ''.'' or ''..''.', Comment = '%1 = the rejected path||is-IS=Slóðin „%1“ er ekki leyfð: enginn hluti slóðarinnar má vera „.“ eða „..“.';
         UnknownCodeErr: Label 'No storage connection is configured for storageCode "%1".', Comment = '%1 = storage code, is-IS=Engin geymslutenging er skilgreind fyrir storageCode "%1".';
         DisabledCodeErr: Label 'The storage connection "%1" is disabled.', Comment = '%1 = storage code, is-IS=Geymslutengingin "%1" er óvirk.';
         UnknownCodeNextStepLbl: Label 'Call Storage.Account.List to see the configured storage codes.', Comment = 'is-IS=Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.';
