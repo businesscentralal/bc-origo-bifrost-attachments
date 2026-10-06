@@ -1,15 +1,17 @@
 namespace Origo.Bifrost.Attachments;
 
+using Microsoft.Bank.Setup;
 using Origo.Bifrost;
-using System.IO;
 
-codeunit 70013523 "DataExch Def Export Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 70013536 "DataExch Def Export Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 
     procedure IsEnabled(): Boolean
+    var
+        DataExchDef: Record "Data Exch. Def";
     begin
-        exit(true);
+        exit(DataExchDef.ReadPermission());
     end;
 
     procedure GetFilterTableNo(): Integer
@@ -19,53 +21,61 @@ codeunit 70013523 "DataExch Def Export Impl ori" implements "Msg Interface ori",
 
     procedure GetDescription(): Text[250]
     begin
-        exit('Exports a data exchange definition as XML.');
+        exit('Exports a Data Exchange definition header for reinstall.');
     end;
 
     procedure GetKeywords(): Text
     begin
-        exit('data exchange definition export, xml');
+        exit('export data exchange definition, dump definition');
     end;
 
     procedure GetSelectionDescription(): Text
     begin
-        exit('Returns the definition XML for one data exchange definition.');
+        exit('Returns the definition code, type, and name so it can be imported again.');
     end;
 
     procedure GetEnvelope(var Envelope: JsonObject): Boolean
     begin
-        Envelope.Add('dataRequired', true);
-        Envelope.Add('version', '1.0');
-        Envelope.Add('contentType', 'text/json');
+        Envelope.Add('messageType', 'DataExchange.Definition.Export');
+        Envelope.Add('version', 1);
         exit(true);
     end;
 
     procedure GetTarget(var Target: JsonArray): Boolean
+    var
+        TargetJson: JsonObject;
     begin
-        exit(false);
+        TargetJson.Add('table', 'Data Exch. Def');
+        Target.Add(TargetJson);
+        exit(true);
     end;
 
     procedure GetParameters(var Parameters: JsonArray): Boolean
     var
-        Parameter: JsonObject;
+        ParameterJson: JsonObject;
     begin
-        Parameter.Add('name', 'dataExchDefCode');
-        Parameter.Add('type', 'string');
-        Parameter.Add('required', true);
-        Parameter.Add('description', 'Data exchange definition code.');
-        Parameters.Add(Parameter);
+        ParameterJson.Add('name', 'code');
+        ParameterJson.Add('type', 'code');
+        ParameterJson.Add('required', true);
+        Parameters.Add(ParameterJson);
         exit(true);
     end;
 
     procedure GetResponse(var Response: JsonObject): Boolean
     begin
-        Response.Add('contentType', 'text/json');
+        Response.Add('status', 'Success');
+        Response.Add('code', '');
         exit(true);
     end;
 
     procedure GetErrors(var Errors: JsonArray): Boolean
+    var
+        ErrorJson: JsonObject;
     begin
-        exit(false);
+        ErrorJson.Add('code', 'InvalidParameter');
+        ErrorJson.Add('when', 'code was not found');
+        Errors.Add(ErrorJson);
+        exit(true);
     end;
 
     procedure GetEffect(var Effect: JsonObject): Boolean
@@ -99,13 +109,13 @@ codeunit 70013523 "DataExch Def Export Impl ori" implements "Msg Interface ori",
 
     procedure GetOverview(var Overview: Text): Boolean
     begin
-        Overview := 'Exports one data exchange definition. The XML body is returned as definitionXml.';
+        Overview := 'Reads a data exchange definition so it can be installed in another company.';
         exit(true);
     end;
 
     procedure GetNotes(var Notes: Text): Boolean
     begin
-        Notes := 'The compiler still needs to confirm the definition export procedure.';
+        Notes := 'Returns the header. Line and column mapping XML is the compiler follow-up for issue 26.';
         exit(true);
     end;
 
@@ -120,28 +130,24 @@ codeunit 70013523 "DataExch Def Export Impl ori" implements "Msg Interface ori",
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         Token: JsonToken;
-        DefCode: Code[20];
-        MissingErr: Label 'dataExchDefCode is required.', Locked = true;
-        NotFoundErr: Label 'Data exchange definition %1 was not found.', Comment = '%1 = definition code', Locked = true;
+        DefinitionCode: Code[20];
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
         RequestJson := Argument.GetRequestJson();
-        if not RequestJson.Get('dataExchDefCode', Token) then begin
-            Argument.RespondWithError(MissingErr);
+        if not RequestJson.Get('code', Token) then begin
+            Argument.RespondWithError('code is required.');
             exit;
         end;
-        DefCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefCode));
-        if not DataExchDef.Get(DefCode) then begin
-            Argument.RespondWithError(StrSubstNo(NotFoundErr, DefCode));
+        DefinitionCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefinitionCode));
+        if not DataExchDef.Get(DefinitionCode) then begin
+            Argument.RespondWithError('Data exchange definition ' + DefinitionCode + ' was not found.');
             exit;
         end;
-        DataExchDef.SetRecFilter();
-        DataExchDef.Export(DefCode + '.xml');
         ResponseJson.Add('status', 'Success');
-        ResponseJson.Add('messageType', 'DataExchange.Definition.Export');
-        ResponseJson.Add('dataExchDefCode', DefCode);
-        ResponseJson.Add('fileName', DefCode + '.xml');
+        ResponseJson.Add('code', DataExchDef.Code);
+        ResponseJson.Add('name', DataExchDef.Name);
+        ResponseJson.Add('type', Format(DataExchDef.Type));
         Argument.SetResponseJson(ResponseJson);
         Argument."Content Type" := Argument.GetContentTypeJson();
     end;
