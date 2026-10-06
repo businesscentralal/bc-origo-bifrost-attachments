@@ -6,6 +6,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## Unreleased
 
+### Added (2026-10-06) - AppSource API audit (#77)
+
+- `API-SURFACE.md` and the object/procedure inventories record the shipped AL contract and consumers. `Storage Connector ori` (interface), `Storage Type ori` (enum 10035636) and `Storage Setup ori` (table 10035636) remain public; the provider enum remains extensible. Proposed access reductions for `Storage Attachment Target ori` (enum 10035635) and `Storage Upload Status ori` (enum 10035637) are held pending authoritative publication/baseline and consumer evidence. No AL surface or IDs change.
+- Release checklist #83 must obtain authoritative registration for both 10035635–10035684 and 70013500–70013549 plus the `ori` affix. Source declarations and catalog absence do not establish registration. Product/test compilation and runtime verification remain dependent on current-main repair #74 and a usable Foundation package.
+
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
 - The Foundation dependency floor is **28.0.1.0** in `app/app.json` and `test/app.json`, the same floor Bifrost Language Models uses for Foundation 28.0.1. Every 28.0.1.x build is accepted.
