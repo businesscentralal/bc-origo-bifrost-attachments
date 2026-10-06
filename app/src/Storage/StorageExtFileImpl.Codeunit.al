@@ -1,5 +1,6 @@
 namespace Origo.Bifrost.Attachments;
 
+using Origo.Bifrost;
 using System.ExternalFileStorage;
 using System.Utilities;
 
@@ -16,6 +17,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
     Access = Internal;
 
     var
+        InvalidPathErr: Label 'The storage path is invalid. Nothing was changed.', Comment = 'is-IS=Geymsluslóðin er ógild. Engu var breytt.';
         NoAccountErr: Label 'Storage connection ''%1'' has no file account selected.', Comment = '%1 = storage code';
 
     procedure TestConnection(StorageSetup: Record "Storage Setup ori")
@@ -165,18 +167,22 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
     /// CombinePath from producing an invalid path such as "origodemo/" when the caller passes
     /// "/" to mean the top-level directory.
     /// </remarks>
-    local procedure ResolvePath(var ExternalFileStorage: Codeunit "External File Storage"; StorageSetup: Record "Storage Setup ori"; Path: Text): Text
+    local procedure ResolvePath(ExternalFileStorage: Codeunit "External File Storage"; StorageSetup: Record "Storage Setup ori"; Path: Text): Text
     var
+        TempArgument: Record "Message Argument ori" temporary;
+        Reader: Codeunit "Storage Request Reader ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
+        BasePath: Text;
     begin
-        if not RequestMgt.PathIsSafe(Path) then
-            RequestMgt.ThrowUnsafePath(Path);
-        Path := Path.TrimStart('/').TrimEnd('/');
-        if StorageSetup."Base Path" = '' then
+        // Direct AL callers and stored legacy links share the request preflight.
+        if not Reader.CheckStoragePath(TempArgument, StorageSetup, 'path', Path, true) then
+            TempArgument.RaiseCollectedErrors("Bifrost Error Code ori"::InvalidParameter, InvalidPathErr);
+        BasePath := RequestMgt.CanonicalPath(StorageSetup."Base Path");
+        if BasePath = '' then
             exit(Path);
         if Path = '' then
-            exit(StorageSetup."Base Path");
-        exit(ExternalFileStorage.CombinePath(StorageSetup."Base Path", Path));
+            exit(BasePath);
+        exit(ExternalFileStorage.CombinePath(BasePath, Path));
     end;
 
     local procedure MaxListPages(): Integer

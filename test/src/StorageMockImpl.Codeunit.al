@@ -8,7 +8,7 @@ using System.Utilities;
 /// <summary>
 /// In-memory <c>Bifrost Storage Connector</c> implementation used by the connector tests. Backed
 /// by <c>Bifrost Storage Mock State</c>, it exercises the full message-type pipeline without a
-/// live storage account. Paths are treated as opaque keys; the base path is not applied.
+/// live storage account. Resolves outer slash variants and the base path like the production adapter.
 /// </summary>
 codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
 {
@@ -27,6 +27,7 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
         Paths: List of [Text];
         EntryPath: Text;
     begin
+        Path := ResolvePath(StorageSetup, Path);
         TempFileAccountContent.Reset();
         TempFileAccountContent.DeleteAll();
         if EntryType = EntryType::Directory then
@@ -49,6 +50,7 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
         Base64Convert: Codeunit "Base64 Convert";
         ContentOutStream: OutStream;
     begin
+        Path := ResolvePath(StorageSetup, Path);
         if not MockState.HasFile(Path) then
             Error(FileNotFoundErr, Path);
         TempBlob.CreateOutStream(ContentOutStream);
@@ -61,6 +63,8 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
         Base64Convert: Codeunit "Base64 Convert";
         ContentInStream: InStream;
     begin
+        MockState.CheckWriteFailure();
+        Path := ResolvePath(StorageSetup, Path);
         TempBlob.CreateInStream(ContentInStream);
         MockState.PutFile(Path, Base64Convert.ToBase64(ContentInStream));
     end;
@@ -69,6 +73,7 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
     var
         MockState: Codeunit "Storage Mock State";
     begin
+        Path := ResolvePath(StorageSetup, Path);
         if not MockState.HasFile(Path) then
             Error(FileNotFoundErr, Path);
         MockState.RemoveFile(Path);
@@ -78,6 +83,7 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
     var
         MockState: Codeunit "Storage Mock State";
     begin
+        Path := ResolvePath(StorageSetup, Path);
         exit(MockState.HasFile(Path));
     end;
 
@@ -85,6 +91,9 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
     var
         MockState: Codeunit "Storage Mock State";
     begin
+        MockState.CheckWriteFailure();
+        SourcePath := ResolvePath(StorageSetup, SourcePath);
+        TargetPath := ResolvePath(StorageSetup, TargetPath);
         if not MockState.HasFile(SourcePath) then
             Error(FileNotFoundErr, SourcePath);
         MockState.PutFile(TargetPath, MockState.GetFileContent(SourcePath));
@@ -94,6 +103,9 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
     var
         MockState: Codeunit "Storage Mock State";
     begin
+        MockState.CheckWriteFailure();
+        SourcePath := ResolvePath(StorageSetup, SourcePath);
+        TargetPath := ResolvePath(StorageSetup, TargetPath);
         if not MockState.HasFile(SourcePath) then
             Error(FileNotFoundErr, SourcePath);
         MockState.PutFile(TargetPath, MockState.GetFileContent(SourcePath));
@@ -104,6 +116,7 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
     var
         MockState: Codeunit "Storage Mock State";
     begin
+        Path := ResolvePath(StorageSetup, Path);
         MockState.AddDirectory(Path);
     end;
 
@@ -111,6 +124,7 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
     var
         MockState: Codeunit "Storage Mock State";
     begin
+        Path := ResolvePath(StorageSetup, Path);
         if not MockState.HasDirectory(Path) then
             Error(DirNotFoundErr, Path);
         MockState.RemoveDirectory(Path);
@@ -120,7 +134,22 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
     var
         MockState: Codeunit "Storage Mock State";
     begin
+        Path := ResolvePath(StorageSetup, Path);
         exit(MockState.HasDirectory(Path));
+    end;
+
+    local procedure ResolvePath(StorageSetup: Record "Storage Setup ori"; Path: Text): Text
+    var
+        BasePath: Text;
+    begin
+        // Independent implementation: a test must fail if request/link normalization drifts.
+        Path := Path.TrimStart('/').TrimEnd('/');
+        BasePath := StorageSetup."Base Path".TrimStart('/').TrimEnd('/');
+        if BasePath = '' then
+            exit(Path);
+        if Path = '' then
+            exit(BasePath);
+        exit(BasePath + '/' + Path);
     end;
 
     local procedure ParentOf(Path: Text): Text

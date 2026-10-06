@@ -14,12 +14,31 @@ codeunit 96201 "Storage Mock State"
     var
         Files: Dictionary of [Text, Text];
         Directories: List of [Text];
+        RejectNextWrite: Boolean;
 
     /// <summary>Clears all mock files and directories.</summary>
     procedure Reset()
     begin
         Clear(Files);
         Clear(Directories);
+        RejectNextWrite := false;
+    end;
+
+    /// <summary>Injects one deterministic failure before the next connector write.</summary>
+    procedure FailNextWrite()
+    begin
+        RejectNextWrite := true;
+    end;
+
+    /// <summary>Raises the configured write failure without changing any provider content.</summary>
+    procedure CheckWriteFailure()
+    var
+        InjectedFailureErr: Label 'Injected storage write failure.', Locked = true;
+    begin
+        if not RejectNextWrite then
+            exit;
+        RejectNextWrite := false;
+        Error(InjectedFailureErr);
     end;
 
     /// <summary>Stores (or overwrites) a file with base64 content.</summary>

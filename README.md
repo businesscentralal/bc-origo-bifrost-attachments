@@ -136,6 +136,23 @@ through `Storage Full ori` and need no second assignment.
 
 ---
 
+## Protect attachment-backed files
+
+`/invoices/scan.pdf/` and `invoices/scan.pdf` address the same file under the configured base path.
+Raw file create, copy, move destinations and upload commit refuse a destination referenced by an attachment link.
+Use `Storage.Attachment.*` to mutate attachments. A rejected upload commit retains the open session and its chunks.
+Copy or move to the same canonical source path is refused before writing.
+A permitted linked-source move updates the matching link and available native path metadata before the remote move.
+
+Directory `/` denotes the connection root; a file path cannot denote that root. Relative segments,
+backslashes, empty inner segments, control characters, segment-edge spaces and trailing dots are rejected.
+Complete relative and base-prefixed paths must fit 2,048 characters; upload/link filenames must fit 250,
+and attachment extensions must fit the native 30-character field. Generated offload paths are checked before
+clearing local content. These storage-field limits do not certify provider compatibility: provider-specific
+limits, account-root semantics, case aliases and real-provider verification remain open under #75.
+
+---
+
 ## Example Scenario
 
 A supplier portal has to attach a 40 MB signed contract PDF to purchase invoice `PI-100234` and

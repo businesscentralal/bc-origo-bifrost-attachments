@@ -119,6 +119,13 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         end;
 
         Path := BuildPath(Target, TableId, RecSystemId, FileName, EntryNo, FolderPath);
+        CheckAttachmentFileName(Argument, FileName);
+        Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
+        CheckNativePathLength(Argument, TableId, StorageSetup.Code, Path, 'path');
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if not RequestMgt.CheckUnlinkedDestination(Argument, StorageSetup.Code, Path, 'path') then
+            exit(false);
 
         // The database writes happen first, then the upload last. The upload is the only step that
         // is not part of the transaction, so any failure before it rolls back cleanly (nothing
@@ -128,8 +135,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         Link."Table ID" := TableId;
         Link."Record System Id" := RecSystemId;
         Link."Storage Code" := StorageSetup."Code";
-        Link."Storage Path" := CopyStr(Path, 1, MaxStrLen(Link."Storage Path"));
-        Link."File Name" := CopyStr(FileName, 1, MaxStrLen(Link."File Name"));
+        Link."Storage Path" := Path;
+        Link."File Name" := FileName;
         Link."Content Size" := TempBlob.Length();
         Link."Inc. Doc. Entry No." := EntryNo;
         Link."Inc. Doc. Line No." := LineNo;
@@ -243,7 +250,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         RequestJson := Argument.GetRequestJson();
         RequestMgt.ReadSetup(Argument, RequestJson, StorageSetup, Connector);
         Reader.ReadPath(Argument, RequestJson, 'path', true, StoragePath);
+        Reader.CheckStoragePath(Argument, StorageSetup, 'path', StoragePath, false);
         Reader.ReadText(Argument, RequestJson, 'fileName', true, FileName);
+        CheckAttachmentFileName(Argument, FileName);
         Reader.ReadText(Argument, RequestJson, 'description', false, Description);
         Reader.ReadNonNegativeInteger(Argument, RequestJson, 'incomingDocumentEntryNo', false, EntryNo);
         if Reader.RespondIfErrors(Argument) then
@@ -279,8 +288,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         Link."Table ID" := Database::"Incoming Document Attachment";
         Link."Record System Id" := IncomingDocumentAttachment.SystemId;
         Link."Storage Code" := StorageSetup."Code";
-        Link."Storage Path" := CopyStr(StoragePath, 1, MaxStrLen(Link."Storage Path"));
-        Link."File Name" := CopyStr(FileName, 1, MaxStrLen(Link."File Name"));
+        Link."Storage Path" := StoragePath;
+        Link."File Name" := FileName;
         Link."Content Size" := TempBlob.Length();
         Link."Inc. Doc. Entry No." := IncomingDocumentAttachment."Incoming Document Entry No.";
         Link."Inc. Doc. Line No." := IncomingDocumentAttachment."Line No.";
@@ -358,6 +367,14 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             exit(false);
         end;
 
+        CheckAttachmentFileName(Argument, FileName);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if FromStorage then begin
+            CheckNativePathLength(Argument, Database::"Document Attachment", StorageSetup.Code, StoragePath, 'path');
+            if Reader.RespondIfErrors(Argument) then
+                exit(false);
+        end;
         TempBlob.CreateInStream(ContentInStream);
         DocumentAttachment.Init();
         DocumentAttachment.SaveAttachmentFromStream(ContentInStream, RecordRef, FileName);
@@ -369,8 +386,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             Link."Table ID" := Database::"Document Attachment";
             Link."Record System Id" := DocumentAttachment.SystemId;
             Link."Storage Code" := StorageSetup."Code";
-            Link."Storage Path" := CopyStr(StoragePath, 1, MaxStrLen(Link."Storage Path"));
-            Link."File Name" := CopyStr(FileName, 1, MaxStrLen(Link."File Name"));
+            Link."Storage Path" := StoragePath;
+            Link."File Name" := FileName;
             Link."Content Size" := TempBlob.Length();
             Link."Offloaded At" := CurrentDateTime();
             Link."Offloaded By" := UserSecurityId();
@@ -412,6 +429,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         if Reader.RespondIfErrors(Argument) then
             exit(false);
 
+        CheckAttachmentFileName(Argument, FileName);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
         TempBlob.CreateInStream(ContentInStream);
         DocumentAttachment.Init();
         DocumentAttachment.SaveAttachmentFromStream(ContentInStream, RecordRef, FileName);
@@ -444,6 +464,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         Reader.ReadText(Argument, RequestJson, 'fileName', SessionFileName = '', FileName);
         if FileName = '' then
             FileName := SessionFileName;
+        CheckAttachmentFileName(Argument, FileName);
         Reader.ReadText(Argument, RequestJson, 'description', false, Description);
         Reader.ReadNonNegativeInteger(Argument, RequestJson, 'incomingDocumentEntryNo', false, EntryNo);
         if Reader.RespondIfErrors(Argument) then
@@ -655,7 +676,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
 
         FromStorage := true;
         RequestMgt.ReadSetup(Argument, RequestJson, StorageSetup, Connector);
-        exit(Reader.ReadPath(Argument, RequestJson, 'path', true, StoragePath));
+        if not Reader.ReadPath(Argument, RequestJson, 'path', true, StoragePath) then
+            exit(false);
+        exit(Reader.CheckStoragePath(Argument, StorageSetup, 'path', StoragePath, false));
     end;
 
     /// <summary>
@@ -818,9 +841,11 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         if not FindLinkedStorageFile(StorageCode, SourcePath, Link) then
             exit(true);
         repeat
-            BlockReason := LinkUpdateBlockReason(Link);
-            if BlockReason <> '' then
-                exit(false);
+            if StoragePathsMatch(Link."Storage Path", SourcePath) then begin
+                BlockReason := LinkUpdateBlockReason(Link);
+                if BlockReason <> '' then
+                    exit(false);
+            end;
         until Link.Next() = 0;
         exit(true);
     end;
@@ -837,9 +862,74 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         if not FindLinkedStorageFile(StorageCode, SourcePath, Link) then
             exit;
         repeat
-            Link."Storage Path" := CopyStr(TargetPath, 1, MaxStrLen(Link."Storage Path"));
-            Link.Modify(true);
+            if StoragePathsMatch(Link."Storage Path", SourcePath) then begin
+                Link."Storage Path" := TargetPath;
+                Link.Modify(true);
+                if Link."Table ID" = Database::"Document Attachment" then
+                    UpdateNativeMovedPath(Link."Record System Id", StorageCode, TargetPath);
+            end;
         until Link.Next() = 0;
+    end;
+
+    /// <summary>Checks every matching link's native address capacity before moving its remote content.</summary>
+    /// <param name="Argument">The argument collecting validation problems.</param>
+    /// <param name="StorageCode">The selected connection.</param>
+    /// <param name="SourcePath">The file being moved.</param>
+    /// <param name="TargetPath">The complete new relative path.</param>
+    internal procedure CheckMovedPath(var Argument: Record "Message Argument ori"; StorageCode: Code[20]; SourcePath: Text; TargetPath: Text)
+    var
+        Link: Record "Storage Attachment Link ori";
+    begin
+        if not FindLinkedStorageFile(StorageCode, SourcePath, Link) then
+            exit;
+        repeat
+            if StoragePathsMatch(Link."Storage Path", SourcePath) then
+                CheckNativePathLength(Argument, Link."Table ID", StorageCode, TargetPath, 'targetPath');
+        until Link.Next() = 0;
+    end;
+
+    local procedure CheckAttachmentFileName(var Argument: Record "Message Argument ori"; FileName: Text)
+    var
+        DocumentAttachment: Record "Document Attachment";
+        Reader: Codeunit "Storage Request Reader ori";
+    begin
+        Reader.CheckFileName(Argument, FileName);
+        Reader.CheckTextLength(Argument, 'fileName', FileExtensionOf(FileName), MaxStrLen(DocumentAttachment."File Extension"));
+    end;
+
+    local procedure CheckNativePathLength(var Argument: Record "Message Argument ori"; TableId: Integer; StorageCode: Code[20]; Path: Text; ParameterName: Text)
+    var
+        Reader: Codeunit "Storage Request Reader ori";
+        StoredExternallyFld: FieldRef;
+        ExternalUploadDateFld: FieldRef;
+        ExternalFilePathFld: FieldRef;
+        StoredInternallyFld: FieldRef;
+        RecRef: RecordRef;
+    begin
+        if TableId <> Database::"Document Attachment" then
+            exit;
+        if not TryGetDocAttachExtStorFields(RecRef, StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld) then
+            exit;
+        Reader.CheckTextLength(Argument, ParameterName, StorageCode + ':' + Path, ExternalFilePathFld.Length());
+        RecRef.Close();
+    end;
+
+    local procedure UpdateNativeMovedPath(RecSystemId: Guid; StorageCode: Code[20]; Path: Text)
+    var
+        StoredExternallyFld: FieldRef;
+        ExternalUploadDateFld: FieldRef;
+        ExternalFilePathFld: FieldRef;
+        StoredInternallyFld: FieldRef;
+        RecRef: RecordRef;
+    begin
+        if not TryGetDocAttachExtStorFields(RecRef, StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld) then
+            exit;
+        if RecRef.GetBySystemId(RecSystemId) then begin
+            // Only the address changes. A failure must roll back before the remote move.
+            ExternalFilePathFld.Value := StorageCode + ':' + Path;
+            RecRef.Modify(true);
+        end;
+        RecRef.Close();
     end;
 
     /// <summary>Returns the table id that an attachment target maps to.</summary>
@@ -860,8 +950,12 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         Link.Reset();
         Link.SetCurrentKey("Storage Code", "Storage Path");
         Link.SetRange("Storage Code", StorageCode);
-        Link.SetRange("Storage Path", Path);
-        exit(Link.FindSet(true));
+        if Link.FindSet(true) then
+            repeat
+                if StoragePathsMatch(Link."Storage Path", Path) then
+                    exit(true);
+            until Link.Next() = 0;
+        exit(false);
     end;
 
     local procedure FindLinkedStoragePathInDirectory(StorageCode: Code[20]; DirectoryPath: Text; var Link: Record "Storage Attachment Link ori"): Boolean
@@ -876,8 +970,19 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             until Link.Next() = 0;
     end;
 
-    local procedure StoragePathIsInDirectory(StoragePath: Text; DirectoryPath: Text): Boolean
+    local procedure StoragePathsMatch(FirstPath: Text; SecondPath: Text): Boolean
+    var
+        RequestMgt: Codeunit "Storage Request Mgt ori";
     begin
+        exit(RequestMgt.CanonicalPath(FirstPath) = RequestMgt.CanonicalPath(SecondPath));
+    end;
+
+    local procedure StoragePathIsInDirectory(StoragePath: Text; DirectoryPath: Text): Boolean
+    var
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+    begin
+        StoragePath := RequestMgt.CanonicalPath(StoragePath);
+        DirectoryPath := RequestMgt.CanonicalPath(DirectoryPath);
         if DirectoryPath = '' then
             exit(StoragePath <> '');
         if StoragePath = DirectoryPath then
@@ -1083,11 +1188,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     var
         RequestMgt: Codeunit "Storage Request Mgt ori";
     begin
-        FolderPath := ConvertStr(FolderPath, '\', '/');
-        FolderPath := DelChr(FolderPath, '<>', ' /');
-        if not RequestMgt.PathIsSafe(FolderPath) then
-            RequestMgt.ThrowUnsafePath(FolderPath);
-        exit(FolderPath);
+        exit(RequestMgt.CanonicalPath(FolderPath));
     end;
 
     /// <summary>
@@ -1158,7 +1259,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         else
             ExternalUploadDateFld.Value := 0DT;
         if Offloaded then
-            ExternalFilePathFld.Value := CopyStr(StrSubstNo('%1:%2', StorageCode, Path), 1, 2048)
+            ExternalFilePathFld.Value := StrSubstNo('%1:%2', StorageCode, Path)
         else
             ExternalFilePathFld.Value := '';
         StoredInternallyFld.Value := not Offloaded;

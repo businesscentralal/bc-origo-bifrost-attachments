@@ -952,9 +952,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType TextExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 1528387766" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Parameter "%1" has the path "%2", which is not allowed: no path segment may be "." or "..".</source>
-          <target>Færibreyta "%1" hefur slóðina "%2", sem er ekki leyfð: enginn hluti slóðarinnar má vera "." eða "..".</target>
-          <note from="Developer" annotates="general" priority="2">%1 = parameter, %2 = the rejected path, is-IS=Færibreyta "%1" hefur slóðina "%2", sem er ekki leyfð: enginn hluti slóðarinnar má vera "." eða "..".</note>
+          <source>Parameter "%1" has an unsafe or ambiguous path "%2". Use slash-separated names without relative segments, empty inner segments, control characters, backslashes or leading/trailing spaces and trailing dots.</source>
+          <target>Færibreytan "%1" hefur óörugga eða tvíræða slóð "%2". Notaðu heiti aðskilin með skástrikum án afstæðra hluta, tómra innri hluta, stýristafa, bakskástrika, bila í upphafi eða lok heita eða punkta í lok heita.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = parameter, %2 = rejected path, is-IS=Færibreytan "%1" hefur óörugga eða tvíræða slóð "%2". Notaðu heiti aðskilin með skástrikum án afstæðra hluta, tómra innri hluta, stýristafa, bakskástrika, bila í upphafi eða lok heita eða punkta í lok heita.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType UnsafePathErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 3751091016 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
@@ -1485,6 +1485,66 @@
           <target>Bifröst gagnaskipti</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Bifröst gagnaskipti</note>
           <note from="Xliff Generator" annotates="general" priority="3">PermissionSet BIFROST DataExch ori - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 932189238 - NamedType 1361799667" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The storage path is invalid. Nothing was changed.</source>
+          <target>Geymsluslóðin er ógild. Engu var breytt.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Geymsluslóðin er ógild. Engu var breytt.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Ext File Impl ori - NamedType InvalidPathErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - NamedType 4208317377" size-unit="char" translate="yes" xml:space="preserve">
+          <source>File "%1" backs a Business Central attachment and cannot be overwritten by a raw storage operation.</source>
+          <target>Skráin "%1" geymir viðhengi í Business Central og ekki má yfirskrifa hana með beinni geymsluaðgerð.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = storage path, is-IS=Skráin "%1" geymir viðhengi í Business Central og ekki má yfirskrifa hana með beinni geymsluaðgerð.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType LinkedFileWriteErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - NamedType 506099085" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Use Storage.Attachment operations to change the attachment, or choose a destination that is not linked to an attachment.</source>
+          <target>Notaðu Storage.Attachment-aðgerðir til að breyta viðhenginu eða veldu áfangastað sem er ekki tengdur viðhengi.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Notaðu Storage.Attachment-aðgerðir til að breyta viðhenginu eða veldu áfangastað sem er ekki tengdur viðhengi.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType LinkedWriteNextStepLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 474049007" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a nonempty file name without slash or backslash</source>
+          <target>skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType FileNameExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 1059208367" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Parameter "fileName" must be a file name without folders or relative segments.</source>
+          <target>Færibreytan "fileName" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Færibreytan "fileName" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType InvalidFileNameErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 1573032490" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shorten the file name or folder path and try again; storage addresses cannot be truncated.</source>
+          <target>Styttu skráarheitið eða möppuslóðina og reyndu aftur; ekki má stytta geymsluslóðir sjálfkrafa.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Styttu skráarheitið eða möppuslóðina og reyndu aftur; ekki má stytta geymsluslóðir sjálfkrafa.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType ShortenTextLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 3320879335" size-unit="char" translate="yes" xml:space="preserve">
+          <source>at most %1 characters</source>
+          <target>í mesta lagi %1 stafir</target>
+          <note from="Developer" annotates="general" priority="2">%1 = maximum length, is-IS=í mesta lagi %1 stafir</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType TextLengthExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 1622132890" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Parameter "%1" has %2 characters; the maximum is %3. Nothing was changed.</source>
+          <target>Færibreytan "%1" er %2 stafir; hámarkið er %3. Engu var breytt.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = parameter, %2 = length, %3 = maximum length, is-IS=Færibreytan "%1" er %2 stafir; hámarkið er %3. Engu var breytt.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType TextTooLongErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - NamedType 3864761490" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Source and destination resolve to the same storage file.</source>
+          <target state="translated">Uppruni og áfangastaður vísa á sömu skrá í geymslunni.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Uppruni og áfangastaður vísa á sömu skrá í geymslunni.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType DifferentPathsErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - NamedType 4243937064" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Choose a different destination file name or folder.</source>
+          <target state="translated">Veldu annað skráarheiti eða aðra möppu fyrir áfangastaðinn.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Veldu annað skráarheiti eða aðra möppu fyrir áfangastaðinn.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType DifferentPathsNextStepLbl</note>
         </trans-unit>
       </group>
     </body>

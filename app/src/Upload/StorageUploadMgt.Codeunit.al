@@ -43,8 +43,6 @@ codeunit 10035665 "Storage Upload Mgt ori"
         NoStorageCodeNextStepLbl: Label 'Use Storage.Upload.CommitToRecord to attach the file to a record, or begin a new session with a storageCode.', Comment = 'is-IS=Notaðu Storage.Upload.CommitToRecord til að hengja skrána við færslu eða byrjaðu nýja lotu með storageCode.';
         UnknownTargetErr: Label 'Parameter "target" has value "%1", which is not an attachment target.', Comment = '%1 = received value, is-IS=Færibreytan "target" hefur gildið "%1", sem er ekki viðhengjamarkmið.';
         TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Locked = true;
-        FileNameHasFolderErr: Label 'fileName must be a file name without folders; use path or folderPath for the destination folder.', Locked = true;
-        FileNameExpectedLbl: Label 'a file name with no slash or backslash', Locked = true;
 
     /// <summary>Opens a chunked upload session and returns its <c>uploadId</c>.</summary>
     /// <param name="Argument">The message argument carrying <c>fileName</c> and optional <c>storageCode</c>/<c>path</c>/<c>folderPath</c>/<c>declaredSize</c>; receives the error response.</param>
@@ -73,8 +71,11 @@ codeunit 10035665 "Storage Upload Mgt ori"
         Reader.ReadPath(Argument, RequestJson, 'path', false, Path);
         Reader.ReadPath(Argument, RequestJson, 'folderPath', false, FolderPath);
         Reader.ReadNonNegativeInteger(Argument, RequestJson, 'declaredSize', false, DeclaredSize);
-        if (StrPos(FileName, '/') > 0) or (StrPos(FileName, '\') > 0) then
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, FileNameHasFolderErr, 'fileName', FileName, FileNameExpectedLbl, FileNameHasFolderErr);
+        Reader.CheckFileName(Argument, FileName);
+        if StorageCode <> '' then begin
+            Path := ResolveTargetPath(Path, FolderPath, FileName);
+            Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
+        end;
         if Reader.RespondIfErrors(Argument) then
             exit(false);
 
@@ -82,9 +83,9 @@ codeunit 10035665 "Storage Upload Mgt ori"
         Session.Init();
         Session."Upload Id" := UploadId;
         Session."Storage Code" := StorageSetup."Code";
-        Session."File Name" := CopyStr(FileName, 1, MaxStrLen(Session."File Name"));
+        Session."File Name" := FileName;
         if StorageCode <> '' then
-            Session."Target Path" := CopyStr(ResolveTargetPath(Path, FolderPath, FileName), 1, MaxStrLen(Session."Target Path"));
+            Session."Target Path" := Path;
         Session."Declared Size" := DeclaredSize;
         Session.Status := Session.Status::Open;
         Session.Insert(true);
@@ -156,6 +157,7 @@ codeunit 10035665 "Storage Upload Mgt ori"
         RequestMgt: Codeunit "Storage Request Mgt ori";
         Connector: Interface "Storage Connector ori";
         UploadId: Guid;
+        Path: Text;
     begin
         Reader.ReadGuid(Argument, Argument.GetRequestJson(), 'uploadId', true, UploadId);
         if Reader.RespondIfErrors(Argument) then
@@ -173,10 +175,17 @@ codeunit 10035665 "Storage Upload Mgt ori"
             Reader.RespondIfErrors(Argument);
             exit(false);
         end;
+        Path := Session."Target Path";
+        Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if not RequestMgt.CheckUnlinkedDestination(Argument, StorageSetup.Code, Path, 'path') then
+            exit(false);
         AssembleChunks(UploadId, TempBlob);
 
         // Database work first, then the upload last: a failure before the upload rolls back the
         // status change, and a failed upload rolls it back too — leaving the session reusable.
+        Session."Target Path" := Path;
         Session.Status := Session.Status::Committed;
         Session."Received Size" := TempBlob.Length();
         Session.Modify(true);
@@ -402,11 +411,7 @@ codeunit 10035665 "Storage Upload Mgt ori"
     var
         RequestMgt: Codeunit "Storage Request Mgt ori";
     begin
-        FolderPath := ConvertStr(FolderPath, '\', '/');
-        FolderPath := DelChr(FolderPath, '<>', ' /');
-        if not RequestMgt.PathIsSafe(FolderPath) then
-            RequestMgt.ThrowUnsafePath(FolderPath);
-        exit(FolderPath);
+        exit(RequestMgt.CanonicalPath(FolderPath));
     end;
 
     local procedure StatusName(Status: Enum "Storage Upload Status ori"): Text
