@@ -4,7 +4,13 @@ All notable changes to Bifrost Attachments are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
 Business Central release versioning (`major.minor.build.revision`).
 
-## Unreleased
+## [Unreleased]
+
+### Fixed (2026-10-06) - main AL compile failures after #68 and #73
+
+- Restore Microsoft symbol resolution in `Storage Data Restriction ori` (10035663), `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534) and `DataExch Def Export Impl ori` (70013536) by importing the namespaces that own their tables.
+- Remove codeunit ID collisions: `DataExch Entry Del Impl ori` uses 70013544 and `DataExch Def Import Impl ori` uses 70013545. Existing Help Get (70013521) and Type List (70013524) keep their IDs. Correct colliding message-type ordinals in `DataExch Import MsgType ori` (70013511, Import.Run 70013522) and `DataExch DefDel MsgType ori` (70013514, Definition.Delete 70013523); message names and implementation bindings stay the same.
+- Add `tools/Test-UniqueObjectIds.ps1` to detect duplicate object IDs and duplicate value ordinals across extensions of the same enum, with synthetic positive and negative cases. The free-ID ledger in `.claude/CLAUDE.md` records the repaired allocations.
 
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
@@ -13,14 +19,11 @@ Business Central release versioning (`major.minor.build.revision`).
 - `tools/` carries Foundation's source guards (copied from the Language Models alignment, pointed at this app). `Test-HelpLinks` defaults to `attachments`. The Source Guards workflow runs the checks that already pass on this app: no call stack in answers, validated table views, no obsolete, permission coverage, and Icelandic keyword counts. Contract-parameter and mixed-language guards are in `tools/` but not in the workflow yet: shared contract chapters declare keys list types do not read, and several Locked telemetry labels predate that rule. Help Links is not wired in: `businesscentralal/bifrost` main has no `help/attachments` folder yet.
 - `.claude/CLAUDE.md`, `AGENTS.md` and the README now name Foundation 28.0.1.0 and the published `attachments` help route, not `hnitbjorg`.
 - Document Attachment offload, born-offloaded create and restore now mirror BC 28 `Stored Externally`, `External File Path`, `External Upload Date` and `Stored Internally` when Microsoft's External Storage - Document Attachments app is installed (#11). The link table is unchanged. Incoming documents are not mirrored. Generic `Data.Records` writes to fields 8750-8753 are blocked. A failed mirror is logged as `BFA-EXTSTOR-01` and does not fail the offload or restore.
-
 - Icelandic discovery keywords for `Storage.Upload.Begin`, `Storage.Upload.Commit` and `Storage.Directory.Exists` now have one entry per English keyword (attachments#10).
 
 ### Changed (2026-10-04) - CI/CD builds only main; every pull request gets a Pull Request Build
 
 - Build policy only, no app change. `CI/CD` runs on pushes to `main` only, and `Pull Request Build` runs for pull requests into any branch. `.github/AL-Go-Settings.json` sets `CICDPushBranches` to `main` and `CICDPullRequestBranches` to `**`, so Update AL-Go System Files keeps the triggers.
-
-## [Unreleased]
 
 ### Removed (2026-10-01) - markdown help procedure (#61)
 

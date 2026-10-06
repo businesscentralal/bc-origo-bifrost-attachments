@@ -4,7 +4,7 @@ using Microsoft.EServices.EDocument;
 using Origo.Bifrost;
 using System.IO;
 
-codeunit 70013521 "DataExch Entry Del Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 70013544 "DataExch Entry Del Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

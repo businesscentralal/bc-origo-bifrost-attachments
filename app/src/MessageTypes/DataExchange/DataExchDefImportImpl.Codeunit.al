@@ -4,7 +4,7 @@ using Origo.Bifrost;
 using System.IO;
 using System.Utilities;
 
-codeunit 70013524 "DataExch Def Import Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 70013545 "DataExch Def Import Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

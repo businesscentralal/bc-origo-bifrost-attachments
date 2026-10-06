@@ -29,6 +29,31 @@ codeunit 96213 "Data Exch Discovery Tests"
         WriteHintTok: Label 'DataExchange.Import.Run / Storage.Upload.CommitToDataExchange', Locked = true;
 
     [Test]
+    procedure RepairedBindings_ResolveTheirOwnTargetTables()
+    var
+        MessageType: Enum "Message Type ori";
+        Implementation: Interface "Msg Interface ori";
+    begin
+        // [SCENARIO] Compile-repair regression: enum collisions must not redirect requests.
+        // Time: no date dependency. Risk: message-type interface resolution.
+        // [GIVEN] Each affected public message name resolves through the production enum.
+        // [WHEN] Its production implementation is resolved without calling an external service.
+        // [THEN] Import and export address entries; type set and definition delete address their own tables.
+        MessageType := MessageType::"DataExchange.Import.Run";
+        Implementation := MessageType;
+        LibraryAssert.AreEqual(Database::"Data Exch.", Implementation.GetFilterTableNo(), 'Import must resolve to the entry implementation.');
+        MessageType := MessageType::"DataExchange.Type.Set";
+        Implementation := MessageType;
+        LibraryAssert.AreEqual(Database::"Data Exchange Type", Implementation.GetFilterTableNo(), 'Type set must resolve to the type implementation.');
+        MessageType := MessageType::"DataExchange.Definition.Delete";
+        Implementation := MessageType;
+        LibraryAssert.AreEqual(Database::"Data Exch. Def", Implementation.GetFilterTableNo(), 'Definition delete must resolve to the definition implementation.');
+        MessageType := MessageType::"DataExchange.Export.Run";
+        Implementation := MessageType;
+        LibraryAssert.AreEqual(Database::"Data Exch.", Implementation.GetFilterTableNo(), 'Export must resolve to the entry implementation.');
+    end;
+
+    [Test]
     procedure DefinitionListAndGet_RenderSeededDefinitionInOrder()
     var
         TempArgument: Record "Message Argument ori";

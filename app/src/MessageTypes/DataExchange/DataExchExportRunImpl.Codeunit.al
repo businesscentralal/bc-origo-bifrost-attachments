@@ -2,6 +2,7 @@ namespace Origo.Bifrost.Attachments;
 
 using Microsoft.Bank.Setup;
 using Origo.Bifrost;
+using System.IO;
 
 codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
