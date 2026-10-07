@@ -151,3 +151,19 @@ zero friends, dependency floor, analyzers and failure policy remain unchanged.
 Receipts set `consumedInputsCertified=false`: boundary observations cannot prove
 transient alc inputs, installed/probed dependencies, real helper timing or trust.
 Actual helper6.1.18/Alpaca runtime and infrastructure integration remain blocked.
+
+## Rejected precompile inputs
+
+A refused precompile records both the app cache (`symbolsFolder`) and compiler
+folder (`compilerSymbolsFolder`) in `rejected-input.json`. Each observed input
+has source-folder attribution, presence, disk byte count and SHA256 when within
+the existing 128 MiB per-package bound. Malformed manifests still retain the disk
+hash; missing folders are explicitly recorded. The combined inventory retains
+at most 128 inputs, cache first and compiler second, with top-level `truncated`
+when inputs exceed that count or a package exceeds the byte bound. Oversized
+packages record their byte count and truncation without reading/hashing them.
+Thus an offending input appears when within these bounds; overflow evidence is
+explicitly incomplete. Context and manifest metadata remain allowlisted, and
+unrecognized build URLs remain redacted. Receipt collection or writing failures
+preserve the original gate exception. These failure observations certify neither
+transient compiler consumption nor signature trust.

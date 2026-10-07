@@ -9,6 +9,7 @@ import shutil
 import struct
 import tempfile
 import unittest
+from unittest.mock import patch
 import zipfile
 from pathlib import Path
 
@@ -515,6 +516,107 @@ class GenuinePackages(unittest.TestCase):
         request['symbolsFolder'] = str(self.root / 'compiler-symbols')
         with self.assertRaisesRegex(G.GateError, 'Changed symbol cache path'):
             G.post_compile(self.root, request)
+
+    def rejection_request(self):
+        return dict(context=self.context, kind="final", manifest=str(self.root / "app/app.json"),
+                    symbolsFolder=str(self.root / "symbols"),
+                    compilerSymbolsFolder=str(self.root / "compiler-symbols"))
+
+    def rejection_receipt(self):
+        return json.loads((self.root / ".buildartifacts/AppSourceGate/Default/rejected-input.json").read_text())
+
+    def test_compiler_rejection_records_actual_offending_bytes(self):
+        self.state()
+        bad = self.root / "compiler-symbols/Malformed.app"
+        bad.write_bytes(b"malformed compiler bytes")
+        with self.assertRaisesRegex(G.GateError, "Invalid NAVX header"):
+            G.before_compile(self.root, self.rejection_request())
+        receipt = self.rejection_receipt()
+        item = next(i for i in receipt["inputs"] if i["path"] == str(bad))
+        self.assertEqual("compilerSymbolsFolder", item["sourceFolder"])
+        self.assertEqual(G.file_hash(bad), item["sha256"])
+        self.assertEqual(bad.stat().st_size, item["bytes"])
+        self.assertFalse(item["manifestValid"])
+        self.assertFalse(receipt["accepted"])
+        self.assertFalse(receipt["consumedInputsCertified"])
+        self.assertFalse(receipt["truncated"])
+
+    def test_cache_rejection_and_wrong_compiler_foundation_are_attributed(self):
+        self.state()
+        bad = self.root / "symbols/Bad.app"
+        bad.write_bytes(b"bad cache")
+        with self.assertRaisesRegex(G.GateError, "Invalid NAVX header"):
+            G.before_compile(self.root, self.rejection_request())
+        item = next(i for i in self.rejection_receipt()["inputs"] if i["path"] == str(bad))
+        self.assertEqual("symbolsFolder", item["sourceFolder"])
+        self.assertEqual(G.file_hash(bad), item["sha256"])
+        bad.unlink()
+        bad = self.root / "compiler-symbols/Foundation.app"
+        shutil.copy2(self.foundation, bad)
+        with bad.open("ab") as output:
+            output.write(b"changed tail")
+        with self.assertRaisesRegex(G.GateError, "Unapproved compiler-folder Foundation bytes"):
+            G.before_compile(self.root, self.rejection_request())
+        item = next(i for i in self.rejection_receipt()["inputs"] if i["path"] == str(bad))
+        self.assertEqual("compilerSymbolsFolder", item["sourceFolder"])
+        self.assertEqual(G.file_hash(bad), item["sha256"])
+
+    def test_missing_compiler_folder_retains_original_refusal_and_folder_evidence(self):
+        self.state()
+        (self.root / "compiler-symbols").rmdir()
+        with self.assertRaisesRegex(G.GateError, "Actual symbol folder absent"):
+            G.before_compile(self.root, self.rejection_request())
+        folder = next(i for i in self.rejection_receipt()["folders"]
+                      if i["sourceFolder"] == "compilerSymbolsFolder")
+        self.assertFalse(folder["present"])
+        self.assertEqual(1, len(self.rejection_receipt()["inputs"]))
+
+    def test_rejection_count_and_byte_bounds_report_truncation(self):
+        self.state()
+        folder = self.root / "compiler-symbols"
+        for index in range(129):
+            (folder / f"{index:03}.app").write_bytes(b"bad")
+        with self.assertRaisesRegex(G.GateError, "128 packages"):
+            G.before_compile(self.root, self.rejection_request())
+        receipt = self.rejection_receipt()
+        self.assertEqual(128, len(receipt["inputs"]))
+        self.assertTrue(receipt["truncated"])
+        for path in folder.glob("*.app"):
+            path.unlink()
+        oversized = folder / "Oversized.app"
+        with oversized.open("wb") as output:
+            output.truncate(128 * 1024 * 1024 + 1)
+        with self.assertRaisesRegex(G.GateError, "128 MiB"):
+            G.before_compile(self.root, self.rejection_request())
+        receipt = self.rejection_receipt()
+        item = next(i for i in receipt["inputs"] if i["path"] == str(oversized))
+        self.assertTrue(item["truncated"])
+        self.assertEqual(128 * 1024 * 1024 + 1, item["bytes"])
+        self.assertNotIn("sha256", item)
+        self.assertTrue(receipt["truncated"])
+
+    def test_duplicate_compiler_inputs_preserve_both_disk_hashes(self):
+        self.state()
+        for name in ("One.app", "Two.app"):
+            shutil.copy2(self.foundation, self.root / "compiler-symbols" / name)
+        with self.assertRaisesRegex(G.GateError, "Duplicate symbol identity/version"):
+            G.before_compile(self.root, self.rejection_request())
+        items = [i for i in self.rejection_receipt()["inputs"] if i["sourceFolder"] == "compilerSymbolsFolder"]
+        self.assertEqual(2, len(items))
+        self.assertEqual([G.file_hash(self.foundation)] * 2, [i["sha256"] for i in items])
+
+    def test_rejection_receipt_io_failure_preserves_original_gate_error(self):
+        self.state()
+        (self.root / "compiler-symbols/Bad.app").write_bytes(b"bad")
+        for operation in ("write_text", "file_hash"):
+            with self.subTest(operation=operation):
+                # Collection and write failures cannot replace the original refusal.
+                if operation == "file_hash":
+                    target = patch.object(G, operation, side_effect=OSError("inventory IO failed"))
+                else:
+                    target = patch.object(Path, operation, side_effect=OSError("receipt IO failed"))
+                with target, self.assertRaisesRegex(G.GateError, "Invalid NAVX header"):
+                    G.before_compile(self.root, self.rejection_request())
 
     def test_inventory_cap_and_missing_folder_are_failures(self):
         with self.assertRaisesRegex(G.GateError, 'absent'):

@@ -245,26 +245,44 @@ def _before_compile(root, request):
     return snapshot
 
 
-def rejected_receipt(output, context, paths):
+def rejected_receipt(output, context, paths=(), *, folders=None):
     """Record bounded disk identities only; never dump Settings or credentials."""
+    candidates = [(Path(path), None) for path in paths]
+    folder_receipts = []
+    for source, folder in (folders or {}).items():
+        folder = Path(folder)
+        present = folder.is_dir()
+        folder_receipts.append({"sourceFolder": source, "path": str(folder), "present": present})
+        if present:
+            candidates.extend((path, source) for path in sorted(folder.glob("*.app")))
     inventory = []
-    for path in list(paths)[:128]:
-        path = Path(path)
+    truncated = len(candidates) > 128
+    for path, source in candidates[:128]:
         item = {"path": str(path), "present": path.is_file()}
-        if path.is_file() and path.stat().st_size <= 128 * 1024 * 1024:
-            item.update(sha256=file_hash(path), bytes=path.stat().st_size)
-            try:
-                info = package_info(path)
-                item.update({k: info[k] for k in ("identity", "friends", "sourceCommit", "compilerVersion")})
-                # Build URLs may contain secrets in malformed/untrusted manifests.
-                url = info["buildUrl"]
-                item["buildUrl"] = url if re.fullmatch(r"https://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/actions/runs/[0-9]+", url) else "redacted-unrecognized-build-url"
-            except (GateError, OSError, ValueError):
-                item["manifestValid"] = False
+        if source is not None:
+            item["sourceFolder"] = source
+        if item["present"]:
+            size = path.stat().st_size
+            item["bytes"] = size
+            if size > 128 * 1024 * 1024:
+                item["truncated"] = True
+                truncated = True
+            else:
+                item["sha256"] = file_hash(path)
+                try:
+                    info = package_info(path)
+                    item.update({k: info[k] for k in ("identity", "friends", "sourceCommit", "compilerVersion")})
+                    # Build URLs may contain secrets in malformed/untrusted manifests.
+                    url = info["buildUrl"]
+                    item["buildUrl"] = url if re.fullmatch(r"https://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/actions/runs/[0-9]+", url) else "redacted-unrecognized-build-url"
+                except (GateError, OSError, ValueError):
+                    item["manifestValid"] = False
         inventory.append(item)
     allowed = {k: context[k] for k in ("run", "attempt", "job", "sourceCommit", "checkoutSha", "mode") if k in context}
     Path(output).write_text(json.dumps({"accepted": False, "context": allowed, "inputs": inventory,
-                                      "truncated": len(paths) > 128, "signatureTrustVerified": False}, indent=2) + "\n")
+                                      "folders": folder_receipts, "truncated": truncated,
+                                      "consumedInputsCertified": False,
+                                      "signatureTrustVerified": False}, indent=2) + "\n")
 
 
 def before_compile(root, request):
@@ -277,8 +295,8 @@ def before_compile(root, request):
             context = request.get("context", {})
             directory = Path(root) / ".buildartifacts/AppSourceGate" / context.get("mode", "Unknown")
             directory.mkdir(parents=True, exist_ok=True)
-            rejected_receipt(directory / "rejected-input.json", context,
-                             sorted(Path(request["symbolsFolder"]).glob("*.app")))
+            rejected_receipt(directory / "rejected-input.json", context, folders={
+                key: request[key] for key in ("symbolsFolder", "compilerSymbolsFolder") if key in request})
         except (OSError, ValueError, KeyError):
             pass
         raise
