@@ -218,3 +218,5 @@ stripping, signing requests, deferred cleanup, merged settings before secrets, a
 upgrade skipping. Keep this repository's app IDs, action versions, dependency settings and
 deployment variables. Apply compatible upstream updates and reapply the Bifrost custom blocks
 before pushing; do not disable the guard or exclude generated workflows from future updates.
+
+- #76: company upgrades retry the existing permission-probed take-over before the orphan-purge tag check. Generated mapping and permission re-grant semantics remain unchanged; synthetic probe tests are not restricted-identity certification.

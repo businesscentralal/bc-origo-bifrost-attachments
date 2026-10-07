@@ -5,7 +5,8 @@ using System.Upgrade;
 /// <summary>
 /// Deletes <c>Storage Attachment Link ori</c> rows that generic <c>Data.Records.Set</c>
 /// inserted before the write restriction: Table ID 0, or an empty Record System Id.
-/// Runs from install and once per company on upgrade.
+/// Purges from install and once per company on upgrade. Every company upgrade first retries
+/// the permission-probed legacy take-over, including when the orphan purge already ran.
 /// </summary>
 codeunit 10035683 "Storage Link Upgrade ori"
 {
@@ -14,9 +15,22 @@ codeunit 10035683 "Storage Link Upgrade ori"
     Permissions = tabledata "Storage Attachment Link ori" = RD;
 
     trigger OnUpgradePerCompany()
+    begin
+        RunCompanyUpgrade();
+    end;
+
+    /// <summary>
+    /// Retries legacy take-over on every company upgrade before the one-time orphan purge.
+    /// A denied probe logs the skip and leaves the next upgrade free to retry. The existing
+    /// take-over preserves populated destination tables and existing permission assignments.
+    /// </summary>
+    internal procedure RunCompanyUpgrade()
     var
+        StorageTakeover: Codeunit "Storage Takeover ori";
         UpgradeTag: Codeunit "Upgrade Tag";
     begin
+        StorageTakeover.TryRunTakeOverAtInstall();
+
         if UpgradeTag.HasUpgradeTag(GetOrphanLinkPurgeTag()) then
             exit;
 
