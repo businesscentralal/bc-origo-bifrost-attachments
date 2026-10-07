@@ -1,0 +1,22 @@
+Keep your Business Central files in cloud storage, and reach them from any process.
+
+Bifrost Attachments connects Business Central to Azure Blob Storage, Azure File Share and SharePoint. Other systems, assistants and Business Central processes all use the same storage connections, set up once. It is an add-on to Bifrost Foundation.
+
+Who it is for
+Business Central customers with many attachments or document flows, and administrators who want a smaller database and one place for files.
+
+What it does
+- Makes the database smaller: moves document and incoming document attachments out to storage and brings them back when needed. Files still open normally in Business Central.
+- Works with files and folders: list, download, upload, copy, move and delete files and folders in any storage connection.
+- Attaches a stored file to a record: a customer, vendor, fixed asset, document or incoming document, without uploading it again.
+- Handles large files: sent in pieces and put together in storage.
+- Uses the standard connectors: Azure Blob Storage, Azure File Share or SharePoint, through Business Central's own connector apps.
+
+Requirements and pricing
+- Microsoft Dynamics 365 Business Central 28.0 or later, Essentials or Premium.
+- Bifrost Foundation, available separately on AppSource.
+- At least one Business Central file storage connector app, for example the Azure Blob Storage Connector by Microsoft.
+- For prices, contact Origo (https://www.origo.is/) or your Business Central partner.
+- If you are a partner, contact The App Channel (https://www.theappchannel.com/).
+
+Bifrost Attachments does not replace Business Central or its extensions. It makes their data and business logic available to the people, routines and AI platforms your organisation already uses.
