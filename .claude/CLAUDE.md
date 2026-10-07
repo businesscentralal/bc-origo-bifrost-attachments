@@ -35,6 +35,8 @@ Test app: codeunit 96207 `Storage Setup Page Tests`, codeunit 96208
 `Storage App Registry Tests` (96208), `Storage Takeover Tests` (96209), `Storage Takeover Probe Tests` (96210); on main through **96213** (`Storage DataExchange Tests`, #51); open PR #45 uses 96211–96212; open PR #52 uses 96214; next free test id **96215**.
 `Storage Msg Conformance Tests` (96211), `Storage Error Response Tests` (96212); next free test id **96213**.
 
+Test-only reservation for #82 (2026-10-07): codeunit **96226** `DataExch Refusal82 Tests ori`, owned by worker-9. The approved manual reservation is recorded in `/team-queue/object-reservations/businesscentralal_bc-origo-bifrost-attachments-codeunit-96226.json`; existing 96218/#79, 96225/#75 and 96274/#74 remain with their owners. No product ID was allocated or renumbered.
+
 ## App Identity
 App:      Bifrost Attachments, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
 Test app: Bifrost Attachments - Tests, id `7cdb530b-b74b-446b-9ece-80e2b911bfb3`

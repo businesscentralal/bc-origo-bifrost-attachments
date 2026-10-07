@@ -4,6 +4,13 @@ All notable changes to Bifrost Attachments are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
 Business Central release versioning (`major.minor.build.revision`).
 
+## [28.0.0.4] — 2026-10-07
+
+### Fixed
+
+- `DataExch Import Run Impl ori` (70013540) and `DataExch Def Delete Impl ori` (70013543) collect complete input refusals before changing data. `Storage Request Reader ori` (10035682) adds strict mutation readers that reject wrong JSON types, raw values beyond their bounds, and code spellings that Business Central would uppercase or trim. Import remains header-only and deletion preserves reference checks and standard triggers (#82).
+- `DataExch Refusal82 Tests ori` (96226) adds dispatched happy/error/boundary, reference readback and postwrite rollback tests for these two operations. ExportRun/TypeSet integration and runtime acceptance remain separately gated; this source change is not release certification.
+
 ## Unreleased
 
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
