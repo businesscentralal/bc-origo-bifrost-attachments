@@ -56,6 +56,11 @@ Business Central release versioning (`major.minor.build.revision`).
 - `DataExch Refusal82 Tests ori` (96226) adds dispatched happy/error/boundary, reference readback and postwrite rollback tests for these two operations. ExportRun/TypeSet integration and runtime acceptance remain separately gated; this source change is not release certification.
 
 
+### Added (2026-10-07) - restricted-role regression preparation (#79)
+
+- Test codeunit `Storage 79 Perm Tests ori` (96218) adds 28 `TestPermissions = Restrictive` regressions for the setup card, setup I/M/D refusal, account discovery, files/directories, upload state and bytes, native creation/offload/open/restore, and shipped Data Exchange discovery/read/write denial. Dedicated test permission sets `Storage79 Test/Setup/Source/Target/Link ori` (96218–96222) and `Storage79 Entry/Column/Def/Field/FldMap/Line/Map/Type ori` (96227–96234) isolate the effective grants without changing product roles. The test app declares its Microsoft Permissions Mock dependency.
+- `test/permissions-79.md` records the least-role matrix, actual Foundation API role union, observer versus actor phases, and outstanding canonical PR84, genuine SaaS/provider/legacy and release gates. All existing broad disabled suites are preserved. These are authored regressions; runtime verification is pending, and they do not certify real identities or provider permissions.
+
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
 - The Foundation dependency floor is **28.0.1.0** in `app/app.json` and `test/app.json`, the same floor Bifrost Language Models uses for Foundation 28.0.1. Every 28.0.1.x build is accepted.

@@ -42,6 +42,8 @@ Test id 96225: `Storage Integrity 75 Tests ori` — #75 canonical paths and prot
 Test-only reservation for #82 (2026-10-07): codeunit **96226** `DataExch Refusal82 Tests ori`, owned by worker-9. The approved manual reservation is recorded in `/team-queue/object-reservations/businesscentralal_bc-origo-bifrost-attachments-codeunit-96226.json`; existing 96218/#79, 96225/#75 and 96274/#74 remain with their owners. No product ID was allocated or renumbered.
 
 ## App Identity
+
+Story #79 typed test allocations (2026-10-07, worker-5): codeunit **96218** `Storage 79 Perm Tests ori`; test-only permission sets **96218–96222** `Storage79 Test/Setup/Source/Target/Link ori` and **96227–96234** `Storage79 Entry/Column/Def/Field/FldMap/Line/Map/Type ori`. These IDs were manually reserved by the resolved `attachments79-worker5-permission-plan-20261006` decision in the existing 96200–96299 block, then rechecked against main and all eight open PR tips plus shared typed reservations. Permission sets 96223/96224 remain reserved but uninstantiated. Separate owners fence codeunit96225/#75, codeunit96226/#82 and codeunit96274/#74; do not infer free IDs from the older prose above. Central workbook/registry synchronization is not claimed. See `test/permissions-79.md` for exact grants and outstanding verification/access gates.
 App:      Bifrost Attachments, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
 Test app: Bifrost Attachments - Tests, id `7cdb530b-b74b-446b-9ece-80e2b911bfb3`
 Publisher: Origo - target Cloud - runtime 17.0 - application/platform 28.0.0.0
