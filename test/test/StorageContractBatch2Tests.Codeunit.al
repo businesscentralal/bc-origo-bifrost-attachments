@@ -82,6 +82,80 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         AssertParameter('Storage.Upload.CommitToRecord', 'description', false);
     end;
 
+    /// <summary>Type listing declares each payload field once with its actual JSON type.</summary>
+    [Test]
+    procedure Scenario_AC02_TypeList_ResponseFields_AreUniqueAndTyped()
+    begin
+        // Story #69, AC02 | Time: None | Risk: Registered Foundation contract dispatch
+        // [SCENARIO] The response chapter matches the public count/types payload.
+        AssertTypeListResponseFields();
+    end;
+
+    /// <summary>The public dispatcher returns seeded types and their exact count.</summary>
+    [Test]
+    procedure Scenario_AC04_TypeList_SeededRows_MatchResponseContract()
+    var
+        DataExchType: Record "Data Exchange Type";
+        SavedTypes: Record "Data Exchange Type" temporary;
+        Request: JsonObject;
+        Response: JsonObject;
+        Rows: JsonArray;
+        Token: JsonToken;
+        FirstFound: Boolean;
+        SecondFound: Boolean;
+    begin
+        // Story #69, AC04 | Time: None | Risk: Disposable test company; original types restored
+        // [GIVEN] Exactly two types; preserve the company's original rows before isolation.
+        SaveAndClearTypes(SavedTypes);
+        DataExchType.Init();
+        DataExchType.Code := 'BIFT69-TYPE-A';
+        DataExchType.Description := 'First contract type fixture';
+        DataExchType.Insert();
+        DataExchType.Init();
+        DataExchType.Code := 'BIFT69-TYPE-B';
+        DataExchType.Description := 'Second contract type fixture';
+        DataExchType.Insert();
+        // [WHEN] The registered message is dispatched without storage or other parameters.
+        Response := Dispatch('DataExchange.Type.List', Request, 1033);
+        RestoreTypes(SavedTypes);
+        // [THEN] Actual payload and response metadata agree, including both seeded rows.
+        Rows := AssertTypeListData(Response, 2);
+        foreach Token in Rows do
+            case JsonText(Token.AsObject(), 'code') of
+                'BIFT69-TYPE-A':
+                    begin
+                        FirstFound := true;
+                        LibraryAssert.AreEqual('First contract type fixture', JsonText(Token.AsObject(), 'description'), 'First row contents.');
+                    end;
+                'BIFT69-TYPE-B':
+                    begin
+                        SecondFound := true;
+                        LibraryAssert.AreEqual('Second contract type fixture', JsonText(Token.AsObject(), 'description'), 'Second row contents.');
+                    end;
+            end;
+        LibraryAssert.IsTrue(FirstFound and SecondFound, 'Both distinct seeded types must be returned.');
+    end;
+
+    /// <summary>An empty type table returns zero and an empty array with the same contract.</summary>
+    [Test]
+    procedure Scenario_AC04_TypeList_EmptyRows_MatchResponseContract()
+    var
+        SavedTypes: Record "Data Exchange Type" temporary;
+        Request: JsonObject;
+        Response: JsonObject;
+        Rows: JsonArray;
+    begin
+        // Story #69, AC04 | Time: None | Risk: Disposable test company; original types restored
+        // [GIVEN] No types, with original company rows preserved.
+        SaveAndClearTypes(SavedTypes);
+        // [WHEN] The same public dispatcher path executes against the empty table.
+        Response := Dispatch('DataExchange.Type.List', Request, 1033);
+        RestoreTypes(SavedTypes);
+        // [THEN] Empty is successful and retains both documented payload fields.
+        Rows := AssertTypeListData(Response, 0);
+        LibraryAssert.AreEqual(0, Rows.Count(), 'Empty types array required.');
+    end;
+
     /// <summary>A seeded definition can be queried without storageCode.</summary>
     [Test]
     procedure Scenario_AC04_DefinitionList_NoStorage_ReturnsSeededRow()
@@ -272,6 +346,89 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         AssertProblem(Icelandic, 'direction', 'InvalidParameter');
         LibraryAssert.AreNotEqual(JsonText(English, 'message'), JsonText(Icelandic, 'message'), 'Refusal must be translated.');
         LibraryAssert.AreNotEqual(JsonText(English, 'nextStep'), JsonText(Icelandic, 'nextStep'), 'Action must be translated.');
+    end;
+
+    local procedure AssertTypeListResponseFields()
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        ResponseChapter: JsonObject;
+        FieldObject: JsonObject;
+        Token: JsonToken;
+        Fields: JsonArray;
+        SeenNames: List of [Text];
+        FieldName: Text;
+    begin
+        LibraryAssert.IsTrue(ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(OrdinalOf('DataExchange.Type.List')), Contract), 'Registered type-list contract.');
+        LibraryAssert.IsTrue(Contract.Get('response', Token), 'Response chapter required.');
+        ResponseChapter := Token.AsObject();
+        LibraryAssert.IsTrue(ResponseChapter.Get('fields', Token), 'Response fields required.');
+        Fields := Token.AsArray();
+        LibraryAssert.AreEqual(2, Fields.Count(), 'Exactly count and types are documented.');
+        foreach Token in Fields do begin
+            FieldObject := Token.AsObject();
+            FieldName := JsonText(FieldObject, 'name');
+            LibraryAssert.IsFalse(SeenNames.Contains(FieldName), 'Response field must not repeat: ' + FieldName);
+            SeenNames.Add(FieldName);
+            case FieldName of
+                'count':
+                    LibraryAssert.AreEqual('integer', JsonText(FieldObject, 'type'), 'Count metadata type.');
+                'types':
+                    LibraryAssert.AreEqual('array', JsonText(FieldObject, 'type'), 'Types metadata type.');
+                else
+                    LibraryAssert.Fail('Unexpected response field: ' + FieldName);
+            end;
+            LibraryAssert.IsTrue(JsonText(FieldObject, 'description') <> '', 'Response field description required.');
+        end;
+        LibraryAssert.IsTrue(SeenNames.Contains('count') and SeenNames.Contains('types'), 'Both response fields are required.');
+    end;
+
+    local procedure AssertTypeListData(Response: JsonObject; ExpectedCount: Integer) Rows: JsonArray
+    var
+        CountText: Text;
+        DataObject: JsonObject;
+        Token: JsonToken;
+    begin
+        AssertTypeListResponseFields();
+        LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'Type listing must succeed.');
+        LibraryAssert.IsTrue(Response.Get('data', Token), 'Success payload required.');
+        DataObject := Token.AsObject();
+        LibraryAssert.AreEqual(2, DataObject.Keys().Count(), 'Payload has exactly count and types.');
+        LibraryAssert.IsTrue(DataObject.Get('types', Token), 'Types payload required.');
+        LibraryAssert.IsTrue(Token.IsArray(), 'Types must be a JSON array.');
+        Rows := Token.AsArray();
+        LibraryAssert.AreEqual(ExpectedCount, Rows.Count(), 'Exact type row count.');
+        LibraryAssert.IsTrue(DataObject.Get('count', Token), 'Count payload required.');
+        Token.WriteTo(CountText);
+        LibraryAssert.AreEqual(Format(ExpectedCount, 0, 9), CountText, 'Count is a JSON integer, never text or fractional.');
+        LibraryAssert.AreEqual(ExpectedCount, Token.AsValue().AsInteger(), 'Integer count matches the rows.');
+    end;
+
+    local procedure SaveAndClearTypes(var SavedTypes: Record "Data Exchange Type" temporary)
+    var
+        DataExchType: Record "Data Exchange Type";
+    begin
+        // Copy complete rows for restoration; partial records would lose company data.
+        DataExchType.ReadIsolation := IsolationLevel::ReadCommitted;
+        if DataExchType.FindSet() then
+            repeat
+                SavedTypes := DataExchType;
+                SavedTypes.Insert();
+            until DataExchType.Next() = 0;
+        DataExchType.DeleteAll();
+    end;
+
+    local procedure RestoreTypes(var SavedTypes: Record "Data Exchange Type" temporary)
+    var
+        DataExchType: Record "Data Exchange Type";
+    begin
+        DataExchType.DeleteAll();
+        if SavedTypes.FindSet() then
+            repeat
+                DataExchType := SavedTypes;
+                DataExchType.Insert(false, true);
+            until SavedTypes.Next() = 0;
+        Commit(); // Restore original company rows before evaluating assertions.
     end;
 
     local procedure ContractParameters(TypeName: Text) Parameters: JsonArray

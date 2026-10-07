@@ -5,6 +5,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+
+### Fixed (2026-10-07) - Data Exchange type response contract (#69)
+
+- Consolidate the duplicate `DataExchange.Type.List` response case in `Storage Contract Parts ori` (70013500), retaining the localized `count` (integer) and `types` (array) fields. `Storage Contract Batch2 Tests` (96216) checks unique response metadata and seeded/empty dispatcher payloads; compile and runtime verification remain required.
+
 ### Fixed (2026-10-07) - canonical compilation and regression fixtures (#74)
 
 - Isolate `Attachments Build Tests ori` (96274) fixture keys across dispatcher calls, create valid Data Exchange header/line/field relationships for the direct license-refusal check, and use standard XMLport 1225 exported XML for the import-refusal fixture. Preserve all response and persisted-state assertions; runtime verification remains required.
