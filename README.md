@@ -315,7 +315,9 @@ Input problems are collected before any write with Foundation error codes and `p
 
 The test app additionally depends on Bifrost Attachments itself and on Microsoft's
 Tests-TestLibraries, Application Test Library, Library Assert, Test Runner, Any and
-Library Variable Storage.
+Library Variable Storage. The dedicated #79 restrictive suite also declares Microsoft
+Permissions Mock; its role fixtures and remaining verification gates are recorded in
+[the #79 permission matrix](test/permissions-79.md).
 
 At runtime, at least one Business Central external file storage connector app (Azure Blob
 Storage, Azure File Share or SharePoint) must be installed and configured. Those apps own the
@@ -342,6 +344,12 @@ credentials — this app only stores a registered File Account id.
 ---
 
 ## Development
+
+Story #79 adds test codeunit `Storage 79 Perm Tests ori` (96218) with 28 permission-enabled
+regressions and 13 test-only permission sets (96218–96222, 96227–96234). All 120 existing
+baseline tests remain unchanged. These tests are authored and await the canonical PR84
+compile repair and runtime verification. Genuine SaaS identity/provider certification
+remains a separate operator access gate; see [the permission matrix](test/permissions-79.md).
 
 - Open `al.code-workspace` in VS Code.
 - Development containers: COSMO Alpaca `bc28-is` (CRONUS IS) and `bc28-w1` (CRONUS International
