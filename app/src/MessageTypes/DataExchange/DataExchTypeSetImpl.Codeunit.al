@@ -61,17 +61,9 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
     /// <summary>Declares the request parameters consumed by this message.</summary>
     procedure GetParameters(var Parameters: JsonArray): Boolean
     var
-        ParameterJson: JsonObject;
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        ParameterJson.Add('name', 'code');
-        ParameterJson.Add('type', 'code');
-        ParameterJson.Add('required', true);
-        Parameters.Add(ParameterJson);
-        Clear(ParameterJson);
-        ParameterJson.Add('name', 'dataExchDefCode');
-        ParameterJson.Add('type', 'code');
-        ParameterJson.Add('required', true);
-        Parameters.Add(ParameterJson);
+        Parameters := ContractParts.GetParameters('DataExchange.Type.Set');
         exit(true);
     end;
 

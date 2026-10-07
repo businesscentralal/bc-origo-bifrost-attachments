@@ -5,6 +5,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+
+### Fixed (2026-10-07) - registered parameter metadata (#69)
+
+- Delegate parameter chapters in `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534) and `DataExch Def Export Impl ori` (70013536) to `Storage Contract Parts ori` (70013500), documenting the shipped optional `description` and JSON string types without changing wire keys or execution. `Storage Contract Batch2 Tests` (96216) asserts exact registered parameter counts, types, requiredness and uniqueness. The tests also verify replacement of stale metadata and the canonical `error` property for single/collected bilingual refusals; runtime verification remains pending.
+
 ### Fixed (2026-10-07) - canonical compilation and regression fixtures (#74)
 
 - Isolate `Attachments Build Tests ori` (96274) fixture keys across dispatcher calls, create valid Data Exchange header/line/field relationships for the direct license-refusal check, and use standard XMLport 1225 exported XML for the import-refusal fixture. Preserve all response and persisted-state assertions; runtime verification remains required.
