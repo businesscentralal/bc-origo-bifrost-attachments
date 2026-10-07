@@ -31,7 +31,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Describes the current operation.</summary>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Creates a Data Exch. entry from a stored file for a generic or payroll import.', Comment = 'is-IS=Býr til gagnaskiptafærslu úr geymdri skrá fyrir almennan innflutning eða launainnflutning.';
+        DescriptionLbl: Label 'Creates a Data Exch. header for a generic or payroll import without reading file content.', Comment = 'is-IS=Býr til haus gagnaskiptafærslu fyrir almennan innflutning eða launainnflutning án þess að lesa innihald skrár.';
     begin
         exit(DescriptionLbl);
     end;
@@ -39,7 +39,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Returns localized discovery terms.</summary>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'data exchange import, process import file', Comment = 'is-IS=innflutningur gagnaskipta, vinna innflutningsskrá';
+        KeywordsLbl: Label 'data exchange import, create import header', Comment = 'is-IS=innflutningur gagnaskipta, stofna innflutningshaus';
     begin
         exit(KeywordsLbl);
     end;
@@ -47,7 +47,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Explains when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionLbl: Label 'Runs a Generic Import or Payroll Import definition. Refuses Bank Statement Import and export definitions.', Comment = 'is-IS=Keyrir skilgreiningu fyrir Generic Import eða Payroll Import. Hafnar Bank Statement Import og útflutningsskilgreiningum.';
+        SelectionLbl: Label 'Creates a header for a Generic Import or Payroll Import definition. Refuses Bank Statement Import and export definitions.', Comment = 'is-IS=Býr til haus fyrir skilgreiningu fyrir Generic Import eða Payroll Import. Hafnar Bank Statement Import og útflutningsskilgreiningum.';
     begin
         exit(SelectionLbl);
     end;
