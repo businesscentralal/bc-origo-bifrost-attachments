@@ -20,6 +20,11 @@ Business Central release versioning (`major.minor.build.revision`).
 - Adopt `Attachments Build Tests ori` (96274) from PR87 with its five existing contract/dispatch tests, and add registered-message persisted-state and unlicensed direct-interface regressions. Correct the three `Force=false` calls in `Storage Link Guard Tests` (96214) and `Storage Upload Tests` (96205), and align dispatcher response buffers with Foundation's `Text[100]` signature. No test-only registration or licensing bypass is added; complete licensed direct-interface/runtime verification remains pending.
 - Add `tools/Test-UniqueObjectIds.ps1` to detect duplicate object IDs and duplicate value ordinals across extensions of the same enum, with synthetic positive and negative cases. The free-ID ledger in `.claude/CLAUDE.md` records the repaired allocations.
 
+### Fixed (2026-10-06) - compilation inputs (#74)
+
+- Resolve Microsoft Data Exchange tables through `System.IO` in `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534), and `DataExch Def Export Impl ori` (70013536).
+- Add `Attachments Build Tests ori` (96274) for existing Data Exchange dispatch, stored results, and refusal paths. Add a build-input guard for duplicate object IDs, overlapping enum ordinals, unallocated IDs, self dependencies, and the Foundation 28.0.1.0 floor, with synthetic regression fixtures.
+
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
 - The Foundation dependency floor is **28.0.1.0** in `app/app.json` and `test/app.json`, the same floor Bifrost Language Models uses for Foundation 28.0.1. Every 28.0.1.x build is accepted.
