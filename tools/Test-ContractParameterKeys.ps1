@@ -8,42 +8,34 @@
     code and never documented, stayed unnoticed. This guard reads the AL source under app/src and, for every message
     type that has a contract:
 
-      declared-not-read  A parameter the contract declares, whose name appears as a string literal nowhere in the code
-                         the implementation reaches (its own procedures, the codeunits it calls and the procedures
-                         of "Message Argument ori" it calls).
-                         A literal counts only outside message text (#459). A translatable Label (one that is not
-                         Locked = true) and the statement of Error, StrSubstNo, Message, Confirm, RespondWith*,
-                         AddError and AddWarning are left out, so a key that appears only there is not a read.
-                         A Locked = true label declared in a reached procedure still counts.
-                         A parameter that a Parts procedure declares only when a Boolean argument is true
-                         ('if WithX then ...', 'if not WithX then exit;') is not declared by a type whose call
-                         passes the literal false (#401). Every call has to be understood for that: a call the
-                         guard cannot read (an argument that is itself a call, a receiver it cannot resolve)
-                         counts as a call that may pass true, so the parameter stays declared (#590). The part
-                         after 'if not WithX then exit;' that is cut is the rest of the block that holds the exit.
-      read-not-declared  A key the implementation itself reads from the request. The request is any
-                         JsonObject variable assigned from GetRequestJson(), the name RequestJson, or a
-                         parameter a reached procedure receives when a caller passes that request in.
-                         A read is RequestJson.Get/Contains, or any call whose first argument is such a
-                         variable and whose second argument is a string literal. A key the parameters and
-                         target chapters do not declare is an offender.
-                         Also the request: a JsonObject taken from the records of the request data
-                         (GetRequestDataArray, then Token.AsObject()), and a variable passed in any argument
-                         position of a reached procedure. Message Argument is entered only through its
-                         readers: evaluate*, tryevaluate*, apply*, GetTableIdFromRequestJson,
-                         GetDateTimeRangeFromRequestJson and FindBankAccReconciliation (ArgumentReaders).
-                         A target entry 'data.a + data.b' declares a and b; 'data.x.y' also declares y.
-      no-reads-seen      The contract declares at least one parameter and the guard sees no request read.
-                         Listed as Type|no-reads-seen|* until a follow-up makes the read visible.
+      declared-not-read  A shared-builder parameter without a proven Get/Contains read on the request.
+      read-not-declared  A proven request read absent from parameters and target chapters.
+      no-reads-seen      Parameters are declared but no request read can be established.
+      unsupported-analysis  A reached source path cannot be resolved safely; this is a failing
+                         source-analysis limitation, not a proven product defect.
 
-    Why a source guard and not a runtime recorder (#146 AMB-1): JsonObject.Get is a platform method, so a
-    recorder on "Message Argument ori" never sees the direct reads, which are most of them, and a probe request only
-    reaches the reads before its first error. The source sees every read on every path.
+    GetParameters Text literals are specialized per invocation through equality/inequality,
+    literal IN/NOT IN, case alternatives, nested branches and early exits. Unknown or mutable
+    selectors retain possible declarations and report unresolved analysis. The existing
+    conservative Boolean-false specialization is retained (#401, #590).
 
-    The allow-list (tools/ContractParameterKeys.AllowList.txt) holds the offenders that exist today, one
-    "Type|rule|key" per line, each with a follow-up issue in a comment line above it. Rules are declared-not-read,
-    read-not-declared and no-reads-seen (Type|no-reads-seen|*). It may only shrink: an offender that is
-    not listed fails, and so does a listed entry that no longer applies.
+    Typed formal parameters bind the request and literal key at their actual positions, including
+    request-second/key-third helpers. A helper name or a nearby string is never consumption.
+    Only actual Get/Contains on a proven request, forwarding/aliases established by source, or
+    a proven request-data array -> token -> object chain count. Locked labels can supply keys
+    to actual reads; message text cannot. Missing helpers, ambiguous overloads/dispatch, dynamic
+    keys and possible request mutations fail conservatively. Text expression specialization is
+    deliberately bounded; unsupported control flow retains the complete body and reports it.
+    Traversal is capped at depth 40 and 2000 contexts. This is source analysis, not runtime proof.
+
+    Hand-built JSON contracts are not inferred. Migrate product declarations to the existing
+    shared builders. External dependency source is not imported: a missing reached Foundation
+    reader remains unresolved until matched immutable dependency provenance is available.
+
+    Existing target semantics are preserved: 'data.a + data.b' declares a and b;
+    'data.x.y' also declares y. The guard compares names, not full JSON paths.
+    Existing allow-list entries may only shrink; new offenders and stale entries fail.
+    Unsupported-analysis diagnostics cannot be allow-listed.
 
 .PARAMETER AppFolder
     The AL app folder (default: ../app next to this script).
@@ -87,30 +79,12 @@ $callUnqualified = [regex]::new('(?<![\.\w])(\w+)\(', 'IgnoreCase')
 $labelLiteral = [regex]::new("Label\s+'((?:[^']|'')*)'", 'IgnoreCase')
 $stringLiteral = [regex]::new("'((?:[^']|'')*)'")
 $targetLiteral = [regex]::new("TargetEntry\(\s*'data\.([^']+)'", 'IgnoreCase')
-# A key spec such as 'bankAccountNo=no,bankAccountId=guid' (FindRecordByIdentifiers): the names left of the '=' are request keys.
-$keySpec = [regex]::new("'((?:\w+=\w+,?)+)'")
 $addRangeTail = '\.AddRange\(\s*((?:''[^'']+''\s*,?\s*)+)\)'
 $parameterLiteral = [regex]::new("\.Parameter\(\s*'([^']+)'", 'IgnoreCase')
-# Var := Argument.GetRequestJson() (or GetRequestJson()) makes Var the request.
-$assignRequest = [regex]::new('(?<![.\w])(\w+)\s*:=\s*(?:\w+\.)?GetRequestJson\(\)', 'IgnoreCase')
-# The first parameter of a procedure, so a request passed into it stays the request inside.
-$firstParam = [regex]::new('(?:procedure|trigger)\s+(?:"[^"]+"|\w+)\s*\(\s*(?:var\s+)?(\w+)\s*:', 'IgnoreCase')
-# An unqualified call that passes the request as its first argument: ReadInside(RequestJson) or ReadInside(RequestJson, ...).
-$passRequest = [regex]::new('(?<![.\w])(\w+)\s*\(\s*(?:(?<var>\w+)|(?:\w+\.)?GetRequestJson\(\))\s*[,)]', 'IgnoreCase')
-# The same, qualified: Argument.TryReadInteger(ReqJson, ...) or Helper.Read(GetRequestJson(), ...).
-$passRequestQualified = [regex]::new('\b(\w+)\.(\w+)\s*\(\s*(?:(?<var>\w+)|(?:\w+\.)?GetRequestJson\(\))\s*[,)]', 'IgnoreCase')
 # Any call, with its argument list (no nested calls): the request can be passed in any position, not only the first (#431).
 $callWithArgs = [regex]::new('(?<![.\w])(?:(?<receiver>\w+)\.)?(?<callee>\w+)\s*\((?<args>[^()]*)\)', 'IgnoreCase')
 # Every call, whatever its arguments: the same start as $callWithArgs, or a call through a chain ('GetParts().AddBase(' or 'A.B.C(').
 $anyCall = [regex]::new('(?<![.\w])(?:(?<receiver>\w+)\.)?(?<callee>\w+)\s*\(|(?<=[\w)\]]\s*\.\s*)(?<chained>\w+)\s*\(', 'IgnoreCase')
-# A JsonObject taken out of an array of records: Obj := Token.AsObject(). In a procedure that calls GetRequestDataArray the
-# array is the request data, so Obj is one record of it and its keys are request keys (#431).
-$assignRecordObject = [regex]::new('(?<![.\w])(\w+)\s*:=\s*\w+\.AsObject\(\)', 'IgnoreCase')
-# Any call whose first argument is the request and whose second is a literal key.
-$callRead = [regex]::new("(?:\b\w+\.)?\b\w+\s*\(\s*(?:(?<var>\w+)|(?:\w+\.)?GetRequestJson\(\))\s*,\s*'(?<key>[^']+)'", 'IgnoreCase')
-# RequestJson.Get('k'...) / ReqJson.Contains('k'...) / GetRequestJson().Contains('k') (#431).
-$memberRead = [regex]::new("(?:\b(?<var>\w+)|GetRequestJson\(\))\.(?:Get|Contains)\(\s*'(?<key>[^']+)'", 'IgnoreCase')
-
 function Read-Source([string]$AppSrc) {
     $objects = @{}
     foreach ($file in Get-ChildItem -LiteralPath $AppSrc -Recurse -Filter '*.al') {
@@ -141,6 +115,7 @@ function Read-Source([string]$AppSrc) {
             }
             foreach ($l in $labelLiteral.Matches($lines[$i])) { $object.Labels += $l.Groups[1].Value.Replace("''", "'") }
         }
+        $object.Globals = if ($starts.Count -gt 0) { ($lines | Select-Object -First $starts[0]) -join "`n" } else { $object.Text }
         for ($p = 0; $p -lt $starts.Count; $p++) {
             $name = $procedureStart.Match($lines[$starts[$p]]).Groups[5].Value.Trim('"').ToLowerInvariant()
             $to = if ($p + 1 -lt $starts.Count) { $starts[$p + 1] } else { $lines.Count }
@@ -405,6 +380,427 @@ function Get-PrunedObjects($Objects, $FalseFlags) {
     return $pruned
 }
 
+# Bounded call-context analysis. Values are either a proven Text literal (s:...), the
+# request object (request), or unknown. Unknown never selects a branch or invents a read.
+function Get-ALTokens([string]$Text) {
+    $pattern = '//[^\r\n]*|/\*[\s\S]*?\*/|''(?:[^'']|'''')*''|"(?:[^"]|"")*"|\b\w+\b|<>|:=|[^\s]'
+    return ,@([regex]::Matches($Text, $pattern) | Where-Object { -not $_.Value.StartsWith('//') -and -not $_.Value.StartsWith('/*') })
+}
+
+function Get-ALStatement($Tokens, [int]$Start) {
+    $i = $Start
+    if ($i -ge $Tokens.Count) { throw 'Unexpected end of statement' }
+    $word = $Tokens[$i].Value.ToLowerInvariant()
+    if ($word -eq 'begin') {
+        $children = @(); $i++
+        while ($i -lt $Tokens.Count -and $Tokens[$i].Value -ne 'end') {
+            $node = Get-ALStatement $Tokens $i; $children += $node; $i = $node.Next
+        }
+        if ($i -ge $Tokens.Count) { throw 'Unclosed begin' }
+        $i++
+        if ($i -lt $Tokens.Count -and $Tokens[$i].Value -eq ';') { $i++ }
+        return @{ Kind = 'block'; Start = $Start; Next = $i; Children = $children }
+    }
+    if ($word -eq 'if') {
+        $i++; $condition = $i; $depth = 0
+        while ($i -lt $Tokens.Count) {
+            $v = $Tokens[$i].Value
+            if ($v -eq 'then' -and $depth -eq 0) { break }
+            if ($v -in @('(', '[')) { $depth++ }; if ($v -in @(')', ']')) { $depth-- }
+            $i++
+        }
+        if ($i -ge $Tokens.Count) { throw 'Missing then' }
+        $test = @($Tokens[$condition..($i - 1)] | ForEach-Object Value)
+        $yes = Get-ALStatement $Tokens ($i + 1); $i = $yes.Next; $no = $null
+        if ($i -lt $Tokens.Count -and $Tokens[$i].Value -eq 'else') { $no = Get-ALStatement $Tokens ($i + 1); $i = $no.Next }
+        return @{ Kind = 'if'; Start = $Start; Next = $i; Test = $test; Yes = $yes; No = $no }
+    }
+    if ($word -eq 'case') {
+        $i++; $selector = $i
+        while ($i -lt $Tokens.Count -and $Tokens[$i].Value -ne 'of') { $i++ }
+        if ($i -ge $Tokens.Count) { throw 'Missing case of' }
+        $test = @($Tokens[$selector..($i - 1)] | ForEach-Object Value); $i++; $arms = @(); $otherwise = @()
+        while ($i -lt $Tokens.Count -and $Tokens[$i].Value -ne 'end') {
+            if ($Tokens[$i].Value -eq 'else') {
+                $i++
+                while ($i -lt $Tokens.Count -and $Tokens[$i].Value -ne 'end') {
+                    $node = Get-ALStatement $Tokens $i; $otherwise += $node; $i = $node.Next
+                }
+                break
+            }
+            $label = $i
+            while ($i -lt $Tokens.Count -and $Tokens[$i].Value -ne ':') { $i++ }
+            if ($i -ge $Tokens.Count) { throw 'Missing case label' }
+            $labels = @($Tokens[$label..($i - 1)] | ForEach-Object Value)
+            $node = Get-ALStatement $Tokens ($i + 1); $i = $node.Next
+            $arms += @{ Labels = $labels; Node = $node }
+        }
+        if ($i -ge $Tokens.Count) { throw 'Unclosed case' }
+        $i++; if ($i -lt $Tokens.Count -and $Tokens[$i].Value -eq ';') { $i++ }
+        return @{ Kind = 'case'; Start = $Start; Next = $i; Test = $test; Arms = $arms; Otherwise = $otherwise }
+    }
+    # Other statements are retained whole. Nested loops/try constructs are unsupported
+    # for specialization: the caller falls back to the complete body with a diagnostic.
+    if ($word -in @('for', 'foreach', 'while', 'repeat', 'with')) { throw "Unsupported control flow: $word" }
+    $depth = 0
+    while ($i -lt $Tokens.Count) {
+        $v = $Tokens[$i].Value
+        if ($depth -eq 0 -and $v -in @(';', 'else', 'end')) { break }
+        if ($v -eq '(') { $depth++ }; if ($v -eq ')') { $depth-- }
+        $i++
+    }
+    if ($i -eq $Start -and $Tokens[$i].Value -ne ';') { throw 'Empty statement' }
+    if ($i -lt $Tokens.Count -and $Tokens[$i].Value -eq ';') { $i++ }
+    return @{ Kind = 'raw'; Start = $Start; Next = $i; Exit = ($word -eq 'exit') }
+}
+
+function Get-TextCondition($Tokens, $Values) {
+    $text = ($Tokens -join ' ').Trim()
+    # Only equality, inequality and literal lists with a proven Text variable are
+    # evaluated. In particular, runtime Booleans do not become proof of reachability.
+    if ($text -match '^not\s*\((.*)\)$') {
+        $nestedTokens = Get-ALTokens $Matches[1]
+        $inner = Get-TextCondition @($nestedTokens | ForEach-Object Value) $Values
+        if ($null -ne $inner) { return (-not $inner) }; return $null
+    }
+    if ($text -match '^\((.*)\)$') { $nestedTokens = Get-ALTokens $Matches[1]; return Get-TextCondition @($nestedTokens | ForEach-Object Value) $Values }
+    $m = [regex]::Match($text, "^(\w+)\s*(=|<>|not\s+in|in)\s*(.*)$", 'IgnoreCase')
+    if (-not $m.Success) { return $null }
+    $value = $Values[$m.Groups[1].Value]
+    if (-not $value -or -not $value.StartsWith('s:')) { return $null }
+    $actual = $value.Substring(2); $op = $m.Groups[2].Value; $rhs = $m.Groups[3].Value
+    if ($op -in @('=', '<>')) {
+        if ($rhs -notmatch "^'((?:[^']|'')*)'$" ) { return $null }
+        $equal = $actual -ceq $Matches[1].Replace("''", "'")
+        if ($op -eq '<>') { return (-not $equal) }; return $equal
+    }
+    if ($rhs -notmatch "^\[\s*'(?:[^']|'')*'(?:\s*,\s*'(?:[^']|'')*')*\s*\]$") { return $null }
+    $list = @($stringLiteral.Matches($rhs) | ForEach-Object { $_.Groups[1].Value.Replace("''", "'") })
+    $contains = $list -ccontains $actual
+    if ($op -match '^not') { return (-not $contains) }; return $contains
+}
+
+function Get-NodeText($Node, $Tokens, [string]$Body) {
+    if ($Node.Next -le $Node.Start) { return '' }
+    $first = $Tokens[$Node.Start]; $last = $Tokens[$Node.Next - 1]
+    return $Body.Substring($first.Index, $last.Index + $last.Length - $first.Index)
+}
+
+function Select-ContextStatements($Nodes, $Tokens, [string]$Body, $Values) {
+    $result = ''; $exits = $false
+    foreach ($node in $Nodes) {
+        $part = ''; $leaves = $false
+        switch ($node.Kind) {
+            'raw' { $part = Get-NodeText $node $Tokens $Body; $leaves = $node.Exit }
+            'block' {
+                $r = Select-ContextStatements $node.Children $Tokens $Body $Values
+                $part = $r.Text; $leaves = $r.Exits
+            }
+            'if' {
+                $condition = Get-TextCondition $node.Test $Values
+                if ($null -ne $condition) {
+                    $selected = if ($condition) { @($node.Yes) } elseif ($node.No) { @($node.No) } else { @() }
+                    $r = Select-ContextStatements $selected $Tokens $Body $Values; $part = $r.Text; $leaves = $r.Exits
+                } else {
+                    $yes = Select-ContextStatements @($node.Yes) $Tokens $Body $Values
+                    $no = Select-ContextStatements @($node.No | Where-Object { $_ }) $Tokens $Body $Values
+                    # Keep the condition: it may contain a reached call/read.
+                    $part = ($node.Test -join ' ') + "`n" + $yes.Text + "`n" + $no.Text
+                    $leaves = $yes.Exits -and $no.Exits
+                }
+            }
+            'case' {
+                $value = if ($node.Test.Count -eq 1) { $Values[$node.Test[0]] } else { $null }
+                $known = $value -and $value.StartsWith('s:')
+                foreach ($arm in $node.Arms) {
+                    if (($arm.Labels -join ' ') -notmatch "^'(?:[^']|'')*'(?:\s*,\s*'(?:[^']|'')*')*$") { $known = $false }
+                }
+                if ($known) {
+                    $selected = $node.Otherwise
+                    foreach ($arm in $node.Arms) {
+                        $labels = @($stringLiteral.Matches(($arm.Labels -join ' ')) | ForEach-Object { $_.Groups[1].Value.Replace("''", "'") })
+                        if ($labels -ccontains $value.Substring(2)) { $selected = @($arm.Node); break }
+                    }
+                    $r = Select-ContextStatements $selected $Tokens $Body $Values; $part = $r.Text; $leaves = $r.Exits
+                } else {
+                    $part = ($node.Test -join ' ') + "`n"
+                    foreach ($arm in $node.Arms) { $part += (Select-ContextStatements @($arm.Node) $Tokens $Body $Values).Text + "`n" }
+                    $part += (Select-ContextStatements $node.Otherwise $Tokens $Body $Values).Text
+                }
+            }
+        }
+        $result += $part + "`n"
+        if ($leaves) { $exits = $true; break }
+    }
+    return @{ Text = $result; Exits = $exits }
+}
+
+# Signature metadata is procedure-local: another procedure's variable with the same
+# name must never resolve this call. Ambiguous overloads are not merged into proof.
+function Get-FormalParameters([string]$Body) {
+    $m = [regex]::Match($Body, '(?i)(?:procedure|trigger)\s+(?:"[^"]+"|\w+)\s*\(([^)]*)\)')
+    $result = @()
+    if ($m.Success -and $m.Groups[1].Value.Trim()) {
+        foreach ($part in $m.Groups[1].Value.Split(';')) {
+            $p = [regex]::Match($part, '(?i)^\s*(?<var>var\s+)?(?<name>\w+)\s*:\s*(?<type>.+?)\s*$')
+            if (-not $p.Success) { throw 'Unsupported formal parameter' }
+            $result += @{ Name = $p.Groups['name'].Value.ToLowerInvariant(); Type = $p.Groups['type'].Value; ByRef = $p.Groups['var'].Success }
+        }
+    }
+    return ,$result
+}
+
+function Get-ContextTypes($Object, [string]$Body) {
+    $result = @{}
+    # Global declarations are outside every procedure; local declarations override them.
+    $global = $Object.Globals
+    foreach ($text in @($global, $Body)) {
+        $begin = [regex]::Match($text, '(?i)\bbegin\b')
+        if ($begin.Success) { $text = $text.Substring(0, $begin.Index) }
+        foreach ($m in [regex]::Matches($text, '(?i)\b(\w+)\s*:\s*(JsonObject|JsonArray|JsonToken|Text\b(?:\[\d+\])?|Code\b(?:\[\d+\])?|(?:Codeunit|Record|Interface)\s+"[^"]+")')) {
+            $result[$m.Groups[1].Value] = $m.Groups[2].Value
+        }
+    }
+    if ($Object.TableNo) { $result['rec'] = 'Record "' + $Object.TableNo + '"' }
+    return $result
+}
+
+function Get-ContextCalls([string]$Body) {
+    $tokens = Get-ALTokens $Body; $calls = @()
+    for ($i = 0; $i + 1 -lt $tokens.Count; $i++) {
+        if ($tokens[$i].Value -notmatch '^\w+$' -or $tokens[$i + 1].Value -ne '(') { continue }
+        if ($i -gt 0 -and $tokens[$i - 1].Value -in @('procedure', 'trigger')) { continue }
+        $receiver = ''; $chained = $false
+        if ($i -gt 0 -and $tokens[$i - 1].Value -eq '.') {
+            if ($i -gt 1 -and $tokens[$i - 2].Value -match '^\w+$' -and ($i -lt 3 -or $tokens[$i - 3].Value -ne '.')) { $receiver = $tokens[$i - 2].Value }
+            else { $chained = $true }
+        }
+        $depth = 1; $j = $i + 2; $start = $tokens[$i + 1].Index + 1; $args = @()
+        while ($j -lt $tokens.Count) {
+            $v = $tokens[$j].Value
+            if ($v -eq '(') { $depth++ }; if ($v -eq ')') { $depth-- }
+            if (($v -eq ',' -and $depth -eq 1) -or $depth -eq 0) {
+                $arg = $Body.Substring($start, $tokens[$j].Index - $start).Trim()
+                if ($arg -or $args.Count -gt 0) { $args += $arg }; $start = $tokens[$j].Index + 1
+            }
+            if ($depth -eq 0) { break }; $j++
+        }
+        if ($depth -ne 0) { continue }
+        $inline = ''
+        if ($chained -and $i -ge 6 -and $tokens[$i - 2].Value -eq ')' -and $tokens[$i - 3].Value -eq '(' -and $tokens[$i - 4].Value -eq 'GetRequestJson' -and $tokens[$i - 5].Value -eq '.') { $inline = $tokens[$i - 6].Value }
+        $calls += @{ InlineRequestReceiver = $inline; Receiver = $receiver; Callee = $tokens[$i].Value.ToLowerInvariant(); Args = $args; Index = $tokens[$i].Index; Chained = $chained }
+    }
+    return ,$calls
+}
+
+function Resolve-ContextValue([string]$Expression, $Values, $Types) {
+    $e = $Expression.Trim()
+    if ($e -match "^'((?:[^']|'')*)'$") { return 's:' + $Matches[1].Replace("''", "'") }
+    if ($e -match '^\w+$' -and $Values.ContainsKey($e)) { return $Values[$e] }
+    if ($e -match '^(?:(\w+)\.)?GetRequestJson\(\)$') {
+        if ($Matches[1] -and $Types[$Matches[1]] -eq 'Record "Message Argument ori"') { return 'request' }
+    }
+    return '?'
+}
+
+function Get-ContextBindings($Object, [string]$Body, $InputValues, $Types) {
+    $values = $InputValues.Clone(); $assignments = @{}
+    $sourceTokens = Get-ALTokens $Body
+    $tokenStarts = @{}
+    foreach ($token in $sourceTokens) { $tokenStarts[$token.Index] = $true }
+    # Multiple/conditional assignments and writes to a formal invalidate that value
+    # for the entire procedure. This deliberately gives false positives over false proof.
+    $mask = $Body
+    foreach ($m in [regex]::Matches($mask, '(?im)(?<![.\w])(\w+)\s*:=\s*([^;]+);')) {
+        if (-not $tokenStarts.ContainsKey($m.Index)) { continue }
+        $name = $m.Groups[1].Value
+        if (-not $assignments.ContainsKey($name)) { $assignments[$name] = @() }
+        $assignments[$name] += $m
+        $values[$name] = '?'
+    }
+    foreach ($label in [regex]::Matches($Body, "(?im)\b(\w+)\s*:\s*Label\s+'((?:[^']|'')*)'\s*,\s*Locked\s*=\s*true\s*;")) {
+        $values[$label.Groups[1].Value] = 's:' + $label.Groups[2].Value.Replace("''", "'")
+    }
+    # Only straight-line aliases before the first control-flow statement are bound.
+    # Request acquisition in an ordinary top-level assignment remains supported.
+    $control = [regex]::Match($mask, '(?i)\b(if|case|for|foreach|while|repeat)\b')
+    foreach ($name in $assignments.Keys) {
+        $a = $assignments[$name]
+        if ($a.Count -ne 1 -or $InputValues.ContainsKey($name) -or ($control.Success -and $a[0].Index -gt $control.Index)) { continue }
+        $value = Resolve-ContextValue $a[0].Groups[2].Value $values $Types
+        if ($value -eq 'request' -and $Types[$name] -ne 'JsonObject') { continue }
+        $values[$name] = $value
+    }
+    # Resolve alias chains in source order, never a forward reference.
+    foreach ($a in @($assignments.Values | ForEach-Object { $_ } | Sort-Object Index)) {
+        $name = $a.Groups[1].Value
+        if ($assignments[$name].Count -ne 1 -or $InputValues.ContainsKey($name) -or ($control.Success -and $a.Index -gt $control.Index)) { continue }
+        $rhs = $a.Groups[2].Value.Trim()
+        if ($assignments.ContainsKey($rhs) -and $assignments[$rhs][0].Index -gt $a.Index) { $values[$name] = '?'; continue }
+        $values[$name] = Resolve-ContextValue $rhs $values $Types
+    }
+    $tokens = Get-ALTokens $Body
+    $beginIndex = @($tokens | Where-Object { $_.Value -eq 'begin' } | Select-Object -First 1)
+    foreach ($name in $assignments.Keys) {
+        $a = $assignments[$name]
+        if ($a.Count -ne 1 -or $beginIndex.Count -ne 1) { continue }
+        if (@($tokens | Where-Object { $_.Value -eq $name -and $_.Index -gt $beginIndex[0].Index -and $_.Index -lt $a[0].Index }).Count -gt 0) { $values[$name] = '?' }
+    }
+    # A record object is request-derived only through the actual array -> token ->
+    # AsObject chain, with the source operations in order (not any nearby AsObject).
+    $calls = Get-ContextCalls $Body
+    foreach ($getArray in @($calls | Where-Object { $_.Callee -eq 'getrequestdataarray' -and $_.Args.Count -eq 1 })) {
+        if ($Types[$getArray.Receiver] -ne 'Record "Message Argument ori"') { continue }
+        $array = $getArray.Args[0]
+        if ($Types[$array] -ne 'JsonArray') { continue }
+        if (@($calls | Where-Object { $_.Args -contains $array -and $_.Index -ne $getArray.Index }).Count -gt 0) { continue }
+        if (@($calls | Where-Object { $_.Receiver -eq $array -and $_.Callee -notin @('get', 'count') }).Count -gt 0) { continue }
+        foreach ($getToken in @($calls | Where-Object { $_.Receiver -eq $array -and $_.Callee -eq 'get' -and $_.Args.Count -eq 2 })) {
+            if ($getToken.Index -lt $getArray.Index) { continue }
+            $token = $getToken.Args[1]
+            if ($Types[$token] -ne 'JsonToken') { continue }
+            if (@($calls | Where-Object { $_.Args -contains $token -and $_.Index -ne $getToken.Index }).Count -gt 0) { continue }
+            foreach ($name in $assignments.Keys) {
+                $a = $assignments[$name]
+                if ($a.Count -ne 1 -or $a[0].Index -lt $getToken.Index -or $Types[$name] -ne 'JsonObject') { continue }
+                if ($a[0].Groups[2].Value.Trim() -eq "$token.AsObject()") { $values[$name] = 'request' }
+            }
+        }
+    }
+    return $values
+}
+
+function Get-ContextBody([string]$Body, $Values, $Diagnostics, [string]$Location) {
+    if (@($Values.Values | Where-Object { $_ -like 's:*' }).Count -eq 0) { return $Body }
+    $tokens = Get-ALTokens $Body
+    for ($i = 0; $i -lt $tokens.Count; $i++) {
+        if ($tokens[$i].Value -ne 'begin') { continue }
+        try {
+            $tree = Get-ALStatement $tokens $i
+            return $Body.Substring(0, $tokens[$i].Index) + (Select-ContextStatements @($tree) $tokens $Body $Values).Text
+        } catch {
+            [void]$Diagnostics.Add("${Location}: $($_.Exception.Message)")
+            return $Body
+        }
+    }
+    return $Body
+}
+
+function Get-ContextReach($Objects, [string]$ObjectName, [string]$ProcedureName, $Bindings, $Contexts, $Diagnostics, [bool]$ReadMode = $false, [int]$Depth = 0) {
+    if ($Depth -gt 40 -or $Contexts.Count -gt 2000) { [void]$Diagnostics.Add("${ObjectName}::${ProcedureName}: traversal bound"); return }
+    if (-not $Objects.ContainsKey($ObjectName) -or -not $Objects[$ObjectName].Procedures.ContainsKey($ProcedureName)) {
+        [void]$Diagnostics.Add("${ObjectName}::${ProcedureName}: unavailable source"); return
+    }
+    $object = $Objects[$ObjectName]; $bodies = @($object.Procedures[$ProcedureName])
+    if ($bodies.Count -ne 1) { [void]$Diagnostics.Add("${ObjectName}::${ProcedureName}: unresolved overload"); return }
+    $ordered = [ordered]@{}
+    foreach ($key in ($Bindings.Keys | Sort-Object)) { $ordered[$key] = $Bindings[$key] }
+    $identity = "$ObjectName::$ProcedureName|" + ($ordered | ConvertTo-Json -Compress)
+    if ($Contexts.ContainsKey($identity)) { return }
+    $body = $bodies[0]; $types = Get-ContextTypes $object $body
+    $values = Get-ContextBindings $object $body $Bindings $types
+    $calls = Get-ContextCalls $body
+    $mutations = @{}
+    # A by-ref parameter or unknown call can mutate a selector/alias. No caller
+    # literal survives that uncertainty. Passing to a proven by-value formal is safe.
+    foreach ($call in $calls) {
+        $target = $null
+        if (-not $call.Receiver -or $call.Receiver -eq 'this') { $target = $ObjectName }
+        elseif ($types[$call.Receiver] -match '^(?:Codeunit|Record)\s+"([^"]+)"$') { $target = $Matches[1] }
+        $formals = @(); $resolved = $target -and $Objects.ContainsKey($target) -and $Objects[$target].Procedures.ContainsKey($call.Callee) -and @($Objects[$target].Procedures[$call.Callee]).Count -eq 1
+        if ($resolved) { $formals = Get-FormalParameters $Objects[$target].Procedures[$call.Callee][0] }
+        for ($a = 0; $a -lt $call.Args.Count; $a++) {
+            $arg = $call.Args[$a].Trim()
+            if (-not $values.ContainsKey($arg) -or ($values[$arg] -notlike 's:*' -and $values[$arg] -ne 'request')) { continue }
+            $unknownTyped = $target -and -not $resolved -and $target -ne 'Msg Contract Mgt ori'
+            if (($resolved -and $a -lt $formals.Count -and $formals[$a].ByRef) -or $unknownTyped) {
+                if (-not $mutations.ContainsKey($arg) -or $mutations[$arg] -gt $call.Index) { $mutations[$arg] = $call.Index }
+            }
+
+        }
+    }
+    foreach ($name in $mutations.Keys) {
+        if ($values[$name] -eq 'request') { [void]$Diagnostics.Add("${ObjectName}::${ProcedureName}: request may be mutated by call ($name)") }
+    }
+    # Text specialization is needed on contract builders. Read analysis keeps all
+    # possible runtime branches, and binds keys only at actual member reads.
+    if (-not $ReadMode) {
+        foreach ($name in $mutations.Keys) { $values[$name] = '?' }
+        foreach ($formal in (Get-FormalParameters $body)) {
+            if ($formal.Type -notmatch '^(Text|Code)(\[\d+\])?$') { continue }
+            $name = [regex]::Escape($formal.Name)
+            if ($body -match "(?i)\b(?:if\s+(?:not\s*\(?\s*)?|case\s+)$name\b" -and $values[$formal.Name] -notlike 's:*') {
+                [void]$Diagnostics.Add("${ObjectName}::${ProcedureName}: unresolved Text selector $($formal.Name)")
+            }
+        }
+    }
+    if (-not $ReadMode) { $body = Get-ContextBody $body $values $Diagnostics "$ObjectName::$ProcedureName" }
+    $Contexts[$identity] = @{ Object = $ObjectName; Procedure = $ProcedureName; Body = $body; Values = $values; Types = $types; Mutations = $mutations }
+    foreach ($call in (Get-ContextCalls $body)) {
+        $callee = $call.Callee; $receiver = $call.Receiver; $target = $null
+        $atCall = $values.Clone()
+        foreach ($name in $mutations.Keys) { if ($call.Index -gt $mutations[$name]) { $atCall[$name] = '?' } }
+        $actual = @($call.Args | ForEach-Object { Resolve-ContextValue $_ $atCall $types })
+        $hasRequest = $actual -contains 'request'
+        if ($call.Chained) {
+            if ($ReadMode -and $call.InlineRequestReceiver -and $types[$call.InlineRequestReceiver] -eq 'Record "Message Argument ori"') { continue }
+            if (-not $ReadMode -or $hasRequest) { [void]$Diagnostics.Add("${ObjectName}::${ProcedureName}: unresolved chained $callee") }
+            continue
+        }
+        if (-not $receiver -or $receiver -eq 'this') { if ($object.Procedures.ContainsKey($callee)) { $target = $ObjectName } }
+        elseif ($types[$receiver] -match '^(?:Codeunit|Record|Interface)\s+"([^"]+)"$') { $target = $Matches[1] }
+        if (-not $target) {
+            if ($ReadMode -and $hasRequest -and $callee -notin @('exit')) { [void]$Diagnostics.Add("${ObjectName}::${ProcedureName}: unresolved call $receiver.$callee") }
+            continue
+        }
+        if ($target -eq 'Msg Contract Mgt ori') { continue } # Existing builder recognition, never read evidence.
+        if ($ReadMode -and $target -eq 'Message Argument ori' -and -not (Test-FollowCall $true $target $callee)) {
+            if (-not ($hasRequest -and @($actual | Where-Object { $_ -like 's:*' }).Count -gt 0)) { continue }
+        }
+        if (-not $Objects.ContainsKey($target) -or -not $Objects[$target].Procedures.ContainsKey($callee)) {
+            if (-not $ReadMode -or $hasRequest -or ($target -eq 'Message Argument ori' -and $callee -match $script:ArgumentReaders)) {
+                [void]$Diagnostics.Add("${target}::${callee}: unavailable source")
+            }
+            continue
+        }
+        if (@($Objects[$target].Procedures[$callee]).Count -ne 1) { [void]$Diagnostics.Add("${target}::${callee}: unresolved overload"); continue }
+        $formal = Get-FormalParameters $Objects[$target].Procedures[$callee][0]
+        if ($formal.Count -ne $actual.Count) { [void]$Diagnostics.Add("${target}::${callee}: argument count"); continue }
+        $bound = @{}
+        for ($a = 0; $a -lt $formal.Count; $a++) {
+            if ($formal[$a].Type -match '^(Text|Code)(\[\d+\])?$' -and $actual[$a] -like 's:*') { $bound[$formal[$a].Name] = $actual[$a] }
+            if ($formal[$a].Type -eq 'JsonObject' -and $actual[$a] -eq 'request') { $bound[$formal[$a].Name] = 'request' }
+        }
+        Get-ContextReach $Objects $target $callee $bound $Contexts $Diagnostics $ReadMode ($Depth + 1)
+    }
+    if ($ReadMode) {
+        foreach ($call in (Get-ContextCalls $body)) {
+            if ($call.Receiver -ne 'Codeunit' -or $call.Callee -ne 'run' -or $call.Args.Count -ne 2) { continue }
+            if ($call.Args[0] -notmatch '^Codeunit::"([^"]+)"$' -or $types[$call.Args[1]] -ne 'Record "Message Argument ori"') { continue }
+            $target = $Matches[1]
+            Get-ContextReach $Objects $target 'onrun' @{} $Contexts $Diagnostics $true ($Depth + 1)
+        }
+    }
+}
+
+function Get-ProvenReadKeys($Contexts, $Diagnostics) {
+    $keys = New-Object 'System.Collections.Generic.HashSet[string]'
+    foreach ($context in $Contexts.Values) {
+        $body = $context.Body; $values = $context.Values; $types = $context.Types
+        foreach ($call in (Get-ContextCalls $body)) {
+            if ($call.Callee -notin @('get', 'contains') -or $call.Args.Count -lt 1) { continue }
+            $inlineRequest = $call.InlineRequestReceiver -and $types[$call.InlineRequestReceiver] -eq 'Record "Message Argument ori"'
+            if ($values[$call.Receiver] -ne 'request' -and -not $inlineRequest) { continue }
+            $atCall = $values.Clone()
+            foreach ($name in $context.Mutations.Keys) { if ($call.Index -gt $context.Mutations[$name]) { $atCall[$name] = '?' } }
+            $key = Resolve-ContextValue $call.Args[0] $atCall $types
+            if ($key -like 's:*') { [void]$keys.Add($key.Substring(2)) }
+            else { [void]$Diagnostics.Add("$($context.Object)::$($context.Procedure): unresolved request key") }
+        }
+    }
+    return ,$keys
+}
+
 function Get-DeclaredKeys($Objects, [string]$ContractCodeunit) {
     $keys = New-Object 'System.Collections.Generic.HashSet[string]'
     $seen = @{}
@@ -416,18 +812,30 @@ function Get-DeclaredKeys($Objects, [string]$ContractCodeunit) {
         $seen = @{}
         Get-Reach $Objects $ContractCodeunit 'getparameters' $seen
     }
-    foreach ($entry in $seen.Keys) {
-        $parts = $entry -split '::', 2
-        foreach ($body in $Objects[$parts[0]].Procedures[$parts[1]]) {
-            foreach ($m in $parameterLiteral.Matches($body)) { [void]$keys.Add($m.Groups[1].Value) }
-            # A parameter declared in a loop over a literal list: AdjustNames.AddRange('a', 'b') ... Parameter(AdjustNames.Get(i), ...)
-            foreach ($loop in [regex]::Matches($body, '\.Parameter\(\s*(\w+)\.Get\(')) {
-                $listName = [regex]::Escape($loop.Groups[1].Value)
-                $rangePattern = $listName + $addRangeTail
-                foreach ($range in [regex]::Matches($body, $rangePattern)) {
-                    foreach ($literal in $stringLiteral.Matches($range.Groups[1].Value)) { [void]$keys.Add($literal.Groups[1].Value) }
+    $contexts = @{}
+    Get-ContextReach $Objects $ContractCodeunit 'getparameters' @{} $contexts $script:AnalysisDiagnostics
+    foreach ($context in $contexts.Values) {
+        $calls = Get-ContextCalls $context.Body
+        foreach ($call in $calls) {
+            if ($call.Callee -ne 'parameter' -or $call.Args.Count -eq 0 -or $context.Types[$call.Receiver] -ne 'Codeunit "Msg Contract Mgt ori"') { continue }
+            $value = Resolve-ContextValue $call.Args[0] $context.Values $context.Types
+            if ($value -like 's:*') { [void]$keys.Add($value.Substring(2)); continue }
+            # Preserve the bounded literal-list builder pattern, never arbitrary JSON.
+            if ($call.Args[0] -match '^(\w+)\.Get\(') {
+                $list = $Matches[1]
+                $ranges = @($calls | Where-Object { $_.Receiver -eq $list -and $_.Callee -eq 'addrange' })
+                if ($ranges.Count -gt 0) {
+                    foreach ($range in $ranges) {
+                        foreach ($arg in $range.Args) {
+                            $item = Resolve-ContextValue $arg $context.Values $context.Types
+                            if ($item -like 's:*') { [void]$keys.Add($item.Substring(2)) }
+                            else { [void]$script:AnalysisDiagnostics.Add("$($context.Object)::$($context.Procedure): unresolved parameter list") }
+                        }
+                    }
+                    continue
                 }
             }
+            [void]$script:AnalysisDiagnostics.Add("$($context.Object)::$($context.Procedure): unresolved parameter declaration")
         }
     }
     return ,$keys
@@ -493,194 +901,10 @@ function Get-TargetKeys($Objects, [string]$ContractCodeunit) {
     return ,$keys
 }
 
-# Drops message text before literals are collected (#459): a Label declaration that is not Locked = true, and the
-# statement of Error, StrSubstNo, Message, Confirm, RespondWith*, AddError and AddWarning. A Locked = true label in
-# the procedure stays, so a key constant still counts. An inner call is part of the outer statement and is removed once.
-function Remove-TextStatements([string]$Body) {
-    $labelDecl = [regex]::new('(?i):\s*Label\b')
-    $labelHits = @($labelDecl.Matches($Body))
-    for ($k = $labelHits.Count - 1; $k -ge 0; $k--) {
-        $hit = $labelHits[$k]
-        $end = Get-StatementEnd $Body $hit.Index
-        $statement = $Body.Substring($hit.Index, $end - $hit.Index)
-        if ($statement -match '(?i)Locked\s*=\s*true') { continue }
-        $start = $Body.LastIndexOf("`n", $hit.Index)
-        if ($start -lt 0) { $start = 0 } else { $start++ }
-        $Body = $Body.Substring(0, $start) + $Body.Substring($end)
-    }
-
-    $call = [regex]::new('(?i)(?:\b(?:Error|StrSubstNo|Message|Confirm)\s*\(|\.(?:RespondWith\w*|AddError|AddWarning)\s*\()')
-    $spans = @()
-    foreach ($hit in @($call.Matches($Body))) {
-        $inside = $false
-        foreach ($span in $spans) {
-            if ($hit.Index -ge $span.Start -and $hit.Index -lt $span.End) { $inside = $true; break }
-        }
-        if ($inside) { continue }
-        $end = Get-StatementEnd $Body $hit.Index
-        $spans += @{ Start = $hit.Index; End = $end }
-    }
-    for ($k = $spans.Count - 1; $k -ge 0; $k--) {
-        $Body = $Body.Substring(0, $spans[$k].Start) + $Body.Substring($spans[$k].End)
-    }
-    return $Body
-}
-
-# Every string literal in the code the implementation reaches from ExecuteBifrostTask, after Remove-TextStatements.
-# A Locked = true label in a reached procedure still counts; a translatable label and a message-text call do not (#459).
-# The contract procedures are not reached from there, so a parameter name that is only declared does not count as read.
-function Get-ReachableLiterals($Objects, [string]$Codeunit) {
-    $literals = New-Object 'System.Collections.Generic.HashSet[string]'
-    $seen = @{}
-    Get-Reach $Objects $Codeunit 'executebifrosttask' $seen
-    foreach ($entry in $seen.Keys) {
-        $parts = $entry -split '::', 2
-        foreach ($body in $Objects[$parts[0]].Procedures[$parts[1]]) {
-            $body = Remove-TextStatements $body
-            foreach ($m in $stringLiteral.Matches($body)) { [void]$literals.Add($m.Groups[1].Value.Replace("''", "'")) }
-            foreach ($m in $keySpec.Matches($body)) {
-                foreach ($pair in $m.Groups[1].Value.Split(',')) { [void]$literals.Add($pair.Split('=')[0]) }
-            }
-        }
-    }
-    return ,$literals
-}
-
-function Get-FirstParam([string]$Body) {
-    $match = $firstParam.Match($Body)
-    if ($match.Success) { return $match.Groups[1].Value.ToLowerInvariant() }
-    return ''
-}
-
-# The parameter names of a procedure, in order, in lower case.
-function Get-ParameterNames([string]$Body) {
-    $names = @()
-    $signature = [regex]::Match($Body, '(?i)(?:procedure|trigger)\s+(?:"[^"]+"|\w+)\s*\(([^)]*)\)')
-    if (-not $signature.Success) { return ,$names }
-    foreach ($param in $signature.Groups[1].Value.Split(';')) {
-        $name = [regex]::Match($param, '(?i)^\s*(?:var\s+)?(\w+)\s*:')
-        if ($name.Success) { $names += $name.Groups[1].Value.ToLowerInvariant() }
-    }
-    return ,$names
-}
-
-# The zero-based positions in an argument list whose argument is one of the names that hold the request.
-function Get-RequestArgumentPositions([string]$Arguments, $RequestNames) {
-    $positions = New-Object 'System.Collections.Generic.List[int]'
-    $flat = [regex]::Replace($Arguments, "'(?:[^']|'')*'", "''")
-    $index = 0
-    foreach ($argument in $flat.Split(',')) {
-        if ($RequestNames.Contains($argument.Trim().ToLowerInvariant())) { $positions.Add($index) }
-        $index++
-    }
-    return ,$positions
-}
-
-# Names, per reached procedure, that hold the request: RequestJson, a variable assigned from GetRequestJson(),
-# and the first parameter of a reached procedure when a caller passes the request into it (#430).
-function Get-RequestVars($Objects, $Seen) {
-    $vars = @{}
-    foreach ($entry in $Seen.Keys) {
-        $names = New-Object 'System.Collections.Generic.HashSet[string]'
-        [void]$names.Add('requestjson')
-        $vars[$entry] = $names
-    }
-    foreach ($entry in @($Seen.Keys)) {
-        $objectName = ($entry -split '::', 2)[0]
-        $procedureName = ($entry -split '::', 2)[1]
-        foreach ($body in $Objects[$objectName].Procedures[$procedureName]) {
-            foreach ($assign in $assignRequest.Matches($body)) { [void]$vars[$entry].Add($assign.Groups[1].Value.ToLowerInvariant()) }
-            if ($body -match 'GetRequestDataArray\(') {
-                foreach ($assign in $assignRecordObject.Matches($body)) { [void]$vars[$entry].Add($assign.Groups[1].Value.ToLowerInvariant()) }
-            }
-        }
-    }
-    $changed = $true
-    while ($changed) {
-        $changed = $false
-        foreach ($entry in @($Seen.Keys)) {
-            $objectName = ($entry -split '::', 2)[0]
-            $procedureName = ($entry -split '::', 2)[1]
-            $object = $Objects[$objectName]
-            foreach ($body in $object.Procedures[$procedureName]) {
-                foreach ($call in $passRequest.Matches($body)) {
-                    if ($call.Groups['var'].Success -and -not $vars[$entry].Contains($call.Groups['var'].Value.ToLowerInvariant())) { continue }
-                    $callee = $call.Groups[1].Value.ToLowerInvariant()
-                    $targetKey = "${objectName}::${callee}"
-                    if (-not $vars.ContainsKey($targetKey)) { continue }
-                    foreach ($calleeBody in $object.Procedures[$callee]) {
-                        $paramName = Get-FirstParam $calleeBody
-                        if ($paramName -ne '' -and $vars[$targetKey].Add($paramName)) { $changed = $true }
-                    }
-                }
-                # The request (or a record of it) passed in any argument position: ProcessRecord(Rec, RecordObject, ...).
-                foreach ($call in $callWithArgs.Matches($body)) {
-                    $positions = Get-RequestArgumentPositions $call.Groups['args'].Value $vars[$entry]
-                    if ($positions.Count -eq 0) { continue }
-                    $receiver = $call.Groups['receiver'].Value.ToLowerInvariant()
-                    $callee = $call.Groups['callee'].Value.ToLowerInvariant()
-                    $targets = @()
-                    if ($receiver -eq '' -or $receiver -in @('this', 'rec')) { $targets = @($objectName) }
-                    elseif ($object.Variables.ContainsKey($receiver)) { $targets = @($object.Variables[$receiver]) }
-                    foreach ($targetName in $targets) {
-                        $targetKey = "${targetName}::${callee}"
-                        if (-not $vars.ContainsKey($targetKey) -or -not $Objects.ContainsKey($targetName)) { continue }
-                        foreach ($calleeBody in $Objects[$targetName].Procedures[$callee]) {
-                            $paramNames = Get-ParameterNames $calleeBody
-                            foreach ($position in $positions) {
-                                if ($position -lt $paramNames.Count -and $vars[$targetKey].Add($paramNames[$position])) { $changed = $true }
-                            }
-                        }
-                    }
-                }
-                foreach ($call in $passRequestQualified.Matches($body)) {
-                    if ($call.Groups['var'].Success -and -not $vars[$entry].Contains($call.Groups['var'].Value.ToLowerInvariant())) { continue }
-                    $receiver = $call.Groups[1].Value.ToLowerInvariant()
-                    $callee = $call.Groups[2].Value.ToLowerInvariant()
-                    $targets = @()
-                    if ($receiver -in @('this', 'rec')) { $targets = @($objectName) }
-                    elseif ($object.Variables.ContainsKey($receiver)) { $targets = @($object.Variables[$receiver]) }
-                    foreach ($targetName in $targets) {
-                        $targetKey = "${targetName}::${callee}"
-                        if (-not $vars.ContainsKey($targetKey) -or -not $Objects.ContainsKey($targetName)) { continue }
-                        if (-not $Objects[$targetName].Procedures.ContainsKey($callee)) { continue }
-                        foreach ($calleeBody in $Objects[$targetName].Procedures[$callee]) {
-                            $paramName = Get-FirstParam $calleeBody
-                            if ($paramName -ne '' -and $vars[$targetKey].Add($paramName)) { $changed = $true }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return $vars
-}
-
-function Add-CallRead($Match, $RequestNames, $Keys) {
-    if ($Match.Groups['var'].Success -and -not $RequestNames.Contains($Match.Groups['var'].Value.ToLowerInvariant())) { return }
-    [void]$Keys.Add($Match.Groups['key'].Value)
-}
-
-# The keys the implementation reads from the request in the procedures it reaches from ExecuteBifrostTask.
-# A call whose first argument is the request and whose second argument is a literal counts, including a wrapper
-# such as GetTextParam(RequestJson, 'dateFilter', ...) and a variable such as ReqJson (#430).
 function Get-ReadKeys($Objects, [string]$Codeunit) {
-    $keys = New-Object 'System.Collections.Generic.HashSet[string]'
-    $seen = @{}
-    Get-Reach $Objects $Codeunit 'executebifrosttask' $seen $true
-    $requestVars = Get-RequestVars $Objects $seen
-    foreach ($entry in $seen.Keys) {
-        $parts = $entry -split '::', 2
-        $requestNames = $requestVars[$entry]
-        foreach ($body in $Objects[$parts[0]].Procedures[$parts[1]]) {
-            foreach ($m in $memberRead.Matches($body)) { Add-CallRead $m $requestNames $keys }
-            foreach ($m in $callRead.Matches($body)) { Add-CallRead $m $requestNames $keys }
-            foreach ($m in $keySpec.Matches($body)) {
-                foreach ($pair in $m.Groups[1].Value.Split(',')) { [void]$keys.Add($pair.Split('=')[0]) }
-            }
-        }
-    }
-    return ,$keys
+    $contexts = @{}
+    Get-ContextReach $Objects $Codeunit 'executebifrosttask' @{} $contexts $script:AnalysisDiagnostics $true
+    return ,(Get-ProvenReadKeys $contexts $script:AnalysisDiagnostics)
 }
 
 function Find-Offenders([string]$AppFolder) {
@@ -693,8 +917,8 @@ function Find-Offenders([string]$AppFolder) {
         if ($contractCodeunit -eq 'Default Contract ori') { continue }
         if (-not $objects.ContainsKey($contractCodeunit) -or -not $objects.ContainsKey($interfaceCodeunit)) { continue }
         if ($Explain -ne '' -and $typeName -ne $Explain) { continue }
+        $script:AnalysisDiagnostics = New-Object 'System.Collections.Generic.HashSet[string]'
         $declared = Get-DeclaredKeys $objects $contractCodeunit
-        $literals = Get-ReachableLiterals $objects $interfaceCodeunit
         $reads = Get-ReadKeys $objects $interfaceCodeunit
         $targetKeys = Get-TargetKeys $objects $contractCodeunit
         if ($Explain -ne '') {
@@ -705,8 +929,12 @@ function Find-Offenders([string]$AppFolder) {
             Write-Host "target (data.)    : $(($targetKeys | Sort-Object) -join ', ')"
             Write-Host "read              : $(($reads | Sort-Object) -join ', ')"
         }
+        foreach ($diagnostic in ($script:AnalysisDiagnostics | Sort-Object)) {
+            if ($Explain -ne '') { Write-Host "unresolved        : $diagnostic" }
+            $found.Add("$typeName|unsupported-analysis|$diagnostic")
+        }
         foreach ($key in ($declared | Sort-Object)) {
-            if (-not $literals.Contains($key)) { $found.Add("$typeName|declared-not-read|$key") }
+            if (-not $reads.Contains($key)) { $found.Add("$typeName|declared-not-read|$key") }
         }
         foreach ($key in ($reads | Sort-Object)) {
             if ($script:NeverParameters -contains $key) { continue }
@@ -741,7 +969,7 @@ function Compare-WithAllowList($Found, $Allowed) {
     # and an entry whose type now has a detected read no longer applies and must be removed (#430).
     $problems = New-Object 'System.Collections.Generic.List[string]'
     foreach ($entry in $Found) {
-        if (-not $Allowed.Contains($entry)) { $problems.Add("New offender (fix the contract or the code, see #146, #357): $entry") }
+        if ($entry -like '*|unsupported-analysis|*' -or -not $Allowed.Contains($entry)) { $problems.Add("New offender (fix the contract or the code, see #146, #357): $entry") }
     }
     foreach ($entry in $Allowed) {
         if (-not $Found.Contains($entry)) { $problems.Add("No longer applies, remove it from the allow-list: $entry") }
@@ -876,7 +1104,11 @@ codeunit 4 "Wrap Impl ori"
     end;
 
     local procedure GetTextParam(RequestJson: JsonObject; ParamName: Text; DefaultValue: Text): Text
+    var
+        Token: JsonToken;
     begin
+        if RequestJson.Get(ParamName, Token) then
+            exit(Token.AsValue().AsText());
         exit(DefaultValue);
     end;
 
@@ -1135,6 +1367,17 @@ codeunit 15 "Const Impl ori"
 namespace Origo.Bifrost;
 table 7 "Message Argument ori"
 {
+    procedure TryReadInteger(RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Integer): Boolean
+    var
+        Token: JsonToken;
+    begin
+        if RequestJson.Get(ParameterName, Token) then begin
+            Value := Token.AsValue().AsInteger();
+            exit(true);
+        end;
+        exit(not Required);
+    end;
+
     procedure GetTableIdFromRequestJson(RequestJson: JsonObject)
     var
         Token: JsonToken;
@@ -1340,6 +1583,7 @@ codeunit $id "Veto $name Impl ori"
         $expected = @(
             'Veto.Unread.Get|declared-not-read|extra',
             'Veto.Chain.Get|declared-not-read|extra',
+            'Veto.Chain.Get|unsupported-analysis|Veto Chain Impl ori::getparameters: unresolved chained addbase',
             'Veto.Nested.Get|declared-not-read|afterBlock'
         )
         $absent = @(
@@ -1369,6 +1613,8 @@ codeunit $id "Veto $name Impl ori"
 if ($SelfTest) {
     Invoke-SelfTest
     Invoke-SelfTestConditionalParameters
+    . (Join-Path $PSScriptRoot 'tests/ContractParameterKeys.Context.Tests.ps1')
+    Invoke-ContextSelfTest
     exit 0
 }
 
