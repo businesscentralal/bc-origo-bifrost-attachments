@@ -355,3 +355,5 @@ migration is needed before the old app is uninstalled.
   are not carried over.
 - The old app remains installed and functional until it is removed; both apps read the same
   external storage accounts, so no files need to be moved.
+
+- Clears absent Notes output in "DataExch Entry Del Impl ori" (70013544), retaining false and the real interface signature; adds seeded/repeated/empty-output regression to "Attachments Build Tests ori" (96274) under the bounded internal analyzer disposition.

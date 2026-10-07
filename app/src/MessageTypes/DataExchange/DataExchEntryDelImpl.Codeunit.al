@@ -148,11 +148,12 @@ codeunit 70013544 "DataExch Entry Del Impl ori" implements "Msg Interface ori", 
         exit(true);
     end;
 
-    /// <summary>Reports the available operation notes.</summary>
-    /// <param name="Notes">The notes contract chapter to populate.</param>
-    /// <returns>True when this contract chapter is provided.</returns>
+    /// <summary>Clears operation notes because this contract does not provide a notes chapter.</summary>
+    /// <param name="Notes">Returns empty text even when the caller supplied stale notes.</param>
+    /// <returns>False because no notes chapter is provided.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     begin
+        Notes := '';
         exit(false);
     end;
 

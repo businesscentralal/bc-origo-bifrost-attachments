@@ -13,6 +13,28 @@ codeunit 96274 "Attachments Build Tests ori"
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
 
+    /// <summary>Absent notes clear stale caller output and consistently return false.</summary>
+    [Test]
+    procedure EntryDelete_NoNotes_ClearsCallerOutput()
+    var
+        EntryDelete: Codeunit "DataExch Entry Del Impl ori";
+        Contract: Interface "Msg Contract ori";
+        Notes: Text;
+    begin
+        // [GIVEN] The direct production interface; this operation has no public enum registration.
+        Contract := EntryDelete;
+        Notes := 'Stale caller notes';
+        // [WHEN] Reading an absent notes chapter.
+        LibraryAssert.IsFalse(Contract.GetNotes(Notes), 'No notes chapter is provided.');
+        // [THEN] A stale output is cleared, including repeated calls and already-empty output.
+        LibraryAssert.AreEqual('', Notes, 'Stale notes must not leak into a missing chapter.');
+        Notes := 'Different stale notes';
+        LibraryAssert.IsFalse(Contract.GetNotes(Notes), 'Repeated reads still have no notes.');
+        LibraryAssert.AreEqual('', Notes, 'Repeated reads must clear caller output.');
+        LibraryAssert.IsFalse(Contract.GetNotes(Notes), 'An empty input still has no notes chapter.');
+        LibraryAssert.AreEqual('', Notes, 'Empty output remains empty.');
+    end;
+
     /// <summary>Each shipped mutation resolves to its own contract implementation.</summary>
     [Test]
     procedure Scenario_AC03_MessageTypes_ResolveDistinctContracts()
