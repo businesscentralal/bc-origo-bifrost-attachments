@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## Unreleased
 
+### Changed (2026-10-07) - AppSource working-material evidence (#81)
+
+- Refresh the approved internal submission workspace with Foundation 28.0.2.523 provenance, source/asset hashes and issue/PR input owners. Preserve immutable internal-QA and explicit release gates for formal scenarios and the smoke dry-run. No AL objects or IDs changed.
+
 ### Added (2026-10-06) - AppSource submission planning (#81)
 
 - Add the Attachments release checklist, independent scenario coverage plan, source market inventory and gated validator sandbox smoke script in `app/docs/appsource/`. Formal scenarios await internal QA. No AL objects or IDs changed.

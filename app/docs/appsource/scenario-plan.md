@@ -7,7 +7,7 @@ locale: en-US
 
 # Plan independent Attachments validation coverage
 
-**Planning only — none of these flows has been executed or certified by this artifact.** Issue #80 owns final internal QA; formal Microsoft-format documents follow its passing evidence. The [source inventory](source-inventory.json) records 34 declared message types, not 34 proven behaviors. In particular, source declarations include Data Exchange mutations that older context files omit. #69/#82 must reconcile their actual request/error contracts before exact examples and expected responses are frozen.
+**Planning only — none of these flows has been executed or certified by this artifact.** Issue #80 owns final internal QA; formal Microsoft-format documents follow its passing immutable evidence and explicit release of the existing QA hold. The [source inventory](source-inventory.json) records 34 declared message types, not 34 proven behaviors. In particular, source declarations include Data Exchange mutations that older context files omit. #69/#82 must reconcile their actual request/error contracts before exact examples and expected responses are frozen.
 
 The submission plan targets a new Attachments offer: Gunnar confirmed on 2026-10-06 that none currently exists. There is no existing offer ID to request. Offer creation and supplying its genuine ID are future operator-owned release prerequisites under separate authorization; `deliverToAppSource` stays unconfigured. Internal QA and formal scenario preparation retain their gates below.
 
@@ -49,3 +49,14 @@ Run provider-dependent rows against Azure Blob Storage, Azure File Share and Sha
 - [ ] Include proven fixtures and payloads for P08/P09. Parked #21/#23–#26 are not promised features; declarations already on main must still be classified and covered.
 - [ ] Record pass/failure count, full SHA/package/dependency identity and cleanup results for the validator dry-run. No unconditional or skipped test is evidence.
 - [ ] Produce `AppSource-UserScenarios.md` only after these gates; incomplete plan rows remain named blockers in the release checklist.
+
+## Bind working coverage to the current inputs
+
+| Working input | Disposition |
+|---|---|
+| Foundation | Approved 28.0.2.523 at source `336b91d9fff11b71ae5cd75dee08186d4218bf07`, run 37544940349 attempt 2; exact package SHA256 and zero friends in source inventory. Historical 517/518 are not current input. |
+| Shipping source | Inventory records unchanged Attachments baseline b42ad90e; 34 declared wire types remain planned, not certified. Reconcile against actual PR84 repaired main only after its approved merge. |
+| Formal plan release | Requires immutable #80 passing QA plus explicit QA hold release; no formal validator scenario or dry-run executed by this update. |
+| Access and providers | #79 / worker-5 plus Gunnar/provider owner supply genuine restricted identities and provider access; #80 / worker-8 supplies actual provider/market results. Synthetic identity/provider assertions do not certify these rows. |
+
+The location decision is approved with conditions, not pending. This pre-QA working refresh does not release runtime, QA, infrastructure, physical-writer or publication holds.

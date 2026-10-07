@@ -389,3 +389,5 @@ The [submission working package](app/docs/appsource/README.md) contains the Atta
 release checklist, scenario plan, source market inventory and gated validator sandbox smoke script
 for #81. Formal scenarios follow exact-candidate internal QA; these planning files do not certify
 AppSource readiness. Published product/help documentation remains with its established owners.
+
+The internal submission workspace is approved with conditions for #81. Its refreshed inventory records the approved Foundation 28.0.2.523 input and named missing-evidence owners. Formal scenarios and the dry-run remain held for immutable #80 QA and explicit release.
