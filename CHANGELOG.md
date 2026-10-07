@@ -4,6 +4,14 @@ All notable changes to Bifrost Attachments are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
 Business Central release versioning (`major.minor.build.revision`).
 
+## [28.0.0.4] — 2026-10-07
+
+### Fixed
+
+- `Storage Contract Parts ori` (70013500) removes unused storage requirements from Data Exchange queries and record uploads, documents conditional attachment sources and accepted address aliases, and adds shared shipped Data Exchange mutation chapters for integration by #82.
+- `Data Exchange Query ori` (70013520) collects malformed filters, flags, dates and paging values before querying, refuses overlong codes and page sizes above 1000, preserves the zero/default page size of 100, and returns localized actionable error details.
+- Read/query discovery wording is localized in `DataExch Def List Impl ori` (70013522), `DataExch Def Get Impl ori` (70013523), `DataExch Type List Impl ori` (70013524), `DataExch Entry List Impl ori` (70013525), and `DataExch Entry Get Impl ori` (70013526). `Storage Contract Batch2 Tests` (96216) adds #69 contract and full-dispatch regression coverage; exact-tip execution and final XLF integration remain verification gates.
+
 ## Unreleased
 
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1

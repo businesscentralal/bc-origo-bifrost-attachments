@@ -26,16 +26,43 @@ codeunit 70013520 "Data Exchange Query ori"
         tabledata "Field" = R;
 
     var
-        MissingParamErr: Label 'Missing required ''%1'' in the request.', Comment = '%1 = parameter name', Locked = true;
-        UnknownDefErr: Label 'No Data Exch. Def exists for code ''%1''.', Comment = '%1 = definition code', Locked = true;
-        UnknownEntryErr: Label 'Data Exch. entry %1 was not found.', Comment = '%1 = entry no.', Locked = true;
-        UnknownTypeErr: Label 'Unknown Data Exch. Def type ''%1''.', Comment = '%1 = type name', Locked = true;
-        UnknownDirectionErr: Label 'direction must be Import or Export.', Locked = true;
-        BooleanParamErr: Label '''%1'' must be a boolean.', Comment = '%1 = parameter name', Locked = true;
-        IntegerParamErr: Label '''%1'' must be an integer.', Comment = '%1 = parameter name', Locked = true;
-        DateParamErr: Label '''%1'' must be an invariant date (YYYY-MM-DD) or datetime.', Comment = '%1 = parameter name', Locked = true;
-        FileTooLargeErr: Label 'File content is %1 bytes, which is above the 1 MB limit for includeFileContent.', Comment = '%1 = byte length', Locked = true;
-        IntegerMissing: Boolean;
+        MissingParamErr: Label 'Missing required ''%1'' in the request.', Comment = '%1 = parameter name||is-IS=Nauðsynlega færibreytuna ''%1'' vantar í beiðnina.';
+        UnknownDefErr: Label 'No Data Exch. Def exists for code ''%1''.', Comment = '%1 = definition code||is-IS=Engin skilgreining gagnaskipta er til fyrir kóðann ''%1''.';
+        UnknownEntryErr: Label 'Data Exch. entry %1 was not found.', Comment = '%1 = entry no.||is-IS=Gagnaskiptafærsla %1 fannst ekki.';
+        UnknownTypeErr: Label 'Unknown Data Exch. Def type ''%1''.', Comment = '%1 = type name||is-IS=Óþekkt gerð skilgreiningar gagnaskipta ''%1''.';
+        UnknownDirectionErr: Label 'direction must be Import or Export.', Comment = 'is-IS=direction verður að vera Import eða Export.';
+        BooleanParamErr: Label '''%1'' must be a boolean.', Comment = '%1 = parameter name||is-IS=''%1'' verður að vera Boole-gildi.';
+        IntegerParamErr: Label '''%1'' must be an integer.', Comment = '%1 = parameter name||is-IS=''%1'' verður að vera heiltala.';
+        DateParamErr: Label '''%1'' must be an invariant date (YYYY-MM-DD) or datetime.', Comment = '%1 = parameter name||is-IS=''%1'' verður að vera dagsetning á óháðu sniði (YYYY-MM-DD) eða dagsetning og tími.';
+        FileTooLargeErr: Label 'File content is %1 bytes, which is above the 1 MB limit for includeFileContent.', Comment = '%1 = byte length||is-IS=Skráarinnihaldið er %1 bæti, sem er yfir 1 MB hámarkinu fyrir includeFileContent.';
+        FileSizeExpectedLbl: Label 'at most 1 MB', Comment = 'is-IS=að hámarki 1 MB';
+        BooleanExpectedLbl: Label 'true or false', Comment = 'is-IS=true eða false';
+        DirectionExpectedLbl: Label 'Import or Export', Comment = 'is-IS=Import eða Export';
+        TextParamErr: Label 'Parameter "%1" must be a JSON string.', Comment = '%1 = parameter name, is-IS=Færibreytan "%1" verður að vera JSON-strengur.';
+        EmptyValueLbl: Label '(empty string)', Comment = 'is-IS=(tómur strengur)';
+        MissingValueLbl: Label '(missing)', Comment = 'is-IS=(vantar)';
+        PagingLimitErr: Label 'take must not exceed 1000.', Comment = 'is-IS=take má ekki vera yfir 1000.';
+        PagingExpectedLbl: Label 'an integer from 0 to 1000; 0 uses the default page size of 100', Comment = 'is-IS=heiltala frá 0 til 1000; 0 notar sjálfgefna síðustærð, 100';
+        TextExpectedLbl: Label 'a JSON string', Comment = 'is-IS=JSON-strengur';
+        SendTextLbl: Label 'Send "%1" as a JSON string.', Comment = '%1 = parameter name, is-IS=Sendu "%1" sem JSON-streng.';
+        SendRequiredLbl: Label 'Provide "%1" and send the request again.', Comment = '%1 = parameter name, is-IS=Gefðu upp "%1" og sendu beiðnina aftur.';
+        CodeLengthErr: Label 'Parameter "%1" exceeds the maximum length of %2 characters.', Comment = '%1 = parameter name, %2 = maximum length, is-IS=Færibreytan "%1" er lengri en leyfilegt hámark, %2 stafir.';
+        CodeLengthExpectedLbl: Label 'at most %1 characters', Comment = '%1 = maximum length, is-IS=að hámarki %1 stafir';
+        ShortenCodeLbl: Label 'Use the complete code within the stated length; values are never truncated.', Comment = 'is-IS=Notaðu allan kóðann innan tilgreindrar lengdar; gildi eru aldrei stytt.';
+        ChooseTypeLbl: Label 'Use a type name returned by DataExchange.Definition.List.', Comment = 'is-IS=Notaðu gerðarheiti sem DataExchange.Definition.List skilar.';
+        ChooseDirectionLbl: Label 'Send Import or Export, or omit direction to list both.', Comment = 'is-IS=Sendu Import eða Export, eða slepptu direction til að birta hvort tveggja.';
+        ChooseDefinitionLbl: Label 'Use a code returned by DataExchange.Definition.List.', Comment = 'is-IS=Notaðu kóða sem DataExchange.Definition.List skilar.';
+        ChooseEntryLbl: Label 'Use an entryNo returned by DataExchange.Entry.List.', Comment = 'is-IS=Notaðu entryNo sem DataExchange.Entry.List skilar.';
+        SendBooleanLbl: Label 'Send "%1" as true or false, or omit it to use the default.', Comment = '%1 = parameter name, is-IS=Sendu "%1" sem true eða false, eða slepptu því til að nota sjálfgefið gildi.';
+        SendIntegerLbl: Label 'Send "%1" as an integer within the allowed range.', Comment = '%1 = parameter name, is-IS=Sendu "%1" sem heiltölu innan leyfilegra marka.';
+        NonNegativeLbl: Label 'an integer greater than or equal to 0', Comment = 'is-IS=heiltala sem er stærri en eða jöfn 0';
+        PositiveIntegerLbl: Label 'an integer greater than 0', Comment = 'is-IS=heiltala sem er stærri en 0';
+        DateExpectedLbl: Label 'YYYY-MM-DD or an invariant datetime', Comment = 'is-IS=YYYY-MM-DD eða dagsetning og tími á óháðu sniði';
+        SendDateLbl: Label 'Send "%1" as YYYY-MM-DD or an invariant datetime, or omit it.', Comment = '%1 = parameter name, is-IS=Sendu "%1" sem YYYY-MM-DD eða dagsetningu og tíma á óháðu sniði, eða slepptu því.';
+        DateRangeErr: Label 'dateFrom must not be later than dateTo.', Comment = 'is-IS=dateFrom má ekki vera síðar en dateTo.';
+        DateRangeExpectedLbl: Label 'dateFrom less than or equal to dateTo', Comment = 'is-IS=dateFrom fyrr en eða jafnt og dateTo';
+        CorrectDateRangeLbl: Label 'Correct the start and end dates and send the request again.', Comment = 'is-IS=Leiðréttu upphafs- og lokadagsetningar og sendu beiðnina aftur.';
+        OmitFileContentLbl: Label 'Send includeFileContent as false or omit it; retrieve the file through its storage workflow.', Comment = 'is-IS=Sendu includeFileContent sem false eða slepptu því; sæktu skrána í gegnum geymsluferlið.';
 
     /// <summary>Lists Data Exch. Def rows, optionally filtered by type name and Import/Export direction.</summary>
     /// <param name="Argument">The message argument. Receives the success or error response.</param>
@@ -51,19 +78,17 @@ codeunit 70013520 "Data Exchange Query ori"
         FilterByType: Boolean;
     begin
         RequestJson := Argument.GetRequestJson();
-        TypeText := GetText(RequestJson, 'type');
-        DirectionText := GetText(RequestJson, 'direction');
-        if not DirectionIsValid(DirectionText) then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameter, UnknownDirectionErr, 'direction', DirectionText, 'Import or Export', '');
+        ReadText(Argument, RequestJson, 'type', false, 0, TypeText);
+        ReadText(Argument, RequestJson, 'direction', false, 0, DirectionText);
+        if (DirectionText <> '') and not DirectionIsValid(DirectionText) then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, UnknownDirectionErr, 'direction', DirectionText, DirectionExpectedLbl, ChooseDirectionLbl);
+        if TypeText <> '' then
+            if TryTypeFromName(TypeText, DefType) then
+                FilterByType := true
+            else
+                Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(UnknownTypeErr, TypeText), 'type', TypeText, EnumNames(DefType), ChooseTypeLbl);
+        if RespondIfErrors(Argument) then
             exit;
-        end;
-        if TypeText <> '' then begin
-            if not TryTypeFromName(TypeText, DefType) then begin
-                Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(UnknownTypeErr, TypeText), 'type', TypeText, '', '');
-                exit;
-            end;
-            FilterByType := true;
-        end;
 
         DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExchDef.SetLoadFields(Code, Name, Type, "File Type", "Reading/Writing Codeunit", "Reading/Writing XMLport", "Ext. Data Handling Codeunit");
@@ -89,16 +114,14 @@ codeunit 70013520 "Data Exchange Query ori"
         CodeText: Text;
     begin
         RequestJson := Argument.GetRequestJson();
-        CodeText := GetText(RequestJson, 'code');
-        if CodeText = '' then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(MissingParamErr, 'code'), 'code', '', '', '');
+        ReadText(Argument, RequestJson, 'code', true, MaxStrLen(DataExchDef.Code), CodeText);
+        if RespondIfErrors(Argument) then
             exit;
-        end;
 
         DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExchDef.SetLoadFields(Code, Name, Type, "File Type", "Reading/Writing Codeunit", "Reading/Writing XMLport", "Ext. Data Handling Codeunit");
-        if not DataExchDef.Get(CopyStr(CodeText, 1, MaxStrLen(DataExchDef.Code))) then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(UnknownDefErr, CodeText), 'code', CodeText, '', '');
+        if not DataExchDef.Get(CodeText) then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(UnknownDefErr, CodeText), 'code', CodeText, ChooseDefinitionLbl, ChooseDefinitionLbl);
             exit;
         end;
 
@@ -146,21 +169,19 @@ codeunit 70013520 "Data Exchange Query ori"
         DefCode: Text;
     begin
         RequestJson := Argument.GetRequestJson();
+        ReadPaging(Argument, RequestJson);
+        ReadFilterDateTime(Argument, RequestJson, 'dateFrom', DateFrom, HasFrom);
+        ReadFilterDateTime(Argument, RequestJson, 'dateTo', DateTo, HasTo);
+        ReadText(Argument, RequestJson, 'dataExchDefCode', false, MaxStrLen(DataExch."Data Exch. Def Code"), DefCode);
+        if HasFrom and HasTo and (DateFrom > DateTo) then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, DateRangeErr, 'dateFrom', Format(DateFrom, 0, 9), DateRangeExpectedLbl, CorrectDateRangeLbl);
+        if RespondIfErrors(Argument) then
+            exit;
         Argument.EvaluateSkipTake(RequestJson, Skip, Take);
-        if not TryReadFilterDateTime(RequestJson, 'dateFrom', DateFrom, HasFrom) then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(DateParamErr, 'dateFrom'), 'dateFrom', '', 'YYYY-MM-DD', '');
-            exit;
-        end;
-        if not TryReadFilterDateTime(RequestJson, 'dateTo', DateTo, HasTo) then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(DateParamErr, 'dateTo'), 'dateTo', '', 'YYYY-MM-DD', '');
-            exit;
-        end;
-
-        DefCode := GetText(RequestJson, 'dataExchDefCode');
         DataExch.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExch.SetLoadFields("Entry No.", "File Name", "File Content", "Data Exch. Def Code", "Data Exch. Line Def Code", "Incoming Entry No.", "Related Record", SystemCreatedAt);
         if DefCode <> '' then
-            DataExch.SetRange("Data Exch. Def Code", CopyStr(DefCode, 1, MaxStrLen(DataExch."Data Exch. Def Code")));
+            DataExch.SetRange("Data Exch. Def Code", DefCode);
         if HasFrom and HasTo then
             DataExch.SetRange(SystemCreatedAt, DateFrom, DateTo)
         else
@@ -206,27 +227,18 @@ codeunit 70013520 "Data Exchange Query ori"
         ContentLength: Integer;
     begin
         RequestJson := Argument.GetRequestJson();
+        ReadPaging(Argument, RequestJson);
+        ReadBoolean(Argument, RequestJson, 'includeFields', true, IncludeFields);
+        ReadBoolean(Argument, RequestJson, 'includeFileContent', false, IncludeFileContent);
+        ReadInteger(Argument, RequestJson, 'entryNo', true, 1, EntryNo);
+        if RespondIfErrors(Argument) then
+            exit;
         Argument.EvaluateSkipTake(RequestJson, Skip, Take);
-        if not TryReadBoolean(RequestJson, 'includeFields', true, IncludeFields) then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(BooleanParamErr, 'includeFields'), 'includeFields', '', 'true or false', '');
-            exit;
-        end;
-        if not TryReadBoolean(RequestJson, 'includeFileContent', false, IncludeFileContent) then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(BooleanParamErr, 'includeFileContent'), 'includeFileContent', '', 'true or false', '');
-            exit;
-        end;
-        if not TryReadRequiredInteger(RequestJson, 'entryNo', EntryNo) then begin
-            if IntegerMissing then
-                Argument.RespondWithError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(MissingParamErr, 'entryNo'), 'entryNo', '', '', '')
-            else
-                Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(IntegerParamErr, 'entryNo'), 'entryNo', '', 'integer', '');
-            exit;
-        end;
 
         DataExch.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExch.SetLoadFields("Entry No.", "File Name", "File Content", "Data Exch. Def Code", "Data Exch. Line Def Code", "Incoming Entry No.", "Related Record", SystemCreatedAt);
         if not DataExch.Get(EntryNo) then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(UnknownEntryErr, EntryNo), 'entryNo', Format(EntryNo, 0, 9), '', '');
+            Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(UnknownEntryErr, EntryNo), 'entryNo', Format(EntryNo, 0, 9), PositiveIntegerLbl, ChooseEntryLbl);
             exit;
         end;
 
@@ -234,7 +246,7 @@ codeunit 70013520 "Data Exchange Query ori"
         if IncludeFileContent then begin
             ContentLength := FileContentLength(DataExch);
             if ContentLength > MaxInlineBytes() then begin
-                Argument.RespondWithError("Bifrost Error Code ori"::LimitExceeded, StrSubstNo(FileTooLargeErr, ContentLength), 'includeFileContent', Format(ContentLength, 0, 9), 'at most 1 MB', '');
+                Argument.RespondWithError("Bifrost Error Code ori"::LimitExceeded, StrSubstNo(FileTooLargeErr, ContentLength), 'includeFileContent', Format(ContentLength, 0, 9), FileSizeExpectedLbl, OmitFileContentLbl);
                 exit;
             end;
             DataObject.Add('contentLength', ContentLength);
@@ -505,105 +517,154 @@ codeunit 70013520 "Data Exchange Query ori"
         Argument."Content Type" := 'text/json';
     end;
 
-    local procedure GetText(RequestJson: JsonObject; PropertyName: Text): Text
+    local procedure RespondIfErrors(var Argument: Record "Message Argument ori"): Boolean
     var
-        Token: JsonToken;
+        Reader: Codeunit "Storage Request Reader ori";
     begin
-        if not RequestJson.Get(PropertyName, Token) then
-            exit('');
-        if not Token.IsValue() then
-            exit('');
-        if Token.AsValue().IsNull() then
-            exit('');
-        exit(Token.AsValue().AsText());
+        exit(Reader.RespondIfErrors(Argument));
     end;
 
-    local procedure TryReadBoolean(RequestJson: JsonObject; PropertyName: Text; DefaultValue: Boolean; var Value: Boolean): Boolean
+    local procedure ReadText(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; MaximumLength: Integer; var TextValue: Text): Boolean
     var
         Token: JsonToken;
         Written: Text;
     begin
-        Value := DefaultValue;
-        if not RequestJson.Get(PropertyName, Token) then
-            exit(true);
-        if not Token.IsValue() or Token.AsValue().IsNull() then
-            exit(true);
+        Clear(TextValue);
+        if not RequestJson.Get(ParameterName, Token) then begin
+            if not Required then
+                exit(true);
+            Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(MissingParamErr, ParameterName), ParameterName, MissingValueLbl, TextExpectedLbl, StrSubstNo(SendRequiredLbl, ParameterName));
+            exit(false);
+        end;
         Token.WriteTo(Written);
-        if Written = 'true' then begin
-            Value := true;
-            exit(true);
+        if not Written.StartsWith('"') then begin
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(TextParamErr, ParameterName), ParameterName, Written, TextExpectedLbl, StrSubstNo(SendTextLbl, ParameterName));
+            exit(false);
         end;
-        if Written = 'false' then begin
-            Value := false;
-            exit(true);
+        TextValue := Token.AsValue().AsText();
+        if Required and (TextValue = '') then begin
+            Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(MissingParamErr, ParameterName), ParameterName, EmptyValueLbl, TextExpectedLbl, StrSubstNo(SendRequiredLbl, ParameterName));
+            exit(false);
         end;
-        exit(false);
+        if (MaximumLength > 0) and (StrLen(TextValue) > MaximumLength) then begin
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(CodeLengthErr, ParameterName, MaximumLength), ParameterName, TextValue, StrSubstNo(CodeLengthExpectedLbl, MaximumLength), ShortenCodeLbl);
+            Clear(TextValue);
+            exit(false);
+        end;
+        exit(true);
     end;
 
-    local procedure TryReadRequiredInteger(RequestJson: JsonObject; PropertyName: Text; var Value: Integer): Boolean
+    local procedure ReadBoolean(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; DefaultValue: Boolean; var BooleanValue: Boolean)
     var
         Token: JsonToken;
         Written: Text;
     begin
-        IntegerMissing := false;
-        if not RequestJson.Get(PropertyName, Token) or (not Token.IsValue()) or Token.AsValue().IsNull() then begin
-            IntegerMissing := true;
-            exit(false);
+        BooleanValue := DefaultValue;
+        if not RequestJson.Get(ParameterName, Token) then
+            exit;
+        Token.WriteTo(Written);
+        case Written of
+            'true':
+                BooleanValue := true;
+            'false':
+                BooleanValue := false;
+            else
+                Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(BooleanParamErr, ParameterName), ParameterName, Written, BooleanExpectedLbl, StrSubstNo(SendBooleanLbl, ParameterName));
+        end;
+    end;
+
+    local procedure ReadPaging(var Argument: Record "Message Argument ori"; RequestJson: JsonObject)
+    var
+        Parsed: Integer;
+    begin
+        ReadInteger(Argument, RequestJson, 'skip', false, 0, Parsed);
+        Clear(Parsed);
+        ReadInteger(Argument, RequestJson, 'take', false, 0, Parsed);
+        if Parsed > 1000 then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, PagingLimitErr, 'take', Format(Parsed, 0, 9), PagingExpectedLbl, StrSubstNo(SendIntegerLbl, 'take'));
+    end;
+
+    local procedure ReadInteger(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; Minimum: Integer; var IntegerValue: Integer)
+    var
+        Token: JsonToken;
+        Written: Text;
+        Expected: Text;
+    begin
+        if Minimum = 0 then
+            Expected := NonNegativeLbl
+        else
+            Expected := PositiveIntegerLbl;
+        if not RequestJson.Get(ParameterName, Token) then begin
+            if Required then
+                Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(MissingParamErr, ParameterName), ParameterName, MissingValueLbl, Expected, StrSubstNo(SendRequiredLbl, ParameterName));
+            exit;
         end;
         Token.WriteTo(Written);
-        if not IsIntegerText(Written) then
-            exit(false);
-        exit(Evaluate(Value, Written, 9));
+        // Preserve digit-string paging values accepted by Foundation as well as JSON integers.
+        if Token.IsValue() then
+            if not Token.AsValue().IsNull() then
+                Written := Token.AsValue().AsText();
+        if IsIntegerText(Written) then
+            if Evaluate(IntegerValue, Written, 9) then begin
+                if IntegerValue < Minimum then
+                    Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(IntegerParamErr, ParameterName), ParameterName, Written, Expected, StrSubstNo(SendIntegerLbl, ParameterName));
+                exit;
+            end;
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(IntegerParamErr, ParameterName), ParameterName, Written, Expected, StrSubstNo(SendIntegerLbl, ParameterName));
     end;
 
     local procedure IsIntegerText(Written: Text): Boolean
     var
         Index: Integer;
-        Digit: Text;
+        FirstDigit: Integer;
     begin
-        if Written = '' then
-            exit(false);
+        FirstDigit := 1;
         if Written.StartsWith('-') then
-            Written := CopyStr(Written, 2);
-        if Written = '' then
+            FirstDigit := 2;
+        if StrLen(Written) < FirstDigit then
             exit(false);
-        for Index := 1 to StrLen(Written) do begin
-            Digit := CopyStr(Written, Index, 1);
-            if (Digit < '0') or (Digit > '9') then
+        for Index := FirstDigit to StrLen(Written) do
+            if not (Written[Index] in ['0' .. '9']) then
                 exit(false);
-        end;
         exit(true);
     end;
 
-    local procedure TryReadFilterDateTime(RequestJson: JsonObject; PropertyName: Text; var Value: DateTime; var IsPresent: Boolean): Boolean
+    local procedure ReadFilterDateTime(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; var DateTimeValue: DateTime; var IsPresent: Boolean)
     var
-        Token: JsonToken;
         TextValue: Text;
         ParsedDate: Date;
+        Valid: Boolean;
     begin
         IsPresent := false;
-        Value := 0DT;
-        if not RequestJson.Get(PropertyName, Token) then
-            exit(true);
-        if not Token.IsValue() or Token.AsValue().IsNull() then
-            exit(true);
-        TextValue := Token.AsValue().AsText();
+        Clear(DateTimeValue);
+        if not ReadText(Argument, RequestJson, ParameterName, false, 0, TextValue) then
+            exit;
         if TextValue = '' then
-            exit(true);
-        if TextValue.Contains('T') or TextValue.Contains(':') then begin
-            if not Evaluate(Value, TextValue, 9) then
-                exit(false);
-            IsPresent := true;
-            exit(true);
+            exit;
+        if TextValue.Contains('T') or TextValue.Contains(':') then
+            Valid := Evaluate(DateTimeValue, TextValue, 9)
+        else begin
+            Valid := Evaluate(ParsedDate, TextValue, 9);
+            if Valid then
+                if ParameterName = 'dateTo' then
+                    DateTimeValue := CreateDateTime(ParsedDate, 235959T)
+                else
+                    DateTimeValue := CreateDateTime(ParsedDate, 0T);
         end;
-        if not Evaluate(ParsedDate, TextValue, 9) then
-            exit(false);
-        if PropertyName = 'dateTo' then
-            Value := CreateDateTime(ParsedDate, 235959T)
-        else
-            Value := CreateDateTime(ParsedDate, 0T);
-        IsPresent := true;
-        exit(true);
+        IsPresent := Valid and (DateTimeValue <> 0DT);
+        if not IsPresent then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(DateParamErr, ParameterName), ParameterName, TextValue, DateExpectedLbl, StrSubstNo(SendDateLbl, ParameterName));
+    end;
+
+    local procedure EnumNames(DefType: Enum "Data Exchange Definition Type") Result: Text
+    var
+        TypeName: Text;
+    begin
+        foreach TypeName in DefType.Names() do begin
+            if Result <> '' then
+                Result += ', ';
+            Result += TypeName;
+        end;
     end;
 
     local procedure DirectionIsValid(DirectionText: Text): Boolean
