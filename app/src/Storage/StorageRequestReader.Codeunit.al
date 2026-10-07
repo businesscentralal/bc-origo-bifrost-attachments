@@ -333,6 +333,129 @@ codeunit 10035682 "Storage Request Reader ori"
         exit(RequestMgt.CanonicalPath(Path));
     end;
 
+    /// <summary>Parses request data read-only and collects malformed or non-object input.</summary>
+    /// <param name="Argument">The request and Foundation collector.</param>
+    /// <param name="RequestJson">Receives the parsed request object.</param>
+    /// <returns>True when the data is a JSON object.</returns>
+    internal procedure ReadMutationRequest(var Argument: Record "Message Argument ori"; var RequestJson: JsonObject): Boolean
+    var
+        InvalidRequestErr: Label 'The request data must be a JSON object.', Comment = 'is-IS=Gögn beiðninnar verða að vera JSON-hlutur.';
+        InvalidRequestLbl: Label 'malformed JSON or a non-object value', Comment = 'is-IS=ógilt JSON eða gildi sem er ekki hlutur';
+        ObjectExpectedLbl: Label 'a JSON object containing the request parameters', Comment = 'is-IS=JSON-hlutur sem inniheldur færibreytur beiðninnar';
+        SendObjectLbl: Label 'Send the parameters as a valid JSON object and retry.', Comment = 'is-IS=Sendu færibreyturnar sem gildan JSON-hlut og reyndu aftur.';
+    begin
+        Clear(RequestJson);
+        if TryReadMutationRequest(Argument, RequestJson) then
+            exit(true);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, InvalidRequestErr, 'data', InvalidRequestLbl, ObjectExpectedLbl, SendObjectLbl);
+        exit(false);
+    end;
+
+    /// <summary>Reads raw JSON strings without coercion or truncation. Optional absence is accepted; explicit null is refused.</summary>
+    /// <param name="Argument">The Foundation error collector.</param>
+    /// <param name="RequestJson">The parsed request.</param>
+    /// <param name="ParameterName">The exact wire key.</param>
+    /// <param name="Required">Whether absence or an empty string is an error.</param>
+    /// <param name="MaxLength">The positive raw character limit.</param>
+    /// <param name="ParsedText">Receives the valid text, otherwise empty.</param>
+    /// <returns>True for valid text or an absent optional key.</returns>
+    internal procedure ReadMutationText(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; MaxLength: Integer; var ParsedText: Text): Boolean
+    var
+        InputToken: JsonToken;
+        Written: Text;
+        RawText: Text;
+        ExpectedText: Text;
+        RequiredErr: Label 'Parameter "%1" is required.', Comment = '%1 = parameter name||is-IS=Færibreytan "%1" er nauðsynleg.';
+        InvalidTextErr: Label 'Parameter "%1" must be a JSON string.', Comment = '%1 = parameter name||is-IS=Færibreytan "%1" verður að vera JSON-strengur.';
+        TooLongErr: Label 'Parameter "%1" exceeds the maximum of %2 characters.', Comment = '%1 = parameter name, %2 = maximum length||is-IS=Færibreytan "%1" er lengri en leyfilegt hámark, %2 stafir.';
+        BoundedStringLbl: Label 'a JSON string of at most %1 characters', Comment = '%1 = maximum length||is-IS=JSON-strengur sem er mest %1 stafir';
+        MissingLbl: Label 'not supplied', Comment = 'is-IS=ekki gefið upp';
+        SendTextLbl: Label 'Send "%1" as %2 and retry.', Comment = '%1 = parameter name, %2 = expected format||is-IS=Sendu "%1" sem %2 og reyndu aftur.';
+    begin
+        ParsedText := '';
+        ExpectedText := StrSubstNo(BoundedStringLbl, MaxLength);
+        if not RequestJson.Get(ParameterName, InputToken) then begin
+            if not Required then
+                exit(true);
+            Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(RequiredErr, ParameterName), ParameterName, MissingLbl, ExpectedText, StrSubstNo(SendTextLbl, ParameterName, ExpectedText));
+            exit(false);
+        end;
+        // JSON serialization starts with a quote only for strings. AsText alone also coerces numbers and booleans.
+        InputToken.WriteTo(Written);
+        if not Written.StartsWith('"') then begin
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(InvalidTextErr, ParameterName), ParameterName, Written, ExpectedText, StrSubstNo(SendTextLbl, ParameterName, ExpectedText));
+            exit(false);
+        end;
+        RawText := InputToken.AsValue().AsText();
+        if Required and (StrLen(RawText) = 0) then begin
+            Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(RequiredErr, ParameterName), ParameterName, Written, ExpectedText, StrSubstNo(SendTextLbl, ParameterName, ExpectedText));
+            exit(false);
+        end;
+        if StrLen(RawText) > MaxLength then begin
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(TooLongErr, ParameterName, MaxLength), ParameterName, RawText, ExpectedText, StrSubstNo(SendTextLbl, ParameterName, ExpectedText));
+            exit(false);
+        end;
+        ParsedText := RawText;
+        exit(true);
+    end;
+
+    /// <summary>Reads a canonical Code20 key without silently uppercasing or trimming caller input.</summary>
+    /// <param name="Argument">The Foundation error collector.</param>
+    /// <param name="RequestJson">The parsed request.</param>
+    /// <param name="ParameterName">The exact required wire key.</param>
+    /// <param name="ParsedCode">Receives the unchanged canonical key, otherwise empty.</param>
+    /// <returns>True only for a nonempty JSON string that already has its BC Code20 spelling.</returns>
+    internal procedure ReadMutationCode(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; var ParsedCode: Code[20]): Boolean
+    var
+        RawText: Text;
+        CanonicalCode: Code[2048];
+        Received: Text;
+        InputToken: JsonToken;
+        CanonicalErr: Label 'Parameter "%1" must use its canonical Business Central code.', Comment = '%1 = parameter name||is-IS=Færibreytan "%1" verður að nota staðlaðan Business Central-kóða.';
+        CanonicalExpectedLbl: Label 'an uppercase code of at most 20 characters without surrounding spaces', Comment = 'is-IS=kóði með hástöfum, mest 20 stafir og án bila í upphafi eða lokin';
+        SendCanonicalLbl: Label 'Use the exact code returned by the corresponding list method; the canonical spelling of this value is "%1".', Comment = '%1 = canonical code||is-IS=Notaðu nákvæmlega kóðann sem samsvarandi listaaðferð skilar; staðlað form þessa gildis er "%1".';
+    begin
+        Clear(ParsedCode);
+        if not ReadMutationText(Argument, RequestJson, ParameterName, true, MaxStrLen(ParsedCode), RawText) then
+            exit(false);
+        // The raw bound was checked before this scratch conversion. Compare character ordinals, never AL text equality.
+        CanonicalCode := RawText;
+        if not SameMutationCodeOrdinals(RawText, CanonicalCode) then begin
+            Received := RawText;
+            if StrLen(CanonicalCode) = 0 then begin
+                RequestJson.Get(ParameterName, InputToken);
+                InputToken.WriteTo(Received);
+            end;
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(CanonicalErr, ParameterName), ParameterName, Received, CanonicalExpectedLbl, StrSubstNo(SendCanonicalLbl, CanonicalCode));
+            exit(false);
+        end;
+        ParsedCode := CanonicalCode;
+        exit(true);
+    end;
+
+    local procedure SameMutationCodeOrdinals(RawText: Text; CanonicalCode: Code[2048]): Boolean
+    var
+        CharacterIndex: Integer;
+        RawOrdinal: Integer;
+        CanonicalOrdinal: Integer;
+    begin
+        if StrLen(RawText) <> StrLen(CanonicalCode) then
+            exit(false);
+        for CharacterIndex := 1 to StrLen(RawText) do begin
+            RawOrdinal := RawText[CharacterIndex];
+            CanonicalOrdinal := CanonicalCode[CharacterIndex];
+            if RawOrdinal <> CanonicalOrdinal then
+                exit(false);
+        end;
+        exit(true);
+    end;
+
+    [TryFunction]
+    local procedure TryReadMutationRequest(var Argument: Record "Message Argument ori"; var RequestJson: JsonObject)
+    begin
+        RequestJson := Argument.GetRequestJson();
+    end;
+
     local procedure AcceptAbsent(var Argument: Record "Message Argument ori"; ParameterName: Text; Required: Boolean): Boolean
     begin
         if not Required then
