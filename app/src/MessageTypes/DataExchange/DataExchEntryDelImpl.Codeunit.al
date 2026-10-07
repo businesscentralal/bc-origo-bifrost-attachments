@@ -1,11 +1,11 @@
 namespace Origo.Bifrost.Attachments;
 
+using Microsoft.EServices.EDocument;
 using Origo.Bifrost;
 using System.IO;
-using System.Utilities;
 
-/// <summary>Imports UTF8 data exchange definitions through the standard Microsoft XMLport.</summary>
-codeunit 70013545 "DataExch Def Import Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+/// <summary>Deletes unreferenced data exchange entries while preserving incoming-document relationships.</summary>
+codeunit 70013544 "DataExch Entry Del Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 
@@ -20,28 +20,28 @@ codeunit 70013545 "DataExch Def Import Impl ori" implements "Msg Interface ori",
     /// <returns>The message metadata value.</returns>
     procedure GetFilterTableNo(): Integer
     begin
-        exit(Database::"Data Exch. Def");
+        exit(Database::"Data Exch.");
     end;
 
     /// <summary>Returns the message description.</summary>
     /// <returns>The message metadata value.</returns>
     procedure GetDescription(): Text[250]
     begin
-        exit('Imports a data exchange definition from XML.');
+        exit('Deletes a Data Exch. entry that is not referenced by an incoming document.');
     end;
 
     /// <summary>Returns discovery keywords for the message.</summary>
     /// <returns>The message metadata value.</returns>
     procedure GetKeywords(): Text
     begin
-        exit('data exchange definition import, xml');
+        exit('data exchange delete, entry delete');
     end;
 
     /// <summary>Returns the selection guidance for the message.</summary>
     /// <returns>The message metadata value.</returns>
     procedure GetSelectionDescription(): Text
     begin
-        exit('Installs a data exchange definition from definitionXml.');
+        exit('Deletes a Data Exch. entry and its fields.');
     end;
 
     /// <summary>Describes the supported message version and request content.</summary>
@@ -70,10 +70,10 @@ codeunit 70013545 "DataExch Def Import Impl ori" implements "Msg Interface ori",
     var
         Parameter: JsonObject;
     begin
-        Parameter.Add('name', 'definitionXml');
-        Parameter.Add('type', 'string');
+        Parameter.Add('name', 'entryNo');
+        Parameter.Add('type', 'integer');
         Parameter.Add('required', true);
-        Parameter.Add('description', 'Data exchange definition XML.');
+        Parameter.Add('description', 'Data Exch. entry number.');
         Parameters.Add(Parameter);
         exit(true);
     end;
@@ -118,8 +118,8 @@ codeunit 70013545 "DataExch Def Import Impl ori" implements "Msg Interface ori",
     /// <returns>True when this contract chapter is provided.</returns>
     procedure GetRelated(var Related: JsonArray): Boolean
     begin
-        Related.Add('DataExchange.Definition.Export');
-        Related.Add('DataExchange.Definition.Get');
+        Related.Add('DataExchange.Import.Run');
+        Related.Add('DataExchange.Entry.Get');
         exit(true);
     end;
 
@@ -144,17 +144,17 @@ codeunit 70013545 "DataExch Def Import Impl ori" implements "Msg Interface ori",
     /// <returns>True when this contract chapter is provided.</returns>
     procedure GetOverview(var Overview: Text): Boolean
     begin
-        Overview := 'Imports a data exchange definition from XML through the standard import.';
+        Overview := 'Deletes a Data Exch. entry. Refuses an entry referenced by an incoming document.';
         exit(true);
     end;
 
-    /// <summary>Reports the available operation notes.</summary>
-    /// <param name="Notes">The notes contract chapter to populate.</param>
-    /// <returns>True when this contract chapter is provided.</returns>
+    /// <summary>Clears operation notes because this contract does not provide a notes chapter.</summary>
+    /// <param name="Notes">Returns empty text even when the caller supplied stale notes.</param>
+    /// <returns>False because no notes chapter is provided.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     begin
-        Notes := 'The compiler still needs to confirm the definition import procedure.';
-        exit(true);
+        Notes := '';
+        exit(false);
     end;
 
     /// <summary>Returns the inbound direction of this write message.</summary>
@@ -168,30 +168,52 @@ codeunit 70013545 "DataExch Def Import Impl ori" implements "Msg Interface ori",
     /// <param name="Argument">The message argument containing request and response data.</param>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
-        TempBlob: Codeunit "Temp Blob";
+        DataExch: Record "Data Exch.";
+        DataExchField: Record "Data Exch. Field";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         Token: JsonToken;
-        DefinitionXml: Text;
-        OutStream: OutStream;
-        InStream: InStream;
-        MissingErr: Label 'definitionXml is required.', Locked = true;
+        EntryNo: Integer;
+        MissingEntryErr: Label 'entryNo is required.', Locked = true;
+        NotFoundErr: Label 'Data Exch. entry %1 was not found.', Comment = '%1 = entry no.', Locked = true;
+        ReferencedErr: Label 'Data Exch. entry %1 is referenced by an incoming document.', Comment = '%1 = entry no.', Locked = true;
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
         RequestJson := Argument.GetRequestJson();
-        if not RequestJson.Get('definitionXml', Token) then begin
-            Argument.RespondWithError(MissingErr);
+        if not RequestJson.Get('entryNo', Token) then begin
+            Argument.RespondWithError(MissingEntryErr);
             exit;
         end;
-        DefinitionXml := Token.AsValue().AsText();
-        TempBlob.CreateOutStream(OutStream, TextEncoding::UTF8);
-        OutStream.WriteText(DefinitionXml);
-        TempBlob.CreateInStream(InStream, TextEncoding::UTF8);
-        Xmlport.Import(Xmlport::"Imp / Exp Data Exch Def & Map", InStream);
+        EntryNo := Token.AsValue().AsInteger();
+        if not DataExch.Get(EntryNo) then begin
+            Argument.RespondWithError(StrSubstNo(NotFoundErr, EntryNo));
+            exit;
+        end;
+        if IsReferencedByIncomingDocument(DataExch) then begin
+            Argument.RespondWithError(StrSubstNo(ReferencedErr, EntryNo));
+            exit;
+        end;
+        DataExchField.SetRange("Data Exch. No.", EntryNo);
+        DataExchField.DeleteAll(true);
+        DataExch.Delete(true);
         ResponseJson.Add('status', 'Success');
-        ResponseJson.Add('messageType', 'DataExchange.Definition.Import');
+        ResponseJson.Add('messageType', 'DataExchange.Entry.Delete');
+        ResponseJson.Add('entryNo', EntryNo);
         Argument.SetResponseJson(ResponseJson);
         Argument."Content Type" := Argument.GetContentTypeJson();
     end;
+
+    local procedure IsReferencedByIncomingDocument(DataExch: Record "Data Exch."): Boolean
+    var
+        EmptyRecordId: RecordId;
+    begin
+        // A stale incoming-document pointer still represents a protected relationship.
+        if DataExch."Incoming Entry No." <> 0 then
+            exit(true);
+        if DataExch."Related Record" = EmptyRecordId then
+            exit(false);
+        exit(DataExch."Related Record".TableNo() = Database::"Incoming Document");
+    end;
+
 }

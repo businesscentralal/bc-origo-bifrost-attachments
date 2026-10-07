@@ -476,9 +476,9 @@ codeunit 96205 "Storage Upload Tests"
 
         // [THEN] Both tables report read- and write-restricted
         LibraryAssert.IsTrue(TempArgument.IsTableReadRestrictedForDataRecords(Database::"Storage Upload Session ori"), 'Sessions must be read-restricted.');
-        LibraryAssert.IsTrue(TempArgument.IsTableWriteRestrictedForDataRecords(Database::"Storage Upload Session ori"), 'Sessions must be write-restricted.');
+        LibraryAssert.IsTrue(TempArgument.IsTableWriteRestrictedForDataRecords(Database::"Storage Upload Session ori", false), 'Sessions must be write-restricted.');
         LibraryAssert.IsTrue(TempArgument.IsTableReadRestrictedForDataRecords(Database::"Storage Upload Chunk ori"), 'Chunks must be read-restricted.');
-        LibraryAssert.IsTrue(TempArgument.IsTableWriteRestrictedForDataRecords(Database::"Storage Upload Chunk ori"), 'Chunks must be write-restricted.');
+        LibraryAssert.IsTrue(TempArgument.IsTableWriteRestrictedForDataRecords(Database::"Storage Upload Chunk ori", false), 'Chunks must be write-restricted.');
     end;
 
     [Test]
@@ -685,7 +685,7 @@ codeunit 96205 "Storage Upload Tests"
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
         ResponseContent: BigText;
-        ResponseContentType: Text[50];
+        ResponseContentType: Text[100];
         MessageVersion: Enum "Message Version ori";
         RequestText: Text;
         ResponseText: Text;
