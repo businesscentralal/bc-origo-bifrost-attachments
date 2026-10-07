@@ -1,5 +1,6 @@
 namespace Origo.Bifrost.Attachments;
 
+using Microsoft.Foundation.Attachment;
 using Origo.Bifrost;
 using System.IO;
 

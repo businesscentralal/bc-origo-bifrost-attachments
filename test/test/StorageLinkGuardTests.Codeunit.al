@@ -57,7 +57,7 @@ codeunit 96214 "Storage Link Guard Tests"
         Link.Get(Database::Customer, RecordId);
         LibraryAssert.AreEqual('kept.txt', Link."File Name", 'The link row must be unchanged after the rejected write.');
         LibraryAssert.IsFalse(TempArgument.IsTableReadRestrictedForDataRecords(Database::"Storage Attachment Link ori"), 'Link reads stay allowed.');
-        LibraryAssert.IsTrue(TempArgument.IsTableWriteRestrictedForDataRecords(Database::"Storage Attachment Link ori"), 'Link writes are restricted.');
+        LibraryAssert.IsTrue(TempArgument.IsTableWriteRestrictedForDataRecords(Database::"Storage Attachment Link ori", false), 'Link writes are restricted.');
     end;
 
     [Test]
@@ -133,7 +133,7 @@ codeunit 96214 "Storage Link Guard Tests"
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
         ResponseContent: BigText;
-        ResponseContentType: Text[50];
+        ResponseContentType: Text[100];
         MessageVersion: Enum "Message Version ori";
         RequestText: Text;
         ResponseText: Text;
