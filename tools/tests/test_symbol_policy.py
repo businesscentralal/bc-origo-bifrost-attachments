@@ -177,6 +177,16 @@ class SymbolPolicy(unittest.TestCase):
         with changed.open('ab') as output: output.write(b'changed-signature-tail')
         with self.assertRaisesRegex(G.GateError, 'entry bound'):
             G.package_info(changed)
+        # The hash exception also requires every exact manifest identity field.
+        # Mutating the profile exercises that second guard using genuine bytes;
+        # changing package bytes instead would stop at the generic entry bound.
+        for key, value in [('id', str(uuid.uuid4())), ('version', '29.0.54011.55936'),
+                           ('publisher', 'Other'), ('name', 'Other Application')]:
+            profile = copy.deepcopy(G.MEASURED_PACKAGE_PROFILES[info['sha256']])
+            profile['identity'][key] = value
+            with self.subTest(identityField=key), patch.dict(G.MEASURED_PACKAGE_PROFILES, {info['sha256']: profile}):
+                with self.assertRaisesRegex(G.GateError, 'Measured package profile identity mismatch'):
+                    G.package_info(path)
         # Profile entry/expansion ceilings remain independently enforced.
         for key, maximum, message in [('maxEntries', 8664, 'entry bound'),
                                       ('maxExpandedBytes', 379592377, 'expanded-byte')]:
@@ -198,9 +208,12 @@ class SymbolPolicy(unittest.TestCase):
             changed = copy.deepcopy(info)
             changed[key] = value
             with self.subTest(key=key), self.assertRaises(G.GateError): G.check_foundation_candidate(changed)
-        changed = copy.deepcopy(info)
-        changed['identity']['version'] = '28.0.3.531'
-        with self.assertRaises(G.GateError): G.check_foundation_candidate(changed)
+        for key, value in [('id', str(uuid.uuid4())), ('version', '28.0.3.531'),
+                           ('publisher', 'Other'), ('name', 'Other Foundation')]:
+            changed = copy.deepcopy(info)
+            changed['identity'][key] = value
+            with self.subTest(identityField=key), self.assertRaisesRegex(G.GateError, 'identity'):
+                G.check_foundation_candidate(changed)
 
 
 if __name__ == '__main__': unittest.main()

@@ -140,14 +140,16 @@ one-package return, original output forwarding, cloned parameters, isolated
 logs, native refusal before compile, compiler exceptions and module-scope
 installation/foreign-override refusal. These language fixtures do not run AL.
 
-BeforeCompile now records both the cache and `compilerFolder/symbols` (at most
-128 packages per folder, at most 128 MiB per package). PostCompile rehashes both:
+BeforeCompile records both the cache (at most 128 packages) and
+`compilerFolder/symbols` (at most 256 packages), with at most 128 MiB on disk per
+package and the resource profiles below. PostCompile rehashes both:
 pre-existing cache entries and compiler-folder entries must remain identical;
 new cache dependencies must match exact pre-observed compiler-folder entries.
 Exactly one new output entry must match the returned package identity and hash.
 Missing/duplicate/substituted paths, inputs or output copies fail acceptance.
-Translation observations cannot replace final snapshots. Foundation signed pin,
-zero friends, dependency floor, analyzers and failure policy remain unchanged.
+Translation observations cannot replace final snapshots. The exact Apps530 pin
+below requires zero friends; dependency floor, analyzers and failure policy remain
+unchanged.
 Receipts set `consumedInputsCertified=false`: boundary observations cannot prove
 transient alc inputs, installed/probed dependencies, real helper timing or trust.
 Actual helper6.1.18/Alpaca runtime and infrastructure integration remain blocked.
@@ -176,8 +178,10 @@ actual `appSymbolsFolder` package cache. The genuine helper receives its origina
 folders and parameters. No package is pruned and no private compiler view is used.
 The catalog limit is 256 packages and 1 GiB aggregate; the app cache limit is
 128 packages and 512 MiB aggregate, including preexisting inputs and the output
-copy. Each package is limited to 128 MiB on disk and expanded content, 4096 ZIP
-entries and a 16 MiB manifest. Aggregate expanded bytes use the same folder limit.
+copy. Each package is limited to 128 MiB on disk and a 16 MiB manifest. The generic
+profile permits 128 MiB expanded content and 4096 ZIP entries; only the exact
+measured Base identity/hash below permits 512 MiB expanded content and 16384
+entries. Aggregate expanded bytes use the same folder limit.
 Each full inventory has a 60 second elapsed budget with checks between 1 MiB reads.
 These finite design limits are **not validated Windows runner capacity**. Actual
 catalog/cache metadata, bytes, hashes, exact folders and dependency resolution
@@ -200,7 +204,8 @@ samples, explicit truncation, folder counts/bytes and incomplete-enumeration fla
 Final helper additions must equal the predicted full copy set, and the exact
 output-copy delta is required. `consumedInputsCertified` and
 `runnerCapacityValidated` stay false; real helper/runner evidence is a separate gate.
-Foundation 530 evidence does not change the existing 523 pin or approve signature
+The exact Apps530 candidate is required by current precompile checks; 523 remains
+a distinct controlled fixture. Candidate content approval does not approve signature
 trust. Worker7 is the sole PR99 writer; this repair is a separate draft dependency
 for integration through the existing owner after technical acceptance. Merged
 PR94 is historical custody and is not a remediation branch.
