@@ -59,6 +59,7 @@ if ($scriptsArchiveUrl) {
 
         Write-Host "Download Alpaca scripts archive from '$scriptsArchiveUrl'"
         Invoke-WebRequest -Uri $scriptsArchiveUrl -OutFile $tempArchivePath
+        $script:AppSourceAlpacaArchiveHash = (Get-FileHash -LiteralPath $tempArchivePath -Algorithm SHA256).Hash.ToLowerInvariant()
 
         Write-Host "Extract Alpaca scripts archive"
         Expand-Archive -Path $tempArchivePath -DestinationPath $tempPath -Force
@@ -102,3 +103,7 @@ if (Test-Path $overridePath) {
 }
 
 Write-Host "::endgroup::"
+
+# Preserve the existing stripping/Alpaca override; initialize current-run evidence
+# after the downloaded overrides are installed, before any final app compile.
+& (Join-Path $env:GITHUB_WORKSPACE 'tools/Assert-AppSourceBuild.ps1') -Stage Initialize -AlpacaArchiveHash $script:AppSourceAlpacaArchiveHash

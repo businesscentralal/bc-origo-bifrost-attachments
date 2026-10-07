@@ -45,5 +45,18 @@
         "doNotSignApps": true
       }
     }
+  ],
+  "enableCodeCop": true,
+  "enableUICop": true,
+  "enableCodeAnalyzersOnTestApps": true,
+  "failOn": "warning",
+  "alpaca": {
+    "enableCodeCopForTestApps": true,
+    "enableUICopForTestApps": true,
+    "enableAppSourceCopForTestApps": true
+  },
+  "fullBuildPatterns": [
+    ".AL-Go/**",
+    "tools/**"
   ]
 }

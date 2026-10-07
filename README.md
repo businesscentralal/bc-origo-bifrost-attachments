@@ -306,6 +306,10 @@ credentials — this app only stores a registered File Account id.
 
 ## Development
 
+- AppSource compiler/package tooling and its verification holds are described in
+  [tools/AppSourceBuildGate.md](tools/AppSourceBuildGate.md). The #78 hooks enforce
+  final analyzer settings and current-run compiler/NAVX receipts; post-pipeline
+  and post-Sign workflow wiring still requires infrastructure approval.
 - Open `al.code-workspace` in VS Code.
 - Development containers: COSMO Alpaca `bc28-is` (CRONUS IS) and `bc28-w1` (CRONUS International
   Ltd.), both defined in `app/.vscode/launch.json` — git-ignored and the authority for the

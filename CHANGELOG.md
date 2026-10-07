@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## Unreleased
 
+### Changed (2026-10-07) - AppSource build evidence (#78)
+
+- Enable CodeCop, UICop and test-app analyzers with `failOn=warning`; add compiler/package hooks and tooling that reject incomplete compiles, wrong inputs, stale receipts and surviving compiled Default friend grants. Preserve the exact Test friend and existing signing policy. Integrate PR87's hash-pinned allocation/dependency guard and all eight regressions. No product AL objects or IDs change. Workflow application, actual product/runtime verification and release readiness remain blocked pending PR84 and infrastructure approval; see `tools/AppSourceBuildGate.md`.
+
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
 - The Foundation dependency floor is **28.0.1.0** in `app/app.json` and `test/app.json`, the same floor Bifrost Language Models uses for Foundation 28.0.1. Every 28.0.1.x build is accepted.
