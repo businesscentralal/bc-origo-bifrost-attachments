@@ -24,20 +24,26 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
 
     /// <summary>Describes the existing message operation.</summary>
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Exports through a Data Exchange definition to a named file.', Comment = 'is-IS=Flytur út með skilgreiningu gagnaskipta í nafngreinda skrá.';
     begin
-        exit('Exports through a Data Exchange definition to a named file.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>Returns the discovery terms for this message type.</summary>
     procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'data exchange export, payment export, export file', Comment = 'is-IS=útflutningur gagnaskipta, útflutningur greiðslna, flytja út skrá';
     begin
-        exit('data exchange export, payment export, export file');
+        exit(KeywordsLbl);
     end;
 
     /// <summary>Describes when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Runs an export definition and returns the file name.', Comment = 'is-IS=Keyrir útflutningsskilgreiningu og skilar skráarheitinu.';
     begin
-        exit('Runs an export definition and returns the file name.');
+        exit(SelectionDescriptionLbl);
     end;
 
     /// <summary>Declares the existing message name and supported version.</summary>

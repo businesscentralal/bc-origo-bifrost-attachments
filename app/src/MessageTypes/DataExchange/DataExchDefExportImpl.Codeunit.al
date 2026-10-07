@@ -24,20 +24,26 @@ codeunit 70013536 "DataExch Def Export Impl ori" implements "Msg Interface ori",
 
     /// <summary>Describes the existing message operation.</summary>
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Exports a Data Exchange definition header for reinstall.', Comment = 'is-IS=Flytur út haus skilgreiningar gagnaskipta til enduruppsetningar.';
     begin
-        exit('Exports a Data Exchange definition header for reinstall.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>Returns the discovery terms for this message type.</summary>
     procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'export data exchange definition, dump definition', Comment = 'is-IS=flytja út skilgreiningu gagnaskipta, afrita skilgreiningu';
     begin
-        exit('export data exchange definition, dump definition');
+        exit(KeywordsLbl);
     end;
 
     /// <summary>Describes when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Returns the definition code, type, and name so it can be imported again.', Comment = 'is-IS=Skilar kóða, gerð og heiti skilgreiningar svo hægt sé að flytja hana inn aftur.';
     begin
-        exit('Returns the definition code, type, and name so it can be imported again.');
+        exit(SelectionDescriptionLbl);
     end;
 
     /// <summary>Declares the existing message name and supported version.</summary>
@@ -148,17 +154,19 @@ codeunit 70013536 "DataExch Def Export Impl ori" implements "Msg Interface ori",
         ResponseJson: JsonObject;
         Token: JsonToken;
         DefinitionCode: Code[20];
+        MissingCodeErr: Label 'code is required.', Comment = 'is-IS=code er nauðsynlegt.';
+        DefinitionNotFoundErr: Label 'Data exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
         RequestJson := Argument.GetRequestJson();
         if not RequestJson.Get('code', Token) then begin
-            Argument.RespondWithError('code is required.');
+            Argument.RespondWithError(MissingCodeErr);
             exit;
         end;
         DefinitionCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefinitionCode));
         if not DataExchDef.Get(DefinitionCode) then begin
-            Argument.RespondWithError('Data exchange definition ' + DefinitionCode + ' was not found.');
+            Argument.RespondWithError(StrSubstNo(DefinitionNotFoundErr, DefinitionCode));
             exit;
         end;
         ResponseJson.Add('status', 'Success');
