@@ -3,6 +3,7 @@ namespace Origo.Bifrost.Attachments.Test;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
+using System.Utilities;
 
 /// <summary>Verifies the existing Data Exchange surface after the compilation-input repair for issue 74.</summary>
 codeunit 96274 "Attachments Build Tests ori"
@@ -63,7 +64,7 @@ codeunit 96274 "Attachments Build Tests ori"
     begin
         // [GIVEN] A real import definition in the isolated test transaction.
         SeedDefinition(Definition, Definition.Type::"Generic Import");
-        Request.Add('code', 'XBUILD74');
+        Request.Add('code', Definition.Code);
         Request.Add('dataExchDefCode', Definition.Code);
         Request.Add('description', 'Compilation repair test');
 
@@ -73,7 +74,7 @@ codeunit 96274 "Attachments Build Tests ori"
         // [THEN] The successful answer agrees with the persisted binding.
         LibraryAssert.AreEqual('Success', ReadText(Response, 'status'), 'Type.Set status');
         ExchangeType.SetLoadFields("Data Exch. Def. Code", Description);
-        LibraryAssert.IsTrue(ExchangeType.Get('XBUILD74'), 'Type.Set must persist a type.');
+        LibraryAssert.IsTrue(ExchangeType.Get(Definition.Code), 'Type.Set must persist a type.');
         LibraryAssert.AreEqual(Definition.Code, ExchangeType."Data Exch. Def. Code", 'Stored definition');
         LibraryAssert.AreEqual('Compilation repair test', ExchangeType.Description, 'Stored description');
     end;
@@ -85,16 +86,20 @@ codeunit 96274 "Attachments Build Tests ori"
         ExchangeType: Record "Data Exchange Type";
         Request: JsonObject;
         Response: JsonObject;
+        TypeCode: Code[20];
     begin
         // [GIVEN] The definition parameter is absent.
-        Request.Add('code', 'XBUILD74');
+        TypeCode := NewFixtureCode();
+        ExchangeType.SetRange(Code, TypeCode);
+        LibraryAssert.IsTrue(ExchangeType.IsEmpty(), 'Fixture type must be absent before the request.');
+        Request.Add('code', TypeCode);
 
         // [WHEN] The existing error path is dispatched.
         Response := Execute(Enum::"Message Type ori"::"DataExchange.Type.Set", Request);
 
         // [THEN] No successful result or partially created exchange type is allowed.
         LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'Missing definition must fail.');
-        ExchangeType.SetRange(Code, 'XBUILD74');
+        ExchangeType.SetRange(Code, TypeCode);
         LibraryAssert.IsTrue(ExchangeType.IsEmpty(), 'Missing definition must not insert a type.');
     end;
 
@@ -109,7 +114,7 @@ codeunit 96274 "Attachments Build Tests ori"
     begin
         // [GIVEN] A definition of the unsupported direction.
         SeedDefinition(Definition, Definition.Type::"Payment Export");
-        Request.Add('code', 'XBUILD74');
+        Request.Add('code', Definition.Code);
         Request.Add('dataExchDefCode', Definition.Code);
 
         // [WHEN] The existing direction guard runs.
@@ -117,7 +122,7 @@ codeunit 96274 "Attachments Build Tests ori"
 
         // [THEN] The refusal leaves the type table unchanged.
         LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'Export definition must fail.');
-        ExchangeType.SetRange(Code, 'XBUILD74');
+        ExchangeType.SetRange(Code, Definition.Code);
         LibraryAssert.IsTrue(ExchangeType.IsEmpty(), 'Export definition must not insert a type.');
     end;
 
@@ -146,6 +151,8 @@ codeunit 96274 "Attachments Build Tests ori"
     [Test]
     procedure EntryDelete_UnlicensedArgument_PreservesEntryAndFields()
     var
+        Definition: Record "Data Exch. Def";
+        LineDefinition: Record "Data Exch. Line Def";
         Entry: Record "Data Exch.";
         Field: Record "Data Exch. Field";
         TempArgument: Record "Message Argument ori" temporary;
@@ -157,11 +164,21 @@ codeunit 96274 "Attachments Build Tests ori"
         // [SCENARIO] PR84 unbound implementation: direct production interface, not wire/dispatch proof.
         // Time: independent of Today/WorkDate. Risk: licence precondition before deletion.
         // [GIVEN] A persisted isolated entry and field; a new argument is genuinely unlicensed.
+        SeedDefinition(Definition, Definition.Type::"Generic Import");
+        LineDefinition.Init();
+        LineDefinition."Data Exch. Def Code" := Definition.Code;
+        LineDefinition.Code := NewFixtureCode();
+        LineDefinition.Name := 'Unlicensed deletion fixture';
+        LineDefinition.Insert();
         Entry.Init();
+        Entry."Data Exch. Def Code" := Definition.Code;
+        Entry."Data Exch. Line Def Code" := LineDefinition.Code;
         Entry."File Name" := 'XPR84-unlicensed.txt';
         Entry.Insert(true);
         EntryNo := Entry."Entry No.";
-        Field.InsertRec(EntryNo, 1, 1, 'Xoriginal', 'XLINE');
+        Field.InsertRec(EntryNo, 1, 1, 'Xoriginal', LineDefinition.Code);
+        Field.SetRange("Data Exch. No.", EntryNo);
+        LibraryAssert.AreEqual(1, Field.Count(), 'Fixture field must exist before execution.');
         TempArgument.Version := TempArgument.Version::"1.0";
         Request.Add('entryNo', EntryNo);
         TempArgument.SetRequestJson(Request);
@@ -175,6 +192,7 @@ codeunit 96274 "Attachments Build Tests ori"
         LibraryAssert.AreEqual(1, Field.Count(), 'Unlicensed fields must remain.');
         Field.FindFirst();
         LibraryAssert.AreEqual('Xoriginal', Field.Value, 'Unlicensed field content must remain.');
+        LibraryAssert.AreEqual(LineDefinition.Code, Field."Data Exch. Line Def Code", 'Unlicensed field relationship must remain.');
     end;
 
     /// <summary>An unlicensed direct Definition.Import call refuses before creating a definition.</summary>
@@ -190,15 +208,16 @@ codeunit 96274 "Attachments Build Tests ori"
     begin
         // [SCENARIO] PR84 unbound implementation: direct production interface, not wire/dispatch proof.
         // Time: independent of Today/WorkDate. Risk: licence precondition before XML import.
-        // [GIVEN] A new genuinely unlicensed argument and a known definition-table count.
+        // [GIVEN] A genuinely unlicensed argument, valid standard-exported XML and known table count.
+        SeedDefinition(Definition, Definition.Type::"Generic Import");
         BeforeCount := Definition.Count();
         TempArgument.Version := TempArgument.Version::"1.0";
-        Request.Add('definitionXml', '<Xmust-not-be-parsed');
+        Request.Add('definitionXml', ExportDefinitionXml(Definition));
         TempArgument.SetRequestJson(Request);
         Implementation := DefinitionImport;
         // [WHEN] The actual production importer receives the unlicensed argument.
         asserterror Implementation.ExecuteBifrostTask(TempArgument);
-        // [THEN] The licence error, rather than an XML error, proves refusal before import.
+        // [THEN] The licence error with valid XML proves refusal before import.
         LibraryAssert.ExpectedError('requires a valid license');
         LibraryAssert.AreEqual(BeforeCount, Definition.Count(), 'Unlicensed import must not insert.');
     end;
@@ -219,7 +238,7 @@ codeunit 96274 "Attachments Build Tests ori"
         Response := Execute(Enum::"Message Type ori"::"DataExchange.Definition.Delete", Request);
         // [THEN] The successful response agrees with persisted header removal.
         LibraryAssert.AreEqual('Success', ReadText(Response, 'status'), 'Definition.Delete status');
-        LibraryAssert.IsFalse(Definition.Get('XBUILD74'), 'Unused definition must be deleted.');
+        LibraryAssert.IsFalse(Definition.Get(Definition.Code), 'Unused definition must be deleted.');
     end;
 
     /// <summary>The relocated Definition.Delete ordinal still refuses a referenced definition.</summary>
@@ -235,7 +254,7 @@ codeunit 96274 "Attachments Build Tests ori"
         // [GIVEN] A persisted definition referenced by a persisted Data Exchange Type.
         SeedDefinition(Definition, Definition.Type::"Generic Import");
         ExchangeType.Init();
-        ExchangeType.Code := 'XBUILD74';
+        ExchangeType.Code := Definition.Code;
         ExchangeType."Data Exch. Def. Code" := Definition.Code;
         ExchangeType.Insert();
         Request.Add('code', Definition.Code);
@@ -243,8 +262,8 @@ codeunit 96274 "Attachments Build Tests ori"
         Response := Execute(Enum::"Message Type ori"::"DataExchange.Definition.Delete", Request);
         // [THEN] Both rows and their relationship remain after the refusal.
         LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'Referenced definition must fail.');
-        LibraryAssert.IsTrue(Definition.Get('XBUILD74'), 'Referenced definition must remain.');
-        LibraryAssert.IsTrue(ExchangeType.Get('XBUILD74'), 'Referencing type must remain.');
+        LibraryAssert.IsTrue(Definition.Get(Definition.Code), 'Referenced definition must remain.');
+        LibraryAssert.IsTrue(ExchangeType.Get(Definition.Code), 'Referencing type must remain.');
         LibraryAssert.AreEqual(Definition.Code, ExchangeType."Data Exch. Def. Code", 'Reference must remain.');
     end;
 
@@ -256,12 +275,14 @@ codeunit 96274 "Attachments Build Tests ori"
         Request: JsonObject;
         Response: JsonObject;
         BeforeCount: Integer;
+        DefinitionCode: Code[20];
     begin
         // [SCENARIO] Issue74 AC03 | Time: no date dependency | Risk: missing-record refusal.
         // [GIVEN] A key absent from the definition table.
-        LibraryAssert.IsFalse(Definition.Get('XBUILD74-MISSING'), 'Fixture key must be absent.');
+        DefinitionCode := NewFixtureCode();
+        LibraryAssert.IsFalse(Definition.Get(DefinitionCode), 'Fixture key must be absent.');
         BeforeCount := Definition.Count();
-        Request.Add('code', 'XBUILD74-MISSING');
+        Request.Add('code', DefinitionCode);
         // [WHEN] Foundation dispatches the registered message.
         Response := Execute(Enum::"Message Type ori"::"DataExchange.Definition.Delete", Request);
         // [THEN] The refusal leaves the definition count unchanged.
@@ -342,10 +363,37 @@ codeunit 96274 "Attachments Build Tests ori"
     local procedure SeedDefinition(var Definition: Record "Data Exch. Def"; DefinitionType: Enum "Data Exchange Definition Type")
     begin
         Definition.Init();
-        Definition.Code := 'XBUILD74';
+        Definition.Code := NewFixtureCode();
         Definition.Name := 'Compilation repair test';
         Definition.Type := DefinitionType;
         Definition.Insert();
+    end;
+
+    local procedure NewFixtureCode(): Code[20]
+    begin
+        // Dispatcher execution can retain records between methods; every call owns a fresh key.
+        exit(CopyStr('X' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, 20));
+    end;
+
+    local procedure ExportDefinitionXml(Definition: Record "Data Exch. Def"): Text
+    var
+        TempBlob: Codeunit "Temp Blob";
+        DefinitionExport: XmlPort "Imp / Exp Data Exch Def & Map";
+        XmlContent: BigText;
+        XmlText: Text;
+        XmlOutStream: OutStream;
+        XmlInStream: InStream;
+    begin
+        Definition.SetRecFilter();
+        TempBlob.CreateOutStream(XmlOutStream, TextEncoding::UTF8);
+        DefinitionExport.SetTableView(Definition);
+        DefinitionExport.SetDestination(XmlOutStream);
+        DefinitionExport.Export();
+        TempBlob.CreateInStream(XmlInStream, TextEncoding::UTF8);
+        XmlContent.Read(XmlInStream);
+        XmlContent.GetSubText(XmlText, 1);
+        LibraryAssert.IsTrue(XmlText <> '', 'The real standard XMLport must export the fixture.');
+        exit(XmlText);
     end;
 
     local procedure AssertContract(MessageType: Enum "Message Type ori"; ExpectedName: Text)

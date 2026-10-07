@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-07) - canonical compilation and regression fixtures (#74)
+
+- Isolate `Attachments Build Tests ori` (96274) fixture keys across dispatcher calls, create valid Data Exchange header/line/field relationships for the direct license-refusal check, and use standard XMLport 1225 exported XML for the import-refusal fixture. Preserve all response and persisted-state assertions; runtime verification remains required.
+
 ### Fixed (2026-10-06) - main AL compile failures after #68 and #73
 
 - Restore Microsoft symbol resolution in `Storage Data Restriction ori` (10035663), `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534) and `DataExch Def Export Impl ori` (70013536) by importing the namespaces that own their tables.
