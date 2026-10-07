@@ -12,6 +12,70 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
 
+    /// <summary>Preserves both response fields through the registered Type.List contract.</summary>
+    [Test]
+    procedure TypeList_Contract_DeclaresCountAndTypesOnce()
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        Response: JsonObject;
+        Field: JsonObject;
+        Token: JsonToken;
+        Fields: JsonArray;
+        CountFields: Integer;
+        TypesFields: Integer;
+    begin
+        // [SCENARIO] The merged contract describes the complete query result without duplicate fields.
+        LibraryAssert.IsTrue(ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(OrdinalOf('DataExchange.Type.List')), Contract), 'The registered contract must be available.');
+        Contract.Get('response', Token);
+        Response := Token.AsObject();
+        Response.Get('fields', Token);
+        Fields := Token.AsArray();
+        LibraryAssert.AreEqual(2, Fields.Count(), 'Type.List returns count and types.');
+        foreach Token in Fields do begin
+            Field := Token.AsObject();
+            case JsonText(Field, 'name') of
+                'count':
+                    begin
+                        CountFields += 1;
+                        LibraryAssert.AreEqual('integer', JsonText(Field, 'type'), 'Count is an integer.');
+                    end;
+                'types':
+                    begin
+                        TypesFields += 1;
+                        LibraryAssert.AreEqual('array', JsonText(Field, 'type'), 'Types is an array.');
+                    end;
+                else
+                    LibraryAssert.Fail('Unexpected Type.List response field.');
+            end;
+        end;
+        LibraryAssert.AreEqual(1, CountFields, 'Count must be declared once.');
+        LibraryAssert.AreEqual(1, TypesFields, 'Types must be declared once.');
+    end;
+
+    /// <summary>Checks the dispatched Type.List result agrees with the preserved contract.</summary>
+    [Test]
+    procedure TypeList_EmptyRequest_CountMatchesTypes()
+    var
+        Request: JsonObject;
+        Response: JsonObject;
+        DataObject: JsonObject;
+        Token: JsonToken;
+        Rows: JsonArray;
+        RowCount: Integer;
+    begin
+        // [SCENARIO] A parameterless query returns its array and the actual array length, including zero.
+        Response := Dispatch('DataExchange.Type.List', Request, 1033);
+        LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'Type.List must accept an empty request.');
+        Response.Get('data', Token);
+        DataObject := Token.AsObject();
+        DataObject.Get('types', Token);
+        Rows := Token.AsArray();
+        DataObject.Get('count', Token);
+        RowCount := Token.AsValue().AsInteger();
+        LibraryAssert.AreEqual(Rows.Count(), RowCount, 'Count must match the returned types.');
+    end;
+
     [Test]
     procedure Batch2_AllTypes_HaveRequiredContractChapters()
     var
