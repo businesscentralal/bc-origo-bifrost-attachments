@@ -194,6 +194,51 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         AssertParameter('Storage.Upload.CommitToRecord', 'description', false);
     end;
 
+    /// <summary>Registered mutation contracts include every shipped key with exact types and no duplicates.</summary>
+    [Test]
+    procedure Scenario_AC02_MutationContracts_MatchShippedKeys()
+    begin
+        // Story #69, AC02 | Time: None | Risk: Registered interfaces must delegate to shared contracts
+        AssertParameterSchema('DataExchange.Type.Set', 'code', 'string', true, 3);
+        AssertParameterSchema('DataExchange.Type.Set', 'dataExchDefCode', 'string', true, 3);
+        AssertParameterSchema('DataExchange.Type.Set', 'description', 'string', false, 3);
+        AssertParameterSchema('DataExchange.Definition.Export', 'code', 'string', true, 1);
+        AssertParameterSchema('DataExchange.Export.Run', 'dataExchDefCode', 'string', true, 2);
+        AssertParameterSchema('DataExchange.Export.Run', 'fileName', 'string', true, 2);
+        AssertParameterAbsent('DataExchange.Type.Set', 'storageCode');
+        AssertParameterAbsent('DataExchange.Definition.Export', 'storageCode');
+        AssertParameterAbsent('DataExchange.Export.Run', 'storageCode');
+    end;
+
+    /// <summary>Repeated registered metadata calls replace stale caller output.</summary>
+    [Test]
+    procedure Scenario_AC02_MutationContracts_ReplaceStaleParameters()
+    var
+        Contract: Interface "Msg Contract ori";
+        MessageType: Enum "Message Type ori";
+        Parameters: JsonArray;
+        Token: JsonToken;
+        TypeName: Text;
+        Types: List of [Text];
+    begin
+        // Story #69, AC02 | Time: None | Risk: Reentrant registered metadata callers
+        Types.Add('DataExchange.Type.Set');
+        Types.Add('DataExchange.Definition.Export');
+        Types.Add('DataExchange.Export.Run');
+        foreach TypeName in Types do begin
+            MessageType := Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName));
+            Contract := MessageType;
+            Clear(Parameters);
+            Parameters.Add('stale metadata');
+            LibraryAssert.IsTrue(Contract.GetParameters(Parameters), TypeName + ' supplies parameters.');
+            LibraryAssert.AreEqual(ContractParameters(TypeName).Count(), Parameters.Count(), TypeName + ' replaces stale output.');
+            LibraryAssert.IsTrue(Contract.GetParameters(Parameters), TypeName + ' repeated parameter read.');
+            LibraryAssert.AreEqual(ContractParameters(TypeName).Count(), Parameters.Count(), TypeName + ' does not append duplicates.');
+            foreach Token in Parameters do
+                LibraryAssert.IsTrue(Token.IsObject(), TypeName + ' removes stale scalar values.');
+        end;
+    end;
+
     /// <summary>A seeded definition can be queried without storageCode.</summary>
     [Test]
     procedure Scenario_AC04_DefinitionList_NoStorage_ReturnsSeededRow()
@@ -382,7 +427,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Icelandic := Dispatch('DataExchange.Definition.List', Request, 1039);
         AssertProblem(English, 'direction', 'InvalidParameter');
         AssertProblem(Icelandic, 'direction', 'InvalidParameter');
-        LibraryAssert.AreNotEqual(JsonText(English, 'message'), JsonText(Icelandic, 'message'), 'Refusal must be translated.');
+        LibraryAssert.AreNotEqual(JsonText(English, 'error'), JsonText(Icelandic, 'error'), 'Refusal must be translated.');
         LibraryAssert.AreNotEqual(JsonText(English, 'nextStep'), JsonText(Icelandic, 'nextStep'), 'Action must be translated.');
     end;
 
@@ -467,6 +512,26 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         LibraryAssert.IsTrue(Found, TypeName + ' must declare ' + ParameterName);
     end;
 
+    local procedure AssertParameterSchema(TypeName: Text; ParameterName: Text; ParameterType: Text; Required: Boolean; ExpectedCount: Integer)
+    var
+        Parameters: JsonArray;
+        Token: JsonToken;
+        Entry: JsonObject;
+        Matches: Integer;
+    begin
+        Parameters := ContractParameters(TypeName);
+        LibraryAssert.AreEqual(ExpectedCount, Parameters.Count(), TypeName + ' exact parameter count.');
+        AssertParameter(TypeName, ParameterName, Required);
+        foreach Token in Parameters do begin
+            Entry := Token.AsObject();
+            if JsonText(Entry, 'name') = ParameterName then begin
+                Matches += 1;
+                LibraryAssert.AreEqual(ParameterType, JsonText(Entry, 'type'), TypeName + ' JSON type of ' + ParameterName);
+            end;
+        end;
+        LibraryAssert.AreEqual(1, Matches, TypeName + ' must declare ' + ParameterName + ' exactly once.');
+    end;
+
     local procedure AssertParameterAbsent(TypeName: Text; ParameterName: Text)
     var
         Token: JsonToken;
@@ -526,7 +591,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
             if JsonText(Problem, 'parameter') = ParameterName then begin
                 Found := true;
                 LibraryAssert.AreEqual(ErrorCode, JsonText(Problem, 'code'), 'Stable error code.');
-                LibraryAssert.IsTrue(JsonText(Problem, 'message') <> '', 'Localized message.');
+                LibraryAssert.IsTrue(JsonText(Problem, 'error') <> '', 'Localized message.');
                 LibraryAssert.IsTrue(JsonText(Problem, 'received') <> '', 'Received value or explicit absence marker.');
                 LibraryAssert.IsTrue(JsonText(Problem, 'expected') <> '', 'Expected format/value.');
                 LibraryAssert.IsTrue(JsonText(Problem, 'nextStep') <> '', 'Actionable next step.');
