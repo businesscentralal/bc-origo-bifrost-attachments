@@ -96,7 +96,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     procedure Scenario_AC04_TypeList_SeededRows_MatchResponseContract()
     var
         DataExchType: Record "Data Exchange Type";
-        SavedTypes: Record "Data Exchange Type" temporary;
+        TempSavedTypes: Record "Data Exchange Type" temporary;
         Request: JsonObject;
         Response: JsonObject;
         Rows: JsonArray;
@@ -106,7 +106,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     begin
         // Story #69, AC04 | Time: None | Risk: Disposable test company; original types restored
         // [GIVEN] Exactly two types; preserve the company's original rows before isolation.
-        SaveAndClearTypes(SavedTypes);
+        SaveAndClearTypes(TempSavedTypes);
         DataExchType.Init();
         DataExchType.Code := 'BIFT69-TYPE-A';
         DataExchType.Description := 'First contract type fixture';
@@ -117,7 +117,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         DataExchType.Insert();
         // [WHEN] The registered message is dispatched without storage or other parameters.
         Response := Dispatch('DataExchange.Type.List', Request, 1033);
-        RestoreTypes(SavedTypes);
+        RestoreTypes(TempSavedTypes);
         // [THEN] Actual payload and response metadata agree, including both seeded rows.
         Rows := AssertTypeListData(Response, 2);
         foreach Token in Rows do
@@ -140,17 +140,17 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     [Test]
     procedure Scenario_AC04_TypeList_EmptyRows_MatchResponseContract()
     var
-        SavedTypes: Record "Data Exchange Type" temporary;
+        TempSavedTypes: Record "Data Exchange Type" temporary;
         Request: JsonObject;
         Response: JsonObject;
         Rows: JsonArray;
     begin
         // Story #69, AC04 | Time: None | Risk: Disposable test company; original types restored
         // [GIVEN] No types, with original company rows preserved.
-        SaveAndClearTypes(SavedTypes);
+        SaveAndClearTypes(TempSavedTypes);
         // [WHEN] The same public dispatcher path executes against the empty table.
         Response := Dispatch('DataExchange.Type.List', Request, 1033);
-        RestoreTypes(SavedTypes);
+        RestoreTypes(TempSavedTypes);
         // [THEN] Empty is successful and retains both documented payload fields.
         Rows := AssertTypeListData(Response, 0);
         LibraryAssert.AreEqual(0, Rows.Count(), 'Empty types array required.');
@@ -404,7 +404,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         LibraryAssert.AreEqual(ExpectedCount, Token.AsValue().AsInteger(), 'Integer count matches the rows.');
     end;
 
-    local procedure SaveAndClearTypes(var SavedTypes: Record "Data Exchange Type" temporary)
+    local procedure SaveAndClearTypes(var TempSavedTypes: Record "Data Exchange Type" temporary)
     var
         DataExchType: Record "Data Exchange Type";
     begin
@@ -412,22 +412,22 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         DataExchType.ReadIsolation := IsolationLevel::ReadCommitted;
         if DataExchType.FindSet() then
             repeat
-                SavedTypes := DataExchType;
-                SavedTypes.Insert();
+                TempSavedTypes := DataExchType;
+                TempSavedTypes.Insert();
             until DataExchType.Next() = 0;
         DataExchType.DeleteAll();
     end;
 
-    local procedure RestoreTypes(var SavedTypes: Record "Data Exchange Type" temporary)
+    local procedure RestoreTypes(var TempSavedTypes: Record "Data Exchange Type" temporary)
     var
         DataExchType: Record "Data Exchange Type";
     begin
         DataExchType.DeleteAll();
-        if SavedTypes.FindSet() then
+        if TempSavedTypes.FindSet() then
             repeat
-                DataExchType := SavedTypes;
+                DataExchType := TempSavedTypes;
                 DataExchType.Insert(false, true);
-            until SavedTypes.Next() = 0;
+            until TempSavedTypes.Next() = 0;
         Commit(); // Restore original company rows before evaluating assertions.
     end;
 
