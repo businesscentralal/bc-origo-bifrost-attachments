@@ -67,6 +67,10 @@ class SymbolPolicy(unittest.TestCase):
         self.assertEqual(186, boundaries['measurements']['compilerCatalog']['packages'])
         self.assertEqual(2, boundaries['measurements']['appCache']['packages'])
         self.assertFalse(boundaries['measurements']['appCache']['runnerCapacityValidated'])
+        missing_resolution = dict(snapshot)
+        del missing_resolution['resolution']
+        with self.assertRaisesRegex(G.GateError, 'Missing bounded dependency'):
+            G.reconcile_symbols(missing_resolution, request, G.package_info(self.cache / 'Output.app'))
         fixture(self.cache / 'Injected.app')
         with self.assertRaisesRegex(G.GateError, 'Unattributed'):
             G.reconcile_symbols(snapshot, request, G.package_info(self.cache / 'Output.app'))

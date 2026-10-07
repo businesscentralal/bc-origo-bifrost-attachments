@@ -410,9 +410,9 @@ def reconcile_symbols(snapshot, request, output):
             require(prepared.get(name) == info, "Unattributed helper symbol addition: " + name)
             additions.append(info)
     require(len(copies) == 1, "Missing/ambiguous exact helper output-copy delta")
-    if "resolution" in snapshot:
-        require(sorted(additions, key=lambda s: s["file"]) == sorted(snapshot["resolution"]["copies"], key=lambda s: s["file"]),
-                "Actual helper additions differ from bounded dependency resolution")
+    require("resolution" in snapshot, "Missing bounded dependency resolution receipt")
+    require(sorted(additions, key=lambda s: s["file"]) == sorted(snapshot["resolution"]["copies"], key=lambda s: s["file"]),
+            "Actual helper additions differ from bounded dependency resolution")
     return {"before": snapshot["symbols"], "compilerBeforeAndAfter": compiler,
             "after": final, "preparationAdditions": additions, "outputCopy": copies[0],
             "measurements": {"compilerCatalog": inventory_measurement(compiler, "compilerCatalog"),
