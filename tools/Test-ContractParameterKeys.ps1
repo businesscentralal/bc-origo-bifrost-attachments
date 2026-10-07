@@ -790,9 +790,9 @@ function Get-ProvenReadKeys($Contexts, $Diagnostics) {
         foreach ($call in (Get-ContextCalls $body)) {
             if ($call.Callee -notin @('get', 'contains') -or $call.Args.Count -lt 1) { continue }
             $inlineRequest = $call.InlineRequestReceiver -and $types[$call.InlineRequestReceiver] -eq 'Record "Message Argument ori"'
-            if ($values[$call.Receiver] -ne 'request' -and -not $inlineRequest) { continue }
             $atCall = $values.Clone()
             foreach ($name in $context.Mutations.Keys) { if ($call.Index -gt $context.Mutations[$name]) { $atCall[$name] = '?' } }
+            if ($atCall[$call.Receiver] -ne 'request' -and -not $inlineRequest) { continue }
             $key = Resolve-ContextValue $call.Args[0] $atCall $types
             if ($key -like 's:*') { [void]$keys.Add($key.Substring(2)) }
             else { [void]$Diagnostics.Add("$($context.Object)::$($context.Procedure): unresolved request key") }

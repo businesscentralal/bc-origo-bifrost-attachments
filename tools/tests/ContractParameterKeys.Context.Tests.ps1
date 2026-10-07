@@ -198,6 +198,8 @@ codeunit 4 "Parts ori"
         Assert-Failure 'request alias used before assignment' @('declared-not-read|key', 'no-reads-seen|*')
         Set-Fixture $declareKey "Clear(RequestJson); Reader.ReadText(Argument, RequestJson, 'key');" $reader
         Assert-Failure 'request cleared before reader' @('no-reads-seen|*')
+        Set-Fixture $declareKey "Clear(RequestJson); if RequestJson.Get('key', Token) then;"
+        Assert-Failure 'request cleared before direct read' @('declared-not-read|key', 'no-reads-seen|*')
         $keyWrite = $reader.Replace('        if Payload.Get(KeyName, Token) then;', "        KeyName := Pick();`n        if Payload.Get(KeyName, Token) then;")
         Set-Fixture $declareKey "Reader.ReadText(Argument, RequestJson, 'key');" $keyWrite
         Assert-Failure 'formal key overwritten' @('declared-not-read|key', 'no-reads-seen|*')
