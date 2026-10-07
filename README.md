@@ -345,6 +345,9 @@ credentials — this app only stores a registered File Account id.
 
 ## Development
 
+- Inventory #80 candidate receipts with [the offline collector](tools/CandidateEvidence.md).
+  Its local consistency result does not certify a runner or release.
+
 Story #79 adds test codeunit `Storage 79 Perm Tests ori` (96218) with 28 permission-enabled
 regressions and 13 test-only permission sets (96218–96222, 96227–96234). All 120 existing
 baseline tests remain unchanged. These tests are authored and await the canonical PR84
