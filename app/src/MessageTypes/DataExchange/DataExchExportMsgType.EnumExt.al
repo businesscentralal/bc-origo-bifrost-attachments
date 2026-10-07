@@ -2,7 +2,8 @@ namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
 
-enumextension 70013519 "DataExch Export Run EnumExt ori" extends "Message Type ori"
+/// <summary>Registers the unchanged DataExchange.Export.Run message and its production bindings.</summary>
+enumextension 70013519 "DataExch Export MsgType ori" extends "Message Type ori"
 {
     value(70013519; "DataExchange.Export.Run")
     {

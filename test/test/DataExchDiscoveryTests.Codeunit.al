@@ -431,7 +431,7 @@ codeunit 96213 "Data Exch Discovery Tests"
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
         ResponseContent: BigText;
-        ResponseContentType: Text[50];
+        ResponseContentType: Text[100];
         MessageVersion: Enum "Message Version ori";
         RequestText: Text;
         ResponseText: Text;
