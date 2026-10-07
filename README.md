@@ -437,3 +437,12 @@ Please go to https://aka.ms/AL-Go and [COSMO Docs](https://docs.cosmoconsult.com
 ### Legacy take-over retry
 
 Each company upgrade retries the permission-probed legacy take-over before checking the orphan-link purge tag. If a required legacy grant is missing, the retry logs a skip; after the grant is corrected, a later app upgrade tries again. Existing destination tables and role assignments follow the original take-over preservation rules. The retry reads only the supported legacy Cloud Events sources.
+
+## AppSource submission preparation
+
+The [submission working package](app/docs/appsource/README.md) contains the Attachments-specific
+release checklist, scenario plan, source market inventory and gated validator sandbox smoke script
+for #81. Formal scenarios follow exact-candidate internal QA; these planning files do not certify
+AppSource readiness. Published product/help documentation remains with its established owners.
+
+The internal submission workspace is approved with conditions for #81. Its refreshed inventory records the approved Foundation 28.0.2.523 input and named missing-evidence owners. Formal scenarios and the dry-run remain held for immutable #80 QA and explicit release.
