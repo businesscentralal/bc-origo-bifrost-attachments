@@ -67,7 +67,8 @@ function Invoke-Gate {
     $path = Join-Path $Root '.buildartifacts/AppSourceGate/request.json'
     $Request | ConvertTo-Json -Depth 30 | Set-Content -LiteralPath $path -Encoding UTF8
     try {
-        & $python.Source (Join-Path $Root 'tools/appsource_gate.py') $Action --root $Root --input $path
+        # Native success diagnostics must not join the helper's package-return stream.
+        & $python.Source (Join-Path $Root 'tools/appsource_gate.py') $Action --root $Root --input $path | ForEach-Object { Write-Host $_ }
         if ($LASTEXITCODE -ne 0) {
             throw "AppSource $Action validation failed."
         }
@@ -140,6 +141,7 @@ if ($Stage -eq 'BeforeCompile') {
         kind = $kind
         manifest = (Join-Path $CompilationParams.appProjectFolder 'app.json')
         symbolsFolder = $CompilationParams.appSymbolsFolder
+        compilerSymbolsFolder = (Join-Path $CompilationParams.compilerFolder 'symbols')
     }
     return
 }
@@ -235,6 +237,7 @@ if ($Stage -eq 'PostCompile') {
         appType = $AppType
         appFile = $AppFile[0]
         symbolsFolder = $CompilationParams.appSymbolsFolder
+        compilerSymbolsFolder = (Join-Path $CompilationParams.compilerFolder 'symbols')
         parameters = $parameters
         sourceFiles = $sources
     }

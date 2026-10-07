@@ -216,7 +216,9 @@ class Staging(unittest.TestCase):
         (directory / 'state.json').write_text(json.dumps(dict(context=self.context, receipts={})))
         symbols = self.root / 'symbols'; symbols.mkdir()
         shutil.copyfile(receipt['selection']['excluded'][0]['path'],symbols / 'Foundation.app')
-        request = dict(context=self.context, manifest=str(self.root/'app/app.json'), symbolsFolder=str(symbols), kind='fixture')
+        compiler_symbols = self.root/'compiler-symbols'
+        compiler_symbols.mkdir()
+        request = dict(context=self.context, manifest=str(self.root/'app/app.json'), symbolsFolder=str(symbols), compilerSymbolsFolder=str(compiler_symbols), kind='fixture')
         with self.assertRaisesRegex(G.GateError,'unapproved Foundation'): G.before_compile(self.root,request)
         rejected=json.loads((directory/'rejected-input.json').read_text())
         self.assertEqual(S.TEST_PIN,rejected['inputs'][0]['sha256'])

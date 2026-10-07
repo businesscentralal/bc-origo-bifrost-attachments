@@ -237,6 +237,7 @@ class GenuinePackages(unittest.TestCase):
         (self.root / "test/Fixture.al").write_text("fixture test source for collector contract unit test")
         symbols = self.root / "symbols"
         symbols.mkdir()
+        (self.root / 'compiler-symbols').mkdir()
         shutil.copy2(self.foundation, symbols / "Foundation.app")
         (self.root / "BuildOutput.txt").write_text(log())
         return context
@@ -245,10 +246,14 @@ class GenuinePackages(unittest.TestCase):
         path = self.fixtures / (name + ".app")
         source = "app/Fixture.al" if app_type == "app" else "test/Fixture.al"
         directory = self.root / ".buildartifacts/AppSourceGate" / self.context["mode"]
+        (self.root / "symbols/HelperOutput.app").unlink(missing_ok=True)
         G.before_compile(self.root, dict(context=self.context, kind="final", symbolsFolder=str(self.root / "symbols"),
+                         compilerSymbolsFolder=str(self.root / "compiler-symbols"),
                          manifest=str(self.root / ("app/app.json" if app_type == "app" else "test/app.json"))))
+        shutil.copy2(path, self.root / "symbols/HelperOutput.app")
         (directory / "current-compile.txt").write_text(log(self.default["identity"]["name"] if app_type == "app" else self.friend["name"]))
         return dict(context=context, appType=app_type, appFile=str(path), symbolsFolder=str(self.root / "symbols"),
+                    compilerSymbolsFolder=str(self.root / "compiler-symbols"),
                     parameters=params(), sourceFiles=[{"file": source, "sha256": G.file_hash(self.root / source)}])
 
     def outputs(self, context, name="default", app_type="app"):
@@ -336,6 +341,7 @@ class GenuinePackages(unittest.TestCase):
     def test_precompile_snapshot_then_helper_copy_is_valid_not_a_self_input(self):
         context = self.state()
         request = self.request(context)
+        (self.root / 'symbols/HelperOutput.app').unlink()
         shutil.copy2(self.fixtures / "default.app", self.root / "symbols/ProductJustBuilt.app")
         G.post_compile(self.root, request)
 
@@ -442,6 +448,83 @@ class GenuinePackages(unittest.TestCase):
             G.reconcile(self.root, context, "pipeline")
         with self.assertRaises(G.GateError):
             G.reconcile(self.root, context, "signed", {"status": "NotSigned"})
+
+    def test_fresh_cache_helper_preparation_addition_and_output_delta(self):
+        context = self.state()
+        shutil.copy2(self.fixtures / 'testApp.app', self.root / 'compiler-symbols/Transitive.app')
+        request = self.request(context)
+        shutil.copy2(self.root / 'compiler-symbols/Transitive.app', self.root / 'symbols/Transitive.app')
+        receipt = G.post_compile(self.root, request)
+        boundaries = receipt['symbolBoundaries']
+        self.assertEqual(['Transitive.app'], [s['file'] for s in boundaries['preparationAdditions']])
+        self.assertEqual(G.file_hash(self.fixtures / 'default.app'), boundaries['outputCopy']['sha256'])
+        self.assertFalse(boundaries['consumedInputsCertified'])
+
+    def test_changed_foundation_or_preexisting_dependency_refused(self):
+        for name, original, replacement in [('Foundation.app', self.foundation, self.fixtures / 'testApp.app'),
+                                             ('Dependency.app', self.fixtures / 'testApp.app', self.fixtures / 'wrongFriend.app')]:
+            with self.subTest(name=name):
+                context = self.state() if not hasattr(self, 'context') else self.context
+                shutil.copy2(original, self.root / 'symbols' / name)
+                request = self.request(context)
+                shutil.copy2(replacement, self.root / 'symbols' / name)
+                with self.assertRaises(G.GateError):
+                    G.post_compile(self.root, request)
+                shutil.copy2(original, self.root / 'symbols' / name)
+
+    def test_changed_compiler_folder_or_unattributed_addition_refused(self):
+        context = self.state()
+        request = self.request(context)
+        shutil.copy2(self.fixtures / 'testApp.app', self.root / 'compiler-symbols/Later.app')
+        with self.assertRaisesRegex(G.GateError, 'Compiler-folder inputs changed'):
+            G.post_compile(self.root, request)
+        (self.root / 'compiler-symbols/Later.app').unlink()
+        shutil.copy2(self.fixtures / 'testApp.app', self.root / 'symbols/Unattributed.app')
+        with self.assertRaisesRegex(G.GateError, 'Unattributed'):
+            G.post_compile(self.root, request)
+
+    def test_missing_changed_or_duplicate_output_copy_refused(self):
+        context = self.state()
+        request = self.request(context)
+        output = self.root / 'symbols/HelperOutput.app'
+        output.unlink()
+        with self.assertRaisesRegex(G.GateError, 'output-copy'):
+            G.post_compile(self.root, request)
+        shutil.copy2(self.fixtures / 'wrongFriend.app', output)
+        with self.assertRaisesRegex(G.GateError, 'self/output'):
+            G.post_compile(self.root, request)
+        shutil.copy2(self.fixtures / 'default.app', output)
+        shutil.copy2(output, self.root / 'symbols/Duplicate.app')
+        with self.assertRaisesRegex(G.GateError, 'Duplicate symbol'):
+            G.post_compile(self.root, request)
+
+    def test_wrong_compiler_foundation_self_input_and_missing_boundary_refused(self):
+        context = self.state()
+        shutil.copy2(self.fixtures / 'default.app', self.root / 'compiler-symbols/Self.app')
+        with self.assertRaisesRegex(G.GateError, 'self-app'):
+            self.request(context)
+        (self.root / 'compiler-symbols/Self.app').unlink()
+        request = self.request(context)
+        del request['compilerSymbolsFolder']
+        with self.assertRaises(KeyError):
+            G.post_compile(self.root, request)
+
+    def test_cache_path_substitution_and_translation_snapshot_refused(self):
+        context = self.state()
+        request = self.request(context)
+        request['symbolsFolder'] = str(self.root / 'compiler-symbols')
+        with self.assertRaisesRegex(G.GateError, 'Changed symbol cache path'):
+            G.post_compile(self.root, request)
+
+    def test_inventory_cap_and_missing_folder_are_failures(self):
+        with self.assertRaisesRegex(G.GateError, 'absent'):
+            G.symbol_inventory(self.root / 'missing')
+        folder = self.root / 'bounded'
+        folder.mkdir()
+        for index in range(129):
+            (folder / f'{index}.app').touch()
+        with self.assertRaisesRegex(G.GateError, '128 packages'):
+            G.symbol_inventory(folder)
 
 
 if __name__ == "__main__":

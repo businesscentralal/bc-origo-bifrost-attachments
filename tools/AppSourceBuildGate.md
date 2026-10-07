@@ -132,3 +132,22 @@ Run `Test-FoundationStaging.ps1` with both genuine archive paths available under
 its artifact folder and the compiler-produced fixture folder. Fixture tests
 prove utility selection and refusal behavior, not product compile/runtime,
 signature trust, live runner arrays or independent review acceptance.
+
+Callback and symbol boundary checks (#78 continuation):
+`tools/Test-AppSourceCallback.ps1` invokes the actual PowerShell callback and
+collector with a native Python verifier and controlled compiler. It checks the
+one-package return, original output forwarding, cloned parameters, isolated
+logs, native refusal before compile, compiler exceptions and module-scope
+installation/foreign-override refusal. These language fixtures do not run AL.
+
+BeforeCompile now records both the cache and `compilerFolder/symbols` (at most
+128 packages per folder, at most 128 MiB per package). PostCompile rehashes both:
+pre-existing cache entries and compiler-folder entries must remain identical;
+new cache dependencies must match exact pre-observed compiler-folder entries.
+Exactly one new output entry must match the returned package identity and hash.
+Missing/duplicate/substituted paths, inputs or output copies fail acceptance.
+Translation observations cannot replace final snapshots. Foundation signed pin,
+zero friends, dependency floor, analyzers and failure policy remain unchanged.
+Receipts set `consumedInputsCertified=false`: boundary observations cannot prove
+transient alc inputs, installed/probed dependencies, real helper timing or trust.
+Actual helper6.1.18/Alpaca runtime and infrastructure integration remain blocked.

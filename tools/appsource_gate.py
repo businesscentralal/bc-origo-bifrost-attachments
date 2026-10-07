@@ -159,6 +159,52 @@ def validate_parameters(params):
     require(params.get("compilerVersion"), "Missing compiler version")
 
 
+def symbol_inventory(folder):
+    """Bound actual on-disk receipts; reject incomplete or duplicate identities."""
+    folder = Path(folder)
+    require(folder.is_dir(), "Actual symbol folder absent")
+    paths = sorted(folder.glob("*.app"))
+    require(len(paths) <= 128, "Symbol inventory exceeds 128 packages")
+    result, identities = [], set()
+    for path in paths:
+        require(path.stat().st_size <= 128 * 1024 * 1024, "Symbol package exceeds 128 MiB")
+        info = package_info(path)
+        identity = tuple(info["identity"][k].lower() for k in ("id", "version"))
+        require(identity not in identities, "Duplicate symbol identity/version")
+        identities.add(identity)
+        result.append({"file": path.name, **info})
+    return result
+
+
+def reconcile_symbols(snapshot, request, output):
+    """Check boundary observations, not unobservable transient compiler consumption."""
+    require(snapshot["symbolsFolder"] == str(Path(request["symbolsFolder"]).resolve()), "Changed symbol cache path")
+    require(snapshot["compilerSymbolsFolder"] == str(Path(request["compilerSymbolsFolder"]).resolve()),
+            "Changed compiler symbol path")
+    compiler = symbol_inventory(request["compilerSymbolsFolder"])
+    require(compiler == snapshot["compilerSymbols"], "Compiler-folder inputs changed during helper call")
+    final = symbol_inventory(request["symbolsFolder"])
+    before = {s["file"]: s for s in snapshot["symbols"]}
+    prepared = {s["file"]: s for s in compiler}
+    after = {s["file"]: s for s in final}
+    for name, info in before.items():
+        require(after.get(name) == info, "Pre-existing symbol changed or disappeared: " + name)
+    additions, copies = [], []
+    for name, info in after.items():
+        if name in before:
+            continue
+        if info["identity"]["id"].lower() == output["identity"]["id"].lower():
+            require(info["sha256"] == output["sha256"], "Unexpected self/output symbol bytes")
+            copies.append(info)
+        else:
+            require(prepared.get(name) == info, "Unattributed helper symbol addition: " + name)
+            additions.append(info)
+    require(len(copies) == 1, "Missing/ambiguous exact helper output-copy delta")
+    return {"before": snapshot["symbols"], "compilerBeforeAndAfter": compiler,
+            "after": final, "preparationAdditions": additions, "outputCopy": copies[0],
+            "consumedInputsCertified": False}
+
+
 def _before_compile(root, request):
     """Snapshot the symbol cache BEFORE helper CopyAppToSymbolsFolder changes it."""
     root = Path(root)
@@ -171,12 +217,11 @@ def _before_compile(root, request):
     test = json.loads((root / "test/app.json").read_text(encoding="utf-8-sig"))
     require(manifest["id"] in (product["id"], test["id"]), "Unexpected compilation project")
     app_type = "app" if manifest["id"] == product["id"] else "testApp"
-    symbols = []
-    for path in sorted(Path(request["symbolsFolder"]).glob("*.app")):
-        symbol = package_info(path)
-        require(app_type != "app" or symbol["identity"]["id"].lower() != product["id"].lower(),
+    symbols = symbol_inventory(request["symbolsFolder"])
+    compiler_symbols = symbol_inventory(request["compilerSymbolsFolder"])
+    for symbol in symbols + compiler_symbols:
+        require(symbol["identity"]["id"].lower() != manifest["id"].lower(),
                 "Product self-app in actual PRECOMPILE symbol cache")
-        symbols.append({"file": path.name, **symbol})
     require(symbols, "Empty actual precompile symbol inventory")
     foundation = [s for s in symbols if s["identity"]["id"] == "7505e808-6e52-4b96-a328-82573391297a"]
     require(len(foundation) == 1 and foundation[0]["sha256"] ==
@@ -187,7 +232,15 @@ def _before_compile(root, request):
         products = [s for s in symbols if s["identity"]["id"] == product["id"]]
         require(len(products) == 1 and products[0]["sha256"] == state["receipts"]["app"]["package"]["sha256"],
                 "Test does not consume exact just-built product")
-    snapshot = {"context": context, "kind": request["kind"], "appType": app_type, "symbols": symbols}
+    for symbol in compiler_symbols:
+        if symbol["identity"]["id"].lower() == foundation[0]["identity"]["id"].lower():
+            require(symbol["sha256"] == foundation[0]["sha256"], "Unapproved compiler-folder Foundation bytes")
+        if app_type == "testApp" and symbol["identity"]["id"].lower() == product["id"].lower():
+            require(symbol["sha256"] == state["receipts"]["app"]["package"]["sha256"], "Wrong compiler-folder Test product")
+    snapshot = {"context": context, "kind": request["kind"], "appType": app_type, "symbols": symbols,
+                "symbolsFolder": str(Path(request["symbolsFolder"]).resolve()),
+                "compilerSymbolsFolder": str(Path(request["compilerSymbolsFolder"]).resolve()),
+                "compilerSymbols": compiler_symbols}
     (directory / "before.json").write_text(json.dumps(snapshot, indent=2) + "\n")
     return snapshot
 
@@ -269,10 +322,11 @@ def post_compile(root, request):
     isolated = (state_path.parent / "current-compile.txt").read_bytes()
     isolated_spans = compile_spans(read_log(isolated))
     require(len(isolated_spans) == 1 and isolated_spans[0] == spans[-1], "Wrong/missing isolated final compiler output")
+    boundaries = reconcile_symbols(snapshot, request, info)
     symbols = snapshot["symbols"]
     receipt = {"context": context, "appType": app_type, "parameters": params, "package": info,
                "logSha256": digest(data[offset:]), "isolatedLogSha256": digest(isolated), "spans": spans, "symbols": symbols,
-               "sourceFiles": request["sourceFiles"]}
+               "sourceFiles": request["sourceFiles"], "symbolBoundaries": boundaries}
     state["receipts"][app_type] = receipt
     state["logBytes"], state["logPrefixSha256"] = len(data), digest(data)
     state_path.write_text(json.dumps(state, indent=2) + "\n")
