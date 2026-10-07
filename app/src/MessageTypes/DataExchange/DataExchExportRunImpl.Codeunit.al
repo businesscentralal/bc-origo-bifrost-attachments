@@ -24,20 +24,26 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
 
     /// <summary>Describes the existing message operation.</summary>
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Exports through a Data Exchange definition to a named file.', Comment = 'is-IS=Flytur út með skilgreiningu gagnaskipta í nafngreinda skrá.';
     begin
-        exit('Exports through a Data Exchange definition to a named file.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>Returns the discovery terms for this message type.</summary>
     procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'data exchange export, payment export, export file', Comment = 'is-IS=útflutningur gagnaskipta, útflutningur greiðslna, flytja út skrá';
     begin
-        exit('data exchange export, payment export, export file');
+        exit(KeywordsLbl);
     end;
 
     /// <summary>Describes when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Runs an export definition and returns the file name.', Comment = 'is-IS=Keyrir útflutningsskilgreiningu og skilar skráarheitinu.';
     begin
-        exit('Runs an export definition and returns the file name.');
+        exit(SelectionDescriptionLbl);
     end;
 
     /// <summary>Declares the existing message name and supported version.</summary>
@@ -158,26 +164,30 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
         Token: JsonToken;
         DefinitionCode: Code[20];
         FileName: Text;
+        MissingDefinitionCodeErr: Label 'dataExchDefCode is required.', Comment = 'is-IS=dataExchDefCode er nauðsynlegt.';
+        MissingFileNameErr: Label 'fileName is required.', Comment = 'is-IS=fileName er nauðsynlegt.';
+        DefinitionNotFoundErr: Label 'Data exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
+        ExportDefinitionExpectedErr: Label 'definition must be an export definition', Comment = 'is-IS=skilgreining verður að vera útflutningsskilgreining';
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
         RequestJson := Argument.GetRequestJson();
         if not RequestJson.Get('dataExchDefCode', Token) then begin
-            Argument.RespondWithError('dataExchDefCode is required.');
+            Argument.RespondWithError(MissingDefinitionCodeErr);
             exit;
         end;
         DefinitionCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefinitionCode));
         if not RequestJson.Get('fileName', Token) then begin
-            Argument.RespondWithError('fileName is required.');
+            Argument.RespondWithError(MissingFileNameErr);
             exit;
         end;
         FileName := Token.AsValue().AsText();
         if not DataExchDef.Get(DefinitionCode) then begin
-            Argument.RespondWithError('Data exchange definition ' + DefinitionCode + ' was not found.');
+            Argument.RespondWithError(StrSubstNo(DefinitionNotFoundErr, DefinitionCode));
             exit;
         end;
         if DataExchDef.Type = DataExchDef.Type::"Generic Import" then begin
-            Argument.RespondWithError('definition must be an export definition');
+            Argument.RespondWithError(ExportDefinitionExpectedErr);
             exit;
         end;
 

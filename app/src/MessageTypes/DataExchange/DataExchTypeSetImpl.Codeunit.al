@@ -24,20 +24,26 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
 
     /// <summary>Describes the existing message operation.</summary>
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Creates or updates a Data Exchange Type and requires an import definition.', Comment = 'is-IS=Stofnar eða uppfærir gerð gagnaskipta og krefst innflutningsskilgreiningar.';
     begin
-        exit('Creates or updates a Data Exchange Type and requires an import definition.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>Returns the discovery terms for this message type.</summary>
     procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'data exchange type, incoming document type, set definition', Comment = 'is-IS=gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu';
     begin
-        exit('data exchange type, incoming document type, set definition');
+        exit(KeywordsLbl);
     end;
 
     /// <summary>Describes when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Wires a Data Exchange Type to an import definition.', Comment = 'is-IS=Tengir gerð gagnaskipta við innflutningsskilgreiningu.';
     begin
-        exit('Wires a Data Exchange Type to an import definition.');
+        exit(SelectionDescriptionLbl);
     end;
 
     /// <summary>Declares the existing message name and supported version.</summary>
@@ -158,26 +164,30 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         Token: JsonToken;
         TypeCode: Code[20];
         DefinitionCode: Code[20];
+        MissingCodeErr: Label 'code is required.', Comment = 'is-IS=code er nauðsynlegt.';
+        MissingDefinitionCodeErr: Label 'dataExchDefCode is required.', Comment = 'is-IS=dataExchDefCode er nauðsynlegt.';
+        DefinitionNotFoundErr: Label 'Data exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
+        ImportDefinitionExpectedErr: Label 'definition must be an import definition', Comment = 'is-IS=skilgreining verður að vera innflutningsskilgreining';
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
         RequestJson := Argument.GetRequestJson();
         if not RequestJson.Get('code', Token) then begin
-            Argument.RespondWithError('code is required.');
+            Argument.RespondWithError(MissingCodeErr);
             exit;
         end;
         TypeCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(TypeCode));
         if not RequestJson.Get('dataExchDefCode', Token) then begin
-            Argument.RespondWithError('dataExchDefCode is required.');
+            Argument.RespondWithError(MissingDefinitionCodeErr);
             exit;
         end;
         DefinitionCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefinitionCode));
         if not DataExchDef.Get(DefinitionCode) then begin
-            Argument.RespondWithError('Data exchange definition ' + DefinitionCode + ' was not found.');
+            Argument.RespondWithError(StrSubstNo(DefinitionNotFoundErr, DefinitionCode));
             exit;
         end;
         if DataExchDef.Type <> DataExchDef.Type::"Generic Import" then begin
-            Argument.RespondWithError('definition must be an import definition');
+            Argument.RespondWithError(ImportDefinitionExpectedErr);
             exit;
         end;
         if not DataExchangeType.Get(TypeCode) then begin
