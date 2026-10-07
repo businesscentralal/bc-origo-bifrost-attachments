@@ -24,6 +24,18 @@ SharePoint) owns the secrets.
 
 ## Functional Flow
 
+Data Exchange read requests do not need a storage connection. For example,
+`DataExchange.Definition.List` accepts `{ "direction": "Import" }` without `storageCode`.
+`DataExchange.Entry.List` accepts optional definition/date filters and `skip`/`take`; `take` is
+0–1000, and omitted or zero uses 100. Invalid values are reported together with
+`code`, `parameter`, `received`, `expected` and an actionable `nextStep`.
+
+For uploads destined for a record, omit `storageCode` in `Storage.Upload.Begin` and finish with
+`Storage.Upload.CommitToRecord`. A storage destination requires a connection.
+`Storage.Attachment.CreateForRecord` accepts one content source: `contentBase64` (or `content`),
+`storageCode` with `path`, or `sourceTarget` with `sourceSystemId`.
+
+
 1. **Configure a connection.** An administrator opens **Bifröst viðhengi Setup** (`Attachments Setup ori`),
    runs the setup wizard, enables *Allow HttpClient Requests* for the extension, picks a registered
    File Account and saves it as a `Storage Setup ori` row with a short `storageCode`.
