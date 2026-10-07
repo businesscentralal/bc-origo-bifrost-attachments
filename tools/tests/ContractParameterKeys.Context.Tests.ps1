@@ -239,6 +239,9 @@ codeunit 4 "Parts ori"
         Assert-Failure 'builder syntax in string cannot declare key' @('read-not-declared|key')
         Set-Fixture $declareKey "// RequestJson.Get('key', Token)`n        Message('key');"
         Assert-Failure 'comment cannot prove a read' @('declared-not-read|key', 'no-reads-seen|*')
+        Set-Fixture $declareKey $readKey
+        Remove-Item (Join-Path $src 'Fixture.al')
+        Assert-Failure 'missing registered implementation cannot pass' @('unsupported-analysis|unavailable contract or implementation source')
         $unsupported = New-Object 'System.Collections.Generic.List[string]'
         $unsupported.Add('Fixture.Get|unsupported-analysis|unavailable source')
         Assert-Context ((Compare-WithAllowList $unsupported $unsupported).Count -gt 0) 'unsupported analysis cannot be allow-listed'

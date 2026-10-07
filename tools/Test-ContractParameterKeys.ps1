@@ -915,7 +915,10 @@ function Find-Offenders([string]$AppFolder) {
         $contractCodeunit = $types[$typeName].Contract
         $interfaceCodeunit = $types[$typeName].Interface
         if ($contractCodeunit -eq 'Default Contract ori') { continue }
-        if (-not $objects.ContainsKey($contractCodeunit) -or -not $objects.ContainsKey($interfaceCodeunit)) { continue }
+        if (-not $objects.ContainsKey($contractCodeunit) -or -not $objects.ContainsKey($interfaceCodeunit)) {
+            $found.Add("$typeName|unsupported-analysis|unavailable contract or implementation source")
+            continue
+        }
         if ($Explain -ne '' -and $typeName -ne $Explain) { continue }
         $script:AnalysisDiagnostics = New-Object 'System.Collections.Generic.HashSet[string]'
         $declared = Get-DeclaredKeys $objects $contractCodeunit
