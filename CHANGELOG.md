@@ -33,6 +33,11 @@ Business Central release versioning (`major.minor.build.revision`).
 - Read/query discovery wording is localized in `DataExch Def List Impl ori` (70013522), `DataExch Def Get Impl ori` (70013523), `DataExch Type List Impl ori` (70013524), `DataExch Entry List Impl ori` (70013525), and `DataExch Entry Get Impl ori` (70013526). `Storage Contract Batch2 Tests` (96216) adds #69 contract and full-dispatch regression coverage; exact-tip execution and final XLF integration remain verification gates.
 
 
+### Fixed (2026-10-06) - retry skipped legacy take-over on upgrade (#76)
+
+- `Storage Link Upgrade ori` (10035683) retries the permission-probed `Storage Takeover ori` (10035676) on every company upgrade, before checking the orphan-purge tag. A denied probe remains telemetry-only; a later permitted upgrade can copy legacy data and re-grant roles. Existing destination data and assignments retain the take-over routine's preservation rules. Generated mapping and grant code are unchanged.
+- `Storage Takeover Probe Tests` (96210) covers tagged and untagged upgrades, both legacy read-denial paths, denied-then-permitted role re-grant, idempotent retry and populated destination preservation with the existing probe seam. Untagged denial still purges only invalid links and records the purge tag; later retries preserve that one-time boundary. Absent-legacy no-op fixtures explicitly require no residual legacy roles. Genuine restricted-identity install/upgrade and legacy-data lifecycle certification remain required; seam tests do not certify permissions.
+
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
 - The Foundation dependency floor is **28.0.1.0** in `app/app.json` and `test/app.json`, the same floor Bifrost Language Models uses for Foundation 28.0.1. Every 28.0.1.x build is accepted.
