@@ -17,6 +17,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         LibraryAssert: Codeunit "Library Assert";
         FailInsert: Boolean;
         FailDelete: Boolean;
+        FailTypeModify: Boolean;
         FailureDefinitionCode: Code[20];
 
     /// <summary>A valid request retains Accepted and creates only the header.</summary>
@@ -469,8 +470,8 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     [Test]
     procedure Scenario_AC01_DeleteMissing_ReportsCompleteError()
     var
-        Response: JsonObject;
         DataExchDef: Record "Data Exch. Def";
+        Response: JsonObject;
         BeforeCount: Integer;
     begin
         // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
@@ -625,6 +626,298 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', '"   "');
         AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', '"   "');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Whitespace must not write.');
+    end;
+
+    /// <summary>Export retains its shipped header-only behavior and exact file name.</summary>
+    [Test]
+    procedure Scenario_AC03_Export_CreatesOnlyNamedHeader()
+    var
+        DataExch: Record "Data Exch.";
+        DefinitionCode: Code[20];
+        Response: JsonObject;
+    begin
+        // Story #82, AC03 | Time: none | Risk: real Foundation dispatch.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Export");
+        Response := DispatchExport(DefinitionCode, 'X82.csv');
+        AssertText(Response, 'status', 'Success');
+        DataExch.Get(IntegerProperty(Response, 'entryNo'));
+        LibraryAssert.AreEqual(DefinitionCode, DataExch."Data Exch. Def Code", 'Header definition mismatch.');
+        LibraryAssert.AreEqual('X82.csv', DataExch."File Name", 'Header file name mismatch.');
+        DataExch.CalcFields("File Content");
+        LibraryAssert.IsFalse(DataExch."File Content".HasValue(), 'Export must remain header-only.');
+        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Export must create exactly one header.');
+    end;
+
+    /// <summary>The shipped export predicate continues accepting Payroll Import.</summary>
+    [Test]
+    procedure Scenario_AC03_ExportPayroll_PreservesShippedPredicate()
+    var
+        DefinitionCode: Code[20];
+        Response: JsonObject;
+    begin
+        // Story #82, AC03 | Time: none | Risk: predicate compatibility.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Payroll Import");
+        Response := DispatchExport(DefinitionCode, 'X82.csv');
+        AssertText(Response, 'status', 'Success');
+        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Payroll predicate must remain unchanged.');
+    end;
+
+    /// <summary>Export collects both invalid raw inputs before writing.</summary>
+    [Test]
+    procedure Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite()
+    var
+        Response: JsonObject;
+        BeforeCount: Integer;
+    begin
+        // Story #82, AC02 | Time: none | Risk: no side effects on refusal.
+        BeforeCount := EntryCount('');
+        Response := Dispatch("Message Type ori"::"DataExchange.Export.Run", '{"dataExchDefCode":[],"fileName":false}');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', '');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'fileName', '');
+        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both errors must be collected.');
+        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Refused export must not write.');
+    end;
+
+    /// <summary>Export rejects missing and wrong-kind definitions before creating a header.</summary>
+    [Test]
+    procedure Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite()
+    var
+        DefinitionCode: Code[20];
+        Response: JsonObject;
+        BeforeCount: Integer;
+    begin
+        // Story #82, AC01 | Time: none | Risk: no side effects on refusal.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
+        BeforeCount := EntryCount('');
+        Response := DispatchExport(DefinitionCode, 'X82.csv');
+        AssertRefusal(Response, 'InvalidParameter', 'dataExchDefCode', DefinitionCode);
+        Response := DispatchExport('X82MISSING', 'X82.csv');
+        AssertRefusal(Response, 'RecordNotFound', 'dataExchDefCode', 'X82MISSING');
+        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Refused definitions must not create headers.');
+    end;
+
+    /// <summary>File-name boundary is accepted exactly; one character beyond is refused.</summary>
+    [Test]
+    procedure Scenario_AC02_ExportFileNameBounds_NeverTruncates()
+    var
+        DataExch: Record "Data Exch.";
+        DefinitionCode: Code[20];
+        FileName: Text;
+        Response: JsonObject;
+    begin
+        // Story #82, AC02 | Time: none | Risk: storage field length.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Export");
+        FileName := PadStr('', MaxStrLen(DataExch."File Name"), 'X');
+        Response := DispatchExport(DefinitionCode, FileName);
+        AssertText(Response, 'status', 'Success');
+        DataExch.Get(IntegerProperty(Response, 'entryNo'));
+        LibraryAssert.AreEqual(FileName, DataExch."File Name", 'Exact limit must remain unchanged.');
+        Response := DispatchExport(DefinitionCode, FileName + 'X');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'fileName', '');
+        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Overlong input must not create another header.');
+    end;
+
+    /// <summary>Type creation and update persist the requested binding and optional description semantics.</summary>
+    [Test]
+    procedure Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription()
+    var
+        DataExchangeType: Record "Data Exchange Type";
+        DefinitionCode: Code[20];
+        OtherDefinitionCode: Code[20];
+        Response: JsonObject;
+    begin
+        // Story #82, AC03 | Time: none | Risk: standard Validate still runs.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
+        OtherDefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
+        Response := DispatchTypeSet(DefinitionCode, DefinitionCode, true, 'X82 original');
+        AssertText(Response, 'status', 'Success');
+        DataExchangeType.Get(DefinitionCode);
+        LibraryAssert.AreEqual('X82 original', DataExchangeType.Description, 'Description must persist.');
+        Response := DispatchTypeSet(DefinitionCode, OtherDefinitionCode, false, '');
+        AssertText(Response, 'status', 'Success');
+        DataExchangeType.Get(DefinitionCode);
+        LibraryAssert.AreEqual(OtherDefinitionCode, DataExchangeType."Data Exch. Def. Code", 'Updated binding must persist.');
+        LibraryAssert.AreEqual('X82 original', DataExchangeType.Description, 'Omitted description must be preserved.');
+        Response := DispatchTypeSet(DefinitionCode, OtherDefinitionCode, true, '');
+        AssertText(Response, 'status', 'Success');
+        DataExchangeType.Get(DefinitionCode);
+        LibraryAssert.AreEqual('', DataExchangeType.Description, 'Explicit empty description must clear the value.');
+    end;
+
+    /// <summary>Malformed type inputs cannot replace the persisted binding or description.</summary>
+    [Test]
+    procedure Scenario_AC02_TypeSetOverlongDescription_PreservesExisting()
+    var
+        DataExchangeType: Record "Data Exchange Type";
+        DefinitionCode: Code[20];
+        OtherDefinitionCode: Code[20];
+        Response: JsonObject;
+    begin
+        // Story #82, AC02 | Time: none | Risk: no silent truncation or partial writes.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
+        OtherDefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
+        Response := DispatchTypeSet(DefinitionCode, DefinitionCode, true, 'X82 original');
+        AssertText(Response, 'status', 'Success');
+        Response := DispatchTypeSet(DefinitionCode, OtherDefinitionCode, true, PadStr('', MaxStrLen(DataExchangeType.Description) + 1, 'X'));
+        AssertRefusal(Response, 'InvalidParameterFormat', 'description', '');
+        DataExchangeType.Get(DefinitionCode);
+        LibraryAssert.AreEqual(DefinitionCode, DataExchangeType."Data Exch. Def. Code", 'Refusal must preserve original binding.');
+        LibraryAssert.AreEqual('X82 original', DataExchangeType.Description, 'Refusal must preserve original description.');
+    end;
+
+    /// <summary>Both code fields and description report their independent invalid types.</summary>
+    [Test]
+    procedure Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite()
+    var
+        DataExchangeType: Record "Data Exchange Type";
+        Response: JsonObject;
+        BeforeCount: Integer;
+    begin
+        // Story #82, AC02 | Time: none | Risk: complete error collection before write.
+        BeforeCount := DataExchangeType.Count();
+        Response := Dispatch("Message Type ori"::"DataExchange.Type.Set", '{"code":[],"dataExchDefCode":false,"description":{}}');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'code', '');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', '');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'description', '');
+        LibraryAssert.AreEqual(3, ErrorCount(Response), 'All errors must be collected.');
+        LibraryAssert.AreEqual(BeforeCount, DataExchangeType.Count(), 'Refusal must not create a type.');
+    end;
+
+    /// <summary>Payroll definitions remain refused by Type.Set without creating a row.</summary>
+    [Test]
+    procedure Scenario_AC01_TypeSetPayroll_DoesNotCreateType()
+    var
+        DataExchangeType: Record "Data Exchange Type";
+        DefinitionCode: Code[20];
+        Response: JsonObject;
+    begin
+        // Story #82, AC01 | Time: none | Risk: shipped predicate compatibility.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Payroll Import");
+        Response := DispatchTypeSet(DefinitionCode, DefinitionCode, false, '');
+        AssertRefusal(Response, 'InvalidParameter', 'dataExchDefCode', DefinitionCode);
+        LibraryAssert.IsFalse(DataExchangeType.Get(DefinitionCode), 'Wrong-kind refusal must not create a row.');
+    end;
+
+    /// <summary>Export's post-insert failure cannot leave a new header.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC04_ExportAfterInsertFailure_RollsBack()
+    var
+        DataExchDef: Record "Data Exch. Def";
+        Faults: Codeunit "DataExch Refusal82 Tests ori";
+        DefinitionCode: Code[20];
+    begin
+        // Story #82, AC04 | Time: none | Risk: real postwrite table trigger, committed fixture.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Export");
+        Commit();
+        Faults.ConfigureFailure(DefinitionCode, true, false);
+        BindSubscription(Faults);
+        asserterror DispatchExport(DefinitionCode, 'X82.csv');
+        LibraryAssert.ExpectedError('X82 postwrite failure');
+        UnbindSubscription(Faults);
+        LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'Failed export must roll back header.');
+        DataExchDef.Get(DefinitionCode);
+        DataExchDef.Delete(true);
+        Commit();
+    end;
+
+    /// <summary>Type.Set's post-modify failure rolls back its inserted row.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert()
+    var
+        DataExchangeType: Record "Data Exchange Type";
+        DataExchDef: Record "Data Exch. Def";
+        Faults: Codeunit "DataExch Refusal82 Tests ori";
+        DefinitionCode: Code[20];
+    begin
+        // Story #82, AC04 | Time: none | Risk: both insert and modify in same transaction.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
+        Commit();
+        Faults.ConfigureTypeFailure(DefinitionCode);
+        BindSubscription(Faults);
+        asserterror DispatchTypeSet(DefinitionCode, DefinitionCode, true, 'X82 failure');
+        LibraryAssert.ExpectedError('X82 type postwrite failure');
+        UnbindSubscription(Faults);
+        LibraryAssert.IsFalse(DataExchangeType.Get(DefinitionCode), 'Failed modify must also roll back prior insert.');
+        DataExchDef.Get(DefinitionCode);
+        DataExchDef.Delete(true);
+        Commit();
+    end;
+
+    /// <summary>A failed update restores the previous binding and description.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal()
+    var
+        DataExchangeType: Record "Data Exchange Type";
+        DataExchDef: Record "Data Exch. Def";
+        Faults: Codeunit "DataExch Refusal82 Tests ori";
+        DefinitionCode: Code[20];
+        OtherDefinitionCode: Code[20];
+        Response: JsonObject;
+    begin
+        // Story #82, AC04 | Time: none | Risk: real postwrite rollback with committed baseline.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
+        OtherDefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
+        Response := DispatchTypeSet(DefinitionCode, DefinitionCode, true, 'X82 original');
+        AssertText(Response, 'status', 'Success');
+        Commit();
+        Faults.ConfigureTypeFailure(OtherDefinitionCode);
+        BindSubscription(Faults);
+        asserterror DispatchTypeSet(DefinitionCode, OtherDefinitionCode, true, 'X82 replacement');
+        LibraryAssert.ExpectedError('X82 type postwrite failure');
+        UnbindSubscription(Faults);
+        DataExchangeType.Get(DefinitionCode);
+        LibraryAssert.AreEqual(DefinitionCode, DataExchangeType."Data Exch. Def. Code", 'Failed update must restore binding.');
+        LibraryAssert.AreEqual('X82 original', DataExchangeType.Description, 'Failed update must restore description.');
+        DataExchangeType.Delete(true);
+        DataExchDef.Get(DefinitionCode);
+        DataExchDef.Delete(true);
+        DataExchDef.Get(OtherDefinitionCode);
+        DataExchDef.Delete(true);
+        Commit();
+    end;
+
+    /// <summary>Arms only the named fixture's type-modification failure.</summary>
+    /// <param name="DefinitionCode">The definition bound by the fixture.</param>
+    internal procedure ConfigureTypeFailure(DefinitionCode: Code[20])
+    begin
+        FailureDefinitionCode := DefinitionCode;
+        FailTypeModify := true;
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Data Exchange Type", 'OnAfterModifyEvent', '', false, false)]
+    local procedure FailAfterTypeModify(var Rec: Record "Data Exchange Type"; var xRec: Record "Data Exchange Type"; RunTrigger: Boolean)
+    var
+        FailureErr: Label 'X82 type postwrite failure', Locked = true;
+    begin
+        if FailTypeModify and not Rec.IsTemporary() and RunTrigger and (Rec."Data Exch. Def. Code" = FailureDefinitionCode) then
+            Error(FailureErr);
+    end;
+
+    local procedure DispatchExport(DefinitionCode: Text; FileName: Text): JsonObject
+    var
+        Request: JsonObject;
+        Payload: Text;
+    begin
+        Request.Add('dataExchDefCode', DefinitionCode);
+        Request.Add('fileName', FileName);
+        Request.WriteTo(Payload);
+        exit(Dispatch("Message Type ori"::"DataExchange.Export.Run", Payload));
+    end;
+
+    local procedure DispatchTypeSet(TypeCode: Text; DefinitionCode: Text; IncludeDescription: Boolean; Description: Text): JsonObject
+    var
+        Request: JsonObject;
+        Payload: Text;
+    begin
+        Request.Add('code', TypeCode);
+        Request.Add('dataExchDefCode', DefinitionCode);
+        if IncludeDescription then
+            Request.Add('description', Description);
+        Request.WriteTo(Payload);
+        exit(Dispatch("Message Type ori"::"DataExchange.Type.Set", Payload));
     end;
 
     /// <summary>Arms only this manually bound test subscriber instance for a specific fixture.</summary>

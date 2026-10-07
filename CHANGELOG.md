@@ -29,6 +29,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed
 
+- `Storage Attachment Mgt ori` (10035635), `Storage Upload Mgt ori` (10035665), and `Storage Request Reader ori` (10035682) retain prewrite length refusals while using bounded assignments for analyzer clarity; direct linked-move calls also reject overlong targets. Remove unused upload labels and align owned test filenames/declaration order.
+- `Storage Attachment Mgt ori` (10035635) persists native fields only after successful field assignment, outside the TryFunction. `Storage Native Fields Tests` (96217) seeds real media before base validation and covers missing records and failed assignments without partial persistence.
+- `DataExch Export Run Impl ori` (70013534) and `DataExch Type Set Impl ori` (70013531) collect strict input and definition errors before writes, retain existing accepted definition kinds, and propagate postwrite failures in the caller transaction. `DataExch Refusal82 Tests ori` (96226) adds header/type readback, refusal and rollback regressions.
+
 - `Storage Contract Parts ori` (70013500) removes unused storage requirements from Data Exchange queries and record uploads, documents conditional attachment sources and accepted address aliases, and adds shared shipped Data Exchange mutation chapters for integration by #82.
 - `Data Exchange Query ori` (70013520) collects malformed filters, flags, dates and paging values before querying, refuses overlong codes and page sizes above 1000, preserves the zero/default page size of 100, and returns localized actionable error details.
 - Read/query discovery wording is localized in `DataExch Def List Impl ori` (70013522), `DataExch Def Get Impl ori` (70013523), `DataExch Type List Impl ori` (70013524), `DataExch Entry List Impl ori` (70013525), and `DataExch Entry Get Impl ori` (70013526). `Storage Contract Batch2 Tests` (96216) adds #69 contract and full-dispatch regression coverage; exact-tip execution and final XLF integration remain verification gates.
