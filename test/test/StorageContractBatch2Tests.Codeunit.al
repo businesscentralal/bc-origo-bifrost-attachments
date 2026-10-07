@@ -19,7 +19,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         ContractMgt: Codeunit "Msg Contract Mgt ori";
         Contract: JsonObject;
         Response: JsonObject;
-        Field: JsonObject;
+        ResponseField: JsonObject;
         Token: JsonToken;
         Fields: JsonArray;
         CountFields: Integer;
@@ -33,17 +33,17 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Fields := Token.AsArray();
         LibraryAssert.AreEqual(2, Fields.Count(), 'Type.List returns count and types.');
         foreach Token in Fields do begin
-            Field := Token.AsObject();
-            case JsonText(Field, 'name') of
+            ResponseField := Token.AsObject();
+            case JsonText(ResponseField, 'name') of
                 'count':
                     begin
                         CountFields += 1;
-                        LibraryAssert.AreEqual('integer', JsonText(Field, 'type'), 'Count is an integer.');
+                        LibraryAssert.AreEqual('integer', JsonText(ResponseField, 'type'), 'Count is an integer.');
                     end;
                 'types':
                     begin
                         TypesFields += 1;
-                        LibraryAssert.AreEqual('array', JsonText(Field, 'type'), 'Types is an array.');
+                        LibraryAssert.AreEqual('array', JsonText(ResponseField, 'type'), 'Types is an array.');
                     end;
                 else
                     LibraryAssert.Fail('Unexpected Type.List response field.');
