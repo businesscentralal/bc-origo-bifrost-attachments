@@ -17,6 +17,7 @@ codeunit 10035662 "Storage Request Mgt ori"
     Access = Internal;
 
     var
+        MoveRecoveryLbl: Label 'linked move recovery after remote acknowledgement loss', Comment = 'is-IS=endurheimt tengdrar færslu eftir tap á staðfestingu frá fjargeymslu';
         LinkPermissionsExpectedLbl: Label 'read and write permission on every linked attachment', Comment = 'is-IS=les- og skrifheimild á öllum tengdum viðhengjum';
         LinkPermissionsNextStepLbl: Label 'Ask the administrator to grant attachment access before retrying.', Comment = 'is-IS=Biddu kerfisstjóra um að veita aðgang að viðhengjum áður en þú reynir aftur.';
         UnsafePathErr: Label 'The path ''%1'' is not allowed: no path segment may be ''.'' or ''..''.', Comment = '%1 = the rejected path||is-IS=Slóðin „%1“ er ekki leyfð: enginn hluti slóðarinnar má vera „.“ eða „..“.';
@@ -371,7 +372,7 @@ codeunit 10035662 "Storage Request Mgt ori"
         if AttachmentMgt.IsStorageFileLinked(StorageSetup.Code, SourcePath) and
            (StorageSetup."Storage Type" = StorageSetup."Storage Type"::"External File Storage")
         then begin
-            Provider.AddUnverifiedOperation(Argument, 'sourcePath', 'linked move recovery after remote acknowledgement loss');
+            Provider.AddUnverifiedOperation(Argument, 'sourcePath', MoveRecoveryLbl);
             Reader.RespondIfErrors(Argument);
             exit;
         end;

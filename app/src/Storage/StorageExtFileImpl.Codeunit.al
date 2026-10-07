@@ -17,6 +17,13 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
     Access = Internal;
 
     var
+        BlobSegmentModeLbl: Label 'Blob segment mode', Comment = 'is-IS=hlutastilling Blob';
+        SharePointRootLbl: Label 'SharePoint decoded library root and comparison', Comment = 'is-IS=afkóðuð safnrót SharePoint og samanburður';
+        ConnectorSchemaLbl: Label 'connector package schema', Comment = 'is-IS=skema tengipakka';
+        AccountSchemaLbl: Label 'account field schema', Comment = 'is-IS=skema reikningsreita';
+        AccountMetadataLbl: Label 'registered account metadata', Comment = 'is-IS=lýsigögn skráðs reiknings';
+        AzureIdentityLbl: Label 'Azure account and resource identity', Comment = 'is-IS=auðkenni Azure-reiknings og tilfangs';
+        FileShareComparisonLbl: Label 'File Share Unicode comparison', Comment = 'is-IS=Unicode-samanburður File Share';
         MetadataPermissionErr: Label 'The storage account address cannot be read with your permissions.', Comment = 'is-IS=Ekki er hægt að lesa slóð geymslureiknings með þínum heimildum.';
         MetadataExpectedLbl: Label 'verified public account metadata and operation capability', Comment = 'is-IS=staðfest opinber lýsigögn reiknings og stuðningur við aðgerð';
         MetadataNextStepLbl: Label 'Ask the administrator for read permission on the selected storage account.', Comment = 'is-IS=Biddu kerfisstjóra um lesheimild á völdum geymslureikningi.';
@@ -221,7 +228,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
                     // No HNS mode is exposed by the public account schema. Deep flat paths are
                     // not malformed: they require the actual account mode to be established.
                     if Address.Split('/').Count() > 61 then
-                        AddUnverifiedOperation(Argument, ParameterName, 'Blob segment mode');
+                        AddUnverifiedOperation(Argument, ParameterName, BlobSegmentModeLbl);
                 end;
             4570:
                 CheckFileSharePath(Argument, ParameterName, Address, IsDirectory);
@@ -263,7 +270,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
                 end;
             4580:
                 begin
-                    AddUnverifiedOperation(Argument, 'storageCode', 'SharePoint decoded library root and comparison');
+                    AddUnverifiedOperation(Argument, 'storageCode', SharePointRootLbl);
                     exit(false);
                 end;
             else
@@ -271,7 +278,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
                 exit(true);
         end;
         if not KnownAccountModule(ConnectorId) then begin
-            AddUnverifiedOperation(Argument, 'storageCode', 'connector package schema');
+            AddUnverifiedOperation(Argument, 'storageCode', ConnectorSchemaLbl);
             exit(false);
         end;
         Account.Open(ConnectorId);
@@ -285,7 +292,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
            not IsMetadataField(Account, 3, 'Storage Account Name', FieldType::Text) or not IsMetadataField(Account, 4, RootFieldName, FieldType::Text)
         then begin
             Account.Close();
-            AddUnverifiedOperation(Argument, 'storageCode', 'account field schema');
+            AddUnverifiedOperation(Argument, 'storageCode', AccountSchemaLbl);
             exit(false);
         end;
         // Only the three verified public fields are loaded; no secret fields or getters.
@@ -294,19 +301,19 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         AccountId.SetRange(StorageSetup."File Account Id");
         if not Account.FindFirst() then begin
             Account.Close();
-            AddUnverifiedOperation(Argument, 'storageCode', 'registered account metadata');
+            AddUnverifiedOperation(Argument, 'storageCode', AccountMetadataLbl);
             exit(false);
         end;
         HostName := Account.Field(3).Value;
         RootName := Account.Field(4).Value;
         Account.Close();
         if not IsAzureResourceName(HostName, false) or not IsAzureResourceName(RootName, true) then begin
-            AddUnverifiedOperation(Argument, 'storageCode', 'Azure account and resource identity');
+            AddUnverifiedOperation(Argument, 'storageCode', AzureIdentityLbl);
             exit(false);
         end;
         Scope := Format(ConnectorId, 0, 9) + ':' + HostName + '/' + RootName;
         if (ConnectorId = 4570) and ContainsNonAscii(Address) then begin
-            AddUnverifiedOperation(Argument, 'path', 'File Share Unicode comparison');
+            AddUnverifiedOperation(Argument, 'path', FileShareComparisonLbl);
             exit(false);
         end;
         exit(true);

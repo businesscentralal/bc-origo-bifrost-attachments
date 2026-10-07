@@ -26,6 +26,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     Access = Internal;
 
     var
+        NativeSchemaLbl: Label 'installed native attachment field schema', Comment = 'is-IS=skema uppsettra innbyggðra viðhengjareita';
         BasePathTok: Label 'bifrost-attachments', Locked = true;
         IncDocPathWithYearTok: Label '%1/incoming-documents/%2/%3/%4', Comment = '%1 = base path, %2 = year, %3 = entry no., %4 = file name', Locked = true;
         IncDocPathTok: Label '%1/incoming-documents/%2/%3', Comment = '%1 = base path, %2 = entry no., %3 = file name', Locked = true;
@@ -943,7 +944,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
            not NativeFieldMatches(RecRef, 8753, 'Stored Internally', FieldType::Boolean)
         then begin
             RecRef.Close();
-            Provider.AddUnverifiedOperation(Argument, ParameterName, 'installed native attachment field schema');
+            Provider.AddUnverifiedOperation(Argument, ParameterName, NativeSchemaLbl);
             exit;
         end;
         if not RecRef.ReadPermission() or not RecRef.WritePermission() then
