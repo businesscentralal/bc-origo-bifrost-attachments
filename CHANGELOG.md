@@ -5,9 +5,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
-### Fixed - duplicate Data Exchange type-list contract case
+### Fixed (2026-10-07) - duplicate Data Exchange type-list contract case
 
-- Remove the redundant `DataExchange.Type.List` response branch from `Storage Contract Parts ori` (70013500), preserving the localized `count` and `types` fields returned by `Data Exchange Query ori` (70013520). `Storage Contract Batch2 Tests` (96216) covers the registered response contract and dispatched count/array agreement.
+- Remove the redundant `DataExchange.Type.List` response branch from `Storage Contract Parts ori` (70013500), preserving the localized `count` and `types` fields returned by `Data Exchange Query ori` (70013520). `Storage Contract Batch2 Tests` (96216) covers unique typed response metadata, a deterministically empty parameterless request and exactly two seeded public-dispatcher rows with integer count, array shape and row contents. Full company rows are preserved/restored in the owned disposable test company; runtime verification remains required.
 
 ### Fixed (2026-10-07) - canonical compilation and regression fixtures (#74)
 
