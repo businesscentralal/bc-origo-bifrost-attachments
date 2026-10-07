@@ -21,7 +21,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "table",
@@ -67,7 +68,8 @@
         "9; \"Offloaded At\"; DateTime",
         "10; \"Offloaded By\"; Guid"
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -94,7 +96,8 @@
       ],
       "nonLocalProcedureCount": 16,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -112,7 +115,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enum",
@@ -132,7 +136,8 @@
       "enumValues": [
         "0; DocumentAttachment",
         "1; IncomingDocument"
-      ]
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "tableextension",
@@ -149,7 +154,8 @@
       "fields": [
         "10035635; \"Offloaded ori\"; Boolean"
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "tableextension",
@@ -166,7 +172,8 @@
       "fields": [
         "10035635; \"Offloaded ori\"; Boolean"
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -189,7 +196,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 5,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -211,7 +219,8 @@
       ],
       "nonLocalProcedureCount": 4,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -232,7 +241,8 @@
       ],
       "nonLocalProcedureCount": 6,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -250,7 +260,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 1,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -271,7 +282,8 @@
       ],
       "nonLocalProcedureCount": 1,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -289,7 +301,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -308,7 +321,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -327,7 +341,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -346,7 +361,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -365,7 +381,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -384,7 +401,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -401,7 +419,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enumextension",
@@ -418,7 +437,8 @@
       "fields": [],
       "enumValues": [
         "70013519; \"DataExchange.Definition.Delete\""
-      ]
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enumextension",
@@ -435,7 +455,8 @@
       "fields": [],
       "enumValues": [
         "70013521; \"DataExchange.Definition.Export\""
-      ]
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -452,7 +473,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -471,7 +493,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -486,7 +509,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -505,7 +529,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -520,7 +545,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -539,7 +565,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -558,7 +585,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enumextension",
@@ -575,7 +603,8 @@
       "fields": [],
       "enumValues": [
         "70013519; \"DataExchange.Export.Run\""
-      ]
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -592,7 +621,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -611,7 +641,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enumextension",
@@ -628,7 +659,8 @@
       "fields": [],
       "enumValues": [
         "70013516; \"DataExchange.Import.Run\""
-      ]
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -645,7 +677,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enumextension",
@@ -667,7 +700,8 @@
         "70013513; \"DataExchange.Type.List\"",
         "70013514; \"DataExchange.Entry.List\"",
         "70013515; \"DataExchange.Entry.Get\""
-      ]
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -686,7 +720,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enumextension",
@@ -703,7 +738,8 @@
       "fields": [],
       "enumValues": [
         "70013516; \"DataExchange.Type.Set\""
-      ]
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -720,7 +756,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -739,7 +776,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -758,7 +796,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -777,7 +816,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -796,7 +836,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -815,7 +856,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -834,7 +876,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -853,7 +896,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -872,7 +916,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -891,7 +936,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -910,7 +956,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -929,7 +976,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -948,7 +996,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -994,7 +1043,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 7,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enumextension",
@@ -1033,7 +1083,8 @@
         "10035655; \"Storage.Attachment.CreateLinked\"",
         "10035656; \"Storage.Attachment.CreateForRecord\"",
         "10035657; \"Storage.Upload.CommitToRecord\""
-      ]
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1052,7 +1103,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1071,7 +1123,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1090,7 +1143,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1109,7 +1163,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1128,7 +1183,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1147,7 +1203,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "permissionset",
@@ -1162,7 +1219,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "permissionset",
@@ -1177,7 +1235,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "permissionsetextension",
@@ -1192,7 +1251,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1210,7 +1270,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "page",
@@ -1233,7 +1294,8 @@
       ],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "pageextension",
@@ -1248,7 +1310,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "page",
@@ -1270,7 +1333,8 @@
         "Name; Rec.Name",
         "\"Account Id\"; Rec.\"Account Id\""
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "page",
@@ -1298,7 +1362,8 @@
         "\"File Account Name\"; Rec.\"File Account Name\"",
         "\"Base Path\"; Rec.\"Base Path\""
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "page",
@@ -1324,7 +1389,8 @@
         "\"Base Path\"; Rec.\"Base Path\"",
         "Enabled; Rec.Enabled"
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "page",
@@ -1334,7 +1400,7 @@
       "sha256": "b5b5269fe07b9080456b3a185efbd9dfd9ed9d8718d444ee9da47185119b0586",
       "access": "Public (default)",
       "extensible": "false",
-      "decision": "KEEP Public: provider contract",
+      "decision": "KEEP UI entry point; HOLD any member access reduction pending baseline",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
         "app/src/Install/StorageTakeover.Codeunit.al",
@@ -1388,7 +1454,8 @@
         "\"Base Path\"; Rec.\"Base Path\"",
         "Enabled; Rec.Enabled"
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "table",
@@ -1454,7 +1521,8 @@
         "7; \"Base Path\"; Text[250]",
         "8; Enabled; Boolean"
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "page",
@@ -1475,7 +1543,8 @@
       "fields": [
         "HttpEnabledField; HttpStatusTxt"
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "interface",
@@ -1511,7 +1580,8 @@
       ],
       "nonLocalProcedureCount": 11,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1530,7 +1600,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 11,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1576,7 +1647,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 16,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1610,7 +1682,8 @@
       ],
       "nonLocalProcedureCount": 10,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enum",
@@ -1631,7 +1704,8 @@
       "fields": [],
       "enumValues": [
         "0; \"External File Storage\""
-      ]
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1649,7 +1723,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1667,7 +1742,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 0,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "table",
@@ -1697,7 +1773,8 @@
         "3; Content; Blob",
         "4; Size; Integer"
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1721,7 +1798,8 @@
       "testConsumers": [],
       "nonLocalProcedureCount": 7,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "codeunit",
@@ -1742,7 +1820,8 @@
       ],
       "nonLocalProcedureCount": 2,
       "fields": [],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "table",
@@ -1776,7 +1855,8 @@
         "7; \"Chunk Count\"; Integer",
         "8; Status; Enum \"Storage Upload Status ori\""
       ],
-      "enumValues": []
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enum",
@@ -1798,7 +1878,17 @@
         "0; Open",
         "1; Committed",
         "2; Aborted"
-      ]
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
     }
-  ]
+  ],
+  "consumerSearch": {
+    "method": "bounded lexical quoted-name matches after removing line comments",
+    "corpus": [
+      "app/src/**/*.al",
+      "test/**/*.al"
+    ],
+    "kindResolved": false,
+    "limitations": "Same-named table/page matches overlap; strings and block comments may match; these lists do not prove typed use, accessibility, runtime execution or absence of foreign consumers."
+  }
 }

@@ -346,7 +346,7 @@ folders in this repository — an approved deviation from Origo PR gateway check
 | In-product help (context-sensitive help pages, en-US and is-IS) | <https://businesscentralal.github.io/bifrost/en-us/help/attachments/> |
 | Building on Bifröst (extensibility guide) | <https://businesscentralal.github.io/bifrost/en-us/extensibility/> |
 | Release notes | [CHANGELOG.md](CHANGELOG.md) |
-| Maintainer API audit, consumers and publication/registration holds (#77) | [API-SURFACE.md](API-SURFACE.md) |
+| Maintainer API audit, bounded lexical matches and publication/registration holds (#77) | [API-SURFACE.md](API-SURFACE.md) |
 
 Message-type contracts are also served by the app itself at runtime: `Help.Storage.Get` returns
 the module directory, and every message type answers its contract chapters through

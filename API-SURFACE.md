@@ -2,12 +2,12 @@
 
 | Release gate | Decision at audited main |
 |---|---|
-| Marketplace publication / previous baseline | **BLOCKED**: no authoritative offer/version history or baseline package is available. |
+| Marketplace publication / previous baseline | **BLOCKED**: Gunnar confirms no current Attachments offer; historical publication/validation and baseline evidence remain unavailable. |
 | Access reduction | **HOLD**: preserve existing access until publication and consumer evidence permits a specific reduction. |
-| Provider contract | **KEEP**: Storage Connector ori, Storage Type ori and Storage Setup ori remain public. Storage Type stays extensible. |
+| Provider contract | **KEEP**: Storage Connector ori, Storage Type ori and table Storage Setup ori (10035636) remain public. Storage Type stays extensible. |
 | State enums | **HOLD**: Storage Attachment Target ori (10035635) and Storage Upload Status ori (10035637) are candidates for Internal. |
 | Registered ranges and affix | **BLOCKED**: Gunnar / Partner Center allocation owner must supply authoritative evidence for both ranges and `ori`. |
-| Full AppSourceCop / product and test compile / runtime | **BLOCKED**: current-main repair #74 (worker-8) and exact usable Foundation package. |
+| Full AppSourceCop / product and test compile / runtime | **BLOCKED**: canonical repair PR84 (worker-3), required green checks and independently verified approved Foundation input. |
 | Independent review | Pending; this audit is an author inventory, not independent certification. |
 
 Source: Attachments main `b42ad90eaee2803205408a1cac8b0d9752b91c0e`, app `28.0.0.4`, test app
@@ -20,14 +20,18 @@ wire name, access, extensibility, identity or allocation is changed.
 
 | Inventory | Contents |
 |---|---|
-| [api-surface-objects.json](api-surface-objects.json) | Every shipping object: kind/ID, access, extensibility, file hash, fields, enum values, local app/test consumers and decision. |
+| [api-surface-objects.json](api-surface-objects.json) | Every shipping object: kind/ID, access, extensibility, file hash, fields, enum values, bounded lexical app/test matches and decision. |
 | [api-surface-procedures.csv](api-surface-procedures.csv) | Every non-local procedure/interface member: signature, declared modifier, effective access, source file/line and fixed-length types. |
 | Matrix below | All shipping objects, including the already-internal helpers and interface-bound implementations. |
+| `python3 tools/Test-ApiSurfaceMatrix.py` | Static guard checks namespace/kind/ID/path, file hashes, document decisions and Setup table/page provider attribution. It does not resolve lexical consumers or compile AL. |
 
 Counts: 81 objects, 788 non-local procedures/interface members, 16
 effectively public procedures/interface members. A public procedure on an Internal object
 is recorded as effectively Internal. Object references are lexical references to the quoted
-AL object name outside line comments; file counts do not assert runtime execution.
+AL object name after removing line comments. Same-named table/page counts overlap;
+strings and block comments may match. These bounded counts are not kind-resolved
+consumers and do not prove typed use, accessibility, runtime execution or absence of
+foreign consumers. The matrix identity is namespace + kind + ID + source path.
 Trigger bodies and local procedures are implementation details and are excluded from the
 non-local procedure inventory. The inventory records source facts; compilation must still
 validate accessibility and binding compatibility.
@@ -38,7 +42,7 @@ validate accessibility and binding compatibility.
 |---|---|---|
 | Storage Type ori (10035636), `Extensible = true` | `test/src/StorageTypeTest.EnumExt.al` adds Mock and binds the mock provider. | Keep public and extensible. |
 | Storage Connector ori interface | Production `Storage Ext File Impl ori` and test `Storage Mock Impl` implement its 11 members. | Preserve all names, parameter types, order and return types. Do not add or remove members. |
-| Storage Setup ori (10035636) | Every provider member accepts this record; production and mock providers read its settings. | Keep public and sealed; its record type is part of the provider signature. |
+| Table Storage Setup ori (10035636) | Every provider member accepts this record; production and mock providers read its settings. | Keep public and sealed; its record type is part of the provider signature. |
 | Foundation message bindings | Shipping enum extensions bind Msg Interface ori / Msg Contract ori / Msg Discovery ori to Internal implementations. | Keep bindings and every existing wire name/ordinal; internal implementations are already intentional. |
 | Friend test access | `app/app.json` names only Attachments Tests; `.AL-Go/PipelineInitialize.ps1` removes it and AS0081 outside Test mode. | Preserve the seam; #78 owns compiled-package friend validation. |
 | State enums 10035635 / 10035637 | Attachment management/link state and upload session/status use them; tests access the Internal implementation via the existing friend grant. | Candidate Internal only after first-publish/baseline verification; currently unchanged and sealed. |
@@ -52,7 +56,7 @@ without compatibility analysis. No effectively public procedure currently takes 
 `Code` or `Text`; fixed-length parameters on Internal helpers are listed in the CSV.
 
 The other five public procedures are `Storage Account Lookup ori.SetConnector` /
-`GetSelectedAccount` and `Storage Setup ori.ClearFileAccount` / `HasFileAccount` /
+`GetSelectedAccount` and page `Storage Setup ori` (10035637): `ClearFileAccount` / `HasFileAccount` /
 `TestConnection`. Their demonstrated callers are local UI/setup code and tests, rather than
 provider interface requirements. They are additional candidates for Internal after the same
 publication and consumer gates clear. Preserve their current signatures until then; do not
@@ -85,7 +89,7 @@ does not make an event subscriber unused.
 
 ## Decide each object separately
 
-| Object / source | Current access | Extensible | Current local consumers | Decision |
+| Object / source | Current access | Extensible | Bounded lexical matches | Decision |
 |---|---|---|---|---|
 | codeunit 10035668 [Storage Attach Key Subscr ori](app/src/Attachments/StorageAttachKeySubscr.Codeunit.al) | Internal | not declared / not applicable | 2 app / 0 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | table 10035635 [Storage Attachment Link ori](app/src/Attachments/StorageAttachmentLink.Table.al) | Internal | false | 13 app / 5 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
@@ -153,7 +157,7 @@ does not make an event subscriber unused.
 | page 10035635 [Storage Account Lookup ori](app/src/Setup/StorageAccountLookup.Page.al) | Public (default) | false | 3 app / 0 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
 | page 10035636 [Storage Card ori](app/src/Setup/StorageCard.Page.al) | Public (default) | false | 4 app / 0 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
 | page 10035678 [Storage Conn. Part ori](app/src/Setup/StorageConnPart.Page.al) | Public (default) | false | 3 app / 0 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
-| page 10035637 [Storage Setup ori](app/src/Setup/StorageSetup.Page.al) | Public (default) | false | 33 app / 7 test files | KEEP Public: provider contract |
+| page 10035637 [Storage Setup ori](app/src/Setup/StorageSetup.Page.al) | Public (default) | false | 33 app / 7 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
 | table 10035636 [Storage Setup ori](app/src/Setup/StorageSetup.Table.al) | Public (default) | false | 33 app / 7 test files | KEEP Public: provider contract |
 | page 10035638 [Storage Setup Wizard ori](app/src/Setup/StorageSetupWizard.Page.al) | Public (default) | false | 3 app / 0 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
 | interface — [Storage Connector ori](app/src/Storage/StorageConnector.Interface.al) | Public (default) | not declared / not applicable | 17 app / 2 test files | KEEP Public: provider contract |
@@ -173,7 +177,7 @@ does not make an event subscriber unused.
 
 | Search corpus | Result |
 |---|---|
-| Attachments app and test at audited main | Consumers are recorded per object in the JSON. The mock provider, setup tests and message conformance tests are demonstrated seams. |
+| Attachments app and test at audited main | Bounded lexical matches are recorded per object in the JSON; table/page subtype attribution requires typed evidence. The mock provider, setup tests and message conformance tests are demonstrated seams. |
 | Foundation at comparison SHA | No quoted shipping Attachments object references found. |
 | Current feature/reference main snapshots | No quoted shipping Attachments object references, Attachments namespace references, app-ID dependencies or Bifrost Attachments manifest dependencies found in the scanned AL/manifests. |
 | Tenant PTEs, third-party providers and Marketplace consumers | Not available. Absence cannot be inferred from the repository scan. |
@@ -188,7 +192,7 @@ that no foreign consumer exists. Preserve any consumer demonstrated before a red
 
 | Required evidence | Current evidence / limitation | Owner / next action |
 |---|---|---|
-| Marketplace first-publish status for AppId `672df32a-a0c5-4a22-b591-0efa38023e95` | GitHub releases list is empty and AppSourceCop.json has no version baseline. Neither establishes Marketplace state. | Gunnar / Partner Center offer owner: provide sanitized offer history and explicit first-publication confirmation, or last published package/version/hash. |
+| Marketplace first-publish status for AppId `672df32a-a0c5-4a22-b591-0efa38023e95` | Gunnar confirms no current Attachments Partner Center offer (saved operator decision). Historical validation/publication and any baseline remain unverified; empty GitHub releases and absent AppSourceCop.version do not prove first publication. | Gunnar / designated evidence owner: provide historical AppId publication/validation determination or actual baseline version/package/hash; no existing offer ID is requested. |
 | Existing tenant/foreign consumer disposition | Source search above is bounded; tenant extensions and unknown provider apps are not visible. | Gunnar / product owner: identify existing consumer obligations before accepting access reduction. |
 | `10035635–10035684` registration | `.claude/CLAUDE.md` asserts workbook allocation. The authoritative allocation workbook/registration record is unavailable. | Gunnar / allocation owner: supply registration tied to the actual app and publisher. |
 | `70013500–70013549` registration | app.json declares it and shipping source uses it. Declaration is not registration evidence. | Gunnar / allocation owner: supply the same authoritative registration evidence for this second block. |
@@ -209,17 +213,32 @@ its publication does not establish this app's publication state.
 3. After the publication/consumer gate clears, implement only justified per-object reductions.
    Preserve Storage Type extensibility, all 11 provider members, the Setup record, Foundation
    bindings, native fields, wire values and the existing Test-mode seam.
-4. After #74 supplies a usable green build and immutable Foundation dependency, compile
+4. After actual canonical [PR84](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/84) (worker-3) merge and independently verified approved Foundation input, compile
    product and tests with full AppSourceCop and zero errors/warnings; record compiler/package
    identities. Run provider/message conformance regressions on an owned disposable COSMO
    environment, MCP and UI checks as applicable, and verify environment deletion.
 5. Re-run all guards and gateway Layer 1 then Layer 2 at the final SHA. #78 owns analyzer/
    compiled-package enforcement. Keep release checklist #83 open until evidence is complete.
 
-Current Default and Test builds both failed in CI run
-[37514877563](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/37514877563).
-Issue #74 owns that repair; this audit does not reinterpret or fix its diagnostics. No product
-or test compilation, deployed app, baseline comparison, runtime test pass count or Marketplace
-certification is claimed by this document. No COSMO environment was created for the audit.
-All technical decisions stay in internal-review; publication and independent human approval
-remain separate gates. Do not publish, create an offer, or merge from this checklist.
+PR86 at `0e45a9c5771463fa4a08359a8c71e7598513c65f` failed Default, Test and
+Pull Request Status Check in [run 37518573084](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/37518573084).
+The resolved shared-compile decision assigns the 16 product errors (AL0185, AL0264,
+AL0231) and AL0659 warning to worker-3 / PR84. These are required failures, with no
+baseline-red waiver. PR87 is donor-only on explicit hold; PR91 has a separate pipeline
+owner. Analyzer/QA worker-8 and tooling worker-6 retain their assignments; this audit
+creates no third compile repair. New-tip checks must be observed through the exact-SHA
+CI watch, not inferred from historical runs or polled by a model.
+
+The current approved Foundation input is main `336b91d9fff11b71ae5cd75dee08186d4218bf07`,
+run `37544940349` attempt 2, signed `Origo_Bifrost Foundation_28.0.2.523.app`,
+SHA256 `5901BEBE66B44E91ED6110620E62EE45D122BA9E0378DCFDA4AEEF4D00D3AE0F`,
+with zero friends. Independently verify exact bytes, manifest and provenance before
+compilation. Historical 517/518 inputs are not current acceptance evidence. The declared
+Foundation floor remains `28.0.1.0`.
+
+The resolved publication-registration-plan permits this bounded audit correction only.
+Source preparation does not release publication, runtime, QA, infrastructure or physical-writer
+holds. No product/test compilation, deployed app, baseline comparison, runtime pass count or
+Marketplace certification is claimed here; no COSMO environment was created for the audit.
+All technical decisions stay in internal-review. No Slack handoff, offer creation, publication
+or merge is authorized by this checklist.

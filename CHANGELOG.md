@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [28.0.0.4] — 2026-10-06
 
+### Fixed (2026-10-07) - API audit attribution (#77)
+
+- Distinguish provider table `Storage Setup ori` (10035636) from UI page `Storage Setup ori` (10035637); label consumer counts as bounded lexical matches and guard matrix identity/attribution. Preserve all AL access and the publication/registration hold.
+
 ### Added (2026-10-06) - AppSource API audit (#77)
 
 - `API-SURFACE.md` and the object/procedure inventories record the shipped AL contract and consumers. `Storage Connector ori` (interface), `Storage Type ori` (enum 10035636) and `Storage Setup ori` (table 10035636) remain public; the provider enum remains extensible. Proposed access reductions for `Storage Attachment Target ori` (enum 10035635) and `Storage Upload Status ori` (enum 10035637) are held pending authoritative publication/baseline and consumer evidence. No AL surface or IDs change.
