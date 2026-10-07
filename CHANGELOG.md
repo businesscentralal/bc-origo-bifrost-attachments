@@ -79,6 +79,15 @@ Business Central release versioning (`major.minor.build.revision`).
 - Release checklist #83 must obtain authoritative registration for both 10035635–10035684 and 70013500–70013549 plus the `ori` affix. Source declarations and catalog absence do not establish registration. Product/test compilation and runtime verification remain dependent on current-main repair #74 and a usable Foundation package.
 
 
+### Changed (2026-10-07) - AppSource working-material evidence (#81)
+
+- Refresh the approved internal submission workspace with Foundation 28.0.2.523 provenance, source/asset hashes and issue/PR input owners. Preserve immutable internal-QA and explicit release gates for formal scenarios and the smoke dry-run. No AL objects or IDs changed.
+
+### Added (2026-10-06) - AppSource submission planning (#81)
+
+- Add the Attachments release checklist, independent scenario coverage plan, source market inventory and gated validator sandbox smoke script in `app/docs/appsource/`. Formal scenarios await internal QA. No AL objects or IDs changed.
+- Record Gunnar's confirmed new-offer plan: Attachments has no Partner Center offer or existing product ID. Keep `deliverToAppSource` unconfigured until separately authorized offer creation supplies the genuine Attachments ID; creation, submission and publication remain outside #81. No AL objects or IDs changed.
+
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
 - The Foundation dependency floor is **28.0.1.0** in `app/app.json` and `test/app.json`, the same floor Bifrost Language Models uses for Foundation 28.0.1. Every 28.0.1.x build is accepted.
