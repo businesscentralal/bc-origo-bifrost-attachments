@@ -149,10 +149,10 @@ codeunit 70013523 "DataExch Def Get Impl ori" implements "Msg Interface ori", "M
     /// <summary>Executes the registered read operation through Foundation.</summary>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
-        Query: Codeunit "Data Exchange Query ori";
+        DataExchangeQuery: Codeunit "Data Exchange Query ori";
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
-        Query.GetDefinition(Argument);
+        DataExchangeQuery.GetDefinition(Argument);
     end;
 }

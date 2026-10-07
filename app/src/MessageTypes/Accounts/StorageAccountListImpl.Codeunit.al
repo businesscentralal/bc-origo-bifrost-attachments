@@ -12,6 +12,8 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
 {
     Access = Internal;
 
+    /// <summary>Reports whether this message type is available to the current caller.</summary>
+    /// <returns>Whether the caller has read permission on <c>Storage Setup ori</c>; this does not check for a configured or enabled connection.</returns>
     procedure IsEnabled(): Boolean
     var
         StorageSetup: Record "Storage Setup ori";
@@ -19,11 +21,15 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
         exit(StorageSetup.ReadPermission());
     end;
 
+    /// <summary>Declares that this message type has no record-filter table.</summary>
+    /// <returns>Zero.</returns>
     procedure GetFilterTableNo(): Integer
     begin
         exit(0);
     end;
 
+    /// <summary>Returns the short description of this message type for discovery.</summary>
+    /// <returns>The existing description text, without executing the message.</returns>
     procedure GetDescription(): Text[250]
     var
         DescriptionLbl: Label 'Lists the configured storage connections (codes, descriptions, connectors and enabled state). No secrets are exposed.', Comment = 'is-IS=Listar uppsettar geymslutengingar (kóða, lýsingar, tengla og hvort þær séu virkar). Engin leyndarmál eru birt.';
@@ -52,6 +58,9 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
         exit(SelectionDescriptionLbl);
     end;
 
+    /// <summary>Replaces the envelope chapter with shared version 1.0 JSON metadata, declaring optional request data and no subject record.</summary>
+    /// <param name="Envelope">Replaced by the generated chapter.</param>
+    /// <returns>True; the chapter is supplied.</returns>
     procedure GetEnvelope(var Envelope: JsonObject): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
@@ -60,11 +69,17 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
         exit(true);
     end;
 
+    /// <summary>Declares that this message type provides no target chapter; leaves the supplied output unchanged.</summary>
+    /// <param name="Target">Left unchanged; the caller must use the return value to determine chapter availability.</param>
+    /// <returns>False; no chapter is advertised.</returns>
     procedure GetTarget(var Target: JsonArray): Boolean
     begin
         exit(false);
     end;
 
+    /// <summary>Replaces the parameters chapter with the shared contract metadata for <c>Storage.Account.List</c>; does not execute the operation.</summary>
+    /// <param name="Parameters">Replaced by the generated chapter.</param>
+    /// <returns>False; no chapter is advertised. The output is still replaced by the shared parameter array (empty for this type).</returns>
     procedure GetParameters(var Parameters: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
@@ -73,6 +88,9 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
         exit(false);
     end;
 
+    /// <summary>Replaces the response chapter with the shared contract metadata for <c>Storage.Account.List</c>; does not execute the operation.</summary>
+    /// <param name="Response">Replaced by the generated chapter.</param>
+    /// <returns>True; the chapter is supplied.</returns>
     procedure GetResponse(var Response: JsonObject): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
@@ -81,6 +99,9 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
         exit(true);
     end;
 
+    /// <summary>Replaces the errors chapter with the shared contract metadata for <c>Storage.Account.List</c>; does not execute the operation.</summary>
+    /// <param name="Errors">Replaced by the generated chapter.</param>
+    /// <returns>True; the chapter is supplied.</returns>
     procedure GetErrors(var Errors: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
@@ -89,6 +110,9 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
         exit(true);
     end;
 
+    /// <summary>Replaces the effect chapter with the shared contract metadata for <c>Storage.Account.List</c>; does not execute the operation.</summary>
+    /// <param name="Effect">Replaced by the generated chapter.</param>
+    /// <returns>True; the chapter is supplied.</returns>
     procedure GetEffect(var Effect: JsonObject): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
@@ -97,11 +121,17 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
         exit(true);
     end;
 
+    /// <summary>Declares that this message type provides no metering chapter; leaves the supplied output unchanged.</summary>
+    /// <param name="Metering">Left unchanged; the caller must use the return value to determine chapter availability.</param>
+    /// <returns>False; no chapter is advertised.</returns>
     procedure GetMetering(var Metering: JsonObject): Boolean
     begin
         exit(false);
     end;
 
+    /// <summary>Replaces the related chapter with the shared contract metadata for <c>Storage.Account.List</c>; does not execute the operation.</summary>
+    /// <param name="Related">Replaced by the generated chapter.</param>
+    /// <returns>True; the chapter is supplied.</returns>
     procedure GetRelated(var Related: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
@@ -110,33 +140,52 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
         exit(true);
     end;
 
+    /// <summary>Declares that this message type provides no workflow chapter; leaves the supplied output unchanged.</summary>
+    /// <param name="Workflow">Left unchanged; the caller must use the return value to determine chapter availability.</param>
+    /// <returns>False; no chapter is advertised.</returns>
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
     begin
         exit(false);
     end;
 
+    /// <summary>Declares that this message type provides no examples chapter; leaves the supplied output unchanged.</summary>
+    /// <param name="Examples">Left unchanged; the caller must use the return value to determine chapter availability.</param>
+    /// <returns>False; no chapter is advertised.</returns>
     procedure GetExamples(var Examples: JsonArray): Boolean
     begin
         exit(false);
     end;
 
+    /// <summary>Declares that this message type provides no overview chapter and clears the supplied text.</summary>
+    /// <param name="Overview">Cleared to empty text, even though no chapter is supplied.</param>
+    /// <returns>False; no chapter is advertised.</returns>
     procedure GetOverview(var Overview: Text): Boolean
     begin
         Clear(Overview);
         exit(false);
     end;
 
+    /// <summary>Declares that this message type provides no notes chapter and clears the supplied text.</summary>
+    /// <param name="Notes">Cleared to empty text, even though no chapter is supplied.</param>
+    /// <returns>False; no chapter is advertised.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     begin
         Clear(Notes);
         exit(false);
     end;
 
+    /// <summary>Declares this message type as outbound in Foundation metadata.</summary>
+    /// <returns><c>Msg Direction ori.Outbound</c>.</returns>
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
         exit(Enum::"Msg Direction ori"::Outbound);
     end;
 
+    /// <summary>
+    /// Checks version and licensing, reads configured storage rows in the current company, and answers with <c>data.accounts</c>.
+    /// Each entry contains code, description, connector name, base path and enabled state; no provider files or setup rows are changed.
+    /// </summary>
+    /// <param name="Argument">Request context; receives the success or error response and response content type.</param>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         StorageSetup: Record "Storage Setup ori";

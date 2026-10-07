@@ -6,6 +6,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-07) - handler documentation and local names (#69)
+
+- Document the actual discovery, chapter availability/output and execution contracts in `Storage Account List Impl ori` (10035639), `DataExch Help Get Impl ori` (70013521), `Storage Dir Create Impl ori` (10035644), `Storage Dir Delete Impl ori` (10035645), `Storage Dir Exists Impl ori` (10035646), `Storage Dir List Impl ori` (10035647), `Storage File Copy Impl ori` (10035648), `Storage File Create Impl ori` (10035649), `Storage File Delete Impl ori` (10035650), `Storage File Exists Impl ori` (10035651), `Storage File Get Impl ori` (10035652), `Storage File List Impl ori` (10035653), `Storage File Move Impl ori` (10035654), `Storage Help Get Impl ori` (10035655). Empty Markdown execution and false chapter results retain their existing behavior.
+- Rename the local query codeunit variable to `DataExchangeQuery` in `DataExch Def Get Impl ori` (70013523), `DataExch Def List Impl ori` (70013522), `DataExch Entry Get Impl ori` (70013526), `DataExch Entry List Impl ori` (70013525), preserving every signature and call. No wire names, object IDs, access, labels or behavior change.
+
 ### Fixed (2026-10-07) - registered parameter metadata (#69)
 
 - Delegate parameter chapters in `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534) and `DataExch Def Export Impl ori` (70013536) to `Storage Contract Parts ori` (70013500), documenting the shipped optional `description` and JSON string types without changing wire keys or execution. `Storage Contract Batch2 Tests` (96216) asserts exact registered parameter counts, types, requiredness and uniqueness. The tests also verify replacement of stale metadata and the canonical `error` property for single/collected bilingual refusals; runtime verification remains pending.
