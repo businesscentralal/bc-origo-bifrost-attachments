@@ -24,6 +24,7 @@ Business Central release versioning (`major.minor.build.revision`).
 - Resolve Microsoft Data Exchange tables through `System.IO` in `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534), and `DataExch Def Export Impl ori` (70013536).
 - Add `Attachments Build Tests ori` (96274) for existing Data Exchange dispatch, stored results, and refusal paths. Add a build-input guard for duplicate object IDs, overlapping enum ordinals, unallocated IDs, self dependencies, and the Foundation 28.0.1.0 floor, with synthetic regression fixtures.
 
+
 ## [28.0.0.4] — 2026-10-07
 
 ### Fixed
@@ -50,6 +51,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - `Storage Request Mgt ori` (10035662), `Storage Request Reader ori` (10035682) and `Storage Ext File Impl ori` (10035661) use a shared outer-slash identity, reject unsafe paths, and validate complete base-prefixed addresses. Raw create/copy/move and upload commit refuse attachment-backed destinations with an actionable error; copy/move onto the same canonical source is also refused.
 - `Storage Attachment Mgt ori` (10035635) matches legacy slash-spelled links, validates generated offload paths and complete filenames before writes, and prepares link/native path updates before a remote move. `Storage Upload Mgt ori` (10035665) validates names and generated paths before inserting a session and rechecks linked targets before commit.
 - `Storage Mock Impl` (96200), `Storage Mock State` (96201) and `Storage Integrity 75 Tests ori` (96225) exercise slash/base resolution, protected destinations, retained upload sessions, path/name boundaries and pre-write connector failure rollback. Runtime verification and provider-specific limit/case policy remain release blockers; this entry does not certify AppSource readiness.
+
+- `DataExch Import Run Impl ori` (70013540) and `DataExch Def Delete Impl ori` (70013543) collect complete input refusals before changing data. `Storage Request Reader ori` (10035682) adds strict mutation readers that reject wrong JSON types, raw values beyond their bounds, and code spellings that Business Central would uppercase or trim. Import remains header-only and deletion preserves reference checks and standard triggers (#82).
+- `DataExch Refusal82 Tests ori` (96226) adds dispatched happy/error/boundary, reference readback and postwrite rollback tests for these two operations. ExportRun/TypeSet integration and runtime acceptance remain separately gated; this source change is not release certification.
+
 
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 

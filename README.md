@@ -299,6 +299,14 @@ object carries the mandatory ` ori` affix.
 
 ---
 
+### Data Exchange request validation
+
+`DataExchange.Import.Run` requires `dataExchDefCode`, `storageCode` and `path`. The two codes must be nonempty JSON strings of at most 20 characters, already in Business Central uppercase form without surrounding spaces. The path must be a nonempty string of at most 2048 characters with no `.` or `..` segments. This bound does not certify a storage provider's path capacity. Import creates a Data Exchange header and returns `Accepted`, `entryNo` and `dataExchDefCode`; it does not resolve a storage account or import file content.
+
+`DataExchange.Definition.Delete` applies the same strict code rule to `code` and refuses a definition referenced by a Data Exchange Type or Bank Export/Import Setup. Successful deletion still runs the standard delete triggers.
+
+Input problems are collected before any write with Foundation error codes and `parameter`, `received`, `expected` and `nextStep`. Multiple problems use `errors[]`. Database execution failures propagate through Foundation in the caller transaction; an `OmitCommit` chain must roll back as a unit. The draft implementation still requires canonical build integration, localization and runtime rollback verification.
+
 ## Dependencies
 
 | App | ID | Purpose |
