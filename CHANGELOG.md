@@ -63,6 +63,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-10-07) - AppSource build evidence (#78)
 
+- Refresh the #77 API audit for main `cefe72f`: 81 object hashes and 806 non-local procedures, including Storage Setup ori table 10035636/page 10035637 and Storage Connector ori interface. Preserve the original PR86 snapshot attribution and all access/provider/wire contracts; the static matrix guard now reports missing or renamed source paths and has rejection regressions. Compilation, runtime, publication and registration gates remain incomplete.
+
 - Add bounded immutable Foundation Apps/TestApps staging, deterministic helper-file selection, substitution/stale-receipt checks and sanitized rejected-input receipts. Preserve signed Apps bytes and remove only the exact Foundation product collision from test inputs. Genuine collision fixtures cover both download orders and modes; PR91 pipeline application and real verification remain blocked. No AL objects or IDs change.
 
 - Enable CodeCop, UICop and test-app analyzers with `failOn=warning`; add compiler/package hooks and tooling that reject incomplete compiles, wrong inputs, stale receipts and surviving compiled Default friend grants. Preserve the exact Test friend and existing signing policy. Integrate PR87's hash-pinned allocation/dependency guard and all eight regressions. No product AL objects or IDs change. Workflow application, actual product/runtime verification and release readiness remain blocked pending PR84 and infrastructure approval; see `tools/AppSourceBuildGate.md`.
