@@ -20,6 +20,10 @@ try {
     if ($LASTEXITCODE -ne 0) {
         throw 'AppSource gate regression checks failed.'
     }
+    & $python.Source -m unittest discover -s (Join-Path $PSScriptRoot 'tests') -p 'test_symbol_policy.py' -v
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Bounded symbol policy regression checks failed.'
+    }
 }
 finally {
     $env:APPSOURCE_GATE_FIXTURES = $previousFixtures

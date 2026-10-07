@@ -453,6 +453,10 @@ class GenuinePackages(unittest.TestCase):
     def test_fresh_cache_helper_preparation_addition_and_output_delta(self):
         context = self.state()
         shutil.copy2(self.fixtures / 'testApp.app', self.root / 'compiler-symbols/Transitive.app')
+        manifest_path = self.root / "app/app.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["dependencies"] = [G.package_info(self.fixtures / "testApp.app")["identity"]]
+        manifest_path.write_text(json.dumps(manifest))
         request = self.request(context)
         shutil.copy2(self.root / 'compiler-symbols/Transitive.app', self.root / 'symbols/Transitive.app')
         receipt = G.post_compile(self.root, request)
@@ -574,9 +578,9 @@ class GenuinePackages(unittest.TestCase):
     def test_rejection_count_and_byte_bounds_report_truncation(self):
         self.state()
         folder = self.root / "compiler-symbols"
-        for index in range(129):
+        for index in range(257):
             (folder / f"{index:03}.app").write_bytes(b"bad")
-        with self.assertRaisesRegex(G.GateError, "128 packages"):
+        with self.assertRaisesRegex(G.GateError, "256 packages"):
             G.before_compile(self.root, self.rejection_request())
         receipt = self.rejection_receipt()
         self.assertEqual(128, len(receipt["inputs"]))
@@ -615,7 +619,8 @@ class GenuinePackages(unittest.TestCase):
                     target = patch.object(G, operation, side_effect=OSError("inventory IO failed"))
                 else:
                     target = patch.object(Path, operation, side_effect=OSError("receipt IO failed"))
-                with target, self.assertRaisesRegex(G.GateError, "Invalid NAVX header"):
+                expected_error = "Invalid compiled NAVX payload/manifest" if operation == "file_hash" else "Invalid NAVX header"
+            with target, self.assertRaisesRegex(G.GateError, expected_error):
                     G.before_compile(self.root, self.rejection_request())
 
     def test_inventory_cap_and_missing_folder_are_failures(self):
@@ -623,7 +628,7 @@ class GenuinePackages(unittest.TestCase):
             G.symbol_inventory(self.root / 'missing')
         folder = self.root / 'bounded'
         folder.mkdir()
-        for index in range(129):
+        for index in range(257):
             (folder / f'{index}.app').touch()
         with self.assertRaisesRegex(G.GateError, '128 packages'):
             G.symbol_inventory(folder)

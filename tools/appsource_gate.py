@@ -11,6 +11,8 @@ import json
 import re
 import struct
 import sys
+import time
+import uuid
 import zipfile
 import zlib
 from pathlib import Path
@@ -30,8 +32,76 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
-def file_hash(path):
-    return digest(Path(path).read_bytes())
+CHUNK_BYTES = 1024 * 1024
+PACKAGE_BYTES = 128 * 1024 * 1024
+MANIFEST_BYTES = 16 * 1024 * 1024
+PACKAGE_ENTRIES = 4096
+INVENTORY_SECONDS = 60
+SYMBOL_POLICIES = {
+    "appCache": {"packages": 128, "bytes": 512 * 1024 * 1024},
+    "compilerCatalog": {"packages": 256, "bytes": 1024 * 1024 * 1024},
+}
+
+
+def budget_check(deadline):
+    require(time.monotonic() <= deadline, "Symbol measurement elapsed budget exceeded")
+
+
+def file_hash(path, deadline=None):
+    sha = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        while True:
+            if deadline is not None:
+                budget_check(deadline)
+            chunk = stream.read(CHUNK_BYTES)
+            if not chunk:
+                break
+            sha.update(chunk)
+    return sha.hexdigest()
+
+
+class PayloadView:
+    """Seekable NAVX payload window; ZIP cannot inspect the signature tail."""
+
+    def __init__(self, stream, offset, length):
+        self.stream, self.offset, self.length, self.position = stream, offset, length, 0
+
+    def seek(self, offset, whence=0):
+        position = offset if whence == 0 else self.position + offset if whence == 1 else self.length + offset
+        require(0 <= position <= self.length, "ZIP seek outside NAVX payload")
+        self.position = position
+        return position
+
+    def tell(self):
+        return self.position
+
+    def seekable(self):
+        return True
+
+    def read(self, size=-1):
+        size = self.length - self.position if size < 0 else min(size, self.length - self.position)
+        self.stream.seek(self.offset + self.position)
+        chunk = self.stream.read(size)
+        require(len(chunk) == size, "Truncated NAVX payload")
+        self.position += len(chunk)
+        return chunk
+
+
+def version_tuple(value):
+    require(re.fullmatch(r"[0-9]+(?:\.[0-9]+){1,3}", value or "") is not None,
+            "Invalid dependency/package version")
+    parts = tuple(int(part) for part in value.split("."))
+    require(all(part <= 2147483647 for part in parts), "Version component out of range")
+    return parts + (0,) * (4 - len(parts))
+
+
+def identity_check(identity):
+    require(all(identity.values()), "Incomplete package identity")
+    try:
+        uuid.UUID(identity["id"])
+    except (ValueError, AttributeError) as exc:
+        raise GateError("Invalid package/dependency AppId") from exc
+    version_tuple(identity["version"])
 
 
 def read_log(data):
@@ -80,61 +150,107 @@ def compile_spans(text):
     return spans
 
 
-def package_info(path):
-    """Read the declared NAVX payload, never search an arbitrary file for PK.
-
-    The BC compiler's NAVX v2 header is 40 bytes, bracketed by NAVX, with
-    little-endian uint64 payload size at offset 28. Signed packages append a
-    signature after that payload. Its presence is NOT signature verification.
-    """
+def package_info(path, deadline=None):
+    """Stream bounded NAVX content and metadata; signature presence is not trust."""
     path = Path(path)
-    require(path.is_file(), "Missing package")
-    data = path.read_bytes()
-    require(len(data) >= 40 and data[:4] == b"NAVX" and data[36:40] == b"NAVX", "Invalid NAVX header")
-    header_size, version = struct.unpack_from("<II", data, 4)
-    length = struct.unpack_from("<Q", data, 28)[0]
-    require(header_size == 40 and version == 2, "Unsupported NAVX header version")
-    require(0 < length <= len(data) - 40 and data[40:44] == b"PK\x03\x04", "Invalid NAVX payload length/header")
+    deadline = time.monotonic() + INVENTORY_SECONDS if deadline is None else deadline
+    budget_check(deadline)
+    require(path.is_file() and not path.is_symlink(), "Missing package or linked input")
+    before = path.stat()
+    require(before.st_size >= 40, "Invalid NAVX header")
+    require(before.st_size <= PACKAGE_BYTES, "Package exceeds 128 MiB")
     try:
-        with zipfile.ZipFile(io.BytesIO(data[40:40 + length])) as archive:
-            names = archive.namelist()
-            require(len(names) == len(set(names)), "Duplicate package entries")
-            require(names.count("NavxManifest.xml") == 1, "Missing/duplicate NAVX manifest")
-            require(archive.testzip() is None, "Corrupt package CRC")
-            manifest = archive.read("NavxManifest.xml")
-            require(b"<!DOCTYPE" not in manifest.upper() and b"<!ENTITY" not in manifest.upper(), "Unsafe manifest XML")
-            root = ET.fromstring(manifest)
-            namespace = "{http://schemas.microsoft.com/navx/2015/manifest}"
-            require(root.tag == namespace + "Package", "Invalid manifest root/namespace")
+        with path.open("rb") as stream:
+            header = stream.read(40)
+            require(header[:4] == b"NAVX" and header[36:40] == b"NAVX", "Invalid NAVX header")
+            header_size, version = struct.unpack_from("<II", header, 4)
+            length = struct.unpack_from("<Q", header, 28)[0]
+            require(header_size == 40 and version == 2, "Unsupported NAVX header version")
+            require(0 < length <= before.st_size - 40 and stream.read(4) == b"PK\x03\x04",
+                    "Invalid NAVX payload length/header")
+            initial_hash = file_hash(path, deadline)
+            with zipfile.ZipFile(PayloadView(stream, 40, length)) as archive:
+                items = archive.infolist()
+                require(len(items) <= PACKAGE_ENTRIES, "Package entry bound exceeded")
+                names = [item.filename for item in items]
+                require(len(names) == len(set(names)), "Duplicate package entries")
+                require(names.count("NavxManifest.xml") == 1, "Missing/duplicate NAVX manifest")
+                expanded = sum(item.file_size for item in items)
+                require(expanded <= PACKAGE_BYTES, "Package expanded-byte bound exceeded")
+                require(archive.getinfo("NavxManifest.xml").file_size <= MANIFEST_BYTES,
+                        "Manifest exceeds 16 MiB")
+                entries, manifest = [], None
+                for item in sorted(items, key=lambda item: item.filename):
+                    sha, size, chunks = hashlib.sha256(), 0, []
+                    with archive.open(item) as content:
+                        while True:
+                            budget_check(deadline)
+                            chunk = content.read(CHUNK_BYTES)
+                            if not chunk:
+                                break
+                            size += len(chunk)
+                            require(size <= item.file_size and size <= PACKAGE_BYTES, "Expanded entry bound exceeded")
+                            sha.update(chunk)
+                            if item.filename == "NavxManifest.xml":
+                                chunks.append(chunk)
+                    require(size == item.file_size, "Truncated expanded entry")
+                    entries.append({"name": item.filename, "sha256": sha.hexdigest()})
+                    if item.filename == "NavxManifest.xml":
+                        manifest = b"".join(chunks)
+                xml_text = manifest.decode("utf-16" if manifest.startswith((b"\xff\xfe", b"\xfe\xff")) else "utf-8-sig")
+                require("<!DOCTYPE" not in xml_text.upper() and "<!ENTITY" not in xml_text.upper(), "Unsafe manifest XML")
+                root = ET.fromstring(manifest)
+                namespace = "{http://schemas.microsoft.com/navx/2015/manifest}"
+                require(root.tag == namespace + "Package", "Invalid manifest root/namespace")
 
-            def one(name):
-                nodes = root.findall(namespace + name)
-                require(len(nodes) == 1, "Missing/duplicate manifest " + name)
-                return nodes[0]
+                def one(name):
+                    nodes = root.findall(namespace + name)
+                    require(len(nodes) == 1, "Missing/duplicate manifest " + name)
+                    return nodes[0]
 
-            app, friends = one("App"), one("InternalsVisibleTo")
-            # Microsoft symbol packages may have no build/source provenance. The
-            # produced product/test MUST have it (checked against current context).
-            source_nodes, build_nodes = root.findall(namespace + "Source"), root.findall(namespace + "Build")
-            require(len(source_nodes) <= 1 and len(build_nodes) <= 1, "Duplicate source/build metadata")
-            source = source_nodes[0] if source_nodes else ET.Element("Source")
-            build = build_nodes[0] if build_nodes else ET.Element("Build")
-            identity = {key.lower(): app.get(key, "") for key in ("Id", "Publisher", "Name", "Version")}
-            require(all(identity.values()), "Incomplete package identity")
-            grants = []
-            for friend in friends:
-                require(friend.tag == namespace + "Module", "Unknown friend element")
-                grant = {key.lower(): friend.get(key, "") for key in ("Id", "Publisher", "Name")}
-                require(all(grant.values()), "Incomplete friend identity")
-                grants.append(grant)
-            entries = [{"name": item.filename, "sha256": digest(archive.read(item))}
-                       for item in sorted(archive.infolist(), key=lambda item: item.filename)]
-    except (zipfile.BadZipFile, ET.ParseError, RuntimeError, OSError, zlib.error) as exc:
+                app, friends = one("App"), one("InternalsVisibleTo")
+                source_nodes, build_nodes = root.findall(namespace + "Source"), root.findall(namespace + "Build")
+                require(len(source_nodes) <= 1 and len(build_nodes) <= 1, "Duplicate source/build metadata")
+                source = source_nodes[0] if source_nodes else ET.Element("Source")
+                build = build_nodes[0] if build_nodes else ET.Element("Build")
+                identity = {key.lower(): app.get(key, "") for key in ("Id", "Publisher", "Name", "Version")}
+                identity_check(identity)
+                grants = []
+                for friend in friends:
+                    require(friend.tag == namespace + "Module", "Unknown friend element")
+                    grant = {key.lower(): friend.get(key, "") for key in ("Id", "Publisher", "Name")}
+                    require(all(grant.values()), "Incomplete friend identity")
+                    grants.append(grant)
+                dependencies = []
+                nodes = root.findall(namespace + "Dependencies")
+                require(len(nodes) <= 1, "Duplicate dependency metadata")
+                for node in nodes[0] if nodes else []:
+                    require(node.tag == namespace + "Dependency", "Unknown dependency metadata")
+                    dep = {key.lower(): node.get(key, "") for key in ("Id", "Publisher", "Name", "MinVersion")}
+                    dep["id"] = dep["id"] or node.get("AppId", "")
+                    dep["version"] = dep.pop("minversion") or node.get("Version", "")
+                    identity_check(dep)
+                    dependencies.append(dep)
+                propagate = app.get("PropagateDependencies", "false").lower()
+                require(propagate in ("true", "false"), "Invalid PropagateDependencies")
+                application, platform = app.get("Application", ""), app.get("Platform", "")
+                for value in (application, platform):
+                    if value:
+                        version_tuple(value)
+        require(tuple(getattr(path.stat(), k) for k in ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")) ==
+                tuple(getattr(before, k) for k in ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns"))
+                and file_hash(path, deadline) == initial_hash,
+                "Package changed during measurement")
+        budget_check(deadline)
+    except (zipfile.BadZipFile, ET.ParseError, RuntimeError, OSError, zlib.error, UnicodeError) as exc:
         raise GateError("Invalid compiled NAVX payload/manifest") from exc
-    return {"identity": identity, "friends": grants, "sourceCommit": source.get("Commit", ""),
-            "compilerVersion": build.get("CompilerVersion", ""), "buildUrl": build.get("Url", ""),
-            "sha256": digest(data), "contentSha256": digest(json.dumps(entries, sort_keys=True).encode()),
-            "bytes": len(data), "signatureTailBytes": len(data) - 40 - length}
+    return {"identity": identity, "friends": grants, "dependencies": dependencies,
+            "application": application, "platform": platform, "propagateDependencies": propagate == "true",
+            "sourceCommit": source.get("Commit", ""), "compilerVersion": build.get("CompilerVersion", ""),
+            "buildUrl": build.get("Url", ""), "sha256": initial_hash,
+            "contentSha256": digest(json.dumps(entries, sort_keys=True).encode()),
+            "bytes": before.st_size, "expandedBytes": expanded, "entryCount": len(items),
+            "signatureTailBytes": before.st_size - 40 - length}
 
 
 def check_package(info, expected, mode, app_type, friend, source_commit=None):
@@ -159,21 +275,115 @@ def validate_parameters(params):
     require(params.get("compilerVersion"), "Missing compiler version")
 
 
-def symbol_inventory(folder):
-    """Bound actual on-disk receipts; reject incomplete or duplicate identities."""
+class SymbolInventory(list):
+    """List-compatible immutable receipt payload with local elapsed measurement."""
+
+
+def symbol_inventory(folder, policy="appCache"):
+    """Complete inventories use distinct finite catalog/cache resource policies."""
+    require(policy in SYMBOL_POLICIES, "Unknown symbol resource policy")
     folder = Path(folder)
-    require(folder.is_dir(), "Actual symbol folder absent")
-    paths = sorted(folder.glob("*.app"))
-    require(len(paths) <= 128, "Symbol inventory exceeds 128 packages")
-    result, identities = [], set()
+    require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
+    limit, started = SYMBOL_POLICIES[policy], time.monotonic()
+    deadline = started + INVENTORY_SECONDS
+    paths = []
+    for path in folder.iterdir():
+        budget_check(deadline)
+        if path.suffix.lower() == ".app":
+            paths.append(path)
+            require(len(paths) <= limit["packages"], "Symbol inventory exceeds " + str(limit["packages"]) + " packages (" + policy + ")")
+    paths.sort()
+    require(sum(path.stat().st_size for path in paths) <= limit["bytes"], "Symbol aggregate-byte bound exceeded")
+    result, identities, filenames, expanded = SymbolInventory(), set(), set(), 0
     for path in paths:
-        require(path.stat().st_size <= 128 * 1024 * 1024, "Symbol package exceeds 128 MiB")
-        info = package_info(path)
-        identity = tuple(info["identity"][k].lower() for k in ("id", "version"))
+        info = package_info(path, deadline)
+        identity = (info["identity"]["id"].lower(), version_tuple(info["identity"]["version"]))
         require(identity not in identities, "Duplicate symbol identity/version")
+        require(path.name.casefold() not in filenames, "Case-insensitive symbol filename collision")
         identities.add(identity)
+        filenames.add(path.name.casefold())
+        expanded += info["expandedBytes"]
+        require(expanded <= limit["bytes"], "Symbol aggregate expanded-byte bound exceeded")
         result.append({"file": path.name, **info})
+    budget_check(deadline)
+    require(sorted(p.name for p in folder.iterdir() if p.suffix.lower() == ".app") == sorted(p.name for p in paths),
+            "Symbol inventory membership changed during measurement")
+    result.elapsed_seconds = time.monotonic() - started
     return result
+
+
+def inventory_measurement(items, policy):
+    return {"policy": policy, "limits": SYMBOL_POLICIES[policy], "packages": len(items),
+            "bytes": sum(s["bytes"] for s in items), "expandedBytes": sum(s["expandedBytes"] for s in items),
+            "inventorySha256": digest(json.dumps(items, sort_keys=True).encode()),
+            "elapsedSeconds": getattr(items, "elapsed_seconds", None), "elapsedBudgetSeconds": INVENTORY_SECONDS,
+            "runnerCapacityValidated": False}
+
+
+def resolve_helper_inputs(manifest, existing, catalog):
+    """Observe helper6.1.18 selection; never substitute its compiler/cache inputs.
+
+    Existing highest compatible version wins; otherwise the helper copies ALL
+    compatible catalog versions. Copied inputs follow all dependencies; existing
+    inputs follow dependencies only when PropagateDependencies is true.
+    Full identity checks deliberately refuse helper's AppId-only mismatches.
+    """
+    dependencies = list(manifest.get("dependencies", []))
+    for field, app_id, name in (("application", "c1335042-3002-4257-bf8a-75c898ccb1b8", "Application"),
+                               ("platform", "8874ed3a-0643-4247-9ced-7a7002f7135d", "System")):
+        if manifest.get(field):
+            dependencies.insert(0, dict(id=app_id, publisher="Microsoft", name=name, version=manifest[field]))
+    available, copies, trace, queued = list(existing), [], [], set()
+    index = 0
+    while index < len(dependencies):
+        require(len(dependencies) <= 4096, "Dependency resolution bound exceeded")
+        dep = dependencies[index]
+        index += 1
+        identity_check(dep)
+        key = (dep["id"].lower(), dep["version"], dep["publisher"], dep["name"])
+        if key in queued:
+            continue
+        queued.add(key)
+
+        def matching(items):
+            matches = [s for s in items if s["identity"]["id"].lower() == dep["id"].lower()
+                       and version_tuple(s["identity"]["version"]) >= version_tuple(dep["version"])]
+            require(all(s["identity"]["publisher"] == dep["publisher"] and s["identity"]["name"] == dep["name"]
+                        for s in matches), "Wrong resolved dependency publisher/name")
+            return sorted(matches, key=lambda s: version_tuple(s["identity"]["version"]), reverse=True)
+
+        found = matching(available)
+        chosen = found[:1] if found else matching(catalog)
+        require(chosen, "Missing compatible dependency: " + dep["name"])
+        trace.append({"dependency": dep, "source": "existing" if found else "compilerCatalog",
+                      "selected": [{"file": s["file"], "identity": s["identity"], "sha256": s["sha256"]} for s in chosen]})
+        for item in chosen:
+            if not found:
+                require(all(s["file"].casefold() != item["file"].casefold() for s in available),
+                        "Helper copy would overwrite existing input")
+                copies.append(item)
+                available.append(item)
+                if item["application"] and not any(d["name"] == "Application" for d in dependencies):
+                    dependencies.append(dict(id="c1335042-3002-4257-bf8a-75c898ccb1b8", publisher="Microsoft",
+                                             name="Application", version=item["application"]))
+                if item["platform"] and not any(d["name"] == "System" and d["publisher"] == "Microsoft" for d in dependencies):
+                    dependencies.append(dict(id="8874ed3a-0643-4247-9ced-7a7002f7135d", publisher="Microsoft",
+                                             name="System", version=item["platform"]))
+            if not found or item["propagateDependencies"]:
+                # Helper queues every catalog version for a new transitive AppId.
+                for child in item["dependencies"]:
+                    if not any(d["id"].lower() == child["id"].lower() for d in dependencies):
+                        transitive = [s["identity"] for s in catalog if s["identity"]["id"].lower() == child["id"].lower()]
+                        require(transitive, "Missing transitive catalog dependency: " + child["name"])
+                        require(all(d["name"] == child["name"] and d["publisher"] == child["publisher"]
+                                    and version_tuple(d["version"]) >= version_tuple(child["version"]) for d in transitive),
+                                "Wrong/too-old transitive catalog dependency")
+                        dependencies.extend(transitive)
+    require(len(available) <= SYMBOL_POLICIES["appCache"]["packages"], "Resolved app cache package bound exceeded")
+    require(sum(s["bytes"] for s in available) <= SYMBOL_POLICIES["appCache"]["bytes"],
+            "Resolved app cache byte bound exceeded")
+    return {"copies": copies, "trace": trace, "resolved": inventory_measurement(available, "appCache"),
+            "helperEquivalenceVerified": False, "consumedInputsCertified": False}
 
 
 def reconcile_symbols(snapshot, request, output):
@@ -181,7 +391,7 @@ def reconcile_symbols(snapshot, request, output):
     require(snapshot["symbolsFolder"] == str(Path(request["symbolsFolder"]).resolve()), "Changed symbol cache path")
     require(snapshot["compilerSymbolsFolder"] == str(Path(request["compilerSymbolsFolder"]).resolve()),
             "Changed compiler symbol path")
-    compiler = symbol_inventory(request["compilerSymbolsFolder"])
+    compiler = symbol_inventory(request["compilerSymbolsFolder"], "compilerCatalog")
     require(compiler == snapshot["compilerSymbols"], "Compiler-folder inputs changed during helper call")
     final = symbol_inventory(request["symbolsFolder"])
     before = {s["file"]: s for s in snapshot["symbols"]}
@@ -200,9 +410,24 @@ def reconcile_symbols(snapshot, request, output):
             require(prepared.get(name) == info, "Unattributed helper symbol addition: " + name)
             additions.append(info)
     require(len(copies) == 1, "Missing/ambiguous exact helper output-copy delta")
+    if "resolution" in snapshot:
+        require(sorted(additions, key=lambda s: s["file"]) == sorted(snapshot["resolution"]["copies"], key=lambda s: s["file"]),
+                "Actual helper additions differ from bounded dependency resolution")
     return {"before": snapshot["symbols"], "compilerBeforeAndAfter": compiler,
             "after": final, "preparationAdditions": additions, "outputCopy": copies[0],
+            "measurements": {"compilerCatalog": inventory_measurement(compiler, "compilerCatalog"),
+                             "appCache": inventory_measurement(final, "appCache")},
             "consumedInputsCertified": False}
+
+
+def sanitized_inventory(items):
+    result = []
+    for info in items:
+        item = dict(info)
+        url = item["buildUrl"]
+        item["buildUrl"] = url if re.fullmatch(r"https://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/actions/runs/[0-9]+", url) else "redacted-unrecognized-build-url"
+        result.append(item)
+    return result
 
 
 def _before_compile(root, request):
@@ -218,7 +443,16 @@ def _before_compile(root, request):
     require(manifest["id"] in (product["id"], test["id"]), "Unexpected compilation project")
     app_type = "app" if manifest["id"] == product["id"] else "testApp"
     symbols = symbol_inventory(request["symbolsFolder"])
-    compiler_symbols = symbol_inventory(request["compilerSymbolsFolder"])
+    compiler_symbols = symbol_inventory(request["compilerSymbolsFolder"], "compilerCatalog")
+    # Keep successful boundary measurements even if later identity/pin/resolution refuses.
+    measured = {"context": context, "measurements": {
+        "appCache": inventory_measurement(symbols, "appCache"),
+        "compilerCatalog": inventory_measurement(compiler_symbols, "compilerCatalog")},
+        "inputs": {"appCache": sanitized_inventory(symbols), "compilerCatalog": sanitized_inventory(compiler_symbols)},
+        "folders": {"appCache": str(Path(request["symbolsFolder"]).resolve()),
+                    "compilerCatalog": str(Path(request["compilerSymbolsFolder"]).resolve())},
+        "consumedInputsCertified": False}
+    (directory / "symbol-measurements.json").write_text(json.dumps(measured, indent=2) + "\n")
     for symbol in symbols + compiler_symbols:
         require(symbol["identity"]["id"].lower() != manifest["id"].lower(),
                 "Product self-app in actual PRECOMPILE symbol cache")
@@ -240,37 +474,65 @@ def _before_compile(root, request):
     snapshot = {"context": context, "kind": request["kind"], "appType": app_type, "symbols": symbols,
                 "symbolsFolder": str(Path(request["symbolsFolder"]).resolve()),
                 "compilerSymbolsFolder": str(Path(request["compilerSymbolsFolder"]).resolve()),
-                "compilerSymbols": compiler_symbols}
+                "compilerSymbols": compiler_symbols,
+                "measurements": {"appCache": inventory_measurement(symbols, "appCache"),
+                                 "compilerCatalog": inventory_measurement(compiler_symbols, "compilerCatalog")},
+                "resolution": resolve_helper_inputs(manifest, symbols, compiler_symbols)}
     (directory / "before.json").write_text(json.dumps(snapshot, indent=2) + "\n")
     return snapshot
 
 
 def rejected_receipt(output, context, paths=(), *, folders=None):
     """Record bounded disk identities only; never dump Settings or credentials."""
+    deadline = time.monotonic() + INVENTORY_SECONDS
     candidates = [(Path(path), None) for path in paths]
+    require(len(candidates) <= 4096, "Diagnostic path bound exceeded")
     folder_receipts = []
     for source, folder in (folders or {}).items():
         folder = Path(folder)
         present = folder.is_dir()
-        folder_receipts.append({"sourceFolder": source, "path": str(folder), "present": present})
+        item = {"sourceFolder": source, "path": str(folder), "present": present,
+                "packages": 0, "bytes": 0, "enumerationComplete": True}
+        folder_receipts.append(item)
         if present:
-            candidates.extend((path, source) for path in sorted(folder.glob("*.app")))
+            for path in folder.iterdir():
+                if time.monotonic() > deadline:
+                    item["enumerationComplete"] = False
+                    break
+                if path.suffix.lower() == ".app":
+                    item["packages"] += 1
+                    item["bytes"] += path.stat().st_size
+                    candidates.append((path, source))
+                    if len(candidates) >= 4096:
+                        item["enumerationComplete"] = False
+                        break
     inventory = []
-    truncated = len(candidates) > 128
+    truncated = len(candidates) > 128 or any(not f["enumerationComplete"] for f in folder_receipts)
+    hashed_bytes = 0
     for path, source in candidates[:128]:
+        if time.monotonic() > deadline:
+            truncated = True
+            break
         item = {"path": str(path), "present": path.is_file()}
         if source is not None:
             item["sourceFolder"] = source
         if item["present"]:
             size = path.stat().st_size
             item["bytes"] = size
-            if size > 128 * 1024 * 1024:
+            if size > PACKAGE_BYTES or hashed_bytes + size > SYMBOL_POLICIES["appCache"]["bytes"] or path.is_symlink():
                 item["truncated"] = True
                 truncated = True
             else:
-                item["sha256"] = file_hash(path)
+                hashed_bytes += size
                 try:
-                    info = package_info(path)
+                    item["sha256"] = file_hash(path, deadline)
+                except GateError:
+                    item["truncated"] = True
+                    truncated = True
+                    inventory.append(item)
+                    break
+                try:
+                    info = package_info(path, deadline)
                     item.update({k: info[k] for k in ("identity", "friends", "sourceCommit", "compilerVersion")})
                     # Build URLs may contain secrets in malformed/untrusted manifests.
                     url = info["buildUrl"]

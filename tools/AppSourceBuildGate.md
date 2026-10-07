@@ -167,3 +167,40 @@ explicitly incomplete. Context and manifest metadata remain allowlisted, and
 unrecognized build URLs remain redacted. Receipt collection or writing failures
 preserve the original gate exception. These failure observations certify neither
 transient compiler consumption nor signature trust.
+
+
+## Separate compiler catalog and actual app cache (#78)
+
+The complete compiler catalog is preserved and measured independently from the
+actual `appSymbolsFolder` package cache. The genuine helper receives its original
+folders and parameters. No package is pruned and no private compiler view is used.
+The catalog limit is 256 packages and 1 GiB aggregate; the app cache limit is
+128 packages and 512 MiB aggregate, including preexisting inputs and the output
+copy. Each package is limited to 128 MiB on disk and expanded content, 4096 ZIP
+entries and a 16 MiB manifest. Aggregate expanded bytes use the same folder limit.
+Each full inventory has a 60 second elapsed budget with checks between 1 MiB reads.
+These finite design limits are **not validated Windows runner capacity**. Actual
+catalog/cache metadata, bytes, hashes, exact folders and dependency resolution
+must be measured on a current successful Default/Test runner before acceptance.
+
+The NAVX reader streams package and expanded-entry hashes, validates CRCs, rejects
+path symlinks, case-insensitive filename collisions and duplicate AppId/version,
+and compares the input hash and stable file metadata before/after measurement.
+It records dependency, Application, Platform and PropagateDependencies metadata.
+The bounded resolver observes helper6.1.18 semantics: an existing highest
+compatible version wins; otherwise every compatible catalog version is copied.
+Existing packages propagate dependencies only when configured; copied packages
+follow their dependencies and implicit Application/System inputs. Identity,
+minimum-version and overwrite ambiguities fail closed. This comparison does not
+replace the helper or establish equivalence/actual transient consumption.
+
+`symbol-measurements.json` retains complete sanitized boundary metadata before
+later Foundation pin or resolution failures. Failure receipts retain bounded
+samples, explicit truncation, folder counts/bytes and incomplete-enumeration flags.
+Final helper additions must equal the predicted full copy set, and the exact
+output-copy delta is required. `consumedInputsCertified` and
+`runnerCapacityValidated` stay false; real helper/runner evidence is a separate gate.
+Foundation 530 evidence does not change the existing 523 pin or approve signature
+trust. Worker7 is the sole PR99 writer; this repair is a separate draft dependency
+for integration through the existing owner after technical acceptance. Merged
+PR94 is historical custody and is not a remediation branch.
