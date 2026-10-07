@@ -8,7 +8,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-07) - bounded build-input evidence (#78)
 
-- Separate the complete compiler catalog from the resolved app cache in `tools/appsource_gate.py`, stream bounded NAVX hashes/CRC checks, and compare genuine helper additions with dependency resolution. Keep complete sanitized measurements and explicit failure truncation. No AL objects or IDs change; Foundation pin, pipeline/signing settings and runtime verification gates remain unchanged. Design limits require actual Windows runner measurements before acceptance.
+- Separate the complete compiler catalog from the resolved app cache in `tools/appsource_gate.py`, stream bounded NAVX hashes/CRC checks, and compare genuine helper additions with dependency resolution. Keep complete sanitized measurements and explicit failure truncation. No AL objects or IDs change. Add an internally reviewed exact-hash BC29 Base Application resource profile and exact immutable Apps530 Foundation candidate/staging profile; retain523as a separate controlled fixture and reject the same-version TestApps collision. Pipeline/signing settings and actual Windows runner/runtime/trust gates remain unchanged.
 
 ### Fixed (2026-10-07) - canonical compilation and regression fixtures (#74)
 

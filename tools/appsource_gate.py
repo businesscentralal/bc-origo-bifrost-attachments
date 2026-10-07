@@ -37,6 +37,23 @@ PACKAGE_BYTES = 128 * 1024 * 1024
 MANIFEST_BYTES = 16 * 1024 * 1024
 PACKAGE_ENTRIES = 4096
 INVENTORY_SECONDS = 60
+MEASURED_PACKAGE_PROFILES = {
+    "10ebba923b6f8d3b6d676cc1f1db16a8a5d4519ff8ca4f45bbd2e778b52d289c": {
+        "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
+                     "name": "Base Application", "version": "29.0.54011.55935"},
+        "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024,
+    },
+}
+FOUNDATION_CANDIDATE = {
+    "identity": {"id": "7505e808-6e52-4b96-a328-82573391297a", "publisher": "Origo",
+                 "name": "Bifrost Foundation", "version": "28.0.3.530"},
+    "sha256": "b95e0eccf7a4038531cea08f0441e757ac176c7c4ff06b1b8eb9d25ac0dd3a88",
+    "sourceCommit": "8ec074f4ac69ac9bde15807cf16d21bee045332f",
+    "buildUrl": "https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/37679390622",
+    "compilerVersion": "18.1.43.7601",
+    "artifactId": 11508979803,
+    "archiveSha256": "21c6331c47d3134d1f3c8c77f240d021fa47710f6fbdebc974b733e0b708bad8",
+}
 SYMBOL_POLICIES = {
     "appCache": {"packages": 128, "bytes": 512 * 1024 * 1024},
     "compilerCatalog": {"packages": 256, "bytes": 1024 * 1024 * 1024},
@@ -169,14 +186,17 @@ def package_info(path, deadline=None):
             require(0 < length <= before.st_size - 40 and stream.read(4) == b"PK\x03\x04",
                     "Invalid NAVX payload length/header")
             initial_hash = file_hash(path, deadline)
+            profile = MEASURED_PACKAGE_PROFILES.get(initial_hash)
+            max_entries = profile["maxEntries"] if profile else PACKAGE_ENTRIES
+            max_expanded = profile["maxExpandedBytes"] if profile else PACKAGE_BYTES
             with zipfile.ZipFile(PayloadView(stream, 40, length)) as archive:
                 items = archive.infolist()
-                require(len(items) <= PACKAGE_ENTRIES, "Package entry bound exceeded")
+                require(len(items) <= max_entries, "Package entry bound exceeded")
                 names = [item.filename for item in items]
                 require(len(names) == len(set(names)), "Duplicate package entries")
                 require(names.count("NavxManifest.xml") == 1, "Missing/duplicate NAVX manifest")
                 expanded = sum(item.file_size for item in items)
-                require(expanded <= PACKAGE_BYTES, "Package expanded-byte bound exceeded")
+                require(expanded <= max_expanded, "Package expanded-byte bound exceeded")
                 require(archive.getinfo("NavxManifest.xml").file_size <= MANIFEST_BYTES,
                         "Manifest exceeds 16 MiB")
                 entries, manifest = [], None
@@ -189,7 +209,7 @@ def package_info(path, deadline=None):
                             if not chunk:
                                 break
                             size += len(chunk)
-                            require(size <= item.file_size and size <= PACKAGE_BYTES, "Expanded entry bound exceeded")
+                            require(size <= item.file_size and size <= max_expanded, "Expanded entry bound exceeded")
                             sha.update(chunk)
                             if item.filename == "NavxManifest.xml":
                                 chunks.append(chunk)
@@ -215,6 +235,8 @@ def package_info(path, deadline=None):
                 build = build_nodes[0] if build_nodes else ET.Element("Build")
                 identity = {key.lower(): app.get(key, "") for key in ("Id", "Publisher", "Name", "Version")}
                 identity_check(identity)
+                if profile:
+                    require(identity == profile["identity"], "Measured package profile identity mismatch")
                 grants = []
                 for friend in friends:
                     require(friend.tag == namespace + "Module", "Unknown friend element")
@@ -250,6 +272,7 @@ def package_info(path, deadline=None):
             "buildUrl": build.get("Url", ""), "sha256": initial_hash,
             "contentSha256": digest(json.dumps(entries, sort_keys=True).encode()),
             "bytes": before.st_size, "expandedBytes": expanded, "entryCount": len(items),
+            "resourceProfile": initial_hash if profile else "generic",
             "signatureTailBytes": before.st_size - 40 - length}
 
 
@@ -259,6 +282,17 @@ def check_package(info, expected, mode, app_type, friend, source_commit=None):
     require(info["friends"] == expected_grants, "Wrong/missing/surviving compiled friend grants")
     if source_commit is not None:
         require(info["sourceCommit"] == source_commit, "Wrong compiled source commit")
+
+
+def check_foundation_candidate(info):
+    """Exact development candidate content, not Windows signature acceptance."""
+    for key in ("identity", "sha256", "sourceCommit", "buildUrl", "compilerVersion"):
+        require(info[key] == FOUNDATION_CANDIDATE[key], "Unapproved Foundation candidate " + key)
+    require(info["friends"] == [] and info["signatureTailBytes"] > 0,
+            "Foundation candidate friend/signature-content mismatch")
+    return {"candidate": "candidate530", "artifactId": FOUNDATION_CANDIDATE["artifactId"],
+            "archiveSha256": FOUNDATION_CANDIDATE["archiveSha256"], "signatureTrustVerified": False,
+            "runnerInputEqualityVerified": False}
 
 
 def validate_parameters(params):
@@ -458,9 +492,8 @@ def _before_compile(root, request):
                 "Product self-app in actual PRECOMPILE symbol cache")
     require(symbols, "Empty actual precompile symbol inventory")
     foundation = [s for s in symbols if s["identity"]["id"] == "7505e808-6e52-4b96-a328-82573391297a"]
-    require(len(foundation) == 1 and foundation[0]["sha256"] ==
-            "5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f",
-            "Missing/ambiguous/unapproved Foundation input bytes")
+    require(len(foundation) == 1, "Missing/ambiguous/unapproved Foundation input bytes")
+    foundation_candidate = check_foundation_candidate(foundation[0])
     if app_type == "testApp":
         require("app" in state["receipts"], "Test compile before product receipt")
         products = [s for s in symbols if s["identity"]["id"] == product["id"]]
@@ -477,7 +510,8 @@ def _before_compile(root, request):
                 "compilerSymbols": compiler_symbols,
                 "measurements": {"appCache": inventory_measurement(symbols, "appCache"),
                                  "compilerCatalog": inventory_measurement(compiler_symbols, "compilerCatalog")},
-                "resolution": resolve_helper_inputs(manifest, symbols, compiler_symbols)}
+                "resolution": resolve_helper_inputs(manifest, symbols, compiler_symbols),
+                "foundationCandidate": foundation_candidate}
     (directory / "before.json").write_text(json.dumps(snapshot, indent=2) + "\n")
     return snapshot
 

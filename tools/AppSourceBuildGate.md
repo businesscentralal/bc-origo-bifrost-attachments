@@ -26,12 +26,12 @@ grants. The Test product carries exactly the existing Attachments test friend;
 the test app carries none. Final output content must match the compile receipt.
 An arbitrary ZIP, `.app` filename, signature tail or stale output cannot pass.
 
-The current approved Foundation input is main
+The separate controlled523 Foundation fixture is main
 `336b91d9fff11b71ae5cd75dee08186d4218bf07`, run `37544940349`, attempt 2,
 `Origo_Bifrost Foundation_28.0.2.523.app`, SHA256
 `5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f`.
-The actual precompile inventory must contain these exact bytes, with zero product
-self-app inputs. Test must use the exact just-built product. Changing the approved
+The controlled fixture retains these exact bytes. Current actual precompile inventory
+requires the internally approved exact candidate530 below, with zero product self-app inputs. Test must use the exact just-built product. Changing the approved
 input requires a reviewed tooling change; the app dependency floor remains
 **28.0.1.0**. Symbol inventories are independent of the donated manifest guard.
 
@@ -69,7 +69,7 @@ Generate isolated genuine NAVX fixtures with the installed compiler and run:
 
 ```powershell
 ./tools/New-AppSourceGateFixtures.ps1 -CompilerDll <actual-alc.dll> -Dotnet <dotnet> -OutputFolder <temporary-fixture-folder>
-./tools/Test-AppSourceBuildGate.ps1 -FixtureFolder <temporary-fixture-folder> -FoundationPackage <approved-523.app>
+./tools/Test-AppSourceBuildGate.ps1 -FixtureFolder <temporary-fixture-folder> -FoundationPackage <controlled-523.app> -CandidateFoundationPackage <exact-Apps530.app> -MeasuredBasePackage <exact-BC29-BaseApplication.app>
 python -m unittest discover -s tools/tests -p test_build_inputs.py -v
 ```
 
@@ -90,7 +90,7 @@ occur. Maximum 128 files and 128 MiB per inventory/archive; flat `.app` artifact
 entries only. URLs, GUIDs, wildcard inputs and symlinks fail closed and need an
 explicitly reviewed adapter; they are never silently dropped.
 
-The signed Foundation Apps pin remains
+The controlled523 Foundation Apps pin remains
 `5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f`,
 source `336b91d9fff11b71ae5cd75dee08186d4218bf07`, run `37544940349`,
 attempt 2, Apps artifact `11459147009`, with zero friends. Only the exact
@@ -204,3 +204,42 @@ Foundation 530 evidence does not change the existing 523 pin or approve signatur
 trust. Worker7 is the sole PR99 writer; this repair is a separate draft dependency
 for integration through the existing owner after technical acceptance. Merged
 PR94 is historical custody and is not a remediation branch.
+
+
+## Internally reviewed exact candidate and measured profile
+
+Internal technical decisions on 2026-10-07 approve one exact BC29 Base Application
+profile: identity `437dbf0e-84ff-417a-965d-ed2bb9650972`, Microsoft,
+Base Application29.0.54011.55935, SHA256
+`10ebba923b6f8d3b6d676cc1f1db16a8a5d4519ff8ca4f45bbd2e778b52d289c`.
+The original embedded source has8665entries/379592378expanded bytes. For these
+exact bytes and identity only, the bound is16384entries/512MiBexpanded. Generic
+4096entries/128MiBexpanded and128MiBdisk limits remain; any changed or converted
+package hash needs its own measured technical disposition. Full CRC/hash reads
+under the deadline are still required. Folder aggregate budgets stay unchanged;
+proposed2GiBexpanded inventory capacity is not approved as validated capacity.
+
+Current compilation-boundary candidate Foundation is exactly28.0.3.530 from
+main`8ec074f4ac69ac9bde15807cf16d21bee045332f`, run37679390622/attempt1,
+Apps artifact11508979803, archive SHA256
+`21c6331c47d3134d1f3c8c77f240d021fa47710f6fbdebc974b733e0b708bad8`,
+package SHA256`b95e0eccf7a4038531cea08f0441e757ac176c7c4ff06b1b8eb9d25ac0dd3a88`,
+compiler18.1.43.7601 and zero friend grants. All identity, source, build and byte
+fields are required, including presence of the original signature content.
+Presence is not Windows signature trust. Candidate approval does not release
+actual runner equality, runtime or signing acceptance.
+
+Staging defaults to the explicit `candidate530` profile, receipt schema2. It
+verifies both complete archives/provenance, preserves Apps bytes and excludes
+only the exact same-AppId TestApps collision (artifact11510930013, archive
+SHA256`0a4a24e4fa1afc56e60c00ea807d8cd9a91f55f21f144c81f458e14521bd0e73`,
+package SHA256`391ba3df7917913ce4fd932096e0f8d5e474d45d0ee78c090f5abee37b1fbfe7`,
+with Foundation Tests friend).523remains the explicit `controlled523` staging
+fixture; it cannot satisfy the current compilation-boundary530candidate check.
+Unknown profiles, changed archives/provenance, swapped Test inputs, missing or
+extra same-AppId inputs and mutations fail closed. Returned helper arrays must
+actually be wired by the existing pipeline owner; no workflow is changed here.
+
+Run staging tests with the genuine archives for both profiles:
+`Test-FoundationStaging.ps1 -ArtifactFolder <controlled523archives> -FixtureFolder <fixtures> -CandidateArtifactFolder <candidate530archives>`.
+This executes collector/staging tests, not a mock runner or signature approval.

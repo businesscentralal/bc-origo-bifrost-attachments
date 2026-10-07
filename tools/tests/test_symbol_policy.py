@@ -4,6 +4,8 @@ import importlib.util
 import io
 from pathlib import Path
 import struct
+import os
+import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -161,6 +163,44 @@ class SymbolPolicy(unittest.TestCase):
         dep = fixture(self.catalog / 'New.app')
         with self.assertRaisesRegex(G.GateError, 'Resolved app cache package'):
             G.resolve_helper_inputs({'dependencies': [dep]}, G.symbol_inventory(self.cache), G.symbol_inventory(self.catalog, 'compilerCatalog'))
+
+    def test_genuine_measured_base_profile_and_changed_hash_cannot_inherit_exception(self):
+        path = Path(os.environ['APPSOURCE_GATE_BASE29'])
+        info = G.package_info(path)
+        self.assertEqual('10ebba923b6f8d3b6d676cc1f1db16a8a5d4519ff8ca4f45bbd2e778b52d289c', info['sha256'])
+        self.assertEqual(info['sha256'], info['resourceProfile'])
+        self.assertEqual(8665, info['entryCount'])
+        self.assertEqual(379592378, info['expandedBytes'])
+        self.assertEqual(G.MEASURED_PACKAGE_PROFILES[info['sha256']]['identity'], info['identity'])
+        changed = self.root / 'changed-base.app'
+        shutil.copyfile(path, changed)
+        with changed.open('ab') as output: output.write(b'changed-signature-tail')
+        with self.assertRaisesRegex(G.GateError, 'entry bound'):
+            G.package_info(changed)
+        # Profile entry/expansion ceilings remain independently enforced.
+        for key, maximum, message in [('maxEntries', 8664, 'entry bound'),
+                                      ('maxExpandedBytes', 379592377, 'expanded-byte')]:
+            profile = copy.deepcopy(G.MEASURED_PACKAGE_PROFILES[info['sha256']])
+            profile[key] = maximum
+            with patch.dict(G.MEASURED_PACKAGE_PROFILES, {info['sha256']: profile}):
+                with self.assertRaisesRegex(G.GateError, message): G.package_info(path)
+
+    def test_genuine_foundation530_candidate_and_wrong_hash_source_version_friend_tail(self):
+        path = Path(os.environ['APPSOURCE_GATE_FOUNDATION530'])
+        info = G.package_info(path)
+        receipt = G.check_foundation_candidate(info)
+        self.assertFalse(receipt['signatureTrustVerified'])
+        self.assertFalse(receipt['runnerInputEqualityVerified'])
+        for key, value in [('sha256', '0' * 64), ('sourceCommit', '0' * 40),
+                           ('buildUrl', 'https://example.invalid'), ('compilerVersion', 'wrong'),
+                           ('friends', [{'id': '9db1a0c9-c503-4793-a9e4-bcda3d3f3c94', 'publisher': 'Origo', 'name': 'Bifrost Foundation - Tests'}]),
+                           ('signatureTailBytes', 0)]:
+            changed = copy.deepcopy(info)
+            changed[key] = value
+            with self.subTest(key=key), self.assertRaises(G.GateError): G.check_foundation_candidate(changed)
+        changed = copy.deepcopy(info)
+        changed['identity']['version'] = '28.0.3.531'
+        with self.assertRaises(G.GateError): G.check_foundation_candidate(changed)
 
 
 if __name__ == '__main__': unittest.main()

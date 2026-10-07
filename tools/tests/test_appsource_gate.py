@@ -118,6 +118,8 @@ class GenuinePackages(unittest.TestCase):
         # Missing real fixtures is a FAILURE, never a skipped/passing test.
         cls.fixtures = Path(os.environ["APPSOURCE_GATE_FIXTURES"])
         cls.foundation = Path(os.environ["APPSOURCE_GATE_FOUNDATION"])
+        cls.foundation_candidate = Path(os.environ["APPSOURCE_GATE_FOUNDATION530"])
+        G.check_foundation_candidate(G.package_info(cls.foundation_candidate))
         for name in ("default", "friend", "wrongFriend", "testApp"):
             G.package_info(cls.fixtures / (name + ".app"))
         cls.default = G.package_info(cls.fixtures / "default.app")
@@ -239,7 +241,7 @@ class GenuinePackages(unittest.TestCase):
         symbols = self.root / "symbols"
         symbols.mkdir()
         (self.root / 'compiler-symbols').mkdir()
-        shutil.copy2(self.foundation, symbols / "Foundation.app")
+        shutil.copy2(self.foundation_candidate, symbols / "Foundation.app")
         (self.root / "BuildOutput.txt").write_text(log())
         return context
 
@@ -466,7 +468,7 @@ class GenuinePackages(unittest.TestCase):
         self.assertFalse(boundaries['consumedInputsCertified'])
 
     def test_changed_foundation_or_preexisting_dependency_refused(self):
-        for name, original, replacement in [('Foundation.app', self.foundation, self.fixtures / 'testApp.app'),
+        for name, original, replacement in [('Foundation.app', self.foundation_candidate, self.fixtures / 'testApp.app'),
                                              ('Dependency.app', self.fixtures / 'testApp.app', self.fixtures / 'wrongFriend.app')]:
             with self.subTest(name=name):
                 context = self.state() if not hasattr(self, 'context') else self.context
