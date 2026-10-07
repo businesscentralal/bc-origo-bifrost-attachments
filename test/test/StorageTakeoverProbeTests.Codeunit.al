@@ -15,6 +15,7 @@ codeunit 96210 "Storage Takeover Probe Tests"
 {
     Subtype = Test;
     TestPermissions = Disabled;
+    RequiredTestIsolation = Function;
 
     var
         Assert: Codeunit "Library Assert";
@@ -305,6 +306,56 @@ codeunit 96210 "Storage Takeover Probe Tests"
         TakeoverState.ClearLastSkip();
     end;
 
+    /// <summary>The tag fixture removes only the purge tag for the current company.</summary>
+    [Test]
+    procedure Scenario_AC03_TagFixture_PreservesUnrelatedTags()
+    var
+        UpgradeTags: RecordRef;
+        OtherTag: Code[250];
+        OtherCompany: Text[30];
+    begin
+        // Story #76, AC03 | Time: independent of Today/WorkDate | Risk: requires Function rollback.
+        // [GIVEN] The target tag and sentinels differing in each part of its global key.
+        Initialize();
+        OtherTag := 'XRETRY76-UnrelatedTag';
+        OtherCompany := 'XRETRY76-OtherCompany';
+        Assert.AreNotEqual(OtherCompany, CompanyName(), 'The other-company sentinel must be distinct.');
+        EnsureOrphanPurgeTag();
+        InsertTagSentinel(OtherTag, CompanyName());
+        InsertTagSentinel(OrphanPurgeTag(), OtherCompany);
+
+        // [WHEN] Preparing the untagged-upgrade fixture.
+        RemoveCompanyOrphanPurgeTag();
+
+        // [THEN] Neither an unrelated tag nor another company loses its upgrade history.
+        UpgradeTags.Open(9999);
+        UpgradeTags.Field(1).SetRange(OrphanPurgeTag());
+        UpgradeTags.Field(3).SetRange(CompanyName());
+        Assert.IsTrue(UpgradeTags.IsEmpty(), 'Only the current-company purge tag must be removed.');
+        UpgradeTags.Field(1).SetRange(OtherTag);
+        Assert.AreEqual(1, UpgradeTags.Count(), 'A different tag in this company must survive.');
+        UpgradeTags.Field(1).SetRange(OrphanPurgeTag());
+        UpgradeTags.Field(3).SetRange(OtherCompany);
+        Assert.AreEqual(1, UpgradeTags.Count(), 'The same tag in another company must survive.');
+        UpgradeTags.Close();
+        // Leave these rows to Function rollback; post-run snapshots must verify their removal.
+    end;
+
+    local procedure InsertTagSentinel(Tag: Code[250]; Company: Text[30])
+    var
+        UpgradeTags: RecordRef;
+    begin
+        UpgradeTags.Open(9999);
+        UpgradeTags.Field(1).SetRange(Tag);
+        UpgradeTags.Field(3).SetRange(Company);
+        Assert.IsTrue(UpgradeTags.IsEmpty(), 'Tag sentinel already exists; require a clean disposable fixture.');
+        UpgradeTags.Init();
+        UpgradeTags.Field(1).Value := Tag;
+        UpgradeTags.Field(3).Value := Company;
+        UpgradeTags.Insert(false);
+        UpgradeTags.Close();
+    end;
+
     local procedure InsertOrphanLink(TableId: Integer; RecordSystemId: Guid)
     var
         Link: Record "Storage Attachment Link ori";
@@ -321,7 +372,7 @@ codeunit 96210 "Storage Takeover Probe Tests"
         UpgradeTags: RecordRef;
     begin
         // System Application 28: table 9999 is internal. Scope the unit fixture to this tag/company.
-        // No Commit: the test runner's rollback must include tag removal and all seeded records.
+        // RequiredTestIsolation rejects an unsafe runner; actual rollback still needs runtime evidence.
         UpgradeTags.Open(9999);
         UpgradeTags.Field(1).SetRange(OrphanPurgeTag());
         UpgradeTags.Field(3).SetRange(CompanyName());

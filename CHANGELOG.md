@@ -25,6 +25,16 @@ Business Central release versioning (`major.minor.build.revision`).
 - Add `Attachments Build Tests ori` (96274) for existing Data Exchange dispatch, stored results, and refusal paths. Add a build-input guard for duplicate object IDs, overlapping enum ordinals, unallocated IDs, self dependencies, and the Foundation 28.0.1.0 floor, with synthetic regression fixtures.
 
 
+## [28.0.0.6] — 2026-10-07 (Bifrost Attachments - Tests; unreleased)
+
+This section describes the test source manifest version; the date is a documentation update, not a release date.
+
+### Changed
+
+- `Storage Takeover Probe Tests` (96210) requires Function test isolation for its global upgrade-tag and role fixtures. A new scoped-tag regression asserts that a different tag in the current company and the purge tag in another company survive fixture preparation. Actual runner rollback, including failure boundaries, remains a runtime acceptance gate.
+- `Storage Takeover Probe Tests` (96210) covers tagged and untagged upgrades, both legacy read-denial paths, denied-then-permitted role re-grant, idempotent retry and populated destination preservation with the existing probe seam. Untagged denial still purges only invalid links and records the purge tag; later retries preserve that one-time boundary. Absent-legacy no-op fixtures explicitly require no residual legacy roles. Genuine restricted-identity install/upgrade and legacy-data lifecycle certification remain required; seam tests do not certify permissions.
+- `tools/Test-TakeoverSafety.ps1` checks the rollback requirement, both tag filters, absence of explicit commits and retry-before-purge ordering. Its mutation self-tests validate the source guard only; they do not certify Business Central runtime behavior.
+
 ## [28.0.0.4] — 2026-10-07
 
 ### Fixed
@@ -37,7 +47,6 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Fixed (2026-10-06) - retry skipped legacy take-over on upgrade (#76)
 
 - `Storage Link Upgrade ori` (10035683) retries the permission-probed `Storage Takeover ori` (10035676) on every company upgrade, before checking the orphan-purge tag. A denied probe remains telemetry-only; a later permitted upgrade can copy legacy data and re-grant roles. Existing destination data and assignments retain the take-over routine's preservation rules. Generated mapping and grant code are unchanged.
-- `Storage Takeover Probe Tests` (96210) covers tagged and untagged upgrades, both legacy read-denial paths, denied-then-permitted role re-grant, idempotent retry and populated destination preservation with the existing probe seam. Untagged denial still purges only invalid links and records the purge tag; later retries preserve that one-time boundary. Absent-legacy no-op fixtures explicitly require no residual legacy roles. Genuine restricted-identity install/upgrade and legacy-data lifecycle certification remain required; seam tests do not certify permissions.
 
 ### Fixed (2026-10-06) - localized storage refusals (#72)
 
