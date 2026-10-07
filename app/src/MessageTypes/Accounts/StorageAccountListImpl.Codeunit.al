@@ -25,8 +25,10 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Lists the configured storage connections (codes, descriptions, connectors and enabled state). No secrets are exposed.', Comment = 'is-IS=Listar uppsettar geymslutengingar (kóða, lýsingar, tengla og hvort þær séu virkar). Engin leyndarmál eru birt.';
     begin
-        exit('Lists the configured storage connections (codes, descriptions, connectors and enabled state). No secrets are exposed.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -45,7 +47,7 @@ codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori"
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Lists the configured storage connections to Azure Blob Storage, Azure File Share or SharePoint so a caller can pick the storage code; it reads no files.', Locked = true;
+        SelectionDescriptionLbl: Label 'Lists the configured storage connections to Azure Blob Storage, Azure File Share or SharePoint so a caller can pick the storage code; it reads no files.', Comment = 'is-IS=Listar uppsettar geymslutengingar við Azure Blob Storage, Azure File Share eða SharePoint svo kallandi geti valið geymslukóða; les engar skrár.';
     begin
         exit(SelectionDescriptionLbl);
     end;

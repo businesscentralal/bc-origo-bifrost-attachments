@@ -23,8 +23,10 @@ codeunit 10035652 "Storage File Get Impl ori" implements "Msg Interface ori", "M
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Downloads a file from the configured storage connection and returns its content as base64.', Comment = 'is-IS=Sækir skrá úr uppsettri geymslutengingu og skilar innihaldi hennar sem base64.';
     begin
-        exit('Downloads a file from the configured storage connection and returns its content as base64.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -43,7 +45,7 @@ codeunit 10035652 "Storage File Get Impl ori" implements "Msg Interface ori", "M
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Downloads one file from a storage connection and returns its content as base64; it does not attach the file to any Business Central record.', Locked = true;
+        SelectionDescriptionLbl: Label 'Downloads one file from a storage connection and returns its content as base64; it does not attach the file to any Business Central record.', Comment = 'is-IS=Sækir eina skrá úr geymslutengingu og skilar innihaldi hennar sem base64; tengir skrána ekki við neina Business Central færslu.';
     begin
         exit(SelectionDescriptionLbl);
     end;

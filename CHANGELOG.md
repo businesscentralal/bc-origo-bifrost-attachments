@@ -38,6 +38,12 @@ Business Central release versioning (`major.minor.build.revision`).
 - `Storage Link Upgrade ori` (10035683) retries the permission-probed `Storage Takeover ori` (10035676) on every company upgrade, before checking the orphan-purge tag. A denied probe remains telemetry-only; a later permitted upgrade can copy legacy data and re-grant roles. Existing destination data and assignments retain the take-over routine's preservation rules. Generated mapping and grant code are unchanged.
 - `Storage Takeover Probe Tests` (96210) covers tagged and untagged upgrades, both legacy read-denial paths, denied-then-permitted role re-grant, idempotent retry and populated destination preservation with the existing probe seam. Untagged denial still purges only invalid links and records the purge tag; later retries preserve that one-time boundary. Absent-legacy no-op fixtures explicitly require no residual legacy roles. Genuine restricted-identity install/upgrade and legacy-data lifecycle certification remain required; seam tests do not certify permissions.
 
+### Fixed (2026-10-06) - localized storage refusals (#72)
+
+- Translate response prose and expected-value conjunctions in `Storage Upload Mgt ori` (10035665), `Storage Attachment Mgt ori` (10035635), and `Storage Request Mgt ori` (10035662), preserving embedded wire tokens.
+- Harvest the existing Icelandic connection-test messages into source comments in `Storage Setup ori` (table 10035636). Add bilingual dispatch regression cases to `Storage Error Response Tests` (96212) and setup-action TestPage cases to `Storage Setup Page Tests` (96207).
+- Correct the agent instructions to locate the archived Foundation takeover generator; generated takeover source remains subject to its separate owner and generator approval.
+
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
 - The Foundation dependency floor is **28.0.1.0** in `app/app.json` and `test/app.json`, the same floor Bifrost Language Models uses for Foundation 28.0.1. Every 28.0.1.x build is accepted.
@@ -50,6 +56,14 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Changed (2026-10-04) - CI/CD builds only main; every pull request gets a Pull Request Build
 
 - Build policy only, no app change. `CI/CD` runs on pushes to `main` only, and `Pull Request Build` runs for pull requests into any branch. `.github/AL-Go-Settings.json` sets `CICDPushBranches` to `main` and `CICDPullRequestBranches` to `**`, so Update AL-Go System Files keeps the triggers.
+
+
+
+### Issue #72 source localization continuation
+- Correct placeholder metadata ordering in "Storage Upload Purge ori" (10035679) so Icelandic purge notifications retain the existing sentence without English placeholder notes; final generated XLF remains with worker7.
+- Localized descriptions and selection prose in "Storage Account List Impl ori" (10035639), "Storage Att. Offload Impl ori" (10035641), "Storage Att. Restore Impl ori" (10035642), "Storage Attach Link Impl ori" (10035640), "Storage Attach Record Impl ori" (10035667), "Storage Dir Create Impl ori" (10035644), "Storage Dir Delete Impl ori" (10035645), "Storage Dir Exists Impl ori" (10035646), "Storage Dir List Impl ori" (10035647), "Storage File Copy Impl ori" (10035648), "Storage File Create Impl ori" (10035649), "Storage File Delete Impl ori" (10035650), "Storage File Exists Impl ori" (10035651), "Storage File Get Impl ori" (10035652), "Storage File List Impl ori" (10035653), "Storage File Move Impl ori" (10035654), "Storage Help Get Impl ori" (10035655), "Storage Upload Abort Impl ori" (10035656), "Storage Upload Append Impl ori" (10035657), "Storage Upload Begin Impl ori" (10035658), "Storage Upload Commit Impl ori" (10035659), "Storage Upload Commit Rec ori" (10035669), "Storage Upload Status Impl ori" (10035660). Public wire names, enum values and implementation bindings are unchanged.
+- Added English/Icelandic exact production-interface discovery assertions to "Storage Error Response Tests" (96212), and aligned its response content type with the real Foundation Text[100] signature. Final XLF remains worker7-owned; runtime/compiler/guard acceptance is blocked pending canonical PR84 and other owner deliveries.
+
 
 ### Removed (2026-10-01) - markdown help procedure (#61)
 
@@ -128,7 +142,7 @@ Business Central release versioning (`major.minor.build.revision`).
   `call_message_type`), line breaks that rendered as a literal `\`, and `→`/`—` shown as text in
   the overview. `Help.Storage.Get`'s own help is now a standard help document followed by the overview.
 - **Tests.** New `Storage Msg Conformance Tests` (96211, Foundation's rules 1-6 plus keyword coverage for
-  every type, no allow-list) and `Storage Error Response Tests` (96212). Existing tests assert the
+  every type, no allow-list) and `Storage Error Response Tests` (96212) and setup-action TestPage cases to `Storage Setup Page Tests` (96207). Existing tests assert the
   structured answers instead of raised texts.
 - **Foundation.** Requires a Foundation build with `Msg Discovery ori` and `Bifrost Error Code ori`
   (#149, #153) and the structured-error hand-over of core#153, #164 and #165; built and tested against the stack up to #169.

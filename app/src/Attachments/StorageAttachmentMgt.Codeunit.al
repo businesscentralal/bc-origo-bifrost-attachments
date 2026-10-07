@@ -32,7 +32,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         DocumentAttachmentTok: Label 'DocumentAttachment', Locked = true;
         IncomingDocumentTok: Label 'IncomingDocument', Locked = true;
         UnknownTargetErr: Label 'Parameter "%1" has value "%2", which is not an attachment target.', Comment = '%1 = parameter, %2 = received value, is-IS=Færibreyta "%1" hefur gildið "%2", sem er ekki viðhengjamarkmið.';
-        TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Locked = true;
+        TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Comment = 'is-IS=DocumentAttachment eða IncomingDocument';
         UnknownCodeErr: Label 'No storage connection is configured for storageCode "%1".', Comment = '%1 = storage code, is-IS=Engin geymslutenging er skilgreind fyrir storageCode "%1".';
         DisabledCodeErr: Label 'The storage connection "%1" is disabled.', Comment = '%1 = storage code, is-IS=Geymslutengingin "%1" er óvirk.';
         RecordNotFoundErr: Label '%1 "%2" was not found (from %3).', Comment = '%1 = table caption, %2 = value received, %3 = request parameter, is-IS=%1 "%2" fannst ekki (úr %3).';
@@ -57,9 +57,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         UnknownTableNameErr: Label 'No table named "%1" exists.', Comment = '%1 = table name, is-IS=Engin tafla heitir "%1".';
         UnknownTableNextStepLbl: Label 'Find the table with Help.Tables.Get.', Comment = 'is-IS=Finndu töfluna með Help.Tables.Get.';
         TableRequiredErr: Label 'Send tableId or tableName to say which table the record is in.', Comment = 'is-IS=Sendu tableId eða tableName til að segja í hvaða töflu færslan er.';
-        TableExpectedLbl: Label 'tableId or tableName', Locked = true;
+        TableExpectedLbl: Label 'tableId or tableName', Comment = 'is-IS=tableId eða tableName';
         RecordRequiredErr: Label 'Send recordSystemId or no to say which record the attachment belongs to.', Comment = 'is-IS=Sendu recordSystemId eða no til að segja hvaða færslu viðhengið tilheyrir.';
-        RecordExpectedLbl: Label 'recordSystemId or no', Locked = true;
+        RecordExpectedLbl: Label 'recordSystemId or no', Comment = 'is-IS=recordSystemId eða no';
         CompositeKeyErr: Label 'Table %1 has a composite primary key, so it cannot be addressed with "no".', Comment = '%1 = table id, is-IS=Tafla %1 hefur samsettan aðallykil og því er ekki hægt að vísa í hana með "no".';
         NonCodeKeyErr: Label 'The primary key of table %1 is not a code or text field, so it cannot be addressed with "no".', Comment = '%1 = table id, is-IS=Aðallykill töflu %1 er hvorki kóða- né textareitur og því er ekki hægt að vísa í hana með "no".';
         UseRecordSystemIdLbl: Label 'Send recordSystemId instead.', Comment = 'is-IS=Sendu recordSystemId í staðinn.';
@@ -67,9 +67,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         RecordNoExpectedLbl: Label 'at most 20 characters', Comment = 'is-IS=í mesta lagi 20 stafir';
         ContentSourceErr: Label 'Send exactly one content source: contentBase64 (or the alias content), storageCode with path, or sourceTarget with sourceSystemId.', Comment = 'is-IS=Sendu nákvæmlega eina uppsprettu innihalds: contentBase64 (eða samheitið content), storageCode með path eða sourceTarget með sourceSystemId.';
         ContentSourceParameterTok: Label 'contentBase64, storageCode, sourceSystemId', Locked = true;
-        ContentSourceExpectedLbl: Label 'exactly one of contentBase64 (or the alias content), storageCode with path, sourceTarget with sourceSystemId', Locked = true;
-        BothInlineContentErr: Label 'Supply contentBase64 or content, not both.', Locked = true;
-        BothInlineContentExpectedLbl: Label 'contentBase64 or content, not both', Locked = true;
+        ContentSourceExpectedLbl: Label 'exactly one of contentBase64 (or the alias content), storageCode with path, sourceTarget with sourceSystemId', Comment = 'is-IS=nákvæmlega eitt af contentBase64 (eða samheitinu content), storageCode með path, sourceTarget með sourceSystemId';
+        BothInlineContentErr: Label 'Supply contentBase64 or content, not both.', Comment = 'is-IS=Gefðu upp contentBase64 eða content, ekki bæði.';
+        BothInlineContentExpectedLbl: Label 'contentBase64 or content, not both', Comment = 'is-IS=contentBase64 eða content, ekki bæði';
         NoAttachmentKeyErr: Label 'Business Central does not know which field identifies a record in table %1, so an attachment cannot be keyed to it.', Comment = '%1 = table id, is-IS=Business Central veit ekki hvaða reitur auðkennir færslu í töflu %1 og því er ekki hægt að tengja viðhengi við hana.';
         AttachmentGoneErr: Label 'The attachment was removed while it was being processed.', Comment = 'is-IS=Viðhenginu var eytt á meðan verið var að vinna með það.';
         NoAttachmentKeyNextStepLbl: Label 'Attach the file to a record of a table that supports attachments, or have a developer subscribe to Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey for this table.', Comment = 'is-IS=Hengdu skrána við færslu í töflu sem styður viðhengi eða láttu forritara gerast áskrifanda að Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey fyrir þessa töflu.';

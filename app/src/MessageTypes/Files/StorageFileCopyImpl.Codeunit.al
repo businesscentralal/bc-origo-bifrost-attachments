@@ -23,8 +23,10 @@ codeunit 10035648 "Storage File Copy Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Copies a file within the configured storage connection.', Comment = 'is-IS=Afritar skrá innan uppsettrar geymslutengingar.';
     begin
-        exit('Copies a file within the configured storage connection.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -43,7 +45,7 @@ codeunit 10035648 "Storage File Copy Impl ori" implements "Msg Interface ori", "
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Copies a file to another path within the same storage connection and keeps the original; use the move type to relocate it instead.', Locked = true;
+        SelectionDescriptionLbl: Label 'Copies a file to another path within the same storage connection and keeps the original; use the move type to relocate it instead.', Comment = 'is-IS=Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu boðgerðina fyrir færslu skráa til að færa hana.';
     begin
         exit(SelectionDescriptionLbl);
     end;

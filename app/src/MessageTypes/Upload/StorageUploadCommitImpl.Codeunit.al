@@ -24,8 +24,10 @@ codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Assembles an upload session''s chunks and writes the file to the storage connection.', Comment = 'is-IS=Sameinar hluta upphleðslulotu og skrifar skrána í geymslutenginguna.';
     begin
-        exit('Assembles an upload session''s chunks and writes the file to the storage connection.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -44,7 +46,7 @@ codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Assembles the chunks of an upload session and writes the file to its storage connection; it does not attach the file to any record.', Locked = true;
+        SelectionDescriptionLbl: Label 'Assembles the chunks of an upload session and writes the file to its storage connection; it does not attach the file to any record.', Comment = 'is-IS=Sameinar hluta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu.';
     begin
         exit(SelectionDescriptionLbl);
     end;

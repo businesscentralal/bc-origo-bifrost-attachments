@@ -24,8 +24,10 @@ codeunit 10035649 "Storage File Create Impl ori" implements "Msg Interface ori",
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Uploads a base64 file of up to 240 MiB to a path in one call. For larger files, use Storage.Upload.Begin, Append and Commit.', Comment = 'is-IS=Hleður base64-skrá allt að 240 MiB á slóð í einu kalli. Fyrir stærri skrár skal nota Storage.Upload.Begin, Append og Commit.';
     begin
-        exit('Uploads a base64 file of up to 240 MiB to a path in one call. For larger files, use Storage.Upload.Begin, Append and Commit.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -44,7 +46,7 @@ codeunit 10035649 "Storage File Create Impl ori" implements "Msg Interface ori",
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Uploads a whole file of up to 240 MiB to a storage path in one call; use the chunked upload types for larger files or files sent in parts.', Locked = true;
+        SelectionDescriptionLbl: Label 'Uploads a whole file of up to 240 MiB to a storage path in one call; use the chunked upload types for larger files or files sent in parts.', Comment = 'is-IS=Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu boðgerðir fyrir hlutaupphleðslu fyrir stærri skrár eða skrár sendar í hlutum.';
     begin
         exit(SelectionDescriptionLbl);
     end;

@@ -23,8 +23,10 @@ codeunit 10035658 "Storage Upload Begin Impl ori" implements "Msg Interface ori"
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Opens a chunked upload session for a file larger than one call can carry, sent as chunks of up to 240 MiB each.', Comment = 'is-IS=Opnar upphleðslulotu fyrir skrá sem rúmast ekki í einu kalli; hún er send í hlutum sem eru allt að 240 MiB hver.';
     begin
-        exit('Opens a chunked upload session for a file larger than one call can carry, sent as chunks of up to 240 MiB each.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -43,7 +45,7 @@ codeunit 10035658 "Storage Upload Begin Impl ori" implements "Msg Interface ori"
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Opens a chunked upload session for files over 240 MiB or streamed in parts; use the single-call file create for anything that fits in one request.', Locked = true;
+        SelectionDescriptionLbl: Label 'Opens a chunked upload session for files over 240 MiB or streamed in parts; use the single-call file create for anything that fits in one request.', Comment = 'is-IS=Opnar upphleðslulotu fyrir skrár yfir 240 MiB eða skrár sendar í hlutum; notaðu skráarstofnun í einu kalli fyrir skrár sem rúmast í einni beiðni.';
     begin
         exit(SelectionDescriptionLbl);
     end;
