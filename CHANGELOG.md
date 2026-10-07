@@ -44,6 +44,13 @@ Business Central release versioning (`major.minor.build.revision`).
 - Harvest the existing Icelandic connection-test messages into source comments in `Storage Setup ori` (table 10035636). Add bilingual dispatch regression cases to `Storage Error Response Tests` (96212) and setup-action TestPage cases to `Storage Setup Page Tests` (96207).
 - Correct the agent instructions to locate the archived Foundation takeover generator; generated takeover source remains subject to its separate owner and generator approval.
 
+### Fixed (2026-10-06) - attachment path integrity (#75)
+- #75 source continuation: `Storage Ext File Impl ori` (10035661) validates verified Azure account metadata and Blob/File Share address budgets; `Storage Request Mgt ori` (10035662), `Storage Request Reader ori` (10035682) and `Storage Attachment Mgt ori` (10035635) preserve case, protect disabled/root/account aliases, derive each moved link's relative path and check installed native field capacity. External linked moves and unresolved provider capabilities remain explicitly fenced in this incomplete draft; runtime and provider recovery are not certified. `Storage Integrity 75 Tests ori` (96225), `Storage Mock Impl` (96200) and `Storage Mock State` (96201) add real-operation alias and copy-fault readbacks plus provider boundary validation tests.
+
+- `Storage Request Mgt ori` (10035662), `Storage Request Reader ori` (10035682) and `Storage Ext File Impl ori` (10035661) use a shared outer-slash identity, reject unsafe paths, and validate complete base-prefixed addresses. Raw create/copy/move and upload commit refuse attachment-backed destinations with an actionable error; copy/move onto the same canonical source is also refused.
+- `Storage Attachment Mgt ori` (10035635) matches legacy slash-spelled links, validates generated offload paths and complete filenames before writes, and prepares link/native path updates before a remote move. `Storage Upload Mgt ori` (10035665) validates names and generated paths before inserting a session and rechecks linked targets before commit.
+- `Storage Mock Impl` (96200), `Storage Mock State` (96201) and `Storage Integrity 75 Tests ori` (96225) exercise slash/base resolution, protected destinations, retained upload sessions, path/name boundaries and pre-write connector failure rollback. Runtime verification and provider-specific limit/case policy remain release blockers; this entry does not certify AppSource readiness.
+
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
 - The Foundation dependency floor is **28.0.1.0** in `app/app.json` and `test/app.json`, the same floor Bifrost Language Models uses for Foundation 28.0.1. Every 28.0.1.x build is accepted.
