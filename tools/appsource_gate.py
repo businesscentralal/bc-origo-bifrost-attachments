@@ -159,7 +159,7 @@ def validate_parameters(params):
     require(params.get("compilerVersion"), "Missing compiler version")
 
 
-def before_compile(root, request):
+def _before_compile(root, request):
     """Snapshot the symbol cache BEFORE helper CopyAppToSymbolsFolder changes it."""
     root = Path(root)
     context = request["context"]
@@ -190,6 +190,45 @@ def before_compile(root, request):
     snapshot = {"context": context, "kind": request["kind"], "appType": app_type, "symbols": symbols}
     (directory / "before.json").write_text(json.dumps(snapshot, indent=2) + "\n")
     return snapshot
+
+
+def rejected_receipt(output, context, paths):
+    """Record bounded disk identities only; never dump Settings or credentials."""
+    inventory = []
+    for path in list(paths)[:128]:
+        path = Path(path)
+        item = {"path": str(path), "present": path.is_file()}
+        if path.is_file() and path.stat().st_size <= 128 * 1024 * 1024:
+            item.update(sha256=file_hash(path), bytes=path.stat().st_size)
+            try:
+                info = package_info(path)
+                item.update({k: info[k] for k in ("identity", "friends", "sourceCommit", "compilerVersion")})
+                # Build URLs may contain secrets in malformed/untrusted manifests.
+                url = info["buildUrl"]
+                item["buildUrl"] = url if re.fullmatch(r"https://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/actions/runs/[0-9]+", url) else "redacted-unrecognized-build-url"
+            except (GateError, OSError, ValueError):
+                item["manifestValid"] = False
+        inventory.append(item)
+    allowed = {k: context[k] for k in ("run", "attempt", "job", "sourceCommit", "checkoutSha", "mode") if k in context}
+    Path(output).write_text(json.dumps({"accepted": False, "context": allowed, "inputs": inventory,
+                                      "truncated": len(paths) > 128, "signatureTrustVerified": False}, indent=2) + "\n")
+
+
+def before_compile(root, request):
+    """Keep the original failure while recording bounded allowlisted disk inputs."""
+    try:
+        return _before_compile(root, request)
+    except (GateError, OSError, KeyError, ValueError):
+        # Evidence failure must never replace or clear the original gate failure.
+        try:
+            context = request.get("context", {})
+            directory = Path(root) / ".buildartifacts/AppSourceGate" / context.get("mode", "Unknown")
+            directory.mkdir(parents=True, exist_ok=True)
+            rejected_receipt(directory / "rejected-input.json", context,
+                             sorted(Path(request["symbolsFolder"]).glob("*.app")))
+        except (OSError, ValueError, KeyError):
+            pass
+        raise
 
 
 def post_compile(root, request):

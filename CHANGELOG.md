@@ -8,6 +8,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-10-07) - AppSource build evidence (#78)
 
+- Add bounded immutable Foundation Apps/TestApps staging, deterministic helper-file selection, substitution/stale-receipt checks and sanitized rejected-input receipts. Preserve signed Apps bytes and remove only the exact Foundation product collision from test inputs. Genuine collision fixtures cover both download orders and modes; PR91 pipeline application and real verification remain blocked. No AL objects or IDs change.
+
 - Enable CodeCop, UICop and test-app analyzers with `failOn=warning`; add compiler/package hooks and tooling that reject incomplete compiles, wrong inputs, stale receipts and surviving compiled Default friend grants. Preserve the exact Test friend and existing signing policy. Integrate PR87's hash-pinned allocation/dependency guard and all eight regressions. No product AL objects or IDs change. Workflow application, actual product/runtime verification and release readiness remain blocked pending PR84 and infrastructure approval; see `tools/AppSourceBuildGate.md`.
 
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
