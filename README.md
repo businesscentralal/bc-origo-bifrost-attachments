@@ -70,8 +70,8 @@ For uploads destined for a record, omit `storageCode` in `Storage.Upload.Begin` 
   multi-hundred-megabyte upload never depends on a single request completing.
 - **One contract for every caller.** The same 23 message types serve the BC client, the Bifröst MCP
   server and any external integration, and each type documents itself at runtime.
-- **Bilingual and AppSource-ready.** Every caption ships in en-US and is-IS; every object carries the
-  registered ` ori` affix.
+- **Bilingual captions.** The app carries en-US and is-IS caption resources and uses the ` ori`
+  object affix. AppSource readiness and affix/range registration evidence remain open in [#83](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/83).
 - **Safe succession.** On first install the app takes its data over from the published *Origo Cloud
   Events Storage* app, so an existing tenant keeps its connections and attachment links.
 
@@ -396,6 +396,7 @@ folders in this repository — an approved deviation from Origo PR gateway check
 | In-product help (context-sensitive help pages, en-US and is-IS) | <https://businesscentralal.github.io/bifrost/en-us/help/attachments/> |
 | Building on Bifröst (extensibility guide) | <https://businesscentralal.github.io/bifrost/en-us/extensibility/> |
 | Release notes | [CHANGELOG.md](CHANGELOG.md) |
+| Maintainer API audit, bounded lexical matches and publication/registration holds (#77) | [API-SURFACE.md](API-SURFACE.md) |
 
 Message-type contracts are also served by the app itself at runtime: `Help.Storage.Get` returns
 the module directory, and every message type answers its contract chapters through
