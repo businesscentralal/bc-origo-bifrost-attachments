@@ -23,8 +23,10 @@ codeunit 10035654 "Storage File Move Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Moves a file within the configured storage connection.', Comment = 'is-IS=Færir skrá innan uppsettrar geymslutengingar.';
     begin
-        exit('Moves a file within the configured storage connection.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -43,7 +45,7 @@ codeunit 10035654 "Storage File Move Impl ori" implements "Msg Interface ori", "
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Moves or renames a file within the same storage connection so the original path no longer exists; use the copy type to keep the original.', Locked = true;
+        SelectionDescriptionLbl: Label 'Moves or renames a file within the same storage connection so the original path no longer exists; use the copy type to keep the original.', Comment = 'is-IS=Færir eða endurnefnir skrá innan sömu geymslutengingar þannig að upprunalega slóðin sé ekki lengur til; notaðu afritun til að halda upprunalegu skránni.';
     begin
         exit(SelectionDescriptionLbl);
     end;

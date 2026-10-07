@@ -42,9 +42,9 @@ codeunit 10035665 "Storage Upload Mgt ori"
         NoStorageCodeErr: Label 'This upload session has no storage connection, so it cannot be written to storage.', Comment = 'is-IS=Þessi upphleðslulota hefur enga geymslutengingu og því er ekki hægt að skrifa hana í geymslu.';
         NoStorageCodeNextStepLbl: Label 'Use Storage.Upload.CommitToRecord to attach the file to a record, or begin a new session with a storageCode.', Comment = 'is-IS=Notaðu Storage.Upload.CommitToRecord til að hengja skrána við færslu eða byrjaðu nýja lotu með storageCode.';
         UnknownTargetErr: Label 'Parameter "target" has value "%1", which is not an attachment target.', Comment = '%1 = received value, is-IS=Færibreytan "target" hefur gildið "%1", sem er ekki viðhengjamarkmið.';
-        TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Locked = true;
-        FileNameHasFolderErr: Label 'fileName must be a file name without folders; use path or folderPath for the destination folder.', Locked = true;
-        FileNameExpectedLbl: Label 'a file name with no slash or backslash', Locked = true;
+        TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Comment = 'is-IS=DocumentAttachment eða IncomingDocument';
+        FileNameHasFolderErr: Label 'fileName must be a file name without folders; use path or folderPath for the destination folder.', Comment = 'is-IS=fileName verður að vera skráarheiti án mappa; notaðu path eða folderPath fyrir áfangamöppuna.';
+        FileNameExpectedLbl: Label 'a file name with no slash or backslash', Comment = 'is-IS=skráarheiti án skástriks eða öfugs skástriks';
 
     /// <summary>Opens a chunked upload session and returns its <c>uploadId</c>.</summary>
     /// <param name="Argument">The message argument carrying <c>fileName</c> and optional <c>storageCode</c>/<c>path</c>/<c>folderPath</c>/<c>declaredSize</c>; receives the error response.</param>

@@ -24,8 +24,10 @@ codeunit 10035660 "Storage Upload Status Impl ori" implements "Msg Interface ori
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Reports the progress and state of an upload session.', Comment = 'is-IS=Skilar framvindu og stöðu upphleðslulotu.';
     begin
-        exit('Reports the progress and state of an upload session.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -44,7 +46,7 @@ codeunit 10035660 "Storage Upload Status Impl ori" implements "Msg Interface ori
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Reports the bytes and chunk count received by an upload session without changing it, to confirm progress before committing.', Locked = true;
+        SelectionDescriptionLbl: Label 'Reports the bytes and chunk count received by an upload session without changing it, to confirm progress before committing.', Comment = 'is-IS=Skilar fjölda bæta og hluta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðslu er lokið.';
     begin
         exit(SelectionDescriptionLbl);
     end;

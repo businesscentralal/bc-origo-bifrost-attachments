@@ -26,8 +26,10 @@ codeunit 10035642 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Restores an offloaded attachment''s file from storage back into the database and deletes the remote copy.', Comment = 'is-IS=Endurheimtir viðhengisskrá úr geymslu í gagnagrunninn og eyðir afritinu í geymslunni.';
     begin
-        exit('Restores an offloaded attachment''s file from storage back into the database and deletes the remote copy.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -46,7 +48,7 @@ codeunit 10035642 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Brings an offloaded or storage-linked attachment back into the Business Central database and deletes the remote copy in storage.', Locked = true;
+        SelectionDescriptionLbl: Label 'Brings an offloaded or storage-linked attachment back into the Business Central database and deletes the remote copy in storage.', Comment = 'is-IS=Færir viðhengi sem hefur verið flutt eða tengt við geymslu aftur í Business Central gagnagrunninn og eyðir afritinu í geymslunni.';
     begin
         exit(SelectionDescriptionLbl);
     end;

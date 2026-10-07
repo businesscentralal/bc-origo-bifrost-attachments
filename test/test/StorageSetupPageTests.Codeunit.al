@@ -17,6 +17,7 @@ codeunit 96207 "Storage Setup Page Tests"
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
         MockCodeTok: Label 'BIFTS-SETUP', Locked = true;
+        ExpectedConnectionMessage: Text;
 
     [Test]
     procedure AttachmentsSetupPage_Opens_ListsStorageConnections()
@@ -142,6 +143,81 @@ codeunit 96207 "Storage Setup Page Tests"
 
         // [THEN] The session is gone (the message text is asserted in the handler)
         LibraryAssert.IsTrue(UploadSession.IsEmpty(), 'The abandoned session should have been purged.');
+    end;
+
+    /// <summary>Checks the connection-test action refuses a missing account in either locale.</summary>
+    [Test]
+    procedure Scenario_AC02_NoAccount_BilingualPageRefusal()
+    begin
+        // [SCENARIO] The setup action shows localized prose before any connector call.
+        Initialize();
+        InsertStorageConnection();
+        AssertMissingAccountAction(1033, 'Select a file account before testing the connection.');
+        AssertMissingAccountAction(1039, 'Veldu skráarreikning áður en tengingin er prófuð.');
+    end;
+
+    /// <summary>Checks the reachable-connection message through the page action in both locales.</summary>
+    [Test]
+    [HandlerFunctions('ConnectionMessageHandler')]
+    procedure Scenario_AC02_ReachableConnection_BilingualPageMessage()
+    var
+        StorageSetup: Record "Storage Setup ori";
+    begin
+        // [GIVEN] The mock connector reports success without external storage access.
+        Initialize();
+        InsertStorageConnection();
+        StorageSetup.Get(MockCodeTok);
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."File Account Id" := CreateGuid();
+        StorageSetup.Modify();
+        // [WHEN/THEN] The real action produces the harvested Icelandic and English messages.
+        AssertConnectionAction(1033, 'The storage connection ''BIFTS-SETUP'' is reachable.');
+        AssertConnectionAction(1039, 'Hægt er að ná sambandi við geymslutenginguna ''BIFTS-SETUP''.');
+    end;
+
+    /// <summary>Asserts the actual page success message, rather than a duplicate test label.</summary>
+    [MessageHandler]
+    procedure ConnectionMessageHandler(Message: Text[1024])
+    begin
+        LibraryAssert.AreEqual(ExpectedConnectionMessage, Message, 'Connection action message mismatch.');
+    end;
+
+    local procedure AssertMissingAccountAction(LanguageId: Integer; ExpectedError: Text)
+    var
+        StorageCard: TestPage "Storage Card ori";
+        StorageSetup: Record "Storage Setup ori";
+        SavedLanguageId: Integer;
+        ActualError: Text;
+    begin
+        StorageSetup.Get(MockCodeTok);
+        Clear(StorageSetup."File Account Id");
+        StorageSetup.Modify();
+        SavedLanguageId := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        StorageCard.OpenEdit();
+        StorageCard.GoToRecord(StorageSetup);
+        asserterror StorageCard.TestConnection.Invoke();
+        ActualError := GetLastErrorText();
+        StorageCard.Close();
+        GlobalLanguage(SavedLanguageId);
+        LibraryAssert.AreEqual(ExpectedError, ActualError, 'Missing-account action refusal mismatch.');
+    end;
+
+    local procedure AssertConnectionAction(LanguageId: Integer; ExpectedMessage: Text)
+    var
+        StorageCard: TestPage "Storage Card ori";
+        StorageSetup: Record "Storage Setup ori";
+        SavedLanguageId: Integer;
+    begin
+        StorageSetup.Get(MockCodeTok);
+        ExpectedConnectionMessage := ExpectedMessage;
+        SavedLanguageId := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        StorageCard.OpenEdit();
+        StorageCard.GoToRecord(StorageSetup);
+        StorageCard.TestConnection.Invoke();
+        StorageCard.Close();
+        GlobalLanguage(SavedLanguageId);
     end;
 
     local procedure Initialize()

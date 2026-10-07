@@ -27,8 +27,10 @@ codeunit 10035641 "Storage Att. Offload Impl ori" implements "Msg Interface ori"
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Offloads an attachment''s file to a storage connection and clears it from the database, keeping it transparently available.', Comment = 'is-IS=Flytur skrá viðhengis í geymslutengingu og fjarlægir hana úr gagnagrunninum en heldur henni aðgengilegri.';
     begin
-        exit('Offloads an attachment''s file to a storage connection and clears it from the database, keeping it transparently available.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -47,7 +49,7 @@ codeunit 10035641 "Storage Att. Offload Impl ori" implements "Msg Interface ori"
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Moves an existing attachment file out of the Business Central database into storage while it stays openable; use restore to bring it back.', Locked = true;
+        SelectionDescriptionLbl: Label 'Moves an existing attachment file out of the Business Central database into storage while it stays openable; use restore to bring it back.', Comment = 'is-IS=Flytur fyrirliggjandi viðhengisskrá úr Business Central gagnagrunninum í geymslu en heldur henni opnanlegri; notaðu endurheimt til að færa hana aftur.';
     begin
         exit(SelectionDescriptionLbl);
     end;

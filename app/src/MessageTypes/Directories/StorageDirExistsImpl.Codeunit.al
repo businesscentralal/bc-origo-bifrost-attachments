@@ -23,8 +23,10 @@ codeunit 10035646 "Storage Dir Exists Impl ori" implements "Msg Interface ori", 
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Reports whether a directory exists in the configured storage connection.', Comment = 'is-IS=Segir til um hvort mappa sé til í uppsettri geymslutengingu.';
     begin
-        exit('Reports whether a directory exists in the configured storage connection.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -43,7 +45,7 @@ codeunit 10035646 "Storage Dir Exists Impl ori" implements "Msg Interface ori", 
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Checks whether a folder exists at a path in a storage connection and returns true or false; use the file check for a single file.', Locked = true;
+        SelectionDescriptionLbl: Label 'Checks whether a folder exists at a path in a storage connection and returns true or false; use the file check for a single file.', Comment = 'is-IS=Athugar hvort mappa sé til á slóð í geymslutengingu og skilar true eða false; notaðu skráarathugun fyrir eina skrá.';
     begin
         exit(SelectionDescriptionLbl);
     end;

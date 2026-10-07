@@ -12,7 +12,7 @@ codeunit 10035679 "Storage Upload Purge ori"
                   tabledata "Storage Upload Chunk ori" = RD;
 
     var
-        PurgedMsg: Label 'Purged %1 upload session(s) and %2 chunk(s).', Comment = 'is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 bita., %1 = session count, %2 = chunk count';
+        PurgedMsg: Label 'Purged %1 upload session(s) and %2 chunk(s).', Comment = '%1 = session count, %2 = chunk count||is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 bita.';
 
     /// <summary>
     /// Deletes every upload session and chunk and tells the user how much was removed.
