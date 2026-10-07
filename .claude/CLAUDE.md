@@ -36,6 +36,8 @@ Test app: codeunit 96207 `Storage Setup Page Tests`, codeunit 96208
 `Storage Msg Conformance Tests` (96211), `Storage Error Response Tests` (96212); next free test id **96213**.
 
 ## App Identity
+
+Story #79 typed test allocations (2026-10-07, worker-5): codeunit **96218** `Storage 79 Perm Tests ori`; test-only permission sets **96218–96222** `Storage79 Test/Setup/Source/Target/Link ori` and **96227–96234** `Storage79 Entry/Column/Def/Field/FldMap/Line/Map/Type ori`. These IDs were manually reserved by the resolved `attachments79-worker5-permission-plan-20261006` decision in the existing 96200–96299 block, then rechecked against main and all eight open PR tips plus shared typed reservations. Permission sets 96223/96224 remain reserved but uninstantiated. Separate owners fence codeunit96225/#75, codeunit96226/#82 and codeunit96274/#74; do not infer free IDs from the older prose above. Central workbook/registry synchronization is not claimed. See `test/permissions-79.md` for exact grants and outstanding verification/access gates.
 App:      Bifrost Attachments, id `672df32a-a0c5-4a22-b591-0efa38023e95`, version 28.0.0.0
 Test app: Bifrost Attachments - Tests, id `7cdb530b-b74b-446b-9ece-80e2b911bfb3`
 Publisher: Origo - target Cloud - runtime 17.0 - application/platform 28.0.0.0
