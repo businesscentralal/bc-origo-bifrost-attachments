@@ -165,12 +165,12 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] It is used for all applicable code fields.
         Response := DispatchImport('xlower', 'xlower', 'X82.csv');
         // [THEN] Both independent code errors are collected, with original spelling.
-        AssertError(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'xlower');
-        AssertError(Response, 'InvalidParameterFormat', 'storageCode', 'xlower');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'xlower');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'xlower');
         LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
         Response := DispatchDelete('xlower');
-        AssertError(Response, 'InvalidParameterFormat', 'code', 'xlower');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'xlower');
     end;
 
     /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
@@ -186,12 +186,12 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] It is used for all applicable code fields.
         Response := DispatchImport('XmIxEd', 'XmIxEd', 'X82.csv');
         // [THEN] Both independent code errors are collected, with original spelling.
-        AssertError(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'XmIxEd');
-        AssertError(Response, 'InvalidParameterFormat', 'storageCode', 'XmIxEd');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'XmIxEd');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'XmIxEd');
         LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
         Response := DispatchDelete('XmIxEd');
-        AssertError(Response, 'InvalidParameterFormat', 'code', 'XmIxEd');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'XmIxEd');
     end;
 
     /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
@@ -207,12 +207,12 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] It is used for all applicable code fields.
         Response := DispatchImport('Xþór', 'Xþór', 'X82.csv');
         // [THEN] Both independent code errors are collected, with original spelling.
-        AssertError(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'Xþór');
-        AssertError(Response, 'InvalidParameterFormat', 'storageCode', 'Xþór');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'Xþór');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'Xþór');
         LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
         Response := DispatchDelete('Xþór');
-        AssertError(Response, 'InvalidParameterFormat', 'code', 'Xþór');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'Xþór');
     end;
 
     /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
@@ -228,12 +228,12 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] It is used for all applicable code fields.
         Response := DispatchImport(' XSPACE', ' XSPACE', 'X82.csv');
         // [THEN] Both independent code errors are collected, with original spelling.
-        AssertError(Response, 'InvalidParameterFormat', 'dataExchDefCode', ' XSPACE');
-        AssertError(Response, 'InvalidParameterFormat', 'storageCode', ' XSPACE');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', ' XSPACE');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', ' XSPACE');
         LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
         Response := DispatchDelete(' XSPACE');
-        AssertError(Response, 'InvalidParameterFormat', 'code', ' XSPACE');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'code', ' XSPACE');
     end;
 
     /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
@@ -249,12 +249,12 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] It is used for all applicable code fields.
         Response := DispatchImport('XSPACE ', 'XSPACE ', 'X82.csv');
         // [THEN] Both independent code errors are collected, with original spelling.
-        AssertError(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'XSPACE ');
-        AssertError(Response, 'InvalidParameterFormat', 'storageCode', 'XSPACE ');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'XSPACE ');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'XSPACE ');
         LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
         Response := DispatchDelete('XSPACE ');
-        AssertError(Response, 'InvalidParameterFormat', 'code', 'XSPACE ');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'XSPACE ');
     end;
 
     /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
@@ -270,12 +270,12 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] It is used for all applicable code fields.
         Response := DispatchImport('X12345678901234567890', 'X12345678901234567890', 'X82.csv');
         // [THEN] Both independent code errors are collected, with original spelling.
-        AssertError(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'X12345678901234567890');
-        AssertError(Response, 'InvalidParameterFormat', 'storageCode', 'X12345678901234567890');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'X12345678901234567890');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'X12345678901234567890');
         LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
         Response := DispatchDelete('X12345678901234567890');
-        AssertError(Response, 'InvalidParameterFormat', 'code', 'X12345678901234567890');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'X12345678901234567890');
     end;
 
     /// <summary>Exact Code20 and path2048 limits preserve successful behavior.</summary>
@@ -313,7 +313,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] The input is dispatched.
         Response := DispatchImport(DefinitionCode, 'XSTORAGE', PadStr('X', 2049, 'A'));
         // [THEN] Foundation supplies bounded error detail and no header is created.
-        AssertError(Response, 'InvalidParameterFormat', 'path', '');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'path', '');
         LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'An overlong path must not write.');
     end;
 
@@ -336,7 +336,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         foreach BadPath in Paths do begin
             Response := DispatchImport(DefinitionCode, 'XSTORAGE', BadPath);
             // [THEN] The original path is refused and state stays unchanged.
-            AssertError(Response, 'InvalidParameter', 'path', BadPath);
+            AssertRefusal(Response, 'InvalidParameter', 'path', BadPath);
             LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'Traversal must not write.');
         end;
     end;
@@ -363,7 +363,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         foreach Payload in Payloads do begin
             Response := Dispatch("Message Type ori"::"DataExchange.Import.Run", Payload);
             // [THEN] The refusal identifies data and no row was inserted.
-            AssertError(Response, 'InvalidParameterFormat', 'data', '');
+            AssertRefusal(Response, 'InvalidParameterFormat', 'data', '');
             LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Bad JSON must not write.');
         end;
     end;
@@ -383,9 +383,9 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] Both are requested through the shipped import.
         Response := DispatchImport('X82-NOT-FOUND', 'XSTORAGE', 'X82.csv');
         // [THEN] Lookup and kind failures remain distinct and no entry is written.
-        AssertError(Response, 'RecordNotFound', 'dataExchDefCode', 'X82-NOT-FOUND');
+        AssertRefusal(Response, 'RecordNotFound', 'dataExchDefCode', 'X82-NOT-FOUND');
         Response := DispatchImport(DefinitionCode, 'XSTORAGE', 'X82.csv');
-        AssertError(Response, 'InvalidParameter', 'dataExchDefCode', DefinitionCode);
+        AssertRefusal(Response, 'InvalidParameter', 'dataExchDefCode', DefinitionCode);
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid definitions must not write.');
     end;
 
@@ -431,7 +431,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] Deletion is requested.
         Response := DispatchDelete(DefinitionCode);
         // [THEN] The reference refusal preserves all rows.
-        AssertError(Response, 'PreconditionFailed', 'code', DefinitionCode);
+        AssertRefusal(Response, 'PreconditionFailed', 'code', DefinitionCode);
         LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'Definition must survive refusal.');
         LibraryAssert.IsTrue(LineDef.Get(DefinitionCode, 'XLINE'), 'Child must survive refusal.');
         LibraryAssert.IsTrue(DataExchangeType.Get(DefinitionCode), 'Reference must survive refusal.');
@@ -458,7 +458,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] Deletion is requested.
         Response := DispatchDelete(DefinitionCode);
         // [THEN] The reference refusal preserves all rows.
-        AssertError(Response, 'PreconditionFailed', 'code', DefinitionCode);
+        AssertRefusal(Response, 'PreconditionFailed', 'code', DefinitionCode);
         LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'Definition must survive refusal.');
         LibraryAssert.IsTrue(LineDef.Get(DefinitionCode, 'XLINE'), 'Child must survive refusal.');
         LibraryAssert.IsTrue(BankSetup.Get(DefinitionCode), 'Reference must survive refusal.');
@@ -479,7 +479,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] An unknown canonical key is deleted.
         Response := DispatchDelete('X82-NOT-FOUND');
         // [THEN] The complete error leaves the definitions unchanged.
-        AssertError(Response, 'RecordNotFound', 'code', 'X82-NOT-FOUND');
+        AssertRefusal(Response, 'RecordNotFound', 'code', 'X82-NOT-FOUND');
         LibraryAssert.AreEqual(BeforeCount, DataExchDef.Count(), 'Missing delete must not change data.');
     end;
 
@@ -622,8 +622,8 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] Both independent code fields are supplied as spaces.
         Response := DispatchImport('   ', '   ', 'X82.csv');
         // [THEN] JSON-serialized whitespace keeps the original received value visible.
-        AssertError(Response, 'InvalidParameterFormat', 'dataExchDefCode', '"   "');
-        AssertError(Response, 'InvalidParameterFormat', 'storageCode', '"   "');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', '"   "');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', '"   "');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Whitespace must not write.');
     end;
 
@@ -754,12 +754,12 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         AssertText(Response, 'status', 'Error');
         AssertText(Response, 'code', 'MultipleErrors');
         LibraryAssert.AreEqual(3, ErrorCount(Response), 'Exactly three input errors are required.');
-        AssertError(Response, ExpectedCode, 'dataExchDefCode', '');
-        AssertError(Response, ExpectedCode, 'storageCode', '');
-        AssertError(Response, ExpectedCode, 'path', '');
+        AssertRefusal(Response, ExpectedCode, 'dataExchDefCode', '');
+        AssertRefusal(Response, ExpectedCode, 'storageCode', '');
+        AssertRefusal(Response, ExpectedCode, 'path', '');
     end;
 
-    local procedure AssertError(Response: JsonObject; ExpectedCode: Text; ParameterName: Text; ExpectedReceived: Text)
+    local procedure AssertRefusal(Response: JsonObject; ExpectedCode: Text; ParameterName: Text; ExpectedReceived: Text)
     var
         Detail: JsonObject;
     begin
