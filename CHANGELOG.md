@@ -9,7 +9,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Fixed (2026-10-06) - retry skipped legacy take-over on upgrade (#76)
 
 - `Storage Link Upgrade ori` (10035683) retries the permission-probed `Storage Takeover ori` (10035676) on every company upgrade, before checking the orphan-purge tag. A denied probe remains telemetry-only; a later permitted upgrade can copy legacy data and re-grant roles. Existing destination data and assignments retain the take-over routine's preservation rules. Generated mapping and grant code are unchanged.
-- `Storage Takeover Probe Tests` (96210) covers tagged upgrades, repeated denial, denied-then-permitted role re-grant, idempotent retry and populated destination preservation with the existing probe seam. Genuine restricted-identity install/upgrade and legacy-data lifecycle certification remain required; seam tests do not certify permissions.
+- `Storage Takeover Probe Tests` (96210) covers tagged and untagged upgrades, both legacy read-denial paths, denied-then-permitted role re-grant, idempotent retry and populated destination preservation with the existing probe seam. Untagged denial still purges only invalid links and records the purge tag; later retries preserve that one-time boundary. Absent-legacy no-op fixtures explicitly require no residual legacy roles. Genuine restricted-identity install/upgrade and legacy-data lifecycle certification remain required; seam tests do not certify permissions.
 
 ### Changed (2026-10-05) - align with Bifrost Foundation 28.0.1
 
