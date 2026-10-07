@@ -27,8 +27,10 @@ codeunit 10035640 "Storage Attach Link Impl ori" implements "Msg Interface ori",
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Attaches a file already in storage to a new or existing incoming document, served transparently from storage.', Comment = 'is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal; skráin er aðgengileg beint úr geymslu.';
     begin
-        exit('Attaches a file already in storage to a new or existing incoming document, served transparently from storage.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -47,7 +49,7 @@ codeunit 10035640 "Storage Attach Link Impl ori" implements "Msg Interface ori",
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Attaches a file that already sits in storage to a new or existing incoming document without copying it into the database.', Locked = true;
+        SelectionDescriptionLbl: Label 'Attaches a file that already sits in storage to a new or existing incoming document without copying it into the database.', Comment = 'is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal án þess að afrita hana í gagnagrunninn.';
     begin
         exit(SelectionDescriptionLbl);
     end;

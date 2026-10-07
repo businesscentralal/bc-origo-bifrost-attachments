@@ -432,6 +432,44 @@ codeunit 96212 "Storage Error Response Tests"
         LibraryAssert.AreEqual(MockCodeTok, ReadDataText(TempArgument, 'storageCode'), 'storageCode is a protocol key.');
     end;
 
+    [Test]
+    procedure DiscoveryDescription_English_UsesSourceText()
+    begin
+        AssertFileGetDiscovery(1033,
+            'Downloads a file from the configured storage connection and returns its content as base64.',
+            'Downloads one file from a storage connection and returns its content as base64; it does not attach the file to any Business Central record.');
+    end;
+
+    [Test]
+    procedure DiscoveryDescription_Icelandic_UsesTranslation()
+    begin
+        AssertFileGetDiscovery(1039,
+            'Sækir skrá úr uppsettri geymslutengingu og skilar innihaldi hennar sem base64.',
+            'Sækir eina skrá úr geymslutengingu og skilar innihaldi hennar sem base64; tengir skrána ekki við neina Business Central færslu.');
+    end;
+
+    local procedure AssertFileGetDiscovery(LanguageId: Integer; ExpectedDescription: Text; ExpectedSelection: Text)
+    var
+        MsgInterface: Interface "Msg Interface ori";
+        Discovery: Interface "Msg Discovery ori";
+        Description: Text;
+        Selection: Text;
+        SavedLanguageId: Integer;
+    begin
+        // [GIVEN] Real registered production interfaces and a requested locale.
+        MsgInterface := Enum::"Message Type ori"::"Storage.File.Get";
+        Discovery := Enum::"Message Type ori"::"Storage.File.Get";
+        SavedLanguageId := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        // [WHEN] Reading the actual discovery prose, without a provider call.
+        Description := MsgInterface.GetDescription();
+        Selection := Discovery.GetSelectionDescription();
+        GlobalLanguage(SavedLanguageId);
+        // [THEN] Exact translations are returned; English fallback fails the Icelandic test.
+        LibraryAssert.AreEqual(ExpectedDescription, Description, 'Discovery description must match the requested language.');
+        LibraryAssert.AreEqual(ExpectedSelection, Selection, 'Selection description must match the requested language.');
+    end;
+
     local procedure Initialize()
     var
         StorageSetup: Record "Storage Setup ori";
@@ -505,7 +543,7 @@ codeunit 96212 "Storage Error Response Tests"
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
         ResponseContent: BigText;
-        ResponseContentType: Text[50];
+        ResponseContentType: Text[100];
         MessageVersion: Enum "Message Version ori";
         RequestText: Text;
         ResponseText: Text;

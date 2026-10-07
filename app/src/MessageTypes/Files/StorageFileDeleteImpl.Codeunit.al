@@ -23,8 +23,10 @@ codeunit 10035650 "Storage File Delete Impl ori" implements "Msg Interface ori",
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Deletes a file from the configured storage connection.', Comment = 'is-IS=Eyðir skrá úr uppsettri geymslutengingu.';
     begin
-        exit('Deletes a file from the configured storage connection.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -43,7 +45,7 @@ codeunit 10035650 "Storage File Delete Impl ori" implements "Msg Interface ori",
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Deletes a single file from a storage connection; to remove a whole folder use the directory delete type instead.', Locked = true;
+        SelectionDescriptionLbl: Label 'Deletes a single file from a storage connection; to remove a whole folder use the directory delete type instead.', Comment = 'is-IS=Eyðir einni skrá úr geymslutengingu; notaðu boðgerðina fyrir eyðingu mappa til að eyða heilli möppu.';
     begin
         exit(SelectionDescriptionLbl);
     end;

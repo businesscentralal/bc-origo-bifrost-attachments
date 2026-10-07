@@ -22,8 +22,10 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Returns a Markdown overview of the storage connector and all its message types. No request body is required.', Comment = 'is-IS=Skilar Markdown-yfirliti yfir geymslutengilinn og allar boðgerðir hans. Enginn meginmálshluti beiðni er nauðsynlegur.';
     begin
-        exit('Returns a Markdown overview of the storage connector and all its message types. No request body is required.');
+        exit(DescriptionLbl);
     end;
 
     procedure GetKeywords(): Text
@@ -35,7 +37,7 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
 
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Returns the storage connector guide and message type map; use a specific storage type to perform an operation.', Locked = true;
+        SelectionDescriptionLbl: Label 'Returns the storage connector guide and message type map; use a specific storage type to perform an operation.', Comment = 'is-IS=Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir boðgerðir; notaðu tiltekna geymsluboðgerð til að framkvæma aðgerð.';
     begin
         exit(SelectionDescriptionLbl);
     end;
@@ -106,8 +108,10 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
     end;
 
     procedure GetOverview(var Overview: Text): Boolean
+    var
+        OverviewLbl: Label 'Getting started: call Storage.Account.List, then use invoke_message_type and describe_message_type. Storage.Upload.Begin uses the bifrost-uploads/ default root.', Comment = 'is-IS=Fyrstu skref: kallaðu á Storage.Account.List og notaðu síðan invoke_message_type og describe_message_type. Storage.Upload.Begin notar sjálfgefnu rótina bifrost-uploads/.';
     begin
-        Overview := 'Getting started: call Storage.Account.List, then use invoke_message_type and describe_message_type. Storage.Upload.Begin uses the bifrost-uploads/ default root.';
+        Overview := OverviewLbl;
         exit(true);
     end;
 

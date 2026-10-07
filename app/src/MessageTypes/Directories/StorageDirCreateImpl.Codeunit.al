@@ -23,8 +23,10 @@ codeunit 10035644 "Storage Dir Create Impl ori" implements "Msg Interface ori", 
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Creates a directory in the configured storage connection.', Comment = 'is-IS=Býr til möppu í uppsettri geymslutengingu.';
     begin
-        exit('Creates a directory in the configured storage connection.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -43,7 +45,7 @@ codeunit 10035644 "Storage Dir Create Impl ori" implements "Msg Interface ori", 
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Creates one empty folder at a path in a storage connection; it writes no files.', Locked = true;
+        SelectionDescriptionLbl: Label 'Creates one empty folder at a path in a storage connection; it writes no files.', Comment = 'is-IS=Býr til eina tóma möppu á slóð í geymslutengingu; skrifar engar skrár.';
     begin
         exit(SelectionDescriptionLbl);
     end;

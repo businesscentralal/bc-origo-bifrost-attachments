@@ -24,8 +24,10 @@ codeunit 10035657 "Storage Upload Append Impl ori" implements "Msg Interface ori
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Appends one base64 chunk of up to 240 MiB to an open upload session.', Comment = 'is-IS=Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu.';
     begin
-        exit('Appends one base64 chunk of up to 240 MiB to an open upload session.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -44,7 +46,7 @@ codeunit 10035657 "Storage Upload Append Impl ori" implements "Msg Interface ori
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Adds one base64 chunk of up to 240 MiB to an open upload session; call it once per part in sequence before committing.', Locked = true;
+        SelectionDescriptionLbl: Label 'Adds one base64 chunk of up to 240 MiB to an open upload session; call it once per part in sequence before committing.', Comment = 'is-IS=Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern hluta í réttri röð áður en upphleðslu er lokið.';
     begin
         exit(SelectionDescriptionLbl);
     end;

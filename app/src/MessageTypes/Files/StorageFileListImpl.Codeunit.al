@@ -24,8 +24,10 @@ codeunit 10035653 "Storage File List Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Lists the files in a directory of the configured storage connection.', Comment = 'is-IS=Listar skrár í möppu í uppsettri geymslutengingu.';
     begin
-        exit('Lists the files in a directory of the configured storage connection.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -44,7 +46,7 @@ codeunit 10035653 "Storage File List Impl ori" implements "Msg Interface ori", "
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Lists the files in one folder of a storage connection; use the directory listing type instead to see its subfolders.', Locked = true;
+        SelectionDescriptionLbl: Label 'Lists the files in one folder of a storage connection; use the directory listing type instead to see its subfolders.', Comment = 'is-IS=Listar skrár í einni möppu í geymslutengingu; notaðu möppulista til að sjá undirmöppur hennar.';
     begin
         exit(SelectionDescriptionLbl);
     end;

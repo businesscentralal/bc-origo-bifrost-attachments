@@ -28,6 +28,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Issue #72 source localization continuation
+- Localized descriptions and selection prose in "Storage Account List Impl ori" (10035639), "Storage Att. Offload Impl ori" (10035641), "Storage Att. Restore Impl ori" (10035642), "Storage Attach Link Impl ori" (10035640), "Storage Attach Record Impl ori" (10035667), "Storage Dir Create Impl ori" (10035644), "Storage Dir Delete Impl ori" (10035645), "Storage Dir Exists Impl ori" (10035646), "Storage Dir List Impl ori" (10035647), "Storage File Copy Impl ori" (10035648), "Storage File Create Impl ori" (10035649), "Storage File Delete Impl ori" (10035650), "Storage File Exists Impl ori" (10035651), "Storage File Get Impl ori" (10035652), "Storage File List Impl ori" (10035653), "Storage File Move Impl ori" (10035654), "Storage Help Get Impl ori" (10035655), "Storage Upload Abort Impl ori" (10035656), "Storage Upload Append Impl ori" (10035657), "Storage Upload Begin Impl ori" (10035658), "Storage Upload Commit Impl ori" (10035659), "Storage Upload Commit Rec ori" (10035669), "Storage Upload Status Impl ori" (10035660). Public wire names, enum values and implementation bindings are unchanged.
+- Added English/Icelandic exact production-interface discovery assertions to "Storage Error Response Tests" (96212), and aligned its response content type with the real Foundation Text[100] signature. Final XLF remains worker7-owned; runtime/compiler/guard acceptance is blocked pending canonical PR84 and other owner deliveries.
+
+
 ### Removed (2026-10-01) - markdown help procedure (#61)
 
 - Every message type codeunit drops `GetMessageHelpAsMarkdownDocument`. Foundation removed it from `Msg Interface ori` (core#198); help is the contract chapters that `Help.Implementation.Get` returns. No chapter changed.

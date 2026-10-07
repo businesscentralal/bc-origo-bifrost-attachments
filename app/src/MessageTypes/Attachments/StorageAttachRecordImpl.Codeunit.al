@@ -26,8 +26,10 @@ codeunit 10035667 "Storage Attach Record Impl ori" implements "Msg Interface ori
     end;
 
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Creates a document attachment on any record - customer, vendor, fixed asset, document - from base64, from storage, or by copying an existing attachment.', Comment = 'is-IS=Býr til skjalaviðhengi á hvaða færslu sem er, svo sem viðskiptamanni, lánardrottni, eign eða skjali, úr base64, úr geymslu eða með afritun viðhengis.';
     begin
-        exit('Creates a document attachment on any record - customer, vendor, fixed asset, document - from base64, from storage, or by copying an existing attachment.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>
@@ -46,7 +48,7 @@ codeunit 10035667 "Storage Attach Record Impl ori" implements "Msg Interface ori
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Attaches a file of up to 240 MiB to any Business Central record as a document attachment, from base64, from storage or from another attachment.', Locked = true;
+        SelectionDescriptionLbl: Label 'Attaches a file of up to 240 MiB to any Business Central record as a document attachment, from base64, from storage or from another attachment.', Comment = 'is-IS=Tengir skrá allt að 240 MiB við hvaða Business Central færslu sem er sem skjalaviðhengi, úr base64, úr geymslu eða úr öðru viðhengi.';
     begin
         exit(SelectionDescriptionLbl);
     end;
