@@ -5,6 +5,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+
+### Fixed (2026-10-07) - restricted permission fixture isolation (#79)
+
+- Use fresh company-local setup, Customer and Data Exchange keys in `Storage 79 Perm Tests ori` (96218). Persist each arranged database baseline before applying exact actor permissions, including native content and upload chunks before a second lowering, so an expected platform error cannot roll back the fixture. Preserve all 28 scenarios, 13 test roles and denial/content assertions; genuine principal/provider/native/legacy verification remains blocked.
 ### Fixed (2026-10-07) - canonical compilation and regression fixtures (#74)
 
 - Isolate `Attachments Build Tests ori` (96274) fixture keys across dispatcher calls, create valid Data Exchange header/line/field relationships for the direct license-refusal check, and use standard XMLport 1225 exported XML for the import-refusal fixture. Preserve all response and persisted-state assertions; runtime verification remains required.
