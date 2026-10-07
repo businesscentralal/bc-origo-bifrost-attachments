@@ -149,6 +149,7 @@ codeunit 96274 "Attachments Build Tests ori"
 
     /// <summary>An unlicensed direct Entry.Delete call refuses before changing persisted rows.</summary>
     [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
     procedure EntryDelete_UnlicensedArgument_PreservesEntryAndFields()
     var
         Definition: Record "Data Exch. Def";
@@ -183,6 +184,8 @@ codeunit 96274 "Attachments Build Tests ori"
         Request.Add('entryNo', EntryNo);
         TempArgument.SetRequestJson(Request);
         Implementation := EntryDelete;
+        // The expected error rolls back the open transaction, so persist the fixture first.
+        Commit();
         // [WHEN] The actual production implementation receives the unlicensed argument.
         asserterror Implementation.ExecuteBifrostTask(TempArgument);
         // [THEN] Licence refusal precedes every write; neither fixture row disappears.
@@ -193,10 +196,16 @@ codeunit 96274 "Attachments Build Tests ori"
         Field.FindFirst();
         LibraryAssert.AreEqual('Xoriginal', Field.Value, 'Unlicensed field content must remain.');
         LibraryAssert.AreEqual(LineDefinition.Code, Field."Data Exch. Line Def Code", 'Unlicensed field relationship must remain.');
+        // Remove only this test's committed fixture after the preservation assertions.
+        Field.DeleteAll(true);
+        Entry.Delete(true);
+        LineDefinition.Delete(true);
+        Definition.Delete(true);
     end;
 
     /// <summary>An unlicensed direct Definition.Import call refuses before creating a definition.</summary>
     [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
     procedure DefinitionImport_UnlicensedArgument_DoesNotInsert()
     var
         Definition: Record "Data Exch. Def";
@@ -215,11 +224,16 @@ codeunit 96274 "Attachments Build Tests ori"
         Request.Add('definitionXml', ExportDefinitionXml(Definition));
         TempArgument.SetRequestJson(Request);
         Implementation := DefinitionImport;
+        // Keep the baseline definition outside the expected error's rollback boundary.
+        Commit();
         // [WHEN] The actual production importer receives the unlicensed argument.
         asserterror Implementation.ExecuteBifrostTask(TempArgument);
         // [THEN] The licence error with valid XML proves refusal before import.
         LibraryAssert.ExpectedError('requires a valid license');
         LibraryAssert.AreEqual(BeforeCount, Definition.Count(), 'Unlicensed import must not insert.');
+        LibraryAssert.IsTrue(Definition.Get(Definition.Code), 'The exported fixture definition must remain.');
+        LibraryAssert.AreEqual('Compilation repair test', Definition.Name, 'The exported fixture name must remain.');
+        Definition.Delete(true);
     end;
 
     /// <summary>The relocated Definition.Delete ordinal still dispatches and removes a persisted header.</summary>

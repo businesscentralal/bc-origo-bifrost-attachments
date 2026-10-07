@@ -9,6 +9,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Fixed (2026-10-07) - canonical compilation and regression fixtures (#74)
 
 - Isolate `Attachments Build Tests ori` (96274) fixture keys across dispatcher calls, create valid Data Exchange header/line/field relationships for the direct license-refusal check, and use standard XMLport 1225 exported XML for the import-refusal fixture. Preserve all response and persisted-state assertions; runtime verification remains required.
+- Persist the two license-refusal fixtures in `Attachments Build Tests ori` (96274) before `asserterror`, so error rollback cannot remove their setup. Preserve license and row-content assertions, verify the exported definition remains, and delete only each test's fixture afterward. Amended runtime verification remains pending.
 
 ### Fixed (2026-10-06) - main AL compile failures after #68 and #73
 
