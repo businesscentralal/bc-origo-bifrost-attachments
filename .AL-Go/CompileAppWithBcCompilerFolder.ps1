@@ -1,7 +1,7 @@
 param([hashtable] $CompilationParams)
 
 $ErrorActionPreference = 'Stop'
-# Supported helper override: capture actual inputs BEFORE its post-build copy
+# Real helper callback installed by PipelineInitialize: capture inputs BEFORE its post-build copy
 # puts the newly compiled product into the symbols folder. Forward every original
 # parameter to the genuine helper; keep its error/exit behavior and output sink.
 & (Join-Path $env:GITHUB_WORKSPACE 'tools/Assert-AppSourceBuild.ps1') -Stage BeforeCompile -CompilationParams $CompilationParams

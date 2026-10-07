@@ -89,6 +89,9 @@ class Parameters(unittest.TestCase):
         self.assertIn("tools/**", settings["fullBuildPatterns"])
         for file in ("PipelineInitialize.ps1", "CompileAppWithBcCompilerFolder.ps1", "PostCompileApp.ps1", "PipelineFinalize.ps1"):
             self.assertTrue((root / ".AL-Go" / file).is_file())
+        initialize = (root / ".AL-Go/PipelineInitialize.ps1").read_text()
+        self.assertIn("Set-AppSourceCompilerCallback", initialize)
+        self.assertIn("-Name 'CompileAppWithBcCompilerFolder' -Value $callback -Scope 2", initialize)
 
     def test_final_intended_settings(self):
         G.validate_parameters(params())

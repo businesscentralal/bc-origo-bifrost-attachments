@@ -5,7 +5,11 @@ compile, compiled NAVX identities and current-run hook receipts. A setting file 
 source-only friend removal is insufficient. `PipelineInitialize` preserves the
 existing Default friend/AS0081 stripping and the Alpaca initialization.
 
-`CompileAppWithBcCompilerFolder` snapshots the real symbol directory **before**
+`PipelineInitialize` explicitly installs the real Run-AlPipeline
+`CompileAppWithBcCompilerFolder` callback using Alpaca's parent-context scope
+mechanism; AL-Go v9.2 does not auto-register that filename. An existing compiler
+override blocks replacement pending its owner's coordination.
+The callback snapshots the real symbol directory **before**
 the helper copies its newly built product there. It forwards the original helper
 parameters and output callback and retains an isolated compiler log.
 `PostCompileApp` receives the returned package, app type and final compilation
