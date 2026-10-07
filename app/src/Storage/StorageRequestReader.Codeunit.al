@@ -22,10 +22,15 @@ codeunit 10035682 "Storage Request Reader ori"
         RequiredParameterMissingErr: Label 'Required parameter "%1" is missing.', Comment = '%1 = parameter name, is-IS=Nauðsynleg færibreyta "%1" vantar.';
         InvalidParameterFormatErr: Label 'Parameter "%1" has value "%2", which is not a valid %3. Expected %4.', Comment = '%1 = parameter, %2 = received value, %3 = type, %4 = expected format, is-IS=Færibreyta "%1" hefur gildið "%2", sem er ekki í gildu sniði (%3). Væntanlegt er %4.';
         NotAValueErr: Label 'Parameter "%1" must be a single value, not a JSON object or array.', Comment = '%1 = parameter, is-IS=Færibreyta "%1" verður að vera eitt gildi, ekki JSON-hlutur eða fylki.';
-        UnsafePathErr: Label 'Parameter "%1" has the path "%2", which is not allowed: no path segment may be "." or "..".', Comment = '%1 = parameter, %2 = the rejected path, is-IS=Færibreyta "%1" hefur slóðina "%2", sem er ekki leyfð: enginn hluti slóðarinnar má vera "." eða "..".';
+        UnsafePathErr: Label 'Parameter "%1" has an unsafe or ambiguous path "%2". Use slash-separated names without relative segments, empty inner segments, control characters or backslashes.', Comment = '%1 = parameter, %2 = rejected path, is-IS=Færibreytan "%1" hefur óörugga eða tvíræða slóð "%2". Notaðu heiti aðskilin með skástrikum án afstæðra hluta, tómra innri hluta, stýristafa eða bakskástrika.';
         NegativeValueErr: Label 'Parameter "%1" has value %2, but it cannot be negative.', Comment = '%1 = parameter, %2 = received value, is-IS=Færibreyta "%1" hefur gildið %2 en það má ekki vera neikvætt.';
         NotBase64Err: Label 'Parameter "%1" is not valid base64 content.', Comment = '%1 = parameter, is-IS=Færibreyta "%1" er ekki gilt base64-innihald.';
         ContentTooLargeErr: Label 'Parameter "%1" carries about %2 bytes, more than the %3 bytes one call can carry.', Comment = '%1 = parameter, %2 = approximate size in bytes, %3 = maximum size in bytes, is-IS=Færibreyta "%1" ber um %2 bæti, meira en þau %3 bæti sem eitt kall getur borið.';
+        TextTooLongErr: Label 'Parameter "%1" has %2 characters; the maximum is %3. Nothing was changed.', Comment = '%1 = parameter, %2 = length, %3 = maximum length, is-IS=Færibreytan "%1" er %2 stafir; hámarkið er %3. Engu var breytt.';
+        TextLengthExpectedLbl: Label 'at most %1 characters', Comment = '%1 = maximum length, is-IS=í mesta lagi %1 stafir';
+        ShortenTextLbl: Label 'Shorten the file name or folder path and try again; storage addresses cannot be truncated.', Comment = 'is-IS=Styttu skráarheitið eða möppuslóðina og reyndu aftur; ekki má stytta geymsluslóðir sjálfkrafa.';
+        InvalidFileNameErr: Label 'Parameter "fileName" must be a file name without folders or relative segments.', Comment = 'is-IS=Færibreytan "fileName" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.';
+        FileNameExpectedLbl: Label 'a nonempty file name without slash or backslash', Comment = 'is-IS=skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik';
         ProblemsInRequestErr: Label '%1 problems in the request. Nothing was changed.', Comment = '%1 = number of problems, is-IS=%1 vandamál í beiðninni. Engu var breytt.';
         TextExpectedLbl: Label 'a JSON string', Comment = 'is-IS=JSON-strengur';
         IntegerTypeLbl: Label 'integer', Comment = 'is-IS=heiltala';
@@ -85,7 +90,10 @@ codeunit 10035682 "Storage Request Reader ori"
     begin
         if not ReadText(Argument, RequestJson, ParameterName, Required, Path) then
             exit(false);
-        exit(CheckPath(Argument, ParameterName, Path));
+        if not CheckPath(Argument, ParameterName, Path) then
+            exit(false);
+        Path := CanonicalPath(Path);
+        exit(true);
     end;
 
     /// <summary>Adds <c>InvalidParameter</c> for a path that walks out of the connection's base path.</summary>
@@ -97,6 +105,8 @@ codeunit 10035682 "Storage Request Reader ori"
     var
         RequestMgt: Codeunit "Storage Request Mgt ori";
     begin
+        if not CheckTextLength(Argument, ParameterName, Path, 2048) then
+            exit(false);
         if RequestMgt.PathIsSafe(Path) then
             exit(true);
         Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(UnsafePathErr, ParameterName, Path), ParameterName, Path, PathExpectedLbl, SendRelativePathLbl);
@@ -242,6 +252,85 @@ codeunit 10035682 "Storage Request Reader ori"
             exit(false);
         Argument.RespondWithCollectedErrors("Bifrost Error Code ori"::MultipleErrors, StrSubstNo(ProblemsInRequestErr, Argument.GetCollectedErrorsJson().Count()));
         exit(true);
+    end;
+
+    /// <summary>Collects a length error instead of silently truncating a stored address or name.</summary>
+    /// <param name="Argument">The argument collecting validation errors.</param>
+    /// <param name="ParameterName">The offending parameter or generated address.</param>
+    /// <param name="TextValue">The complete value to validate.</param>
+    /// <param name="MaximumLength">The destination capacity.</param>
+    /// <returns>True when the complete value fits.</returns>
+    internal procedure CheckTextLength(var Argument: Record "Message Argument ori"; ParameterName: Text; TextValue: Text; MaximumLength: Integer): Boolean
+    begin
+        if StrLen(TextValue) <= MaximumLength then
+            exit(true);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(TextTooLongErr, ParameterName, StrLen(TextValue), MaximumLength), ParameterName, Format(StrLen(TextValue), 0, 9), StrSubstNo(TextLengthExpectedLbl, MaximumLength), ShortenTextLbl);
+        exit(false);
+    end;
+
+    /// <summary>Checks an address sink capacity without truncation; malformed addresses use InvalidParameter.</summary>
+    internal procedure CheckAddressLength(var Argument: Record "Message Argument ori"; ParameterName: Text; Address: Text; Capacity: Integer): Boolean
+    begin
+        if StrLen(Address) <= Capacity then
+            exit(true);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(TextTooLongErr, ParameterName, StrLen(Address), Capacity), ParameterName, Format(StrLen(Address), 0, 9), StrSubstNo(TextLengthExpectedLbl, Capacity), ShortenTextLbl);
+        exit(false);
+    end;
+
+    /// <summary>Checks a complete filename before a session, attachment or remote file is written.</summary>
+    /// <param name="Argument">The argument collecting validation errors.</param>
+    /// <param name="FileName">The complete filename, including its extension.</param>
+    /// <returns>True when the filename fits the storage field and contains no folder.</returns>
+    internal procedure CheckFileName(var Argument: Record "Message Argument ori"; FileName: Text): Boolean
+    var
+        Link: Record "Storage Attachment Link ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+    begin
+        if not CheckTextLength(Argument, 'fileName', FileName, MaxStrLen(Link."File Name")) then
+            exit(false);
+        if (FileName <> '') and not FileName.Contains('/') and not FileName.Contains('\') and RequestMgt.PathIsSafe(FileName) then
+            exit(true);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, InvalidFileNameErr, 'fileName', FileName, FileNameExpectedLbl, SendRelativePathLbl);
+        exit(false);
+    end;
+
+    /// <summary>Validates the complete relative and base-prefixed address before storage or database writes.</summary>
+    /// <param name="Argument">The argument collecting validation errors.</param>
+    /// <param name="StorageSetup">The selected storage connection and base path.</param>
+    /// <param name="ParameterName">The path parameter to identify in errors.</param>
+    /// <param name="Path">The complete relative path; returns its canonical spelling.</param>
+    /// <param name="AllowRoot">Whether this is a directory operation that may address the base root.</param>
+    /// <returns>True when the address is valid and fits storage fields.</returns>
+    internal procedure CheckStoragePath(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; ParameterName: Text; var Path: Text; AllowRoot: Boolean): Boolean
+    var
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+        BasePath: Text;
+        FullPath: Text;
+    begin
+        if not CheckPath(Argument, ParameterName, Path) then
+            exit(false);
+        Path := RequestMgt.CanonicalPath(Path);
+        if (not AllowRoot) and (Path = '') then begin
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, InvalidFileNameErr, ParameterName, Path, FileNameExpectedLbl, SendRelativePathLbl);
+            exit(false);
+        end;
+        BasePath := RequestMgt.CanonicalPath(StorageSetup."Base Path");
+        if not CheckPath(Argument, 'basePath', BasePath) then
+            exit(false);
+        FullPath := Path;
+        if BasePath <> '' then begin
+            FullPath := BasePath;
+            if Path <> '' then
+                FullPath += '/' + Path;
+        end;
+        exit(CheckTextLength(Argument, ParameterName, FullPath, 2048));
+    end;
+
+    local procedure CanonicalPath(Path: Text): Text
+    var
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+    begin
+        exit(RequestMgt.CanonicalPath(Path));
     end;
 
     local procedure AcceptAbsent(var Argument: Record "Message Argument ori"; ParameterName: Text; Required: Boolean): Boolean
