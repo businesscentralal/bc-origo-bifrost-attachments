@@ -109,6 +109,7 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
         if not MockState.HasFile(SourcePath) then
             Error(FileNotFoundErr, SourcePath);
         MockState.PutFile(TargetPath, MockState.GetFileContent(SourcePath));
+        MockState.CheckAfterMoveCopy();
         MockState.RemoveFile(SourcePath);
     end;
 

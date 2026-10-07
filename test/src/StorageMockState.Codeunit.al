@@ -15,6 +15,8 @@ codeunit 96201 "Storage Mock State"
         Files: Dictionary of [Text, Text];
         Directories: List of [Text];
         RejectNextWrite: Boolean;
+        RejectAfterCopy: Boolean;
+        WriteCalls: Integer;
 
     /// <summary>Clears all mock files and directories.</summary>
     procedure Reset()
@@ -22,6 +24,8 @@ codeunit 96201 "Storage Mock State"
         Clear(Files);
         Clear(Directories);
         RejectNextWrite := false;
+        RejectAfterCopy := false;
+        WriteCalls := 0;
     end;
 
     /// <summary>Injects one deterministic failure before the next connector write.</summary>
@@ -35,10 +39,34 @@ codeunit 96201 "Storage Mock State"
     var
         InjectedFailureErr: Label 'Injected storage write failure.', Locked = true;
     begin
+        WriteCalls += 1;
         if not RejectNextWrite then
             exit;
         RejectNextWrite := false;
         Error(InjectedFailureErr);
+    end;
+
+    /// <summary>Injects a move failure after target content exists but before source deletion.</summary>
+    procedure FailMoveAfterCopy()
+    begin
+        RejectAfterCopy := true;
+    end;
+
+    /// <summary>Raises the post-copy fault without hiding the independently readable target copy.</summary>
+    procedure CheckAfterMoveCopy()
+    var
+        InjectedFailureErr: Label 'Injected failure after move copy.', Locked = true;
+    begin
+        if not RejectAfterCopy then
+            exit;
+        RejectAfterCopy := false;
+        Error(InjectedFailureErr);
+    end;
+
+    /// <summary>Returns actual mock create/copy/move calls, including refused provider writes.</summary>
+    procedure GetWriteCalls(): Integer
+    begin
+        exit(WriteCalls);
     end;
 
     /// <summary>Stores (or overwrites) a file with base64 content.</summary>

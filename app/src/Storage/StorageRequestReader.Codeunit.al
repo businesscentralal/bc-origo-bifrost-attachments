@@ -22,7 +22,7 @@ codeunit 10035682 "Storage Request Reader ori"
         RequiredParameterMissingErr: Label 'Required parameter "%1" is missing.', Comment = '%1 = parameter name, is-IS=Nauðsynleg færibreyta "%1" vantar.';
         InvalidParameterFormatErr: Label 'Parameter "%1" has value "%2", which is not a valid %3. Expected %4.', Comment = '%1 = parameter, %2 = received value, %3 = type, %4 = expected format, is-IS=Færibreyta "%1" hefur gildið "%2", sem er ekki í gildu sniði (%3). Væntanlegt er %4.';
         NotAValueErr: Label 'Parameter "%1" must be a single value, not a JSON object or array.', Comment = '%1 = parameter, is-IS=Færibreyta "%1" verður að vera eitt gildi, ekki JSON-hlutur eða fylki.';
-        UnsafePathErr: Label 'Parameter "%1" has an unsafe or ambiguous path "%2". Use slash-separated names without relative segments, empty inner segments, control characters, backslashes or leading/trailing spaces and trailing dots.', Comment = '%1 = parameter, %2 = rejected path, is-IS=Færibreytan "%1" hefur óörugga eða tvíræða slóð "%2". Notaðu heiti aðskilin með skástrikum án afstæðra hluta, tómra innri hluta, stýristafa, bakskástrika, bila í upphafi eða lok heita eða punkta í lok heita.';
+        UnsafePathErr: Label 'Parameter "%1" has an unsafe or ambiguous path "%2". Use slash-separated names without relative segments, empty inner segments, control characters or backslashes.', Comment = '%1 = parameter, %2 = rejected path, is-IS=Færibreytan "%1" hefur óörugga eða tvíræða slóð "%2". Notaðu heiti aðskilin með skástrikum án afstæðra hluta, tómra innri hluta, stýristafa eða bakskástrika.';
         NegativeValueErr: Label 'Parameter "%1" has value %2, but it cannot be negative.', Comment = '%1 = parameter, %2 = received value, is-IS=Færibreyta "%1" hefur gildið %2 en það má ekki vera neikvætt.';
         NotBase64Err: Label 'Parameter "%1" is not valid base64 content.', Comment = '%1 = parameter, is-IS=Færibreyta "%1" er ekki gilt base64-innihald.';
         ContentTooLargeErr: Label 'Parameter "%1" carries about %2 bytes, more than the %3 bytes one call can carry.', Comment = '%1 = parameter, %2 = approximate size in bytes, %3 = maximum size in bytes, is-IS=Færibreyta "%1" ber um %2 bæti, meira en þau %3 bæti sem eitt kall getur borið.';
@@ -264,7 +264,16 @@ codeunit 10035682 "Storage Request Reader ori"
     begin
         if StrLen(TextValue) <= MaximumLength then
             exit(true);
-        Argument.AddError("Bifrost Error Code ori"::LimitExceeded, StrSubstNo(TextTooLongErr, ParameterName, StrLen(TextValue), MaximumLength), ParameterName, Format(StrLen(TextValue), 0, 9), StrSubstNo(TextLengthExpectedLbl, MaximumLength), ShortenTextLbl);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(TextTooLongErr, ParameterName, StrLen(TextValue), MaximumLength), ParameterName, Format(StrLen(TextValue), 0, 9), StrSubstNo(TextLengthExpectedLbl, MaximumLength), ShortenTextLbl);
+        exit(false);
+    end;
+
+    /// <summary>Checks an address sink capacity without truncation; malformed addresses use InvalidParameter.</summary>
+    internal procedure CheckAddressLength(var Argument: Record "Message Argument ori"; ParameterName: Text; Address: Text; Capacity: Integer): Boolean
+    begin
+        if StrLen(Address) <= Capacity then
+            exit(true);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(TextTooLongErr, ParameterName, StrLen(Address), Capacity), ParameterName, Format(StrLen(Address), 0, 9), StrSubstNo(TextLengthExpectedLbl, Capacity), ShortenTextLbl);
         exit(false);
     end;
 

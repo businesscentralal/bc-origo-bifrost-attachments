@@ -32,7 +32,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         DocumentAttachmentTok: Label 'DocumentAttachment', Locked = true;
         IncomingDocumentTok: Label 'IncomingDocument', Locked = true;
         UnknownTargetErr: Label 'Parameter "%1" has value "%2", which is not an attachment target.', Comment = '%1 = parameter, %2 = received value, is-IS=Færibreyta "%1" hefur gildið "%2", sem er ekki viðhengjamarkmið.';
-        TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Locked = true;
+        TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Comment = 'is-IS=DocumentAttachment eða IncomingDocument';
         UnknownCodeErr: Label 'No storage connection is configured for storageCode "%1".', Comment = '%1 = storage code, is-IS=Engin geymslutenging er skilgreind fyrir storageCode "%1".';
         DisabledCodeErr: Label 'The storage connection "%1" is disabled.', Comment = '%1 = storage code, is-IS=Geymslutengingin "%1" er óvirk.';
         RecordNotFoundErr: Label '%1 "%2" was not found (from %3).', Comment = '%1 = table caption, %2 = value received, %3 = request parameter, is-IS=%1 "%2" fannst ekki (úr %3).';
@@ -50,6 +50,12 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         PathAlreadyLinkedErr: Label 'The storage path "%1" on connection "%2" already backs another attachment. Each storage file can back only one attachment.', Comment = '%1 = storage path, %2 = storage code, is-IS=Geymsluslóðin "%1" á tengingunni "%2" geymir þegar annað viðhengi. Hver skrá í geymslunni getur aðeins geymt eitt viðhengi.';
         PathAlreadyLinkedNextStepLbl: Label 'Copy the file with Storage.File.Copy and link the copy, or attach the file with content instead.', Comment = 'is-IS=Afritaðu skrána með Storage.File.Copy og tengdu afritið eða hengdu skrána við með innihaldi.';
         UnlinkedExpectedLbl: Label 'a file that no attachment is linked to', Comment = 'is-IS=skrá sem ekkert viðhengi er tengt við';
+        NativePermissionExpectedLbl: Label 'read and write permission on every linked attachment', Comment = 'is-IS=les- og skrifheimild á öllum tengdum viðhengjum';
+        NativePermissionNextStepLbl: Label 'Ask the administrator to grant attachment access before retrying.', Comment = 'is-IS=Biddu kerfisstjóra um að veita aðgang að viðhengjum áður en þú reynir aftur.';
+        AliasMoveErr: Label 'The destination cannot be represented by every linked storage connection. Nothing was changed.', Comment = 'is-IS=Ekki er hægt að tákna áfangastaðinn með öllum tengdum geymslutengingum. Engu var breytt.';
+        AliasRootExpectedLbl: Label 'a destination inside every linked connection base path', Comment = 'is-IS=áfangastaður innan grunnslóðar allra tengdra geymslutenginga';
+        AliasMoveNextStepLbl: Label 'Choose a destination inside all linked roots, or restore the attachments before moving the file.', Comment = 'is-IS=Veldu áfangastað innan allra tengdra rótarslóða eða endurheimtu viðhengin áður en skráin er færð.';
+        AliasIdentityErr: Label 'The physical address of an attachment link could not be verified.', Comment = 'is-IS=Ekki tókst að staðfesta raunverulega slóð viðhengjatengingar.';
         LinkPermissionErr: Label 'You do not have permission to update Bifröst storage attachment links.', Comment = 'is-IS=Þú hefur ekki heimild til að uppfæra viðhengjatengingar Bifröst geymslu.';
         TargetPermissionErr: Label 'You do not have permission to update the linked Business Central table %1.', Comment = '%1 = table id, is-IS=Þú hefur ekki heimild til að uppfæra tengdu Business Central töfluna %1.';
         ReadPermissionErr: Label 'You do not have permission to read table %1.', Comment = '%1 = table id, is-IS=Þú hefur ekki heimild til að lesa töflu %1.';
@@ -57,9 +63,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         UnknownTableNameErr: Label 'No table named "%1" exists.', Comment = '%1 = table name, is-IS=Engin tafla heitir "%1".';
         UnknownTableNextStepLbl: Label 'Find the table with Help.Tables.Get.', Comment = 'is-IS=Finndu töfluna með Help.Tables.Get.';
         TableRequiredErr: Label 'Send tableId or tableName to say which table the record is in.', Comment = 'is-IS=Sendu tableId eða tableName til að segja í hvaða töflu færslan er.';
-        TableExpectedLbl: Label 'tableId or tableName', Locked = true;
+        TableExpectedLbl: Label 'tableId or tableName', Comment = 'is-IS=tableId eða tableName';
         RecordRequiredErr: Label 'Send recordSystemId or no to say which record the attachment belongs to.', Comment = 'is-IS=Sendu recordSystemId eða no til að segja hvaða færslu viðhengið tilheyrir.';
-        RecordExpectedLbl: Label 'recordSystemId or no', Locked = true;
+        RecordExpectedLbl: Label 'recordSystemId or no', Comment = 'is-IS=recordSystemId eða no';
         CompositeKeyErr: Label 'Table %1 has a composite primary key, so it cannot be addressed with "no".', Comment = '%1 = table id, is-IS=Tafla %1 hefur samsettan aðallykil og því er ekki hægt að vísa í hana með "no".';
         NonCodeKeyErr: Label 'The primary key of table %1 is not a code or text field, so it cannot be addressed with "no".', Comment = '%1 = table id, is-IS=Aðallykill töflu %1 er hvorki kóða- né textareitur og því er ekki hægt að vísa í hana með "no".';
         UseRecordSystemIdLbl: Label 'Send recordSystemId instead.', Comment = 'is-IS=Sendu recordSystemId í staðinn.';
@@ -67,9 +73,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         RecordNoExpectedLbl: Label 'at most 20 characters', Comment = 'is-IS=í mesta lagi 20 stafir';
         ContentSourceErr: Label 'Send exactly one content source: contentBase64 (or the alias content), storageCode with path, or sourceTarget with sourceSystemId.', Comment = 'is-IS=Sendu nákvæmlega eina uppsprettu innihalds: contentBase64 (eða samheitið content), storageCode með path eða sourceTarget með sourceSystemId.';
         ContentSourceParameterTok: Label 'contentBase64, storageCode, sourceSystemId', Locked = true;
-        ContentSourceExpectedLbl: Label 'exactly one of contentBase64 (or the alias content), storageCode with path, sourceTarget with sourceSystemId', Locked = true;
-        BothInlineContentErr: Label 'Supply contentBase64 or content, not both.', Locked = true;
-        BothInlineContentExpectedLbl: Label 'contentBase64 or content, not both', Locked = true;
+        ContentSourceExpectedLbl: Label 'exactly one of contentBase64 (or the alias content), storageCode with path, sourceTarget with sourceSystemId', Comment = 'is-IS=nákvæmlega eitt af contentBase64 (eða samheitinu content), storageCode með path, sourceTarget með sourceSystemId';
+        BothInlineContentErr: Label 'Supply contentBase64 or content, not both.', Comment = 'is-IS=Gefðu upp contentBase64 eða content, ekki bæði.';
+        BothInlineContentExpectedLbl: Label 'contentBase64 or content, not both', Comment = 'is-IS=contentBase64 eða content, ekki bæði';
         NoAttachmentKeyErr: Label 'Business Central does not know which field identifies a record in table %1, so an attachment cannot be keyed to it.', Comment = '%1 = table id, is-IS=Business Central veit ekki hvaða reitur auðkennir færslu í töflu %1 og því er ekki hægt að tengja viðhengi við hana.';
         AttachmentGoneErr: Label 'The attachment was removed while it was being processed.', Comment = 'is-IS=Viðhenginu var eytt á meðan verið var að vinna með það.';
         NoAttachmentKeyNextStepLbl: Label 'Attach the file to a record of a table that supports attachments, or have a developer subscribe to Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey for this table.', Comment = 'is-IS=Hengdu skrána við færslu í töflu sem styður viðhengi eða láttu forritara gerast áskrifanda að Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey fyrir þessa töflu.';
@@ -841,7 +847,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         if not FindLinkedStorageFile(StorageCode, SourcePath, Link) then
             exit(true);
         repeat
-            if StoragePathsMatch(Link."Storage Path", SourcePath) then begin
+            if LinkMatches(Link, StorageCode, SourcePath, false) then begin
                 BlockReason := LinkUpdateBlockReason(Link);
                 if BlockReason <> '' then
                     exit(false);
@@ -857,16 +863,18 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     procedure UpdateMovedStorageFile(StorageCode: Code[20]; SourcePath: Text; TargetPath: Text)
     var
         Link: Record "Storage Attachment Link ori";
+        LinkTargetPath: Text;
     begin
         Link.ReadIsolation := IsolationLevel::UpdLock;
         if not FindLinkedStorageFile(StorageCode, SourcePath, Link) then
             exit;
         repeat
-            if StoragePathsMatch(Link."Storage Path", SourcePath) then begin
-                Link."Storage Path" := TargetPath;
+            if LinkMatches(Link, StorageCode, SourcePath, false) then begin
+                LinkTargetPath := RelativeMovedPath(Link, StorageCode, TargetPath);
+                Link."Storage Path" := LinkTargetPath;
                 Link.Modify(true);
                 if Link."Table ID" = Database::"Document Attachment" then
-                    UpdateNativeMovedPath(Link."Record System Id", StorageCode, TargetPath);
+                    UpdateNativeMovedPath(Link."Record System Id", Link."Storage Code", LinkTargetPath);
             end;
         until Link.Next() = 0;
     end;
@@ -879,12 +887,29 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     internal procedure CheckMovedPath(var Argument: Record "Message Argument ori"; StorageCode: Code[20]; SourcePath: Text; TargetPath: Text)
     var
         Link: Record "Storage Attachment Link ori";
+        LinkSetup: Record "Storage Setup ori";
+        Reader: Codeunit "Storage Request Reader ori";
+        LinkedRecord: RecordRef;
+        LinkTargetPath: Text;
     begin
         if not FindLinkedStorageFile(StorageCode, SourcePath, Link) then
             exit;
         repeat
-            if StoragePathsMatch(Link."Storage Path", SourcePath) then
-                CheckNativePathLength(Argument, Link."Table ID", StorageCode, TargetPath, 'targetPath');
+            if LinkMatches(Link, StorageCode, SourcePath, false) then begin
+                LinkedRecord.Open(Link."Table ID");
+                LinkedRecord.ReadIsolation := IsolationLevel::RepeatableRead;
+                if not LinkedRecord.GetBySystemId(Link."Record System Id") then
+                    AddRecordNotFound(Argument, Link."Table ID", Format(Link."Record System Id", 0, 4), 'sourcePath');
+                LinkedRecord.Close();
+                LinkTargetPath := RelativeMovedPath(Link, StorageCode, TargetPath);
+                if LinkTargetPath = '' then
+                    Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, AliasMoveErr, 'targetPath', TargetPath, AliasRootExpectedLbl, AliasMoveNextStepLbl)
+                else begin
+                    LinkSetup.Get(Link."Storage Code");
+                    Reader.CheckStoragePath(Argument, LinkSetup, 'targetPath', LinkTargetPath, false);
+                    CheckNativePathLength(Argument, Link."Table ID", Link."Storage Code", LinkTargetPath, 'targetPath');
+                end;
+            end;
         until Link.Next() = 0;
     end;
 
@@ -900,18 +925,42 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     local procedure CheckNativePathLength(var Argument: Record "Message Argument ori"; TableId: Integer; StorageCode: Code[20]; Path: Text; ParameterName: Text)
     var
         Reader: Codeunit "Storage Request Reader ori";
-        StoredExternallyFld: FieldRef;
-        ExternalUploadDateFld: FieldRef;
-        ExternalFilePathFld: FieldRef;
-        StoredInternallyFld: FieldRef;
+        Provider: Codeunit "Storage Ext File Impl ori";
+        NativeModule: ModuleInfo;
         RecRef: RecordRef;
+        ExternalFilePathFld: FieldRef;
+        NativeModuleId: Guid;
     begin
         if TableId <> Database::"Document Attachment" then
             exit;
-        if not TryGetDocAttachExtStorFields(RecRef, StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld) then
+        NativeModuleId := '5f2e93a0-6083-4718-b05a-7ac89be5644d';
+        if not NavApp.GetModuleInfo(NativeModuleId, NativeModule) then
             exit;
-        Reader.CheckTextLength(Argument, ParameterName, StorageCode + ':' + Path, ExternalFilePathFld.Length());
+        RecRef.Open(TableId);
+        if not NativeFieldMatches(RecRef, 8750, 'Stored Externally', FieldType::Boolean) or
+           not NativeFieldMatches(RecRef, 8751, 'External Upload Date', FieldType::DateTime) or
+           not NativeFieldMatches(RecRef, 8752, 'External File Path', FieldType::Text) or
+           not NativeFieldMatches(RecRef, 8753, 'Stored Internally', FieldType::Boolean)
+        then begin
+            RecRef.Close();
+            Provider.AddUnverifiedOperation(Argument, ParameterName, 'installed native attachment field schema');
+            exit;
+        end;
+        if not RecRef.ReadPermission() or not RecRef.WritePermission() then
+            Argument.AddError("Bifrost Error Code ori"::PermissionDenied, StrSubstNo(TargetPermissionErr, TableId), ParameterName, StorageCode, NativePermissionExpectedLbl, NativePermissionNextStepLbl);
+        ExternalFilePathFld := RecRef.Field(8752);
+        Reader.CheckAddressLength(Argument, ParameterName, StorageCode + ':' + Path, ExternalFilePathFld.Length());
         RecRef.Close();
+    end;
+
+    local procedure NativeFieldMatches(RecRef: RecordRef; FieldNumber: Integer; FieldName: Text; ExpectedType: FieldType): Boolean
+    var
+        NativeField: FieldRef;
+    begin
+        if not RecRef.FieldExist(FieldNumber) then
+            exit(false);
+        NativeField := RecRef.Field(FieldNumber);
+        exit((NativeField.Name = FieldName) and (NativeField.Type = ExpectedType));
     end;
 
     local procedure UpdateNativeMovedPath(RecSystemId: Guid; StorageCode: Code[20]; Path: Text)
@@ -948,11 +997,11 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     local procedure FindLinkedStorageFile(StorageCode: Code[20]; Path: Text; var Link: Record "Storage Attachment Link ori"): Boolean
     begin
         Link.Reset();
-        Link.SetCurrentKey("Storage Code", "Storage Path");
-        Link.SetRange("Storage Code", StorageCode);
-        if Link.FindSet(true) then
+        // Do not filter on storage code, Enabled, raw path or a wildcard expression.
+        // Existing disabled setups and differently rooted aliases still protect their links.
+        if Link.FindSet() then
             repeat
-                if StoragePathsMatch(Link."Storage Path", Path) then
+                if LinkMatches(Link, StorageCode, Path, false) then
                     exit(true);
             until Link.Next() = 0;
         exit(false);
@@ -961,33 +1010,66 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     local procedure FindLinkedStoragePathInDirectory(StorageCode: Code[20]; DirectoryPath: Text; var Link: Record "Storage Attachment Link ori"): Boolean
     begin
         Link.Reset();
-        Link.SetCurrentKey("Storage Code", "Storage Path");
-        Link.SetRange("Storage Code", StorageCode);
-        if Link.FindSet(true) then
+        if Link.FindSet() then
             repeat
-                if StoragePathIsInDirectory(Link."Storage Path", DirectoryPath) then
+                if LinkMatches(Link, StorageCode, DirectoryPath, true) then
                     exit(true);
             until Link.Next() = 0;
+        exit(false);
     end;
 
-    local procedure StoragePathsMatch(FirstPath: Text; SecondPath: Text): Boolean
+    local procedure LinkMatches(Link: Record "Storage Attachment Link ori"; StorageCode: Code[20]; Path: Text; IncludeDescendants: Boolean): Boolean
     var
+        SelectedSetup: Record "Storage Setup ori";
+        LinkSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Provider: Codeunit "Storage Ext File Impl ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
+        SelectedScope: Text;
+        LinkScope: Text;
+        SelectedAddress: Text;
+        LinkAddress: Text;
+        CaseSensitive: Boolean;
+        LinkCaseSensitive: Boolean;
     begin
-        exit(RequestMgt.CanonicalPath(FirstPath) = RequestMgt.CanonicalPath(SecondPath));
-    end;
-
-    local procedure StoragePathIsInDirectory(StoragePath: Text; DirectoryPath: Text): Boolean
-    var
-        RequestMgt: Codeunit "Storage Request Mgt ori";
-    begin
-        StoragePath := RequestMgt.CanonicalPath(StoragePath);
-        DirectoryPath := RequestMgt.CanonicalPath(DirectoryPath);
-        if DirectoryPath = '' then
-            exit(StoragePath <> '');
-        if StoragePath = DirectoryPath then
+        SelectedSetup.Get(StorageCode);
+        LinkSetup.Get(Link."Storage Code");
+        if (SelectedSetup."Storage Type" <> LinkSetup."Storage Type") or (SelectedSetup.Connector <> LinkSetup.Connector) then
+            exit(false);
+        Provider.ResolvePhysicalAddress(TempArgument, SelectedSetup, Path, SelectedScope, SelectedAddress, CaseSensitive);
+        Provider.ResolvePhysicalAddress(TempArgument, LinkSetup, Link."Storage Path", LinkScope, LinkAddress, LinkCaseSensitive);
+        if TempArgument.HasCollectedErrors() then
+            TempArgument.RaiseCollectedErrors("Bifrost Error Code ori"::PreconditionFailed, AliasIdentityErr);
+        if not RequestMgt.PathsEqual(SelectedScope, LinkScope, true) then
+            exit(false);
+        if RequestMgt.PathsEqual(SelectedAddress, LinkAddress, CaseSensitive) then
             exit(true);
-        exit(StoragePath.StartsWith(DirectoryPath + '/'));
+        if not IncludeDescendants then
+            exit(false);
+        if SelectedAddress = '' then
+            exit(LinkAddress <> '');
+        exit(RequestMgt.PathsEqual(CopyStr(LinkAddress, 1, StrLen(SelectedAddress) + 1), SelectedAddress + '/', CaseSensitive));
+    end;
+
+    local procedure RelativeMovedPath(Link: Record "Storage Attachment Link ori"; StorageCode: Code[20]; TargetPath: Text): Text
+    var
+        SelectedSetup: Record "Storage Setup ori";
+        LinkSetup: Record "Storage Setup ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+        FullTarget: Text;
+        LinkBase: Text;
+        CaseSensitive: Boolean;
+    begin
+        SelectedSetup.Get(StorageCode);
+        LinkSetup.Get(Link."Storage Code");
+        FullTarget := RequestMgt.CombinedPath(SelectedSetup."Base Path", TargetPath);
+        LinkBase := RequestMgt.CanonicalPath(LinkSetup."Base Path");
+        if LinkBase = '' then
+            exit(FullTarget);
+        CaseSensitive := not ((LinkSetup."Storage Type" = LinkSetup."Storage Type"::"External File Storage") and (LinkSetup.Connector.AsInteger() = 4570));
+        if RequestMgt.PathsEqual(CopyStr(FullTarget, 1, StrLen(LinkBase) + 1), LinkBase + '/', CaseSensitive) then
+            exit(CopyStr(FullTarget, StrLen(LinkBase) + 2));
+        exit('');
     end;
 
     local procedure LinkUpdateBlockReason(var Link: Record "Storage Attachment Link ori"): Text
@@ -995,10 +1077,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         LinkedRecordRef: RecordRef;
         CanWrite: Boolean;
     begin
-        if not Link.WritePermission() then
+        if not Link.ReadPermission() or not Link.WritePermission() then
             exit(LinkPermissionErr);
         LinkedRecordRef.Open(Link."Table ID");
-        CanWrite := LinkedRecordRef.WritePermission();
+        CanWrite := LinkedRecordRef.ReadPermission() and LinkedRecordRef.WritePermission();
         LinkedRecordRef.Close();
         if not CanWrite then
             exit(StrSubstNo(TargetPermissionErr, Link."Table ID"));

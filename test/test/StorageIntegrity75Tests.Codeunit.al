@@ -194,7 +194,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
                 AssertSuccess(Response);
                 LibraryAssert.AreEqual('boundary', StoredText(Path), 'The accepted address must not be truncated.');
             end else begin
-                AssertRefusal(Response, 'LimitExceeded');
+                AssertRefusal(Response, 'InvalidParameter');
                 LibraryAssert.IsFalse(MockState.HasFile(Path), 'An overlimit path must not be written.');
             end;
         end;
@@ -218,7 +218,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [WHEN] Their combination exceeds the stored address capacity.
         Response := Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest(LongPath(2048), 'boundary'));
         // [THEN] No remote file was created.
-        AssertRefusal(Response, 'LimitExceeded');
+        AssertRefusal(Response, 'InvalidParameter');
         LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'Full-address validation must precede writes.');
     end;
 
@@ -252,7 +252,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
                 Session.Get(UploadId);
                 LibraryAssert.AreEqual(FileName, Session."File Name", 'The name must not be truncated.');
             end else begin
-                AssertRefusal(Response, 'LimitExceeded');
+                AssertRefusal(Response, 'InvalidParameter');
                 LibraryAssert.AreEqual(BeforeCount, Session.Count(), 'An invalid name must not create a session.');
             end;
         end;
@@ -304,7 +304,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [WHEN] A valid-size folder generates a path too large for the link.
         Response := Execute(Enum::"Message Type ori"::"Storage.Attachment.Offload", RequestJson);
         // [THEN] No link or remote orphan is created and the blob is still local and readable.
-        AssertRefusal(Response, 'LimitExceeded');
+        AssertRefusal(Response, 'InvalidParameter');
         LibraryAssert.IsFalse(Link.Get(Database::"Incoming Document Attachment", AttachmentId), 'Rejected offload must not insert a link.');
         LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'Rejected offload must not create a remote orphan.');
         Attachment.GetBySystemId(AttachmentId);
@@ -378,6 +378,190 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [THEN] The linked file and its canonical relative address survive.
         AssertRefusal(Response, 'PreconditionFailed');
         AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
+    end;
+
+    /// <summary>Disabled aliases with different bases still protect the same file from all raw destinations.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC02_DisabledAlias_ProtectsPhysicalDestination()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        Link: Record "Storage Attachment Link ori";
+        MockState: Codeunit "Storage Mock State";
+        RequestJson: JsonObject;
+        AttachmentId: Guid;
+        BeforeCalls: Integer;
+    begin
+        // Story #75, AC02 | Time: none | Risk: disabled links remain authoritative.
+        Initialize();
+        // [GIVEN] One linked physical key, now represented by a disabled, nested setup.
+        AttachmentId := CreateLinked('Xroot/Xfile.txt');
+        InsertAlias('X75ALIAS', 'Xroot', false);
+        Link.Get(Database::"Incoming Document Attachment", AttachmentId);
+        Link."Storage Code" := 'X75ALIAS';
+        Link."Storage Path" := '/Xfile.txt/';
+        Link.Modify();
+        BeforeCalls := MockState.GetWriteCalls();
+        // [WHEN] A raw create uses the enabled outer root.
+        RequestJson := ContentRequest('/Xroot/Xfile.txt/', 'replacement');
+        AssertRefusal(Execute(Enum::"Message Type ori"::"Storage.File.Create", RequestJson), 'PreconditionFailed');
+        // [THEN] The physical bytes, disabled link and provider call count are unchanged.
+        LibraryAssert.AreEqual(BeforeCalls, MockState.GetWriteCalls(), 'The guard must precede the provider call.');
+        LibraryAssert.AreEqual('original', StoredText('Xroot/Xfile.txt'), 'The alias must protect the original bytes.');
+        Link.Get(Database::"Incoming Document Attachment", AttachmentId);
+        LibraryAssert.AreEqual('/Xfile.txt/', Link."Storage Path", 'Refusal preserves legacy spelling.');
+        StorageSetup.Get('X75ALIAS');
+        LibraryAssert.IsFalse(StorageSetup.Enabled, 'Protection must not enable an existing disabled setup.');
+    end;
+
+    /// <summary>A source move retains the aliased storage code and derives its own relative destination.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC01_AliasMove_PreservesEachRelativeRoot()
+    var
+        Link: Record "Storage Attachment Link ori";
+        AttachmentId: Guid;
+    begin
+        // Story #75, AC01 | Time: none | Risk: local aliases are not remote atomicity proof.
+        Initialize();
+        // [GIVEN] An alias rooted inside the selected setup.
+        AttachmentId := CreateLinked('Xroot/Xfile.txt');
+        InsertAlias('X75ALIAS', '/Xroot/', true);
+        Link.Get(Database::"Incoming Document Attachment", AttachmentId);
+        Link."Storage Code" := 'X75ALIAS';
+        Link."Storage Path" := 'Xfile.txt';
+        Link.Modify();
+        // [WHEN] The file moves within both roots.
+        AssertSuccess(Execute(Enum::"Message Type ori"::"Storage.File.Move", TransferRequest('/Xroot/Xfile.txt/', 'Xroot/Xarchive/Xfile.txt')));
+        // [THEN] It remains readable under its own code and the physical destination.
+        Link.Get(Database::"Incoming Document Attachment", AttachmentId);
+        LibraryAssert.AreEqual('X75ALIAS', Link."Storage Code", 'Move must not change the link owner code.');
+        LibraryAssert.AreEqual('Xarchive/Xfile.txt', Link."Storage Path", 'Use the alias-relative destination.');
+        LibraryAssert.AreEqual('original', StoredText('Xroot/Xarchive/Xfile.txt'), 'Moved bytes must be readable.');
+    end;
+
+    /// <summary>A move outside an aliased root fails before metadata or provider mutation.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC04_AliasRootEscape_PreservesSource()
+    var
+        Link: Record "Storage Attachment Link ori";
+        MockState: Codeunit "Storage Mock State";
+        AttachmentId: Guid;
+        BeforeCalls: Integer;
+    begin
+        // Story #75, AC04 | Time: none | Risk: an alias cannot represent the new address.
+        Initialize();
+        AttachmentId := CreateLinked('Xroot/Xfile.txt');
+        InsertAlias('X75ALIAS', 'Xroot', true);
+        Link.Get(Database::"Incoming Document Attachment", AttachmentId);
+        Link."Storage Code" := 'X75ALIAS';
+        Link."Storage Path" := 'Xfile.txt';
+        Link.Modify();
+        BeforeCalls := MockState.GetWriteCalls();
+        AssertRefusal(Execute(Enum::"Message Type ori"::"Storage.File.Move", TransferRequest('Xroot/Xfile.txt', 'Xoutside.txt')), 'PreconditionFailed');
+        Link.Get(Database::"Incoming Document Attachment", AttachmentId);
+        LibraryAssert.AreEqual('Xfile.txt', Link."Storage Path", 'The link must remain under its original root.');
+        LibraryAssert.AreEqual(BeforeCalls, MockState.GetWriteCalls(), 'No remote move may start.');
+        LibraryAssert.AreEqual('original', StoredText('Xroot/Xfile.txt'), 'The source must remain readable.');
+        LibraryAssert.IsFalse(MockState.HasFile('Xoutside.txt'), 'No destination may be created.');
+    end;
+
+    /// <summary>Ordinal identity keeps case-distinct and Unicode-distinct keys and literal filter characters separate.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC01_CaseAndLiteralKeys_PreserveDistinctFiles()
+    var
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+        AttachmentId: Guid;
+    begin
+        // Story #75, AC01 | Time: none | Risk: AL text/database collation cannot define Blob identity.
+        Initialize();
+        AttachmentId := CreateLinked('Xdir/XÁ*.txt');
+        AssertSuccess(Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest('Xdir/Xá*.txt', 'different')));
+        LibraryAssert.IsFalse(RequestMgt.PathsEqual('XÁ', 'Xá', true), 'Ordinal comparison must distinguish Unicode case.');
+        LibraryAssert.AreEqual('different', StoredText('Xdir/Xá*.txt'), 'Case-distinct key must retain its own content.');
+        AssertLinkedContent(AttachmentId, 'Xdir/XÁ*.txt');
+        AssertRefusal(Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest('/Xdir/XÁ*.txt/', 'bad')), 'PreconditionFailed');
+        AssertLinkedContent(AttachmentId, 'Xdir/XÁ*.txt');
+    end;
+
+    /// <summary>Provider budget validation distinguishes the complete Blob name and File Share components.</summary>
+    [Test]
+    procedure Scenario_AC03_ProviderBudgets_RejectExactOverlimits()
+    var
+        Argument: Record "Message Argument ori" temporary;
+        Provider: Codeunit "Storage Ext File Impl ori";
+        PathLength: Integer;
+        DirectoryPath: Text;
+    begin
+        // Story #75, AC03 | Time: none | Risk: pure budgets do not prove account root mapping or access.
+        for PathLength := 1023 to 1025 do begin
+            Clear(Argument);
+            Provider.CheckProviderBudget(Argument, 4560, 'path', PadStr('X', PathLength, 'a'), false);
+            LibraryAssert.AreEqual(PathLength > 1024, Argument.HasCollectedErrors(), 'Blob complete-name boundary must be exact.');
+        end;
+        for PathLength := 399 to 401 do begin
+            Clear(Argument);
+            Provider.CheckProviderBudget(Argument, 4580, 'path', PadStr('X', PathLength, 'a'), false);
+            LibraryAssert.AreEqual(PathLength > 400, Argument.HasCollectedErrors(), 'SharePoint complete decoded path boundary must be exact.');
+        end;
+        for PathLength := 254 to 256 do begin
+            Clear(Argument);
+            Provider.CheckProviderBudget(Argument, 4570, 'path', PadStr('X', PathLength, 'a'), false);
+            LibraryAssert.AreEqual(PathLength > 255, Argument.HasCollectedErrors(), 'File Share component boundary must be exact.');
+        end;
+        for PathLength := 2047 to 2049 do begin
+            Clear(Argument);
+            Provider.CheckProviderBudget(Argument, 4570, 'path', LongPath(PathLength), false);
+            LibraryAssert.AreEqual(PathLength > 2048, Argument.HasCollectedErrors(), 'File Share complete pathname boundary must be exact.');
+        end;
+        DirectoryPath := 'X';
+        for PathLength := 2 to 251 do begin
+            DirectoryPath += '/X';
+            if PathLength >= 249 then begin
+                Clear(Argument);
+                Provider.CheckProviderBudget(Argument, 4570, 'path', DirectoryPath, true);
+                LibraryAssert.AreEqual(PathLength > 250, Argument.HasCollectedErrors(), 'A directory path has no final file component exemption.');
+            end;
+        end;
+        Clear(Argument);
+        Provider.CheckProviderBudget(Argument, 4570, 'path', 'Xdir/Xfile.', false);
+        LibraryAssert.IsTrue(Argument.HasCollectedErrors(), 'Trailing-dot aliases require prewrite refusal.');
+    end;
+
+    /// <summary>A copy-stage failure rolls back links while retaining source readability and exposing the duplicate.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC04_PostCopyFault_RetainsReadableSourceAndDuplicate()
+    var
+        MockState: Codeunit "Storage Mock State";
+        AttachmentId: Guid;
+    begin
+        // Story #75, AC04 | Time: none | Risk: mock outcome is not a provider recovery guarantee.
+        Initialize();
+        AttachmentId := CreateLinked('Xfile.txt');
+        MockState.FailMoveAfterCopy();
+        asserterror Execute(Enum::"Message Type ori"::"Storage.File.Move", TransferRequest('Xfile.txt', 'Xcopy.txt'));
+        LibraryAssert.ExpectedError('Injected failure after move copy.');
+        AssertLinkedContent(AttachmentId, 'Xfile.txt');
+        LibraryAssert.AreEqual('original', StoredText('Xcopy.txt'), 'The extra copy is an explicit cleanup obligation, not an atomic rollback.');
+        // Recovery is an explicit caller decision on a known test-owned unlinked copy, not automatic compensation.
+        AssertSuccess(Execute(Enum::"Message Type ori"::"Storage.File.Delete", PathRequest('Xcopy.txt')));
+        LibraryAssert.IsFalse(MockState.HasFile('Xcopy.txt'), 'Explicit cleanup removes the test-owned duplicate.');
+        AssertLinkedContent(AttachmentId, 'Xfile.txt');
+    end;
+
+    local procedure InsertAlias(StorageCode: Code[20]; BasePath: Text[250]; Enabled: Boolean)
+    var
+        StorageSetup: Record "Storage Setup ori";
+    begin
+        StorageSetup.Init();
+        StorageSetup.Code := StorageCode;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Base Path" := BasePath;
+        StorageSetup.Enabled := Enabled;
+        StorageSetup.Insert();
     end;
 
     local procedure Initialize()
