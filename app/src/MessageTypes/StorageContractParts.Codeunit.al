@@ -348,8 +348,6 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('columnDefs', 'array', 'Column definitions.'));
                     Fields.Add(ContractMgt.ResponseField('mappings', 'array', 'Field mappings.'));
                 end;
-            'DataExchange.Type.List':
-                Fields.Add(ContractMgt.ResponseField('types', 'array', 'Data Exchange Type rows.'));
             'DataExchange.Entry.List':
                 begin
                     Fields.Add(ContractMgt.ResponseField('skip', 'integer', PagingSkipLbl));

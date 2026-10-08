@@ -490,44 +490,44 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
     [Test]
     procedure Scenario_AC03_ProviderBudgets_RejectExactOverlimits()
     var
-        Argument: Record "Message Argument ori" temporary;
+        TempArgument: Record "Message Argument ori" temporary;
         Provider: Codeunit "Storage Ext File Impl ori";
         PathLength: Integer;
         DirectoryPath: Text;
     begin
         // Story #75, AC03 | Time: none | Risk: pure budgets do not prove account root mapping or access.
         for PathLength := 1023 to 1025 do begin
-            Clear(Argument);
-            Provider.CheckProviderBudget(Argument, 4560, 'path', PadStr('X', PathLength, 'a'), false);
-            LibraryAssert.AreEqual(PathLength > 1024, Argument.HasCollectedErrors(), 'Blob complete-name boundary must be exact.');
+            Clear(TempArgument);
+            Provider.CheckProviderBudget(TempArgument, 4560, 'path', PadStr('X', PathLength, 'a'), false);
+            LibraryAssert.AreEqual(PathLength > 1024, TempArgument.HasCollectedErrors(), 'Blob complete-name boundary must be exact.');
         end;
         for PathLength := 399 to 401 do begin
-            Clear(Argument);
-            Provider.CheckProviderBudget(Argument, 4580, 'path', PadStr('X', PathLength, 'a'), false);
-            LibraryAssert.AreEqual(PathLength > 400, Argument.HasCollectedErrors(), 'SharePoint complete decoded path boundary must be exact.');
+            Clear(TempArgument);
+            Provider.CheckProviderBudget(TempArgument, 4580, 'path', PadStr('X', PathLength, 'a'), false);
+            LibraryAssert.AreEqual(PathLength > 400, TempArgument.HasCollectedErrors(), 'SharePoint complete decoded path boundary must be exact.');
         end;
         for PathLength := 254 to 256 do begin
-            Clear(Argument);
-            Provider.CheckProviderBudget(Argument, 4570, 'path', PadStr('X', PathLength, 'a'), false);
-            LibraryAssert.AreEqual(PathLength > 255, Argument.HasCollectedErrors(), 'File Share component boundary must be exact.');
+            Clear(TempArgument);
+            Provider.CheckProviderBudget(TempArgument, 4570, 'path', PadStr('X', PathLength, 'a'), false);
+            LibraryAssert.AreEqual(PathLength > 255, TempArgument.HasCollectedErrors(), 'File Share component boundary must be exact.');
         end;
         for PathLength := 2047 to 2049 do begin
-            Clear(Argument);
-            Provider.CheckProviderBudget(Argument, 4570, 'path', LongPath(PathLength), false);
-            LibraryAssert.AreEqual(PathLength > 2048, Argument.HasCollectedErrors(), 'File Share complete pathname boundary must be exact.');
+            Clear(TempArgument);
+            Provider.CheckProviderBudget(TempArgument, 4570, 'path', LongPath(PathLength), false);
+            LibraryAssert.AreEqual(PathLength > 2048, TempArgument.HasCollectedErrors(), 'File Share complete pathname boundary must be exact.');
         end;
         DirectoryPath := 'X';
         for PathLength := 2 to 251 do begin
             DirectoryPath += '/X';
             if PathLength >= 249 then begin
-                Clear(Argument);
-                Provider.CheckProviderBudget(Argument, 4570, 'path', DirectoryPath, true);
-                LibraryAssert.AreEqual(PathLength > 250, Argument.HasCollectedErrors(), 'A directory path has no final file component exemption.');
+                Clear(TempArgument);
+                Provider.CheckProviderBudget(TempArgument, 4570, 'path', DirectoryPath, true);
+                LibraryAssert.AreEqual(PathLength > 250, TempArgument.HasCollectedErrors(), 'A directory path has no final file component exemption.');
             end;
         end;
-        Clear(Argument);
-        Provider.CheckProviderBudget(Argument, 4570, 'path', 'Xdir/Xfile.', false);
-        LibraryAssert.IsTrue(Argument.HasCollectedErrors(), 'Trailing-dot aliases require prewrite refusal.');
+        Clear(TempArgument);
+        Provider.CheckProviderBudget(TempArgument, 4570, 'path', 'Xdir/Xfile.', false);
+        LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'Trailing-dot aliases require prewrite refusal.');
     end;
 
     /// <summary>A copy-stage failure rolls back links while retaining source readability and exposing the duplicate.</summary>
@@ -562,6 +562,23 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         StorageSetup."Base Path" := BasePath;
         StorageSetup.Enabled := Enabled;
         StorageSetup.Insert();
+    end;
+
+    /// <summary>A direct move-helper call cannot silently truncate a stored link path.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC03_DirectMoveOverlong_PreservesLinkAndContent()
+    var
+        AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
+        AttachmentId: Guid;
+    begin
+        // Story #75, AC03 | Time: none | Risk: public helper called without message preflight.
+        Initialize();
+        AttachmentId := CreateLinked('Xdir/Xfile.txt');
+        Commit();
+        asserterror AttachmentMgt.UpdateMovedStorageFile(MockCodeTok, 'Xdir/Xfile.txt', PadStr('X', 2049, 'a'));
+        LibraryAssert.AreNotEqual('', GetLastErrorText(), 'Overlong path must raise an actionable refusal.');
+        AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
     end;
 
     local procedure Initialize()

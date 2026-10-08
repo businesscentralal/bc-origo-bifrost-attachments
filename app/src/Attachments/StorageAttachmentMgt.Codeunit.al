@@ -142,8 +142,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         Link."Table ID" := TableId;
         Link."Record System Id" := RecSystemId;
         Link."Storage Code" := StorageSetup."Code";
-        Link."Storage Path" := Path;
-        Link."File Name" := FileName;
+        Link."Storage Path" := CopyStr(Path, 1, MaxStrLen(Link."Storage Path"));
+        Link."File Name" := CopyStr(FileName, 1, MaxStrLen(Link."File Name"));
         Link."Content Size" := TempBlob.Length();
         Link."Inc. Doc. Entry No." := EntryNo;
         Link."Inc. Doc. Line No." := LineNo;
@@ -153,9 +153,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
 
         ClearAttachment(Target, RecSystemId);
 
-        Connector.CreateFile(StorageSetup, Path, TempBlob);
         if Target = Target::DocumentAttachment then
             SetNativeExternalStorageFields(RecSystemId, StorageSetup.Code, Path);
+        // Native field persistence can fail; complete it before the irreversible upload.
+        Connector.CreateFile(StorageSetup, Path, TempBlob);
 
         if TaskScheduler.CanCreateTask() then
             TaskScheduler.CreateTask(Codeunit::"Media Cleanup Runner", 0, true, CompanyName, CurrentDateTime() + 5000);
@@ -295,8 +296,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         Link."Table ID" := Database::"Incoming Document Attachment";
         Link."Record System Id" := IncomingDocumentAttachment.SystemId;
         Link."Storage Code" := StorageSetup."Code";
-        Link."Storage Path" := StoragePath;
-        Link."File Name" := FileName;
+        Link."Storage Path" := CopyStr(StoragePath, 1, MaxStrLen(Link."Storage Path"));
+        Link."File Name" := CopyStr(FileName, 1, MaxStrLen(Link."File Name"));
         Link."Content Size" := TempBlob.Length();
         Link."Inc. Doc. Entry No." := IncomingDocumentAttachment."Incoming Document Entry No.";
         Link."Inc. Doc. Line No." := IncomingDocumentAttachment."Line No.";
@@ -393,8 +394,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             Link."Table ID" := Database::"Document Attachment";
             Link."Record System Id" := DocumentAttachment.SystemId;
             Link."Storage Code" := StorageSetup."Code";
-            Link."Storage Path" := StoragePath;
-            Link."File Name" := FileName;
+            Link."Storage Path" := CopyStr(StoragePath, 1, MaxStrLen(Link."Storage Path"));
+            Link."File Name" := CopyStr(FileName, 1, MaxStrLen(Link."File Name"));
             Link."Content Size" := TempBlob.Length();
             Link."Offloaded At" := CurrentDateTime();
             Link."Offloaded By" := UserSecurityId();
@@ -864,7 +865,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     procedure UpdateMovedStorageFile(StorageCode: Code[20]; SourcePath: Text; TargetPath: Text)
     var
         Link: Record "Storage Attachment Link ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Reader: Codeunit "Storage Request Reader ori";
         LinkTargetPath: Text;
+        MovePathTooLongErr: Label 'The destination path exceeds the attachment link capacity.', Comment = 'is-IS=Áfangaslóðin er lengri en viðhengjatengingin leyfir.';
     begin
         Link.ReadIsolation := IsolationLevel::UpdLock;
         if not FindLinkedStorageFile(StorageCode, SourcePath, Link) then
@@ -872,7 +876,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         repeat
             if LinkMatches(Link, StorageCode, SourcePath, false) then begin
                 LinkTargetPath := RelativeMovedPath(Link, StorageCode, TargetPath);
-                Link."Storage Path" := LinkTargetPath;
+                // Public callers must not bypass the path capacity checked by the message preflight.
+                if not Reader.CheckTextLength(TempArgument, 'targetPath', LinkTargetPath, MaxStrLen(Link."Storage Path")) then
+                    TempArgument.RaiseCollectedErrors("Bifrost Error Code ori"::InvalidParameter, MovePathTooLongErr);
+                Link."Storage Path" := CopyStr(LinkTargetPath, 1, MaxStrLen(Link."Storage Path"));
                 Link.Modify(true);
                 if Link."Table ID" = Database::"Document Attachment" then
                     UpdateNativeMovedPath(Link."Record System Id", Link."Storage Code", LinkTargetPath);
@@ -927,9 +934,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     var
         Reader: Codeunit "Storage Request Reader ori";
         Provider: Codeunit "Storage Ext File Impl ori";
-        NativeModule: ModuleInfo;
         RecRef: RecordRef;
         ExternalFilePathFld: FieldRef;
+        NativeModule: ModuleInfo;
         NativeModuleId: Guid;
     begin
         if TableId <> Database::"Document Attachment" then
@@ -1290,7 +1297,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             exit;
         if not RecRef.GetBySystemId(RecSystemId) then
             exit;
-        if not TryAssignNativeExternalStorageFields(RecRef, StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld, true, StorageCode, Path) then
+        if TryAssignNativeExternalStorageFields(StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld, true, StorageCode, Path) then
+            // Persist only after the field-assignment TryFunction has returned successfully.
+            RecRef.Modify(true)
+        else
             LogNativeFieldMirrorFailure(RecSystemId, GetLastErrorText());
     end;
 
@@ -1309,7 +1319,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             exit;
         if not RecRef.GetBySystemId(RecSystemId) then
             exit;
-        if not TryAssignNativeExternalStorageFields(RecRef, StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld, false, '', '') then
+        if TryAssignNativeExternalStorageFields(StoredExternallyFld, ExternalUploadDateFld, ExternalFilePathFld, StoredInternallyFld, false, '', '') then
+            // Persist only after the field-assignment TryFunction has returned successfully.
+            RecRef.Modify(true)
+        else
             LogNativeFieldMirrorFailure(RecSystemId, GetLastErrorText());
     end;
 
@@ -1334,7 +1347,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     end;
 
     [TryFunction]
-    local procedure TryAssignNativeExternalStorageFields(var RecRef: RecordRef; var StoredExternallyFld: FieldRef; var ExternalUploadDateFld: FieldRef; var ExternalFilePathFld: FieldRef; var StoredInternallyFld: FieldRef; Offloaded: Boolean; StorageCode: Code[20]; Path: Text)
+    local procedure TryAssignNativeExternalStorageFields(var StoredExternallyFld: FieldRef; var ExternalUploadDateFld: FieldRef; var ExternalFilePathFld: FieldRef; var StoredInternallyFld: FieldRef; Offloaded: Boolean; StorageCode: Code[20]; Path: Text)
     begin
         StoredExternallyFld.Value := Offloaded;
         if Offloaded then
@@ -1346,7 +1359,6 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         else
             ExternalFilePathFld.Value := '';
         StoredInternallyFld.Value := not Offloaded;
-        RecRef.Modify(true);
     end;
 
     local procedure LogNativeFieldMirrorFailure(RecSystemId: Guid; ErrorText: Text)

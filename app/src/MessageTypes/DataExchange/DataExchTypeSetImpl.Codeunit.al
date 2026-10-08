@@ -7,6 +7,12 @@ using System.IO;
 codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
+    TableNo = "Message Argument ori";
+
+    trigger OnRun()
+    begin
+        SetType(Rec);
+    end;
 
     /// <summary>Reports whether the current user has the table permission required by this message.</summary>
     procedure IsEnabled(): Boolean
@@ -24,81 +30,79 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
 
     /// <summary>Describes the existing message operation.</summary>
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Creates or updates a Data Exchange Type and requires an import definition.', Comment = 'is-IS=Stofnar eða uppfærir gerð gagnaskipta og krefst innflutningsskilgreiningar.';
     begin
-        exit('Creates or updates a Data Exchange Type and requires an import definition.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>Returns the discovery terms for this message type.</summary>
     procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'data exchange type, incoming document type, set definition', Comment = 'is-IS=gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu';
     begin
-        exit('data exchange type, incoming document type, set definition');
+        exit(KeywordsLbl);
     end;
 
     /// <summary>Describes when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Wires a Data Exchange Type to an import definition.', Comment = 'is-IS=Tengir gerð gagnaskipta við innflutningsskilgreiningu.';
     begin
-        exit('Wires a Data Exchange Type to an import definition.');
+        exit(SelectionDescriptionLbl);
     end;
 
     /// <summary>Declares the existing message name and supported version.</summary>
     procedure GetEnvelope(var Envelope: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Envelope.Add('messageType', 'DataExchange.Type.Set');
-        Envelope.Add('version', 1);
+        Envelope := ContractParts.GetEnvelope(true);
         exit(true);
     end;
 
     /// <summary>Declares the Microsoft table targeted by this message.</summary>
     procedure GetTarget(var Target: JsonArray): Boolean
     var
-        TargetJson: JsonObject;
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        TargetJson.Add('table', 'Data Exchange Type');
-        Target.Add(TargetJson);
+        Target := ContractParts.GetDataExchangeTarget('DataExchange.Type.Set');
         exit(true);
     end;
 
     /// <summary>Declares the request parameters consumed by this message.</summary>
     procedure GetParameters(var Parameters: JsonArray): Boolean
     var
-        ParameterJson: JsonObject;
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        ParameterJson.Add('name', 'code');
-        ParameterJson.Add('type', 'code');
-        ParameterJson.Add('required', true);
-        Parameters.Add(ParameterJson);
-        Clear(ParameterJson);
-        ParameterJson.Add('name', 'dataExchDefCode');
-        ParameterJson.Add('type', 'code');
-        ParameterJson.Add('required', true);
-        Parameters.Add(ParameterJson);
+        Parameters := ContractParts.GetParameters('DataExchange.Type.Set');
         exit(true);
     end;
 
     /// <summary>Describes the existing response fields.</summary>
     procedure GetResponse(var Response: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Response.Add('status', 'Success');
-        Response.Add('code', '');
+        Response := ContractParts.GetResponse('DataExchange.Type.Set');
         exit(true);
     end;
 
     /// <summary>Describes the existing refusal conditions.</summary>
     procedure GetErrors(var Errors: JsonArray): Boolean
     var
-        ErrorJson: JsonObject;
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        ErrorJson.Add('code', 'InvalidParameter');
-        ErrorJson.Add('when', 'the definition is not an import definition');
-        Errors.Add(ErrorJson);
+        Errors := ContractParts.GetErrors('DataExchange.Type.Set');
         exit(true);
     end;
 
     /// <summary>Declares the effects of this operation.</summary>
     procedure GetEffect(var Effect: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Effect.Add('writes', 'Data Exchange Type');
-        Effect.Add('posts', false);
+        Effect := ContractParts.GetEffect('DataExchange.Type.Set');
         exit(true);
     end;
 
@@ -148,46 +152,57 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         exit(Enum::"Msg Direction ori"::Inbound);
     end;
 
-    /// <summary>Executes the existing Data Exchange operation and writes its response to the argument.</summary>
+    /// <summary>Validates raw inputs before any write, preserving the caller transaction on execution failure.</summary>
+    /// <param name="Argument">The licensed request and response.</param>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
-    var
-        DataExchangeType: Record "Data Exchange Type";
-        DataExchDef: Record "Data Exch. Def";
-        RequestJson: JsonObject;
-        ResponseJson: JsonObject;
-        Token: JsonToken;
-        TypeCode: Code[20];
-        DefinitionCode: Code[20];
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
-        RequestJson := Argument.GetRequestJson();
-        if not RequestJson.Get('code', Token) then begin
-            Argument.RespondWithError('code is required.');
-            exit;
+        // No Boolean return: preserve the caller transaction and propagate postwrite errors.
+        Codeunit.Run(Codeunit::"DataExch Type Set Impl ori", Argument);
+    end;
+
+    local procedure SetType(var Argument: Record "Message Argument ori")
+    var
+        DataExchangeType: Record "Data Exchange Type";
+        DataExchDef: Record "Data Exch. Def";
+        Reader: Codeunit "Storage Request Reader ori";
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        DefinitionCode: Code[20];
+        TypeCode: Code[20];
+        Description: Text;
+        NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
+        InvalidKindErr: Label 'The definition kind is not accepted by this operation.', Comment = 'is-IS=Þessi aðgerð tekur ekki við tegund skilgreiningarinnar.';
+        ExpectedLbl: Label 'an existing Generic Import definition', Comment = 'is-IS=fyrirliggjandi Generic Import-skilgreining';
+        SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and select a definition of an accepted kind using its exact code.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og veldu skilgreiningu af leyfðri tegund með nákvæmum kóða hennar.';
+    begin
+        if Reader.ReadMutationRequest(Argument, RequestJson) then begin
+            Reader.ReadMutationCode(Argument, RequestJson, 'code', TypeCode);
+            Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefinitionCode);
+            Reader.ReadMutationText(Argument, RequestJson, 'description', false, MaxStrLen(DataExchangeType.Description), Description);
         end;
-        TypeCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(TypeCode));
-        if not RequestJson.Get('dataExchDefCode', Token) then begin
-            Argument.RespondWithError('dataExchDefCode is required.');
+        if Reader.RespondIfErrors(Argument) then
             exit;
-        end;
-        DefinitionCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefinitionCode));
-        if not DataExchDef.Get(DefinitionCode) then begin
-            Argument.RespondWithError('Data exchange definition ' + DefinitionCode + ' was not found.');
+        DataExchDef.SetLoadFields(Type);
+        DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
+        if not DataExchDef.Get(DefinitionCode) then
+            Argument.AddError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(NotFoundErr, DefinitionCode), 'dataExchDefCode', DefinitionCode, ExpectedLbl, SelectDefinitionLbl)
+        else
+            // Preserve the shipped predicate, including Payroll Import handling.
+            if DataExchDef.Type <> DataExchDef.Type::"Generic Import" then
+                Argument.AddError("Bifrost Error Code ori"::InvalidParameter, InvalidKindErr, 'dataExchDefCode', DefinitionCode, ExpectedLbl, SelectDefinitionLbl);
+        if Reader.RespondIfErrors(Argument) then
             exit;
-        end;
-        if DataExchDef.Type <> DataExchDef.Type::"Generic Import" then begin
-            Argument.RespondWithError('definition must be an import definition');
-            exit;
-        end;
+        DataExchangeType.ReadIsolation := IsolationLevel::UpdLock;
         if not DataExchangeType.Get(TypeCode) then begin
             DataExchangeType.Init();
             DataExchangeType.Code := TypeCode;
             DataExchangeType.Insert(true);
         end;
         DataExchangeType.Validate("Data Exch. Def. Code", DefinitionCode);
-        if RequestJson.Get('description', Token) then
-            DataExchangeType.Description := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DataExchangeType.Description));
+        if RequestJson.Contains('description') then
+            DataExchangeType.Description := CopyStr(Description, 1, MaxStrLen(DataExchangeType.Description));
         DataExchangeType.Modify(true);
         ResponseJson.Add('status', 'Success');
         ResponseJson.Add('code', DataExchangeType.Code);

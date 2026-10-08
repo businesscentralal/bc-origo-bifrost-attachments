@@ -30,6 +30,11 @@ Data Exchange read requests do not need a storage connection. For example,
 0–1000, and omitted or zero uses 100. Invalid values are reported together with
 `code`, `parameter`, `received`, `expected` and an actionable `nextStep`.
 
+`DataExchange.Export.Run` creates a named Data Exchange header; it does not generate or upload a file.
+`DataExchange.Type.Set` binds a Generic Import definition to a type. Both operations reject
+malformed or overlong inputs before writing, and preserve the caller transaction on execution failure.
+Omitting `description` in Type.Set preserves its existing value; an empty string clears it.
+
 For uploads destined for a record, omit `storageCode` in `Storage.Upload.Begin` and finish with
 `Storage.Upload.CommitToRecord`. A storage destination requires a connection.
 `Storage.Attachment.CreateForRecord` accepts one content source: `contentBase64` (or `content`),
@@ -344,6 +349,9 @@ credentials — this app only stores a registered File Account id.
 ---
 
 ## Development
+
+- Inventory #80 candidate receipts with [the offline collector](tools/CandidateEvidence.md).
+  Its local consistency result does not certify a runner or release.
 
 Story #79 adds test codeunit `Storage 79 Perm Tests ori` (96218) with 28 permission-enabled
 regressions and 13 test-only permission sets (96218–96222, 96227–96234). All 120 existing
