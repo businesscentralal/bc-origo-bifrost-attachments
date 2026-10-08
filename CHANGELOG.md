@@ -1,3 +1,5 @@
+
+
 # Changelog
 
 All notable changes to Bifrost Attachments are documented here.
@@ -5,6 +7,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+
+
 
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
 

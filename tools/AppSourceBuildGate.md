@@ -176,12 +176,15 @@ transient compiler consumption nor signature trust.
 The complete compiler catalog is preserved and measured independently from the
 actual `appSymbolsFolder` package cache. The genuine helper receives its original
 folders and parameters. No package is pruned and no private compiler view is used.
-The catalog limit is 256 packages and 1 GiB aggregate; the app cache limit is
+The catalog limit is 256 packages and 1 GiB aggregate on disk; the app cache limit is
 128 packages and 512 MiB aggregate, including preexisting inputs and the output
 copy. Each package is limited to 128 MiB on disk and a 16 MiB manifest. The generic
 profile permits 128 MiB expanded content and 4096 ZIP entries; only the exact
 measured Base identity/hash below permits 512 MiB expanded content and 16384
-entries. Aggregate expanded bytes use the same folder limit.
+entries. The catalog has a separate 4 GiB expanded-work bound; the app cache keeps
+its 512 MiB expanded bound. The retained BC29 sample requires 1,863,664,153 bytes
+of wrapper plus embedded-app expansion. These finite bounds do not certify the
+complete runner catalog.
 Each full inventory has a 60 second elapsed budget with checks between 1 MiB reads.
 These finite design limits are **not validated Windows runner capacity**. Actual
 catalog/cache metadata, bytes, hashes, exact folders and dependency resolution
@@ -265,9 +268,25 @@ explicit and never certifies a complete inventory. The 129-distinct-package
 regression mutates genuine compiler fixtures; it is diagnostic test evidence.
 
 The approved `latestBuild` workflow-artifact pin `1.0.3.530` (containing app
-`28.0.3.530`) is applied in settings. Failure-only receipt upload requires current
-pipeline-owner adoption and infrastructure review. The artifact pin does not
+`28.0.3.530`) is applied in settings. The user-authorized completion also applies
+failure-only upload of bounded rejected-input receipts. The artifact pin does not
 replace any exact candidate checks. Historical run37697457309 package bytes were not retained;
 its manifest layout cannot be inferred from source samples. Fresh runner capture
 must preserve exact run/source identity and rejected/consumed bytes in protected
 custody before a format-policy change is considered.
+
+## ReadyToRun dependency envelopes
+
+Dependency inventories accept a ReadyToRun envelope only when its explicit
+manifest identifies one bounded embedded NAVX package. The envelope and embedded
+package retain separate hashes; their identities must match, both expansions
+consume the finite inventory budget, and duplicate/ambiguous/nested/injected
+inputs are rejected. This does not accept ReadyToRun shipping output or certify
+signature trust. The retained Microsoft Any and Base Application wrappers are
+genuine regression fixtures, not substitutes for a fresh complete runner capture.
+
+`Test-AppSourceBuildGate.ps1` also requires `ReadyToRunAnyPackage`,
+`EmbeddedAnyPackage`, and `ReadyToRunBasePackage`; it runs the envelope regressions
+alongside the original gate and symbol-policy suites. The combined exact-source
+tooling run passed 92 tests (45 gate, 10 policy, 15 envelopes, 22 staging), with
+zero skips. Application CI and BC runtime verification remain separate.
