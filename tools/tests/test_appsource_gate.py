@@ -81,6 +81,11 @@ class Parameters(unittest.TestCase):
     def test_committed_settings_and_supported_hook_entrypoints(self):
         root = Path(__file__).parents[2]
         settings = json.loads((root / ".AL-Go/settings.json").read_text())
+        foundation_probing = settings["appDependencyProbingPaths"]
+        self.assertEqual(1, len(foundation_probing))
+        self.assertEqual("https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core", foundation_probing[0]["repo"])
+        self.assertEqual("latestBuild", foundation_probing[0]["release_status"])
+        self.assertEqual("1.0.3.530", foundation_probing[0]["version"])
         for key in ("enableCodeCop", "enableUICop", "enableCodeAnalyzersOnTestApps"):
             self.assertIs(True, settings[key])
         self.assertEqual("warning", settings["failOn"])
@@ -118,6 +123,8 @@ class GenuinePackages(unittest.TestCase):
         # Missing real fixtures is a FAILURE, never a skipped/passing test.
         cls.fixtures = Path(os.environ["APPSOURCE_GATE_FIXTURES"])
         cls.foundation = Path(os.environ["APPSOURCE_GATE_FOUNDATION"])
+        cls.foundation_candidate = Path(os.environ["APPSOURCE_GATE_FOUNDATION530"])
+        G.check_foundation_candidate(G.package_info(cls.foundation_candidate))
         for name in ("default", "friend", "wrongFriend", "testApp"):
             G.package_info(cls.fixtures / (name + ".app"))
         cls.default = G.package_info(cls.fixtures / "default.app")
@@ -239,7 +246,7 @@ class GenuinePackages(unittest.TestCase):
         symbols = self.root / "symbols"
         symbols.mkdir()
         (self.root / 'compiler-symbols').mkdir()
-        shutil.copy2(self.foundation, symbols / "Foundation.app")
+        shutil.copy2(self.foundation_candidate, symbols / "Foundation.app")
         (self.root / "BuildOutput.txt").write_text(log())
         return context
 
@@ -453,6 +460,10 @@ class GenuinePackages(unittest.TestCase):
     def test_fresh_cache_helper_preparation_addition_and_output_delta(self):
         context = self.state()
         shutil.copy2(self.fixtures / 'testApp.app', self.root / 'compiler-symbols/Transitive.app')
+        manifest_path = self.root / "app/app.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["dependencies"] = [G.package_info(self.fixtures / "testApp.app")["identity"]]
+        manifest_path.write_text(json.dumps(manifest))
         request = self.request(context)
         shutil.copy2(self.root / 'compiler-symbols/Transitive.app', self.root / 'symbols/Transitive.app')
         receipt = G.post_compile(self.root, request)
@@ -462,7 +473,7 @@ class GenuinePackages(unittest.TestCase):
         self.assertFalse(boundaries['consumedInputsCertified'])
 
     def test_changed_foundation_or_preexisting_dependency_refused(self):
-        for name, original, replacement in [('Foundation.app', self.foundation, self.fixtures / 'testApp.app'),
+        for name, original, replacement in [('Foundation.app', self.foundation_candidate, self.fixtures / 'testApp.app'),
                                              ('Dependency.app', self.fixtures / 'testApp.app', self.fixtures / 'wrongFriend.app')]:
             with self.subTest(name=name):
                 context = self.state() if not hasattr(self, 'context') else self.context
@@ -574,9 +585,9 @@ class GenuinePackages(unittest.TestCase):
     def test_rejection_count_and_byte_bounds_report_truncation(self):
         self.state()
         folder = self.root / "compiler-symbols"
-        for index in range(129):
+        for index in range(257):
             (folder / f"{index:03}.app").write_bytes(b"bad")
-        with self.assertRaisesRegex(G.GateError, "128 packages"):
+        with self.assertRaisesRegex(G.GateError, "256 packages"):
             G.before_compile(self.root, self.rejection_request())
         receipt = self.rejection_receipt()
         self.assertEqual(128, len(receipt["inputs"]))
@@ -605,6 +616,39 @@ class GenuinePackages(unittest.TestCase):
         self.assertEqual(2, len(items))
         self.assertEqual([G.file_hash(self.foundation)] * 2, [i["sha256"] for i in items])
 
+    def test_manifest_rejection_after_receipt_cap_retains_offending_hash(self):
+        self.state()
+        folder = self.root / "compiler-symbols"
+        # Mutate genuine compiler-produced fixtures into distinct parser inputs.
+        # These are diagnostic regressions, never valid deployment evidence.
+        import xml.etree.ElementTree as ET
+        import uuid
+        for index in range(129):
+            def unique(entries):
+                result = []
+                for name, content in entries:
+                    if name == "NavxManifest.xml":
+                        manifest = ET.fromstring(content)
+                        manifest.find("{http://schemas.microsoft.com/navx/2015/manifest}App").set("Id", str(uuid.UUID(int=index + 1)))
+                        content = ET.tostring(manifest)
+                    result.append((name, content))
+                return result
+            shutil.move(self.malformed(unique), folder / f"{index:03}.app")
+        bad = folder / "zzz-offending.app"
+        shutil.move(self.malformed(lambda entries: [(n, b) for n, b in entries if n != "NavxManifest.xml"]), bad)
+        with self.assertRaisesRegex(G.GateError, "Missing/duplicate NAVX manifest"):
+            G.before_compile(self.root, self.rejection_request())
+        receipt = self.rejection_receipt()
+        self.assertTrue(receipt["truncated"])
+        self.assertEqual(128, len(receipt["inputs"]))
+        item = receipt["inputs"][0]
+        self.assertEqual(str(bad), item["path"])
+        self.assertEqual("compilerSymbolsFolder", item["sourceFolder"])
+        self.assertEqual(G.file_hash(bad), item["sha256"])
+        self.assertTrue(item["triggeredRejection"])
+        self.assertFalse(item["manifestValid"])
+        self.assertFalse(receipt["accepted"])
+
     def test_rejection_receipt_io_failure_preserves_original_gate_error(self):
         self.state()
         (self.root / "compiler-symbols/Bad.app").write_bytes(b"bad")
@@ -615,7 +659,8 @@ class GenuinePackages(unittest.TestCase):
                     target = patch.object(G, operation, side_effect=OSError("inventory IO failed"))
                 else:
                     target = patch.object(Path, operation, side_effect=OSError("receipt IO failed"))
-                with target, self.assertRaisesRegex(G.GateError, "Invalid NAVX header"):
+                expected_error = "Invalid compiled NAVX payload/manifest" if operation == "file_hash" else "Invalid NAVX header"
+            with target, self.assertRaisesRegex(G.GateError, expected_error):
                     G.before_compile(self.root, self.rejection_request())
 
     def test_inventory_cap_and_missing_folder_are_failures(self):
@@ -623,7 +668,7 @@ class GenuinePackages(unittest.TestCase):
             G.symbol_inventory(self.root / 'missing')
         folder = self.root / 'bounded'
         folder.mkdir()
-        for index in range(129):
+        for index in range(257):
             (folder / f'{index}.app').touch()
         with self.assertRaisesRegex(G.GateError, '128 packages'):
             G.symbol_inventory(folder)

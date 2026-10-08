@@ -26,22 +26,28 @@ codeunit 70013544 "DataExch Entry Del Impl ori" implements "Msg Interface ori", 
     /// <summary>Returns the message description.</summary>
     /// <returns>The message metadata value.</returns>
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Deletes a Data Exch. entry that is not referenced by an incoming document.', Comment = 'is-IS=Eyðir gagnaskiptafærslu sem ekki er vísað í úr innkomuskjali.';
     begin
-        exit('Deletes a Data Exch. entry that is not referenced by an incoming document.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>Returns discovery keywords for the message.</summary>
     /// <returns>The message metadata value.</returns>
     procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'data exchange delete, entry delete', Comment = 'is-IS=eyða gagnaskiptum, eyða færslu';
     begin
-        exit('data exchange delete, entry delete');
+        exit(KeywordsLbl);
     end;
 
     /// <summary>Returns the selection guidance for the message.</summary>
     /// <returns>The message metadata value.</returns>
     procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Deletes a Data Exch. entry and its fields.', Comment = 'is-IS=Eyðir gagnaskiptafærslu og reitum hennar.';
     begin
-        exit('Deletes a Data Exch. entry and its fields.');
+        exit(SelectionDescriptionLbl);
     end;
 
     /// <summary>Describes the supported message version and request content.</summary>
@@ -174,9 +180,9 @@ codeunit 70013544 "DataExch Entry Del Impl ori" implements "Msg Interface ori", 
         ResponseJson: JsonObject;
         Token: JsonToken;
         EntryNo: Integer;
-        MissingEntryErr: Label 'entryNo is required.', Locked = true;
-        NotFoundErr: Label 'Data Exch. entry %1 was not found.', Comment = '%1 = entry no.', Locked = true;
-        ReferencedErr: Label 'Data Exch. entry %1 is referenced by an incoming document.', Comment = '%1 = entry no.', Locked = true;
+        MissingEntryErr: Label 'entryNo is required.', Comment = 'is-IS=entryNo er nauðsynlegt.';
+        NotFoundErr: Label 'Data Exch. entry %1 was not found.', Comment = '%1 = entry no.||is-IS=Gagnaskiptafærsla %1 fannst ekki.';
+        ReferencedErr: Label 'Data Exch. entry %1 is referenced by an incoming document.', Comment = '%1 = entry no.||is-IS=Vísað er í gagnaskiptafærslu %1 úr innkomuskjali.';
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();

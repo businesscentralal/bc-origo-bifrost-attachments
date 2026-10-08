@@ -310,6 +310,17 @@ jobs:
           if-no-files-found: ignore
           retention-days: ${{ inputs.artifactsRetentionDays }}
 
+      - name: Publish artifacts - rejected AppSource input receipts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        env:
+          ACTIONS_RUNNER_DISABLE_NODE_MAGLEV: 1
+        if: failure() && inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/AppSourceGate/**/rejected-input.json',inputs.project)) != '')
+        with:
+          name: ${{ steps.calculateArtifactsNames.outputs.BuildOutputArtifactsName }}-RejectedAppSourceInputs
+          path: '${{ inputs.project }}/.buildartifacts/AppSourceGate/**/rejected-input.json'
+          if-no-files-found: error
+          retention-days: ${{ inputs.artifactsRetentionDays }}
+
       - name: Publish artifacts - build output
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         env:

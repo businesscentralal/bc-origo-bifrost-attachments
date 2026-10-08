@@ -419,7 +419,7 @@ codeunit 10035682 "Storage Request Reader ori"
         if not ReadMutationText(Argument, RequestJson, ParameterName, true, MaxStrLen(ParsedCode), RawText) then
             exit(false);
         // The raw bound was checked before this scratch conversion. Compare character ordinals, never AL text equality.
-        CanonicalCode := RawText;
+        CanonicalCode := CopyStr(RawText, 1, MaxStrLen(CanonicalCode));
         if not SameMutationCodeOrdinals(RawText, CanonicalCode) then begin
             Received := RawText;
             if StrLen(CanonicalCode) = 0 then begin
@@ -429,7 +429,7 @@ codeunit 10035682 "Storage Request Reader ori"
             Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(CanonicalErr, ParameterName), ParameterName, Received, CanonicalExpectedLbl, StrSubstNo(SendCanonicalLbl, CanonicalCode));
             exit(false);
         end;
-        ParsedCode := CanonicalCode;
+        ParsedCode := CopyStr(CanonicalCode, 1, MaxStrLen(ParsedCode));
         exit(true);
     end;
 
