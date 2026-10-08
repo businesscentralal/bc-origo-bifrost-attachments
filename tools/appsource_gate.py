@@ -205,7 +205,7 @@ def package_info(path, deadline=None, *, allow_ready_to_run=False):
                 require(len(names) == len(set(names)), "Duplicate package entries")
                 require(not ("NavxManifest.xml" in names and "readytorunappmanifest.json" in names),
                         "Ambiguous NAVX/ReadyToRun manifests")
-                if names.count("NavxManifest.xml") == 0 and allow_ready_to_run:
+            if names.count("NavxManifest.xml") == 0 and allow_ready_to_run and "readytorunappmanifest.json" in names:
                     return ready_to_run_info(path, before, archive, items, initial_hash, length,
                                              deadline, max_expanded, profile)
                 require(names.count("NavxManifest.xml") == 1, "Missing/duplicate NAVX manifest")

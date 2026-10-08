@@ -176,12 +176,15 @@ transient compiler consumption nor signature trust.
 The complete compiler catalog is preserved and measured independently from the
 actual `appSymbolsFolder` package cache. The genuine helper receives its original
 folders and parameters. No package is pruned and no private compiler view is used.
-The catalog limit is 256 packages and 1 GiB aggregate; the app cache limit is
+The catalog limit is 256 packages and 1 GiB aggregate on disk; the app cache limit is
 128 packages and 512 MiB aggregate, including preexisting inputs and the output
 copy. Each package is limited to 128 MiB on disk and a 16 MiB manifest. The generic
 profile permits 128 MiB expanded content and 4096 ZIP entries; only the exact
 measured Base identity/hash below permits 512 MiB expanded content and 16384
-entries. Aggregate expanded bytes use the same folder limit.
+entries. The catalog has a separate 4 GiB expanded-work bound; the app cache keeps
+its 512 MiB expanded bound. The retained BC29 sample requires 1,863,664,153 bytes
+of wrapper plus embedded-app expansion. These finite bounds do not certify the
+complete runner catalog.
 Each full inventory has a 60 second elapsed budget with checks between 1 MiB reads.
 These finite design limits are **not validated Windows runner capacity**. Actual
 catalog/cache metadata, bytes, hashes, exact folders and dependency resolution
