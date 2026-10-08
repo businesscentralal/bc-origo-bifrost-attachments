@@ -290,3 +290,17 @@ genuine regression fixtures, not substitutes for a fresh complete runner capture
 alongside the original gate and symbol-policy suites. The combined exact-source
 tooling run passed 92 tests (45 gate, 10 policy, 15 envelopes, 22 staging), with
 zero skips. Application CI and BC runtime verification remain separate.
+
+## Compiler artifact aliases
+
+Before the precompile catalog check, the collector measures the complete bounded
+compiler catalog and removes only Microsoft packages with identical `SymbolReference.json` and
+all manifest metadata (excluding only the build wall-clock timestamp and
+`TRANSLATIONFILE`/`LCGTRANSLATIONFILE` packaging flags) sharing an
+AppId/version. It prefers the versioned filename and records each retained/removed
+filename, identity, both package SHA-256 hashes and symbol SHA-256 in `<appType>-<kind>-catalog-normalization.json` and `before.json`.
+Every duplicate group is validated before deletion; conflicting compiler symbols/metadata or
+non-Microsoft duplicates fail. Unique unversioned libraries and different versions
+remain available. The app cache and postcompile catalog inventory remain strict;
+no diagnostic, analyzer or runtime test is suppressed. This receipt proves
+compiler-symbol equivalence, not runtime-package equivalence, Windows signature trust or successful product compilation.

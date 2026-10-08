@@ -269,6 +269,19 @@ def package_info(path, deadline=None, *, allow_ready_to_run=False):
                     dependencies.append(dep)
                 propagate = app.get("PropagateDependencies", "false").lower()
                 require(propagate in ("true", "false"), "Invalid PropagateDependencies")
+                # Build wall-clock timestamp is not a compiler input.
+                # Translation packaging flags also differ between platform and
+                # W1 artifacts without changing compiler symbols. Preserve all
+                # other metadata, including Runtime/Target and feature flags.
+                def compiler_manifest(node):
+                    attrs = {k: v for k, v in node.attrib.items()
+                             if not (node.tag == namespace + "Build" and k == "Timestamp")}
+                    return [node.tag, sorted(attrs.items()), (node.text or "").strip(),
+                            [compiler_manifest(child) for child in node
+                             if not (node.tag == namespace + "Features" and
+                                     child.tag == namespace + "Feature" and
+                                     (child.text or "").strip() in ("TRANSLATIONFILE", "LCGTRANSLATIONFILE"))]]
+                manifest_compiler_hash = digest(json.dumps(compiler_manifest(root), sort_keys=True).encode())
                 application, platform = app.get("Application", ""), app.get("Platform", "")
                 for value in (application, platform):
                     if value:
@@ -285,6 +298,8 @@ def package_info(path, deadline=None, *, allow_ready_to_run=False):
             "sourceCommit": source.get("Commit", ""), "compilerVersion": build.get("CompilerVersion", ""),
             "buildUrl": build.get("Url", ""), "sha256": initial_hash,
             "contentSha256": digest(json.dumps(entries, sort_keys=True).encode()),
+            "symbolReferenceSha256": next((e["sha256"] for e in entries if e["name"] == "SymbolReference.json"), None),
+            "compilerManifestSha256": manifest_compiler_hash,
             "bytes": before.st_size, "expandedBytes": expanded, "entryCount": len(items),
             "resourceProfile": initial_hash if profile else "generic",
             "signatureTailBytes": before.st_size - 40 - length}
@@ -396,7 +411,12 @@ class SymbolInventory(list):
 
 
 def symbol_inventory(folder, policy="appCache"):
-    """Complete inventories use distinct finite catalog/cache resource policies."""
+    """Strict identity-unique inventory after any explicit catalog preparation."""
+    return _symbol_inventory(folder, policy)
+
+
+def _symbol_inventory(folder, policy, *, catalog_aliases=False):
+    """Complete bounded measurement; duplicate collection is preparation-only."""
     require(policy in SYMBOL_POLICIES, "Unknown symbol resource policy")
     folder = Path(folder)
     require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
@@ -419,7 +439,7 @@ def symbol_inventory(folder, policy="appCache"):
             error.rejected_package = path
             raise
         identity = (info["identity"]["id"].lower(), version_tuple(info["identity"]["version"]))
-        require(identity not in identities, "Duplicate symbol identity/version")
+        require(catalog_aliases or identity not in identities, "Duplicate symbol identity/version")
         require(path.name.casefold() not in filenames, "Case-insensitive symbol filename collision")
         identities.add(identity)
         filenames.add(path.name.casefold())
@@ -431,6 +451,55 @@ def symbol_inventory(folder, policy="appCache"):
             "Symbol inventory membership changed during measurement")
     result.elapsed_seconds = time.monotonic() - started
     return result
+
+
+def normalize_compiler_catalog(folder):
+    """Remove compiler-equivalent Microsoft artifact aliases before strict inventory.
+
+    Validate the entire bounded catalog and every duplicate group before any
+    deletion. Different compiler symbols/metadata and non-Microsoft duplicates fail.
+    Prefer the versioned filename; retain a receipt for each removed alias.
+    """
+    folder = Path(folder)
+    measured = _symbol_inventory(folder, "compilerCatalog", catalog_aliases=True)
+    groups = {}
+    for item in measured:
+        key = (item["identity"]["id"].lower(), version_tuple(item["identity"]["version"]))
+        groups.setdefault(key, []).append(item)
+    removals = []
+    for items in groups.values():
+        if len(items) == 1:
+            continue
+        require(all(item["identity"]["publisher"] == "Microsoft" for item in items),
+                "Duplicate symbol identity/version: non-Microsoft catalog collision")
+        fields = ("identity", "friends", "dependencies", "application", "platform",
+                  "propagateDependencies", "sourceCommit", "compilerVersion", "buildUrl",
+                  "symbolReferenceSha256", "compilerManifestSha256")
+        require(items[0]["symbolReferenceSha256"] is not None and
+                all(all(item[key] == items[0][key] for key in fields) for item in items),
+                "Conflicting duplicate symbol identity/version compiler inputs")
+        items.sort(key=lambda item: (not item["file"].lower().endswith(
+            "_" + item["identity"]["version"] + ".app"), item["file"]))
+        retained = items[0]
+        for removed in items[1:]:
+            removals.append({"identity": retained["identity"], "retainedSha256": retained["sha256"],
+                             "removedSha256": removed["sha256"],
+                             "symbolReferenceSha256": retained["symbolReferenceSha256"],
+                             "compilerManifestSha256": retained["compilerManifestSha256"],
+                             "compilerMetadataEqual": True,
+                             "retained": retained["file"], "removed": removed["file"]})
+    # Recheck all bytes/membership before performing the approved preparation.
+    deadline = time.monotonic() + INVENTORY_SECONDS
+    require(sorted(p.name for p in folder.iterdir() if p.suffix.lower() == ".app") ==
+            sorted(item["file"] for item in measured), "Catalog changed before alias removal")
+    for item in measured:
+        path = folder / item["file"]
+        require(not path.is_symlink() and file_hash(path, deadline) == item["sha256"],
+                "Catalog changed before alias removal")
+    for item in removals:
+        (folder / item["removed"]).unlink()
+    return {"aliasesRemoved": removals, "before": inventory_measurement(measured, "compilerCatalog"),
+            "compilerSymbolEqualityVerified": True, "signatureTrustVerified": False}
 
 
 def inventory_measurement(items, policy):
@@ -564,6 +633,9 @@ def _before_compile(root, request):
     require(manifest["id"] in (product["id"], test["id"]), "Unexpected compilation project")
     app_type = "app" if manifest["id"] == product["id"] else "testApp"
     symbols = symbol_inventory(request["symbolsFolder"])
+    normalization = normalize_compiler_catalog(request["compilerSymbolsFolder"])
+    (directory / (app_type + "-" + request["kind"] + "-catalog-normalization.json")).write_text(
+        json.dumps({"context": context, **normalization}, indent=2) + "\n")
     compiler_symbols = symbol_inventory(request["compilerSymbolsFolder"], "compilerCatalog")
     # Keep successful boundary measurements even if later identity/pin/resolution refuses.
     measured = {"context": context, "measurements": {
@@ -594,7 +666,7 @@ def _before_compile(root, request):
     snapshot = {"context": context, "kind": request["kind"], "appType": app_type, "symbols": symbols,
                 "symbolsFolder": str(Path(request["symbolsFolder"]).resolve()),
                 "compilerSymbolsFolder": str(Path(request["compilerSymbolsFolder"]).resolve()),
-                "compilerSymbols": compiler_symbols,
+                "compilerSymbols": compiler_symbols, "catalogNormalization": normalization,
                 "measurements": {"appCache": inventory_measurement(symbols, "appCache"),
                                  "compilerCatalog": inventory_measurement(compiler_symbols, "compilerCatalog")},
                 "resolution": resolve_helper_inputs(manifest, symbols, compiler_symbols),

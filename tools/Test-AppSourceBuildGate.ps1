@@ -45,6 +45,10 @@ try {
     if ($LASTEXITCODE -ne 0) {
         throw 'Bounded symbol policy regression checks failed.'
     }
+    & $python.Source -m unittest discover -s (Join-Path $PSScriptRoot 'tests') -p 'test_symbol_dedup.py' -v
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Compiler catalog alias preparation regression checks failed.'
+    }
     & $python.Source -m unittest discover -s (Join-Path $PSScriptRoot 'tests') -p 'test_ready_to_run.py' -v
     if ($LASTEXITCODE -ne 0) {
         throw 'ReadyToRun inventory regression checks failed.'

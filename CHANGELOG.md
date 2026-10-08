@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-08) - duplicate BC artifact symbol aliases (#78)
+
+- Normalize compiler-equivalent Microsoft identity/version aliases in the compiler catalog before strict AppSource inventory, retaining the versioned file and an identity/package-hash/symbol-hash/removal receipt. Conflicting symbols/metadata, non-Microsoft collisions and duplicate app-cache inputs still fail; bounds, analyzer gates and test execution remain strict. No AL objects or IDs change. Actual runner compilation and runtime verification remain pending.
+
 
 
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
