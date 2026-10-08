@@ -32,7 +32,7 @@ class Staging(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.context = dict(run='1234', attempt='2', sourceCommit='3' * 40, checkoutSha='4' * 40, mode='Default')
-        self.request = dict(context=self.context, artifacts={kind: dict(archive=str(path), provenance=dict(
+        self.request = dict(profile='controlled523', context=self.context, artifacts={kind: dict(archive=str(path), provenance=dict(
             repository='OrigoSoftwareSolutions/bc-origo-bifrost-core', sourceSha=S.SOURCE, run=S.RUN,
             attempt=2, artifactId=S.ARTIFACTS[kind][0], archiveSha256=S.ARTIFACTS[kind][1],
             expired=False, conclusion='success')) for kind, path in self.archives.items()},
@@ -219,7 +219,7 @@ class Staging(unittest.TestCase):
         compiler_symbols = self.root/'compiler-symbols'
         compiler_symbols.mkdir()
         request = dict(context=self.context, manifest=str(self.root/'app/app.json'), symbolsFolder=str(symbols), compilerSymbolsFolder=str(compiler_symbols), kind='fixture')
-        with self.assertRaisesRegex(G.GateError,'unapproved Foundation'): G.before_compile(self.root,request)
+        with self.assertRaisesRegex(G.GateError,'(?i)unapproved Foundation'): G.before_compile(self.root,request)
         rejected=json.loads((directory/'rejected-input.json').read_text())
         self.assertEqual(S.TEST_PIN,rejected['inputs'][0]['sha256'])
 
@@ -230,6 +230,54 @@ class Staging(unittest.TestCase):
         result = subprocess.run([sys.executable,S.__file__,'stage','--input',str(request_path),'--destination',str(self.destination)],capture_output=True,text=True)
         self.assertEqual(1,result.returncode); self.assertNotIn('do-not-emit',result.stdout+result.stderr)
         self.assertTrue((self.root/'stage-rejected.json').exists())
+
+
+class Candidate530(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.config = S.PROFILES['candidate530']
+        inputs = Path(os.environ['FOUNDATION_CANDIDATE_ARTIFACTS'])
+        context = dict(run='1234', attempt='1', sourceCommit='3' * 40, checkoutSha='4' * 40, mode='Default')
+        artifacts = {}
+        for kind, (artifact, sha) in self.config['artifacts'].items():
+            archive = inputs / f'foundation530-{artifact}.zip'
+            self.assertEqual(sha, G.file_hash(archive))
+            artifacts[kind] = dict(archive=str(archive), provenance=dict(repository='OrigoSoftwareSolutions/bc-origo-bifrost-core',
+                sourceSha=self.config['source'], run=self.config['run'], attempt=self.config['attempt'],
+                artifactId=artifact, archiveSha256=sha, expired=False, conclusion='success'))
+        # Default production staging profile is candidate530.523is only explicit controlled fixture.
+        self.request = dict(context=context, artifacts=artifacts)
+
+    def test_actual_candidate_staging_retains_signed_apps_and_excludes_only_exact_test_collision(self):
+        arrays = S.stage(self.request, self.root / 'stage')
+        self.assertEqual(1, len(arrays['installApps']))
+        self.assertEqual([], arrays['installTestApps'])
+        info = G.package_info(arrays['installApps'][0])
+        G.check_foundation_candidate(info)
+        receipt = S.validate(self.root / 'stage/selection.json', self.request['context'], arrays['installApps'], arrays['installTestApps'])
+        self.assertEqual('candidate530', receipt['profile'])
+        self.assertFalse(receipt['signatureTrustVerified'])
+        self.assertEqual(self.config['testPin'], receipt['selection']['excluded'][0]['sha256'])
+        self.assertEqual([S.TEST_FRIEND], receipt['selection']['excluded'][0]['friends'])
+
+    def test_wrong_candidate_source_archive_swap_and_wrong_profile_fail_closed(self):
+        for change in ('source', 'swap', 'profile'):
+            request = copy.deepcopy(self.request)
+            if change == 'source': request['artifacts']['Apps']['provenance']['sourceSha'] = '0' * 40
+            elif change == 'swap': request['artifacts']['Apps']['archive'] = request['artifacts']['TestApps']['archive']
+            else: request['profile'] = 'controlled523'
+            with self.subTest(change=change), self.assertRaises(G.GateError): S.stage(request, self.root / change)
+            self.assertFalse((self.root / change).exists())
+
+    def test_test_candidate_cannot_be_swapped_into_apps_or_mutated_after_staging(self):
+        arrays = S.stage(self.request, self.root / 'stage')
+        excluded = json.loads((self.root / 'stage/selection.json').read_text())['selection']['excluded'][0]['path']
+        with self.assertRaises(G.GateError): S.select([excluded], [excluded], 'candidate530')
+        with open(arrays['installApps'][0], 'ab') as out: out.write(b'mutated-tail')
+        with self.assertRaises(G.GateError):
+            S.validate(self.root / 'stage/selection.json', self.request['context'], arrays['installApps'], arrays['installTestApps'])
 
 
 if __name__ == '__main__': unittest.main()
