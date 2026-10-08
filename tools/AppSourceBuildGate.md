@@ -268,9 +268,25 @@ explicit and never certifies a complete inventory. The 129-distinct-package
 regression mutates genuine compiler fixtures; it is diagnostic test evidence.
 
 The approved `latestBuild` workflow-artifact pin `1.0.3.530` (containing app
-`28.0.3.530`) is applied in settings. Failure-only receipt upload requires current
-pipeline-owner adoption and infrastructure review. The artifact pin does not
+`28.0.3.530`) is applied in settings. The user-authorized completion also applies
+failure-only upload of bounded rejected-input receipts. The artifact pin does not
 replace any exact candidate checks. Historical run37697457309 package bytes were not retained;
 its manifest layout cannot be inferred from source samples. Fresh runner capture
 must preserve exact run/source identity and rejected/consumed bytes in protected
 custody before a format-policy change is considered.
+
+## ReadyToRun dependency envelopes
+
+Dependency inventories accept a ReadyToRun envelope only when its explicit
+manifest identifies one bounded embedded NAVX package. The envelope and embedded
+package retain separate hashes; their identities must match, both expansions
+consume the finite inventory budget, and duplicate/ambiguous/nested/injected
+inputs are rejected. This does not accept ReadyToRun shipping output or certify
+signature trust. The retained Microsoft Any and Base Application wrappers are
+genuine regression fixtures, not substitutes for a fresh complete runner capture.
+
+`Test-AppSourceBuildGate.ps1` also requires `ReadyToRunAnyPackage`,
+`EmbeddedAnyPackage`, and `ReadyToRunBasePackage`; it runs the envelope regressions
+alongside the original gate and symbol-policy suites. The combined exact-source
+tooling run passed 92 tests (45 gate, 10 policy, 15 envelopes, 22 staging), with
+zero skips. Application CI and BC runtime verification remain separate.

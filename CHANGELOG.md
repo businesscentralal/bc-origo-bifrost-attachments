@@ -8,6 +8,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-08) - integrated post-merge completion
+
+- Validate explicit ReadyToRun dependency envelopes with complete outer/embedded identity and bounded expansion, retain offending-input diagnostics and require the native gate completion marker. Pin Foundation workflow artifact `1.0.3.530` and retain bounded rejected-input receipts on failed builds.
+- Persist native attachment fields before external upload, preserve license-first refusals, and cover failed native persistence without orphaning a provider file. Correct two test declaration orders and the takeover sentinel's company parameter without truncating input.
+- Make the API audit portable across Windows encodings, refresh its exact-source inventory, enforce canonical AL line endings and regenerate Icelandic translations from actual compiler output. Actual current-run CI, BC runtime and AppSource release certification remain separate from source integration.
+
 ### Fixed (2026-10-07) - bounded build-input evidence (#78)
 
 - Separate the complete compiler catalog from the resolved app cache in `tools/appsource_gate.py`, stream bounded NAVX hashes/CRC checks, and compare genuine helper additions with dependency resolution. Keep complete sanitized measurements and explicit failure truncation. No AL objects or IDs change. Add an internally reviewed exact-hash BC29 Base Application resource profile and exact immutable Apps530 Foundation candidate/staging profile; retain523as a separate controlled fixture and reject the same-version TestApps collision. Exercise every manifest identity field with genuine Base and Foundation bytes, and align the documented catalog/cache and profile limits. Pipeline/signing settings and actual Windows runner/runtime/trust gates remain unchanged.

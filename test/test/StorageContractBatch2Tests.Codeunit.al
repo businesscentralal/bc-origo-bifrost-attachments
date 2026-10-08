@@ -59,10 +59,10 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     [Test]
     procedure TypeList_EmptyRequest_CountMatchesTypes()
     var
+        TempSavedTypes: Record "Data Exchange Type" temporary;
         Request: JsonObject;
         Response: JsonObject;
         Rows: JsonArray;
-        TempSavedTypes: Record "Data Exchange Type" temporary;
     begin
         // Story #69, AC04 | Time: None | Risk: Run only in own disposable test company; restore original rows
         // [GIVEN] A deterministically empty type table, preserving all original company rows.
@@ -80,13 +80,13 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     procedure Scenario_AC04_TypeList_SeededRows_MatchResponseContract()
     var
         DataExchType: Record "Data Exchange Type";
+        TempSavedTypes: Record "Data Exchange Type" temporary;
         Request: JsonObject;
         Response: JsonObject;
         Rows: JsonArray;
         Token: JsonToken;
         FirstFound: Boolean;
         SecondFound: Boolean;
-        TempSavedTypes: Record "Data Exchange Type" temporary;
     begin
         // Story #69, AC04 | Time: None | Risk: Run only in own disposable test company; restore original rows
         // [GIVEN] Exactly two types; preserve the company's original rows before isolation.
