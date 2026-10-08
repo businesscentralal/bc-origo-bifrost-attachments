@@ -330,7 +330,12 @@ def symbol_inventory(folder, policy="appCache"):
     require(sum(path.stat().st_size for path in paths) <= limit["bytes"], "Symbol aggregate-byte bound exceeded")
     result, identities, filenames, expanded = SymbolInventory(), set(), set(), 0
     for path in paths:
-        info = package_info(path, deadline)
+        try:
+            info = package_info(path, deadline)
+        except GateError as error:
+            # Retain the actual failing input even beyond the diagnostic item cap.
+            error.rejected_package = path
+            raise
         identity = (info["identity"]["id"].lower(), version_tuple(info["identity"]["version"]))
         require(identity not in identities, "Duplicate symbol identity/version")
         require(path.name.casefold() not in filenames, "Case-insensitive symbol filename collision")
@@ -516,7 +521,7 @@ def _before_compile(root, request):
     return snapshot
 
 
-def rejected_receipt(output, context, paths=(), *, folders=None):
+def rejected_receipt(output, context, paths=(), *, folders=None, offending=None):
     """Record bounded disk identities only; never dump Settings or credentials."""
     deadline = time.monotonic() + INVENTORY_SECONDS
     candidates = [(Path(path), None) for path in paths]
@@ -540,6 +545,10 @@ def rejected_receipt(output, context, paths=(), *, folders=None):
                     if len(candidates) >= 4096:
                         item["enumerationComplete"] = False
                         break
+    if offending is not None:
+        offending = Path(offending)
+        prioritized = [(path, source) for path, source in candidates if path == offending]
+        candidates = prioritized + [(path, source) for path, source in candidates if path != offending]
     inventory = []
     truncated = len(candidates) > 128 or any(not f["enumerationComplete"] for f in folder_receipts)
     hashed_bytes = 0
@@ -548,6 +557,8 @@ def rejected_receipt(output, context, paths=(), *, folders=None):
             truncated = True
             break
         item = {"path": str(path), "present": path.is_file()}
+        if offending is not None and path == offending:
+            item["triggeredRejection"] = True
         if source is not None:
             item["sourceFolder"] = source
         if item["present"]:
@@ -585,14 +596,15 @@ def before_compile(root, request):
     """Keep the original failure while recording bounded allowlisted disk inputs."""
     try:
         return _before_compile(root, request)
-    except (GateError, OSError, KeyError, ValueError):
+    except (GateError, OSError, KeyError, ValueError) as error:
         # Evidence failure must never replace or clear the original gate failure.
         try:
             context = request.get("context", {})
             directory = Path(root) / ".buildartifacts/AppSourceGate" / context.get("mode", "Unknown")
             directory.mkdir(parents=True, exist_ok=True)
             rejected_receipt(directory / "rejected-input.json", context, folders={
-                key: request[key] for key in ("symbolsFolder", "compilerSymbolsFolder") if key in request})
+                key: request[key] for key in ("symbolsFolder", "compilerSymbolsFolder") if key in request},
+                offending=getattr(error, "rejected_package", None))
         except (OSError, ValueError, KeyError):
             pass
         raise
