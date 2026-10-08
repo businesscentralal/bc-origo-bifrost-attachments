@@ -45,6 +45,10 @@ This section describes the test source manifest version; the date is a documenta
 
 ## [28.0.0.4] — 2026-10-07
 
+### Added
+
+- Add `tools/collect_candidate_evidence.py` and collector regression tests for #80 to reject stale or changed local receipts and retain missing candidate, market, provider, runtime and cleanup evidence. This tooling inventories evidence only and never certifies a release. No AL objects or IDs change.
+
 ### Fixed
 
 - `Storage Contract Parts ori` (70013500) removes unused storage requirements from Data Exchange queries and record uploads, documents conditional attachment sources and accepted address aliases, and adds shared shipped Data Exchange mutation chapters for integration by #82.
