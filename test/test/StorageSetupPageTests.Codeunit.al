@@ -184,8 +184,8 @@ codeunit 96207 "Storage Setup Page Tests"
 
     local procedure AssertMissingAccountAction(LanguageId: Integer; ExpectedError: Text)
     var
-        StorageCard: TestPage "Storage Card ori";
         StorageSetup: Record "Storage Setup ori";
+        StorageCard: TestPage "Storage Card ori";
         SavedLanguageId: Integer;
         ActualError: Text;
     begin
@@ -205,8 +205,8 @@ codeunit 96207 "Storage Setup Page Tests"
 
     local procedure AssertConnectionAction(LanguageId: Integer; ExpectedMessage: Text)
     var
-        StorageCard: TestPage "Storage Card ori";
         StorageSetup: Record "Storage Setup ori";
+        StorageCard: TestPage "Storage Card ori";
         SavedLanguageId: Integer;
     begin
         StorageSetup.Get(MockCodeTok);
