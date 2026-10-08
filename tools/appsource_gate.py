@@ -12,6 +12,7 @@ import re
 import struct
 import sys
 import time
+import tempfile
 import uuid
 import zipfile
 import zlib
@@ -38,6 +39,11 @@ MANIFEST_BYTES = 16 * 1024 * 1024
 PACKAGE_ENTRIES = 4096
 INVENTORY_SECONDS = 60
 MEASURED_PACKAGE_PROFILES = {
+    "05d37036733b4df5ffaf31d3d779ec48af63465da6f694ff15a7e0b228abc1b8": {
+        "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
+                     "name": "Base Application", "version": "29.0.54011.55935"},
+        "maxEntries": 4096, "maxExpandedBytes": 512 * 1024 * 1024,
+    },
     "10ebba923b6f8d3b6d676cc1f1db16a8a5d4519ff8ca4f45bbd2e778b52d289c": {
         "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
                      "name": "Base Application", "version": "29.0.54011.55935"},
@@ -56,7 +62,10 @@ FOUNDATION_CANDIDATE = {
 }
 SYMBOL_POLICIES = {
     "appCache": {"packages": 128, "bytes": 512 * 1024 * 1024},
-    "compilerCatalog": {"packages": 256, "bytes": 1024 * 1024 * 1024},
+    # Retained BC29 sample measures 1,863,664,153 expanded bytes across
+    # envelope+embedded layers; keep compressed and expanded budgets distinct.
+    "compilerCatalog": {"packages": 256, "bytes": 1024 * 1024 * 1024,
+                        "expandedBytes": 4 * 1024 * 1024 * 1024},
 }
 
 
@@ -167,7 +176,7 @@ def compile_spans(text):
     return spans
 
 
-def package_info(path, deadline=None):
+def package_info(path, deadline=None, *, allow_ready_to_run=False):
     """Stream bounded NAVX content and metadata; signature presence is not trust."""
     path = Path(path)
     deadline = time.monotonic() + INVENTORY_SECONDS if deadline is None else deadline
@@ -194,6 +203,11 @@ def package_info(path, deadline=None):
                 require(len(items) <= max_entries, "Package entry bound exceeded")
                 names = [item.filename for item in items]
                 require(len(names) == len(set(names)), "Duplicate package entries")
+                require(not ("NavxManifest.xml" in names and "readytorunappmanifest.json" in names),
+                        "Ambiguous NAVX/ReadyToRun manifests")
+                if names.count("NavxManifest.xml") == 0 and allow_ready_to_run:
+                    return ready_to_run_info(path, before, archive, items, initial_hash, length,
+                                             deadline, max_expanded, profile)
                 require(names.count("NavxManifest.xml") == 1, "Missing/duplicate NAVX manifest")
                 expanded = sum(item.file_size for item in items)
                 require(expanded <= max_expanded, "Package expanded-byte bound exceeded")
@@ -276,6 +290,74 @@ def package_info(path, deadline=None):
             "signatureTailBytes": before.st_size - 40 - length}
 
 
+
+def ready_to_run_info(path, before, archive, items, initial_hash, length, deadline, max_expanded, profile):
+    """Read one bounded ReadyToRun envelope for dependency inventories only.
+
+    Report the outer file hash consumed by the helper, and retain the embedded
+    NAVX hash separately. No wrapper is accepted for shipping/postcompile output.
+    """
+    names = [item.filename for item in items]
+    require(names.count("readytorunappmanifest.json") == 1, "Missing/duplicate ReadyToRun manifest")
+    expanded = sum(item.file_size for item in items)
+    require(expanded <= max_expanded, "Package expanded-byte bound exceeded")
+    require(archive.getinfo("readytorunappmanifest.json").file_size <= MANIFEST_BYTES,
+            "ReadyToRun manifest exceeds 16 MiB")
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            require(key not in result, "Duplicate ReadyToRun metadata key")
+            result[key] = value
+        return result
+    metadata = json.loads(archive.read("readytorunappmanifest.json").decode("utf-8-sig"),
+                          object_pairs_hook=unique_object)
+    keys = {"EmbeddedAppId", "EmbeddedAppPublisher", "EmbeddedAppName", "EmbeddedAppVersion", "EmbeddedAppFileName"}
+    require(isinstance(metadata, dict) and set(metadata) == keys and
+            all(isinstance(value, str) and value for value in metadata.values()), "Invalid ReadyToRun metadata")
+    expected = {key.lower(): metadata["EmbeddedApp" + key] for key in ("Id", "Publisher", "Name", "Version")}
+    identity_check(expected)
+    embedded = metadata["EmbeddedAppFileName"]
+    require("/" not in embedded and "\\" not in embedded and ":" not in embedded and
+            embedded not in (".", "..") and embedded.lower().endswith(".app"), "Invalid ReadyToRun embedded filename")
+    require([name for name in names if name.lower().endswith(".app")] == [embedded],
+            "Missing/ambiguous ReadyToRun embedded app")
+    require(archive.getinfo(embedded).file_size <= PACKAGE_BYTES, "Embedded package exceeds 128 MiB")
+    entries = []
+    with tempfile.TemporaryDirectory(prefix="appsource-r2r-") as scratch:
+        inner_path = Path(scratch) / "embedded.app"
+        for item in sorted(items, key=lambda item: item.filename):
+            sha, size = hashlib.sha256(), 0
+            with archive.open(item) as content:
+                with inner_path.open("wb") if item.filename == embedded else io.BytesIO() as target:
+                    while True:
+                        budget_check(deadline)
+                        chunk = content.read(CHUNK_BYTES)
+                        if not chunk:
+                            break
+                        size += len(chunk)
+                        require(size <= item.file_size and size <= max_expanded, "Expanded entry bound exceeded")
+                        sha.update(chunk)
+                        if item.filename == embedded:
+                            target.write(chunk)
+            require(size == item.file_size, "Truncated expanded entry")
+            entries.append({"name": item.filename, "sha256": sha.hexdigest()})
+        inner = package_info(inner_path, deadline)
+        require(inner["identity"] == expected, "ReadyToRun embedded identity mismatch")
+        if profile:
+            require(inner["identity"] == profile["identity"], "Measured package profile identity mismatch")
+    require(tuple(getattr(path.stat(), key) for key in ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")) ==
+            tuple(getattr(before, key) for key in ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")) and
+            file_hash(path, deadline) == initial_hash, "Package changed during measurement")
+    budget_check(deadline)
+    # Count work at both compression layers in the aggregate inventory budget.
+    return {**inner, "sha256": initial_hash, "contentSha256": digest(json.dumps(entries, sort_keys=True).encode()),
+            "bytes": before.st_size, "expandedBytes": expanded + inner["expandedBytes"], "entryCount": len(items),
+            "resourceProfile": initial_hash if profile else "generic", "signatureTailBytes": before.st_size - 40 - length,
+            "readyToRun": {"embeddedSha256": inner["sha256"], "embeddedContentSha256": inner["contentSha256"],
+                           "embeddedEntryCount": inner["entryCount"], "embeddedExpandedBytes": inner["expandedBytes"],
+                           "outerExpandedBytes": expanded, "signatureTrustVerified": False}}
+
+
 def check_package(info, expected, mode, app_type, friend, source_commit=None):
     require(info["identity"] == {k: expected[k] for k in ("id", "publisher", "name", "version")}, "Wrong package identity/version")
     expected_grants = [friend] if mode == "Test" and app_type == "app" else []
@@ -331,7 +413,7 @@ def symbol_inventory(folder, policy="appCache"):
     result, identities, filenames, expanded = SymbolInventory(), set(), set(), 0
     for path in paths:
         try:
-            info = package_info(path, deadline)
+            info = package_info(path, deadline, allow_ready_to_run=True)
         except GateError as error:
             # Retain the actual failing input even beyond the diagnostic item cap.
             error.rejected_package = path
@@ -342,7 +424,7 @@ def symbol_inventory(folder, policy="appCache"):
         identities.add(identity)
         filenames.add(path.name.casefold())
         expanded += info["expandedBytes"]
-        require(expanded <= limit["bytes"], "Symbol aggregate expanded-byte bound exceeded")
+        require(expanded <= limit.get("expandedBytes", limit["bytes"]), "Symbol aggregate expanded-byte bound exceeded")
         result.append({"file": path.name, **info})
     budget_check(deadline)
     require(sorted(p.name for p in folder.iterdir() if p.suffix.lower() == ".app") == sorted(p.name for p in paths),

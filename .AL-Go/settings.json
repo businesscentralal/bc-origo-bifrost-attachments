@@ -16,7 +16,7 @@
     {
       "repo": "https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core",
       "release_status": "latestBuild",
-      "version": "28.0.2.523",
+      "version": "1.0.3.530",
       "projects": "*",
       "authTokenSecret": "ghTokenWorkflow"
     }
