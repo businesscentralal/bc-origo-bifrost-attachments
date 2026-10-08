@@ -1,5 +1,5 @@
 {
-  "sourceSha": "b42ad90eaee2803205408a1cac8b0d9752b91c0e",
+  "sourceSha": "fca2943658e9843d3cfcce80ff6093657e8bd51e",
   "appId": "672df32a-a0c5-4a22-b591-0efa38023e95",
   "appVersion": "28.0.0.4",
   "testAppVersion": "28.0.0.6",
@@ -18,7 +18,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 0,
       "fields": [],
       "enumValues": [],
@@ -46,13 +49,20 @@
         "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Storage/StorageRequestReader.Codeunit.al",
         "app/src/Upload/StorageDataRestriction.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/Storage79PermTests.Codeunit.al",
         "test/test/StorageAttachmentFieldTests.Codeunit.al",
         "test/test/StorageAttachRecordTests.Codeunit.al",
         "test/test/StorageConnectorTests.Codeunit.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
         "test/test/StorageLinkGuardTests.Codeunit.al",
+        "test/test/StorageNativeFieldsTests.Codeunit.al",
+        "test/test/StorageTakeoverProbeTests.Codeunit.al",
         "test/test/StorageUploadTests.Codeunit.al"
       ],
       "nonLocalProcedureCount": 0,
@@ -76,7 +86,7 @@
       "id": 10035635,
       "name": "Storage Attachment Mgt ori",
       "file": "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
-      "sha256": "3b36f725ca760e20d1fca1657cd731b131a8bc61bb892c06289dcb17b258befc",
+      "sha256": "9108c5606017bd94e4496962a2e55635bc525b20ca24799b4184ac77cb68ac82",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -92,9 +102,12 @@
         "app/src/Upload/StorageUploadMgt.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
         "test/test/StorageNativeFieldsTests.Codeunit.al"
       ],
-      "nonLocalProcedureCount": 16,
+      "nonLocalProcedureCount": 17,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -112,7 +125,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 0,
       "fields": [],
       "enumValues": [],
@@ -180,7 +196,7 @@
       "id": 70013520,
       "name": "Data Exchange Query ori",
       "file": "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
-      "sha256": "2cf260e4063dcc58345808e3c9a5486075a2e2305da85a21ed2b1e3b007bd351",
+      "sha256": "904cf2bf6345ae95788abab6e3d5f88000e53615eba9e89c4cc3cc85eb92ef57",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -193,7 +209,16 @@
         "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Column.PermissionSet.al",
+        "test/src/Permissions/Storage79Def.PermissionSet.al",
+        "test/src/Permissions/Storage79Entry.PermissionSet.al",
+        "test/src/Permissions/Storage79Field.PermissionSet.al",
+        "test/src/Permissions/Storage79FldMap.PermissionSet.al",
+        "test/src/Permissions/Storage79Line.PermissionSet.al",
+        "test/src/Permissions/Storage79Map.PermissionSet.al",
+        "test/src/Permissions/Storage79Type.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 5,
       "fields": [],
       "enumValues": [],
@@ -210,10 +235,13 @@
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
         "app/src/Lifecycle/StorageInstall.Codeunit.al",
+        "app/src/Lifecycle/StorageLinkUpgrade.Codeunit.al",
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/test/StorageTakeoverProbeTests.Codeunit.al",
         "test/test/StorageTakeoverTests.Codeunit.al"
       ],
@@ -237,6 +265,8 @@
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/test/StorageTakeoverProbeTests.Codeunit.al"
       ],
       "nonLocalProcedureCount": 6,
@@ -257,7 +287,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 1,
       "fields": [],
       "enumValues": [],
@@ -268,7 +301,7 @@
       "id": 10035683,
       "name": "Storage Link Upgrade ori",
       "file": "app/src/Lifecycle/StorageLinkUpgrade.Codeunit.al",
-      "sha256": "da237af8ec7d4b1fd86295f80dab4e15e23a3745685d9a881c02d8503cb74c48",
+      "sha256": "f375032de37967f2339a4342e10dfdde86aa2ecc0e49eb7aad5ec517b08a6b61",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -278,9 +311,12 @@
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
       "testConsumers": [
-        "test/test/StorageLinkGuardTests.Codeunit.al"
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/StorageLinkGuardTests.Codeunit.al",
+        "test/test/StorageTakeoverProbeTests.Codeunit.al"
       ],
-      "nonLocalProcedureCount": 1,
+      "nonLocalProcedureCount": 2,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -298,7 +334,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 0,
       "fields": [],
       "enumValues": [],
@@ -309,7 +348,7 @@
       "id": 10035639,
       "name": "Storage Account List Impl ori",
       "file": "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
-      "sha256": "7338d5afc88ad45a50d483c1157f8d17224753cf7cd64c4558e6cfa24e86fbbb",
+      "sha256": "5535c59d9a7a2568be19c2d6384318f63d7a943d82ca21fda254df3b8c859f49",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -318,7 +357,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -329,7 +371,7 @@
       "id": 10035641,
       "name": "Storage Att. Offload Impl ori",
       "file": "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
-      "sha256": "e12b7c43d39163d61de1aa14071705ef39b31411040394b9e2fc2bb26a932130",
+      "sha256": "5eac45b1f64b01a70f0492f2e013f1ea8bb6041da8f97f0299444df1da00ba46",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -338,7 +380,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -349,7 +394,7 @@
       "id": 10035642,
       "name": "Storage Att. Restore Impl ori",
       "file": "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
-      "sha256": "2a473a67d83b52e651bc36a5a7dae257415ea6a67aa83e7dffcf64cb32200b84",
+      "sha256": "cd55ddb9cf58d05e3802d4861110214befcc5809e9650b9b1df88ead38de4bb7",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -358,7 +403,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -369,7 +417,7 @@
       "id": 10035640,
       "name": "Storage Attach Link Impl ori",
       "file": "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
-      "sha256": "6dea25a77b715f0b8851a1688b4c351ef2838f56fdc63197941ce4867c0b15f3",
+      "sha256": "ee106c2a189292e256c941e3ff07ed2829c65013459e896416d7b74fe02af74f",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -378,7 +426,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -389,7 +440,7 @@
       "id": 10035667,
       "name": "Storage Attach Record Impl ori",
       "file": "app/src/MessageTypes/Attachments/StorageAttachRecordImpl.Codeunit.al",
-      "sha256": "3fcbd9493188926aaf49f105843a0d04438a51023457faa6f0e5a81e3882b7a4",
+      "sha256": "23b206096096a7919e3c85b3bbd554f017f5dc96728d79a82e96a6aabc4977be",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -398,25 +449,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
-      "nonLocalProcedureCount": 19,
-      "fields": [],
-      "enumValues": [],
-      "namespace": "Origo.Bifrost.Attachments"
-    },
-    {
-      "kind": "codeunit",
-      "id": 70013543,
-      "name": "DataExch Def Delete Impl ori",
-      "file": "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
-      "sha256": "5d0f56287619f46175ed5ecb4fb392051ef7f03e1f0686b7b19857e45f0908f8",
-      "access": "Internal",
-      "extensible": "not declared / not applicable",
-      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
-      "appConsumers": [
-        "app/src/MessageTypes/DataExchange/DataExchDefDeleteMsgType.EnumExt.al"
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
       ],
-      "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -426,8 +462,8 @@
       "kind": "enumextension",
       "id": 70013514,
       "name": "DataExch DefDel MsgType ori",
-      "file": "app/src/MessageTypes/DataExchange/DataExchDefDeleteMsgType.EnumExt.al",
-      "sha256": "9de3988f0d7a85bca2de95fae09a9c61f6497e5ddeb1f146c5a4a3546edd40fa",
+      "file": "app/src/MessageTypes/DataExchange/DataExchDefDelMsgType.EnumExt.al",
+      "sha256": "97c8f8c4591fcc6a8b42d26d87a6e5e22387f6d9ab43cd3fb87ebfbdee31948a",
       "access": "Public (default)",
       "extensible": "not declared / not applicable",
       "decision": "KEEP: wire bindings, fields, setup integration or permission contract",
@@ -436,15 +472,33 @@
       "nonLocalProcedureCount": 0,
       "fields": [],
       "enumValues": [
-        "70013519; \"DataExchange.Definition.Delete\""
+        "70013523; \"DataExchange.Definition.Delete\""
       ],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
+      "id": 70013543,
+      "name": "DataExch Def Delete Impl ori",
+      "file": "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+      "sha256": "f8e7148783a3b770aef0712c95d4aa65fb9d97a4faa202040e0012ebe8d3d5b8",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/MessageTypes/DataExchange/DataExchDefDelMsgType.EnumExt.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 19,
+      "fields": [],
+      "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
     },
     {
       "kind": "enumextension",
       "id": 70013521,
       "name": "DataExch Def Exp EnumExt ori",
-      "file": "app/src/MessageTypes/DataExchange/DataExchDefExport.EnumExt.al",
+      "file": "app/src/MessageTypes/DataExchange/DataExchDefExpEnumExt.EnumExt.al",
       "sha256": "91b486f8a831cef2d4b69d51d44f9fc074e781f15e5b56e9db61af4cd0095287",
       "access": "Public (default)",
       "extensible": "not declared / not applicable",
@@ -463,14 +517,16 @@
       "id": 70013536,
       "name": "DataExch Def Export Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al",
-      "sha256": "11404430af9b33a0ac9b8fcb8870ca574abe425a66aec8ccdfc0ac5316644c00",
+      "sha256": "573039c8632f22086fa5e7b711bb6b0ea443e9585b2aeab23ce1cc2f02508d58",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
-        "app/src/MessageTypes/DataExchange/DataExchDefExport.EnumExt.al"
+        "app/src/MessageTypes/DataExchange/DataExchDefExpEnumExt.EnumExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/test/AttachmentsBuildTestsori.Codeunit.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -481,7 +537,7 @@
       "id": 70013523,
       "name": "DataExch Def Get Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
-      "sha256": "379fc82573e0587e18ddf8271ce6c1de299962a2a81019a24b38cb2c8ad49dc8",
+      "sha256": "3f3417f015e32071c4f111ec48cb1dc72bf382db836ee5288c5211ababff600b",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -490,7 +546,16 @@
         "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Column.PermissionSet.al",
+        "test/src/Permissions/Storage79Def.PermissionSet.al",
+        "test/src/Permissions/Storage79Entry.PermissionSet.al",
+        "test/src/Permissions/Storage79Field.PermissionSet.al",
+        "test/src/Permissions/Storage79FldMap.PermissionSet.al",
+        "test/src/Permissions/Storage79Line.PermissionSet.al",
+        "test/src/Permissions/Storage79Map.PermissionSet.al",
+        "test/src/Permissions/Storage79Type.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -498,15 +563,17 @@
     },
     {
       "kind": "codeunit",
-      "id": 70013524,
+      "id": 70013545,
       "name": "DataExch Def Import Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchDefImportImpl.Codeunit.al",
-      "sha256": "3f1218ab53f1497a8a04c7b8c8803b99c448e980daf02a8e47709866a267bfb2",
+      "sha256": "04ad73660f6fdcc8803b2c8978db47a8b10f03953c4e5bfafcb8cf8669f92316",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/test/AttachmentsBuildTestsori.Codeunit.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -517,7 +584,7 @@
       "id": 70013522,
       "name": "DataExch Def List Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
-      "sha256": "4fb72a4078b451ddb63528ed835c197ba787f3e85720f5f54fccd73dc608af6d",
+      "sha256": "e126078475462ca858be72ca7e03a4168adb3c1e6df5f805263bd3fba3bc0b86",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -526,7 +593,16 @@
         "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Column.PermissionSet.al",
+        "test/src/Permissions/Storage79Def.PermissionSet.al",
+        "test/src/Permissions/Storage79Entry.PermissionSet.al",
+        "test/src/Permissions/Storage79Field.PermissionSet.al",
+        "test/src/Permissions/Storage79FldMap.PermissionSet.al",
+        "test/src/Permissions/Storage79Line.PermissionSet.al",
+        "test/src/Permissions/Storage79Map.PermissionSet.al",
+        "test/src/Permissions/Storage79Type.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -534,15 +610,17 @@
     },
     {
       "kind": "codeunit",
-      "id": 70013521,
+      "id": 70013544,
       "name": "DataExch Entry Del Impl ori",
-      "file": "app/src/MessageTypes/DataExchange/DataExchEntryDeleteImpl.Codeunit.al",
-      "sha256": "fbb1515b6cedd50aa9658072476099b13663028e0e16089691ca354e69faf807",
+      "file": "app/src/MessageTypes/DataExchange/DataExchEntryDelImpl.Codeunit.al",
+      "sha256": "9ba7fd381143f99b484c4cad433a9f90eedce8b10e04dcb01da34f65d6e382ed",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/test/AttachmentsBuildTestsori.Codeunit.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -553,7 +631,7 @@
       "id": 70013526,
       "name": "DataExch Entry Get Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
-      "sha256": "09f959e38b6b403e24b27f9e8295d650bc96043532db3ac8b97866e0d59411df",
+      "sha256": "505547721eb787571959772a4dc4896383acba692f3d15a6f75d475399d3fd38",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -562,7 +640,16 @@
         "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Column.PermissionSet.al",
+        "test/src/Permissions/Storage79Def.PermissionSet.al",
+        "test/src/Permissions/Storage79Entry.PermissionSet.al",
+        "test/src/Permissions/Storage79Field.PermissionSet.al",
+        "test/src/Permissions/Storage79FldMap.PermissionSet.al",
+        "test/src/Permissions/Storage79Line.PermissionSet.al",
+        "test/src/Permissions/Storage79Map.PermissionSet.al",
+        "test/src/Permissions/Storage79Type.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -573,7 +660,7 @@
       "id": 70013525,
       "name": "DataExch Entry List Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
-      "sha256": "0170096194e9e84d62bbc481544ec628bed671a86cf8c9fe7357670fa8cc9506",
+      "sha256": "28b48077c3a70338c7fa6eef51ea4eec2905fd1b655cf024092cf114f6e5c06b",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -582,7 +669,16 @@
         "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Column.PermissionSet.al",
+        "test/src/Permissions/Storage79Def.PermissionSet.al",
+        "test/src/Permissions/Storage79Entry.PermissionSet.al",
+        "test/src/Permissions/Storage79Field.PermissionSet.al",
+        "test/src/Permissions/Storage79FldMap.PermissionSet.al",
+        "test/src/Permissions/Storage79Line.PermissionSet.al",
+        "test/src/Permissions/Storage79Map.PermissionSet.al",
+        "test/src/Permissions/Storage79Type.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -591,9 +687,9 @@
     {
       "kind": "enumextension",
       "id": 70013519,
-      "name": "DataExch Export Run EnumExt ori",
-      "file": "app/src/MessageTypes/DataExchange/DataExchExportRun.EnumExt.al",
-      "sha256": "eca41bcd5c2df57b3a8ccc75af3c77ef58e00c3cefb4e1d878501a20d70dd95f",
+      "name": "DataExch Export MsgType ori",
+      "file": "app/src/MessageTypes/DataExchange/DataExchExportMsgType.EnumExt.al",
+      "sha256": "21482e7b9dec094eb72868c8ac625e2d1a4c2c0abb27d4fa4d8329c1aabc84dd",
       "access": "Public (default)",
       "extensible": "not declared / not applicable",
       "decision": "KEEP: wire bindings, fields, setup integration or permission contract",
@@ -611,14 +707,16 @@
       "id": 70013534,
       "name": "DataExch Export Run Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
-      "sha256": "13910e6dc71948a3ffdfeeb4fbf4bc0e47c95baab30440723f2561ac8ffc9d8d",
+      "sha256": "848020ade73f544b89d8142fe3b27ffaa8f4aacefb4910f2b6920c76e65c49ff",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
-        "app/src/MessageTypes/DataExchange/DataExchExportRun.EnumExt.al"
+        "app/src/MessageTypes/DataExchange/DataExchExportMsgType.EnumExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/test/AttachmentsBuildTestsori.Codeunit.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -638,7 +736,16 @@
         "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Column.PermissionSet.al",
+        "test/src/Permissions/Storage79Def.PermissionSet.al",
+        "test/src/Permissions/Storage79Entry.PermissionSet.al",
+        "test/src/Permissions/Storage79Field.PermissionSet.al",
+        "test/src/Permissions/Storage79FldMap.PermissionSet.al",
+        "test/src/Permissions/Storage79Line.PermissionSet.al",
+        "test/src/Permissions/Storage79Map.PermissionSet.al",
+        "test/src/Permissions/Storage79Type.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -649,7 +756,7 @@
       "id": 70013511,
       "name": "DataExch Import MsgType ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchImportMsgType.EnumExt.al",
-      "sha256": "4fcda7f2b2467b10b79752eed9abe5f975bd56da374bbc66eb5c42ef34fa3f45",
+      "sha256": "dbed665926ba43a4b3e936d56f4b5d23a23c456584d8d4dd2d20b49af4f31e80",
       "access": "Public (default)",
       "extensible": "not declared / not applicable",
       "decision": "KEEP: wire bindings, fields, setup integration or permission contract",
@@ -658,7 +765,7 @@
       "nonLocalProcedureCount": 0,
       "fields": [],
       "enumValues": [
-        "70013516; \"DataExchange.Import.Run\""
+        "70013522; \"DataExchange.Import.Run\""
       ],
       "namespace": "Origo.Bifrost.Attachments"
     },
@@ -667,7 +774,7 @@
       "id": 70013540,
       "name": "DataExch Import Run Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
-      "sha256": "297ec45710d73d9be0beec554e6e3469bfabd66ee64ae144b00e7bd6d2ea5d6a",
+      "sha256": "d9b82a987df533394e40026e2ad8cd0edafc2daac1f50acd0a9bf3dbcabaff0e",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -708,7 +815,7 @@
       "id": 70013524,
       "name": "DataExch Type List Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
-      "sha256": "0b7b8fa7f7eb10d665666a8619fa8c69d6c7ebcd6e5d7968eace7ac35f5dde68",
+      "sha256": "471c2ebb40938aebe2151adf0ea0ab6d7232385efa4b2a84d2be13f5b0c1378c",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -717,7 +824,16 @@
         "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Column.PermissionSet.al",
+        "test/src/Permissions/Storage79Def.PermissionSet.al",
+        "test/src/Permissions/Storage79Entry.PermissionSet.al",
+        "test/src/Permissions/Storage79Field.PermissionSet.al",
+        "test/src/Permissions/Storage79FldMap.PermissionSet.al",
+        "test/src/Permissions/Storage79Line.PermissionSet.al",
+        "test/src/Permissions/Storage79Map.PermissionSet.al",
+        "test/src/Permissions/Storage79Type.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -727,7 +843,7 @@
       "kind": "enumextension",
       "id": 70013516,
       "name": "DataExch Type Set EnumExt ori",
-      "file": "app/src/MessageTypes/DataExchange/DataExchTypeSet.EnumExt.al",
+      "file": "app/src/MessageTypes/DataExchange/DataExchTypeSetEnumExt.EnumExt.al",
       "sha256": "fd903b40d4a8b1f47ebab7d7382573cee371bf5f298f81806054f3142582fba7",
       "access": "Public (default)",
       "extensible": "not declared / not applicable",
@@ -746,14 +862,16 @@
       "id": 70013531,
       "name": "DataExch Type Set Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
-      "sha256": "54fa74e9cd3de67c42d2f7b4025d5745c20641148b426c8844c5cb4004c7690f",
+      "sha256": "1760e8b70896192fd83722e70b286749179a7df99aa9a09307a9a77e0bade4a5",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
-        "app/src/MessageTypes/DataExchange/DataExchTypeSet.EnumExt.al"
+        "app/src/MessageTypes/DataExchange/DataExchTypeSetEnumExt.EnumExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/test/AttachmentsBuildTestsori.Codeunit.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -764,7 +882,7 @@
       "id": 10035644,
       "name": "Storage Dir Create Impl ori",
       "file": "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
-      "sha256": "6fe06ec40916fdcd4a3d0abc548775379cc717d14beab1babd5eac4c93223364",
+      "sha256": "f57cf5d9d56cc873ddbe518827b8ca21a23987a29481235448005f1332eee12e",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -773,7 +891,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -784,7 +905,7 @@
       "id": 10035645,
       "name": "Storage Dir Delete Impl ori",
       "file": "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
-      "sha256": "7f5091c6e1e001cd0bac4a17d1b065dd8cdbce9ef8dd87606f9872834bbdd1ec",
+      "sha256": "afb5fdcfe3614f2c982d5c07e4a7a9f867b536c6a78d973814ffa34275fd52c2",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -793,7 +914,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -804,7 +928,7 @@
       "id": 10035646,
       "name": "Storage Dir Exists Impl ori",
       "file": "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
-      "sha256": "332b9fdc41a6c4f0f3d1bcd8f6afd7cd1f825bd588b576d37283fa39c1219752",
+      "sha256": "00477f1736db270d20b333e9283b02a1e1fab036fb05e61c36775022b8c1324b",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -813,7 +937,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -824,7 +951,7 @@
       "id": 10035647,
       "name": "Storage Dir List Impl ori",
       "file": "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
-      "sha256": "a0a2e2dcb354ad2bf143281e0dc97122cce9febdfa513a0fd888d8128549a0c2",
+      "sha256": "0e560d6b083f57ae174efe1b4a44c235a82b5e43e9f8a8ae41c87f64af5d9b98",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -833,7 +960,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -844,7 +974,7 @@
       "id": 10035648,
       "name": "Storage File Copy Impl ori",
       "file": "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
-      "sha256": "84dfc43b39de1aaa8613db8e687bd828f142074ff85ff39604f544a1abaf0233",
+      "sha256": "c4dddd422efe5c204cda2d2c9c5107a525f47279b15e5e5becfb224a6a796593",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -853,7 +983,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -864,7 +997,7 @@
       "id": 10035649,
       "name": "Storage File Create Impl ori",
       "file": "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
-      "sha256": "3fd0b3c6084425ab61473372c71ebdafd390075107b9bcdc96b8d87b28a66993",
+      "sha256": "aab8293dddb33e3e38f15198c864a99427f9e16d4d892c978dff2b301d488ce8",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -873,7 +1006,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -884,7 +1020,7 @@
       "id": 10035650,
       "name": "Storage File Delete Impl ori",
       "file": "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
-      "sha256": "1caae40ce829b9bfb16f2c37fcb3f58995519e80bd6d584c5732e2f48088e72c",
+      "sha256": "ce1a7dd807cd3ea97b055087cba4fe1881f74bf2d625d3e8f98c76a66b08af41",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -893,7 +1029,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -904,7 +1043,7 @@
       "id": 10035651,
       "name": "Storage File Exists Impl ori",
       "file": "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
-      "sha256": "57fa6fb5bb5d68e17c7951889c6b592f4d77ff96216423bdb3fe9db475b69fff",
+      "sha256": "fd091773aae2de2318f2670aa3b772ee066dd82014d0a1bae346cb2f2950dd3d",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -913,7 +1052,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -924,7 +1066,7 @@
       "id": 10035652,
       "name": "Storage File Get Impl ori",
       "file": "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
-      "sha256": "b7b130106a32dda1e20d92d8b3a865f0da752cfbbc6041ccef4033aa4f5745db",
+      "sha256": "641b9380240679c10e1e6d803924b8c78b2b44936180241deecfbf834286d364",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -933,7 +1075,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -944,7 +1089,7 @@
       "id": 10035653,
       "name": "Storage File List Impl ori",
       "file": "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
-      "sha256": "d1669996cf4a0d35c2ce594be6da7a598948af2b6010acbb6849f0e99ae015ff",
+      "sha256": "c991adb78a5c09f0d0fc73be524639307c4113eae4089236be00c23218b39950",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -953,7 +1098,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -964,7 +1112,7 @@
       "id": 10035654,
       "name": "Storage File Move Impl ori",
       "file": "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
-      "sha256": "5dc02bab1f02624943b84c1aa8078e9a2011f9a1a1e989195282fe012976eaf3",
+      "sha256": "fb32f5fd60cf02671ed3cd2199377981c99d544bb4b3f2e16949f9450b148835",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -973,7 +1121,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -984,7 +1135,7 @@
       "id": 10035655,
       "name": "Storage Help Get Impl ori",
       "file": "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
-      "sha256": "fa0a9191880b4f6f307e5a20d6bbb1074db145957cea02a448d3d98661cd5d18",
+      "sha256": "0bc5be08e5497ba278b0f3e46c6a678537d30c3ce8423a1865baa66fb1c9daf0",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -993,7 +1144,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -1004,7 +1158,7 @@
       "id": 70013500,
       "name": "Storage Contract Parts ori",
       "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
-      "sha256": "85a7427f3a4de7dd666e73cf7e84f57eb3d39f0ad6888670e5170df378e0fc70",
+      "sha256": "9b2a65d9c02e5ac97d3fd79000d256c9c87078202e10250cd08ad01d7d599f55",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1014,12 +1168,17 @@
         "app/src/MessageTypes/Attachments/StorageAttachRecordImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
@@ -1041,7 +1200,7 @@
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
       "testConsumers": [],
-      "nonLocalProcedureCount": 7,
+      "nonLocalProcedureCount": 8,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -1091,7 +1250,7 @@
       "id": 10035656,
       "name": "Storage Upload Abort Impl ori",
       "file": "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
-      "sha256": "ffdee9652dc30d1fe3b3f406cb5589a5e0cb3771ad86c7369d7ad6fd2d061070",
+      "sha256": "665b31588b0ff0be3b99f645e87f5a237d673549712b8b22be57d74380e11325",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1100,7 +1259,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -1111,7 +1273,7 @@
       "id": 10035657,
       "name": "Storage Upload Append Impl ori",
       "file": "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
-      "sha256": "1177f89dab068a7a1dbfbc53f7b674e20c0df7a040d6077f4a842ab5fce418ad",
+      "sha256": "2045a76bfac60c8ca6a7b8703a5331cc22f4373c817ea7cda34a2a9bc8be6aeb",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1120,7 +1282,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -1131,7 +1296,7 @@
       "id": 10035658,
       "name": "Storage Upload Begin Impl ori",
       "file": "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
-      "sha256": "59493fd2e90da3ec5705fdaa89aaeda5d8a563115bc8e475156ca4f1412379b6",
+      "sha256": "f2c9e93d59332bbe614bb6728f25d598063c852247316f69001e8b48a854700e",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1140,7 +1305,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -1151,7 +1319,7 @@
       "id": 10035659,
       "name": "Storage Upload Commit Impl ori",
       "file": "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
-      "sha256": "71f2499d6f4701b8e9ecd51bc9f6e4611ea1e0b883368b73c244e4b3619d27ef",
+      "sha256": "4722a222d237355263b59526f1b629086210481da7b4d559248bee5c797c633a",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1160,7 +1328,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -1171,7 +1342,7 @@
       "id": 10035669,
       "name": "Storage Upload Commit Rec ori",
       "file": "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
-      "sha256": "1bd83994444ca2fa65e7b9281fc218ef12108dccfc103b0dba3f9a269a8afe8c",
+      "sha256": "ca378361e261368e8d2a034182e8ec8e51a213aaa2d8e38d9dd673d0bce82b8a",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1180,7 +1351,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -1191,7 +1365,7 @@
       "id": 10035660,
       "name": "Storage Upload Status Impl ori",
       "file": "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
-      "sha256": "f587eb2b78b19a45a1db5049586c6a0de774c79a988734f9d854f812755f5e23",
+      "sha256": "993b1d49212037060aa0f122b52b67dbc17243d8c0228f52ea6a57e50a86e5d8",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1200,7 +1374,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -1267,7 +1444,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 0,
       "fields": [],
       "enumValues": [],
@@ -1289,6 +1469,8 @@
         "app/src/Setup/SetupExt.PageExt.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/test/StorageAppRegistryTests.Codeunit.al",
         "test/test/StorageSetupPageTests.Codeunit.al"
       ],
@@ -1327,7 +1509,10 @@
         "app/src/Permissions/StorageFull.PermissionSetExt.al",
         "app/src/Setup/StorageCard.Page.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 2,
       "fields": [
         "Name; Rec.Name",
@@ -1351,7 +1536,12 @@
         "app/src/Setup/StorageConnPart.Page.al",
         "app/src/Setup/StorageSetup.Page.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/Storage79PermTests.Codeunit.al",
+        "test/test/StorageSetupPageTests.Codeunit.al"
+      ],
       "nonLocalProcedureCount": 0,
       "fields": [
         "\"Code\"; Rec.\"Code\"",
@@ -1379,7 +1569,10 @@
         "app/src/Permissions/StorageFull.PermissionSetExt.al",
         "app/src/Setup/AttachmentsSetup.Page.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 0,
       "fields": [
         "\"Code\"; Rec.\"Code\"",
@@ -1433,16 +1626,23 @@
         "app/src/Storage/StorageConnector.Interface.al",
         "app/src/Storage/StorageExtFileImpl.Codeunit.al",
         "app/src/Storage/StorageRequestMgt.Codeunit.al",
+        "app/src/Storage/StorageRequestReader.Codeunit.al",
         "app/src/Upload/StorageDataRestriction.Codeunit.al",
         "app/src/Upload/StorageUploadMgt.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/src/StorageMockImpl.Codeunit.al",
+        "test/test/Storage79PermTests.Codeunit.al",
         "test/test/StorageAttachmentFieldTests.Codeunit.al",
         "test/test/StorageAttachRecordTests.Codeunit.al",
         "test/test/StorageConnectorTests.Codeunit.al",
         "test/test/StorageErrorResponseTests.Codeunit.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
+        "test/test/StorageNativeFieldsTests.Codeunit.al",
         "test/test/StorageSetupPageTests.Codeunit.al",
+        "test/test/StorageTakeoverProbeTests.Codeunit.al",
         "test/test/StorageUploadTests.Codeunit.al"
       ],
       "nonLocalProcedureCount": 0,
@@ -1462,7 +1662,7 @@
       "id": 10035636,
       "name": "Storage Setup ori",
       "file": "app/src/Setup/StorageSetup.Table.al",
-      "sha256": "a05f43476f277a546f7b221460a35d07a44430162d259fe772359d88417e935b",
+      "sha256": "027eb8b8cd5f379db3cf035febe7f580d142bc71e43ca49d4d34046b3e56fbee",
       "access": "Public (default)",
       "extensible": "false",
       "decision": "KEEP Public: provider contract",
@@ -1498,16 +1698,23 @@
         "app/src/Storage/StorageConnector.Interface.al",
         "app/src/Storage/StorageExtFileImpl.Codeunit.al",
         "app/src/Storage/StorageRequestMgt.Codeunit.al",
+        "app/src/Storage/StorageRequestReader.Codeunit.al",
         "app/src/Upload/StorageDataRestriction.Codeunit.al",
         "app/src/Upload/StorageUploadMgt.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/src/StorageMockImpl.Codeunit.al",
+        "test/test/Storage79PermTests.Codeunit.al",
         "test/test/StorageAttachmentFieldTests.Codeunit.al",
         "test/test/StorageAttachRecordTests.Codeunit.al",
         "test/test/StorageConnectorTests.Codeunit.al",
         "test/test/StorageErrorResponseTests.Codeunit.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
+        "test/test/StorageNativeFieldsTests.Codeunit.al",
         "test/test/StorageSetupPageTests.Codeunit.al",
+        "test/test/StorageTakeoverProbeTests.Codeunit.al",
         "test/test/StorageUploadTests.Codeunit.al"
       ],
       "nonLocalProcedureCount": 3,
@@ -1538,7 +1745,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 0,
       "fields": [
         "HttpEnabledField; HttpStatusTxt"
@@ -1588,17 +1798,23 @@
       "id": 10035661,
       "name": "Storage Ext File Impl ori",
       "file": "app/src/Storage/StorageExtFileImpl.Codeunit.al",
-      "sha256": "9fd0ce25a407d7adb915618fa28d3f04294cbcd575a159370aadda965591684e",
+      "sha256": "2dda6f7918130450a3c605687ad1fdd3606a6cfe4ad3393f93688046dd66c67c",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Storage/StorageRequestMgt.Codeunit.al",
         "app/src/Storage/StorageType.Enum.al"
       ],
-      "testConsumers": [],
-      "nonLocalProcedureCount": 11,
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al"
+      ],
+      "nonLocalProcedureCount": 15,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -1608,7 +1824,7 @@
       "id": 10035662,
       "name": "Storage Request Mgt ori",
       "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
-      "sha256": "6493b9afec75ca7f7c8fa0e9e06b0808bc0b6bf75cb72130f07b63692df0aa62",
+      "sha256": "f73db8bfe5f76669293e5bc36d7fef49a2d89bfc2837e20c9479b96c98163087",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1644,8 +1860,12 @@
         "app/src/Storage/StorageRequestReader.Codeunit.al",
         "app/src/Upload/StorageUploadMgt.Codeunit.al"
       ],
-      "testConsumers": [],
-      "nonLocalProcedureCount": 16,
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al"
+      ],
+      "nonLocalProcedureCount": 20,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -1655,12 +1875,17 @@
       "id": 10035682,
       "name": "Storage Request Reader ori",
       "file": "app/src/Storage/StorageRequestReader.Codeunit.al",
-      "sha256": "d37ad932487f136aed865298ca3d4521090d0cb2ce34381e03651df0ea3856c6",
+      "sha256": "15e38bee3c740de060a8a9dad11d63a08e8100c5fcb48447be075105a2a61bf0",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
@@ -1674,13 +1899,16 @@
         "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
         "app/src/Storage/StorageRequestMgt.Codeunit.al",
         "app/src/Upload/StorageUploadMgt.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/test/StorageErrorResponseTests.Codeunit.al"
       ],
-      "nonLocalProcedureCount": 10,
+      "nonLocalProcedureCount": 17,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -1712,7 +1940,7 @@
       "id": 10035663,
       "name": "Storage Data Restriction ori",
       "file": "app/src/Upload/StorageDataRestriction.Codeunit.al",
-      "sha256": "a77d137675b36ca57bd8a7b8787a9362ba8d2c6d8be9af913d01b96ddc337491",
+      "sha256": "4d4aa7d2feb3fc53b8631bbe69bb24da263ef870c9a41777d43f0251cf8a32b7",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1720,7 +1948,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 0,
       "fields": [],
       "enumValues": [],
@@ -1739,7 +1970,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 0,
       "fields": [],
       "enumValues": [],
@@ -1763,6 +1997,10 @@
         "app/src/Upload/StorageUploadSession.Table.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/Storage79PermTests.Codeunit.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
         "test/test/StorageSetupPageTests.Codeunit.al",
         "test/test/StorageUploadTests.Codeunit.al"
       ],
@@ -1781,7 +2019,7 @@
       "id": 10035665,
       "name": "Storage Upload Mgt ori",
       "file": "app/src/Upload/StorageUploadMgt.Codeunit.al",
-      "sha256": "a2cfa02a0bb9c76a242bad1f0012bf464e88e108e38d6e53f8c5f2c6ca35adad",
+      "sha256": "fc040893d586a0b805fc2c0f8ba6a909821f9ec337fa3e86dc89b687d9e7b694",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1795,7 +2033,10 @@
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
-      "testConsumers": [],
+      "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al"
+      ],
       "nonLocalProcedureCount": 7,
       "fields": [],
       "enumValues": [],
@@ -1806,7 +2047,7 @@
       "id": 10035679,
       "name": "Storage Upload Purge ori",
       "file": "app/src/Upload/StorageUploadPurge.Codeunit.al",
-      "sha256": "52f5ec10a9e0ebe1c87134ab5df445c0cd893b864354f869613b291c31a1500a",
+      "sha256": "86ee869b7263cc1362250cd396b6897479433cfbe5427aca13d59e92d2930c04",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1816,6 +2057,8 @@
         "app/src/Setup/AttachmentsSetup.Page.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/test/StorageSetupPageTests.Codeunit.al"
       ],
       "nonLocalProcedureCount": 2,
@@ -1841,6 +2084,11 @@
         "app/src/Upload/StorageUploadPurge.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/Storage79PermTests.Codeunit.al",
+        "test/test/StorageErrorResponseTests.Codeunit.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
         "test/test/StorageSetupPageTests.Codeunit.al",
         "test/test/StorageUploadTests.Codeunit.al"
       ],
@@ -1883,12 +2131,15 @@
     }
   ],
   "consumerSearch": {
-    "method": "bounded lexical quoted-name matches after removing line comments",
-    "corpus": [
-      "app/src/**/*.al",
-      "test/**/*.al"
-    ],
     "kindResolved": false,
-    "limitations": "Same-named table/page matches overlap; strings and block comments may match; these lists do not prove typed use, accessibility, runtime execution or absence of foreign consumers."
+    "scope": "app/src and test from the same pinned source snapshot",
+    "method": "Quoted name lexical matches after removing line comments; strings and block comments may match; no foreign-consumer absence assertion"
+  },
+  "refreshedAt": "2026-10-08T11:39:43.897358+00:00",
+  "originalSnapshot": {
+    "sourceSha": "b42ad90eaee2803205408a1cac8b0d9752b91c0e",
+    "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86",
+    "commit": "ef39ae86b5729038877b2427e9a892487ce09728",
+    "note": "Original audit remains attributable in Git history; this refresh inventories current product source."
   }
 }

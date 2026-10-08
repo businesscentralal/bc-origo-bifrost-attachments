@@ -26,22 +26,28 @@ codeunit 70013545 "DataExch Def Import Impl ori" implements "Msg Interface ori",
     /// <summary>Returns the message description.</summary>
     /// <returns>The message metadata value.</returns>
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Imports a data exchange definition from XML.', Comment = 'is-IS=Flytur inn skilgreiningu gagnaskipta úr XML.';
     begin
-        exit('Imports a data exchange definition from XML.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>Returns discovery keywords for the message.</summary>
     /// <returns>The message metadata value.</returns>
     procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'data exchange definition import, xml', Comment = 'is-IS=flytja inn skilgreiningu gagnaskipta, xml';
     begin
-        exit('data exchange definition import, xml');
+        exit(KeywordsLbl);
     end;
 
     /// <summary>Returns the selection guidance for the message.</summary>
     /// <returns>The message metadata value.</returns>
     procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Installs a data exchange definition from definitionXml.', Comment = 'is-IS=Setur upp skilgreiningu gagnaskipta úr definitionXml.';
     begin
-        exit('Installs a data exchange definition from definitionXml.');
+        exit(SelectionDescriptionLbl);
     end;
 
     /// <summary>Describes the supported message version and request content.</summary>
@@ -175,7 +181,7 @@ codeunit 70013545 "DataExch Def Import Impl ori" implements "Msg Interface ori",
         DefinitionXml: Text;
         OutStream: OutStream;
         InStream: InStream;
-        MissingErr: Label 'definitionXml is required.', Locked = true;
+        MissingErr: Label 'definitionXml is required.', Comment = 'is-IS=definitionXml er nauðsynlegt.';
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
