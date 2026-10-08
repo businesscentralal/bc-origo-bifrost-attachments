@@ -24,20 +24,26 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
 
     /// <summary>Describes the existing message operation.</summary>
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Creates or updates a Data Exchange Type and requires an import definition.', Comment = 'is-IS=Stofnar eða uppfærir gerð gagnaskipta og krefst innflutningsskilgreiningar.';
     begin
-        exit('Creates or updates a Data Exchange Type and requires an import definition.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>Returns the discovery terms for this message type.</summary>
     procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'data exchange type, incoming document type, set definition', Comment = 'is-IS=gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu';
     begin
-        exit('data exchange type, incoming document type, set definition');
+        exit(KeywordsLbl);
     end;
 
     /// <summary>Describes when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Wires a Data Exchange Type to an import definition.', Comment = 'is-IS=Tengir gerð gagnaskipta við innflutningsskilgreiningu.';
     begin
-        exit('Wires a Data Exchange Type to an import definition.');
+        exit(SelectionDescriptionLbl);
     end;
 
     /// <summary>Declares the existing message name and supported version.</summary>
@@ -61,17 +67,9 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
     /// <summary>Declares the request parameters consumed by this message.</summary>
     procedure GetParameters(var Parameters: JsonArray): Boolean
     var
-        ParameterJson: JsonObject;
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        ParameterJson.Add('name', 'code');
-        ParameterJson.Add('type', 'code');
-        ParameterJson.Add('required', true);
-        Parameters.Add(ParameterJson);
-        Clear(ParameterJson);
-        ParameterJson.Add('name', 'dataExchDefCode');
-        ParameterJson.Add('type', 'code');
-        ParameterJson.Add('required', true);
-        Parameters.Add(ParameterJson);
+        Parameters := ContractParts.GetParameters('DataExchange.Type.Set');
         exit(true);
     end;
 
