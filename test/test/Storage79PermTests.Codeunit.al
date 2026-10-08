@@ -21,9 +21,9 @@ codeunit 96218 "Storage 79 Perm Tests ori"
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
         LowerPermissions: Codeunit "Library - Lower Permissions";
-        StorageCodeTok: Label 'X79-STORAGE', Locked = true;
-        CustomerNoTok: Label 'X79-CUSTOMER', Locked = true;
-        DefinitionCodeTok: Label 'X79-DEF', Locked = true;
+        StorageCode: Code[20];
+        CustomerNo: Code[20];
+        DefinitionCode: Code[20];
 
     [Test]
     /// <summary>Actual advertised storage role can open and change setup through its card.</summary>
@@ -36,7 +36,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         Initialize();
         LowerStorageActor();
         LibraryAssert.IsTrue(StorageSetup.WritePermission(), 'Granted setup actor must be able to mutate setup.');
-        StorageSetup.Get(StorageCodeTok);
+        StorageSetup.Get(StorageCode);
         StorageCard.OpenEdit();
         StorageCard.GoToRecord(StorageSetup);
         StorageCard.Description.SetValue('X79 changed through card');
@@ -44,7 +44,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         Observe();
         Clear(StorageSetup);
         StorageSetup.ReadIsolation := IsolationLevel::ReadCommitted;
-        StorageSetup.Get(StorageCodeTok);
+        StorageSetup.Get(StorageCode);
         LibraryAssert.AreEqual('X79 changed through card', StorageSetup.Description, 'Read back the persisted page effect.');
     end;
 
@@ -60,7 +60,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         LowerActor('Storage79 Setup ori');
         LibraryAssert.IsTrue(StorageSetup.ReadPermission(), 'Read-only setup must remain reachable.');
         LibraryAssert.IsFalse(StorageSetup.WritePermission(), 'Actor must lack setup mutation before opening the card.');
-        StorageSetup.Get(StorageCodeTok);
+        StorageSetup.Get(StorageCode);
         StorageCard.OpenEdit();
         StorageCard.GoToRecord(StorageSetup);
         asserterror StorageCard.Description.SetValue('X79 forbidden card change');
@@ -101,7 +101,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         Initialize();
         LowerActor('Storage79 Setup ori');
         AssertReadOnlySetup();
-        StorageSetup.Get(StorageCodeTok);
+        StorageSetup.Get(StorageCode);
         StorageSetup.Description := 'X79 forbidden modification';
         StorageSetup.Enabled := false;
         asserterror StorageSetup.Modify(true);
@@ -120,7 +120,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         Initialize();
         LowerActor('Storage79 Setup ori');
         AssertReadOnlySetup();
-        StorageSetup.Get(StorageCodeTok);
+        StorageSetup.Get(StorageCode);
         asserterror StorageSetup.Delete(true);
         AssertPlatformPermissionError();
         Observe();
@@ -170,7 +170,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         Accounts := AccountsToken.AsArray();
         foreach AccountToken in Accounts do begin
             AccountJson := AccountToken.AsObject();
-            if ReadText(AccountJson, 'code') = StorageCodeTok then begin
+            if ReadText(AccountJson, 'code') = StorageCode then begin
                 FoundStorageCode := true;
                 LibraryAssert.AreEqual('X79 original setup', ReadText(AccountJson, 'description'), 'Configured account description.');
                 LibraryAssert.AreEqual('X79-root', ReadText(AccountJson, 'basePath'), 'Configured account base path.');
@@ -409,7 +409,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         SeedNativeAttachment(AttachmentId);
         LowerNativeActor(true);
         RequestJson := AttachmentRequest(AttachmentId);
-        RequestJson.Add('storageCode', StorageCodeTok);
+        RequestJson.Add('storageCode', StorageCode);
         ResponseJson := Dispatch(MessageType::"Storage.Attachment.Offload", RequestJson);
         AssertSuccess(ResponseJson);
         Observe();
@@ -454,7 +454,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         LibraryAssert.IsFalse(AttachmentLink.WritePermission(), 'Link mutation must actually be absent.');
         LibraryAssert.IsTrue(DocumentAttachment.WritePermission(), 'Native write remains granted to isolate link denial.');
         RequestJson := AttachmentRequest(AttachmentId);
-        RequestJson.Add('storageCode', StorageCodeTok);
+        RequestJson.Add('storageCode', StorageCode);
         ResponseJson := Dispatch(MessageType::"Storage.Attachment.Offload", RequestJson);
         Observe();
         AttachmentLink.ReadIsolation := IsolationLevel::ReadCommitted;
@@ -480,10 +480,10 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         EntryNo := SeedDataExchange();
         LowerActor('BIFROST DataExch ori');
         AssertDiscoveryReads(0);
-        RequestJson.Add('code', DefinitionCodeTok);
+        RequestJson.Add('code', DefinitionCode);
         ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Get", RequestJson);
         AssertSuccess(ResponseJson);
-        LibraryAssert.AreEqual(DefinitionCodeTok, ReadText(ReadData(ResponseJson), 'code'), 'The seeded definition was actually reached.');
+        LibraryAssert.AreEqual(DefinitionCode, ReadText(ReadData(ResponseJson), 'code'), 'The seeded definition was actually reached.');
         Clear(RequestJson);
         AssertSuccess(Dispatch(MessageType::"DataExchange.Definition.List", RequestJson));
         AssertSuccess(Dispatch(MessageType::"DataExchange.Type.List", RequestJson));
@@ -605,27 +605,36 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         // Setup/observer phases restore the runner's original grants, never claim actor authority.
         LowerPermissions.StopLoggingNAVPermissions();
         MockState.Reset();
+        // Each method owns fresh company-local keys; committed fixtures cannot leak into the next method.
+        StorageCode := NewFixtureCode();
+        CustomerNo := NewFixtureCode();
+        DefinitionCode := NewFixtureCode();
         UploadSession.SetRange("File Name", 'X79-upload.txt');
         UploadSession.DeleteAll(true);
         DocumentAttachment.SetRange("Table ID", Database::Customer);
-        DocumentAttachment.SetRange("No.", CustomerNoTok);
+        DocumentAttachment.SetRange("No.", CustomerNo);
         DocumentAttachment.DeleteAll(false);
-        AttachmentLink.SetRange("Storage Code", StorageCodeTok);
+        AttachmentLink.SetRange("Storage Code", StorageCode);
         AttachmentLink.DeleteAll(false);
-        if StorageSetup.Get(StorageCodeTok) then
+        if StorageSetup.Get(StorageCode) then
             StorageSetup.Delete(false);
         StorageSetup.Init();
-        StorageSetup.Code := StorageCodeTok;
+        StorageSetup.Code := StorageCode;
         StorageSetup.Description := 'X79 original setup';
         StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
         StorageSetup."Base Path" := 'X79-root';
         StorageSetup.Enabled := true;
         StorageSetup.Insert(false);
-        if not Customer.Get(CustomerNoTok) then begin
+        if not Customer.Get(CustomerNo) then begin
             Customer.Init();
-            Customer."No." := CustomerNoTok;
+            Customer."No." := CustomerNo;
             Customer.Insert(false);
         end;
+    end;
+
+    local procedure NewFixtureCode(): Code[20]
+    begin
+        exit(CopyStr('X79-' + DelChr(Format(CreateGuid(), 0, 4), '=', '{}-'), 1, 20));
     end;
 
     local procedure LowerActor(RoleId: Code[20])
@@ -636,6 +645,9 @@ codeunit 96218 "Storage 79 Perm Tests ori"
     begin
         // SetExact avoids Microsoft's Set()/Push defaults: All Objects, Test Tables, D365 Basic.
         LowerPermissions.StopLoggingNAVPermissions();
+        // Preserve the arranged database state before an expected platform error can roll it back.
+        // This also commits seeded native content and upload chunks before a second lowering.
+        Commit();
         LowerPermissions.StartLoggingNAVPermissions();
         LowerPermissions.SetExactPermissionSet('Storage79 Test ori');
         LowerPermissions.AddPermissionSet('BIFROST API ori');
@@ -689,7 +701,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         StorageSetup: Record "Storage Setup ori";
     begin
         StorageSetup.ReadIsolation := IsolationLevel::ReadCommitted;
-        StorageSetup.Get(StorageCodeTok);
+        StorageSetup.Get(StorageCode);
         LibraryAssert.AreEqual('X79 original setup', StorageSetup.Description, 'Description must remain unchanged.');
         LibraryAssert.AreEqual('X79-root', StorageSetup."Base Path", 'Base path must remain unchanged.');
         LibraryAssert.IsTrue(StorageSetup.Enabled, 'Enabled state must remain unchanged.');
@@ -770,13 +782,13 @@ codeunit 96218 "Storage 79 Perm Tests ori"
 
     local procedure StorageRequest(StoragePath: Text) RequestJson: JsonObject
     begin
-        RequestJson.Add('storageCode', StorageCodeTok);
+        RequestJson.Add('storageCode', StorageCode);
         RequestJson.Add('path', StoragePath);
     end;
 
     local procedure CopyRequest(SourcePath: Text; TargetPath: Text) RequestJson: JsonObject
     begin
-        RequestJson.Add('storageCode', StorageCodeTok);
+        RequestJson.Add('storageCode', StorageCode);
         RequestJson.Add('sourcePath', SourcePath);
         RequestJson.Add('targetPath', TargetPath);
     end;
@@ -789,7 +801,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         MessageType: Enum "Message Type ori";
     begin
         if UseStorage then
-            RequestJson.Add('storageCode', StorageCodeTok);
+            RequestJson.Add('storageCode', StorageCode);
         RequestJson.Add('fileName', 'X79-upload.txt');
         ResponseJson := Dispatch(MessageType::"Storage.Upload.Begin", RequestJson);
         AssertSuccess(ResponseJson);
@@ -820,13 +832,13 @@ codeunit 96218 "Storage 79 Perm Tests ori"
     begin
         RequestJson := UploadRequest(UploadId);
         RequestJson.Add('tableId', Database::Customer);
-        RequestJson.Add('no', CustomerNoTok);
+        RequestJson.Add('no', CustomerNo);
     end;
 
     local procedure CreateAttachmentRequest() RequestJson: JsonObject
     begin
         RequestJson.Add('tableId', Database::Customer);
-        RequestJson.Add('no', CustomerNoTok);
+        RequestJson.Add('no', CustomerNo);
         RequestJson.Add('fileName', 'X79-inline.txt');
         RequestJson.Add('contentBase64', Encode('X79 inline bytes'));
     end;
@@ -845,7 +857,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         AssertSuccess(Dispatch(MessageType::"Storage.Attachment.CreateForRecord", CreateAttachmentRequest()));
         DocumentAttachment.ReadIsolation := IsolationLevel::ReadCommitted;
         DocumentAttachment.SetRange("Table ID", Database::Customer);
-        DocumentAttachment.SetRange("No.", CustomerNoTok);
+        DocumentAttachment.SetRange("No.", CustomerNo);
         DocumentAttachment.SetRange("File Name", 'X79-inline');
         DocumentAttachment.FindFirst();
         AttachmentId := DocumentAttachment.SystemId;
@@ -857,11 +869,11 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         Customer: Record Customer;
     begin
         Customer.ReadIsolation := IsolationLevel::ReadCommitted;
-        Customer.Get(CustomerNoTok);
-        LibraryAssert.AreEqual(CustomerNoTok, Customer."No.", 'Refused writes preserve the source record.');
+        Customer.Get(CustomerNo);
+        LibraryAssert.AreEqual(CustomerNo, Customer."No.", 'Refused writes preserve the source record.');
         DocumentAttachment.ReadIsolation := IsolationLevel::ReadCommitted;
         DocumentAttachment.SetRange("Table ID", Database::Customer);
-        DocumentAttachment.SetRange("No.", CustomerNoTok);
+        DocumentAttachment.SetRange("No.", CustomerNo);
         LibraryAssert.AreEqual(ExpectedCount, DocumentAttachment.Count(), 'Fresh readback verifies actual native target rows.');
     end;
 
@@ -871,7 +883,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
     begin
         DocumentAttachment.ReadIsolation := IsolationLevel::ReadCommitted;
         DocumentAttachment.SetRange("Table ID", Database::Customer);
-        DocumentAttachment.SetRange("No.", CustomerNoTok);
+        DocumentAttachment.SetRange("No.", CustomerNo);
         DocumentAttachment.SetRange("File Name", FileName);
         DocumentAttachment.FindFirst();
         AssertOpenAttachmentBytes(DocumentAttachment, ContentText);
@@ -919,7 +931,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
             RequestJson.Add('includeFields', true);
             ResponseJson := Dispatch(MessageType::"DataExchange.Entry.Get", RequestJson);
         end else begin
-            RequestJson.Add('code', DefinitionCodeTok);
+            RequestJson.Add('code', DefinitionCode);
             ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Get", RequestJson);
         end;
         Observe();
@@ -938,7 +950,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         Initialize();
         EntryNo := SeedDataExchange();
         if UseExportDefinition then begin
-            DataExchDef.Get(DefinitionCodeTok);
+            DataExchDef.Get(DefinitionCode);
             DataExchDef.Type := DataExchDef.Type::"Generic Export";
             DataExchDef.Modify(false);
         end;
@@ -946,16 +958,16 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         LowerActor('BIFROST DataExch ori');
         LowerPermissions.AddPermissionSet('BIFROST Attach ori');
         AssertDiscoveryReads(0);
-        RequestJson.Add('dataExchDefCode', DefinitionCodeTok);
+        RequestJson.Add('dataExchDefCode', DefinitionCode);
         case MessageType of
             MessageType::"DataExchange.Type.Set":
                 begin
-                    RequestJson.Add('code', DefinitionCodeTok);
+                    RequestJson.Add('code', DefinitionCode);
                     RequestJson.Add('description', 'X79 forbidden type modification');
                 end;
             MessageType::"DataExchange.Import.Run":
                 begin
-                    RequestJson.Add('storageCode', StorageCodeTok);
+                    RequestJson.Add('storageCode', StorageCode);
                     RequestJson.Add('path', 'X79-input.txt');
                 end;
             MessageType::"DataExchange.Export.Run":
@@ -1003,49 +1015,49 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         DataExchField: Record "Data Exch. Field";
         ContentOutStream: OutStream;
     begin
-        DataExch.SetRange("Data Exch. Def Code", DefinitionCodeTok);
+        DataExch.SetRange("Data Exch. Def Code", DefinitionCode);
         DataExch.DeleteAll(true);
         DataExch.Reset();
-        if DataExchType.Get(DefinitionCodeTok) then
+        if DataExchType.Get(DefinitionCode) then
             DataExchType.Delete(false);
-        if DataExchDef.Get(DefinitionCodeTok) then
+        if DataExchDef.Get(DefinitionCode) then
             DataExchDef.Delete(true);
         DataExchDef.Init();
-        DataExchDef.Code := DefinitionCodeTok;
+        DataExchDef.Code := DefinitionCode;
         DataExchDef.Name := 'X79 seeded definition';
         DataExchDef.Type := DataExchDef.Type::"Generic Import";
         DataExchDef."File Type" := DataExchDef."File Type"::"Variable Text";
         DataExchDef.Insert(false);
         LineDef.Init();
-        LineDef."Data Exch. Def Code" := DefinitionCodeTok;
+        LineDef."Data Exch. Def Code" := DefinitionCode;
         LineDef.Code := 'X79-LINE';
         LineDef."Column Count" := 1;
         LineDef.Insert(false);
         ColumnDef.Init();
-        ColumnDef."Data Exch. Def Code" := DefinitionCodeTok;
+        ColumnDef."Data Exch. Def Code" := DefinitionCode;
         ColumnDef."Data Exch. Line Def Code" := LineDef.Code;
         ColumnDef."Column No." := 1;
         ColumnDef.Name := 'X79 column';
         ColumnDef.Insert(false);
         Mapping.Init();
-        Mapping."Data Exch. Def Code" := DefinitionCodeTok;
+        Mapping."Data Exch. Def Code" := DefinitionCode;
         Mapping."Data Exch. Line Def Code" := LineDef.Code;
         Mapping."Table ID" := Database::Customer;
         Mapping.Insert(false);
         FieldMapping.Init();
-        FieldMapping."Data Exch. Def Code" := DefinitionCodeTok;
+        FieldMapping."Data Exch. Def Code" := DefinitionCode;
         FieldMapping."Data Exch. Line Def Code" := LineDef.Code;
         FieldMapping."Table ID" := Database::Customer;
         FieldMapping."Column No." := 1;
         FieldMapping."Field ID" := 1;
         FieldMapping.Insert(false);
         DataExchType.Init();
-        DataExchType.Code := DefinitionCodeTok;
+        DataExchType.Code := DefinitionCode;
         DataExchType.Description := 'X79 seeded type';
-        DataExchType."Data Exch. Def. Code" := DefinitionCodeTok;
+        DataExchType."Data Exch. Def. Code" := DefinitionCode;
         DataExchType.Insert(false);
         DataExch.Init();
-        DataExch."Data Exch. Def Code" := DefinitionCodeTok;
+        DataExch."Data Exch. Def Code" := DefinitionCode;
         DataExch."Data Exch. Line Def Code" := LineDef.Code;
         DataExch."File Name" := 'X79-entry.txt';
         DataExch."File Content".CreateOutStream(ContentOutStream, TextEncoding::UTF8);
@@ -1055,7 +1067,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         DataExchField."Data Exch. No." := DataExch."Entry No.";
         DataExchField."Line No." := 1;
         DataExchField."Column No." := 1;
-        DataExchField.Value := CustomerNoTok;
+        DataExchField.Value := CustomerNo;
         DataExchField.Insert(false);
         exit(DataExch."Entry No.");
     end;
@@ -1075,24 +1087,24 @@ codeunit 96218 "Storage 79 Perm Tests ori"
     begin
         // Fresh observer records read every seeded graph component and the original blob.
         DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
-        DataExchDef.Get(DefinitionCodeTok);
+        DataExchDef.Get(DefinitionCode);
         LibraryAssert.AreEqual('X79 seeded definition', DataExchDef.Name, 'Definition persists unchanged.');
         LineDef.ReadIsolation := IsolationLevel::ReadCommitted;
-        LineDef.Get(DefinitionCodeTok, 'X79-LINE');
+        LineDef.Get(DefinitionCode, 'X79-LINE');
         LibraryAssert.AreEqual(1, LineDef."Column Count", 'Line definition persists unchanged.');
         ColumnDef.ReadIsolation := IsolationLevel::ReadCommitted;
-        ColumnDef.Get(DefinitionCodeTok, 'X79-LINE', 1);
+        ColumnDef.Get(DefinitionCode, 'X79-LINE', 1);
         LibraryAssert.AreEqual('X79 column', ColumnDef.Name, 'Column persists unchanged.');
         Mapping.ReadIsolation := IsolationLevel::ReadCommitted;
-        Mapping.Get(DefinitionCodeTok, 'X79-LINE', Database::Customer);
+        Mapping.Get(DefinitionCode, 'X79-LINE', Database::Customer);
         FieldMapping.ReadIsolation := IsolationLevel::ReadCommitted;
-        FieldMapping.Get(DefinitionCodeTok, 'X79-LINE', Database::Customer, 1, 1);
+        FieldMapping.Get(DefinitionCode, 'X79-LINE', Database::Customer, 1, 1);
         DataExchType.ReadIsolation := IsolationLevel::ReadCommitted;
-        DataExchType.Get(DefinitionCodeTok);
-        LibraryAssert.AreEqual(DefinitionCodeTok, DataExchType."Data Exch. Def. Code", 'Type reference persists unchanged.');
+        DataExchType.Get(DefinitionCode);
+        LibraryAssert.AreEqual(DefinitionCode, DataExchType."Data Exch. Def. Code", 'Type reference persists unchanged.');
         LibraryAssert.AreEqual('X79 seeded type', DataExchType.Description, 'Denied Type.Set cannot change the type description.');
         DataExch.ReadIsolation := IsolationLevel::ReadCommitted;
-        DataExch.SetRange("Data Exch. Def Code", DefinitionCodeTok);
+        DataExch.SetRange("Data Exch. Def Code", DefinitionCode);
         LibraryAssert.AreEqual(1, DataExch.Count(), 'Denied entry writes must create no additional rows.');
         DataExch.Reset();
         DataExch.ReadIsolation := IsolationLevel::ReadCommitted;
@@ -1102,6 +1114,6 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         LibraryAssert.AreEqual(Encode('X79 data exchange bytes'), Base64Convert.ToBase64(ContentInStream), 'Entry blob remains byte-for-byte intact.');
         DataExchField.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExchField.Get(EntryNo, 1, 1, '');
-        LibraryAssert.AreEqual(CustomerNoTok, DataExchField.Value, 'Entry field persists unchanged.');
+        LibraryAssert.AreEqual(CustomerNo, DataExchField.Value, 'Entry field persists unchanged.');
     end;
 }
