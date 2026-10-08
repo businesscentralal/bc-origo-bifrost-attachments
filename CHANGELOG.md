@@ -6,6 +6,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-07) - bounded build-input evidence (#78)
+
+- Separate the complete compiler catalog from the resolved app cache in `tools/appsource_gate.py`, stream bounded NAVX hashes/CRC checks, and compare genuine helper additions with dependency resolution. Keep complete sanitized measurements and explicit failure truncation. No AL objects or IDs change. Add an internally reviewed exact-hash BC29 Base Application resource profile and exact immutable Apps530 Foundation candidate/staging profile; retain523as a separate controlled fixture and reject the same-version TestApps collision. Exercise every manifest identity field with genuine Base and Foundation bytes, and align the documented catalog/cache and profile limits. Pipeline/signing settings and actual Windows runner/runtime/trust gates remain unchanged.
+
+
 ### Fixed (2026-10-07) - selective Data Exchange localization (#72, #74)
 
 - Localize discovery text in `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534), `DataExch Def Export Impl ori` (70013536), `DataExch Entry Del Impl ori` (70013544) and `DataExch Def Import Impl ori` (70013545), plus six existing refusal labels in Definition Export, Definition Import and Entry Delete. `Attachments Build Tests ori` (96274) asserts exact discovery text in English and Icelandic; `Storage Setup Page Tests` (96207) orders Record declarations before TestPage without changing assertions. Eight TypeSet/ExportRun execution contexts remain deferred. Compiled shipping translations and runtime verification remain pending.
