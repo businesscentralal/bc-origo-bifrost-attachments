@@ -43,8 +43,6 @@ codeunit 10035665 "Storage Upload Mgt ori"
         NoStorageCodeNextStepLbl: Label 'Use Storage.Upload.CommitToRecord to attach the file to a record, or begin a new session with a storageCode.', Comment = 'is-IS=Notaðu Storage.Upload.CommitToRecord til að hengja skrána við færslu eða byrjaðu nýja lotu með storageCode.';
         UnknownTargetErr: Label 'Parameter "target" has value "%1", which is not an attachment target.', Comment = '%1 = received value, is-IS=Færibreytan "target" hefur gildið "%1", sem er ekki viðhengjamarkmið.';
         TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Comment = 'is-IS=DocumentAttachment eða IncomingDocument';
-        FileNameHasFolderErr: Label 'fileName must be a file name without folders; use path or folderPath for the destination folder.', Comment = 'is-IS=fileName verður að vera skráarheiti án mappa; notaðu path eða folderPath fyrir áfangamöppuna.';
-        FileNameExpectedLbl: Label 'a file name with no slash or backslash', Comment = 'is-IS=skráarheiti án skástriks eða öfugs skástriks';
 
     /// <summary>Opens a chunked upload session and returns its <c>uploadId</c>.</summary>
     /// <param name="Argument">The message argument carrying <c>fileName</c> and optional <c>storageCode</c>/<c>path</c>/<c>folderPath</c>/<c>declaredSize</c>; receives the error response.</param>
@@ -85,9 +83,9 @@ codeunit 10035665 "Storage Upload Mgt ori"
         Session.Init();
         Session."Upload Id" := UploadId;
         Session."Storage Code" := StorageSetup."Code";
-        Session."File Name" := FileName;
+        Session."File Name" := CopyStr(FileName, 1, MaxStrLen(Session."File Name"));
         if StorageCode <> '' then
-            Session."Target Path" := Path;
+            Session."Target Path" := CopyStr(Path, 1, MaxStrLen(Session."Target Path"));
         Session."Declared Size" := DeclaredSize;
         Session.Status := Session.Status::Open;
         Session.Insert(true);
@@ -187,7 +185,7 @@ codeunit 10035665 "Storage Upload Mgt ori"
 
         // Database work first, then the upload last: a failure before the upload rolls back the
         // status change, and a failed upload rolls it back too — leaving the session reusable.
-        Session."Target Path" := Path;
+        Session."Target Path" := CopyStr(Path, 1, MaxStrLen(Session."Target Path"));
         Session.Status := Session.Status::Committed;
         Session."Received Size" := TempBlob.Length();
         Session.Modify(true);
