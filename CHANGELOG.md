@@ -1,3 +1,5 @@
+
+
 # Changelog
 
 All notable changes to Bifrost Attachments are documented here.
@@ -5,9 +7,29 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
-### Changed (2026-10-08) - storage contracts (#75 #82)
 
-- Add 181 non-local procedure XML contracts in `Storage Attach Link Impl ori` (10035640), `Storage Attach Record Impl ori` (10035667), `Storage Att. Offload Impl ori` (10035641), `Storage Att. Restore Impl ori` (10035642), `Storage Upload Abort Impl ori` (10035656), `Storage Upload Append Impl ori` (10035657), `Storage Upload Begin Impl ori` (10035658), `Storage Upload Commit Impl ori` (10035659), `Storage Upload Commit Rec ori` (10035669), `Storage Upload Status Impl ori` (10035660), `Storage Ext File Impl ori` (10035661). Document output preservation for omitted chapters, dispatcher delegation, provider errors and bounded pagination. Executable source, wire contracts, labels and access remain unchanged; compile/runtime and integration gates remain open.
+
+
+### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
+
+- Require the native action's exact completion marker before permitting compilation while preserving exact Foundation candidate identity, hash and provenance checks. Pin artifact lookup to workflow version `1.0.3.530`, containing app `28.0.3.530`. Rejection receipts prioritize the package that failed parsing, including failures beyond the 128-item diagnostic cap. Native callback and genuine-package mutation regressions cover silent success and retained offending bytes. Failure-receipt workflow upload remains with the pipeline owner for infrastructure review. No AL objects or IDs change; actual runner manifest diagnosis, Windows trust and product/runtime verification remain pending.
+
+### Fixed (2026-10-07) - bounded build-input evidence (#78)
+
+- Separate the complete compiler catalog from the resolved app cache in `tools/appsource_gate.py`, stream bounded NAVX hashes/CRC checks, and compare genuine helper additions with dependency resolution. Keep complete sanitized measurements and explicit failure truncation. No AL objects or IDs change. Add an internally reviewed exact-hash BC29 Base Application resource profile and exact immutable Apps530 Foundation candidate/staging profile; retain523as a separate controlled fixture and reject the same-version TestApps collision. Exercise every manifest identity field with genuine Base and Foundation bytes, and align the documented catalog/cache and profile limits. Pipeline/signing settings and actual Windows runner/runtime/trust gates remain unchanged.
+
+
+### Fixed (2026-10-07) - selective Data Exchange localization (#72, #74)
+
+- Localize discovery text in `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534), `DataExch Def Export Impl ori` (70013536), `DataExch Entry Del Impl ori` (70013544) and `DataExch Def Import Impl ori` (70013545), plus six existing refusal labels in Definition Export, Definition Import and Entry Delete. `Attachments Build Tests ori` (96274) asserts exact discovery text in English and Icelandic; `Storage Setup Page Tests` (96207) orders Record declarations before TestPage without changing assertions. Eight TypeSet/ExportRun execution contexts remain deferred. Compiled shipping translations and runtime verification remain pending.
+
+### Fixed (2026-10-07) - registered parameter metadata (#69)
+
+- Delegate parameter chapters in `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534) and `DataExch Def Export Impl ori` (70013536) to `Storage Contract Parts ori` (70013500), documenting the shipped optional `description` and JSON string types without changing wire keys or execution. `Storage Contract Batch2 Tests` (96216) asserts exact registered parameter counts, types, requiredness and uniqueness. The tests also verify replacement of stale metadata and the canonical `error` property for single/collected bilingual refusals; runtime verification remains pending.
+
+### Fixed (2026-10-07) - duplicate Data Exchange type-list contract case
+
+- Remove the redundant `DataExchange.Type.List` response branch from `Storage Contract Parts ori` (70013500), preserving the localized `count` and `types` fields returned by `Data Exchange Query ori` (70013520). `Storage Contract Batch2 Tests` (96216) covers unique typed response metadata, a deterministically empty parameterless request and exactly two seeded public-dispatcher rows with integer count, array shape and row contents. Full company rows are preserved/restored in the owned disposable test company; runtime verification remains required.
 
 ### Fixed (2026-10-07) - canonical compilation and regression fixtures (#74)
 
@@ -32,10 +54,6 @@ Business Central release versioning (`major.minor.build.revision`).
 ## [28.0.0.4] — 2026-10-07
 
 ### Fixed
-
-- `Storage Attachment Mgt ori` (10035635), `Storage Upload Mgt ori` (10035665), and `Storage Request Reader ori` (10035682) retain prewrite length refusals while using bounded assignments for analyzer clarity; direct linked-move calls also reject overlong targets. Remove unused upload labels and align owned test filenames/declaration order.
-- `Storage Attachment Mgt ori` (10035635) persists native fields only after successful field assignment, outside the TryFunction. `Storage Native Fields Tests` (96217) seeds real media before base validation and covers missing records and failed assignments without partial persistence.
-- `DataExch Export Run Impl ori` (70013534) and `DataExch Type Set Impl ori` (70013531) collect strict input and definition errors before writes, retain existing accepted definition kinds, and propagate postwrite failures in the caller transaction. `DataExch Refusal82 Tests ori` (96226) adds header/type readback, refusal and rollback regressions.
 
 - `Storage Contract Parts ori` (70013500) removes unused storage requirements from Data Exchange queries and record uploads, documents conditional attachment sources and accepted address aliases, and adds shared shipped Data Exchange mutation chapters for integration by #82.
 - `Data Exchange Query ori` (70013520) collects malformed filters, flags, dates and paging values before querying, refuses overlong codes and page sizes above 1000, preserves the zero/default page size of 100, and returns localized actionable error details.

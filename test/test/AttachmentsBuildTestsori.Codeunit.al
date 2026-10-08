@@ -14,6 +14,132 @@ codeunit 96274 "Attachments Build Tests ori"
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
 
+    /// <summary>Verifies exact English discovery text from five production implementations without licence or provider fixtures.</summary>
+    [Test]
+    procedure Language72_Discovery_ExactEnglish()
+    var
+        DefinitionExport: Codeunit "DataExch Def Export Impl ori";
+        DefinitionImport: Codeunit "DataExch Def Import Impl ori";
+        EntryDelete: Codeunit "DataExch Entry Del Impl ori";
+        ExportRun: Codeunit "DataExch Export Run Impl ori";
+        TypeSet: Codeunit "DataExch Type Set Impl ori";
+        Implementation: Interface "Msg Interface ori";
+        Discovery: Interface "Msg Discovery ori";
+        Actual: List of [Text];
+        SavedLanguageId: Integer;
+    begin
+        // Story #72 + #74: exact source prose must translate even for unregistered direct interfaces.
+        // [GIVEN] Real production implementations and the requested language.
+        SavedLanguageId := GlobalLanguage();
+        GlobalLanguage(1033);
+        // [WHEN] Reading all three discovery texts; restore the caller language before assertions.
+        Implementation := DefinitionExport;
+        Discovery := DefinitionExport;
+        Actual.Add(Implementation.GetDescription());
+        Actual.Add(Discovery.GetKeywords());
+        Actual.Add(Discovery.GetSelectionDescription());
+        Implementation := DefinitionImport;
+        Discovery := DefinitionImport;
+        Actual.Add(Implementation.GetDescription());
+        Actual.Add(Discovery.GetKeywords());
+        Actual.Add(Discovery.GetSelectionDescription());
+        Implementation := EntryDelete;
+        Discovery := EntryDelete;
+        Actual.Add(Implementation.GetDescription());
+        Actual.Add(Discovery.GetKeywords());
+        Actual.Add(Discovery.GetSelectionDescription());
+        Implementation := ExportRun;
+        Discovery := ExportRun;
+        Actual.Add(Implementation.GetDescription());
+        Actual.Add(Discovery.GetKeywords());
+        Actual.Add(Discovery.GetSelectionDescription());
+        Implementation := TypeSet;
+        Discovery := TypeSet;
+        Actual.Add(Implementation.GetDescription());
+        Actual.Add(Discovery.GetKeywords());
+        Actual.Add(Discovery.GetSelectionDescription());
+        GlobalLanguage(SavedLanguageId);
+        // [THEN] Exact expectations reject fallback, empty text and a wrong sibling implementation.
+        LibraryAssert.AreEqual('Exports a Data Exchange definition header for reinstall.', Actual.Get(1), 'Exact English discovery text 1.');
+        LibraryAssert.AreEqual('export data exchange definition, dump definition', Actual.Get(2), 'Exact English discovery text 2.');
+        LibraryAssert.AreEqual('Returns the definition code, type, and name so it can be imported again.', Actual.Get(3), 'Exact English discovery text 3.');
+        LibraryAssert.AreEqual('Imports a data exchange definition from XML.', Actual.Get(4), 'Exact English discovery text 4.');
+        LibraryAssert.AreEqual('data exchange definition import, xml', Actual.Get(5), 'Exact English discovery text 5.');
+        LibraryAssert.AreEqual('Installs a data exchange definition from definitionXml.', Actual.Get(6), 'Exact English discovery text 6.');
+        LibraryAssert.AreEqual('Deletes a Data Exch. entry that is not referenced by an incoming document.', Actual.Get(7), 'Exact English discovery text 7.');
+        LibraryAssert.AreEqual('data exchange delete, entry delete', Actual.Get(8), 'Exact English discovery text 8.');
+        LibraryAssert.AreEqual('Deletes a Data Exch. entry and its fields.', Actual.Get(9), 'Exact English discovery text 9.');
+        LibraryAssert.AreEqual('Exports through a Data Exchange definition to a named file.', Actual.Get(10), 'Exact English discovery text 10.');
+        LibraryAssert.AreEqual('data exchange export, payment export, export file', Actual.Get(11), 'Exact English discovery text 11.');
+        LibraryAssert.AreEqual('Runs an export definition and returns the file name.', Actual.Get(12), 'Exact English discovery text 12.');
+        LibraryAssert.AreEqual('Creates or updates a Data Exchange Type and requires an import definition.', Actual.Get(13), 'Exact English discovery text 13.');
+        LibraryAssert.AreEqual('data exchange type, incoming document type, set definition', Actual.Get(14), 'Exact English discovery text 14.');
+        LibraryAssert.AreEqual('Wires a Data Exchange Type to an import definition.', Actual.Get(15), 'Exact English discovery text 15.');
+    end;
+
+    /// <summary>Verifies exact Icelandic discovery text from five production implementations without licence or provider fixtures.</summary>
+    [Test]
+    procedure Language72_Discovery_ExactIcelandic()
+    var
+        DefinitionExport: Codeunit "DataExch Def Export Impl ori";
+        DefinitionImport: Codeunit "DataExch Def Import Impl ori";
+        EntryDelete: Codeunit "DataExch Entry Del Impl ori";
+        ExportRun: Codeunit "DataExch Export Run Impl ori";
+        TypeSet: Codeunit "DataExch Type Set Impl ori";
+        Implementation: Interface "Msg Interface ori";
+        Discovery: Interface "Msg Discovery ori";
+        Actual: List of [Text];
+        SavedLanguageId: Integer;
+    begin
+        // Story #72 + #74: exact source prose must translate even for unregistered direct interfaces.
+        // [GIVEN] Real production implementations and the requested language.
+        SavedLanguageId := GlobalLanguage();
+        GlobalLanguage(1039);
+        // [WHEN] Reading all three discovery texts; restore the caller language before assertions.
+        Implementation := DefinitionExport;
+        Discovery := DefinitionExport;
+        Actual.Add(Implementation.GetDescription());
+        Actual.Add(Discovery.GetKeywords());
+        Actual.Add(Discovery.GetSelectionDescription());
+        Implementation := DefinitionImport;
+        Discovery := DefinitionImport;
+        Actual.Add(Implementation.GetDescription());
+        Actual.Add(Discovery.GetKeywords());
+        Actual.Add(Discovery.GetSelectionDescription());
+        Implementation := EntryDelete;
+        Discovery := EntryDelete;
+        Actual.Add(Implementation.GetDescription());
+        Actual.Add(Discovery.GetKeywords());
+        Actual.Add(Discovery.GetSelectionDescription());
+        Implementation := ExportRun;
+        Discovery := ExportRun;
+        Actual.Add(Implementation.GetDescription());
+        Actual.Add(Discovery.GetKeywords());
+        Actual.Add(Discovery.GetSelectionDescription());
+        Implementation := TypeSet;
+        Discovery := TypeSet;
+        Actual.Add(Implementation.GetDescription());
+        Actual.Add(Discovery.GetKeywords());
+        Actual.Add(Discovery.GetSelectionDescription());
+        GlobalLanguage(SavedLanguageId);
+        // [THEN] Exact expectations reject fallback, empty text and a wrong sibling implementation.
+        LibraryAssert.AreEqual('Flytur út haus skilgreiningar gagnaskipta til enduruppsetningar.', Actual.Get(1), 'Exact Icelandic discovery text 1.');
+        LibraryAssert.AreEqual('flytja út skilgreiningu gagnaskipta, afrita skilgreiningu', Actual.Get(2), 'Exact Icelandic discovery text 2.');
+        LibraryAssert.AreEqual('Skilar kóða, gerð og heiti skilgreiningar svo hægt sé að flytja hana inn aftur.', Actual.Get(3), 'Exact Icelandic discovery text 3.');
+        LibraryAssert.AreEqual('Flytur inn skilgreiningu gagnaskipta úr XML.', Actual.Get(4), 'Exact Icelandic discovery text 4.');
+        LibraryAssert.AreEqual('flytja inn skilgreiningu gagnaskipta, xml', Actual.Get(5), 'Exact Icelandic discovery text 5.');
+        LibraryAssert.AreEqual('Setur upp skilgreiningu gagnaskipta úr definitionXml.', Actual.Get(6), 'Exact Icelandic discovery text 6.');
+        LibraryAssert.AreEqual('Eyðir gagnaskiptafærslu sem ekki er vísað í úr innkomuskjali.', Actual.Get(7), 'Exact Icelandic discovery text 7.');
+        LibraryAssert.AreEqual('eyða gagnaskiptum, eyða færslu', Actual.Get(8), 'Exact Icelandic discovery text 8.');
+        LibraryAssert.AreEqual('Eyðir gagnaskiptafærslu og reitum hennar.', Actual.Get(9), 'Exact Icelandic discovery text 9.');
+        LibraryAssert.AreEqual('Flytur út með skilgreiningu gagnaskipta í nafngreinda skrá.', Actual.Get(10), 'Exact Icelandic discovery text 10.');
+        LibraryAssert.AreEqual('útflutningur gagnaskipta, útflutningur greiðslna, flytja út skrá', Actual.Get(11), 'Exact Icelandic discovery text 11.');
+        LibraryAssert.AreEqual('Keyrir útflutningsskilgreiningu og skilar skráarheitinu.', Actual.Get(12), 'Exact Icelandic discovery text 12.');
+        LibraryAssert.AreEqual('Stofnar eða uppfærir gerð gagnaskipta og krefst innflutningsskilgreiningar.', Actual.Get(13), 'Exact Icelandic discovery text 13.');
+        LibraryAssert.AreEqual('gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu', Actual.Get(14), 'Exact Icelandic discovery text 14.');
+        LibraryAssert.AreEqual('Tengir gerð gagnaskipta við innflutningsskilgreiningu.', Actual.Get(15), 'Exact Icelandic discovery text 15.');
+    end;
+
     /// <summary>Absent notes clear stale caller output and consistently return false.</summary>
     [Test]
     procedure EntryDelete_NoNotes_ClearsCallerOutput()

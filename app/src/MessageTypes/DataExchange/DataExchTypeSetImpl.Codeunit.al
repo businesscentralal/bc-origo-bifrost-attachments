@@ -30,20 +30,26 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
 
     /// <summary>Describes the existing message operation.</summary>
     procedure GetDescription(): Text[250]
+    var
+        DescriptionLbl: Label 'Creates or updates a Data Exchange Type and requires an import definition.', Comment = 'is-IS=Stofnar eða uppfærir gerð gagnaskipta og krefst innflutningsskilgreiningar.';
     begin
-        exit('Creates or updates a Data Exchange Type and requires an import definition.');
+        exit(DescriptionLbl);
     end;
 
     /// <summary>Returns the discovery terms for this message type.</summary>
     procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'data exchange type, incoming document type, set definition', Comment = 'is-IS=gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu';
     begin
-        exit('data exchange type, incoming document type, set definition');
+        exit(KeywordsLbl);
     end;
 
     /// <summary>Describes when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
+    var
+        SelectionDescriptionLbl: Label 'Wires a Data Exchange Type to an import definition.', Comment = 'is-IS=Tengir gerð gagnaskipta við innflutningsskilgreiningu.';
     begin
-        exit('Wires a Data Exchange Type to an import definition.');
+        exit(SelectionDescriptionLbl);
     end;
 
     /// <summary>Declares the existing message name and supported version.</summary>
@@ -150,8 +156,8 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
     /// <param name="Argument">The licensed request and response.</param>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     begin
-        Argument.AssertVersion1();
         Argument.AssertIsLicensed();
+        Argument.AssertVersion1();
         // No Boolean return: preserve the caller transaction and propagate postwrite errors.
         Codeunit.Run(Codeunit::"DataExch Type Set Impl ori", Argument);
     end;
