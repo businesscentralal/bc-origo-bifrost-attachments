@@ -81,6 +81,11 @@ class Parameters(unittest.TestCase):
     def test_committed_settings_and_supported_hook_entrypoints(self):
         root = Path(__file__).parents[2]
         settings = json.loads((root / ".AL-Go/settings.json").read_text())
+        foundation_probing = settings["appDependencyProbingPaths"]
+        self.assertEqual(1, len(foundation_probing))
+        self.assertEqual("https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core", foundation_probing[0]["repo"])
+        self.assertEqual("latestBuild", foundation_probing[0]["release_status"])
+        self.assertEqual("1.0.3.530", foundation_probing[0]["version"])
         for key in ("enableCodeCop", "enableUICop", "enableCodeAnalyzersOnTestApps"):
             self.assertIs(True, settings[key])
         self.assertEqual("warning", settings["failOn"])

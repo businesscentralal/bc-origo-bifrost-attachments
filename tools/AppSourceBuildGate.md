@@ -264,10 +264,10 @@ folder attribution within the existing byte/time bounds. Truncation remains
 explicit and never certifies a complete inventory. The 129-distinct-package
 regression mutates genuine compiler fixtures; it is diagnostic test evidence.
 
-The proposed `latestBuild` workflow-artifact pin `1.0.3.530` (containing app
-`28.0.3.530`) and failure-only receipt upload require current pipeline-owner
-adoption and infrastructure review. The proposal does not replace any exact
-candidate checks. Historical run37697457309 package bytes were not retained;
+The approved `latestBuild` workflow-artifact pin `1.0.3.530` (containing app
+`28.0.3.530`) is applied in settings. Failure-only receipt upload requires current
+pipeline-owner adoption and infrastructure review. The artifact pin does not
+replace any exact candidate checks. Historical run37697457309 package bytes were not retained;
 its manifest layout cannot be inferred from source samples. Fresh runner capture
 must preserve exact run/source identity and rejected/consumed bytes in protected
 custody before a format-policy change is considered.
