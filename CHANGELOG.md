@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-08) - measured current BC artifact capacity (#78)
+
+- Add exact hash and identity profiles for the outer and embedded Microsoft Base Application `29.0.54011.55975` in `tools/appsource_gate.py`, allowing the already approved full-catalog alias normalization to inspect this artifact. Genuine-package regressions cover both layers, identity/hash changes, bounds, CRC/truncation, mutation and strict shipping/cache refusals. Generic and aggregate limits and the Foundation candidate pin remain unchanged; no AL objects or IDs change. Actual current-tip compile, unit tests and runtime verification remain pending.
+
 ### Fixed (2026-10-08) - duplicate BC artifact symbol aliases (#78)
 
 - Normalize compiler-equivalent Microsoft identity/version aliases in the compiler catalog before strict AppSource inventory, retaining the versioned file and an identity/package-hash/symbol-hash/removal receipt. Conflicting symbols/metadata, non-Microsoft collisions and duplicate app-cache inputs still fail; bounds, analyzer gates and test execution remain strict. No AL objects or IDs change. Actual runner compilation and runtime verification remain pending.

@@ -49,6 +49,16 @@ MEASURED_PACKAGE_PROFILES = {
                      "name": "Base Application", "version": "29.0.54011.55935"},
         "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024,
     },
+    "4e4aca03643b998452dc3c6e525ce9a611a804a7bd581bbe6734e33b22891c67": {
+        "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
+                     "name": "Base Application", "version": "29.0.54011.55975"},
+        "maxEntries": 4096, "maxExpandedBytes": 512 * 1024 * 1024,
+    },
+    "ab800f38121e7eda19d1fa65bee3915a8b31010f2d9a87800f4aeb023dba9d48": {
+        "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
+                     "name": "Base Application", "version": "29.0.54011.55975"},
+        "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024,
+    },
 }
 FOUNDATION_CANDIDATE = {
     "identity": {"id": "7505e808-6e52-4b96-a328-82573391297a", "publisher": "Origo",

@@ -69,7 +69,16 @@ Generate isolated genuine NAVX fixtures with the installed compiler and run:
 
 ```powershell
 ./tools/New-AppSourceGateFixtures.ps1 -CompilerDll <actual-alc.dll> -Dotnet <dotnet> -OutputFolder <temporary-fixture-folder>
-./tools/Test-AppSourceBuildGate.ps1 -FixtureFolder <temporary-fixture-folder> -FoundationPackage <controlled-523.app> -CandidateFoundationPackage <exact-Apps530.app> -MeasuredBasePackage <exact-BC29-BaseApplication.app>
+./tools/Test-AppSourceBuildGate.ps1 `
+  -FixtureFolder <temporary-fixture-folder> `
+  -FoundationPackage <controlled-523.app> `
+  -CandidateFoundationPackage <exact-Apps530.app> `
+  -MeasuredBasePackage <exact-55935-embedded.app> `
+  -ReadyToRunAnyPackage <exact-55935-Any-outer.app> `
+  -EmbeddedAnyPackage <exact-55935-Any-embedded.app> `
+  -ReadyToRunBasePackage <exact-55935-outer.app> `
+  -ReadyToRunBase55975Package <exact-55975-outer.app> `
+  -EmbeddedBase55975Package <exact-55975-embedded.app>
 python -m unittest discover -s tools/tests -p test_build_inputs.py -v
 ```
 
@@ -216,16 +225,29 @@ PR94 is historical custody and is not a remediation branch.
 
 ## Internally reviewed exact candidate and measured profile
 
-Internal technical decisions on 2026-10-07 approve one exact BC29 Base Application
-profile: identity `437dbf0e-84ff-417a-965d-ed2bb9650972`, Microsoft,
-Base Application29.0.54011.55935, SHA256
-`10ebba923b6f8d3b6d676cc1f1db16a8a5d4519ff8ca4f45bbd2e778b52d289c`.
-The original embedded source has8665entries/379592378expanded bytes. For these
-exact bytes and identity only, the bound is16384entries/512MiBexpanded. Generic
-4096entries/128MiBexpanded and128MiBdisk limits remain; any changed or converted
-package hash needs its own measured technical disposition. Full CRC/hash reads
-under the deadline are still required. Folder aggregate budgets stay unchanged;
-proposed2GiBexpanded inventory capacity is not approved as validated capacity.
+Internal technical decisions on 2026-10-07 and 2026-10-08 approve finite,
+content-addressed BC29 Base Application profiles. All four manifest identity
+fields must match: AppId `437dbf0e-84ff-417a-965d-ed2bb9650972`, publisher
+`Microsoft`, name `Base Application`, and the exact version below.
+
+| Version / layer | SHA256 | Measured entries / expanded bytes | Entry / expanded ceiling |
+|---|---|---|---|
+| 29.0.54011.55935 outer ReadyToRun | `05d37036733b4df5ffaf31d3d779ec48af63465da6f694ff15a7e0b228abc1b8` | retained measured source | 4096 / 512 MiB |
+| 29.0.54011.55935 embedded NAVX | `10ebba923b6f8d3b6d676cc1f1db16a8a5d4519ff8ca4f45bbd2e778b52d289c` | 8665 / 379592378 | 16384 / 512 MiB |
+| 29.0.54011.55975 outer ReadyToRun | `4e4aca03643b998452dc3c6e525ce9a611a804a7bd581bbe6734e33b22891c67` | 10 / 288402113 | 4096 / 512 MiB |
+| 29.0.54011.55975 embedded NAVX | `ab800f38121e7eda19d1fa65bee3915a8b31010f2d9a87800f4aeb023dba9d48` | 8665 / 379592378 | 16384 / 512 MiB |
+
+Both 55975 profiles are required; the outer profile alone still refuses the
+embedded entry count. Generic 4096-entry / 128 MiB-expanded and 128 MiB-disk
+limits remain. Changed or converted bytes need their own measured disposition.
+Full CRC/hash reads, 16 MiB manifests and the 60-second inventory deadline remain.
+Aggregate budgets are unchanged: compiler catalog 256 packages / 1 GiB disk /
+4 GiB expanded, app cache 128 packages / 512 MiB disk / 512 MiB expanded.
+The 55975 envelope plus embedded package counts 667994491 expanded-work bytes,
+so this envelope alone exceeds the app-cache expanded ceiling. The profiles do
+not approve cache enlargement or validate the complete actual runner catalog,
+translation/final caches, signature trust, compilation or runtime tests.
+Shipping output still requires NAVX and refuses ReadyToRun envelopes.
 
 Current compilation-boundary candidate Foundation is exactly28.0.3.530 from
 main`8ec074f4ac69ac9bde15807cf16d21bee045332f`, run37679390622/attempt1,
@@ -287,7 +309,7 @@ genuine regression fixtures, not substitutes for a fresh complete runner capture
 
 `Test-AppSourceBuildGate.ps1` also requires `ReadyToRunAnyPackage`,
 `EmbeddedAnyPackage`, and `ReadyToRunBasePackage`; it runs the envelope regressions
-alongside the original gate and symbol-policy suites. The combined exact-source
+alongside the original gate and symbol-policy suites. The historical 55935 exact-source
 tooling run passed 92 tests (45 gate, 10 policy, 15 envelopes, 22 staging), with
 zero skips. Application CI and BC runtime verification remain separate.
 
@@ -304,3 +326,11 @@ non-Microsoft duplicates fail. Unique unversioned libraries and different versio
 remain available. The app cache and postcompile catalog inventory remain strict;
 no diagnostic, analyzer or runtime test is suppressed. This receipt proves
 compiler-symbol equivalence, not runtime-package equivalence, Windows signature trust or successful product compilation.
+
+The genuine Base55975 regressions additionally require
+`-ReadyToRunBase55975Package <exact-55975-outer.app>` and
+`-EmbeddedBase55975Package <exact-55975-embedded.app>` on
+`Test-AppSourceBuildGate.ps1`. Missing fixtures fail; no fixture tests are skipped.
+They preserve the existing 55935 fixtures and test both exact identities/hashes,
+independent layer bounds, shipping refusal, aggregate work, CRC/truncation and
+measurement mutation. These are tooling checks, not Business Central test counts.

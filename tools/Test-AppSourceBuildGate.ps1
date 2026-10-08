@@ -9,7 +9,9 @@ param(
     [Parameter(Mandatory)][string] $MeasuredBasePackage,
     [Parameter(Mandatory)][string] $ReadyToRunAnyPackage,
     [Parameter(Mandatory)][string] $EmbeddedAnyPackage,
-    [Parameter(Mandatory)][string] $ReadyToRunBasePackage
+    [Parameter(Mandatory)][string] $ReadyToRunBasePackage,
+    [Parameter(Mandatory)][string] $ReadyToRunBase55975Package,
+    [Parameter(Mandatory)][string] $EmbeddedBase55975Package
 )
 $ErrorActionPreference = 'Stop'
 $previousFixtures = $env:APPSOURCE_GATE_FIXTURES
@@ -21,6 +23,8 @@ $readyToRunInputs = @{
     APPSOURCE_GATE_READYTORUN_ANY = $ReadyToRunAnyPackage
     APPSOURCE_GATE_EMBEDDED_ANY = $EmbeddedAnyPackage
     APPSOURCE_GATE_READYTORUN_BASE29 = $ReadyToRunBasePackage
+    APPSOURCE_GATE_READYTORUN_BASE55975 = $ReadyToRunBase55975Package
+    APPSOURCE_GATE_EMBEDDED_BASE55975 = $EmbeddedBase55975Package
 }
 foreach ($name in $readyToRunInputs.Keys) {
     $previousReadyToRun[$name] = [Environment]::GetEnvironmentVariable($name)
@@ -52,6 +56,10 @@ try {
     & $python.Source -m unittest discover -s (Join-Path $PSScriptRoot 'tests') -p 'test_ready_to_run.py' -v
     if ($LASTEXITCODE -ne 0) {
         throw 'ReadyToRun inventory regression checks failed.'
+    }
+    & $python.Source -m unittest discover -s (Join-Path $PSScriptRoot 'tests') -p 'test_measured_base55975.py' -v
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Measured Base55975 regression checks failed.'
     }
 }
 finally {
