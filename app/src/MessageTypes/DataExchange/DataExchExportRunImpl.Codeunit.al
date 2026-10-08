@@ -67,17 +67,9 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     /// <summary>Declares the request parameters consumed by this message.</summary>
     procedure GetParameters(var Parameters: JsonArray): Boolean
     var
-        ParameterJson: JsonObject;
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        ParameterJson.Add('name', 'dataExchDefCode');
-        ParameterJson.Add('type', 'code');
-        ParameterJson.Add('required', true);
-        Parameters.Add(ParameterJson);
-        Clear(ParameterJson);
-        ParameterJson.Add('name', 'fileName');
-        ParameterJson.Add('type', 'text');
-        ParameterJson.Add('required', true);
-        Parameters.Add(ParameterJson);
+        Parameters := ContractParts.GetParameters('DataExchange.Export.Run');
         exit(true);
     end;
 
