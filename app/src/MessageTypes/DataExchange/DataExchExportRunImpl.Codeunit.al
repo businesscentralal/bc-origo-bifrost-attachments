@@ -156,26 +156,30 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
         Token: JsonToken;
         DefinitionCode: Code[20];
         FileName: Text;
+        MissingDefinitionCodeErr: Label 'dataExchDefCode is required.', Comment = 'is-IS=dataExchDefCode er nauðsynlegt.';
+        MissingFileNameErr: Label 'fileName is required.', Comment = 'is-IS=fileName er nauðsynlegt.';
+        DefinitionNotFoundErr: Label 'Data exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
+        ExportDefinitionExpectedErr: Label 'definition must be an export definition', Comment = 'is-IS=skilgreining verður að vera útflutningsskilgreining';
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
         RequestJson := Argument.GetRequestJson();
         if not RequestJson.Get('dataExchDefCode', Token) then begin
-            Argument.RespondWithError('dataExchDefCode is required.');
+            Argument.RespondWithError(MissingDefinitionCodeErr);
             exit;
         end;
         DefinitionCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefinitionCode));
         if not RequestJson.Get('fileName', Token) then begin
-            Argument.RespondWithError('fileName is required.');
+            Argument.RespondWithError(MissingFileNameErr);
             exit;
         end;
         FileName := Token.AsValue().AsText();
         if not DataExchDef.Get(DefinitionCode) then begin
-            Argument.RespondWithError('Data exchange definition ' + DefinitionCode + ' was not found.');
+            Argument.RespondWithError(StrSubstNo(DefinitionNotFoundErr, DefinitionCode));
             exit;
         end;
         if DataExchDef.Type = DataExchDef.Type::"Generic Import" then begin
-            Argument.RespondWithError('definition must be an export definition');
+            Argument.RespondWithError(ExportDefinitionExpectedErr);
             exit;
         end;
 
