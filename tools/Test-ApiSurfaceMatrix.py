@@ -24,7 +24,7 @@ def validate(root, inventory, document):
             errors.append(f"Inventory path missing from current source: {obj['file']}")
             continue
         try:
-            text = path.read_text()
+            text = path.read_text(encoding='utf-8-sig')
         except OSError as error:
             errors.append(f"Inventory source unreadable: {obj['file']}: {error}")
             continue
@@ -58,7 +58,7 @@ def validate(root, inventory, document):
                 errors.append('Storage Setup table provider contract attribution missing')
     interface_path = root / 'app/src/Storage/StorageConnector.Interface.al'
     try:
-        interface = interface_path.read_text()
+        interface = interface_path.read_text(encoding='utf-8-sig')
     except OSError as error:
         errors.append(f'Provider interface source missing or unreadable: {interface_path.relative_to(root)}: {error}')
         interface = ''
@@ -74,6 +74,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=pathlib.Path, default=pathlib.Path(__file__).resolve().parents[1])
     args = parser.parse_args()
-    errors = validate(args.root, json.loads((args.root / 'api-surface-objects.json').read_text()), (args.root / 'API-SURFACE.md').read_text())
-    print(json.dumps({'staticOnly': True, 'objectsChecked': len(json.loads((args.root / 'api-surface-objects.json').read_text())['objects']), 'errors': errors}, indent=2))
+    errors = validate(args.root, json.loads((args.root / 'api-surface-objects.json').read_text(encoding='utf-8-sig')), (args.root / 'API-SURFACE.md').read_text(encoding='utf-8-sig'))
+    print(json.dumps({'staticOnly': True, 'objectsChecked': len(json.loads((args.root / 'api-surface-objects.json').read_text(encoding='utf-8-sig'))['objects']), 'errors': errors}, indent=2))
     raise SystemExit(bool(errors))

@@ -21,8 +21,8 @@ class ApiSurfaceMatrixTests(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = pathlib.Path(self.temporary.name)
         shutil.copytree(ROOT / 'app/src', self.root / 'app/src')
-        self.inventory = json.loads((ROOT / 'api-surface-objects.json').read_text())
-        self.document = (ROOT / 'API-SURFACE.md').read_text()
+        self.inventory = json.loads((ROOT / 'api-surface-objects.json').read_text(encoding='utf-8-sig'))
+        self.document = (ROOT / 'API-SURFACE.md').read_text(encoding='utf-8-sig')
 
     def errors(self):
         return matrix.validate(self.root, self.inventory, self.document)
@@ -43,8 +43,8 @@ class ApiSurfaceMatrixTests(unittest.TestCase):
     def test_missing_source_cli_returns_findings_without_traceback(self):
         obj = self.inventory['objects'][0]
         (self.root / obj['file']).unlink()
-        (self.root / 'api-surface-objects.json').write_text(json.dumps(self.inventory))
-        (self.root / 'API-SURFACE.md').write_text(self.document)
+        (self.root / 'api-surface-objects.json').write_text(json.dumps(self.inventory), encoding='utf-8')
+        (self.root / 'API-SURFACE.md').write_text(self.document, encoding='utf-8')
         result = subprocess.run([sys.executable, str(ROOT / 'tools/Test-ApiSurfaceMatrix.py'), '--root', str(self.root)], capture_output=True, text=True)
         self.assertEqual(1, result.returncode)
         self.assertEqual('', result.stderr)
@@ -66,7 +66,7 @@ class ApiSurfaceMatrixTests(unittest.TestCase):
     def test_changed_source_hash(self):
         obj = self.inventory['objects'][0]
         path = self.root / obj['file']
-        path.write_text(path.read_text() + '\n// Unrecorded source change\n')
+        path.write_text(path.read_text(encoding='utf-8-sig') + '\n// Unrecorded source change\n', encoding='utf-8')
         self.assert_finding('Source hash mismatch: ' + obj['file'])
 
     def test_changed_identity(self):
@@ -76,7 +76,7 @@ class ApiSurfaceMatrixTests(unittest.TestCase):
     def test_unrecognized_source_identity(self):
         obj = self.inventory['objects'][0]
         path = self.root / obj['file']
-        path.write_text('namespace Origo.Bifrost.Attachments;\n')
+        path.write_text('namespace Origo.Bifrost.Attachments;\n', encoding='utf-8')
         self.assert_finding('Unrecognized source identity')
 
     def test_changed_document_decision(self):
@@ -94,7 +94,7 @@ class ApiSurfaceMatrixTests(unittest.TestCase):
 
     def test_provider_signature_requires_setup_record(self):
         path = self.root / 'app/src/Storage/StorageConnector.Interface.al'
-        path.write_text(path.read_text().replace('Record "Storage Setup ori"', 'Record "Other Table"', 1))
+        path.write_text(path.read_text(encoding='utf-8-sig').replace('Record "Storage Setup ori"', 'Record "Other Table"', 1), encoding='utf-8')
         self.assert_finding('Provider members no longer all require the Storage Setup Record')
 
     def test_lexical_matches_cannot_claim_kind_resolution(self):
