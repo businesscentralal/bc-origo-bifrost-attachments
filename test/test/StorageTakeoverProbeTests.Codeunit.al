@@ -341,7 +341,7 @@ codeunit 96210 "Storage Takeover Probe Tests"
         // Leave these rows to Function rollback; post-run snapshots must verify their removal.
     end;
 
-    local procedure InsertTagSentinel(Tag: Code[250]; Company: Text[30])
+    local procedure InsertTagSentinel(Tag: Code[250]; Company: Text)
     var
         UpgradeTags: RecordRef;
     begin
