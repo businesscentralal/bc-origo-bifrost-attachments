@@ -28,6 +28,25 @@ BUILD_URL = f'https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/ac
 MAX_FILES = 128
 MAX_BYTES = 128 * 1024 * 1024
 
+PROFILES = {
+    'controlled523': dict(source=SOURCE, run=RUN, attempt=2, artifacts=ARTIFACTS,
+                          identity=IDENTITY, pin=PIN, testPin=TEST_PIN, buildUrl=BUILD_URL),
+    'candidate530': dict(source='8ec074f4ac69ac9bde15807cf16d21bee045332f', run=37679390622, attempt=1,
+        artifacts={
+            'Apps': (11508979803, '21c6331c47d3134d1f3c8c77f240d021fa47710f6fbdebc974b733e0b708bad8'),
+            'TestApps': (11510930013, '0a4a24e4fa1afc56e60c00ea807d8cd9a91f55f21f144c81f458e14521bd0e73'),
+        },
+        identity=dict(id=FOUNDATION, publisher='Origo', name='Bifrost Foundation', version='28.0.3.530'),
+        pin='b95e0eccf7a4038531cea08f0441e757ac176c7c4ff06b1b8eb9d25ac0dd3a88',
+        testPin='391ba3df7917913ce4fd932096e0f8d5e474d45d0ee78c090f5abee37b1fbfe7',
+        buildUrl='https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/37679390622'),
+}
+
+
+def profile_config(name):
+    require(name in PROFILES, 'Unknown Foundation staging profile')
+    return PROFILES[name]
+
 
 def context_check(context):
     require(set(context) == {'run', 'attempt', 'sourceCommit', 'checkoutSha', 'mode'}, 'Unexpected/missing staging context fields')
@@ -38,10 +57,11 @@ def context_check(context):
         require(re.fullmatch('[1-9][0-9]*', str(context[key])) is not None, 'Invalid staging run/attempt')
 
 
-def provenance_check(kind, provenance, archive):
-    artifact, sha = ARTIFACTS[kind]
-    expected = dict(repository='OrigoSoftwareSolutions/bc-origo-bifrost-core', sourceSha=SOURCE,
-                    run=RUN, attempt=2, artifactId=artifact, archiveSha256=sha, expired=False, conclusion='success')
+def provenance_check(kind, provenance, archive, profile="controlled523"):
+    config = profile_config(profile)
+    artifact, sha = config["artifacts"][kind]
+    expected = dict(repository='OrigoSoftwareSolutions/bc-origo-bifrost-core', sourceSha=config["source"],
+                    run=config["run"], attempt=config["attempt"], artifactId=artifact, archiveSha256=sha, expired=False, conclusion='success')
     require(provenance == expected, 'Missing/expired/wrong-source artifact provenance')
     require(Path(archive).is_file() and Path(archive).stat().st_size <= MAX_BYTES, 'Missing/oversized artifact archive')
     require(file_hash(archive) == sha, 'Changed artifact archive')
@@ -78,22 +98,23 @@ def inspect(paths):
     return result
 
 
-def select(app_paths, test_paths):
+def select(app_paths, test_paths, profile="controlled523"):
     """Compose actual helper string[] file inputs; remove only verified collision."""
+    config = profile_config(profile)
     apps, tests = inspect(app_paths), inspect(test_paths)
     require(all(x['helperInput'] == x['path'] for x in apps), 'Wrapped installApps unsupported by helper')
     foundation = [x for x in apps if x['identity']['id'].lower() == FOUNDATION]
     require(len(foundation) == 1, 'Missing/duplicate Apps Foundation candidates')
     approved = foundation[0]
-    require(approved['identity'] == IDENTITY and approved['sha256'] == PIN and approved['friends'] == []
-            and approved['sourceCommit'] == SOURCE and approved['buildUrl'] == BUILD_URL,
+    require(approved['identity'] == config['identity'] and approved['sha256'] == config['pin'] and approved['friends'] == []
+            and approved['sourceCommit'] == config['source'] and approved['buildUrl'] == config['buildUrl'],
             'Unapproved Apps Foundation package/identity/friends/source')
     collisions = [x for x in tests if x['identity']['id'].lower() == FOUNDATION]
     require(len(collisions) == 1, 'Missing/duplicate TestApps Foundation candidates')
     collision = collisions[0]
-    require(collision['identity'] == IDENTITY and collision['sha256'] == TEST_PIN
-            and collision['friends'] == [TEST_FRIEND] and collision['sourceCommit'] == SOURCE
-            and collision['buildUrl'] == BUILD_URL, 'Unrecognized TestApps collision')
+    require(collision['identity'] == config['identity'] and collision['sha256'] == config['testPin']
+            and collision['friends'] == [TEST_FRIEND] and collision['sourceCommit'] == config['source']
+            and collision['buildUrl'] == config['buildUrl'], 'Unrecognized TestApps collision')
     selected_tests = [x for x in tests if x['identity']['id'].lower() != FOUNDATION]
     selected = apps + selected_tests
     ids = [x['identity']['id'].lower() for x in selected]
@@ -111,31 +132,35 @@ def validate(receipt_path, context, install_apps, install_tests, symbols=None):
     context_check(context)
     require(Path(receipt_path).is_file(), 'Missing staging receipt')
     receipt = json.loads(Path(receipt_path).read_text())
-    require(receipt['context'] == context and receipt['schema'] == 1, 'Stale/wrong staging receipt')
+    require(receipt['context'] == context and receipt['schema'] == 2, 'Stale/wrong staging receipt')
+    profile = receipt['profile']
+    config = profile_config(profile)
     for kind, paths in [('installApps', install_apps), ('installTestApps', install_tests)]:
         actual = inspect(paths)
         require(actual == receipt['selection']['after'][kind], 'Changed/substituted helper input array or package')
     for kind, entry in receipt['artifacts'].items():
-        provenance_check(kind, entry['provenance'], entry['archive'])
+        provenance_check(kind, entry['provenance'], entry['archive'], profile)
     # Validate exclusion and approved identity too; a receipt alone is not authority.
     original = receipt['selection']['before']
-    selected = select([x['helperInput'] for x in original['installApps']], [x['helperInput'] for x in original['installTestApps']])
+    selected = select([x['helperInput'] for x in original['installApps']], [x['helperInput'] for x in original['installTestApps']], profile)
     require(selected == receipt['selection'], 'Staging receipt inventory changed')
     if symbols is not None:
         candidates = [x for x in inspect(symbols) if x['identity']['id'].lower() == FOUNDATION]
-        require(len(candidates) == 1 and candidates[0]['sha256'] == PIN, 'Changed/missing compiler Foundation input')
+        require(len(candidates) == 1 and candidates[0]['sha256'] == config['pin'], 'Changed/missing compiler Foundation input')
     return receipt
 
 
 def stage(request, destination):
     """Use immutable archives and a fresh directory. Never delete another input."""
+    profile = request.get('profile', 'candidate530')
+    profile_config(profile)
     context = request['context']
     context_check(context)
     destination = Path(destination)
     require(not destination.exists(), 'Existing staging directory/receipts cannot be reused')
     require(set(request['artifacts']) == set(ARTIFACTS), 'Missing/unknown dependency artifact')
     for kind, entry in request['artifacts'].items():
-        provenance_check(kind, entry['provenance'], entry['archive'])
+        provenance_check(kind, entry['provenance'], entry['archive'], profile)
     destination.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='foundation-stage-', dir=destination.parent) as temp:
         work = Path(temp)
@@ -147,11 +172,11 @@ def stage(request, destination):
         # are explicit files, never URLs, GUIDs, wildcards or secret-bearing settings.
         apps = sorted((work / 'Apps').glob('*.app')) + request.get('otherApps', [])
         tests = sorted((work / 'TestApps').glob('*.app')) + request.get('otherTestApps', [])
-        select(apps, tests)
+        select(apps, tests, profile)
         shutil.copytree(work, destination)
     selection = select(sorted((destination / 'Apps').glob('*.app')) + request.get('otherApps', []),
-                       sorted((destination / 'TestApps').glob('*.app')) + request.get('otherTestApps', []))
-    receipt = dict(schema=1, context=context, artifacts=request['artifacts'], selection=selection, signatureTrustVerified=False)
+                       sorted((destination / 'TestApps').glob('*.app')) + request.get('otherTestApps', []), profile)
+    receipt = dict(schema=2, profile=profile, context=context, artifacts=request['artifacts'], selection=selection, signatureTrustVerified=False)
     receipt_path = destination / 'selection.json'
     receipt_path.write_text(json.dumps(receipt, indent=2) + '\n')
     arrays = {kind: [x['helperInput'] for x in items] for kind, items in selection['after'].items()}

@@ -54,6 +54,22 @@ try {
             Assert-Contract (($script:received -join '|') -ceq 'compiler-line-one|compiler-line-two') 'Original sink lost output'
             Assert-Contract (([IO.File]::ReadAllLines((Join-Path $directory 'current-compile.txt')) -join '|') -ceq 'compiler-line-one|compiler-line-two') 'Isolated log differs'
             $count++
+            foreach ($silentOrInvalid in @(
+                '# Truncated gate module: definitions only, no entry point.',
+                "print('AppSource gate: post passed')",
+                "print('AppSource gate: before passed')`nprint('unexpected extra output')",
+                "print('appsource gate: before passed')"
+            )) {
+                [IO.File]::WriteAllText((Join-Path $fixture 'tools/appsource_gate.py'), $silentOrInvalid)
+                $callsBefore = $script:compilerCalls
+                $refused = $false
+                try { Invoke-Command -ScriptBlock $callback -ArgumentList $parameters | Out-Null }
+                catch { $refused = $_.Exception.Message -ceq 'AppSource before validation did not return the expected completion marker.' }
+                Assert-Contract ($refused -and $script:compilerCalls -eq $callsBefore) 'Zero-exit verifier without exact completion marker reached compiler'
+                Assert-Contract (-not (Test-Path (Join-Path $fixture '.buildartifacts/AppSourceGate/request.json'))) 'Invalid-marker request cleanup failed'
+                $count++
+            }
+            [IO.File]::WriteAllText((Join-Path $fixture 'tools/appsource_gate.py'), "print('AppSource gate: before passed')")
             $script:throwCompiler = $true
             $preserved = $false
             try { Invoke-Command -ScriptBlock $callback -ArgumentList $parameters | Out-Null } catch { $preserved = $_.Exception.Message -ceq 'original-compiler-failure' }
