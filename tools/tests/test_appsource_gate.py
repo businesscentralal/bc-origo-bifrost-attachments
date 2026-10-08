@@ -611,6 +611,39 @@ class GenuinePackages(unittest.TestCase):
         self.assertEqual(2, len(items))
         self.assertEqual([G.file_hash(self.foundation)] * 2, [i["sha256"] for i in items])
 
+    def test_manifest_rejection_after_receipt_cap_retains_offending_hash(self):
+        self.state()
+        folder = self.root / "compiler-symbols"
+        # Mutate genuine compiler-produced fixtures into distinct parser inputs.
+        # These are diagnostic regressions, never valid deployment evidence.
+        import xml.etree.ElementTree as ET
+        import uuid
+        for index in range(129):
+            def unique(entries):
+                result = []
+                for name, content in entries:
+                    if name == "NavxManifest.xml":
+                        manifest = ET.fromstring(content)
+                        manifest.find("{http://schemas.microsoft.com/navx/2015/manifest}App").set("Id", str(uuid.UUID(int=index + 1)))
+                        content = ET.tostring(manifest)
+                    result.append((name, content))
+                return result
+            shutil.move(self.malformed(unique), folder / f"{index:03}.app")
+        bad = folder / "zzz-offending.app"
+        shutil.move(self.malformed(lambda entries: [(n, b) for n, b in entries if n != "NavxManifest.xml"]), bad)
+        with self.assertRaisesRegex(G.GateError, "Missing/duplicate NAVX manifest"):
+            G.before_compile(self.root, self.rejection_request())
+        receipt = self.rejection_receipt()
+        self.assertTrue(receipt["truncated"])
+        self.assertEqual(128, len(receipt["inputs"]))
+        item = receipt["inputs"][0]
+        self.assertEqual(str(bad), item["path"])
+        self.assertEqual("compilerSymbolsFolder", item["sourceFolder"])
+        self.assertEqual(G.file_hash(bad), item["sha256"])
+        self.assertTrue(item["triggeredRejection"])
+        self.assertFalse(item["manifestValid"])
+        self.assertFalse(receipt["accepted"])
+
     def test_rejection_receipt_io_failure_preserves_original_gate_error(self):
         self.state()
         (self.root / "compiler-symbols/Bad.app").write_bytes(b"bad")

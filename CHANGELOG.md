@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
+
+- Require the native action's exact completion marker before permitting compilation, and pin Foundation artifact lookup to workflow version `1.0.3.530` while preserving exact candidate identity, hash and provenance checks. Rejection receipts prioritize the package that failed parsing, including failures beyond the 128-item diagnostic cap. Native callback and genuine-package mutation regressions cover silent success and retained offending bytes. No AL objects or IDs change; actual runner manifest diagnosis, Windows trust and product/runtime verification remain pending.
+
 ### Fixed (2026-10-07) - bounded build-input evidence (#78)
 
 - Separate the complete compiler catalog from the resolved app cache in `tools/appsource_gate.py`, stream bounded NAVX hashes/CRC checks, and compare genuine helper additions with dependency resolution. Keep complete sanitized measurements and explicit failure truncation. No AL objects or IDs change. Add an internally reviewed exact-hash BC29 Base Application resource profile and exact immutable Apps530 Foundation candidate/staging profile; retain523as a separate controlled fixture and reject the same-version TestApps collision. Exercise every manifest identity field with genuine Base and Foundation bytes, and align the documented catalog/cache and profile limits. Pipeline/signing settings and actual Windows runner/runtime/trust gates remain unchanged.
