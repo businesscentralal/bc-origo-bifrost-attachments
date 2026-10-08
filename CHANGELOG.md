@@ -5,6 +5,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+### Changed (2026-10-08) - storage contracts (#75 #82)
+
+- Add 181 non-local procedure XML contracts in `Storage Attach Link Impl ori` (10035640), `Storage Attach Record Impl ori` (10035667), `Storage Att. Offload Impl ori` (10035641), `Storage Att. Restore Impl ori` (10035642), `Storage Upload Abort Impl ori` (10035656), `Storage Upload Append Impl ori` (10035657), `Storage Upload Begin Impl ori` (10035658), `Storage Upload Commit Impl ori` (10035659), `Storage Upload Commit Rec ori` (10035669), `Storage Upload Status Impl ori` (10035660), `Storage Ext File Impl ori` (10035661). Document output preservation for omitted chapters, dispatcher delegation, provider errors and bounded pagination. Executable source, wire contracts, labels and access remain unchanged; compile/runtime and integration gates remain open.
+
 ### Fixed (2026-10-07) - canonical compilation and regression fixtures (#74)
 
 - Isolate `Attachments Build Tests ori` (96274) fixture keys across dispatcher calls, create valid Data Exchange header/line/field relationships for the direct license-refusal check, and use standard XMLport 1225 exported XML for the import-refusal fixture. Preserve all response and persisted-state assertions; runtime verification remains required.
