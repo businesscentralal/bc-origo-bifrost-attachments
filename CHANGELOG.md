@@ -8,11 +8,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-### Fixed (2026-10-08) - integrated post-merge completion
 
-- Validate explicit ReadyToRun dependency envelopes with complete outer/embedded identity and bounded expansion, retain offending-input diagnostics and require the native gate completion marker. Pin Foundation workflow artifact `1.0.3.530` and retain bounded rejected-input receipts on failed builds.
-- Persist native attachment fields before external upload, preserve license-first refusals, and cover failed native persistence without orphaning a provider file. Correct two test declaration orders and the takeover sentinel's company parameter without truncating input.
-- Make the API audit portable across Windows encodings, refresh its exact-source inventory, enforce canonical AL line endings and regenerate Icelandic translations from actual compiler output. Actual current-run CI, BC runtime and AppSource release certification remain separate from source integration.
+
+### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
+
+- Require the native action's exact completion marker before permitting compilation while preserving exact Foundation candidate identity, hash and provenance checks. Pin artifact lookup to workflow version `1.0.3.530`, containing app `28.0.3.530`. Rejection receipts prioritize the package that failed parsing, including failures beyond the 128-item diagnostic cap. Native callback and genuine-package mutation regressions cover silent success and retained offending bytes. Failure-receipt workflow upload remains with the pipeline owner for infrastructure review. No AL objects or IDs change; actual runner manifest diagnosis, Windows trust and product/runtime verification remain pending.
 
 ### Fixed (2026-10-07) - bounded build-input evidence (#78)
 
