@@ -81,6 +81,11 @@ class Parameters(unittest.TestCase):
     def test_committed_settings_and_supported_hook_entrypoints(self):
         root = Path(__file__).parents[2]
         settings = json.loads((root / ".AL-Go/settings.json").read_text())
+        foundation_probing = settings["appDependencyProbingPaths"]
+        self.assertEqual(1, len(foundation_probing))
+        self.assertEqual("https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core", foundation_probing[0]["repo"])
+        self.assertEqual("latestBuild", foundation_probing[0]["release_status"])
+        self.assertEqual("1.0.3.530", foundation_probing[0]["version"])
         for key in ("enableCodeCop", "enableUICop", "enableCodeAnalyzersOnTestApps"):
             self.assertIs(True, settings[key])
         self.assertEqual("warning", settings["failOn"])
@@ -610,6 +615,39 @@ class GenuinePackages(unittest.TestCase):
         items = [i for i in self.rejection_receipt()["inputs"] if i["sourceFolder"] == "compilerSymbolsFolder"]
         self.assertEqual(2, len(items))
         self.assertEqual([G.file_hash(self.foundation)] * 2, [i["sha256"] for i in items])
+
+    def test_manifest_rejection_after_receipt_cap_retains_offending_hash(self):
+        self.state()
+        folder = self.root / "compiler-symbols"
+        # Mutate genuine compiler-produced fixtures into distinct parser inputs.
+        # These are diagnostic regressions, never valid deployment evidence.
+        import xml.etree.ElementTree as ET
+        import uuid
+        for index in range(129):
+            def unique(entries):
+                result = []
+                for name, content in entries:
+                    if name == "NavxManifest.xml":
+                        manifest = ET.fromstring(content)
+                        manifest.find("{http://schemas.microsoft.com/navx/2015/manifest}App").set("Id", str(uuid.UUID(int=index + 1)))
+                        content = ET.tostring(manifest)
+                    result.append((name, content))
+                return result
+            shutil.move(self.malformed(unique), folder / f"{index:03}.app")
+        bad = folder / "zzz-offending.app"
+        shutil.move(self.malformed(lambda entries: [(n, b) for n, b in entries if n != "NavxManifest.xml"]), bad)
+        with self.assertRaisesRegex(G.GateError, "Missing/duplicate NAVX manifest"):
+            G.before_compile(self.root, self.rejection_request())
+        receipt = self.rejection_receipt()
+        self.assertTrue(receipt["truncated"])
+        self.assertEqual(128, len(receipt["inputs"]))
+        item = receipt["inputs"][0]
+        self.assertEqual(str(bad), item["path"])
+        self.assertEqual("compilerSymbolsFolder", item["sourceFolder"])
+        self.assertEqual(G.file_hash(bad), item["sha256"])
+        self.assertTrue(item["triggeredRejection"])
+        self.assertFalse(item["manifestValid"])
+        self.assertFalse(receipt["accepted"])
 
     def test_rejection_receipt_io_failure_preserves_original_gate_error(self):
         self.state()

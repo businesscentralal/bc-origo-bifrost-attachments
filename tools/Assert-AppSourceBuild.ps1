@@ -68,9 +68,15 @@ function Invoke-Gate {
     $Request | ConvertTo-Json -Depth 30 | Set-Content -LiteralPath $path -Encoding UTF8
     try {
         # Native success diagnostics must not join the helper's package-return stream.
-        & $python.Source (Join-Path $Root 'tools/appsource_gate.py') $Action --root $Root --input $path | ForEach-Object { Write-Host $_ }
-        if ($LASTEXITCODE -ne 0) {
+        $diagnostics = @(& $python.Source (Join-Path $Root 'tools/appsource_gate.py') $Action --root $Root --input $path)
+        $gateExitCode = $LASTEXITCODE
+        $diagnostics | ForEach-Object { Write-Host $_ }
+        if ($gateExitCode -ne 0) {
             throw "AppSource $Action validation failed."
+        }
+        # A truncated script without main() exits zero without validating anything.
+        if ($diagnostics.Count -ne 1 -or $diagnostics[0] -cne "AppSource gate: $Action passed") {
+            throw "AppSource $Action validation did not return the expected completion marker."
         }
     }
     finally {

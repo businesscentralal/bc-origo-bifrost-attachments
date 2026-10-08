@@ -248,3 +248,26 @@ actually be wired by the existing pipeline owner; no workflow is changed here.
 Run staging tests with the genuine archives for both profiles:
 `Test-FoundationStaging.ps1 -ArtifactFolder <controlled523archives> -FixtureFolder <fixtures> -CandidateArtifactFolder <candidate530archives>`.
 This executes collector/staging tests, not a mock runner or signature approval.
+
+## Native completion and rejected-input custody
+
+The PowerShell collector requires both native exit zero and exactly one
+case-sensitive `AppSource gate: <action> passed` line. Definitions without an
+entry point, a marker for another action, extra output and native failures refuse
+compilation; request cleanup and the original compiler return/exception remain.
+The marker detects an inert script, not independent validation or BC acceptance.
+
+When package parsing rejects a compiler/cache input, its path is attached to the
+original error and prioritized in the bounded rejected-input receipt. A malformed
+package after the 128-item diagnostic cap therefore retains its disk hash and
+folder attribution within the existing byte/time bounds. Truncation remains
+explicit and never certifies a complete inventory. The 129-distinct-package
+regression mutates genuine compiler fixtures; it is diagnostic test evidence.
+
+The approved `latestBuild` workflow-artifact pin `1.0.3.530` (containing app
+`28.0.3.530`) is applied in settings. Failure-only receipt upload requires current
+pipeline-owner adoption and infrastructure review. The artifact pin does not
+replace any exact candidate checks. Historical run37697457309 package bytes were not retained;
+its manifest layout cannot be inferred from source samples. Fresh runner capture
+must preserve exact run/source identity and rejected/consumed bytes in protected
+custody before a format-policy change is considered.
