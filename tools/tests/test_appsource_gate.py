@@ -606,6 +606,27 @@ class GenuinePackages(unittest.TestCase):
         self.assertNotIn("sha256", item)
         self.assertTrue(receipt["truncated"])
 
+    def test_catalog_alias_preparation_precedes_snapshot_and_post_remains_strict(self):
+        from test_symbol_policy import fixture
+        context = self.state()
+        catalog = self.root / "compiler-symbols"
+        versioned = catalog / "Microsoft_Test Library_29.0.1.0.app"
+        alias = catalog / "Microsoft_Test Library.app"
+        fixture(versioned)
+        shutil.copy2(versioned, alias)
+        request = dict(self.rejection_request(), kind="translation")
+        snapshot = G.before_compile(self.root, request)
+        self.assertEqual(1, len(snapshot["catalogNormalization"]["aliasesRemoved"]))
+        self.assertFalse(alias.exists())
+        directory = self.root / ".buildartifacts/AppSourceGate/Default"
+        translation = directory / "app-translation-catalog-normalization.json"
+        G.post_compile(self.root, self.request(context))
+        self.assertEqual(1, len(json.loads(translation.read_text())["aliasesRemoved"]))
+        self.assertEqual([], json.loads((directory / "app-final-catalog-normalization.json").read_text())["aliasesRemoved"])
+        shutil.copy2(versioned, alias)
+        with self.assertRaisesRegex(G.GateError, "Duplicate symbol identity/version"):
+            G.symbol_inventory(catalog, "compilerCatalog")
+
     def test_duplicate_compiler_inputs_preserve_both_disk_hashes(self):
         self.state()
         for name in ("One.app", "Two.app"):
