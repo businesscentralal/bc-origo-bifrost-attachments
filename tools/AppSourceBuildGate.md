@@ -26,12 +26,12 @@ grants. The Test product carries exactly the existing Attachments test friend;
 the test app carries none. Final output content must match the compile receipt.
 An arbitrary ZIP, `.app` filename, signature tail or stale output cannot pass.
 
-The current approved Foundation input is main
+The separate controlled523 Foundation fixture is main
 `336b91d9fff11b71ae5cd75dee08186d4218bf07`, run `37544940349`, attempt 2,
 `Origo_Bifrost Foundation_28.0.2.523.app`, SHA256
 `5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f`.
-The actual precompile inventory must contain these exact bytes, with zero product
-self-app inputs. Test must use the exact just-built product. Changing the approved
+The controlled fixture retains these exact bytes. Current actual precompile inventory
+requires the internally approved exact candidate530 below, with zero product self-app inputs. Test must use the exact just-built product. Changing the approved
 input requires a reviewed tooling change; the app dependency floor remains
 **28.0.1.0**. Symbol inventories are independent of the donated manifest guard.
 
@@ -69,7 +69,7 @@ Generate isolated genuine NAVX fixtures with the installed compiler and run:
 
 ```powershell
 ./tools/New-AppSourceGateFixtures.ps1 -CompilerDll <actual-alc.dll> -Dotnet <dotnet> -OutputFolder <temporary-fixture-folder>
-./tools/Test-AppSourceBuildGate.ps1 -FixtureFolder <temporary-fixture-folder> -FoundationPackage <approved-523.app>
+./tools/Test-AppSourceBuildGate.ps1 -FixtureFolder <temporary-fixture-folder> -FoundationPackage <controlled-523.app> -CandidateFoundationPackage <exact-Apps530.app> -MeasuredBasePackage <exact-BC29-BaseApplication.app>
 python -m unittest discover -s tools/tests -p test_build_inputs.py -v
 ```
 
@@ -90,7 +90,7 @@ occur. Maximum 128 files and 128 MiB per inventory/archive; flat `.app` artifact
 entries only. URLs, GUIDs, wildcard inputs and symlinks fail closed and need an
 explicitly reviewed adapter; they are never silently dropped.
 
-The signed Foundation Apps pin remains
+The controlled523 Foundation Apps pin remains
 `5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f`,
 source `336b91d9fff11b71ae5cd75dee08186d4218bf07`, run `37544940349`,
 attempt 2, Apps artifact `11459147009`, with zero friends. Only the exact
@@ -140,14 +140,16 @@ one-package return, original output forwarding, cloned parameters, isolated
 logs, native refusal before compile, compiler exceptions and module-scope
 installation/foreign-override refusal. These language fixtures do not run AL.
 
-BeforeCompile now records both the cache and `compilerFolder/symbols` (at most
-128 packages per folder, at most 128 MiB per package). PostCompile rehashes both:
+BeforeCompile records both the cache (at most 128 packages) and
+`compilerFolder/symbols` (at most 256 packages), with at most 128 MiB on disk per
+package and the resource profiles below. PostCompile rehashes both:
 pre-existing cache entries and compiler-folder entries must remain identical;
 new cache dependencies must match exact pre-observed compiler-folder entries.
 Exactly one new output entry must match the returned package identity and hash.
 Missing/duplicate/substituted paths, inputs or output copies fail acceptance.
-Translation observations cannot replace final snapshots. Foundation signed pin,
-zero friends, dependency floor, analyzers and failure policy remain unchanged.
+Translation observations cannot replace final snapshots. The exact Apps530 pin
+below requires zero friends; dependency floor, analyzers and failure policy remain
+unchanged.
 Receipts set `consumedInputsCertified=false`: boundary observations cannot prove
 transient alc inputs, installed/probed dependencies, real helper timing or trust.
 Actual helper6.1.18/Alpaca runtime and infrastructure integration remain blocked.
@@ -167,3 +169,124 @@ explicitly incomplete. Context and manifest metadata remain allowlisted, and
 unrecognized build URLs remain redacted. Receipt collection or writing failures
 preserve the original gate exception. These failure observations certify neither
 transient compiler consumption nor signature trust.
+
+
+## Separate compiler catalog and actual app cache (#78)
+
+The complete compiler catalog is preserved and measured independently from the
+actual `appSymbolsFolder` package cache. The genuine helper receives its original
+folders and parameters. No package is pruned and no private compiler view is used.
+The catalog limit is 256 packages and 1 GiB aggregate on disk; the app cache limit is
+128 packages and 512 MiB aggregate, including preexisting inputs and the output
+copy. Each package is limited to 128 MiB on disk and a 16 MiB manifest. The generic
+profile permits 128 MiB expanded content and 4096 ZIP entries; only the exact
+measured Base identity/hash below permits 512 MiB expanded content and 16384
+entries. The catalog has a separate 4 GiB expanded-work bound; the app cache keeps
+its 512 MiB expanded bound. The retained BC29 sample requires 1,863,664,153 bytes
+of wrapper plus embedded-app expansion. These finite bounds do not certify the
+complete runner catalog.
+Each full inventory has a 60 second elapsed budget with checks between 1 MiB reads.
+These finite design limits are **not validated Windows runner capacity**. Actual
+catalog/cache metadata, bytes, hashes, exact folders and dependency resolution
+must be measured on a current successful Default/Test runner before acceptance.
+
+The NAVX reader streams package and expanded-entry hashes, validates CRCs, rejects
+path symlinks, case-insensitive filename collisions and duplicate AppId/version,
+and compares the input hash and stable file metadata before/after measurement.
+It records dependency, Application, Platform and PropagateDependencies metadata.
+The bounded resolver observes helper6.1.18 semantics: an existing highest
+compatible version wins; otherwise every compatible catalog version is copied.
+Existing packages propagate dependencies only when configured; copied packages
+follow their dependencies and implicit Application/System inputs. Identity,
+minimum-version and overwrite ambiguities fail closed. This comparison does not
+replace the helper or establish equivalence/actual transient consumption.
+
+`symbol-measurements.json` retains complete sanitized boundary metadata before
+later Foundation pin or resolution failures. Failure receipts retain bounded
+samples, explicit truncation, folder counts/bytes and incomplete-enumeration flags.
+Final helper additions must equal the predicted full copy set, and the exact
+output-copy delta is required. `consumedInputsCertified` and
+`runnerCapacityValidated` stay false; real helper/runner evidence is a separate gate.
+The exact Apps530 candidate is required by current precompile checks; 523 remains
+a distinct controlled fixture. Candidate content approval does not approve signature
+trust. Worker7 is the sole PR99 writer; this repair is a separate draft dependency
+for integration through the existing owner after technical acceptance. Merged
+PR94 is historical custody and is not a remediation branch.
+
+
+## Internally reviewed exact candidate and measured profile
+
+Internal technical decisions on 2026-10-07 approve one exact BC29 Base Application
+profile: identity `437dbf0e-84ff-417a-965d-ed2bb9650972`, Microsoft,
+Base Application29.0.54011.55935, SHA256
+`10ebba923b6f8d3b6d676cc1f1db16a8a5d4519ff8ca4f45bbd2e778b52d289c`.
+The original embedded source has8665entries/379592378expanded bytes. For these
+exact bytes and identity only, the bound is16384entries/512MiBexpanded. Generic
+4096entries/128MiBexpanded and128MiBdisk limits remain; any changed or converted
+package hash needs its own measured technical disposition. Full CRC/hash reads
+under the deadline are still required. Folder aggregate budgets stay unchanged;
+proposed2GiBexpanded inventory capacity is not approved as validated capacity.
+
+Current compilation-boundary candidate Foundation is exactly28.0.3.530 from
+main`8ec074f4ac69ac9bde15807cf16d21bee045332f`, run37679390622/attempt1,
+Apps artifact11508979803, archive SHA256
+`21c6331c47d3134d1f3c8c77f240d021fa47710f6fbdebc974b733e0b708bad8`,
+package SHA256`b95e0eccf7a4038531cea08f0441e757ac176c7c4ff06b1b8eb9d25ac0dd3a88`,
+compiler18.1.43.7601 and zero friend grants. All identity, source, build and byte
+fields are required, including presence of the original signature content.
+Presence is not Windows signature trust. Candidate approval does not release
+actual runner equality, runtime or signing acceptance.
+
+Staging defaults to the explicit `candidate530` profile, receipt schema2. It
+verifies both complete archives/provenance, preserves Apps bytes and excludes
+only the exact same-AppId TestApps collision (artifact11510930013, archive
+SHA256`0a4a24e4fa1afc56e60c00ea807d8cd9a91f55f21f144c81f458e14521bd0e73`,
+package SHA256`391ba3df7917913ce4fd932096e0f8d5e474d45d0ee78c090f5abee37b1fbfe7`,
+with Foundation Tests friend).523remains the explicit `controlled523` staging
+fixture; it cannot satisfy the current compilation-boundary530candidate check.
+Unknown profiles, changed archives/provenance, swapped Test inputs, missing or
+extra same-AppId inputs and mutations fail closed. Returned helper arrays must
+actually be wired by the existing pipeline owner; no workflow is changed here.
+
+Run staging tests with the genuine archives for both profiles:
+`Test-FoundationStaging.ps1 -ArtifactFolder <controlled523archives> -FixtureFolder <fixtures> -CandidateArtifactFolder <candidate530archives>`.
+This executes collector/staging tests, not a mock runner or signature approval.
+
+## Native completion and rejected-input custody
+
+The PowerShell collector requires both native exit zero and exactly one
+case-sensitive `AppSource gate: <action> passed` line. Definitions without an
+entry point, a marker for another action, extra output and native failures refuse
+compilation; request cleanup and the original compiler return/exception remain.
+The marker detects an inert script, not independent validation or BC acceptance.
+
+When package parsing rejects a compiler/cache input, its path is attached to the
+original error and prioritized in the bounded rejected-input receipt. A malformed
+package after the 128-item diagnostic cap therefore retains its disk hash and
+folder attribution within the existing byte/time bounds. Truncation remains
+explicit and never certifies a complete inventory. The 129-distinct-package
+regression mutates genuine compiler fixtures; it is diagnostic test evidence.
+
+The approved `latestBuild` workflow-artifact pin `1.0.3.530` (containing app
+`28.0.3.530`) is applied in settings. The user-authorized completion also applies
+failure-only upload of bounded rejected-input receipts. The artifact pin does not
+replace any exact candidate checks. Historical run37697457309 package bytes were not retained;
+its manifest layout cannot be inferred from source samples. Fresh runner capture
+must preserve exact run/source identity and rejected/consumed bytes in protected
+custody before a format-policy change is considered.
+
+## ReadyToRun dependency envelopes
+
+Dependency inventories accept a ReadyToRun envelope only when its explicit
+manifest identifies one bounded embedded NAVX package. The envelope and embedded
+package retain separate hashes; their identities must match, both expansions
+consume the finite inventory budget, and duplicate/ambiguous/nested/injected
+inputs are rejected. This does not accept ReadyToRun shipping output or certify
+signature trust. The retained Microsoft Any and Base Application wrappers are
+genuine regression fixtures, not substitutes for a fresh complete runner capture.
+
+`Test-AppSourceBuildGate.ps1` also requires `ReadyToRunAnyPackage`,
+`EmbeddedAnyPackage`, and `ReadyToRunBasePackage`; it runs the envelope regressions
+alongside the original gate and symbol-policy suites. The combined exact-source
+tooling run passed 92 tests (45 gate, 10 policy, 15 envelopes, 22 staging), with
+zero skips. Application CI and BC runtime verification remain separate.
