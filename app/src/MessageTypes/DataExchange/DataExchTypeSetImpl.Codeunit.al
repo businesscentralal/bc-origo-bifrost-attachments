@@ -156,26 +156,30 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         Token: JsonToken;
         TypeCode: Code[20];
         DefinitionCode: Code[20];
+        MissingCodeErr: Label 'code is required.', Comment = 'is-IS=code er nauðsynlegt.';
+        MissingDefinitionCodeErr: Label 'dataExchDefCode is required.', Comment = 'is-IS=dataExchDefCode er nauðsynlegt.';
+        DefinitionNotFoundErr: Label 'Data exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
+        ImportDefinitionExpectedErr: Label 'definition must be an import definition', Comment = 'is-IS=skilgreining verður að vera innflutningsskilgreining';
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
         RequestJson := Argument.GetRequestJson();
         if not RequestJson.Get('code', Token) then begin
-            Argument.RespondWithError('code is required.');
+            Argument.RespondWithError(MissingCodeErr);
             exit;
         end;
         TypeCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(TypeCode));
         if not RequestJson.Get('dataExchDefCode', Token) then begin
-            Argument.RespondWithError('dataExchDefCode is required.');
+            Argument.RespondWithError(MissingDefinitionCodeErr);
             exit;
         end;
         DefinitionCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefinitionCode));
         if not DataExchDef.Get(DefinitionCode) then begin
-            Argument.RespondWithError('Data exchange definition ' + DefinitionCode + ' was not found.');
+            Argument.RespondWithError(StrSubstNo(DefinitionNotFoundErr, DefinitionCode));
             exit;
         end;
         if DataExchDef.Type <> DataExchDef.Type::"Generic Import" then begin
-            Argument.RespondWithError('definition must be an import definition');
+            Argument.RespondWithError(ImportDefinitionExpectedErr);
             exit;
         end;
         if not DataExchangeType.Get(TypeCode) then begin
