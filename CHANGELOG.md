@@ -1,3 +1,5 @@
+
+
 # Changelog
 
 All notable changes to Bifrost Attachments are documented here.
@@ -5,6 +7,30 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+
+
+
+### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
+
+- Require the native action's exact completion marker before permitting compilation while preserving exact Foundation candidate identity, hash and provenance checks. Pin artifact lookup to workflow version `1.0.3.530`, containing app `28.0.3.530`. Rejection receipts prioritize the package that failed parsing, including failures beyond the 128-item diagnostic cap. Native callback and genuine-package mutation regressions cover silent success and retained offending bytes. Failure-receipt workflow upload remains with the pipeline owner for infrastructure review. No AL objects or IDs change; actual runner manifest diagnosis, Windows trust and product/runtime verification remain pending.
+
+### Fixed (2026-10-07) - bounded build-input evidence (#78)
+
+- Separate the complete compiler catalog from the resolved app cache in `tools/appsource_gate.py`, stream bounded NAVX hashes/CRC checks, and compare genuine helper additions with dependency resolution. Keep complete sanitized measurements and explicit failure truncation. No AL objects or IDs change. Add an internally reviewed exact-hash BC29 Base Application resource profile and exact immutable Apps530 Foundation candidate/staging profile; retain523as a separate controlled fixture and reject the same-version TestApps collision. Exercise every manifest identity field with genuine Base and Foundation bytes, and align the documented catalog/cache and profile limits. Pipeline/signing settings and actual Windows runner/runtime/trust gates remain unchanged.
+
+
+### Fixed (2026-10-07) - selective Data Exchange localization (#72, #74)
+
+- Localize discovery text in `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534), `DataExch Def Export Impl ori` (70013536), `DataExch Entry Del Impl ori` (70013544) and `DataExch Def Import Impl ori` (70013545), plus six existing refusal labels in Definition Export, Definition Import and Entry Delete. `Attachments Build Tests ori` (96274) asserts exact discovery text in English and Icelandic; `Storage Setup Page Tests` (96207) orders Record declarations before TestPage without changing assertions. Eight TypeSet/ExportRun execution contexts remain deferred. Compiled shipping translations and runtime verification remain pending.
+
+### Fixed (2026-10-07) - registered parameter metadata (#69)
+
+- Delegate parameter chapters in `DataExch Type Set Impl ori` (70013531), `DataExch Export Run Impl ori` (70013534) and `DataExch Def Export Impl ori` (70013536) to `Storage Contract Parts ori` (70013500), documenting the shipped optional `description` and JSON string types without changing wire keys or execution. `Storage Contract Batch2 Tests` (96216) asserts exact registered parameter counts, types, requiredness and uniqueness. The tests also verify replacement of stale metadata and the canonical `error` property for single/collected bilingual refusals; runtime verification remains pending.
+
+### Fixed (2026-10-07) - duplicate Data Exchange type-list contract case
+
+- Remove the redundant `DataExchange.Type.List` response branch from `Storage Contract Parts ori` (70013500), preserving the localized `count` and `types` fields returned by `Data Exchange Query ori` (70013520). `Storage Contract Batch2 Tests` (96216) covers unique typed response metadata, a deterministically empty parameterless request and exactly two seeded public-dispatcher rows with integer count, array shape and row contents. Full company rows are preserved/restored in the owned disposable test company; runtime verification remains required.
+
 ### Fixed (2026-10-07) - canonical compilation and regression fixtures (#74)
 
 - Isolate `Attachments Build Tests ori` (96274) fixture keys across dispatcher calls, create valid Data Exchange header/line/field relationships for the direct license-refusal check, and use standard XMLport 1225 exported XML for the import-refusal fixture. Preserve all response and persisted-state assertions; runtime verification remains required.
@@ -25,16 +51,6 @@ Business Central release versioning (`major.minor.build.revision`).
 - Add `Attachments Build Tests ori` (96274) for existing Data Exchange dispatch, stored results, and refusal paths. Add a build-input guard for duplicate object IDs, overlapping enum ordinals, unallocated IDs, self dependencies, and the Foundation 28.0.1.0 floor, with synthetic regression fixtures.
 
 
-## [28.0.0.6] — 2026-10-07 (Bifrost Attachments - Tests; unreleased)
-
-This section describes the test source manifest version; the date is a documentation update, not a release date.
-
-### Changed
-
-- `Storage Takeover Probe Tests` (96210) requires Function test isolation for its global upgrade-tag and role fixtures. A new scoped-tag regression asserts that a different tag in the current company and the purge tag in another company survive fixture preparation. Actual runner rollback, including failure boundaries, remains a runtime acceptance gate.
-- `Storage Takeover Probe Tests` (96210) covers tagged and untagged upgrades, both legacy read-denial paths, denied-then-permitted role re-grant, idempotent retry and populated destination preservation with the existing probe seam. Untagged denial still purges only invalid links and records the purge tag; later retries preserve that one-time boundary. Absent-legacy no-op fixtures explicitly require no residual legacy roles. Genuine restricted-identity install/upgrade and legacy-data lifecycle certification remain required; seam tests do not certify permissions.
-- `tools/Test-TakeoverSafety.ps1` checks the rollback requirement, both tag filters, absence of explicit commits and retry-before-purge ordering. Its mutation self-tests validate the source guard only; they do not certify Business Central runtime behavior.
-
 ## [28.0.0.4] — 2026-10-07
 
 ### Fixed
@@ -47,6 +63,7 @@ This section describes the test source manifest version; the date is a documenta
 ### Fixed (2026-10-06) - retry skipped legacy take-over on upgrade (#76)
 
 - `Storage Link Upgrade ori` (10035683) retries the permission-probed `Storage Takeover ori` (10035676) on every company upgrade, before checking the orphan-purge tag. A denied probe remains telemetry-only; a later permitted upgrade can copy legacy data and re-grant roles. Existing destination data and assignments retain the take-over routine's preservation rules. Generated mapping and grant code are unchanged.
+- `Storage Takeover Probe Tests` (96210) covers tagged and untagged upgrades, both legacy read-denial paths, denied-then-permitted role re-grant, idempotent retry and populated destination preservation with the existing probe seam. Untagged denial still purges only invalid links and records the purge tag; later retries preserve that one-time boundary. Absent-legacy no-op fixtures explicitly require no residual legacy roles. Genuine restricted-identity install/upgrade and legacy-data lifecycle certification remain required; seam tests do not certify permissions.
 
 ### Fixed (2026-10-06) - localized storage refusals (#72)
 
