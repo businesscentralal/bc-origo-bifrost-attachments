@@ -153,9 +153,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
 
         ClearAttachment(Target, RecSystemId);
 
-        Connector.CreateFile(StorageSetup, Path, TempBlob);
         if Target = Target::DocumentAttachment then
             SetNativeExternalStorageFields(RecSystemId, StorageSetup.Code, Path);
+        // Native field persistence can fail; complete it before the irreversible upload.
+        Connector.CreateFile(StorageSetup, Path, TempBlob);
 
         if TaskScheduler.CanCreateTask() then
             TaskScheduler.CreateTask(Codeunit::"Media Cleanup Runner", 0, true, CompanyName, CurrentDateTime() + 5000);

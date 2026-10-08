@@ -156,8 +156,8 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
     /// <param name="Argument">The licensed request and response.</param>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     begin
-        Argument.AssertVersion1();
         Argument.AssertIsLicensed();
+        Argument.AssertVersion1();
         // No Boolean return: preserve the caller transaction and propagate postwrite errors.
         Codeunit.Run(Codeunit::"DataExch Type Set Impl ori", Argument);
     end;
