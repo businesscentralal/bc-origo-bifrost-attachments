@@ -118,7 +118,10 @@ actual authorized API metadata and current run identity.
 
 `validate --input consumed.json --destination <staged-dir>` rehashes actual
 `installApps` and `installTestApps` arrays against the current-context receipt
-and both archives. Optional `symbols` verifies the exact Foundation consumed
+and both archives. The receipt must retain exactly the Apps and TestApps
+provenance entries; omission cannot hide later archive mutation. Unknown
+artifact entries also fail before validation can accept the receipt.
+Optional `symbols` verifies the exact Foundation consumed
 by compilation. Call validation before helper installation and again with real
 compiler inputs. Changing a package, omitting/reordering/substituting an input,
 wrong provenance or stale/missing receipt fails. `rejected-input.json` captures

@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-09) - staging provenance refusal (#78)
+
+- Require both immutable Apps and TestApps archive provenance entries when validating Foundation staging receipts in `tools/stage_foundation_inputs.py`. Genuine candidate regressions refuse omitted/unknown entries and archive mutation concealed by an omitted entry. Foundation identity/hash/friend checks remain strict. No AL objects, IDs or labels change; workflow integration, compilation and runtime verification remain blocked.
+
 ### Fixed (2026-10-08) - measured current BC artifact capacity (#78)
 
 - Add exact hash and identity profiles for the outer and embedded Microsoft Base Application `29.0.54011.55975` in `tools/appsource_gate.py`, allowing the already approved full-catalog alias normalization to inspect this artifact. Genuine-package regressions cover both layers, identity/hash changes, bounds, CRC/truncation, mutation and strict shipping/cache refusals. Generic and aggregate limits and the Foundation candidate pin remain unchanged; no AL objects or IDs change. Actual current-tip compile, unit tests and runtime verification remain pending.

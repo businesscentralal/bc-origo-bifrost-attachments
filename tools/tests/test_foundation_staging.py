@@ -279,5 +279,34 @@ class Candidate530(unittest.TestCase):
         with self.assertRaises(G.GateError):
             S.validate(self.root / 'stage/selection.json', self.request['context'], arrays['installApps'], arrays['installTestApps'])
 
+    def test_receipt_cannot_omit_archive_provenance(self):
+        arrays = S.stage(self.request, self.root / 'stage')
+        path = self.root / 'stage/selection.json'
+        receipt = json.loads(path.read_text())
+        for kinds in ([], ['Apps'], ['TestApps'], ['Apps', 'TestApps', 'Unknown']):
+            changed = copy.deepcopy(receipt)
+            changed['artifacts'] = {kind: receipt['artifacts'].get(kind, {}) for kind in kinds}
+            path.write_text(json.dumps(changed))
+            with self.subTest(kinds=kinds), self.assertRaisesRegex(G.GateError, 'receipt artifact'):
+                S.validate(path, self.request['context'], arrays['installApps'], arrays['installTestApps'])
+
+    def test_retained_archive_mutation_cannot_be_hidden_by_receipt_omission(self):
+        # Copy the genuine archives: never mutate shared immutable evidence.
+        for kind, entry in self.request['artifacts'].items():
+            archive = self.root / (kind + '.zip')
+            shutil.copyfile(entry['archive'], archive)
+            entry['archive'] = str(archive)
+        arrays = S.stage(self.request, self.root / 'stage')
+        path = self.root / 'stage/selection.json'
+        receipt = json.loads(path.read_text())
+        with open(self.request['artifacts']['TestApps']['archive'], 'ab') as out:
+            out.write(b'mutated-archive')
+        with self.assertRaisesRegex(G.GateError, 'Changed artifact archive'):
+            S.validate(path, self.request['context'], arrays['installApps'], arrays['installTestApps'])
+        del receipt['artifacts']['TestApps']
+        path.write_text(json.dumps(receipt))
+        with self.assertRaisesRegex(G.GateError, 'receipt artifact'):
+            S.validate(path, self.request['context'], arrays['installApps'], arrays['installTestApps'])
+
 
 if __name__ == '__main__': unittest.main()

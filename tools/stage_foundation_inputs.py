@@ -135,6 +135,7 @@ def validate(receipt_path, context, install_apps, install_tests, symbols=None):
     require(receipt['context'] == context and receipt['schema'] == 2, 'Stale/wrong staging receipt')
     profile = receipt['profile']
     config = profile_config(profile)
+    require(set(receipt['artifacts']) == set(config['artifacts']), 'Missing/unknown staging receipt artifact')
     for kind, paths in [('installApps', install_apps), ('installTestApps', install_tests)]:
         actual = inspect(paths)
         require(actual == receipt['selection']['after'][kind], 'Changed/substituted helper input array or package')
