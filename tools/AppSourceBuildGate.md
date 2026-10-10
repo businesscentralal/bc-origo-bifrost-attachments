@@ -40,7 +40,7 @@ package/content digests and source hashes are retained in sanitized JSON under
 `.buildartifacts/AppSourceGate/<mode>`. The checkout can be a synthetic PR merge;
 the manifest's compiled-source commit is checked independently. Existing receipts
 cannot be reused. Missing/displaced hooks, truncated later logs, disabled cops,
-fallbacks, workspace compilation and unsupported compiler collection fail closed.
+fallbacks, unknown backend state and unsupported compiler collection fail closed.
 Container-only compilation needs a supported identity collector before acceptance.
 
 ## Infrastructure and acceptance holds
@@ -402,11 +402,29 @@ remain unchanged. Source inventory is bounded to 4096 files per project and
 1–128; fresh output mapping must exactly cover the approved graph. These are
 boundary observations, not proof of altool's internal consumed bytes.
 
-Classic validation still refuses workspace parameters. Workspace receipts are
-separate from classic pipeline state; the downstream classic initialization and
-finalization gates continue to refuse workspace delivery until final internal
-infrastructure review approves the full execution design. Hook fixture and
-collector passes do not authorize publication or imply a shipping build.
+Classic parameter validation still refuses workspace parameters. Workspace schema
+2/backend=workspace state is created before CompileApps, and PipelineInitialize
+validates/adopts completed receipts after installing Alpaca overrides. It installs
+no classic compiler callback on that backend. Finalize/Pipeline/Signed dispatch
+by backend, bind the complete pinned module import closure, preserve original
+unsigned bytes and compare prebuilt copies. Actual signing must retain NAVX
+content and have a valid Windows signature verdict bound to the signed hash.
+
+Pinned workspace producer f192c6a6 supports SourceCommit/SourceRepositoryUrl,
+but no BuildUrl argument. Genuine metadata-only workspace fixtures demonstrate
+an empty embedded URL. A nonempty URL must equal the current GitHub run. The
+external run URL is bound to source, tools, compiler logs and unsigned/signed
+output hashes; it is not an embedded URL claim. Classic embedded URL equality
+is unchanged. Actual full shipping/analyzer generation and publication acceptance
+remain blocked pending final review and runner verification.
+
+Prepared project manifests, AL sources, configs and resources are immutable.
+Unexpected generated AppSourceCop configuration or translation changes refuse;
+these legitimate producer transformations require exact build-local reconciliation
+review before this candidate can certify a real shipping pipeline. Unknown
+baseline/Microsoft packages require selected provenance; there is no blanket
+Microsoft trust. Incremental/self/stale packages cannot replace current receipts.
+Hook/collector fixture passes do not authorize publication or imply a product build.
 
 Standalone fixture guards require genuine inputs explicitly or through
 `FOUNDATION_STAGING_ARTIFACTS`, `APPSOURCE_GATE_FIXTURES`,
@@ -414,3 +432,34 @@ Standalone fixture guards require genuine inputs explicitly or through
 `FOUNDATION_ADAPTER_PWSH` and `FOUNDATION_WORKSPACE_MODULE`. The staging guard
 checks pinned upstream hashes and actual PowerShell invocation; archive/package
 hashes are checked by the tests. Missing inputs fail with diagnostics.
+
+
+### Bounded classic preparation (local candidate; execution blocked)
+
+`Prepare-ClassicCompilerInputs.ps1` prepares actual appProjectFolder and symbol
+paths before the unchanged helper, then immediately seals and checks them after
+its single call. It requires exclusive run-local caches, pins exact helper6.1.18/6.1.19 and its paired GetAppInfo source, with
+fresh genuine altool metadata, invalidates only owned cache_AppInfo.json and
+copies only exact selected catalog bytes without overwrite. Four read-only
+metadata processes share a 60-second total budget and a 15-second per-process
+limit. Existing package/byte policies, 4096 dependency nodes/edges and a maximum
+256 copies remain finite; unresolved or colliding inputs refuse. Existing highest
+compatible selection, all copied compatible versions and propagation are modeled
+and compared against the genuine unchanged selection block.
+
+Actual updateDependencies transformations, report-layout generation and any
+unreconciled source/config/tool mutation refuse; no caller flag or shipping floor
+is changed. Shared ProgramData compiler caches are not exclusive run-local caches
+and cannot satisfy this candidate without an approved supported runner preparation.
+The retained product-manifest Foundation/Microsoft graph is tooling proof; actual
+Test current-run product, paired Windows execution, shipping translations and
+runtime tests remain required. consumedInputsCertified stays false. The OutputTo
+transport wrapper retains the original sink and package stream, not a pre-alc seam.
+
+The classic guard additionally requires FOUNDATION_CLASSIC_CATALOG,
+FOUNDATION_CLASSIC_PACKAGE, FOUNDATION_CLASSIC_HELPER_SOURCE,
+FOUNDATION_CLASSIC_COMPILER_EXTENSION, FOUNDATION_CLASSIC_DOTNET_FOLDER,
+FOUNDATION_CLASSIC_TELEMETRY_SOURCE and FOUNDATION_CLASSIC_EVIDENCE. Workspace
+collector tests require actual workspace-produced FOUNDATION_WORKSPACE_OUTPUT_FIXTURES
+and a genuine FOUNDATION_WORKSPACE_BASELINE_FIXTURE for the unknown-Microsoft
+negative case, in addition to the existing pinned module and Foundation archives.

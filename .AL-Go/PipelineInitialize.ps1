@@ -1,20 +1,24 @@
 # Bifrost: never ship the test app's internalsVisibleTo grant.
 # COSMO Alpaca replaces .AL-Go/PreCompileApp.ps1 with its own override and never calls ours,
 # so the strip happens here, before anything compiles. Only the Test build mode keeps the grant.
+# The original pipeline contract retains the early strip. Write only on a real
+# change so an already prepared workspace manifest keeps its receipt hash.
 if ($env:BuildMode -ne 'Test') {
     $appJsonPath = Join-Path $env:GITHUB_WORKSPACE 'app/app.json'
-    if (Test-Path -LiteralPath $appJsonPath) {
-        $appJson = Get-Content -LiteralPath $appJsonPath -Raw -Encoding UTF8 | ConvertFrom-Json
-        if ($appJson.PSObject.Properties.Name -contains 'internalsVisibleTo') {
-            $appJson.PSObject.Properties.Remove('internalsVisibleTo')
-        }
-        if ($appJson.PSObject.Properties.Name -contains 'suppressWarnings') {
-            $appJson.suppressWarnings = @($appJson.suppressWarnings | Where-Object { $_ -ne 'AS0081' })
-        }
-        $appJson | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $appJsonPath -Encoding UTF8
-        Write-Host "Bifrost: build mode '$($env:BuildMode)' - removed internalsVisibleTo and the AS0081 suppression from app/app.json."
+    $appJson = Get-Content -LiteralPath $appJsonPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $changed = $false
+    if ($appJson.PSObject.Properties.Name -contains 'internalsVisibleTo') {
+        $appJson.PSObject.Properties.Remove('internalsVisibleTo')
+        $changed = $true
     }
+    if ($appJson.PSObject.Properties['suppressWarnings'] -and 'AS0081' -in $appJson.suppressWarnings) {
+        $appJson.suppressWarnings = @($appJson.suppressWarnings | Where-Object { $_ -ne 'AS0081' })
+        $changed = $true
+    }
+    if ($changed) { $appJson | ConvertTo-Json -Depth 100 | Set-Content -LiteralPath $appJsonPath -Encoding UTF8 }
 }
+
+& (Join-Path $env:GITHUB_WORKSPACE 'tools/Prepare-FoundationInputs.ps1') -Action PrepareManifest
 
 Write-Host "::group::PipelineInitialize"
 
@@ -130,6 +134,21 @@ Write-Host "::endgroup::"
 # override registry. Install Run-AlPipeline's real callback using the same
 # parent-context scope mechanism as the downloaded Alpaca initialization.
 # Do not displace an existing owner's compiler override.
+function Set-AppSourceWorkspaceRefusal {
+    $existing = Get-Variable -Name 'CompileAppWithBcCompilerFolder' -Scope 2 -ValueOnly -ErrorAction Stop
+    if ($existing) { throw 'Existing workspace compiler override requires owner coordination.' }
+    Set-Variable -Name 'CompileAppWithBcCompilerFolder' -Scope 2 -Value {
+        param([hashtable] $CompilationParams)
+        throw 'Unexpected recompilation on prebuilt workspace backend.'
+    }
+}
+
+# Prebuilt workspace packages must never enter a classic compiling callback.
+if (($env:Settings | ConvertFrom-Json).workspaceCompilation.enabled) {
+    Set-AppSourceWorkspaceRefusal
+    return
+}
+
 function Set-AppSourceCompilerCallback {
     $existing = Get-Variable -Name 'CompileAppWithBcCompilerFolder' -Scope 2 -ValueOnly -ErrorAction Stop
     if ($existing) {

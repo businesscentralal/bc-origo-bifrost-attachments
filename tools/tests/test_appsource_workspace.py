@@ -22,12 +22,12 @@ class Workspace(unittest.TestCase):
                     source=self.root/folder
                     if source.exists():shutil.copytree(source,out/folder,dirs_exist_ok=True)
             self.addCleanup(retain)
-        self.fixtures=Path(os.environ['APPSOURCE_GATE_FIXTURES'])
+        self.fixtures=Path(os.environ['FOUNDATION_WORKSPACE_OUTPUT_FIXTURES'])
         self.candidate=Path(os.environ['FOUNDATION_CANDIDATE_ARTIFACTS'])
         self.module=Path(os.environ['FOUNDATION_WORKSPACE_MODULE'])
         self.product=G.package_info(self.fixtures/'default.app')
         self.test=G.package_info(self.fixtures/'testApp.app')
-        self.context=dict(mode='Default',run='1234',attempt='1',job='workspace-fixture',sourceCommit=self.product['sourceCommit'],checkoutSha='2'*40,buildUrl=self.product['buildUrl'])
+        self.context=dict(mode='Default',run='1234',attempt='1',job='workspace-fixture',sourceCommit=self.product['sourceCommit'],checkoutSha='2'*40,buildUrl='https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/1234')
         for name,info in [('app',self.product),('test',self.test)]:
             folder=self.root/name;folder.mkdir();(folder/'app.json').write_text(json.dumps(info['identity']))
             (folder/'fixture.al').write_text('codeunit 50100 "Fixture ori" {}')
@@ -38,14 +38,21 @@ class Workspace(unittest.TestCase):
         for name in ['compiler','altool','compilerPackage','CodeCop','UICop','AppSourceCop','Analyzers.Common']:
             p=tool_dir/name;p.write_bytes(name.encode());tools[name]=dict(path=str(p),sha256=G.file_hash(p),version=self.product['compilerVersion'])
         tools['workspaceModule']=dict(path=str(self.module),sha256=G.file_hash(self.module))
+        for name,rel in G.WORKSPACE_IMPORTS:
+            path=(self.module.parent/rel).resolve();tools[name]=dict(path=str(path),sha256=G.file_hash(path))
         params={k:None for k in G.WORKSPACE_KEYS}
-        params.update(ALToolPath=tools['altool']['path'],WorkspaceFile=str(self.workspace),PackageCachePath=str(self.cache),OutFolder=str(self.out),Analyzers=['CodeCop','UICop','AppSourceCop'],MaxCpuCount=2,SourceCommit=self.context['sourceCommit'],ReportSuppressedDiagnostics=False,EnableExternalRulesets=False,GenerateReportLayout=True)
+        params.update(SourceRepositoryUrl=self.product['sourceRepositoryUrl'],ALToolPath=tools['altool']['path'],WorkspaceFile=str(self.workspace),PackageCachePath=str(self.cache),OutFolder=str(self.out),Analyzers=['CodeCop','UICop','AppSourceCop'],MaxCpuCount=2,SourceCommit=self.context['sourceCommit'],ReportSuppressedDiagnostics=False,EnableExternalRulesets=False,GenerateReportLayout=True)
         settings=dict(workspaceCompilation=dict(enabled=True),enableCodeCop=True,enableUICop=True,enableAppSourceCop=True,enableCodeAnalyzersOnTestApps=True,failOn='warning',type='AppSource App')
         self.request=dict(context=self.context,appType='app',parameters=params,tools=tools,settings=settings)
         c=S.PROFILES['candidate530']
         artifacts={k:dict(archive=str(self.candidate/f'foundation530-{v[0]}.zip'),provenance=dict(repository='OrigoSoftwareSolutions/bc-origo-bifrost-core',sourceSha=c['source'],run=c['run'],attempt=c['attempt'],artifactId=v[0],archiveSha256=v[1],expired=False,conclusion='success')) for k,v in c['artifacts'].items()}
         self.stage_request=dict(profile='candidate530',context={k:self.context[k] for k in ('run','attempt','mode','sourceCommit','checkoutSha')},artifacts=artifacts,otherApps=[],otherTestApps=[])
         self.selection=self.root/'selected'
+        # Bind real owned hooks/preparation sources before workspace creation.
+        repo=Path(__file__).parents[2]
+        for relative in G.WORKSPACE_HOOKS:
+            target=self.root/relative;target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(repo/relative,target)
         self.publish()
     def publish(self):
         if self.selection.exists():shutil.rmtree(self.selection)
@@ -58,6 +65,8 @@ class Workspace(unittest.TestCase):
         selected=json.loads((self.selection/'selection.json').read_text())
         source=selected['publication']['selection']['installApps'][0]['path']
         shutil.copyfile(source,self.cache/'foundation.app')
+        state=self.root/'.buildartifacts/AppSourceGate'/self.context['mode']
+        G.workspace_initialize(self.root,self.request)
     def compile_fixture(self,name='default'):
         # Mimic current-run compiler cache and output-copy contract with actual
         # compiler-produced immutable packages. No compiler execution claimed.
@@ -100,7 +109,7 @@ class Workspace(unittest.TestCase):
         self.request['parameters']['Features']=['changed']
         with self.assertRaises(G.GateError):G.workspace_post(self.root,self.request)
     def test_tools_analyzers_warning_and_module_negative_contracts(self):
-        for mutate in [lambda r:r['parameters'].update(Analyzers=['CodeCop']),lambda r:r['settings'].update(failOn='none'),lambda r:r['parameters'].update(Ruleset='suppress.json'),lambda r:r['tools']['workspaceModule'].update(sha256='0'*64),lambda r:r['parameters'].update(CustomAnalyzers=['untrusted']),lambda r:r['parameters'].update(MaxCpuCount=0)]:
+        for mutate in [lambda r:r['parameters'].update(Analyzers=['CodeCop']),lambda r:r['settings'].update(failOn='none'),lambda r:r['parameters'].update(Ruleset='suppress.json'),lambda r:r['tools']['workspaceModule'].update(sha256='0'*64),lambda r:r['parameters'].update(CustomAnalyzers=['untrusted']),lambda r:r['parameters'].update(MaxCpuCount=0),lambda r:r['parameters'].update(MaxCpuCount=True)]:
             request=copy.deepcopy(self.request);mutate(request)
             with self.assertRaises(G.GateError):G.workspace_before(self.root,request)
         # Classic remains strict, including direct workspace-refusal regression.
@@ -111,7 +120,7 @@ class Workspace(unittest.TestCase):
         with self.assertRaises(G.GateError):G.workspace_post(self.root,self.request)
     def test_warning_and_stale_log_refused(self):
         G.workspace_before(self.root,self.request);self.compile_fixture()
-        log=self.out/'Logs/default.log';log.write_text(log.read_text()+'\nwarning AA0001: real refusal\n')
+        log=self.out/'Logs/default.log';log.write_text(log.read_text()+'\n[OUT] warning AA0001: real refusal\n')
         with self.assertRaises(G.GateError):G.workspace_post(self.root,self.request)
     def test_ambiguous_multi_project_and_output_refused(self):
         self.workspace.write_text(json.dumps(dict(folders=[dict(path='app'),dict(path='app')])))
@@ -150,5 +159,69 @@ class Workspace(unittest.TestCase):
         os.utime(output,None)
         (self.root/'app/fixture.al').write_text('altered source')
         with self.assertRaises(G.GateError):G.workspace_post(self.root,self.request)
+
+
+    def finalize(self):
+        for receipt in self.state()['receipts'].values():
+            folder=self.root/'.buildartifacts'/('Apps' if receipt['appType']=='app' else 'TestApps')
+            folder.mkdir(exist_ok=True)
+            for output in receipt['outputs']: shutil.copyfile(output['file'],folder/Path(output['file']).name)
+        (self.root/'BuildOutput.txt').write_bytes((self.out/'Logs/default.log').read_bytes())
+        G.workspace_adopt(self.root,{**self.request,'alpacaArchiveSha256':'a'*64})
+        return G.reconcile(self.root,self.context,'finalize')
+    def state(self):
+        return json.loads((self.root/'.buildartifacts/AppSourceGate'/self.context['mode']/'state.json').read_text())
+    def test_full_prebuilt_lifecycle_uses_external_run_attestation(self):
+        G.workspace_before(self.root,self.request);self.compile_fixture()
+        receipt=G.workspace_post(self.root,self.request)
+        self.assertEqual('',receipt['outputs'][0]['buildUrl'])
+        result=self.finalize();self.assertEqual('workspace',result['backend'])
+        self.assertEqual(self.context['buildUrl'],result['externalBuildAttestation']['buildUrl'])
+        self.assertFalse(result['consumedInputsCertified'])
+        G.reconcile(self.root,self.context,'pipeline')
+        with self.assertRaises(G.GateError):G.workspace_before(self.root,self.request)
+        with self.assertRaises(G.GateError):G.workspace_adopt(self.root,{**self.request,'alpacaArchiveSha256':'a'*64})
+        with self.assertRaises(G.GateError):G.reconcile(self.root,self.context,'signed')
+    def test_no_implicit_state_or_adoption_for_incomplete_invocation(self):
+        directory=self.root/'.buildartifacts/AppSourceGate'/self.context['mode']
+        with self.assertRaises(G.GateError):G.workspace_adopt(self.root,{**self.request,'alpacaArchiveSha256':'a'*64})
+        shutil.rmtree(directory)
+        with self.assertRaises(FileNotFoundError):G.workspace_before(self.root,self.request)
+    def test_prebuilt_copy_source_log_and_hook_changes_refuse(self):
+        G.workspace_before(self.root,self.request);self.compile_fixture();G.workspace_post(self.root,self.request);self.finalize()
+        output=self.root/'.buildartifacts/Apps/default.app'
+        saved=output.read_bytes();output.write_bytes(b'wrong-copy')
+        with self.assertRaises(G.GateError):G.reconcile(self.root,self.context,'pipeline')
+        output.write_bytes(saved)
+        path=self.root/'tools/Prepare-FoundationInputs.ps1';saved=path.read_bytes();path.write_bytes(b'changed')
+        with self.assertRaises(G.GateError):G.reconcile(self.root,self.context,'pipeline')
+        path.write_bytes(saved)
+        log=self.out/'Logs/default.log';log.write_text(log.read_text()+'\nchanged')
+        with self.assertRaises(G.GateError):G.reconcile(self.root,self.context,'pipeline')
+    def test_workspace_metadata_omission_distinct_from_wrong_url(self):
+        info=copy.deepcopy(self.product);manifest=self.product['identity']
+        self.assertEqual('',info['buildUrl'])
+        G.workspace_check_metadata(info,manifest,self.context,'app',{},self.request['tools'],self.request['parameters'])
+        info['buildUrl']='https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/999'
+        with self.assertRaises(G.GateError):G.workspace_check_metadata(info,manifest,self.context,'app',{},self.request['tools'],self.request['parameters'])
+        info['buildUrl']=self.context['buildUrl'];G.workspace_check_metadata(info,manifest,self.context,'app',{},self.request['tools'],self.request['parameters'])
+        info['sourceRepositoryUrl']='https://github.com/wrong/repo'
+        with self.assertRaises(G.GateError):G.workspace_check_metadata(info,manifest,self.context,'app',{},self.request['tools'],self.request['parameters'])
+    def test_unknown_microsoft_is_not_blanket_trusted(self):
+        package=Path(os.environ['FOUNDATION_WORKSPACE_BASELINE_FIXTURE'])
+        self.assertEqual('Microsoft',G.package_info(package)['identity']['publisher'])
+        shutil.copyfile(package,self.cache/'unknown-microsoft.app')
+        with self.assertRaises(G.GateError):G.workspace_before(self.root,self.request)
+    def test_generated_config_after_preparation_requires_scoped_reconciliation(self):
+        (self.root/'app/AppSourceCop.json').write_text('{"mandatorySuffix":"ori"}')
+        with self.assertRaises(G.GateError):G.workspace_before(self.root,self.request)
+
+    def test_no_project_changes_between_prepare_and_pre(self):
+        (self.root/'app/fixture.al').write_text('changed before compile')
+        with self.assertRaises(G.GateError):G.workspace_before(self.root,self.request)
+    def test_unreceipted_cache_addition_after_finalize(self):
+        G.workspace_before(self.root,self.request);self.compile_fixture();G.workspace_post(self.root,self.request);self.finalize()
+        shutil.copyfile(self.fixtures/'testApp.app',self.cache/'unreceipted.app')
+        with self.assertRaises(G.GateError):G.reconcile(self.root,self.context,'pipeline')
 
 if __name__=='__main__':unittest.main()

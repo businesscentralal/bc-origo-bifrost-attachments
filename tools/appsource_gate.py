@@ -5,10 +5,13 @@ entry point alone obtains a Windows NAVX signature verdict for shipping output.
 """
 
 import argparse
+import concurrent.futures
 import hashlib
 import io
 import json
 import re
+import shutil
+import subprocess
 import struct
 import sys
 import time
@@ -305,6 +308,7 @@ def package_info(path, deadline=None, *, allow_ready_to_run=False):
         raise GateError("Invalid compiled NAVX payload/manifest") from exc
     return {"identity": identity, "friends": grants, "dependencies": dependencies,
             "application": application, "platform": platform, "propagateDependencies": propagate == "true",
+            "sourceRepositoryUrl": source.get("RepositoryUrl", ""),
             "sourceCommit": source.get("Commit", ""), "compilerVersion": build.get("CompilerVersion", ""),
             "buildUrl": build.get("Url", ""), "sha256": initial_hash,
             "contentSha256": digest(json.dumps(entries, sort_keys=True).encode()),
@@ -528,13 +532,14 @@ def resolve_helper_inputs(manifest, existing, catalog):
     inputs follow dependencies only when PropagateDependencies is true.
     Full identity checks deliberately refuse helper's AppId-only mismatches.
     """
-    dependencies = list(manifest.get("dependencies", []))
+    dependencies = []
     for field, app_id, name in (("application", "c1335042-3002-4257-bf8a-75c898ccb1b8", "Application"),
                                ("platform", "8874ed3a-0643-4247-9ced-7a7002f7135d", "System")):
         if manifest.get(field):
-            dependencies.insert(0, dict(id=app_id, publisher="Microsoft", name=name, version=manifest[field]))
+            dependencies.append(dict(id=app_id, publisher="Microsoft", name=name, version=manifest[field]))
+    dependencies.extend(manifest.get("dependencies", []))
     available, copies, trace, queued = list(existing), [], [], set()
-    index = 0
+    index, edges = 0, len(dependencies)
     while index < len(dependencies):
         require(len(dependencies) <= 4096, "Dependency resolution bound exceeded")
         dep = dependencies[index]
@@ -571,6 +576,8 @@ def resolve_helper_inputs(manifest, existing, catalog):
                                              name="System", version=item["platform"]))
             if not found or item["propagateDependencies"]:
                 # Helper queues every catalog version for a new transitive AppId.
+                edges += len(item["dependencies"])
+                require(edges <= 4096, "Dependency edge bound exceeded")
                 for child in item["dependencies"]:
                     if not any(d["id"].lower() == child["id"].lower() for d in dependencies):
                         transitive = [s["identity"] for s in catalog if s["identity"]["id"].lower() == child["id"].lower()]
@@ -584,6 +591,225 @@ def resolve_helper_inputs(manifest, existing, catalog):
             "Resolved app cache byte bound exceeded")
     return {"copies": copies, "trace": trace, "resolved": inventory_measurement(available, "appCache"),
             "helperEquivalenceVerified": False, "consumedInputsCertified": False}
+
+
+CLASSIC_HELPER_SHA = '9835753336bc95bc3cac0813e50ef06da4b4132fa1aee116c65934751abdad2d'
+CLASSIC_HELPERS = {
+    CLASSIC_HELPER_SHA: ('6.1.18', 'eb9530bf1d757fde941010c3dfa8526dc0d09fd598d62e5866940c67f7ed1ab4'),
+    '9bdc072429580d8b78ed68eabbc537e07df0e7c5d49bed1131f0bf5dbab672d7': ('6.1.19', 'e7be1168e145b942f01c5dce7735de5c9a05816816f919663d808d602fcc5ea9'),
+}
+CLASSIC_METADATA_SECONDS = 60
+CLASSIC_COPY_LIMIT = 256
+
+
+def classic_metadata(path, item, command, deadline):
+    """Fresh genuine altool metadata, never helper cache injection."""
+    remaining = deadline - time.monotonic()
+    require(remaining > 0, 'Classic metadata elapsed bound exceeded')
+    try:
+        result = subprocess.run(command + ['GetPackageManifest', str(path)],
+                                capture_output=True, timeout=min(15, remaining), check=False)
+    except subprocess.TimeoutExpired as exc:
+        raise GateError('Classic altool metadata timeout') from exc
+    require(result.returncode == 0 and len(result.stdout) <= MANIFEST_BYTES, 'Classic altool metadata failed/bound exceeded')
+    metadata = json.loads(result.stdout.decode('utf-8-sig'))
+    require({k:metadata[k] for k in ('id','publisher','name','version')} == item['identity'], 'Altool/package identity differs')
+    require(metadata.get('application','') == item['application'] and metadata.get('platform','') == item['platform']
+            and metadata.get('propagateDependencies',False) == item['propagateDependencies']
+            and metadata.get('dependencies',[]) == item['dependencies'], 'Altool/package dependency metadata differs')
+    require(file_hash(path) == item['sha256'], 'Classic metadata input changed')
+    return {'file':str(path), 'sha256':item['sha256'], 'metadata':metadata}
+
+
+def classic_mutation_check(manifest, resolution, parameters):
+    # Do not turn off the genuine flag or silently change a shipping floor.
+    if parameters.get('UpdateDependencies'):
+        selected = [x for t in resolution['trace'] for x in t['selected']]
+        for dep in manifest.get('dependencies',[]):
+            require(not any(x['identity']['id'].lower() == dep['id'].lower()
+                            and version_tuple(x['identity']['version']) > version_tuple(dep['version']) for x in selected),
+                    'Genuine updateDependencies would mutate manifest; scoped build-local transformation needs review')
+        for field, name in (('application','Application'),('platform','System')):
+            if manifest.get(field):
+                require(not any(x['identity']['name'] == name and x['identity']['publisher'] == 'Microsoft'
+                                and version_tuple(x['identity']['version']) > version_tuple(manifest[field]) for x in selected),
+                        'Genuine updateDependencies would mutate ' + field)
+    require(not any(parameters.get('customCodeCops') or []), 'Custom cop loading/download mutation unsupported')
+    require(not parameters.get('assemblyProbingPaths'), 'Additional probing inputs need exact scoped inventory')
+    require(parameters.get('GenerateReportLayout', 'NotSpecified') == 'No',
+            'Helper layout generation source mutation is unsupported until scoped review')
+
+
+def project_inputs(project):
+    """Hash project configs, resources and AL; generated input changes refuse."""
+    project = Path(project)
+    files, total = [], 0
+    excluded = {'.alpackages','output','.buildartifacts','.git'}
+    for path in sorted(project.rglob('*')):
+        if any(part in excluded for part in path.relative_to(project).parts): continue
+        if path.is_file():
+            total += path.stat().st_size
+            require(not path.is_symlink() and len(files) < 4096 and total <= SYMBOL_POLICIES['appCache']['bytes'],
+                    'Project config/resource/source bound/links')
+            files.append({'file':str(path.relative_to(project)), 'sha256':file_hash(path)})
+    return files
+
+
+def classic_source_inventory(project):
+    project = Path(project)
+    result = [{'file':'app.json', 'sha256':file_hash(project / 'app.json')}]
+    total = 0
+    for path in sorted(project.rglob('*.al')):
+        total += path.stat().st_size
+        require(not path.is_symlink() and len(result) <= 4096 and total <= 128 * 1024 * 1024,
+                'Classic source bound/links')
+        result.append({'file':str(path.relative_to(project)), 'sha256':file_hash(path)})
+    require(len(result) > 1, 'Missing classic source')
+    return result
+
+
+def classic_prepare(root, request):
+    """Prepare bounded fixed point under caller's exclusive run-local custody."""
+    root, project = Path(root), Path(request['appProjectFolder']).resolve()
+    context = request['context']; mode = context['mode']
+    require(mode in ('Default','Test') and project in ((root/'app').resolve(), (root/'test').resolve()),
+            'Unapproved classic project')
+    directory = root / '.buildartifacts/AppSourceGate' / mode
+    state = json.loads((directory/'state.json').read_text(encoding='utf-8-sig'))
+    require(state.get('backend','classic') == 'classic' and state['context'] == context, 'Wrong classic state/context')
+    owned = Path(request['ownedRoot']).resolve()
+    caches = [Path(request[k]).resolve() for k in ('symbolsFolder','compilerSymbolsFolder')]
+    require(caches[0] != caches[1] and all(c.is_relative_to(owned) and not c.is_symlink() for c in caches),
+            'Classic caches require exclusive run-local ownership')
+    helper, altool = Path(request['helper']), Path(request['altool'])
+    metadata_helper = Path(request['metadataHelper'])
+    helper_sha = file_hash(helper)
+    require(helper_sha in CLASSIC_HELPERS, 'Unpinned genuine classic helper')
+    helper_version, metadata_sha = CLASSIC_HELPERS[helper_sha]
+    require(file_hash(metadata_helper) == metadata_sha, 'Unpinned genuine metadata helper')
+    extension = Path(request['compilerExtension'])
+    compiler_tools = {}
+    total = 0
+    for path in sorted(extension.rglob('*')):
+        if path.is_file():
+            total += path.stat().st_size
+            require(not path.is_symlink() and len(compiler_tools) < 4096 and total <= SYMBOL_POLICIES['compilerCatalog']['bytes'], 'Classic compiler tool inventory bound/links')
+            compiler_tools[str(path)] = file_hash(path)
+    extra_roots = []
+    if request.get('compilerFolder'):
+        compiler_root = Path(request['compilerFolder'])
+        extra_roots = [compiler_root/'dlls', compiler_root/'manifest.json']
+        for base in extra_roots:
+            paths = sorted(base.rglob('*')) if base.is_dir() else [base]
+            for path in paths:
+                if path.is_file():
+                    total += path.stat().st_size
+                    require(not path.is_symlink() and len(compiler_tools) < 4096 and total <= SYMBOL_POLICIES['compilerCatalog']['bytes'], 'Classic probing/tool inventory bound/links')
+                    compiler_tools[str(path)] = file_hash(path)
+    require(compiler_tools and str(altool) in compiler_tools, 'Classic compiler/tool closure missing')
+    require(file_hash(helper) == helper_sha, 'Genuine classic helper changed')
+    require(file_hash(altool) == request['altoolSha256'], 'Classic altool changed')
+    command = [str(altool)]
+    if altool.suffix.lower() == '.dll':
+        runtime = Path(request['dotnet'])
+        require(file_hash(runtime) == request['dotnetSha256'], 'Classic metadata runtime changed')
+        command = [str(runtime),str(altool)]
+    manifest = json.loads((project/'app.json').read_text(encoding='utf-8-sig'))
+    sources = classic_source_inventory(project)
+    project_files = project_inputs(project)
+    normalization = normalize_compiler_catalog(caches[1])
+    existing, catalog = symbol_inventory(caches[0]), symbol_inventory(caches[1], 'compilerCatalog')
+    require(all(i['identity']['id'] != manifest['id'] for i in existing + catalog), 'Classic self/stale input')
+    foundation = [i for i in existing if i['identity']['id'] == FOUNDATION_CANDIDATE['identity']['id']]
+    require(len(foundation) == 1, 'Classic selected Foundation absent/ambiguous');check_foundation_candidate(foundation[0])
+    product = json.loads((root/'app/app.json').read_text(encoding='utf-8-sig'))
+    if project == (root/'test').resolve():
+        built = state['receipts'].get('app',{}).get('package',{})
+        products = [i for i in existing if i['identity']['id'] == product['id']]
+        require(len(products) == 1 and products[0]['sha256'] == built.get('sha256'), 'Classic Test current-run product missing/wrong')
+    resolution = resolve_helper_inputs(manifest, existing, catalog)
+    classic_mutation_check(manifest, resolution, request['parameters'])
+    require(len(resolution['copies']) <= CLASSIC_COPY_LIMIT, 'Classic copy convergence bound exceeded')
+    deadline = time.monotonic() + CLASSIC_METADATA_SECONDS
+    work = [(folder/item['file'],item) for folder, inventory in zip(caches,(existing,catalog)) for item in inventory]
+    # Four bounded read-only metadata processes share the unchanged total budget.
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+        futures = [pool.submit(classic_metadata,path,item,command,deadline) for path,item in work]
+        metadata = [future.result() for future in futures]
+    # Invalidate only these owned caches. No metadata fabrication/stale reuse.
+    for folder in caches:
+        path = folder/'cache_AppInfo.json'
+        if path.exists():
+            require(path.is_file() and not path.is_symlink(), 'Unknown/linked metadata cache')
+            path.unlink()
+    for item in resolution['copies']:
+        source, target = caches[1]/item['file'], caches[0]/item['file']
+        require(not target.exists() and file_hash(source) == item['sha256'], 'Classic overwrite/source mutation')
+        with source.open('rb') as inp, target.open('xb') as dest:
+            shutil.copyfileobj(inp,dest,CHUNK_BYTES)
+        require(file_hash(target) == item['sha256'], 'Classic copied bytes changed')
+    final = symbol_inventory(caches[0]); replay = resolve_helper_inputs(manifest,final,catalog)
+    require(not replay['copies'], 'Classic preparation did not converge')
+    require(symbol_inventory(caches[1],'compilerCatalog') == catalog and classic_source_inventory(project) == sources,
+            'Classic preparation source/catalog mutation')
+    receipt = {'helperVersion':helper_version, 'context':context, 'sources':sources, 'projectInputs':project_files, 'appProjectFolder':str(project),
+               'symbolsFolder':str(caches[0]), 'compilerSymbolsFolder':str(caches[1]),
+               'cache':final, 'catalog':catalog, 'resolution':resolution, 'replay':replay,
+               'catalogNormalization':normalization, 'metadata':metadata,
+               'compilerTools':compiler_tools, 'compilerExtension':str(extension), 'extraToolRoots':[str(p) for p in extra_roots],
+               'tools':{'metadataHelper':{'path':str(metadata_helper),'sha256':file_hash(metadata_helper)}, 'helper':{'path':str(helper),'sha256':helper_sha},
+                        'altool':{'path':str(altool),'sha256':request['altoolSha256']}},
+               'consumedInputsCertified':False, 'helperRuntimeEquivalenceVerified':False}
+    if altool.suffix.lower() == '.dll': receipt['tools']['dotnet']={'path':request['dotnet'],'sha256':request['dotnetSha256']}
+    (directory/'classic-prepared.json').write_text(json.dumps(receipt,indent=2)+'\n')
+    return receipt
+
+
+def classic_tools_unchanged(receipt):
+    roots = [Path(receipt['compilerExtension'])] + [Path(p) for p in receipt['extraToolRoots']]
+    files = {}
+    for root in roots:
+        for p in (sorted(root.rglob('*')) if root.is_dir() else [root]):
+            if p.is_file(): files[str(p)] = file_hash(p)
+    require(files == receipt['compilerTools'], 'Classic compiler/probing closure changed')
+
+
+def classic_seal(root, request):
+    directory = Path(root)/'.buildartifacts/AppSourceGate'/request['context']['mode']
+    receipt = json.loads((directory/'classic-prepared.json').read_text())
+    require(receipt['context'] == request['context'], 'Wrong classic seal context')
+    require(classic_source_inventory(receipt['appProjectFolder']) == receipt['sources'] and project_inputs(receipt['appProjectFolder']) == receipt['projectInputs'], 'Classic source/config changed before helper')
+    for item in receipt['tools'].values(): require(file_hash(item['path']) == item['sha256'], 'Classic tool changed before helper')
+    classic_tools_unchanged(receipt)
+    require(symbol_inventory(receipt['symbolsFolder']) == receipt['cache'] and
+            symbol_inventory(receipt['compilerSymbolsFolder'],'compilerCatalog') == receipt['catalog'],
+            'Classic cache changed before helper')
+    for folder in (receipt['symbolsFolder'],receipt['compilerSymbolsFolder']):
+        require(not (Path(folder)/'cache_AppInfo.json').exists(), 'Stale helper metadata cache reintroduced')
+    return {'preparedSha256':file_hash(directory/'classic-prepared.json'), 'consumedInputsCertified':False}
+
+
+def classic_after(root, request):
+    directory = Path(root)/'.buildartifacts/AppSourceGate'/request['context']['mode']
+    receipt = json.loads((directory/'classic-prepared.json').read_text())
+    require(receipt['context'] == request['context'], 'Wrong classic after context')
+    require(classic_source_inventory(receipt['appProjectFolder']) == receipt['sources'] and project_inputs(receipt['appProjectFolder']) == receipt['projectInputs'], 'Classic helper mutated manifest/source/config')
+    for item in receipt['tools'].values(): require(file_hash(item['path']) == item['sha256'], 'Classic helper/tool mutation')
+    classic_tools_unchanged(receipt)
+    require(symbol_inventory(receipt['compilerSymbolsFolder'],'compilerCatalog') == receipt['catalog'], 'Classic helper catalog mutation')
+    final = symbol_inventory(receipt['symbolsFolder'])
+    baseline = {x['file']:x for x in receipt['cache']}
+    for item in receipt['cache']: require(item in final, 'Classic helper changed prepared input')
+    additions = [x for x in final if x['file'] not in baseline]
+    if request['copyAppToSymbolsFolder']:
+        require(len(additions) == 1 and additions[0]['identity']['id'] == json.loads((Path(receipt['appProjectFolder'])/'app.json').read_text(encoding='utf-8-sig'))['id'],
+                'Classic helper added unaccounted dependency/output')
+        require(len(request['appFiles']) == 1 and file_hash(request['appFiles'][0]) == additions[0]['sha256'], 'Classic output copy differs')
+    else: require(not additions, 'Translation helper unexpectedly changed symbol cache')
+    result = {'context':request['context'],'preparedSha256':file_hash(directory/'classic-prepared.json'),
+              'after':final,'consumedInputsCertified':False}
+    (directory/'classic-after.json').write_text(json.dumps(result,indent=2)+'\n')
+    return result
 
 
 def reconcile_symbols(snapshot, request, output):
@@ -828,6 +1054,9 @@ def reconcile(root, context, stage, signature=None):
     root = Path(root)
     directory = root / ".buildartifacts" / "AppSourceGate" / context["mode"]
     state = json.loads((directory / "state.json").read_text(encoding="utf-8-sig"))
+    if state.get("backend") == "workspace":
+        return workspace_reconcile(root, context, stage, signature)
+    require(state.get("backend", "classic") == "classic", "Unknown receipt backend")
     require(state["context"] == context, "Stale finalize context")
     expected = {"app", "testApp"} if context["mode"] == "Test" else {"app"}
     require(set(state["receipts"]) == expected, "Skipped/missing/unexpected compile hook")
@@ -864,14 +1093,184 @@ def reconcile(root, context, stage, signature=None):
     return result
 
 
-# Workspace receipts deliberately do not enter the classic receipt state. A
-# separate final infrastructure review must approve downstream reconciliation.
+# Explicit backend state is created before workspace creation and adopted by
+# the prebuilt pipeline. These observations do not certify internal consumption.
 WORKSPACE_MODULE_SHA = 'fcf82a3a83f6925c26adcd0876d57f59ba3c29ad8b2e9a1c11c70eaa9aefb73e'
 WORKSPACE_KEYS = {'ALToolPath', 'WorkspaceFile', 'PackageCachePath', 'OutFolder',
                   'LogDirectory', 'ErrorLogDirectory', 'AssemblyProbingPaths',
                   'Analyzers', 'CustomAnalyzers', 'PreprocessorSymbols', 'Features',
                   'GenerateReportLayout', 'Ruleset', 'SourceRepositoryUrl', 'SourceCommit',
                   'ReportSuppressedDiagnostics', 'EnableExternalRulesets', 'MaxCpuCount'}
+
+
+WORKSPACE_HOOKS = ('.AL-Go/PipelineInitialize.ps1', '.AL-Go/PipelineFinalize.ps1',
+                   '.AL-Go/PreCompileApp.ps1', '.AL-Go/PostCompileApp.ps1',
+                   '.AL-Go/CompileAppWithBcCompilerFolder.ps1', '.AL-Go/settings.json',
+                   'tools/Assert-AppSourceBuild.ps1', 'tools/appsource_gate.py',
+                   'tools/Acquire-FoundationInputs.ps1', 'tools/Prepare-FoundationInputs.ps1',
+                   'tools/stage_foundation_inputs.py', 'tools/Prepare-ClassicCompilerInputs.ps1')
+WORKSPACE_IMPORTS = (('DebugLogHelper.psm1', './DebugLogHelper.psm1'), ('TelemetryHelper.psm1', '../TelemetryHelper.psm1'),
+                     ('Github-Helper.psm1', '../Github-Helper.psm1'),
+                     ('AL-Go-Helper.ps1', '../AL-Go-Helper.ps1'))
+
+
+def workspace_prepared_projects(root, mode):
+    """Bind the approved two-project graph before altool workspace creation."""
+    root = Path(root)
+    result = {}
+    for app_type, folder in (('app', 'app'), ('testApp', 'test')):
+        # workspace_projects validates the genuine workspace later; use the same
+        # manifest/source inventory here without manufacturing compiler arguments.
+        manifest = root / folder / 'app.json'
+        require(manifest.is_file() and not manifest.is_symlink() and manifest.stat().st_size <= MANIFEST_BYTES,
+                'Missing/linked/oversized prepared manifest')
+        data = json.loads(manifest.read_text(encoding='utf-8-sig'))
+        identity_check({k:data[k] for k in ('id', 'publisher', 'name', 'version')})
+        sources, total = [], 0
+        for path in sorted((root / folder).rglob('*.al')):
+            total += path.stat().st_size
+            require(not path.is_symlink() and len(sources) < 4096 and total <= 128 * 1024 * 1024,
+                    'Prepared source bound/links')
+            sources.append({'file':str(path.relative_to(root)), 'sha256':file_hash(path)})
+        require(sources, 'Prepared project sources missing')
+        result[app_type] = {'path':folder, 'manifest':data, 'manifestSha256':file_hash(manifest), 'sources':sources, 'inputs':project_inputs(root/folder)}
+    friend = {k:result['testApp']['manifest'][k] for k in ('id', 'publisher', 'name')}
+    require(result['app']['manifest'].get('internalsVisibleTo', []) == ([friend] if mode == 'Test' else []),
+            'Workspace friendship not prepared before creation')
+    require(not result['testApp']['manifest'].get('internalsVisibleTo'), 'Unexpected test friendship')
+    return result
+
+
+def workspace_state(root, context):
+    require(context.get('mode') in ('Default', 'Test'), 'Unexpected workspace state mode')
+    directory = Path(root) / '.buildartifacts/AppSourceGate' / context['mode']
+    state = json.loads((directory / 'state.json').read_text(encoding='utf-8-sig'))
+    require(state.get('schema') == 2 and state.get('backend') == 'workspace'
+            and state['context'] == context, 'Missing/stale/untrusted workspace state')
+    require(file_hash(state['selection']) == state['selectionSha256'], 'Selected workspace inputs changed')
+    require(state['preparedProjects'] == workspace_prepared_projects(root, context['mode']),
+            'Prepared workspace sources/manifest changed')
+    require(set(state['hookHashes']) == set(WORKSPACE_HOOKS), 'Incomplete workspace hook inventory')
+    for path, sha in state['hookHashes'].items():
+        require(file_hash(Path(root) / path) == sha, 'Workspace hook/preparation tool changed')
+    return directory, state
+
+
+def workspace_initialize(root, request):
+    context = request['context']
+    require(context.get('mode') in ('Default', 'Test'), 'Unexpected initialization mode')
+    for key in ('sourceCommit','checkoutSha'):
+        require(re.fullmatch('[a-f0-9]{40}',context[key]), 'Workspace initialization SHA missing')
+    for key in ('run','attempt','job'):
+        require(context.get(key), 'Workspace initialization identity missing')
+    require(request['settings'].get('workspaceCompilation', {}).get('enabled') is True,
+            'Workspace backend not selected')
+    require(re.fullmatch(r'https://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/actions/runs/[0-9]+', context['buildUrl']),
+            'Missing canonical external run URL')
+    directory = Path(root) / '.buildartifacts/AppSourceGate' / context['mode']
+    require(not directory.exists(), 'Existing workspace receipts cannot be reused')
+    hooks = {p:file_hash(Path(root) / p) for p in WORKSPACE_HOOKS}
+    state = {'schema':2, 'backend':'workspace', 'context':context, 'startedNs':time.time_ns(),
+             'hookHashes':hooks, 'effectiveSettings':request['settings'],
+             'preparedProjects':workspace_prepared_projects(root, context['mode']),
+             'selection':request['selection'], 'selectionSha256':file_hash(request['selection']),
+             'receipts':{}, 'adopted':False, 'consumedInputsCertified':False}
+    directory.mkdir(parents=True)
+    (directory / 'state.json').write_text(json.dumps(state, indent=2) + '\n')
+    return state
+
+
+def workspace_adopt(root, request):
+    directory, state = workspace_state(root, request['context'])
+    require(not state['adopted'] and not (directory / 'before.json').exists(), 'Repeated/incomplete workspace adoption')
+    require(state['effectiveSettings'] == request['settings'], 'Workspace settings changed before pipeline')
+    require(set(state['receipts']) == ({'app','testApp'} if state['context']['mode'] == 'Test' else {'app'}),
+            'Incomplete workspace compilation before prebuilt pipeline')
+    require(re.fullmatch('[a-f0-9]{64}', request.get('alpacaArchiveSha256', '')), 'Missing Alpaca archive hash')
+    workspace_validate_receipts(root, state)
+    log = Path(root) / 'BuildOutput.txt'
+    require(log.is_file(), 'Actual workspace aggregate build output missing')
+    state['buildOutputSha256'] = file_hash(log)
+    state.update(adopted=True, alpacaArchiveSha256=request['alpacaArchiveSha256'])
+    (directory / 'state.json').write_text(json.dumps(state, indent=2) + '\n')
+    return state
+
+
+def workspace_check_metadata(info, manifest, context, app_type, friend, tools, parameters):
+    check_package(info, manifest, context['mode'], app_type, friend, context['sourceCommit'])
+    require(info['compilerVersion'] == tools['compiler']['version'], 'Workspace compiler metadata mismatch')
+    require(info['sourceRepositoryUrl'] == parameters['SourceRepositoryUrl'], 'Workspace source repository mismatch')
+    # This exact pinned producer has no BuildUrl parameter. Actual producer
+    # omission is tested separately; the run link is an external hash attestation.
+    require(not info['buildUrl'] or info['buildUrl'] == context['buildUrl'], 'Workspace nonempty build URL mismatch')
+
+
+def workspace_validate_receipts(root, state, stage=None):
+    require(set(state['receipts']) == ({'app','testApp'} if state['context']['mode'] == 'Test' else {'app'}),
+            'Missing/unexpected workspace receipts')
+    for app_type, receipt in state['receipts'].items():
+        request = dict(context=state['context'], parameters=receipt['parameters'], tools=receipt['tools'], settings=state['effectiveSettings'])
+        workspace_parameters(request)
+        require(receipt['context'] == state['context'] and receipt['projects'] == [state['preparedProjects'][app_type]],
+                'Stale/source-displaced workspace receipt')
+        for output in receipt['outputs']:
+            expected = {k:v for k,v in output.items() if k != 'file'}
+            unsigned = Path(root) / '.buildartifacts/AppSourceGate' / state['context']['mode'] / 'unsigned' / (app_type + '.app')
+            require(package_info(unsigned) == expected, 'Retained unsigned workspace bytes changed')
+            actual = package_info(output['file'])
+            final = Path(root) / '.buildartifacts' / ('Apps' if app_type == 'app' else 'TestApps') / Path(output['file']).name
+            if stage == 'signed' and Path(output['file']).resolve() == final.resolve():
+                require(actual['contentSha256'] == output['contentSha256'], 'Signed original workspace content changed')
+            else:
+                require(actual == expected, 'Original workspace output changed')
+        for item in receipt['logs'] + receipt['errorLogs']:
+            path = Path(item['file'])
+            require(file_hash(path) == item['sha256'] and path.stat().st_mtime_ns == item['mtimeNs'],
+                    'Workspace compiler log changed')
+        for symbol in receipt['cacheAfter']:
+            require(file_hash(Path(receipt['parameters']['PackageCachePath']) / symbol['file']) == symbol['sha256'],
+                    'Workspace cache input/output changed')
+    # No new cache bytes after last compile, including an unexpected second compile.
+    last = state['receipts']['testApp' if state['context']['mode'] == 'Test' else 'app']
+    require(symbol_inventory(last['parameters']['PackageCachePath'], 'compilerCatalog') == last['cacheAfter'],
+            'Unreceipted workspace cache additions')
+
+
+def workspace_reconcile(root, context, stage, signature=None):
+    directory, state = workspace_state(root, context)
+    require(state['adopted'] and not (directory / 'before.json').exists(), 'Workspace pipeline not adopted/incomplete')
+    workspace_validate_receipts(root, state, stage)
+    require(file_hash(Path(root) / 'BuildOutput.txt') == state['buildOutputSha256'], 'Unreceipted later workspace compiler output')
+    outputs = []
+    for app_type, receipt in sorted(state['receipts'].items()):
+        folder = Path(root) / '.buildartifacts' / ('Apps' if app_type == 'app' else 'TestApps')
+        files = list(folder.glob('*.app'))
+        require(len(files) == len(receipt['outputs']) == 1, 'Missing/ambiguous prebuilt workspace copy')
+        info = package_info(files[0]); original = receipt['outputs'][0]
+        require(info['contentSha256'] == original['contentSha256'], 'Prebuilt workspace NAVX content changed')
+        if stage == 'signed':
+            require(context['mode'] == 'Default' and app_type == 'app', 'Unexpected workspace signing mode')
+            require(signature and signature.get('status') == 'Valid' and signature.get('signerThumbprint')
+                    and signature.get('provider') == 'Windows Get-AuthenticodeSignature' and signature.get('sha256') == info['sha256'],
+                    'Missing/invalid workspace signature proof')
+        else:
+            require(info['sha256'] == original['sha256'], 'Unsigned prebuilt workspace bytes changed')
+        outputs.append({'file':str(files[0].relative_to(root)), **info})
+    if stage != 'finalize':
+        finalized = json.loads((directory / 'finalize.json').read_text())
+        require(finalized['context'] == context and finalized['stateSha256'] == file_hash(directory / 'state.json'),
+                'Missing/stale workspace finalization')
+    result = {'schema':2, 'backend':'workspace', 'context':context, 'stage':stage,
+              'stateSha256':file_hash(directory / 'state.json'), 'outputs':outputs,
+              'externalBuildAttestation':{'buildUrl':context['buildUrl'], 'sourceCommit':context['sourceCommit'],
+                  'checkoutSha':context['checkoutSha'], 'unsignedHashes':[o['sha256'] for r in state['receipts'].values() for o in r['outputs']],
+                  'outputHashes':[o['sha256'] for o in outputs]}, 'consumedInputsCertified':False}
+    if signature: result['signature'] = signature
+    (directory / (stage + '.json')).write_text(json.dumps(result, indent=2) + '\n')
+    return result
+
+
+WORKSPACE_IMPORT_HASHES = {'DebugLogHelper.psm1': '830abb97839a0d340deabc4e95fc23cf43205800c945c6f0635d240dd8eb2579', 'TelemetryHelper.psm1': '0914ad287a31efe80b43a34d02107e538ee7aa6a9f94cef8c6b385c6d9e96520', 'Github-Helper.psm1': 'b83916a0869106557371df3e819118b6cf3949a7c65b44b57cb41243be0e12ee', 'AL-Go-Helper.ps1': 'e3c5488ae4d52cd7b38867b50002752b75531bac71c4900cdd28e9aaf97c02f2'}
 
 
 def workspace_parameters(request):
@@ -889,14 +1288,20 @@ def workspace_parameters(request):
             and len(p['Analyzers']) == 3 and not p['CustomAnalyzers'], 'Unexpected workspace analyzers')
     require(not p['Ruleset'] and p['ReportSuppressedDiagnostics'] is False
             and p['EnableExternalRulesets'] is False, 'Workspace suppression/ruleset unsupported')
-    require(isinstance(p['MaxCpuCount'], int) and 1 <= p['MaxCpuCount'] <= 128,
+    require(type(p['MaxCpuCount']) is int and 1 <= p['MaxCpuCount'] <= 128,
             'Workspace CPU bound unsupported')
     require(p['SourceCommit'] == request['context']['sourceCommit'], 'Workspace source commit mismatch')
+    require(re.fullmatch(r'https://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', p['SourceRepositoryUrl'] or ''), 'Workspace source repository absent/unsupported')
     tools = request['tools']
     require(tools['workspaceModule']['sha256'] == WORKSPACE_MODULE_SHA, 'Unpinned workspace module')
     for name in ('compiler', 'altool', 'compilerPackage', 'CodeCop', 'UICop', 'AppSourceCop', 'Analyzers.Common', 'workspaceModule'):
         item = tools[name]
         require(file_hash(item['path']) == item['sha256'], 'Workspace tool hash changed: ' + name)
+    module = Path(tools['workspaceModule']['path'])
+    for name, relative in WORKSPACE_IMPORTS:
+        require(file_hash(module.parent / relative) == tools[name]['sha256'] == WORKSPACE_IMPORT_HASHES[name]
+                and Path(tools[name]['path']).resolve() == (module.parent / relative).resolve(),
+                'Workspace upstream import missing/changed: ' + name)
     require(Path(p['ALToolPath']).resolve() == Path(tools['altool']['path']).resolve(), 'Workspace tool path mismatch')
     require(tools['compiler'].get('version') and tools['compilerPackage'].get('version'),
             'Workspace compiler versions absent')
@@ -944,7 +1349,7 @@ def workspace_projects(root, request):
             sources.append({'file': str(source.relative_to(root)), 'sha256': file_hash(source)})
         require(sources, 'Workspace project has no sources')
         projects.append({'path': str(path.relative_to(root)), 'manifest': manifest,
-                         'manifestSha256': file_hash(manifest_path), 'sources': sources})
+                         'manifestSha256': file_hash(manifest_path), 'sources': sources, 'inputs':project_inputs(path)})
     return {'workspaceSha256': file_hash(workspace), 'projects': projects}
 
 
@@ -965,10 +1370,11 @@ def workspace_before(root, request):
     p = workspace_parameters(request)
     projects = workspace_projects(root, request)
     context, app_type = request['context'], request['appType']
-    directory = Path(root) / '.buildartifacts/AppSourceGate' / context['mode'] / 'workspace'
-    directory.mkdir(parents=True, exist_ok=True)
+    directory, state = workspace_state(root, context)
+    require(not state['adopted'], 'Workspace recompilation after prebuilt adoption')
+    require(request['settings'] == state['effectiveSettings'], 'Workspace settings changed since preparation')
+    require(projects['projects'] == [state['preparedProjects'][app_type]], 'Workspace preparation displaced')
     state_path = directory / 'state.json'
-    state = json.loads(state_path.read_text()) if state_path.exists() else {'context': context, 'receipts': {}}
     require(state['context'] == context and app_type not in state['receipts'], 'Stale/duplicate workspace state')
     require(not (directory / 'before.json').exists(), 'Unfinished workspace invocation cannot be reused')
     symbols = symbol_inventory(p['PackageCachePath'], 'compilerCatalog')
@@ -978,6 +1384,7 @@ def workspace_before(root, request):
     # Selected dependencies are revalidated by the preparation process and here;
     # shared baseline additions cannot introduce unproven non-Microsoft bytes.
     import stage_foundation_inputs as staging
+    require(request['selection'] == state['selection'], 'Workspace selected input location changed')
     selection = json.loads(Path(request['selection']).read_text(encoding='utf-8-sig'))
     staging_context = {k:context[k] for k in ('run', 'attempt', 'sourceCommit', 'checkoutSha', 'mode')}
     arrays = selection['publication']['selection']
@@ -991,7 +1398,7 @@ def workspace_before(root, request):
             known[output['identity']['id']] = output['sha256']
     for symbol in symbols:
         key = symbol['identity']['id']
-        require(key in known or symbol['identity']['publisher'] == 'Microsoft', 'Unproven workspace baseline input')
+        require(key in known, 'Unproven workspace baseline input')
         if key in known:
             require(symbol['sha256'] == known[key], 'Changed selected/current-run workspace input')
     product = json.loads((Path(root) / 'app/app.json').read_text(encoding='utf-8-sig'))
@@ -1023,7 +1430,8 @@ def workspace_post(root, request):
     p = workspace_parameters(request)
     context = request['context']
     require(context.get('mode') in ('Default', 'Test'), 'Unexpected workspace post mode')
-    directory = Path(root) / '.buildartifacts/AppSourceGate' / context['mode'] / 'workspace'
+    directory, state = workspace_state(root, context)
+    require(not state['adopted'], 'Workspace post after adoption')
     before = json.loads((directory / 'before.json').read_text())
     state = json.loads((directory / 'state.json').read_text())
     require(state['context'] == before['context'] == context and before['appType'] == request['appType'], 'Stale workspace post')
@@ -1044,8 +1452,7 @@ def workspace_post(root, request):
         matches = [project for project in before['projects'] if project['manifest']['id'] == info['identity']['id']]
         require(len(matches) == 1 and info['identity']['id'] not in mapped, 'Unknown/duplicate workspace output')
         mapped.add(info['identity']['id'])
-        check_package(info, matches[0]['manifest'], context['mode'], request['appType'], friend, context['sourceCommit'])
-        require(info['compilerVersion'] == request['tools']['compiler']['version'] and info['buildUrl'] == context['buildUrl'], 'Workspace package compiler/run mismatch')
+        workspace_check_metadata(info, matches[0]['manifest'], context, request['appType'], friend, request['tools'], p)
         outputs.append({'file': str(path), **info})
     symbols = symbol_inventory(p['PackageCachePath'], 'compilerCatalog')
     pre = {s['file']:s['sha256'] for s in before['symbols']}
@@ -1064,7 +1471,9 @@ def workspace_post(root, request):
         path = Path(before['logDirectory']) / name
         require(path.stat().st_mtime_ns >= before['startedNs'], 'Stale workspace log timestamp')
         # altool per-project log lines carry [OUT] prefixes.
-        text = re.sub(r'^\[OUT\]\s?', '', read_log(path.read_bytes()), flags=re.M)
+        raw = read_log(path.read_bytes())
+        require(re.search(r'^Exit code: 0\s*$', raw, re.M) and not re.search(r'^\[ERR\]', raw, re.M), 'Workspace wrapper failed/incomplete')
+        text = '\n'.join(line[6:] for line in raw.splitlines() if line.startswith('[OUT] '))
         found = compile_spans(text)
         require(len(found) == 1, 'Ambiguous workspace log span')
         spans.extend(found);log_receipts.append({'file':str(path), **logs[name]})
@@ -1090,6 +1499,13 @@ def workspace_post(root, request):
                **project_data, 'outputs':outputs, 'cacheBefore':before['symbols'], 'cacheAfter':symbols,
                'logs':log_receipts, 'errorLogs':error_receipts, 'spans':spans, 'consumedInputsCertified':False,
                'boundary':'supported workspace pre/post observations; altool internal preparation unverified'}
+    unsigned = directory / 'unsigned'
+    unsigned.mkdir(exist_ok=True)
+    target = unsigned / (request['appType'] + '.app')
+    require(len(outputs) == 1 and not target.exists(), 'Duplicate/ambiguous unsigned workspace retention')
+    with Path(outputs[0]['file']).open('rb') as source, target.open('xb') as dest:
+        shutil.copyfileobj(source, dest, CHUNK_BYTES)
+    require(file_hash(target) == outputs[0]['sha256'], 'Unsigned workspace retention differs')
     state['receipts'][request['appType']] = receipt
     (directory / (request['appType'] + '-receipt.json')).write_text(json.dumps(receipt, indent=2) + '\n')
     (directory / 'state.json').write_text(json.dumps(state, indent=2) + '\n')
@@ -1099,7 +1515,7 @@ def workspace_post(root, request):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=["before", "post", "finalize", "pipeline", "signed", "package", "workspace-before", "workspace-post"])
+    parser.add_argument("action", choices=["before", "post", "finalize", "pipeline", "signed", "package", "workspace-before", "workspace-post", "workspace-initialize", "workspace-adopt", "classic-prepare", "classic-seal", "classic-after"])
     parser.add_argument("--root", type=Path)
     parser.add_argument("--input", type=Path, required=True)
     args = parser.parse_args()
@@ -1108,7 +1524,17 @@ def main():
             result = package_info(args.input)
         else:
             request = json.loads(args.input.read_text(encoding="utf-8-sig"))
-            if args.action == "workspace-before":
+            if args.action == "classic-prepare":
+                result = classic_prepare(args.root, request)
+            elif args.action == "classic-seal":
+                result = classic_seal(args.root, request)
+            elif args.action == "classic-after":
+                result = classic_after(args.root, request)
+            elif args.action == "workspace-initialize":
+                result = workspace_initialize(args.root, request)
+            elif args.action == "workspace-adopt":
+                result = workspace_adopt(args.root, request)
+            elif args.action == "workspace-before":
                 result = workspace_before(args.root, request)
             elif args.action == "workspace-post":
                 result = workspace_post(args.root, request)

@@ -230,10 +230,15 @@ jobs:
         if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
         shell: ${{ inputs.shell }}
         env:
+          Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'
           BuildMode: ${{ inputs.buildMode }}
         run: |
           & (Join-Path $env:GITHUB_WORKSPACE 'tools/Prepare-FoundationInputs.ps1') -Action PrepareManifest
           & (Join-Path $env:GITHUB_WORKSPACE 'tools/Prepare-FoundationInputs.ps1') -Action Validate
+
+          if (($env:Settings | ConvertFrom-Json).workspaceCompilation.enabled) {
+            & (Join-Path $env:GITHUB_WORKSPACE 'tools/Assert-AppSourceBuild.ps1') -Stage WorkspaceInitialize
+          }
 
       - name: Compile Apps
         id: compile

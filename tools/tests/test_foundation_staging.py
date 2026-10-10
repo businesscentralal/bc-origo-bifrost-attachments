@@ -334,7 +334,12 @@ class Candidate530(unittest.TestCase):
         for block in re.split(r'(?m)^      - name:', text)[1:]:
             keys = re.findall(r'(?m)^        ([A-Za-z][A-Za-z0-9_-]*):', block)
             self.assertEqual(len(keys), len(set(keys)), 'Duplicate workflow step key')
-        self.assertEqual(3, text.count("Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'"))
+        self.assertEqual(4, text.count("Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'"))
+        preparation=text[text.index('- name: Validate selected inputs before Compile Apps'):text.index('- name: Compile Apps')]
+        self.assertIn("Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'", preparation)
+        self.assertIn('-Stage WorkspaceInitialize',preparation)
+        self.assertLess(preparation.index('-Action PrepareManifest'),preparation.index('-Stage WorkspaceInitialize'))
+        self.assertIn('workspaceCompilation.enabled',preparation)
         self.assertLess(text.index('- name: Acquire Foundation inputs'), text.index('- name: Download Project Dependencies'))
         self.assertLess(text.index('- name: Stage Foundation inputs'), text.index('- name: Compile Apps'))
         self.assertLess(text.index('- name: Compile Apps'), text.index('- name: Build\n'))

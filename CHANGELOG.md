@@ -8,6 +8,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+- #78 owner-local execution candidate: `Prepare-ClassicCompilerInputs.ps1` and `Test-ClassicCompilerPreparation.ps1` add bounded genuine-metadata cache preparation and helper graph comparison. `Assert-AppSourceBuild.ps1`, `Prepare-FoundationInputs.ps1`, `appsource_gate.py`, `PipelineInitialize.ps1` and workspace Pre/Post/Finalize hooks use explicit backend state, prebuilt adoption and external run-bound metadata receipts with immutable unsigned bytes. No AL object IDs allocated. Actual producer transformations, paired shipping/runtime verification, final infrastructure review and sanctioned publication remain blocked.
+
 - #78 local pipeline correction: prepare Default friendship before workspace creation; add strict workspace PreCompileApp/PostCompileApp contracts, separate bounded receipts, and genuine preparation/callback fixtures. No AL object IDs allocated; shipping execution and classic late-boundary approval remain blocked.
 
 ### Fixed (2026-10-10) - local split resolver integration preparation (#78)

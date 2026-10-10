@@ -14,10 +14,18 @@ if ($Action -eq 'PrepareManifest') {
     if ($env:BuildMode -cnotin @('Default', 'Test')) { throw 'Unexpected build mode for manifest preparation.' }
     $path = Join-Path $Root 'app/app.json'
     $manifest = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
-    if ($env:BuildMode -ceq 'Default' -and $manifest.PSObject.Properties['internalsVisibleTo']) {
-        $manifest.PSObject.Properties.Remove('internalsVisibleTo')
-        $manifest | ConvertTo-Json -Depth 100 | Set-Content -LiteralPath $path -Encoding UTF8
+    $changed = $false
+    if ($env:BuildMode -ceq 'Default') {
+        if ($manifest.PSObject.Properties['internalsVisibleTo']) {
+            $manifest.PSObject.Properties.Remove('internalsVisibleTo')
+            $changed = $true
+        }
+        if ($manifest.PSObject.Properties['suppressWarnings'] -and 'AS0081' -in $manifest.suppressWarnings) {
+            $manifest.suppressWarnings = @($manifest.suppressWarnings | Where-Object { $_ -ne 'AS0081' })
+            $changed = $true
+        }
     }
+    if ($changed) { $manifest | ConvertTo-Json -Depth 100 | Set-Content -LiteralPath $path -Encoding UTF8 }
     # Test friendship and every unrelated property are preserved.
     return
 }

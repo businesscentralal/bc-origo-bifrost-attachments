@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('Initialize', 'BeforeCompile', 'PostCompile', 'Finalize', 'Pipeline', 'Signed', 'WorkspaceBefore', 'WorkspacePost')]
+    [ValidateSet('Initialize', 'BeforeCompile', 'PostCompile', 'Finalize', 'Pipeline', 'Signed', 'WorkspaceBefore', 'WorkspacePost', 'WorkspaceInitialize')]
     [string] $Stage,
     [string] $Root = $env:GITHUB_WORKSPACE,
     [string[]] $AppFile,
@@ -84,17 +84,30 @@ function Invoke-Gate {
     }
 }
 
+function Get-WorkspaceSettings {
+    param($Settings)
+    $effective = @{}
+    foreach ($name in 'enableCodeCop', 'enableUICop', 'enableAppSourceCop', 'enableCodeAnalyzersOnTestApps', 'failOn', 'workspaceCompilation', 'type', 'escapeFromCops', 'rulesetFile') {
+        $property = $Settings.PSObject.Properties[$name]
+        $effective[$name] = if ($property) { $property.Value } else { $null }
+    }
+    return $effective
+}
+
+if ($Stage -eq 'WorkspaceInitialize') {
+    $directory = Join-Path $Root '.buildartifacts/AppSourceGate'
+    New-Item -Path $directory -ItemType Directory -Force | Out-Null
+    Invoke-Gate 'workspace-initialize' @{context=(Get-Context); settings=(Get-WorkspaceSettings (Read-Settings)); selection=(Join-Path $env:RUNNER_TEMP "foundation-selected-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT-$env:BuildMode/selection.json")}
+    return
+}
+
 # Separate actual workspace contracts. No classic-parameter impersonation and no
 # compiler parameter mutation; caller's ref and returned app stream remain intact.
-if ($Stage -in @('WorkspaceBefore', 'WorkspacePost')) {
+if ($Stage -in @('WorkspaceBefore', 'WorkspacePost', 'WorkspaceInitialize')) {
     $context = Get-Context
     if (-not $CompilationParams -or $AppType -cnotin @('app', 'testApp')) { throw 'Missing/unexpected workspace contract.' }
     $settings = Read-Settings
-    $effective = @{}
-    foreach ($name in 'enableCodeCop', 'enableUICop', 'enableAppSourceCop', 'enableCodeAnalyzersOnTestApps', 'failOn', 'workspaceCompilation', 'type', 'escapeFromCops', 'rulesetFile') {
-        $property = $settings.PSObject.Properties[$name]
-        $effective[$name] = if ($property) { $property.Value } else { $null }
-    }
+    $effective = Get-WorkspaceSettings $settings
     $parameters = @{}
     foreach ($key in $CompilationParams.Keys) {
         $value = $CompilationParams[$key]
@@ -129,6 +142,12 @@ if ($Stage -in @('WorkspaceBefore', 'WorkspacePost')) {
     $module = Get-Command Build-AppsInWorkspace -ErrorAction Stop
     $tools.workspaceModule = Get-FileReceipt $module.ScriptBlock.File
     $tools.workspaceModule.path = $module.ScriptBlock.File
+    $moduleFolder = Split-Path $module.ScriptBlock.File -Parent
+    foreach ($entry in @{'TelemetryHelper.psm1'='../TelemetryHelper.psm1'; 'Github-Helper.psm1'='../Github-Helper.psm1'; 'AL-Go-Helper.ps1'='../AL-Go-Helper.ps1'; 'DebugLogHelper.psm1'='./DebugLogHelper.psm1'}.GetEnumerator()) {
+        $path = (Resolve-Path -LiteralPath (Join-Path $moduleFolder $entry.Value)).Path
+        $tools[$entry.Key] = Get-FileReceipt $path
+        $tools[$entry.Key].path = $path
+    }
     if ($Stage -eq 'WorkspaceBefore') {
         & (Join-Path $Root 'tools/Prepare-FoundationInputs.ps1') -Action Validate -Root $Root
     }
@@ -142,6 +161,15 @@ if ($Stage -in @('WorkspaceBefore', 'WorkspacePost')) {
 $context = Get-Context
 $directory = Join-Path $Root ".buildartifacts/AppSourceGate/$($context.mode)"
 $settings = Read-Settings
+$workspaceBackend = (Get-Setting $settings 'workspaceCompilation').enabled
+if ($workspaceBackend -and $Stage -eq 'Initialize') {
+    Invoke-Gate 'workspace-adopt' @{context=$context; settings=(Get-WorkspaceSettings $settings); alpacaArchiveSha256=$AlpacaArchiveHash}
+    return
+}
+if ($workspaceBackend -and $Stage -in @('BeforeCompile', 'PostCompile')) {
+    throw 'Unexpected classic recompilation on prebuilt workspace backend.'
+}
+if (-not $workspaceBackend) {
 foreach ($name in 'enableCodeCop', 'enableUICop', 'enableCodeAnalyzersOnTestApps') {
     if ((Get-Setting $settings $name) -isnot [bool] -or -not (Get-Setting $settings $name)) {
         throw "Effective analyzer setting disabled: $name"
@@ -163,7 +191,7 @@ if ($Stage -eq 'Initialize') {
     }
     New-Item -Path $directory -ItemType Directory -Force | Out-Null
     $hooks = @{}
-    foreach ($path in '.AL-Go/PipelineInitialize.ps1', '.AL-Go/CompileAppWithBcCompilerFolder.ps1', '.AL-Go/PostCompileApp.ps1', '.AL-Go/PipelineFinalize.ps1', '.AL-Go/settings.json', 'tools/Assert-AppSourceBuild.ps1', 'tools/appsource_gate.py') {
+    foreach ($path in '.AL-Go/PipelineInitialize.ps1', '.AL-Go/CompileAppWithBcCompilerFolder.ps1', '.AL-Go/PostCompileApp.ps1', '.AL-Go/PipelineFinalize.ps1', '.AL-Go/settings.json', 'tools/Assert-AppSourceBuild.ps1', 'tools/appsource_gate.py', 'tools/Prepare-ClassicCompilerInputs.ps1', 'tools/Prepare-FoundationInputs.ps1', 'tools/stage_foundation_inputs.py') {
         $hooks[$path] = (Get-FileReceipt (Join-Path $Root $path)).sha256
     }
     if ($AlpacaArchiveHash -notmatch '^[a-f0-9]{64}$') {
@@ -233,7 +261,13 @@ if ($Stage -eq 'PostCompile') {
     }
     $extension = Join-Path $CompilationParams.compilerFolder 'compiler/extension'
     $bin = Join-Path $extension 'bin'
-    $compiler = Join-Path $bin 'alc.exe'
+    $compilerBin = Join-Path $bin $(if ($IsLinux) {'linux'} elseif ($IsMacOS) {'darwin'} else {'win32'})
+    if (-not (Test-Path (Join-Path $compilerBin 'alc.*'))) { $compilerBin = $bin }
+    $compiler = Join-Path $compilerBin 'alc.exe'
+    if ($IsLinux -or $IsMacOS) {
+        $compiler = Join-Path $compilerBin 'alc'
+        if (-not (Test-Path -LiteralPath $compiler)) { $compiler = Join-Path $compilerBin 'alc.dll' }
+    }
     $packageJson = Join-Path $extension 'package.json'
     $compilerPackage = Get-Content -LiteralPath $packageJson -Raw -Encoding UTF8 | ConvertFrom-Json
     $compilerFile = Get-FileReceipt $compiler
@@ -304,6 +338,8 @@ if ($Stage -eq 'PostCompile') {
         sourceFiles = $sources
     }
     return
+}
+
 }
 
 $signature = $null

@@ -22,6 +22,13 @@ try {
     foreach ($tool in 'Prepare-FoundationInputs.ps1', 'stage_foundation_inputs.py', 'appsource_gate.py') {
         Copy-Item (Join-Path $source "tools/$tool") (Join-Path $fixture "tools/$tool")
     }
+    # Controlled preparation adapter verifies callback invocation/parameter custody.
+    # Actual metadata/copy fixed-point behavior is covered by the dedicated guard.
+    @'
+param($Action,$CompilationParams,$AppFiles)
+if ($Action -cnotin @('Prepare','Seal','After') -or -not $CompilationParams) { throw 'wrong-classic-contract' }
+if ($Action -ceq 'After' -and (@($AppFiles).Count -ne 1 -or $AppFiles[0] -cne 'original-package.app')) { throw 'classic-output-lost' }
+'@ | Set-Content (Join-Path $fixture 'tools/Prepare-ClassicCompilerInputs.ps1')
     if (-not $CandidateArtifactFolder) { throw 'Missing genuine CandidateArtifactFolder for mandatory preparation fixture.' }
     $realGate = Get-Content (Join-Path $source 'tools/appsource_gate.py') -Raw
     # Keep genuine package/staging definitions importable by the real preparation
@@ -160,6 +167,21 @@ Path(sys.argv[3]).write_text(json.dumps(dict(profile='candidate530',artifacts=ar
     try { Invoke-HelperFixture -PipelineInitialize $installer -CompileAppWithBcCompilerFolder {'foreign.app'} | Out-Null }
     catch { $refused = $_.Exception.Message -like 'Existing compiler-folder override*' }
     Assert-Contract $refused 'Existing owner callback displaced'
+    $count++
+    # Test real helper-scope refusal installation; it never enters the compiler.
+    $refusalStart = $initialize.IndexOf('function Set-AppSourceWorkspaceRefusal')
+    $refusalEnd = $initialize.IndexOf('# Prebuilt workspace packages', $refusalStart)
+    $refusalInstaller = [scriptblock]::Create($initialize.Substring($refusalStart, $refusalEnd-$refusalStart) + 'Set-AppSourceWorkspaceRefusal')
+    $callsBefore = $script:compilerCalls
+    $refused = $false
+    try { Invoke-HelperFixture -PipelineInitialize $refusalInstaller | Out-Null }
+    catch { $refused = $_.Exception.Message -ceq 'Unexpected recompilation on prebuilt workspace backend.' }
+    Assert-Contract ($refused -and $script:compilerCalls -eq $callsBefore) 'Unexpected prebuilt recompilation reached compiler'
+    $count++
+    $refused = $false
+    try { Invoke-HelperFixture -PipelineInitialize $refusalInstaller -CompileAppWithBcCompilerFolder {'foreign.app'} | Out-Null }
+    catch { $refused = $_.Exception.Message -ceq 'Existing workspace compiler override requires owner coordination.' }
+    Assert-Contract $refused 'Workspace refusal displaced another owner callback'
     $count++
     # Invoke the genuine pinned function, with controlled filesystem/compiler
     # ancillaries only. Both repository hooks run at actual positional call sites.
