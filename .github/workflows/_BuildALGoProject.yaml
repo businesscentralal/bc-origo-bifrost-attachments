@@ -298,6 +298,18 @@ jobs:
           baselineWorkflowSHA: ${{ inputs.baselineWorkflowSHA }}
           previousAppsPath: ${{ steps.DownloadPreviousRelease.outputs.PreviousAppsPath }}
 
+      - name: Validate AppSource pipeline outputs
+        id: appSourcePipelineGate
+        if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
+        shell: ${{ inputs.shell }}
+        env:
+          Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'
+          BuildMode: ${{ inputs.buildMode }}
+          APPSOURCE_SIGN_REQUESTED: '${{ inputs.signArtifacts }}'
+        run: |
+          $required = $env:BuildMode -eq 'Default' -and $env:APPSOURCE_SIGN_REQUESTED -eq 'true'
+          & (Join-Path $env:GITHUB_WORKSPACE 'tools/Assert-AppSourceBuild.ps1') -Stage Pipeline -ShippingSigningRequired $required
+
       - name: Record container identity
         id: containerIdentity
         if: inputs.sharedContainer && steps.DetermineBuildProject.outputs.BuildIt == 'True'
@@ -315,6 +327,27 @@ jobs:
           azureCredentialsJson: '${{ fromJson(steps.ReadSecrets.outputs.Secrets).AZURE_CREDENTIALS }}'
           pathToFiles: '${{ inputs.project }}/.buildartifacts/Apps/*.app'
 
+      - name: Validate AppSource shipping outputs
+        id: appSourceShippingGate
+        if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
+        shell: ${{ inputs.shell }}
+        env:
+          Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'
+          BuildMode: ${{ inputs.buildMode }}
+          APPSOURCE_SIGN_REQUESTED: '${{ inputs.signArtifacts }}'
+          APPSOURCE_SIGN_OUTCOME: '${{ steps.sign.outcome }}'
+        run: |
+          $required = $env:BuildMode -eq 'Default' -and $env:APPSOURCE_SIGN_REQUESTED -eq 'true'
+          if ($required) {
+            & (Join-Path $env:GITHUB_WORKSPACE 'tools/Assert-AppSourceBuild.ps1') -Stage Signed -ShippingSigningRequired $true -SignOutcome $env:APPSOURCE_SIGN_OUTCOME
+          }
+          elseif ($env:APPSOURCE_SIGN_OUTCOME -eq 'success') {
+            throw 'Unexpected signing outside the Default shipping policy.'
+          }
+          else {
+            & (Join-Path $env:GITHUB_WORKSPACE 'tools/Assert-AppSourceBuild.ps1') -Stage Pipeline -ShippingSigningRequired $false
+          }
+
       - name: Calculate Artifact names
         id: calculateArtifactsNames
         uses: microsoft/AL-Go-Actions/CalculateArtifactNames@v9.2
@@ -329,7 +362,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         env:
           ACTIONS_RUNNER_DISABLE_NODE_MAGLEV: 1
-        if: inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/Apps/*',inputs.project)) != '')
+        if: success() && steps.appSourcePipelineGate.outcome == 'success' && steps.appSourceShippingGate.outcome == 'success' && inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/Apps/*',inputs.project)) != '')
         with:
           name: ${{ steps.calculateArtifactsNames.outputs.AppsArtifactsName }}
           path: '${{ inputs.project }}/.buildartifacts/Apps/'
@@ -351,7 +384,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         env:
           ACTIONS_RUNNER_DISABLE_NODE_MAGLEV: 1
-        if: inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/TestApps/*',inputs.project)) != '')
+        if: success() && steps.appSourcePipelineGate.outcome == 'success' && steps.appSourceShippingGate.outcome == 'success' && inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/TestApps/*',inputs.project)) != '')
         with:
           name: ${{ steps.calculateArtifactsNames.outputs.TestAppsArtifactsName }}
           path: '${{ inputs.project }}/.buildartifacts/TestApps/'

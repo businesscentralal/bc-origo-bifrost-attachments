@@ -334,7 +334,14 @@ class Candidate530(unittest.TestCase):
         for block in re.split(r'(?m)^      - name:', text)[1:]:
             keys = re.findall(r'(?m)^        ([A-Za-z][A-Za-z0-9_-]*):', block)
             self.assertEqual(len(keys), len(set(keys)), 'Duplicate workflow step key')
-        self.assertEqual(4, text.count("Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'"))
+        selected_settings = "Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'"
+        consumers = {block.splitlines()[0].strip() for block in re.split(r'(?m)^      - name:', text)[1:]
+                     if selected_settings in block}
+        self.assertEqual({'Download Project Dependencies', 'Validate selected inputs before Compile Apps',
+                          'Compile Apps', 'Build', 'Validate AppSource pipeline outputs',
+                          'Validate AppSource shipping outputs'}, consumers,
+                         'Each actual selected-input and final-output consumer must bind resolver settings')
+        self.assertEqual(len(consumers), text.count(selected_settings), 'Duplicate selected settings binding')
         preparation=text[text.index('- name: Validate selected inputs before Compile Apps'):text.index('- name: Compile Apps')]
         self.assertIn("Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'", preparation)
         self.assertIn('-Stage WorkspaceInitialize',preparation)

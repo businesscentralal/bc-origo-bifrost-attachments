@@ -65,6 +65,21 @@ Require ($phase -match 'Test-SharedAlpacaContainer\.ps1') 'The build must execut
 $phaseCleanup = Get-YamlBlock $phase 'CustomJob-Alpaca-RemoveContainers' 2
 Require ($phaseCleanup -match '!inputs.sharedContainer') 'Shared phases must defer cleanup until both phases finish.'
 
+# Final package consumers must execute at the true boundaries before uploads.
+$buildAt = $phase.IndexOf('uses: microsoft/AL-Go-Actions/RunPipeline@v9.2')
+$pipelineAt = $phase.IndexOf('id: appSourcePipelineGate')
+$signAt = $phase.IndexOf('uses: microsoft/AL-Go-Actions/Sign@v9.2')
+$shippingAt = $phase.IndexOf('id: appSourceShippingGate')
+$uploadAt = $phase.IndexOf('- name: Publish artifacts - apps')
+Require ($phase -match '-Stage Pipeline -ShippingSigningRequired \$false') 'Unsigned shipping must revalidate actual final outputs before upload.'
+Require ($buildAt -ge 0 -and $pipelineAt -gt $buildAt -and $signAt -gt $pipelineAt -and $shippingAt -gt $signAt -and $uploadAt -gt $shippingAt) 'Pipeline and Signed consumers must precede shipping upload at the actual build/sign boundaries.'
+Require ($phase -match '-Stage Pipeline -ShippingSigningRequired \$required' -and $phase -match '-Stage Signed -ShippingSigningRequired \$true -SignOutcome \$env:APPSOURCE_SIGN_OUTCOME') 'Actual run-bound Pipeline and Signed consumers must be called.'
+Require ($phase -match "APPSOURCE_SIGN_REQUESTED:.*inputs.signArtifacts" -and $phase -match 'APPSOURCE_SIGN_OUTCOME:.*steps.sign.outcome') 'Shipping must bind requested signing and actual Sign outcome.'
+foreach ($name in 'apps', 'test apps') {
+    $match = [regex]::Match($phase, '(?s)- name: Publish artifacts - ' + [regex]::Escape($name) + '\r?\n(.*?)(?=      - name:|$)')
+    Require ($match.Success -and $match.Groups[1].Value -match "if: success\(\) && steps.appSourcePipelineGate.outcome == 'success' && steps.appSourceShippingGate.outcome == 'success'") 'Product and Test package uploads must require both final consumers.'
+}
+
 $parseTokens = $null; $parseErrors = $null
 $pipelineAst = [Management.Automation.Language.Parser]::ParseInput((Read-ProjectFile '.AL-Go/PipelineInitialize.ps1'), [ref]$parseTokens, [ref]$parseErrors)
 Require ($parseErrors.Count -eq 0) 'PipelineInitialize.ps1 must parse.'

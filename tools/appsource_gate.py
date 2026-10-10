@@ -1049,13 +1049,38 @@ def post_compile(root, request):
     return receipt
 
 
-def reconcile(root, context, stage, signature=None):
+def validate_shipping_stage(directory, context, stage, shipping, result):
+    # Direct fixture reconciliation without workflow policy proves only package
+    # boundaries. Actual workflow always supplies shipping intent at Pipeline.
+    if shipping is None:
+        return
+    require(stage in ('pipeline','signed') and type(shipping.get('signingRequired')) is bool
+            and type(shipping.get('doNotSignApps')) is bool, 'Missing actual shipping policy')
+    state = json.loads((directory / 'state.json').read_text(encoding='utf-8-sig'))
+    require(shipping.get('effectiveSettings') == state['effectiveSettings'], 'Final merged settings changed')
+    required = shipping['signingRequired']
+    require(not required or (context['mode'] == 'Default' and not shipping['doNotSignApps']),
+            'Shipping signing intent/settings mismatch')
+    require(context['mode'] != 'Test' or shipping['doNotSignApps'], 'Test unsigned policy missing')
+    if stage == 'signed':
+        pipeline = json.loads((directory / 'pipeline.json').read_text())
+        require(pipeline['context'] == context and pipeline['stateSha256'] == result['stateSha256']
+                and pipeline.get('shipping', {}).get('signingRequired') is True
+                and pipeline['shipping']['doNotSignApps'] is False
+                and required and shipping['signOutcome'] == 'success',
+                'Missing current Pipeline or skipped/failed required signing')
+        require([v['contentSha256'] for v in pipeline['outputs']] == [v['contentSha256'] for v in result['outputs']],
+                'Signed output displaced from Pipeline')
+    result['shipping'] = shipping
+
+
+def reconcile(root, context, stage, signature=None, shipping=None):
     """Check expected hooks and actual published artifact paths, also after Sign."""
     root = Path(root)
     directory = root / ".buildartifacts" / "AppSourceGate" / context["mode"]
     state = json.loads((directory / "state.json").read_text(encoding="utf-8-sig"))
     if state.get("backend") == "workspace":
-        return workspace_reconcile(root, context, stage, signature)
+        return workspace_reconcile(root, context, stage, signature, shipping)
     require(state.get("backend", "classic") == "classic", "Unknown receipt backend")
     require(state["context"] == context, "Stale finalize context")
     expected = {"app", "testApp"} if context["mode"] == "Test" else {"app"}
@@ -1087,6 +1112,7 @@ def reconcile(root, context, stage, signature=None):
         require(finalized["context"] == context and finalized["stateSha256"] == file_hash(directory / "state.json"),
                 "Missing/stale/displaced PipelineFinalize")
     result = {"context": context, "stage": stage, "stateSha256": file_hash(directory / "state.json"), "outputs": outputs}
+    validate_shipping_stage(directory, context, stage, shipping, result)
     if signature:
         result["signature"] = signature
     (directory / (stage + ".json")).write_text(json.dumps(result, indent=2) + "\n")
@@ -1141,6 +1167,131 @@ def workspace_prepared_projects(root, mode):
     return result
 
 
+WORKSPACE_COMPILE_SHA = '16e2056d9fc88097bf10c504886ff2d2bfccf4d91796cc62cc271cf20df438d9'
+
+
+def workspace_cop_configs(root):
+    result = {}
+    for folder in ('app', 'test'):
+        path = Path(root) / folder / 'AppSourceCop.json'
+        if path.exists():
+            require(path.is_file() and not path.is_symlink() and path.stat().st_size <= MANIFEST_BYTES,
+                    'Invalid original AppSourceCop input')
+            value = json.loads(path.read_text(encoding='utf-8-sig'))
+            require(isinstance(value, dict), 'Original AppSourceCop must be an object')
+            result[folder] = value
+    return result
+
+
+def workspace_stock_manifest(original, settings, context):
+    """Model unchanged pinned Get-VersionNumber + Update-AppJsonProperties only."""
+    import copy
+    expected = copy.deepcopy(original)
+    require(all(k in settings for k in ('versioningStrategy','appBuild','appRevision')), 'Missing actual stock version settings')
+    strategy = settings['versioningStrategy']
+    require(type(strategy) is int, 'Missing actual versioning strategy')
+    build, revision = settings['appBuild'], settings['appRevision']
+    major_minor = None
+    if strategy == -1:
+        artifact = settings['artifact'].split('/')
+        require(len(artifact) > 4, 'Missing versioned BC artifact')
+        version = version_tuple(artifact[4])
+        major_minor, build, revision = version[:2], version[2], version[3]
+    elif strategy & 16:
+        repo_version = settings['repoVersion'].split('.')
+        require(2 <= len(repo_version) <= 4 and all(v.isdecimal() for v in repo_version), 'Invalid actual repoVersion')
+        repo_version = tuple(int(v) for v in repo_version)
+        major_minor = repo_version[:2]
+        if strategy & 15 == 3:
+            # Upstream emits a warning for absent build; warning is not acceptance.
+            require(len(repo_version) >= 3, 'repoVersion emits stock missing-build warning')
+            build = repo_version[2]
+    require(type(build) is int and type(revision) is int and 0 <= build <= 2147483647
+            and 0 <= revision <= 2147483647, 'Invalid actual stock build/revision')
+    current = version_tuple(original['version'])
+    major_minor = current[:2] if major_minor is None else major_minor
+    if not (strategy == -1 or strategy & 16) and build == 0:
+        build = current[2]
+    expected['version'] = '.'.join(str(v) for v in (*major_minor, build, revision))
+    expected['build'] = {'by':'AL-Go for GitHub', 'url':context['buildUrl']}
+    return expected
+
+
+def workspace_stock_cop(original, settings):
+    """Only New-AppSourceCopJson managed fields without a baseline are allowed."""
+    import copy
+    expected = copy.deepcopy(original)
+    affixes = settings.get('appSourceCopMandatoryAffixes')
+    if affixes:
+        require(isinstance(affixes, list) and len(affixes) <= 128
+                and all(isinstance(v, str) for v in affixes), 'Invalid managed affixes')
+        expected['mandatoryAffixes'] = affixes
+    tag = settings.get('obsoleteTagMinAllowedMajorMinor')
+    if tag:
+        require(isinstance(tag, str), 'Invalid managed obsolete tag')
+        expected['obsoleteTagMinAllowedMajorMinor'] = tag
+    return expected
+
+
+def workspace_reconcile_preparation(root, request):
+    """Validate stock order at genuine precompile; never rewrite shipping inputs."""
+    root = Path(root); context = request['context']
+    directory = root / '.buildartifacts/AppSourceGate' / context['mode']
+    state = json.loads((directory / 'state.json').read_text(encoding='utf-8-sig'))
+    require(state.get('backend') == 'workspace' and state['context'] == context
+            and state['effectiveSettings'] == request['settings'], 'Stock context/settings changed')
+    # workspace_parameters has already byte-validated the pinned producer + imports.
+    if 'generatedProjects' in state:
+        receipt = json.loads((directory / 'stock-preparation.json').read_text())
+        require(receipt['sha256'] == state['stockPreparationSha256']
+                and receipt['sha256'] == hashlib.sha256(json.dumps(receipt['transformation'], sort_keys=True).encode()).hexdigest(),
+                'Stock transformation receipt changed')
+        workspace_state(root, context)
+        return
+    actual = workspace_prepared_projects(root, context['mode'])
+    if actual == state['preparedProjects']:
+        return  # Stable controlled/genuine primitive producer; no exclusion implied.
+    require(not state['receipts'] and not state['adopted'], 'Late/duplicate stock transformation')
+    settings = state['effectiveSettings']
+    require(request['tools']['workspaceModule']['sha256'] == WORKSPACE_MODULE_SHA
+            and request['tools']['AL-Go-Helper.ps1']['sha256'] == WORKSPACE_IMPORT_HASHES['AL-Go-Helper.ps1'],
+            'Unpinned stock transformation producer')
+    transformations = {}
+    configs = workspace_cop_configs(root)
+    for app_type, before in state['preparedProjects'].items():
+        after = actual[app_type]; folder = before['path']
+        require(after['path'] == folder and after['sources'] == before['sources'], 'Unknown stock source change')
+        manifest = workspace_stock_manifest(before['manifest'], settings, context)
+        require(after['manifest'] == manifest, 'Unexpected stock manifest property/version/build')
+        expected_cop = workspace_stock_cop(state['originalCopConfigs'].get(folder, {}), settings)
+        # Preserve user-managed settings; unknown baseline version/path is refused.
+        require(configs.get(folder, {}) == expected_cop, 'Unexpected stock AppSourceCop/baseline change')
+        require((folder in configs) == (folder in state['originalCopConfigs'] or bool(expected_cop)),
+                'Unaccounted AppSourceCop creation/deletion')
+        original_inputs = {v['file']:v['sha256'] for v in before['inputs']}
+        actual_inputs = {v['file']:v['sha256'] for v in after['inputs']}
+        for name in set(original_inputs) | set(actual_inputs):
+            if name not in ('app.json','AppSourceCop.json'):
+                require(original_inputs.get(name) == actual_inputs.get(name), 'Unknown generated config/resource/translation change')
+        transformations[app_type] = {'original':before, 'generated':after,
+                                    'copOriginal':state['originalCopConfigs'].get(folder), 'copGenerated':configs.get(folder)}
+    # Pin every source implementing the stock order, not a downloaded mutable helper.
+    module = Path(request['tools']['workspaceModule']['path'])
+    compile_source = module.parent.parent / 'CompileApps/Compile.ps1'
+    require(file_hash(compile_source) == WORKSPACE_COMPILE_SHA, 'Unpinned stock CompileApps orchestration')
+    transformation = {'context':context, 'settings':settings, 'projects':transformations,
+                      'producerHashes':{'CompileApps':WORKSPACE_COMPILE_SHA, 'CompileFromWorkspace':WORKSPACE_MODULE_SHA,
+                                        'AL-Go-Helper':WORKSPACE_IMPORT_HASHES['AL-Go-Helper.ps1']},
+                      'consumedInputsCertified':False}
+    digest = hashlib.sha256(json.dumps(transformation, sort_keys=True).encode()).hexdigest()
+    (directory / 'stock-preparation.json').write_text(json.dumps({'sha256':digest,'transformation':transformation}, indent=2)+'\n')
+    state.update(generatedProjects=actual, stockPreparationSha256=digest,
+                 stockProducerFiles={str(compile_source):WORKSPACE_COMPILE_SHA, str(module):WORKSPACE_MODULE_SHA,
+                                    str(module.parent.parent / 'AL-Go-Helper.ps1'):WORKSPACE_IMPORT_HASHES['AL-Go-Helper.ps1']})
+    (directory / 'state.json').write_text(json.dumps(state, indent=2)+'\n')
+    workspace_state(root, context)
+
+
 def workspace_state(root, context):
     require(context.get('mode') in ('Default', 'Test'), 'Unexpected workspace state mode')
     directory = Path(root) / '.buildartifacts/AppSourceGate' / context['mode']
@@ -1148,8 +1299,15 @@ def workspace_state(root, context):
     require(state.get('schema') == 2 and state.get('backend') == 'workspace'
             and state['context'] == context, 'Missing/stale/untrusted workspace state')
     require(file_hash(state['selection']) == state['selectionSha256'], 'Selected workspace inputs changed')
-    require(state['preparedProjects'] == workspace_prepared_projects(root, context['mode']),
+    require(state.get('generatedProjects', state['preparedProjects']) == workspace_prepared_projects(root, context['mode']),
             'Prepared workspace sources/manifest changed')
+    if 'generatedProjects' in state:
+        receipt = json.loads((directory / 'stock-preparation.json').read_text())
+        require(receipt['sha256'] == state['stockPreparationSha256']
+                and receipt['sha256'] == hashlib.sha256(json.dumps(receipt['transformation'], sort_keys=True).encode()).hexdigest(),
+                'Stock transformation receipt changed')
+        for path, sha in state['stockProducerFiles'].items():
+            require(file_hash(path) == sha, 'Stock producer source changed')
     require(set(state['hookHashes']) == set(WORKSPACE_HOOKS), 'Incomplete workspace hook inventory')
     for path, sha in state['hookHashes'].items():
         require(file_hash(Path(root) / path) == sha, 'Workspace hook/preparation tool changed')
@@ -1173,6 +1331,7 @@ def workspace_initialize(root, request):
     state = {'schema':2, 'backend':'workspace', 'context':context, 'startedNs':time.time_ns(),
              'hookHashes':hooks, 'effectiveSettings':request['settings'],
              'preparedProjects':workspace_prepared_projects(root, context['mode']),
+             'originalCopConfigs':workspace_cop_configs(root),
              'selection':request['selection'], 'selectionSha256':file_hash(request['selection']),
              'receipts':{}, 'adopted':False, 'consumedInputsCertified':False}
     directory.mkdir(parents=True)
@@ -1211,7 +1370,7 @@ def workspace_validate_receipts(root, state, stage=None):
     for app_type, receipt in state['receipts'].items():
         request = dict(context=state['context'], parameters=receipt['parameters'], tools=receipt['tools'], settings=state['effectiveSettings'])
         workspace_parameters(request)
-        require(receipt['context'] == state['context'] and receipt['projects'] == [state['preparedProjects'][app_type]],
+        require(receipt['context'] == state['context'] and receipt['projects'] == [state.get('generatedProjects', state['preparedProjects'])[app_type]],
                 'Stale/source-displaced workspace receipt')
         for output in receipt['outputs']:
             expected = {k:v for k,v in output.items() if k != 'file'}
@@ -1236,7 +1395,7 @@ def workspace_validate_receipts(root, state, stage=None):
             'Unreceipted workspace cache additions')
 
 
-def workspace_reconcile(root, context, stage, signature=None):
+def workspace_reconcile(root, context, stage, signature=None, shipping=None):
     directory, state = workspace_state(root, context)
     require(state['adopted'] and not (directory / 'before.json').exists(), 'Workspace pipeline not adopted/incomplete')
     workspace_validate_receipts(root, state, stage)
@@ -1265,6 +1424,7 @@ def workspace_reconcile(root, context, stage, signature=None):
               'externalBuildAttestation':{'buildUrl':context['buildUrl'], 'sourceCommit':context['sourceCommit'],
                   'checkoutSha':context['checkoutSha'], 'unsignedHashes':[o['sha256'] for r in state['receipts'].values() for o in r['outputs']],
                   'outputHashes':[o['sha256'] for o in outputs]}, 'consumedInputsCertified':False}
+    validate_shipping_stage(directory, context, stage, shipping, result)
     if signature: result['signature'] = signature
     (directory / (stage + '.json')).write_text(json.dumps(result, indent=2) + '\n')
     return result
@@ -1294,6 +1454,8 @@ def workspace_parameters(request):
     require(re.fullmatch(r'https://github.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', p['SourceRepositoryUrl'] or ''), 'Workspace source repository absent/unsupported')
     tools = request['tools']
     require(tools['workspaceModule']['sha256'] == WORKSPACE_MODULE_SHA, 'Unpinned workspace module')
+    require(file_hash(Path(tools['workspaceModule']['path']).parent.parent / 'CompileApps/Compile.ps1') == WORKSPACE_COMPILE_SHA,
+            'Unpinned stock CompileApps source')
     for name in ('compiler', 'altool', 'compilerPackage', 'CodeCop', 'UICop', 'AppSourceCop', 'Analyzers.Common', 'workspaceModule'):
         item = tools[name]
         require(file_hash(item['path']) == item['sha256'], 'Workspace tool hash changed: ' + name)
@@ -1368,12 +1530,13 @@ def workspace_logs(folder):
 
 def workspace_before(root, request):
     p = workspace_parameters(request)
+    workspace_reconcile_preparation(root, request)
     projects = workspace_projects(root, request)
     context, app_type = request['context'], request['appType']
     directory, state = workspace_state(root, context)
     require(not state['adopted'], 'Workspace recompilation after prebuilt adoption')
     require(request['settings'] == state['effectiveSettings'], 'Workspace settings changed since preparation')
-    require(projects['projects'] == [state['preparedProjects'][app_type]], 'Workspace preparation displaced')
+    require(projects['projects'] == [state.get('generatedProjects', state['preparedProjects'])[app_type]], 'Workspace preparation displaced')
     state_path = directory / 'state.json'
     require(state['context'] == context and app_type not in state['receipts'], 'Stale/duplicate workspace state')
     require(not (directory / 'before.json').exists(), 'Unfinished workspace invocation cannot be reused')
@@ -1543,7 +1706,7 @@ def main():
             elif args.action == "post":
                 result = post_compile(args.root, request)
             else:
-                result = reconcile(args.root, request["context"], args.action, request.get("signature"))
+                result = reconcile(args.root, request["context"], args.action, request.get("signature"), request.get("shipping"))
         # Receipts are files, not console dumps of pipeline settings or paths.
         print(json.dumps(result) if args.action == "package" else "AppSource gate: " + args.action + " passed")
         return 0

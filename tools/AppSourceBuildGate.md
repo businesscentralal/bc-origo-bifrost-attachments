@@ -45,7 +45,8 @@ Container-only compilation needs a supported identity collector before acceptanc
 
 ## Infrastructure and acceptance holds
 
-The concrete workflow patch is an external review artifact, **not applied here**.
+The concrete owner-local workflow patch is prepared in this candidate for final
+infrastructure review; it is unpushed and publication remains blocked.
 It runs `Assert-AppSourceBuild.ps1 -Stage Pipeline` immediately after RunPipeline,
 then `-Stage Signed` immediately after the existing Sign action when shipping
 signing is intended. It preserves signing selection, action pins and credentials.
@@ -418,10 +419,20 @@ output hashes; it is not an embedded URL claim. Classic embedded URL equality
 is unchanged. Actual full shipping/analyzer generation and publication acceptance
 remain blocked pending final review and runner verification.
 
-Prepared project manifests, AL sources, configs and resources are immutable.
-Unexpected generated AppSourceCop configuration or translation changes refuse;
-these legitimate producer transformations require exact build-local reconciliation
-review before this candidate can certify a real shipping pipeline. Unknown
+Original prepared manifests, AL sources, configs and resources remain retained.
+At the genuine workspace Pre boundary, a separate hash-bound stock-preparation
+receipt permits only the pinned Get-VersionNumber/Update-AppJsonProperties version
+and canonical current-run build stamp, and New-AppSourceCopJson managed mandatory
+affixes/obsolete-tag fields. Existing user-managed fields must remain identical.
+The original inventory is preserved alongside the generated inventory; every
+other property, AL/resource/translation mutation and unknown baseline path/bytes
+refuses. The exact CompileApps orchestration, producer and full import hashes are
+bound and rechecked through finalization. Stock-order tests execute the unchanged
+pinned functions. Genuine current compiler output from stamped primitive projects
+retains the current Build.Url; the earlier unstamped primitive has an empty URL.
+Neither result certifies shipping AL/analyzers, Windows or internal consumption.
+Final disposition of the exact transformation allowlist and infrastructure diff
+remains required before publication. Unknown
 baseline/Microsoft packages require selected provenance; there is no blanket
 Microsoft trust. Incremental/self/stale packages cannot replace current receipts.
 Hook/collector fixture passes do not authorize publication or imply a product build.
@@ -463,3 +474,21 @@ FOUNDATION_CLASSIC_TELEMETRY_SOURCE and FOUNDATION_CLASSIC_EVIDENCE. Workspace
 collector tests require actual workspace-produced FOUNDATION_WORKSPACE_OUTPUT_FIXTURES
 and a genuine FOUNDATION_WORKSPACE_BASELINE_FIXTURE for the unknown-Microsoft
 negative case, in addition to the existing pinned module and Foundation archives.
+
+
+The owner-local workflow invokes Pipeline in both modes after successful
+RunPipeline, then Signed after Default shipping Sign when signArtifacts requests
+it. Signed requires the recorded current Pipeline, successful Sign outcome,
+unchanged NAVX content and actual Windows valid signature bound to the signed
+hash. Missing credentials/certificate, skipped signing, signing failure or an
+unavailable trust/SIP provider fails acceptance. Test remains unsigned and revalidates Pipeline at the final upload boundary.
+Both
+product and test package uploads explicitly require both final workflow gates
+and unchanged actual merged settings;
+failure diagnostics remain available through their existing artifact steps.
+Static wiring mutation tests and controlled receipt negatives are tooling
+verification, not signed Windows/paired-runner certification. Actual shipping
+settings/cache provenance, dependency/layout/probing changes, complete Test
+current-product execution and the four independently owned guard fixes still
+require exact evidence and final review. No producer/action versions, flags,
+Foundation pin, bounds or dependency floors are changed.

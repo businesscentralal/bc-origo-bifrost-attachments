@@ -5,6 +5,8 @@ param(
     [string[]] $AppFile,
     [string] $AppType,
     [hashtable] $CompilationParams,
+    [bool] $ShippingSigningRequired = $false,
+    [string] $SignOutcome,
     [string] $AlpacaArchiveHash
 )
 
@@ -87,7 +89,7 @@ function Invoke-Gate {
 function Get-WorkspaceSettings {
     param($Settings)
     $effective = @{}
-    foreach ($name in 'enableCodeCop', 'enableUICop', 'enableAppSourceCop', 'enableCodeAnalyzersOnTestApps', 'failOn', 'workspaceCompilation', 'type', 'escapeFromCops', 'rulesetFile') {
+    foreach ($name in 'enableCodeCop', 'enableUICop', 'enableAppSourceCop', 'enableCodeAnalyzersOnTestApps', 'failOn', 'workspaceCompilation', 'type', 'escapeFromCops', 'rulesetFile', 'versioningStrategy', 'repoVersion', 'appBuild', 'appRevision', 'artifact', 'appSourceCopMandatoryAffixes', 'obsoleteTagMinAllowedMajorMinor', 'doNotSignApps', 'skipUpgrade', 'updateDependencies', 'generateReportLayout', 'preprocessorSymbols', 'features', 'additionalCountries', 'customCodeCops', 'appFolders', 'testFolders', 'bcptTestFolders', 'incrementalBuilds', 'trackALAlertsInGitHub') {
         $property = $Settings.PSObject.Properties[$name]
         $effective[$name] = if ($property) { $property.Value } else { $null }
     }
@@ -342,8 +344,25 @@ if ($Stage -eq 'PostCompile') {
 
 }
 
+$shipping = $null
+if ($Stage -in @('Pipeline', 'Signed')) {
+    $doNotSign = Get-Setting $settings 'doNotSignApps'
+    if ($doNotSign -isnot [bool]) { throw 'Actual merged signing policy absent.' }
+    if (($context.mode -eq 'Test' -and -not $doNotSign) -or ($ShippingSigningRequired -and ($context.mode -ne 'Default' -or $doNotSign))) {
+        throw 'Shipping signing intent conflicts with actual mode/settings.'
+    }
+    $finalEffective = @{}
+    if ($workspaceBackend) { $finalEffective = Get-WorkspaceSettings $settings }
+    else {
+        foreach ($name in 'enableCodeCop', 'enableUICop', 'enableCodeAnalyzersOnTestApps', 'failOn', 'type', 'rulesetFile', 'doNotBuildTests', 'doNotRunTests', 'doNotSignApps', 'useCompilerFolder') {
+            $finalEffective[$name] = Get-Setting $settings $name
+        }
+    }
+    $shipping = @{ signingRequired=$ShippingSigningRequired; doNotSignApps=$doNotSign; signOutcome=$SignOutcome; effectiveSettings=$finalEffective }
+}
 $signature = $null
 if ($Stage -eq 'Signed') {
+    if (-not $ShippingSigningRequired -or $SignOutcome -cne 'success') { throw 'Required shipping signing was skipped or failed.' }
     if ($env:OS -ne 'Windows_NT' -or -not (Get-Command Get-AuthenticodeSignature -ErrorAction SilentlyContinue)) {
         throw 'Windows NAVX signature provider/trust/SIP unavailable; signature proof blocked.'
     }
@@ -362,4 +381,4 @@ if ($Stage -eq 'Signed') {
         sha256 = (Get-FileReceipt $files[0].FullName).sha256
     }
 }
-Invoke-Gate $Stage.ToLowerInvariant() @{ context = $context; signature = $signature }
+Invoke-Gate $Stage.ToLowerInvariant() @{ context = $context; signature = $signature; shipping = $shipping }

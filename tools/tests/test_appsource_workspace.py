@@ -2,7 +2,7 @@
 
 Controlled compiler fixture bytes are not runtime/compiler/signature certification.
 """
-import copy,json,os,shutil,sys,tempfile,time,unittest
+import copy,json,os,shutil,sys,tempfile,time,unittest,subprocess
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).parents[1]))
 import appsource_gate as G
@@ -18,9 +18,10 @@ class Workspace(unittest.TestCase):
             def retain():
                 out=Path(evidence)/self.id();out.mkdir(parents=True,exist_ok=True)
                 if hasattr(self,'request'):(out/'request.json').write_text(json.dumps(self.request,indent=2))
-                for folder in ['.buildartifacts','app','test','out/Logs','errors']:
+                for folder in ['.buildartifacts','app','test','out/Logs','errors','stock.ps1','stock.log','stock-settings.json','workspace.code-workspace']:
                     source=self.root/folder
-                    if source.exists():shutil.copytree(source,out/folder,dirs_exist_ok=True)
+                    if source.is_dir():shutil.copytree(source,out/folder,dirs_exist_ok=True)
+                    elif source.is_file():shutil.copyfile(source,out/folder)
             self.addCleanup(retain)
         self.fixtures=Path(os.environ['FOUNDATION_WORKSPACE_OUTPUT_FIXTURES'])
         self.candidate=Path(os.environ['FOUNDATION_CANDIDATE_ARTIFACTS'])
@@ -166,7 +167,7 @@ class Workspace(unittest.TestCase):
             folder=self.root/'.buildartifacts'/('Apps' if receipt['appType']=='app' else 'TestApps')
             folder.mkdir(exist_ok=True)
             for output in receipt['outputs']: shutil.copyfile(output['file'],folder/Path(output['file']).name)
-        (self.root/'BuildOutput.txt').write_bytes((self.out/'Logs/default.log').read_bytes())
+        (self.root/'BuildOutput.txt').write_bytes(b''.join(Path(item['file']).read_bytes() for receipt in self.state()['receipts'].values() for item in receipt['logs']))
         G.workspace_adopt(self.root,{**self.request,'alpacaArchiveSha256':'a'*64})
         return G.reconcile(self.root,self.context,'finalize')
     def state(self):
@@ -212,6 +213,132 @@ class Workspace(unittest.TestCase):
         self.assertEqual('Microsoft',G.package_info(package)['identity']['publisher'])
         shutil.copyfile(package,self.cache/'unknown-microsoft.app')
         with self.assertRaises(G.GateError):G.workspace_before(self.root,self.request)
+    def stock_prepare(self, initial=None, versioning=0, build=0, revision=0, repo_version='1.0.0'):
+        # Execute unchanged AST function bodies from pinned stock producer/import,
+        # in stock order; no action/helper files are changed or intercepted.
+        if initial:
+            for folder in ('app','test'):
+                (self.root/folder/'AppSourceCop.json').write_text(json.dumps(initial))
+        state_path=self.root/'.buildartifacts/AppSourceGate'/self.context['mode']/'state.json'
+        state=json.loads(state_path.read_text())
+        state['originalCopConfigs']=G.workspace_cop_configs(self.root)
+        state['preparedProjects']=G.workspace_prepared_projects(self.root,self.context['mode'])
+        settings=self.request['settings']
+        settings.update(versioningStrategy=versioning,appBuild=build,appRevision=revision,repoVersion=repo_version,
+                        artifact='https://bcartifacts.azureedge.net/sandbox/29.0.54011.55935/w1',
+                        appSourceCopMandatoryAffixes=['ori'],obsoleteTagMinAllowedMajorMinor='1.0')
+        state['effectiveSettings']=settings;state_path.write_text(json.dumps(state))
+        ps=self.root/'stock.ps1'
+        ps.write_text(r"""param($ModulePath,$ProjectRoot,$SettingsPath)
+$ErrorActionPreference='Stop'
+function Import-PinnedFunction($Path,$Name) {
+    $tokens=$null;$errors=$null
+    $ast=[Management.Automation.Language.Parser]::ParseFile($Path,[ref]$tokens,[ref]$errors)
+    if ($errors.Count) { throw 'Pinned source parse failure' }
+    $node=$ast.Find({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -ceq $Name},$true)
+    if (-not $node) { throw 'Pinned function absent' }
+    . ([scriptblock]::Create($node.Extent.Text))
+    Get-Item function:$Name
+}
+foreach ($name in 'Update-AppJsonProperties','New-AppSourceCopJson','Get-BuildMetadata') {
+    $function=Import-PinnedFunction $ModulePath $name
+    Set-Item "function:$name" $function.ScriptBlock
+}
+foreach($name in 'Get-VersionNumber','ConvertTo-HashTable') {
+    $function=Import-PinnedFunction (Join-Path (Split-Path (Split-Path $ModulePath)) 'AL-Go-Helper.ps1') $name
+    Set-Item "function:$name" $function.ScriptBlock
+}
+function OutputDebug { param($message) }
+function Get-ALTool { param($CompilerFolder) return $env:FOUNDATION_STOCK_ALTOOL }
+$settings=Get-Content $SettingsPath -Raw|ConvertFrom-Json|ConvertTo-HashTable
+Push-Location $ProjectRoot
+try {
+    New-AppSourceCopJson -AppFolders @('app','test') -CompilerFolder '.' -Settings $settings
+    $version=Get-VersionNumber -Settings $settings
+    $metadata=Get-BuildMetadata
+    Update-AppJsonProperties -Folders @('app','test') -MajorMinorVersion $version.MajorMinorVersion -BuildNumber $version.BuildNumber -RevisionNumber $version.RevisionNumber -BuildBy $metadata.BuildBy -BuildUrl $metadata.BuildUrl
+} finally {Pop-Location}
+""")
+        settings_file=self.root/'stock-settings.json';settings_file.write_text(json.dumps(settings))
+        env=os.environ.copy();env.update(GITHUB_SERVER_URL='https://github.com',GITHUB_REPOSITORY='businesscentralal/bc-origo-bifrost-attachments',GITHUB_RUN_ID=self.context['run'],GITHUB_SHA=self.context['sourceCommit'])
+        x=subprocess.run([os.environ['FOUNDATION_ADAPTER_PWSH'],'-NoProfile','-File',str(ps),str(self.module),str(self.root),str(settings_file)],env=env,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=30)
+        (self.root/'stock.log').write_text(x.stdout)
+        self.assertEqual(0,x.returncode,x.stdout)
+        return state
+
+    def test_stock_order_preserves_original_and_records_only_generated_inputs(self):
+        original=self.stock_prepare(initial={'mandatoryPrefix':'ori','customSetting':'preserved'})
+        G.workspace_before(self.root,self.request)
+        state=json.loads((self.root/'.buildartifacts/AppSourceGate/Default/state.json').read_text())
+        self.assertEqual(original['preparedProjects'],state['preparedProjects'])
+        self.assertNotEqual(state['preparedProjects'],state['generatedProjects'])
+        self.assertEqual(self.context['buildUrl'],state['generatedProjects']['app']['manifest']['build']['url'])
+        self.assertTrue((self.root/'.buildartifacts/AppSourceGate/Default/stock-preparation.json').exists())
+        self.compile_fixture('stock-default');G.workspace_post(self.root,self.request)
+        self.finalize();G.reconcile(self.root,self.context,'pipeline',shipping=dict(signingRequired=False,doNotSignApps=False,signOutcome=None,effectiveSettings=self.request['settings']))
+
+    def test_stock_test_mode_uses_current_generated_product(self):
+        self.context['mode']='Test'
+        friend={k:self.test['identity'][k] for k in ('id','publisher','name')}
+        (self.root/'app/app.json').write_text(json.dumps({**self.product['identity'],'internalsVisibleTo':[friend]}))
+        self.publish();self.stock_prepare()
+        G.workspace_before(self.root,self.request);self.compile_fixture('stock-friend');G.workspace_post(self.root,self.request)
+        self.workspace.write_text(json.dumps(dict(folders=[dict(path='test')])));self.request['appType']='testApp'
+        G.workspace_before(self.root,self.request);self.compile_fixture('stock-testApp');G.workspace_post(self.root,self.request)
+        self.finalize();G.reconcile(self.root,self.context,'pipeline',shipping=dict(signingRequired=False,doNotSignApps=True,signOutcome=None,effectiveSettings=self.request['settings']))
+
+    def test_stock_version_strategies_match_genuine_source(self):
+        for strategy,build,revision,repo,version in [(0,7,1,'1.0.0','1.0.7.1'),(19,7,1,'2.3.4','2.3.4.1'),(-1,0,0,'1.0.0','29.0.54011.55935')]:
+            with self.subTest(strategy=strategy):
+                self.stock_prepare(versioning=strategy,build=build,revision=revision,repo_version=repo)
+                G.workspace_reconcile_preparation(self.root,self.request)
+                manifest=json.loads((self.root/'app/app.json').read_text(encoding='utf-8-sig'))
+                self.assertEqual(version,manifest['version'])
+                # Reset an isolated controlled state to test the next producer setting.
+                state_path=self.root/'.buildartifacts/AppSourceGate/Default/state.json';state=json.loads(state_path.read_text())
+                for key in ('generatedProjects','stockPreparationSha256','stockProducerFiles'):state.pop(key,None)
+                state_path.write_text(json.dumps(state))
+
+    def test_stock_unknown_changes_and_baseline_fields_are_refused(self):
+        self.stock_prepare()
+        for folder,file,mutate in [('app','fixture.al',lambda p:p.write_text('unknown source')),('app','AppSourceCop.json',lambda p:p.write_text('{"mandatoryAffixes":["ori"],"obsoleteTagMinAllowedMajorMinor":"1.0","baselinePackageCachePath":"unknown"}')),('app','app.json',lambda p:p.write_text(json.dumps({**json.loads(p.read_text(encoding='utf-8-sig')),'dependencies':[]}))),('app','unapproved.ruleset.json',lambda p:p.write_text('{}'))]:
+            path=self.root/folder/file;before=path.read_bytes() if path.exists() else None
+            with self.subTest(file=file):
+                mutate(path)
+                with self.assertRaises(G.GateError):G.workspace_before(self.root,self.request)
+                if before is None:path.unlink()
+                else:path.write_bytes(before)
+
+    def test_final_settings_drift_refuses_shipping_acceptance(self):
+        G.workspace_before(self.root,self.request);self.compile_fixture();G.workspace_post(self.root,self.request);self.finalize()
+        changed={**self.request['settings'],'failOn':'error'}
+        with self.assertRaises(G.GateError):
+            G.reconcile(self.root,self.context,'pipeline',shipping=dict(signingRequired=False,doNotSignApps=False,signOutcome=None,effectiveSettings=changed))
+
+    def test_stock_receipt_tampering_after_pre_is_refused(self):
+        self.stock_prepare();G.workspace_before(self.root,self.request)
+        receipt=self.root/'.buildartifacts/AppSourceGate/Default/stock-preparation.json'
+        obj=json.loads(receipt.read_text());obj['transformation']['context']['run']='other';receipt.write_text(json.dumps(obj))
+        self.compile_fixture('stock-default')
+        with self.assertRaises(G.GateError):G.workspace_post(self.root,self.request)
+
+    def test_stock_wrong_current_run_build_url_refused(self):
+        self.stock_prepare();path=self.root/'app/app.json';manifest=json.loads(path.read_text(encoding='utf-8-sig'))
+        manifest['build']['url']=self.context['buildUrl']+'0';path.write_text(json.dumps(manifest))
+        with self.assertRaises(G.GateError):G.workspace_before(self.root,self.request)
+
+    def test_required_signed_consumer_needs_pipeline_and_successful_sign(self):
+        G.workspace_before(self.root,self.request);self.compile_fixture();G.workspace_post(self.root,self.request);self.finalize()
+        shipping=dict(signingRequired=True,doNotSignApps=False,signOutcome=None,effectiveSettings=self.request['settings'])
+        # Provider fixture is only a collector negative, never Windows trust proof.
+        info=G.package_info(self.root/'.buildartifacts/Apps/default.app')
+        signature=dict(status='Valid',signerThumbprint='fixture',provider='Windows Get-AuthenticodeSignature',sha256=info['sha256'])
+        with self.assertRaises(OSError):G.reconcile(self.root,self.context,'signed',signature,shipping)
+        G.reconcile(self.root,self.context,'pipeline',shipping=shipping)
+        for outcome in ('skipped','failure','cancelled'):
+            with self.subTest(outcome=outcome),self.assertRaises(G.GateError):
+                G.reconcile(self.root,self.context,'signed',signature,{**shipping,'signOutcome':outcome})
+
     def test_generated_config_after_preparation_requires_scoped_reconciliation(self):
         (self.root/'app/AppSourceCop.json').write_text('{"mandatorySuffix":"ori"}')
         with self.assertRaises(G.GateError):G.workspace_before(self.root,self.request)
