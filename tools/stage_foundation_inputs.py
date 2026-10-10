@@ -1,7 +1,7 @@
 """Bounded local-only Foundation artifact staging; no download or trust verdict.
 
-Run before Run-AlPipeline/AL-Go dependency extraction. The separate pipeline
-owner must apply the returned local-file arrays; this tool installs no hooks.
+Retain pinned archives before stock dependency extraction; publish selected arrays
+and verify their actual recursive dependency mirror. No signature trust verdict.
 """
 import argparse
 import json
@@ -10,6 +10,7 @@ import shutil
 import sys
 import tempfile
 import zipfile
+import appsource_gate as gate
 from pathlib import Path, PurePosixPath
 from appsource_gate import GateError, require, file_hash, package_info, rejected_receipt
 
@@ -131,7 +132,7 @@ def validate(receipt_path, context, install_apps, install_tests, symbols=None):
     """Re-read actual consumed arrays/bytes immediately before helper or compiler."""
     context_check(context)
     require(Path(receipt_path).is_file(), 'Missing staging receipt')
-    receipt = json.loads(Path(receipt_path).read_text())
+    receipt = json.loads(Path(receipt_path).read_text(encoding='utf-8-sig'))
     require(receipt['context'] == context and receipt['schema'] == 2, 'Stale/wrong staging receipt')
     profile = receipt['profile']
     config = profile_config(profile)
@@ -185,20 +186,131 @@ def stage(request, destination):
     return arrays
 
 
+def publication_files(root):
+    root = Path(root)
+    require(root.is_dir() and not root.is_symlink(), 'Missing/linked publication root')
+    # Bound all directory entries, including non-app metadata. Never follow links.
+    entries = []
+    for path in root.rglob('*'):
+        require(not path.is_symlink(), 'Publication symlink refused')
+        entries.append(path)
+        require(len(entries) <= 512, 'Publication inventory bound exceeded')
+    return sorted(str(p.resolve()) for p in entries if p.is_file() and p.suffix.lower() == '.app')
+
+
+def publish(receipt_path, context, install_apps, install_tests, root):
+    """Populate the actual stock/Alpaca .dependencies scan root, retaining other apps."""
+    receipt = validate(receipt_path, context, install_apps, install_tests)
+    root = Path(root).resolve()
+    stage_root = Path(receipt_path).resolve().parent
+    require(root != stage_root and root not in stage_root.parents and stage_root not in root.parents,
+            'Retained excluded packages cannot be beneath publication root')
+    require('publication' not in receipt, 'Existing publication receipt cannot be reused')
+    root.mkdir(parents=True, exist_ok=True)
+    existing = inspect(publication_files(root))
+    selected = receipt['selection']['after']
+    desired = selected['installApps'] + selected['installTestApps']
+    by_hash = {(x['identity']['id'].lower(), x['sha256']): x for x in desired}
+    require(all((x['identity']['id'].lower(), x['sha256']) in by_hash for x in existing),
+            'Unselected publication residue/source')
+    require(len({x['identity']['id'].lower() for x in existing}) == len(existing),
+            'Duplicate publication identity')
+    arrays = {}
+    for kind, items in selected.items():
+        arrays[kind] = []
+        for item in items:
+            source = Path(item['path'])
+            matches = [x for x in existing if x['identity'] == item['identity'] and x['sha256'] == item['sha256']]
+            target = Path(matches[0]['path']) if matches else root / source.name
+            if not matches:
+                require(not target.exists(), 'Competing publication filename')
+                # Exclusive creation; no overwrite of another producer's package.
+                with source.open('rb') as src, target.open('xb') as dst:
+                    shutil.copyfileobj(src, dst)
+            arrays[kind].append('(' + str(target) + ')' if item['helperInput'].startswith('(') else str(target))
+    actual = {kind: inspect(paths) for kind, paths in arrays.items()}
+    for kind in selected:
+        require([{k: v for k, v in x.items() if k not in ('path', 'helperInput')} for x in actual[kind]] ==
+                [{k: v for k, v in x.items() if k not in ('path', 'helperInput')} for x in selected[kind]],
+                'Publication copy/selection changed')
+    receipt['publication'] = dict(root=str(root), selection=actual)
+    Path(receipt_path).write_text(json.dumps(receipt, indent=2) + '\n')
+    validate_publication(receipt_path, context, **arrays)
+    return arrays
+
+
+def validate_publication(receipt_path, context, installApps, installTestApps, cache_roots=(), root=None):
+    receipt = json.loads(Path(receipt_path).read_text(encoding='utf-8-sig'))
+    original = receipt['selection']['after']
+    validate(receipt_path, context, [x['helperInput'] for x in original['installApps']],
+             [x['helperInput'] for x in original['installTestApps']])
+    publication = receipt['publication']
+    for kind, paths in [('installApps', installApps), ('installTestApps', installTestApps)]:
+        require(inspect(paths) == publication['selection'][kind], 'Changed actual consumer array/package')
+        expected = [{k: v for k, v in x.items() if k not in ('path', 'helperInput')} for x in original[kind]]
+        actual = [{k: v for k, v in x.items() if k not in ('path', 'helperInput')} for x in publication['selection'][kind]]
+        require(actual == expected, 'Unproven publication receipt inputs')
+        require([x['helperInput'].startswith('(') for x in original[kind]] ==
+                [x['helperInput'].startswith('(') for x in publication['selection'][kind]], 'Changed test marker')
+    observed = inspect(publication_files(publication['root']))
+    expected = publication['selection']['installApps'] + publication['selection']['installTestApps']
+    require(sorted(x['path'] for x in observed) == sorted(x['path'] for x in expected),
+            'Incomplete/unselected publication inventory')
+    # Re-read cache pin and known selected dependencies at each owned boundary.
+    # Microsoft/transitive/output provenance is handled by the existing AppSource
+    # before/post gate. This does not certify the unobservable pre-alc instant.
+    config = profile_config(receipt['profile'])
+    known = {x['identity']['id'].lower(): x['sha256'] for x in expected}
+    if root is not None and cache_roots:
+        state_path = Path(root) / '.buildartifacts/AppSourceGate' / context['mode'] / 'state.json'
+        require(state_path.is_file(), 'Missing generated-output provenance state')
+        state = json.loads(state_path.read_text(encoding='utf-8-sig'))
+        require(all(state['context'].get(k) == v for k, v in context.items()), 'Stale generated-output provenance')
+        for compiled in state['receipts'].values():
+            info = compiled['package']
+            key = info['identity']['id'].lower()
+            require(key not in known, 'Generated output conflicts with selected input')
+            known[key] = info['sha256']
+    for index, cache in enumerate(cache_roots):
+        items = gate.symbol_inventory(cache, 'appCache' if index == 0 else 'compilerCatalog')
+        ids = [x['identity']['id'].lower() for x in items]
+        require(len(ids) == len(set(ids)), 'Duplicate cache identities')
+        names = [x['file'].casefold() for x in items]
+        require(len(names) == len(set(names)), 'Duplicate cache filenames')
+        for x in items:
+            key = x['identity']['id'].lower()
+            require(key in known or x['identity']['publisher'] == 'Microsoft', 'Unproven non-Microsoft cache source')
+            if key in known:
+                require(x['sha256'] == known[key], 'Changed selected cache input')
+            if key == FOUNDATION:
+                require(x['sha256'] == config['pin'] and x['identity'] == config['identity'], 'Unapproved cache Foundation')
+    return dict(context=context, publication=publication, arrays=dict(installApps=installApps, installTestApps=installTestApps),
+                cacheRoots=list(cache_roots), consumedInputsCertified=False)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['stage', 'validate'])
+    parser.add_argument('action', choices=['stage', 'validate', 'publish', 'consumer'])
     parser.add_argument('--input', type=Path, required=True)
     parser.add_argument('--destination', type=Path, required=True)
     args = parser.parse_args()
     request = {}
     try:
-        request = json.loads(args.input.read_text())
+        request = json.loads(args.input.read_text(encoding='utf-8-sig'))
         if args.action == 'stage':
             arrays = stage(request, args.destination)
             (args.destination / 'helper-inputs.json').write_text(json.dumps(arrays, indent=2) + '\n')
             for kind, paths in arrays.items():
                 (args.destination / (kind + '.json')).write_text(json.dumps(paths, indent=2) + '\n')
+        elif args.action == 'publish':
+            arrays = publish(args.destination / 'selection.json', request['context'], request['installApps'],
+                             request['installTestApps'], request['publicationRoot'])
+            for kind, paths in arrays.items():
+                (args.destination / (kind + '.json')).write_text(json.dumps(paths, indent=2) + '\n')
+        elif args.action == 'consumer':
+            observation = validate_publication(args.destination / 'selection.json', request['context'], request['installApps'],
+                                               request['installTestApps'], request.get('cacheRoots', []), request.get('root'))
+            (args.destination / 'consumer-observation.json').write_text(json.dumps(observation, indent=2) + '\n')
         else:
             validate(args.destination / 'selection.json', request['context'], request['installApps'],
                      request['installTestApps'], request.get('symbols'))

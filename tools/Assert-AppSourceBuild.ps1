@@ -149,6 +149,7 @@ if ($Stage -eq 'BeforeCompile') {
         symbolsFolder = $CompilationParams.appSymbolsFolder
         compilerSymbolsFolder = (Join-Path $CompilationParams.compilerFolder 'symbols')
     }
+    & (Join-Path $Root 'tools/Prepare-FoundationInputs.ps1') -Action Validate -Root $Root -CacheRoot @($CompilationParams.appSymbolsFolder, (Join-Path $CompilationParams.compilerFolder 'symbols'))
     return
 }
 

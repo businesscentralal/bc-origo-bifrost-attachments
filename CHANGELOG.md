@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-10) - local split resolver integration preparation (#78)
+
+- Prepare `Acquire-FoundationInputs.ps1`, `Prepare-FoundationInputs.ps1` and selected-input workflow wiring: retain pinned Foundation Apps/TestApps archives before extraction, remove the exact probe in step-local Settings, preserve unrelated dependencies/test markers and populate the selected recursive dependency mirror. All four consumer arrays use the selected files; owned publication and cache observations fail closed on changed inputs. No AL objects, IDs or labels change. Publication remains blocked pending final infrastructure diff review, supported workspace/late compiler boundaries and sanctioned workflow/Actions execution. Tooling tests do not certify compilation, signature trust or BC runtime.
+
 ### Fixed (2026-10-09) - staging provenance refusal (#78)
 
 - Require both immutable Apps and TestApps archive provenance entries when validating Foundation staging receipts in `tools/stage_foundation_inputs.py`. Genuine candidate regressions refuse omitted/unknown entries and archive mutation concealed by an omitted entry. Foundation identity/hash/friend checks remain strict. No AL objects, IDs or labels change; workflow integration, compilation and runtime verification remain blocked.

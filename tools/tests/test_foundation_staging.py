@@ -2,6 +2,7 @@
 import copy
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -307,6 +308,171 @@ class Candidate530(unittest.TestCase):
         path.write_text(json.dumps(receipt))
         with self.assertRaisesRegex(G.GateError, 'receipt artifact'):
             S.validate(path, self.request['context'], arrays['installApps'], arrays['installTestApps'])
+
+
+    def publish_candidate(self, mode='Default', order=('Apps', 'TestApps')):
+        self.request['context']['mode'] = mode
+        self.request['artifacts'] = {kind: self.request['artifacts'][kind] for kind in order}
+        fixtures = Path(os.environ['APPSOURCE_GATE_FIXTURES'])
+        scan = self.root / '.dependencies'
+        scan.mkdir()
+        for name in ('default', 'testApp'):
+            shutil.copyfile(fixtures / (name + '.app'), scan / (name + '.app'))
+        self.request['otherApps'] = [str(scan / 'default.app')]
+        self.request['otherTestApps'] = ['(' + str(scan / 'testApp.app') + ')']
+        destination = self.root / 'retained-stage'
+        arrays = S.stage(self.request, destination)
+        receipt = destination / 'selection.json'
+        published = S.publish(receipt, self.request['context'], arrays['installApps'], arrays['installTestApps'], scan)
+        return receipt, published, scan
+
+    def test_workflow_uses_all_four_selected_consumer_inputs_and_step_local_settings(self):
+        text = (Path(S.__file__).parents[1] / '.github/workflows/_BuildALGoProject.yaml').read_text()
+        for field, output in [('dependencyAppsJson','InstallApps'), ('dependencyTestAppsJson','InstallTestApps'),
+                              ('installAppsJson','InstallApps'), ('installTestAppsJson','InstallTestApps')]:
+            self.assertEqual(1, text.count(field + ': ${{ steps.StageFoundationInputs.outputs.' + output + ' }}'))
+        for block in re.split(r'(?m)^      - name:', text)[1:]:
+            keys = re.findall(r'(?m)^        ([A-Za-z][A-Za-z0-9_-]*):', block)
+            self.assertEqual(len(keys), len(set(keys)), 'Duplicate workflow step key')
+        self.assertEqual(3, text.count("Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'"))
+        self.assertLess(text.index('- name: Acquire Foundation inputs'), text.index('- name: Download Project Dependencies'))
+        self.assertLess(text.index('- name: Stage Foundation inputs'), text.index('- name: Compile Apps'))
+        self.assertLess(text.index('- name: Compile Apps'), text.index('- name: Build\n'))
+        self.assertIn("fromJson(env.workspaceCompilation).enabled == true", text)
+        self.assertNotIn('GITHUB_ENV', (Path(S.__file__).parent/'Acquire-FoundationInputs.ps1').read_text())
+
+    def test_publication_preserves_unrelated_sources_markers_and_excludes_collision(self):
+        receipt, arrays, scan = self.publish_candidate()
+        observation = S.validate_publication(receipt, self.request['context'], **arrays)
+        self.assertFalse(observation['consumedInputsCertified'])
+        self.assertEqual(3, len(S.publication_files(scan)))
+        self.assertEqual(['(' + str(scan / 'testApp.app') + ')'], arrays['installTestApps'])
+        foundation = [x for x in S.inspect(S.publication_files(scan)) if x['identity']['id'] == S.FOUNDATION]
+        self.assertEqual([self.config['pin']], [x['sha256'] for x in foundation])
+        excluded = json.loads(receipt.read_text())['selection']['excluded'][0]
+        self.assertNotIn(excluded['path'], S.publication_files(scan))
+        self.assertEqual(self.config['testPin'], G.file_hash(excluded['path']))
+
+    def test_publication_rejects_cache_residue_changed_bytes_duplicate_and_unknown_source(self):
+        receipt, arrays, scan = self.publish_candidate()
+        excluded = json.loads(receipt.read_text())['selection']['excluded'][0]['path']
+        cache = self.root / 'cache'; cache.mkdir()
+        for name in S.publication_files(scan): shutil.copyfile(name, cache / Path(name).name)
+        S.validate_publication(receipt, self.request['context'], **arrays, cache_roots=[cache])
+        foundation = next(x for x in S.inspect(S.publication_files(cache)) if x['identity']['id'] == S.FOUNDATION)
+        shutil.copyfile(excluded, foundation['path'])
+        with self.assertRaisesRegex(G.GateError, 'Changed selected cache'):
+            S.validate_publication(receipt, self.request['context'], **arrays, cache_roots=[cache])
+        # Mutated cache must fail at both translation/final boundary checks.
+        for boundary in ('translation', 'final'):
+            with self.subTest(boundary=boundary), self.assertRaises(G.GateError):
+                S.validate_publication(receipt, self.request['context'], **arrays, cache_roots=[cache])
+        shutil.copyfile(arrays['installApps'][0], scan / 'residue.app')
+        with self.assertRaisesRegex(G.GateError, 'publication inventory'):
+            S.validate_publication(receipt, self.request['context'], **arrays)
+
+    def test_publication_rejects_changed_array_marker_context_inventory_and_receipt(self):
+        receipt, arrays, scan = self.publish_candidate()
+        for key in ('installApps', 'installTestApps'):
+            changed = copy.deepcopy(arrays); changed[key] = []
+            with self.subTest(key=key), self.assertRaises(G.GateError):
+                S.validate_publication(receipt, self.request['context'], **changed)
+        changed = {**arrays, 'installTestApps': [arrays['installTestApps'][0][1:-1]]}
+        with self.assertRaises(G.GateError): S.validate_publication(receipt, self.request['context'], **changed)
+        with self.assertRaises(G.GateError):
+            S.validate_publication(receipt, {**self.request['context'], 'mode': 'Test'}, **arrays)
+        data = json.loads(receipt.read_text())
+        data['publication']['selection']['installApps'] = []
+        receipt.write_text(json.dumps(data))
+        with self.assertRaises(G.GateError): S.validate_publication(receipt, self.request['context'], **arrays)
+
+    def test_publication_refuses_scan_root_containing_retained_exclusion_or_unknown_inputs(self):
+        arrays = S.stage(self.request, self.root / 'stage')
+        with self.assertRaisesRegex(G.GateError, 'beneath publication'):
+            S.publish(self.root / 'stage/selection.json', self.request['context'], arrays['installApps'], arrays['installTestApps'], self.root)
+        scan = self.root / 'scan'; scan.mkdir()
+        shutil.copyfile(Path(os.environ['APPSOURCE_GATE_FIXTURES']) / 'default.app', scan / 'unknown.app')
+        before = G.file_hash(scan / 'unknown.app')
+        with self.assertRaisesRegex(G.GateError, 'Unselected publication residue'):
+            S.publish(self.root / 'stage/selection.json', self.request['context'], arrays['installApps'], arrays['installTestApps'], scan)
+        self.assertEqual(before, G.file_hash(scan / 'unknown.app'))
+
+    def test_actual_prepare_script_and_stock_consumer_array_seams_all_modes_orders(self):
+        upstream = Path(os.environ['FOUNDATION_ADAPTER_UPSTREAM'])
+        pwsh = os.environ['FOUNDATION_ADAPTER_PWSH']
+        fixtures = Path(os.environ['APPSOURCE_GATE_FIXTURES'])
+        source = Path(S.__file__).parents[1]
+        for mode in ('Default', 'Test'):
+            for workspace in (False, True):
+                for order in (('Apps','TestApps'), ('TestApps','Apps')):
+                    with self.subTest(mode=mode, workspace=workspace, order=order):
+                        root = self.root / (mode + str(workspace) + order[0]); root.mkdir()
+                        (root / 'tools').mkdir()
+                        for name in ('stage_foundation_inputs.py','appsource_gate.py','Prepare-FoundationInputs.ps1'):
+                            shutil.copyfile(source / 'tools' / name, root / 'tools' / name)
+                        subprocess.run(['git','init','-q',str(root)],check=True)
+                        subprocess.run(['git','-C',str(root),'-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','-q','--allow-empty','-m','Local integration fixture'],check=True)
+                        sha = subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip()
+                        (root / '.dependencies').mkdir()
+                        for name in ('default','testApp'):
+                            shutil.copyfile(fixtures / (name + '.app'), root / '.dependencies' / (name + '.app'))
+                        stock = {'Apps':[str(root / '.dependencies/default.app')], 'TestApps':['(' + str(root / '.dependencies/testApp.app') + ')']}
+                        for kind, paths in stock.items(): (root / (kind + '.json')).write_text(json.dumps(paths))
+                        manifest = root / 'archives.json'
+                        manifest.write_text(json.dumps(dict(profile='candidate530', artifacts={k:self.request['artifacts'][k] for k in order})))
+                        temp = root / 'runner-temp'; temp.mkdir()
+                        output = root / 'outputs.txt'; output.touch()
+                        env = {**os.environ, 'RUNNER_TEMP':str(temp),'GITHUB_WORKSPACE':str(root),'GITHUB_RUN_ID':'1234','GITHUB_RUN_ATTEMPT':'1',
+                               'GITHUB_SHA':'3'*40,'BuildMode':mode,'GITHUB_OUTPUT':str(output),'PYTHONDONTWRITEBYTECODE':'1'}
+                        prepare = [pwsh,'-NoProfile','-NonInteractive','-File',str(root / 'tools/Prepare-FoundationInputs.ps1')]
+                        result = subprocess.run(prepare + ['-Action','Stage','-ArchiveManifestPath',str(manifest),'-DownloadedApps',str(root/'Apps.json'),'-DownloadedTestApps',str(root/'TestApps.json')],env=env,capture_output=True,text=True)
+                        self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+                        selected = temp / f'foundation-selected-1234-1-{mode}'
+                        receipt = json.loads((selected/'selection.json').read_text())
+                        self.assertEqual(sha,receipt['context']['checkoutSha'])
+                        arrays = {k:json.loads((selected/(k+'.json')).read_text()) for k in ('installApps','installTestApps')}
+                        self.assertEqual(stock['TestApps'],arrays['installTestApps'])
+                        result = subprocess.run(prepare + ['-Action','Validate'],env=env,capture_output=True,text=True)
+                        self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+                        # Execute the exact stock read/copy statements on genuine selected
+                        # inputs. External compilation/containers are not mocked as green.
+                        compile_source=(upstream/'CompileApps/Compile.ps1').read_text()
+                        reader=compile_source[compile_source.index('    $dependencyApps = @()'):compile_source.index('    # Set up a compiler folder')]
+                        copier=compile_source[compile_source.index('    # Copy dependency apps'):compile_source.index('    # Incremental Builds')]
+                        pipeline=(upstream/'RunPipeline/RunPipeline.ps1').read_text()
+                        begin=pipeline.index('    if ($installAppsJson')
+                        end=pipeline.index('    #',begin)
+                        # RunPipeline reader block ends immediately before its following
+                        # declaration; find by AST-balanced stock block using known marker.
+                        tail=pipeline[begin:]
+                        next_block=tail.index('    if ($settings.runTestsInAllInstalledTestApps)')
+                        pipeline_reader=tail[:next_block]
+                        cache=root/'workspace-cache';cache.mkdir()
+                        script=root/'stock-consumers.ps1'
+                        script.write_text("param($apps,$tests,$cache)\n$ErrorActionPreference='Stop'\nfunction OutputDebug { param($message) }\nfunction OutputWarning { param($message) throw $message }\n$dependencyAppsJson=$apps;$dependencyTestAppsJson=$tests;$packageCachePath=$cache\n" + reader + copier + "\n$install=@{Apps=@();TestApps=@()};$installAppsJson=$apps;$installTestAppsJson=$tests\n" + pipeline_reader + "\n@{apps=@($install.Apps);tests=@($install.TestApps)} | ConvertTo-Json -Depth 10\n")
+                        result=subprocess.run([pwsh,'-NoProfile','-NonInteractive','-File',str(script),str(selected/'installApps.json'),str(selected/'installTestApps.json'),str(cache)],env=env,capture_output=True,text=True)
+                        self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+                        loaded=json.loads(result.stdout)
+                        self.assertEqual(arrays['installApps'],loaded['apps']);self.assertEqual(arrays['installTestApps'],loaded['tests'])
+                        S.validate_publication(selected/'selection.json',receipt['context'],**arrays,cache_roots=[cache])
+                        evidence_path = os.environ.get('FOUNDATION_ADAPTER_EVIDENCE')
+                        if evidence_path:
+                            record = dict(mode=mode, workspaceCompilation=workspace, archiveOrder=list(order),
+                                          context=receipt['context'], selectedArrays=arrays, publication=receipt['publication'],
+                                          observedCache=S.inspect(S.publication_files(cache)), stockConsumerArrays=loaded,
+                                          compileExecuted=False, consumedInputsCertified=False)
+                            with open(evidence_path, 'a') as out: out.write(json.dumps(record) + '\n')
+                        state_dir = root / '.buildartifacts/AppSourceGate' / mode
+                        state_dir.mkdir(parents=True)
+                        (state_dir/'state.json').write_text(json.dumps(dict(context=receipt['context'], receipts={})))
+                        result=subprocess.run(prepare + ['-Action','Validate','-CacheRoot',str(cache)],env=env,capture_output=True,text=True)
+                        self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+                        # Excluded collision introduced after consumer observation fails.
+                        foundation=next(x for x in S.inspect(S.publication_files(cache)) if x['identity']['id']==S.FOUNDATION)
+                        shutil.copyfile(receipt['selection']['excluded'][0]['path'],foundation['path'])
+                        result=subprocess.run(prepare + ['-Action','Validate','-CacheRoot',str(cache)],env=env,capture_output=True,text=True)
+                        self.assertNotEqual(0,result.returncode)
+                        self.assertEqual(self.config['pin'],G.file_hash(next(x for x in arrays['installApps'] if G.package_info(x)['identity']['id']==S.FOUNDATION)))
 
 
 if __name__ == '__main__': unittest.main()

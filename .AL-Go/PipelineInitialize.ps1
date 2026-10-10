@@ -94,6 +94,9 @@ if ($scriptFiles) {
     Write-Host "- None"
 }
 
+# Revalidate selected publication inputs before invoking downloaded Alpaca scans.
+& (Join-Path $env:GITHUB_WORKSPACE 'tools/Prepare-FoundationInputs.ps1') -Action Validate
+
 $overridesPath = Join-Path $scriptsPath "/Overrides/RunAlPipeline"
 Write-Host "Alpaca overrides path: $overridesPath"
 $overridePath = Join-Path $overridesPath "PipelineInitialize.ps1"

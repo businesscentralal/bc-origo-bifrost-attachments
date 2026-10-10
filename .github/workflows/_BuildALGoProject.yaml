@@ -181,18 +181,42 @@ jobs:
           path: ${{ runner.temp }}/.artifactcache
           key: ${{ env.artifactCacheKey }}
 
+      - name: Acquire Foundation inputs
+        id: AcquireFoundationInputs
+        if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
+        shell: ${{ inputs.shell }}
+        env:
+          Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
+          BuildMode: ${{ inputs.buildMode }}
+        run: |
+          $retained = Join-Path $env:RUNNER_TEMP "foundation-archives-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT-$env:BuildMode"
+          & (Join-Path $env:GITHUB_WORKSPACE 'tools/Acquire-FoundationInputs.ps1') -Destination $retained
+
       - name: Download Project Dependencies
         id: DownloadProjectDependencies
         if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
         uses: microsoft/AL-Go-Actions/DownloadProjectDependencies@v9.2
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
+          Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'
         with:
           shell: ${{ inputs.shell }}
           project: ${{ inputs.project }}
           buildMode: ${{ inputs.buildMode }}
           projectDependenciesJson: ${{ inputs.projectDependenciesJson }}
           baselineWorkflowRunId: ${{ inputs.baselineWorkflowRunId }}
+
+      - name: Stage Foundation inputs
+        id: StageFoundationInputs
+        if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
+        shell: ${{ inputs.shell }}
+        env:
+          BuildMode: ${{ inputs.buildMode }}
+          FOUNDATION_ARCHIVE_MANIFEST: ${{ steps.AcquireFoundationInputs.outputs.ArchiveManifestPath }}
+          FOUNDATION_STOCK_APPS: ${{ steps.DownloadProjectDependencies.outputs.DownloadedApps }}
+          FOUNDATION_STOCK_TEST_APPS: ${{ steps.DownloadProjectDependencies.outputs.DownloadedTestApps }}
+        run: |
+          & (Join-Path $env:GITHUB_WORKSPACE 'tools/Prepare-FoundationInputs.ps1') -Action Stage -ArchiveManifestPath $env:FOUNDATION_ARCHIVE_MANIFEST -DownloadedApps $env:FOUNDATION_STOCK_APPS -DownloadedTestApps $env:FOUNDATION_STOCK_TEST_APPS
 
       - name: Download Previous Release
         id: DownloadPreviousRelease
@@ -202,11 +226,20 @@ jobs:
           shell: ${{ inputs.shell }}
           project: ${{ inputs.project }}
 
+      - name: Validate selected inputs before Compile Apps
+        if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
+        shell: ${{ inputs.shell }}
+        env:
+          BuildMode: ${{ inputs.buildMode }}
+        run: |
+          & (Join-Path $env:GITHUB_WORKSPACE 'tools/Prepare-FoundationInputs.ps1') -Action Validate
+
       - name: Compile Apps
         id: compile
         uses: microsoft/AL-Go-Actions/CompileApps@v9.2
         if: steps.DetermineBuildProject.outputs.BuildIt == 'True' && fromJson(env.workspaceCompilation).enabled == true
         env:
+          Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
           BuildMode: ${{ inputs.buildMode }}
         with:
@@ -214,8 +247,8 @@ jobs:
           artifact: ${{ env.artifact }}
           project: ${{ inputs.project }}
           buildMode: ${{ inputs.buildMode }}
-          dependencyAppsJson: ${{ steps.DownloadProjectDependencies.outputs.DownloadedApps }}
-          dependencyTestAppsJson: ${{ steps.DownloadProjectDependencies.outputs.DownloadedTestApps }}
+          dependencyAppsJson: ${{ steps.StageFoundationInputs.outputs.InstallApps }}
+          dependencyTestAppsJson: ${{ steps.StageFoundationInputs.outputs.InstallTestApps }}
           baselineWorkflowRunId: ${{ inputs.baselineWorkflowRunId }}
           baselineWorkflowSHA: ${{ inputs.baselineWorkflowSHA }}
           previousAppsPath: ${{ steps.DownloadPreviousRelease.outputs.PreviousAppsPath }}
@@ -230,10 +263,19 @@ jobs:
           [System.IO.File]::WriteAllText($needsContextPath, $nc.Trim())
           Add-Content -Encoding UTF8 -Path $env:GITHUB_ENV -Value "NeedsContext=$needsContextPath"
 
+      - name: Validate selected inputs before Build
+        if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
+        shell: ${{ inputs.shell }}
+        env:
+          BuildMode: ${{ inputs.buildMode }}
+        run: |
+          & (Join-Path $env:GITHUB_WORKSPACE 'tools/Prepare-FoundationInputs.ps1') -Action Validate
+
       - name: Build
         uses: microsoft/AL-Go-Actions/RunPipeline@v9.2
         if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
         env:
+          Settings: '${{ steps.AcquireFoundationInputs.outputs.ResolverSettings }}'
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
           BuildMode: ${{ inputs.buildMode }}
           NeedsContext: ${{ env.NeedsContext }}
@@ -244,8 +286,8 @@ jobs:
           artifact: ${{ env.artifact }}
           project: ${{ inputs.project }}
           buildMode: ${{ inputs.buildMode }}
-          installAppsJson: ${{ steps.DownloadProjectDependencies.outputs.DownloadedApps }}
-          installTestAppsJson: ${{ steps.DownloadProjectDependencies.outputs.DownloadedTestApps }}
+          installAppsJson: ${{ steps.StageFoundationInputs.outputs.InstallApps }}
+          installTestAppsJson: ${{ steps.StageFoundationInputs.outputs.InstallTestApps }}
           baselineWorkflowRunId: ${{ inputs.baselineWorkflowRunId }}
           baselineWorkflowSHA: ${{ inputs.baselineWorkflowSHA }}
           previousAppsPath: ${{ steps.DownloadPreviousRelease.outputs.PreviousAppsPath }}

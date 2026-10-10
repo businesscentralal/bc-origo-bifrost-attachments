@@ -337,3 +337,47 @@ The genuine Base55975 regressions additionally require
 They preserve the existing 55935 fixtures and test both exact identities/hashes,
 independent layer bounds, shipping refusal, aggregate work, CRC/truncation and
 measurement mutation. These are tooling checks, not Business Central test counts.
+
+
+## Local split resolver adapter (#78, pending delivery review)
+
+`Acquire-FoundationInputs.ps1` retains exact candidate530 Apps/TestApps ZIPs in
+`RUNNER_TEMP`, outside recursive publication roots. It verifies run37679390622,
+attempt1, source8ec074f4 and artifact11508979803/11510930013 metadata, expiry,
+archive digest and bytes. API calls have a 30-second header timeout, bounded body
+reads and a 120-second aggregate deadline; metadata is limited to1MiB, each archive
+to128MiB. A single HTTPS redirect may reach GitHub artifact blob hosts, with no
+Authorization header forwarded. Existing `ghTokenWorkflow` is decoded in memory.
+Tokens, authenticated URLs, Secrets and effective Settings are never logged.
+
+The exact Foundation probing entry is removed from a clone of effective Settings,
+passed only to the stock dependency resolver and both consumers. Tracked settings,
+global Settings, current-build/baseline resolution, other probing paths and
+install/test entries remain intact. Unexpected Foundation entries fail.
+`Prepare-FoundationInputs.ps1` combines both explicit stock JSON arrays with the
+retained archives, stages outside workspace scan roots, and emits the same selected
+arrays for CompileApps and RunPipeline. The `.dependencies` mirror permits only
+selected package bytes; pre-existing unrelated selected packages and test markers
+are retained. No blanket deletion/overwrite or Foundation policy expansion occurs.
+
+The new publication observations rehash the arrays, both archives and every
+recursive mirror package. Cache observations use the existing AppSource parser's
+finite cache/catalog policies and reject changed known inputs/duplicates. Existing
+before/post collector observations retain translation/final boundaries, but **do
+not prove the instant after genuine helper preparation and before alc**.
+Workspace compilation still fails the existing explicit guard: stock CompileApps
+uses a separate PreCompileApp hook absent from the allowed tracked path set. Do
+not remove that guard or call this local diff a complete supported workspace repair.
+Final internal implementation review must decide the supported hook and any
+necessary additional test/hook paths before publication. Windows trust, actual
+Alpaca scans, full paired Default/Test CI and BC runtime remain unverified.
+
+The new `Test-FoundationResolverAdapter.ps1` requires retained upstream v9.2
+`UpstreamFolder`, candidate ZIP `CandidateArtifactFolder`, and API snapshot
+`MetadataFolder`. Staging integration tests additionally require
+`FOUNDATION_ADAPTER_UPSTREAM`, `FOUNDATION_ADAPTER_PWSH`, and optionally
+`FOUNDATION_ADAPTER_EVIDENCE` for sanitized consumer inventories. These tests
+execute stock AnalyzeRepo/probe resolution and stock consumer read/copy statements;
+external network, workspace compiler and physical containers are not simulated
+as successful builds. Both workspace flags and modes exercise selected arrays;
+workspace-enabled compilation acceptance remains blocked as stated above.
