@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('Initialize', 'BeforeCompile', 'PostCompile', 'Finalize', 'Pipeline', 'Signed')]
+    [ValidateSet('Initialize', 'BeforeCompile', 'PostCompile', 'Finalize', 'Pipeline', 'Signed', 'WorkspaceBefore', 'WorkspacePost')]
     [string] $Stage,
     [string] $Root = $env:GITHUB_WORKSPACE,
     [string[]] $AppFile,
@@ -82,6 +82,61 @@ function Invoke-Gate {
     finally {
         Remove-Item -LiteralPath $path -Force
     }
+}
+
+# Separate actual workspace contracts. No classic-parameter impersonation and no
+# compiler parameter mutation; caller's ref and returned app stream remain intact.
+if ($Stage -in @('WorkspaceBefore', 'WorkspacePost')) {
+    $context = Get-Context
+    if (-not $CompilationParams -or $AppType -cnotin @('app', 'testApp')) { throw 'Missing/unexpected workspace contract.' }
+    $settings = Read-Settings
+    $effective = @{}
+    foreach ($name in 'enableCodeCop', 'enableUICop', 'enableAppSourceCop', 'enableCodeAnalyzersOnTestApps', 'failOn', 'workspaceCompilation', 'type', 'escapeFromCops', 'rulesetFile') {
+        $property = $settings.PSObject.Properties[$name]
+        $effective[$name] = if ($property) { $property.Value } else { $null }
+    }
+    $parameters = @{}
+    foreach ($key in $CompilationParams.Keys) {
+        $value = $CompilationParams[$key]
+        $parameters[$key] = if ($value -is [System.Management.Automation.SwitchParameter]) { $value.IsPresent } else { $value }
+    }
+    $altool = [string]$parameters.ALToolPath
+    $bin = Split-Path $altool -Parent
+    $platformBin = $bin
+    if ((Split-Path $bin -Leaf) -in @('linux', 'win32', 'darwin')) { $bin = Split-Path $bin -Parent }
+    $extension = Split-Path $bin -Parent
+    $compiler = Join-Path $platformBin 'alc.exe'
+    if (-not (Test-Path -LiteralPath $compiler)) { $compiler = Join-Path $platformBin 'alc' }
+    if (-not (Test-Path -LiteralPath $compiler)) { $compiler = Join-Path $bin 'alc.dll' }
+    $package = Join-Path $extension 'package.json'
+    $packageData = Get-Content -LiteralPath $package -Raw -Encoding UTF8 | ConvertFrom-Json
+    $compilerReceipt = Get-FileReceipt $compiler
+    if (-not $compilerReceipt.version) { throw 'Workspace compiler executable file version absent.' }
+    $tools = @{}
+    foreach ($entry in @{compiler=$compiler; altool=$altool; compilerPackage=$package}.GetEnumerator()) {
+        $receipt = Get-FileReceipt $entry.Value
+        $receipt.path = $entry.Value
+        $tools[$entry.Key] = $receipt
+    }
+    $tools.compilerPackage.version = $packageData.version
+    $analyzers = Join-Path $bin 'Analyzers'
+    if (-not (Test-Path -LiteralPath $analyzers)) { $analyzers = $bin }
+    foreach ($name in 'CodeCop', 'UICop', 'AppSourceCop', 'Analyzers.Common') {
+        $path = Join-Path $analyzers "Microsoft.Dynamics.Nav.$name.dll"
+        $tools[$name] = Get-FileReceipt $path
+        $tools[$name].path = $path
+    }
+    $module = Get-Command Build-AppsInWorkspace -ErrorAction Stop
+    $tools.workspaceModule = Get-FileReceipt $module.ScriptBlock.File
+    $tools.workspaceModule.path = $module.ScriptBlock.File
+    if ($Stage -eq 'WorkspaceBefore') {
+        & (Join-Path $Root 'tools/Prepare-FoundationInputs.ps1') -Action Validate -Root $Root
+    }
+    $directory = Join-Path $Root '.buildartifacts/AppSourceGate'
+    New-Item -Path $directory -ItemType Directory -Force | Out-Null
+    $action = if ($Stage -eq 'WorkspaceBefore') { 'workspace-before' } else { 'workspace-post' }
+    Invoke-Gate $action @{ context=$context; appType=$AppType; appFiles=@($AppFile); selection=(Join-Path $env:RUNNER_TEMP "foundation-selected-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT-$env:BuildMode/selection.json"); parameters=$parameters; settings=$effective; tools=$tools }
+    return
 }
 
 $context = Get-Context

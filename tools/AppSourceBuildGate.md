@@ -381,3 +381,36 @@ execute stock AnalyzeRepo/probe resolution and stock consumer read/copy statemen
 external network, workspace compiler and physical containers are not simulated
 as successful builds. Both workspace flags and modes exercise selected arrays;
 workspace-enabled compilation acceptance remains blocked as stated above.
+
+### Owner-local workspace correction (#78; publication blocked)
+
+The pinned AL-Go workspace hook contracts are `PreCompileApp(AppType, [ref]
+compilationParameters)` and `PostCompileApp(appFiles, AppType,
+compilationParameters)`. The pre hook observes the actual `WorkspaceFile`,
+`PackageCachePath`, `OutFolder`, `ALToolPath` and unchanged compiler arguments.
+Workspace creation runs before the pre hook. `Prepare-FoundationInputs.ps1
+-Action PrepareManifest` therefore removes Default product friendship before
+CompileApps; Test friendship and dependency manifests remain intact.
+
+The separate workspace collector checks the selected pinned Foundation bytes,
+project/source/tool identities, current-run output hashes, fresh per-project
+compiler logs and requested SARIF logs. It supports this repository's single
+product then single test project graph and refuses other or ambiguous project
+sets, stale/self inputs and unexplained cache additions. Compiler-catalog budgets
+remain unchanged. Source inventory is bounded to 4096 files per project and
+128 MiB total, workspace JSON to 16 MiB, logs to 128 files / 32 MiB, CPU count to
+1–128; fresh output mapping must exactly cover the approved graph. These are
+boundary observations, not proof of altool's internal consumed bytes.
+
+Classic validation still refuses workspace parameters. Workspace receipts are
+separate from classic pipeline state; the downstream classic initialization and
+finalization gates continue to refuse workspace delivery until final internal
+infrastructure review approves the full execution design. Hook fixture and
+collector passes do not authorize publication or imply a shipping build.
+
+Standalone fixture guards require genuine inputs explicitly or through
+`FOUNDATION_STAGING_ARTIFACTS`, `APPSOURCE_GATE_FIXTURES`,
+`FOUNDATION_CANDIDATE_ARTIFACTS`, `FOUNDATION_ADAPTER_UPSTREAM`,
+`FOUNDATION_ADAPTER_PWSH` and `FOUNDATION_WORKSPACE_MODULE`. The staging guard
+checks pinned upstream hashes and actual PowerShell invocation; archive/package
+hashes are checked by the tests. Missing inputs fail with diagnostics.

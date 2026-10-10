@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('Stage', 'Validate')][string] $Action,
+    [ValidateSet('Stage', 'Validate', 'PrepareManifest')][string] $Action,
     [string] $Root = $env:GITHUB_WORKSPACE,
     [string] $ArchiveManifestPath,
     [string] $DownloadedApps,
@@ -8,6 +8,19 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+# CompileApps creates a workspace before its PreCompileApp hook. Prepare the
+# build-local product manifest here, never Foundation or test dependency manifests.
+if ($Action -eq 'PrepareManifest') {
+    if ($env:BuildMode -cnotin @('Default', 'Test')) { throw 'Unexpected build mode for manifest preparation.' }
+    $path = Join-Path $Root 'app/app.json'
+    $manifest = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
+    if ($env:BuildMode -ceq 'Default' -and $manifest.PSObject.Properties['internalsVisibleTo']) {
+        $manifest.PSObject.Properties.Remove('internalsVisibleTo')
+        $manifest | ConvertTo-Json -Depth 100 | Set-Content -LiteralPath $path -Encoding UTF8
+    }
+    # Test friendship and every unrelated property are preserved.
+    return
+}
 $python = Get-Command python3 -ErrorAction SilentlyContinue
 if (-not $python) { $python = Get-Command python -ErrorAction Stop }
 $sha = & git -C $Root rev-parse HEAD

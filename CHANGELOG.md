@@ -8,6 +8,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+- #78 local pipeline correction: prepare Default friendship before workspace creation; add strict workspace PreCompileApp/PostCompileApp contracts, separate bounded receipts, and genuine preparation/callback fixtures. No AL object IDs allocated; shipping execution and classic late-boundary approval remain blocked.
+
 ### Fixed (2026-10-10) - local split resolver integration preparation (#78)
 
 - Prepare `Acquire-FoundationInputs.ps1`, `Prepare-FoundationInputs.ps1` and selected-input workflow wiring: retain pinned Foundation Apps/TestApps archives before extraction, remove the exact probe in step-local Settings, preserve unrelated dependencies/test markers and populate the selected recursive dependency mirror. All four consumer arrays use the selected files; owned publication and cache observations fail closed on changed inputs. No AL objects, IDs or labels change. Publication remains blocked pending final infrastructure diff review, supported workspace/late compiler boundaries and sanctioned workflow/Actions execution. Tooling tests do not certify compilation, signature trust or BC runtime.

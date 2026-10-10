@@ -232,6 +232,7 @@ jobs:
         env:
           BuildMode: ${{ inputs.buildMode }}
         run: |
+          & (Join-Path $env:GITHUB_WORKSPACE 'tools/Prepare-FoundationInputs.ps1') -Action PrepareManifest
           & (Join-Path $env:GITHUB_WORKSPACE 'tools/Prepare-FoundationInputs.ps1') -Action Validate
 
       - name: Compile Apps
