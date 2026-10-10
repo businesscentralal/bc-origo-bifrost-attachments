@@ -10,6 +10,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 
 
+
+### Fixed (2026-10-10) - UAT dependency installation
+
+- UAT feature-app deployment uses the Foundation app already deployed by its own pipeline in Dev scope, avoiding an unauthorized AppSource Foundation installation. `.github/AL-Go-Settings.json`: `DeployToBifrost.DependencyInstallMode = "ignore"`. AppSource delivery is unchanged; no AL objects or IDs change.
+
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
 
 - Require the native action's exact completion marker before permitting compilation while preserving exact Foundation candidate identity, hash and provenance checks. Pin artifact lookup to workflow version `1.0.3.530`, containing app `28.0.3.530`. Rejection receipts prioritize the package that failed parsing, including failures beyond the 128-item diagnostic cap. Native callback and genuine-package mutation regressions cover silent success and retained offending bytes. Failure-receipt workflow upload remains with the pipeline owner for infrastructure review. No AL objects or IDs change; actual runner manifest diagnosis, Windows trust and product/runtime verification remain pending.
