@@ -29,8 +29,15 @@
     Traversal is capped at depth 40 and 2000 contexts. This is source analysis, not runtime proof.
 
     Hand-built JSON contracts are not inferred. Migrate product declarations to the existing
-    shared builders. External dependency source is not imported: a missing reached Foundation
-    reader remains unresolved until matched immutable dependency provenance is available.
+    shared builders. External dependency readers require an explicitly supplied, independently
+    SHA256-pinned manifest. Repo/commit/path, Git blob, content hash, dependency and AL object
+    identities are checked before the verified bytes enter analysis. Missing source still fails.
+    This proves source reads only, never compiled-package equality or runtime trust.
+
+    JsonObject var outputs are proven only for a direct acquisition or bounded forwarding/
+    success wrapper; success-only outputs remain within the exact positive IF branch. Loops,
+    conflicting writes, unknown calls and ambiguous outputs do not acquire provenance.
+    Output proofs are capped at depth 16 and 256 calls per candidate.
 
     Existing target semantics are preserved: 'data.a + data.b' declares a and b;
     'data.x.y' also declares y. The guard compares names, not full JSON paths.
@@ -42,6 +49,12 @@
 
 .PARAMETER AllowListPath
     The allow-list file (default: ContractParameterKeys.AllowList.txt next to this script).
+
+.PARAMETER DependencySourceManifest
+    Optional single-file dependency source manifest (schema 1). See tools/ContractParameterKeys.Provenance.md.
+
+.PARAMETER DependencySourceManifestSha256
+    Independently approved immutable manifest hash. Both arguments are required together.
 
 .PARAMETER Explain
     A message type name. Prints the parameters its contract declares, the target keys and the keys the code reads, and
@@ -58,10 +71,13 @@ param(
     [string]$AppFolder = (Join-Path $PSScriptRoot '..\app'),
     [string]$AllowListPath = (Join-Path $PSScriptRoot 'ContractParameterKeys.AllowList.txt'),
     [switch]$SelfTest,
-    [string]$Explain = ''
+    [string]$Explain = '',
+    [string]$DependencySourceManifest = '',
+    [string]$DependencySourceManifestSha256 = ''
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'ContractParameterKeys.Provenance.ps1')
 
 # The procedures of "Message Argument ori" that read keys from the request, by name (lower case): the evaluate*, tryevaluate* and
 # apply* readers, the table and date range readers, and FindBankAccReconciliation (systemId, recordSystemId, bankAccountNo, statementNo).
@@ -85,10 +101,19 @@ $parameterLiteral = [regex]::new("\.Parameter\(\s*'([^']+)'", 'IgnoreCase')
 $callWithArgs = [regex]::new('(?<![.\w])(?:(?<receiver>\w+)\.)?(?<callee>\w+)\s*\((?<args>[^()]*)\)', 'IgnoreCase')
 # Every call, whatever its arguments: the same start as $callWithArgs, or a call through a chain ('GetParts().AddBase(' or 'A.B.C(').
 $anyCall = [regex]::new('(?<![.\w])(?:(?<receiver>\w+)\.)?(?<callee>\w+)\s*\(|(?<=[\w)\]]\s*\.\s*)(?<chained>\w+)\s*\(', 'IgnoreCase')
-function Read-Source([string]$AppSrc) {
+function Read-Source([string]$AppSrc, [string[]]$VerifiedLines = $null) {
     $objects = @{}
-    foreach ($file in Get-ChildItem -LiteralPath $AppSrc -Recurse -Filter '*.al') {
-        $lines = @(Get-Content -LiteralPath $file.FullName -Encoding UTF8)
+    foreach ($file in $(if (Test-Path -LiteralPath $AppSrc -PathType Leaf) { Get-Item -LiteralPath $AppSrc } else { Get-ChildItem -LiteralPath $AppSrc -Recurse -Filter '*.al' })) {
+        $lines = if ($null -ne $VerifiedLines) { @($VerifiedLines) } else { @(Get-Content -LiteralPath $file.FullName -Encoding UTF8) }
+        # Attribute/declaration matching must ignore comments, including block
+        # comments between a TryFunction attribute and its forwarding procedure.
+        # Keep strings, quoted identifiers, line boundaries and original bodies.
+        $declarationText = [regex]::Replace(($lines -join "`n"), '''(?:[^'']|'''')*''|"(?:[^"]|"")*"|//[^\r\n]*|/\*[\s\S]*?\*/', {
+            param($match)
+            if ($match.Value.StartsWith('//') -or $match.Value.StartsWith('/*')) { return ($match.Value -replace '[^\r\n]', ' ') }
+            return $match.Value
+        })
+        $declarationLines = $declarationText -split "`n"
         $objectName = $null
         $kind = $null
         for ($i = 0; $i -lt $lines.Count; $i++) {
@@ -102,12 +127,12 @@ function Read-Source([string]$AppSrc) {
             $im = [regex]::Match($header, 'implements\s+(.*?)(?:\{|$)', 'IgnoreCase')
             if ($im.Success) { foreach ($n in [regex]::Matches($im.Groups[1].Value, '"([^"]+)"')) { $implements += $n.Groups[1].Value } }
             $tableNoMatch = [regex]::Match(($lines | Select-Object -First 40) -join ' ', 'TableNo\s*=\s*"([^"]+)"')
-            $objects[$objectName] = @{ TableNo = $(if ($tableNoMatch.Success) { $tableNoMatch.Groups[1].Value } else { '' }); Implements = $implements; Name = $objectName; Kind = $kind; File = $file.FullName; Lines = $lines; Procedures = @{}; Variables = @{}; Labels = @(); Text = ($lines -join "`n") }
+            $objects[$objectName] = @{ TableNo = $(if ($tableNoMatch.Success) { $tableNoMatch.Groups[1].Value } else { '' }); Implements = $implements; Name = $objectName; Kind = $kind; File = $file.FullName; Lines = $lines; Procedures = @{}; TryFunctions = @{}; Variables = @{}; Labels = @(); Text = ($lines -join "`n") }
         }
         $object = $objects[$objectName]
         $starts = @()
         for ($i = 0; $i -lt $lines.Count; $i++) {
-            if ($procedureStart.IsMatch($lines[$i])) { $starts += $i }
+            if ($procedureStart.IsMatch($declarationLines[$i])) { $starts += $i }
             foreach ($v in $varDeclaration.Matches($lines[$i])) {
                 $varName = $v.Groups[1].Value.ToLowerInvariant()
                 if (-not $object.Variables.ContainsKey($varName)) { $object.Variables[$varName] = @() }
@@ -117,7 +142,13 @@ function Read-Source([string]$AppSrc) {
         }
         $object.Globals = if ($starts.Count -gt 0) { ($lines | Select-Object -First $starts[0]) -join "`n" } else { $object.Text }
         for ($p = 0; $p -lt $starts.Count; $p++) {
-            $name = $procedureStart.Match($lines[$starts[$p]]).Groups[5].Value.Trim('"').ToLowerInvariant()
+            $name = $procedureStart.Match($declarationLines[$starts[$p]]).Groups[5].Value.Trim('"').ToLowerInvariant()
+            if ($declarationLines[$starts[$p]] -match '(?i)\[TryFunction\]') { $object.TryFunctions[$name] = $true }
+            for ($a = $starts[$p] - 1; $a -ge 0; $a--) {
+                if ($declarationLines[$a] -match '^\s*$') { continue }
+                if ($declarationLines[$a] -notmatch '^\s*(\[[^]]+\]\s*)+$') { break }
+                if ($declarationLines[$a] -match '(?i)\[TryFunction\]') { $object.TryFunctions[$name] = $true }
+            }
             $to = if ($p + 1 -lt $starts.Count) { $starts[$p + 1] } else { $lines.Count }
             $body = ($lines[$starts[$p]..($to - 1)] | Where-Object { -not $_.TrimStart().StartsWith('//') }) -join "`n"
             if (-not $object.Procedures.ContainsKey($name)) { $object.Procedures[$name] = @() }
@@ -707,13 +738,18 @@ function Get-ContextReach($Objects, [string]$ObjectName, [string]$ProcedureName,
         $target = $null
         if (-not $call.Receiver -or $call.Receiver -eq 'this') { $target = $ObjectName }
         elseif ($types[$call.Receiver] -match '^(?:Codeunit|Record)\s+"([^"]+)"$') { $target = $Matches[1] }
+        if ($ReadMode -and $values[$call.Receiver] -eq 'request' -and $call.Callee -notin @('get', 'contains', 'keys', 'values', 'writeto')) {
+            $mutations[$call.Receiver] = $call.Index
+        }
         $formals = @(); $resolved = $target -and $Objects.ContainsKey($target) -and $Objects[$target].Procedures.ContainsKey($call.Callee) -and @($Objects[$target].Procedures[$call.Callee]).Count -eq 1
         if ($resolved) { $formals = Get-FormalParameters $Objects[$target].Procedures[$call.Callee][0] }
         for ($a = 0; $a -lt $call.Args.Count; $a++) {
             $arg = $call.Args[$a].Trim()
             if (-not $values.ContainsKey($arg) -or ($values[$arg] -notlike 's:*' -and $values[$arg] -ne 'request')) { continue }
             $unknownTyped = $target -and -not $resolved -and $target -ne 'Msg Contract Mgt ori'
-            if (($resolved -and $a -lt $formals.Count -and $formals[$a].ByRef) -or $unknownTyped) {
+            $referenceMutation = $ReadMode -and $values[$arg] -eq 'request' -and $resolved -and
+                -not (Test-RequestParameterReadOnly $Objects $target $call.Callee $a @{ Count = 0; Active = @{} })
+            if (($resolved -and $a -lt $formals.Count -and $formals[$a].ByRef) -or $unknownTyped -or $referenceMutation) {
                 if (-not $mutations.ContainsKey($arg) -or $mutations[$arg] -gt $call.Index) { $mutations[$arg] = $call.Index }
             }
 
@@ -735,11 +771,12 @@ function Get-ContextReach($Objects, [string]$ObjectName, [string]$ProcedureName,
         }
     }
     if (-not $ReadMode) { $body = Get-ContextBody $body $values $Diagnostics "$ObjectName::$ProcedureName" }
-    $Contexts[$identity] = @{ Object = $ObjectName; Procedure = $ProcedureName; Body = $body; Values = $values; Types = $types; Mutations = $mutations }
+    $outputRanges = @()
+    if ($ReadMode) { $outputRanges = Get-RequestOutputRanges $Objects $ObjectName $body $types $Diagnostics }
+    $Contexts[$identity] = @{ OutputRanges = $outputRanges; Object = $ObjectName; Procedure = $ProcedureName; Body = $body; Values = $values; Types = $types; Mutations = $mutations }
     foreach ($call in (Get-ContextCalls $body)) {
         $callee = $call.Callee; $receiver = $call.Receiver; $target = $null
-        $atCall = $values.Clone()
-        foreach ($name in $mutations.Keys) { if ($call.Index -gt $mutations[$name]) { $atCall[$name] = '?' } }
+        $atCall = Get-ValuesAtCall $values $mutations $outputRanges $call.Index
         $actual = @($call.Args | ForEach-Object { Resolve-ContextValue $_ $atCall $types })
         $hasRequest = $actual -contains 'request'
         if ($call.Chained) {
@@ -775,9 +812,18 @@ function Get-ContextReach($Objects, [string]$ObjectName, [string]$ProcedureName,
     }
     if ($ReadMode) {
         foreach ($call in (Get-ContextCalls $body)) {
-            if ($call.Receiver -ne 'Codeunit' -or $call.Callee -ne 'run' -or $call.Args.Count -ne 2) { continue }
-            if ($call.Args[0] -notmatch '^Codeunit::"([^"]+)"$' -or $types[$call.Args[1]] -ne 'Record "Message Argument ori"') { continue }
-            $target = $Matches[1]
+            if ($call.Receiver -ne 'Codeunit' -or $call.Callee -ne 'run') { continue }
+            if ($call.Args.Count -ne 2) {
+                [void]$Diagnostics.Add("${ObjectName}::${ProcedureName}: unsupported Codeunit.Run dispatch"); continue
+            }
+            $runMatch = [regex]::Match($call.Args[0], '^Codeunit::"([^"]+)"$', 'IgnoreCase')
+            if (-not $runMatch.Success -or $types[$call.Args[1]] -ne 'Record "Message Argument ori"') {
+                [void]$Diagnostics.Add("${ObjectName}::${ProcedureName}: unsupported Codeunit.Run dispatch"); continue
+            }
+            $target = $runMatch.Groups[1].Value
+            if (-not $Objects.ContainsKey($target) -or $Objects[$target].Kind -ne 'codeunit' -or $Objects[$target].TableNo -ne 'Message Argument ori') {
+                [void]$Diagnostics.Add("${target}::onrun: incompatible Codeunit.Run source"); continue
+            }
             Get-ContextReach $Objects $target 'onrun' @{} $Contexts $Diagnostics $true ($Depth + 1)
         }
     }
@@ -790,8 +836,7 @@ function Get-ProvenReadKeys($Contexts, $Diagnostics) {
         foreach ($call in (Get-ContextCalls $body)) {
             if ($call.Callee -notin @('get', 'contains') -or $call.Args.Count -lt 1) { continue }
             $inlineRequest = $call.InlineRequestReceiver -and $types[$call.InlineRequestReceiver] -eq 'Record "Message Argument ori"'
-            $atCall = $values.Clone()
-            foreach ($name in $context.Mutations.Keys) { if ($call.Index -gt $context.Mutations[$name]) { $atCall[$name] = '?' } }
+            $atCall = Get-ValuesAtCall $values $context.Mutations $context.OutputRanges $call.Index
             if ($atCall[$call.Receiver] -ne 'request' -and -not $inlineRequest) { continue }
             $key = Resolve-ContextValue $call.Args[0] $atCall $types
             if ($key -like 's:*') { [void]$keys.Add($key.Substring(2)) }
@@ -909,6 +954,7 @@ function Get-ReadKeys($Objects, [string]$Codeunit) {
 
 function Find-Offenders([string]$AppFolder) {
     $objects = Read-Source (Join-Path $AppFolder 'src')
+    Import-DependencyReaderSource $objects $DependencySourceManifest $DependencySourceManifestSha256 $AppFolder
     $types = Get-Types $objects
     $found = New-Object 'System.Collections.Generic.List[string]'
     foreach ($typeName in $types.Keys) {
@@ -1618,6 +1664,8 @@ if ($SelfTest) {
     Invoke-SelfTestConditionalParameters
     . (Join-Path $PSScriptRoot 'tests/ContractParameterKeys.Context.Tests.ps1')
     Invoke-ContextSelfTest
+    . (Join-Path $PSScriptRoot 'tests/ContractParameterKeys.Provenance.Tests.ps1')
+    Invoke-ProvenanceSelfTest
     exit 0
 }
 
