@@ -5,7 +5,7 @@ using Origo.Bifrost;
 /// <summary>
 /// Carries the Foundation setup read that Dispatcher ori needs for the response language.
 /// A restrictive test codeunit's Permissions property is an allow-list, so it cannot grant this
-/// read to Foundation. This codeunit stays on the stack and supplies the indirect read.
+/// read to Foundation. This codeunit stays on the stack and supplies the indirect read through Permissions.
 /// </summary>
 codeunit 96223 "Storage Lang Gate ori"
 {
