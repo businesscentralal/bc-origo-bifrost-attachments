@@ -426,9 +426,15 @@ class SymbolInventory(list):
     """List-compatible immutable receipt payload with local elapsed measurement."""
 
 
-def symbol_inventory(folder, policy="appCache"):
-    """Complete inventories use distinct finite catalog/cache resource policies."""
+def symbol_inventory(folder, policy="appCache", expanded_exemptions=()):
+    """Complete inventories use distinct finite catalog/cache resource policies.
+
+    App-cache expanded exemptions are exact compiler-catalog package hashes
+    already measured under the catalog budget. They still count toward the
+    cache package and disk-byte bounds. The catalog inventory never exempts.
+    """
     require(policy in SYMBOL_POLICIES, "Unknown symbol resource policy")
+    exemptions = set(expanded_exemptions) if policy == "appCache" else set()
     folder = Path(folder)
     require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
     limit, started = SYMBOL_POLICIES[policy], time.monotonic()
@@ -457,7 +463,11 @@ def symbol_inventory(folder, policy="appCache"):
         require(path.name.casefold() not in filenames, "Case-insensitive symbol filename collision")
         identities.add(identity)
         filenames.add(path.name.casefold())
-        expanded += info["expandedBytes"]
+        # Envelope plus embedded expansion for one Base Application copy is
+        # already inside the catalog budget. Charging it again against the
+        # cache's 512 MiB expanded bound rejects the helper's dependency copy.
+        if info["sha256"] not in exemptions:
+            expanded += info["expandedBytes"]
         require(expanded <= limit.get("expandedBytes", limit["bytes"]), "Symbol aggregate expanded-byte bound exceeded")
         result.append({"file": path.name, **info})
     budget_check(deadline)
@@ -661,7 +671,7 @@ def reconcile_symbols(snapshot, request, output):
             "Changed compiler symbol path")
     compiler = symbol_inventory(request["compilerSymbolsFolder"], "compilerCatalog")
     require(compiler == snapshot["compilerSymbols"], "Compiler-folder inputs changed during helper call")
-    final = symbol_inventory(request["symbolsFolder"])
+    final = symbol_inventory(request["symbolsFolder"], expanded_exemptions={item["sha256"] for item in compiler})
     before = {s["file"]: s for s in snapshot["symbols"]}
     prepared = {s["file"]: s for s in compiler}
     after = {s["file"]: s for s in final}

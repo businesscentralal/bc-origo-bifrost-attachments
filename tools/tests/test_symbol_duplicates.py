@@ -150,6 +150,50 @@ class CompilerSymbolAliases(unittest.TestCase):
         self.assertEqual(identity, info["identity"])
         self.assertEqual(G.file_hash(inner), info["readyToRun"]["embeddedSha256"])
 
+    def test_catalog_copy_is_not_charged_twice_against_the_cache_expanded_bound(self):
+        identity = fixture(self.catalog / "Microsoft_Base Application_29.0.54011.56136.app")
+        catalog = G.symbol_inventory(self.catalog, "compilerCatalog")
+        shutil.copyfile(self.catalog / "Microsoft_Base Application_29.0.54011.56136.app",
+                        self.cache / "Microsoft_Base Application_29.0.54011.56136.app")
+        sha = catalog[0]["sha256"]
+        real = G.package_info
+
+        def inflate(path, deadline=None, allow_ready_to_run=False, measured_profile=None):
+            info = real(path, deadline, allow_ready_to_run=allow_ready_to_run, measured_profile=measured_profile)
+            if path.name.startswith("Microsoft_Base Application"):
+                info = dict(info, expandedBytes=600 * 1024 * 1024)
+            return info
+
+        def inflate_catalog(path, deadline=None, allow_ready_to_run=False, measured_profile=None):
+            info = real(path, deadline, allow_ready_to_run=allow_ready_to_run, measured_profile=measured_profile)
+            if path.name.startswith("Microsoft_Base Application"):
+                info = dict(info, expandedBytes=5 * 1024 * 1024 * 1024)
+            return info
+
+        with patch.object(G, "package_info", inflate):
+            with self.assertRaisesRegex(G.GateError, "Symbol aggregate expanded-byte bound exceeded"):
+                G.symbol_inventory(self.cache)
+            self.assertEqual(1, len(G.symbol_inventory(self.cache, expanded_exemptions={sha})))
+        with patch.object(G, "package_info", inflate_catalog):
+            with self.assertRaisesRegex(G.GateError, "Symbol aggregate expanded-byte bound exceeded"):
+                G.symbol_inventory(self.catalog, "compilerCatalog", expanded_exemptions={sha})
+        fixture(self.cache / "Local.app")
+
+        def inflate_local(path, deadline=None, allow_ready_to_run=False, measured_profile=None):
+            info = real(path, deadline, allow_ready_to_run=allow_ready_to_run, measured_profile=measured_profile)
+            if path.name == "Local.app":
+                info = dict(info, expandedBytes=600 * 1024 * 1024)
+            return info
+
+        with patch.object(G, "package_info", inflate_local):
+            with self.assertRaisesRegex(G.GateError, "Symbol aggregate expanded-byte bound exceeded"):
+                G.symbol_inventory(self.cache, expanded_exemptions={sha})
+        tight = dict(G.SYMBOL_POLICIES["appCache"], bytes=10)
+        with patch.dict(G.SYMBOL_POLICIES, {"appCache": tight}):
+            with self.assertRaisesRegex(G.GateError, "Symbol aggregate-byte bound exceeded"):
+                G.symbol_inventory(self.cache, expanded_exemptions={sha})
+        self.assertEqual(identity["id"], catalog[0]["identity"]["id"])
+
     def test_app_cache_still_rejects_a_byte_identical_duplicate(self):
         fixture(self.cache / "One.app")
         shutil.copyfile(self.cache / "One.app", self.cache / "Two.app")
