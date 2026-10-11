@@ -1,8 +1,10 @@
 """TestApps filename collision restore. Synthetic packages, not artifact certification."""
 import base64
 import copy
+import http.server
 import io
 import json
+import threading
 import struct
 import sys
 import tempfile
@@ -51,6 +53,47 @@ class WorkflowToken(unittest.TestCase):
         encoded = base64.b64encode(b"ghp_exampletokenvalue000").decode("ascii")
         with patch.dict("os.environ", {"Secrets": json.dumps({"ghTokenWorkflow": encoded})}, clear=False):
             self.assertEqual("ghp_exampletokenvalue000", S.workflow_token())
+
+
+class ArtifactDownload(unittest.TestCase):
+    def test_redirect_does_not_forward_the_token(self):
+        seen = {}
+
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                seen.setdefault(self.path, []).append(self.headers.get("Authorization"))
+                if self.path == "/zip":
+                    self.send_response(302)
+                    location = "http://127.0.0.1:%d/file" % self.server.server_address[1]
+                    self.send_header("Location", location)
+                    self.end_headers()
+                    return
+                if self.headers.get("Authorization"):
+                    self.send_response(401)
+                    self.end_headers()
+                    return
+                body = b"PK\x03\x04ok"
+                self.send_response(200)
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+
+            def log_message(self, fmt, *args):
+                return
+
+        server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        destination = Path(tempfile.mkdtemp()) / "artifact.bin"
+        try:
+            S._download_url("http://127.0.0.1:%d/zip" % server.server_address[1],
+                            "secret-token-value-0000", destination)
+            self.assertEqual(b"PK\x03\x04ok", destination.read_bytes())
+            self.assertEqual("Bearer secret-token-value-0000", seen["/zip"][0])
+            self.assertIsNone(seen["/file"][0])
+        finally:
+            server.shutdown()
+            server.server_close()
 
 
 class FoundationRestore(unittest.TestCase):

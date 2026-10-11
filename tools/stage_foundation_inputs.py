@@ -288,30 +288,85 @@ def workflow_token():
     raise GateError("Foundation TestApps collision cannot be restored without the workflow token")
 
 
+def _token_candidates():
+    """AL-Go's probing path uses the base64 ghTokenWorkflow secret. GITHUB_TOKEN is the fallback."""
+    found = []
+    raw = os.environ.get("Secrets") or ""
+    data = {}
+    if raw:
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError:
+            data = {}
+    if isinstance(data, dict):
+        for key in ("ghTokenWorkflow", "githubToken", "ghToken"):
+            if data.get(key):
+                text = _secret_text(data[key])
+                found.append((key, text, text != data[key]))
+    for key in ("GITHUB_TOKEN", "GH_TOKEN"):
+        if os.environ.get(key):
+            found.append((key, os.environ[key], False))
+    require(found, "Foundation TestApps collision cannot be restored without the workflow token")
+    return found
+
+
+def _read_capped(response, destination):
+    remaining = MAX_BYTES
+    with Path(destination).open("wb") as output:
+        while True:
+            chunk = response.read(1024 * 1024)
+            if not chunk:
+                break
+            remaining -= len(chunk)
+            require(remaining >= 0, "Foundation Apps artifact exceeds cap")
+            output.write(chunk)
+
+
+class _ArtifactRedirect(Exception):
+    def __init__(self, url):
+        self.url = url
+
+
+class _StopRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise _ArtifactRedirect(newurl)
+
+
+def _download_url(url, token, destination):
+    """Download a GitHub artifact zip. Do not send the token to the redirect host."""
+    request = urllib.request.Request(url, headers={
+        "Authorization": "Bearer " + token,
+        "User-Agent": "bifrost-attachments",
+        "Accept": "application/vnd.github+json",
+    })
+    opener = urllib.request.build_opener(_StopRedirect)
+    try:
+        response = opener.open(request, timeout=120)
+    except _ArtifactRedirect as redirected:
+        follow = urllib.request.Request(redirected.url, headers={"User-Agent": "bifrost-attachments"})
+        with urllib.request.urlopen(follow, timeout=120) as response:
+            _read_capped(response, destination)
+        return
+    except urllib.error.HTTPError as exc:
+        host = urllib.request.urlparse(getattr(exc, "url", None) or url).netloc
+        raise GateError("Foundation Apps artifact download failed: HTTP " + str(exc.code) + " from " + host) from None
+    with response:
+        _read_capped(response, destination)
+
+
 def download_apps_archive(destination, profile="candidate530"):
     config = profile_config(profile)
     artifact_id = config["artifacts"]["Apps"][0]
     url = ("https://api.github.com/repos/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/artifacts/"
            + str(artifact_id) + "/zip")
-    request = urllib.request.Request(url, headers={
-        "Authorization": "Bearer " + workflow_token(),
-        "Accept": "application/vnd.github+json",
-        "User-Agent": "bifrost-attachments",
-    })
-    try:
-        with urllib.request.urlopen(request, timeout=120) as response:
-            remaining = MAX_BYTES
-            with Path(destination).open("wb") as output:
-                while True:
-                    chunk = response.read(1024 * 1024)
-                    if not chunk:
-                        break
-                    remaining -= len(chunk)
-                    require(remaining >= 0, "Foundation Apps artifact exceeds cap")
-                    output.write(chunk)
-    except urllib.error.HTTPError as exc:
-        raise GateError("Foundation Apps artifact download failed: HTTP " + str(exc.code)) from None
-    return destination
+    errors = []
+    for name, token, decoded in _token_candidates():
+        try:
+            _download_url(url, token, destination)
+            return destination
+        except GateError as exc:
+            errors.append(name + (" decoded" if decoded else "") + " len " + str(len(token)) + ": " + str(exc))
+    raise GateError("Foundation Apps artifact download failed: " + "; ".join(errors))
 
 
 def main():
