@@ -26,7 +26,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure FileGet_NoStorageCodeNoPath_ReportsBothMissing()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         Parameters: List of [Text];
     begin
@@ -47,7 +47,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure FileGet_UnknownStorageCode_ReturnsRecordNotFoundWithNextStep()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] An unknown storage code is RecordNotFound and points to Storage.Account.List.
@@ -65,7 +65,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure FileGet_DisabledConnection_ReturnsPreconditionFailed()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A disabled connection is a precondition, not a missing record.
@@ -81,7 +81,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure FileGet_DotDotPath_ReturnsInvalidParameter()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A path that walks out of the connection's base path is refused before any storage call.
@@ -98,7 +98,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure FileCreate_NotBase64_ReturnsInvalidParameterFormat()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] Content that is not base64 is a format error on contentBase64, and nothing is stored.
@@ -116,7 +116,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure UploadAppend_ThreeBadValues_ReportsAllTogether()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A malformed uploadId, a text sequence and a missing chunk are all reported at once.
@@ -135,7 +135,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure UploadAppend_FractionalSequence_ReturnsInvalidParameterFormat()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
         UploadId: Text;
@@ -155,7 +155,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure UploadAppend_DigitStringSequence_IsAccepted()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
         UploadId: Text;
@@ -175,7 +175,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure UploadBegin_NegativeDeclaredSize_ReturnsInvalidParameter()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] Boundary: a negative size is well-formed but not allowed.
@@ -192,7 +192,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure UploadBegin_Session_AdvertisesLargestChunk()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         DataObject: JsonObject;
         Token: JsonToken;
@@ -228,7 +228,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure UploadStatus_UnknownUploadId_ReturnsRecordNotFound()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A well-formed uploadId that names no session is RecordNotFound with a next step.
@@ -244,7 +244,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure Offload_UnknownTargetAndNoSystemId_ReportsBoth()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A wrong target and a missing systemId are reported together.
@@ -262,7 +262,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure Offload_UnknownSystemId_ReturnsRecordNotFound()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] An attachment that does not exist is RecordNotFound on systemId.
@@ -279,7 +279,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure Restore_AttachmentNotOffloaded_ReturnsPreconditionFailed()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         CreateJson: JsonObject;
         RestoreJson: JsonObject;
@@ -308,7 +308,7 @@ codeunit 96212 "Storage Error Response Tests"
     [Test]
     procedure CreateForRecord_TextTableId_ReturnsInvalidParameterFormat()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
@@ -362,7 +362,7 @@ codeunit 96212 "Storage Error Response Tests"
 
     local procedure AssertLocalizedUploadRefusal(LanguageId: Integer; ExpectedMessage: Text; ExpectedValue: Text)
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         UploadSession: Record "Storage Upload Session ori";
         RequestJson: JsonObject;
         SavedLanguageId: Integer;
@@ -387,7 +387,7 @@ codeunit 96212 "Storage Error Response Tests"
 
     local procedure AssertLocalizedTarget(LanguageId: Integer; ExpectedValue: Text)
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         SavedLanguageId: Integer;
     begin
@@ -408,7 +408,7 @@ codeunit 96212 "Storage Error Response Tests"
 
     local procedure AssertLocalizedUploadSuccess(LanguageId: Integer)
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         UploadSession: Record "Storage Upload Session ori";
         RequestJson: JsonObject;
         UploadId: Guid;
@@ -501,7 +501,7 @@ codeunit 96212 "Storage Error Response Tests"
 
     local procedure BeginUpload(): Text
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         RequestJson.Add('storageCode', MockCodeTok);
@@ -510,13 +510,13 @@ codeunit 96212 "Storage Error Response Tests"
         exit(ReadDataText(TempArgument, 'uploadId'));
     end;
 
-    local procedure AssertErrorAnswer(var TempArgument: Record "Message Argument ori"; ExpectedCode: Text; ExpectedParameter: Text)
+    local procedure AssertErrorAnswer(var TempArgument: Record "Message Argument ori" temporary; ExpectedCode: Text; ExpectedParameter: Text)
     begin
         AssertErrorCode(TempArgument, ExpectedCode);
         LibraryAssert.AreEqual(ExpectedParameter, ReadText(TempArgument.GetResponseJson(), 'parameter'), 'The error should name the parameter.');
     end;
 
-    local procedure AssertErrorCode(var TempArgument: Record "Message Argument ori"; ExpectedCode: Text)
+    local procedure AssertErrorCode(var TempArgument: Record "Message Argument ori" temporary; ExpectedCode: Text)
     var
         ResponseJson: JsonObject;
     begin
@@ -526,7 +526,7 @@ codeunit 96212 "Storage Error Response Tests"
         LibraryAssert.IsFalse(ResponseJson.Contains('callstack'), 'No call stack may reach the caller.');
     end;
 
-    local procedure ErrorParameters(var TempArgument: Record "Message Argument ori"; ErrorCode: Text) Parameters: List of [Text]
+    local procedure ErrorParameters(var TempArgument: Record "Message Argument ori" temporary; ErrorCode: Text) Parameters: List of [Text]
     var
         Token: JsonToken;
         EntryToken: JsonToken;
@@ -538,7 +538,7 @@ codeunit 96212 "Storage Error Response Tests"
                 Parameters.Add(ReadText(EntryToken.AsObject(), 'parameter'));
     end;
 
-    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -561,7 +561,7 @@ codeunit 96212 "Storage Error Response Tests"
         TempArgument.SetResponseJson(ResponseJson);
     end;
 
-    local procedure ReadDataText(var TempArgument: Record "Message Argument ori"; PropertyName: Text): Text
+    local procedure ReadDataText(var TempArgument: Record "Message Argument ori" temporary; PropertyName: Text): Text
     var
         Token: JsonToken;
     begin

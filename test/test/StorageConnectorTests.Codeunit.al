@@ -180,7 +180,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure AccountListReturnsConfiguredCode()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         ResponseJson: JsonObject;
         DataObject: JsonObject;
         AccountsToken: JsonToken;
@@ -202,7 +202,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure FileCreateThenGetRoundtripsContent()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
@@ -232,7 +232,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure FileExistsReflectsCreateAndDelete()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
@@ -261,7 +261,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure FileDelete_LinkedAttachment_ReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
@@ -288,7 +288,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure DirectoryDelete_ContainsLinkedAttachment_ReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
@@ -318,7 +318,7 @@ codeunit 96204 "Storage Connector Tests"
     procedure FileMove_LinkedAttachment_UpdatesLinkPath()
     var
         Link: Record "Storage Attachment Link ori";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
         MoveJson: JsonObject;
@@ -354,7 +354,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure CreateLinked_DuplicatePath_ReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
@@ -378,7 +378,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure FileListReturnsEntriesUnderPath()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
         DataObject: JsonObject;
@@ -408,7 +408,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure DirectoryCreateExistsDelete()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         // [GIVEN] A created directory
         Initialize();
@@ -429,7 +429,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure UnknownStorageCodeReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [GIVEN] A request naming a storage code that is not configured
@@ -448,7 +448,7 @@ codeunit 96204 "Storage Connector Tests"
     procedure DisabledConnectionIsRejected()
     var
         StorageSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         // [GIVEN] The mock connection is disabled
         Initialize();
@@ -466,7 +466,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure MissingPathReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [GIVEN] A request that omits the required path
@@ -483,7 +483,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure RelativePathSegmentIsRejected()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         // [SCENARIO] The base path is a connection's only confinement boundary, so a caller must
         // not be able to walk out of it with a relative segment.
@@ -500,7 +500,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure RelativePathWithBackslashesIsRejected()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         // [GIVEN] A request that hides the relative segment behind Windows separators
         Initialize();
@@ -515,7 +515,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure CurrentDirectorySegmentIsRejected()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         // [GIVEN] A request carrying a "." segment
         Initialize();
@@ -530,7 +530,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure DotsInsideAFileNameAreAccepted()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
     begin
@@ -550,7 +550,7 @@ codeunit 96204 "Storage Connector Tests"
     [Test]
     procedure GetMissingFileReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         // [GIVEN] An empty backend
         Initialize();
@@ -567,7 +567,7 @@ codeunit 96204 "Storage Connector Tests"
     var
         DocumentAttachment: Record "Document Attachment";
         Customer: Record Customer;
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         TempBlob: Codeunit "Temp Blob";
         RecRef: RecordRef;
         OffloadReq: JsonObject;
@@ -635,7 +635,7 @@ codeunit 96204 "Storage Connector Tests"
     var
         DocumentAttachment: Record "Document Attachment";
         Customer: Record Customer;
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         SeedBlob: Codeunit "Temp Blob";
         ExportBlob: Codeunit "Temp Blob";
         RecRef: RecordRef;
@@ -702,7 +702,7 @@ codeunit 96204 "Storage Connector Tests"
     var
         IncomingDocument: Record "Incoming Document";
         Attachment: Record "Incoming Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         SeedBlob: Codeunit "Temp Blob";
         ContentBlob: Codeunit "Temp Blob";
         OffloadReq: JsonObject;
@@ -769,7 +769,7 @@ codeunit 96204 "Storage Connector Tests"
 
     local procedure CreateLinkedIncomingAttachment(Path: Text; FileName: Text)
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         RequestJson.Add('storageCode', MockCodeTok);
@@ -859,14 +859,14 @@ codeunit 96204 "Storage Connector Tests"
         LibraryAssert.IsTrue(ParametersText.Contains('"storageCode"'), StrSubstNo(NoParamsErr, MessageType));
     end;
 
-    local procedure ExecuteType(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori")
+    local procedure ExecuteType(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori")
     var
         RequestJson: JsonObject;
     begin
         ExecuteTypeWithRequest(TempArgument, MessageType, RequestJson);
     end;
 
-    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -900,7 +900,7 @@ codeunit 96204 "Storage Connector Tests"
                 DataObject := Token.AsObject();
     end;
 
-    local procedure ReadDataBool(var TempArgument: Record "Message Argument ori"; PropertyName: Text): Boolean
+    local procedure ReadDataBool(var TempArgument: Record "Message Argument ori" temporary; PropertyName: Text): Boolean
     var
         DataObject: JsonObject;
         Token: JsonToken;
@@ -934,7 +934,7 @@ codeunit 96204 "Storage Connector Tests"
         exit(Token.AsValue().AsText());
     end;
 
-    local procedure AssertErrorResponse(var TempArgument: Record "Message Argument ori"; ExpectedCode: Text; ExpectedParameter: Text)
+    local procedure AssertErrorResponse(var TempArgument: Record "Message Argument ori" temporary; ExpectedCode: Text; ExpectedParameter: Text)
     var
         ResponseJson: JsonObject;
         WrongCodeErr: Label 'Expected an error with code %1.', Comment = '%1 = error code', Locked = true;

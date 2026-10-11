@@ -29,7 +29,7 @@ codeunit 96206 "Storage Attach Record Tests"
     procedure CreateForRecord_FromBase64_OnCustomer()
     var
         DocAttachment: Record "Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] Inline base64 content becomes a document attachment on a customer.
@@ -62,7 +62,7 @@ codeunit 96206 "Storage Attach Record Tests"
     procedure CreateForRecord_FromContentBase64_OnCustomer()
     var
         DocAttachment: Record "Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] #15 AC01 — contentBase64 is the canonical inline name on CreateForRecord.
@@ -88,7 +88,7 @@ codeunit 96206 "Storage Attach Record Tests"
     [Test]
     procedure CreateForRecord_RejectsContentAndContentBase64()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] #15 AC03 — sending both inline names is one clear error, not a guessed source.
@@ -110,7 +110,7 @@ codeunit 96206 "Storage Attach Record Tests"
     [Test]
     procedure CreateForRecordHelpDocumentsContentBase64First()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         ContractMgt: Codeunit "Msg Contract Mgt ori";
         Contract: JsonObject;
         MessageType: Enum "Message Type ori";
@@ -134,7 +134,7 @@ codeunit 96206 "Storage Attach Record Tests"
     procedure CreateForRecord_OnFixedAsset()
     var
         DocAttachment: Record "Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A fixed asset carries an attachment just like a customer does.
@@ -162,7 +162,7 @@ codeunit 96206 "Storage Attach Record Tests"
     var
         Customer: Record Customer;
         DocAttachment: Record "Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A record can be addressed by SystemId instead of by its number.
@@ -192,7 +192,7 @@ codeunit 96206 "Storage Attach Record Tests"
     var
         IncDocAttachment: Record "Incoming Document Attachment";
         DocAttachment: Record "Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A file that is already in Business Central is copied onto a record without
@@ -224,7 +224,7 @@ codeunit 96206 "Storage Attach Record Tests"
     procedure CreateForRecord_FromStorage_IsBornOffloaded()
     var
         DocAttachment: Record "Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         MockState: Codeunit "Storage Mock State";
         RequestJson: JsonObject;
         StoragePath: Text;
@@ -259,7 +259,7 @@ codeunit 96206 "Storage Attach Record Tests"
     [Test]
     procedure CreateForRecord_RejectsTwoContentSources()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] Ambiguity about where the bytes come from is refused rather than guessed at.
@@ -279,7 +279,7 @@ codeunit 96206 "Storage Attach Record Tests"
     [Test]
     procedure CreateForRecord_RejectsUnknownRecord()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] An attachment cannot be hung on a record that does not exist.
@@ -372,7 +372,7 @@ codeunit 96206 "Storage Attach Record Tests"
         exit(Base64Convert.ToBase64(InStr));
     end;
 
-    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -419,7 +419,7 @@ codeunit 96206 "Storage Attach Record Tests"
         exit(ReadText(DataToken.AsObject(), PropertyName));
     end;
 
-    local procedure AssertErrorResponse(var TempArgument: Record "Message Argument ori"; ExpectedCode: Text; ExpectedParameter: Text)
+    local procedure AssertErrorResponse(var TempArgument: Record "Message Argument ori" temporary; ExpectedCode: Text; ExpectedParameter: Text)
     var
         ResponseJson: JsonObject;
         WrongCodeErr: Label 'Expected an error with code %1.', Comment = '%1 = error code', Locked = true;

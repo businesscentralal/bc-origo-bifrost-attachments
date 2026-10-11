@@ -56,7 +56,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     [Test]
     procedure DefinitionListAndGet_RenderSeededDefinitionInOrder()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         DataObject: JsonObject;
@@ -143,7 +143,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     procedure TypeList_EmptyCompany_ReturnsCountZero()
     var
         DataExchType: Record "Data Exchange Type";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         DataObject: JsonObject;
     begin
@@ -159,7 +159,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     [Test]
     procedure EntryGet_PagesFields_AndRefusesFileAboveOneMegabyte()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         DataObject: JsonObject;
         Fields: JsonArray;
@@ -213,7 +213,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     [Test]
     procedure DataRecordsSet_OnDataExch_ReturnsHint()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         SetRequest: JsonObject;
         RecordObject: JsonObject;
         Fields: JsonObject;
@@ -239,7 +239,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     [Test]
     procedure NegativeSkip_AndMissingCode_ReturnErrors()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A missing definition code is status Error, and a negative skip is rejected.
@@ -426,7 +426,7 @@ codeunit 96213 "Data Exch Discovery Tests"
         exit(DataExch."Entry No.");
     end;
 
-    local procedure ExecuteType(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteType(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
