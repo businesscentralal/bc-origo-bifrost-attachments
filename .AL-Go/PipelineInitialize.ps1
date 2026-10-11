@@ -143,5 +143,9 @@ $foundationPython = Get-Command python3 -ErrorAction SilentlyContinue
 if (-not $foundationPython) {
     $foundationPython = Get-Command python -ErrorAction Stop
 }
-& $foundationPython.Source (Join-Path $env:GITHUB_WORKSPACE 'tools/stage_foundation_inputs.py') restore --root $env:GITHUB_WORKSPACE
-if ($LASTEXITCODE -ne 0) { throw 'Foundation candidate restore failed.' }
+# Keep the status line on the host log. This script's success stream is not a package path,
+# but the callback installer test invokes this tail and must not mix it into the returned .app.
+$foundationRestore = @(& $foundationPython.Source (Join-Path $env:GITHUB_WORKSPACE 'tools/stage_foundation_inputs.py') restore --root $env:GITHUB_WORKSPACE)
+$foundationRestoreExit = $LASTEXITCODE
+$foundationRestore | ForEach-Object { Write-Host $_ }
+if ($foundationRestoreExit -ne 0) { throw 'Foundation candidate restore failed.' }

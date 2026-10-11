@@ -14,6 +14,8 @@ function Assert-Contract($Condition, $Message) { if (-not $Condition) { throw $M
 try {
     New-Item -ItemType Directory -Path (Join-Path $fixture 'tools') -Force | Out-Null
     Copy-Item (Join-Path $source 'tools/Assert-AppSourceBuild.ps1') (Join-Path $fixture 'tools/Assert-AppSourceBuild.ps1')
+    $restoreStub = "print('{""action"": ""absent"", ""restored"": []}')`nprint('restore-status-must-not-return')"
+    [IO.File]::WriteAllText((Join-Path $fixture 'tools/stage_foundation_inputs.py'), $restoreStub)
     $env:GITHUB_WORKSPACE = $fixture
     $env:GITHUB_RUN_ID = 'fixture'; $env:GITHUB_RUN_ATTEMPT = '1'; $env:GITHUB_JOB = 'callback-fixture'; $env:GITHUB_SHA = 'a' * 40
     $env:Settings = @{enableCodeCop=$true;enableUICop=$true;enableCodeAnalyzersOnTestApps=$true;failOn='warning';workspaceCompilation=@{enabled=$false};type='AppSource App'} | ConvertTo-Json
@@ -85,6 +87,15 @@ try {
             $count++
         }
     }
+    [IO.File]::WriteAllText((Join-Path $fixture 'tools/stage_foundation_inputs.py'), "import sys`nprint('restore-refused', file=sys.stderr)`nsys.exit(4)")
+    [IO.File]::WriteAllText((Join-Path $fixture 'tools/appsource_gate.py'), "print('AppSource gate: before passed')")
+    $callsBefore = $script:compilerCalls
+    $refused = $false
+    try { Invoke-Command -ScriptBlock $callback -ArgumentList $parameters | Out-Null }
+    catch { $refused = $_.Exception.Message -ceq 'Foundation candidate restore failed.' }
+    Assert-Contract ($refused -and $script:compilerCalls -eq $callsBefore) 'Foundation restore failure reached the compiler'
+    [IO.File]::WriteAllText((Join-Path $fixture 'tools/stage_foundation_inputs.py'), $restoreStub)
+    $count++
     New-Item -ItemType Directory -Path (Join-Path $fixture '.AL-Go') -Force | Out-Null
     Copy-Item (Join-Path $source '.AL-Go/CompileAppWithBcCompilerFolder.ps1') (Join-Path $fixture '.AL-Go/CompileAppWithBcCompilerFolder.ps1')
     [IO.File]::WriteAllText((Join-Path $fixture 'tools/appsource_gate.py'), "print('AppSource gate: before passed')")

@@ -150,8 +150,12 @@ if ($Stage -eq 'BeforeCompile') {
     if ($CompilationParams.appSymbolsFolder) {
         $restoreArgs += @('--symbols', [string]$CompilationParams.appSymbolsFolder)
     }
-    & $python.Source @restoreArgs
-    if ($LASTEXITCODE -ne 0) { throw 'Foundation candidate restore failed.' }
+    # This callback's success stream is the single returned .app path. Restore
+    # status must stay on the host log or PostCompile sees more than one package.
+    $restoreOutput = @(& $python.Source @restoreArgs)
+    $restoreExitCode = $LASTEXITCODE
+    $restoreOutput | ForEach-Object { Write-Host $_ }
+    if ($restoreExitCode -ne 0) { throw 'Foundation candidate restore failed.' }
     # The gate counts byte-identical compiler symbol aliases, ReadyToRun
     # wrappers of the same app, and same id+version packages with the same
     # symbol reference and canonical compiler manifest as one package. It

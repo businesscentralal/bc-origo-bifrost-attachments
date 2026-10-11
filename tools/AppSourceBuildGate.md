@@ -263,9 +263,11 @@ extra same-AppId inputs and mutations fail closed. AL-Go extracts the Apps and
 TestApps artifacts onto one `Publisher_Name_Version.app`. Before compilation,
 `PipelineInitialize` restores the pinned Apps package when that file is the exact
 TestApps collision (same id and version, Foundation test friend, pinned collision
-hash). The Apps archive hash and the extracted package hash, source, build URL
-and zero-friend checks still have to match. Any other Foundation hash fails and
-is not replaced.
+hash). BeforeCompile repeats that restore inside the compiler callback. Its
+status line is written to the host log and is not part of the callback's package
+return, so PostCompile still receives exactly one `.app`. The Apps archive hash
+and the extracted package hash, source, build URL and zero-friend checks still
+have to match. Any other Foundation hash fails and is not replaced.
 
 Run staging tests with the genuine archives for both profiles:
 `Test-FoundationStaging.ps1 -ArtifactFolder <controlled523archives> -FixtureFolder <fixtures> -CandidateArtifactFolder <candidate530archives>`.
