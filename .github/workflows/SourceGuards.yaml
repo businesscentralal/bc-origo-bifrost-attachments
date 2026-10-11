@@ -80,19 +80,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Equivalent compiler symbol aliases
-        run: |
-          python3 -m unittest discover -s tools/tests -p test_symbol_duplicates.py -v
-          python3 -m unittest discover -s tools/tests -p test_foundation_restore.py -v
-
-  AppSourceCallbackReturn:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Compiler callback returns one package
-        shell: pwsh
-        run: ./tools/Test-AppSourceCallback.ps1
+        run: python3 -m unittest discover -s tools/tests -p test_symbol_duplicates.py -v
 
   IcelandicKeywordCounts:
     runs-on: ubuntu-latest

@@ -191,12 +191,7 @@ copy. Each package is limited to 128 MiB on disk and a 16 MiB manifest. The gene
 profile permits 128 MiB expanded content and 4096 ZIP entries; only the exact
 measured Base identity/hash below permits 512 MiB expanded content and 16384
 entries. The catalog has a separate 4 GiB expanded-work bound; the app cache keeps
-its 512 MiB expanded bound. Before and post compile do not charge that 512 MiB again for an exact
-compiler-catalog copy: the helper's Base Application copy is envelope plus
-embedded expansion and already passed the catalog budget. The test compile
-remeasures the same cache after the product compile. That copy still counts
-toward the cache's 128-package and 512 MiB disk bounds, and every package that
-is not an exact catalog copy still counts toward the 512 MiB expanded bound. The retained BC29 sample requires 1,863,664,153 bytes
+its 512 MiB expanded bound. The retained BC29 sample requires 1,863,664,153 bytes
 of wrapper plus embedded-app expansion. These finite bounds do not certify the
 complete runner catalog.
 Each full inventory has a 60 second elapsed budget with checks between 1 MiB reads.
@@ -238,11 +233,7 @@ Base Application29.0.54011.55935, SHA256
 The original embedded source has8665entries/379592378expanded bytes. For these
 exact bytes and identity only, the bound is16384entries/512MiBexpanded. Generic
 4096entries/128MiBexpanded and128MiBdisk limits remain; any changed or converted
-package hash needs its own measured technical disposition. Compiler artifact
-29.0.54011.56136 ships Base Application SHA256
-`ef3e37554444fd1b80ebe1b11fceace8e4c642405c552195b89b5bf9f9890823`
-(111997691 disk bytes). That wrapper hash, and the Base Application
-embedded in it, uses 16384 entries and 512 MiB expanded. Full CRC/hash reads
+package hash needs its own measured technical disposition. Full CRC/hash reads
 under the deadline are still required. Folder aggregate budgets stay unchanged;
 proposed2GiBexpanded inventory capacity is not approved as validated capacity.
 
@@ -264,15 +255,8 @@ package SHA256`391ba3df7917913ce4fd932096e0f8d5e474d45d0ee78c090f5abee37b1fbfe7`
 with Foundation Tests friend).523remains the explicit `controlled523` staging
 fixture; it cannot satisfy the current compilation-boundary530candidate check.
 Unknown profiles, changed archives/provenance, swapped Test inputs, missing or
-extra same-AppId inputs and mutations fail closed. AL-Go extracts the Apps and
-TestApps artifacts onto one `Publisher_Name_Version.app`. Before compilation,
-`PipelineInitialize` restores the pinned Apps package when that file is the exact
-TestApps collision (same id and version, Foundation test friend, pinned collision
-hash). BeforeCompile repeats that restore inside the compiler callback. Its
-status line is written to the host log and is not part of the callback's package
-return, so PostCompile still receives exactly one `.app`. The Apps archive hash
-and the extracted package hash, source, build URL and zero-friend checks still
-have to match. Any other Foundation hash fails and is not replaced.
+extra same-AppId inputs and mutations fail closed. Returned helper arrays must
+actually be wired by the existing pipeline owner; no workflow is changed here.
 
 Run staging tests with the genuine archives for both profiles:
 `Test-FoundationStaging.ps1 -ArtifactFolder <controlled523archives> -FixtureFolder <fixtures> -CandidateArtifactFolder <candidate530archives>`.

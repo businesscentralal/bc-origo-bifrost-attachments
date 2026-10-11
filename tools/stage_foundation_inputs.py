@@ -4,16 +4,11 @@ Run before Run-AlPipeline/AL-Go dependency extraction. The separate pipeline
 owner must apply the returned local-file arrays; this tool installs no hooks.
 """
 import argparse
-import base64
 import json
-import os
 import re
 import shutil
 import sys
 import tempfile
-import time
-import urllib.error
-import urllib.request
 import zipfile
 from pathlib import Path, PurePosixPath
 from appsource_gate import GateError, require, file_hash, package_info, rejected_receipt
@@ -189,221 +184,14 @@ def stage(request, destination):
     return arrays
 
 
-def _foundation_filename(identity):
-    return f"{identity['publisher']}_{identity['name']}_{identity['version']}.app"
-
-
-def restore_overwritten_foundation(root, fetch_archive, profile="candidate530", symbols=None):
-    """Put the approved Apps package back when TestApps extracted over the same filename.
-
-    AL-Go writes both artifacts into `.dependencies` as `Publisher_Name_Version.app`.
-    The TestApps package is the same id and version with the Foundation test friend
-    and a different hash. Only that exact collision is replaced, and only after the
-    Apps archive and extracted package match the pinned hashes. An already approved
-    file is left untouched. Any other hash fails without a download.
-    """
-    config = profile_config(profile)
-    root = Path(root)
-    filename = _foundation_filename(config["identity"]).casefold()
-    folders = [root / ".dependencies", root / ".packages", root / ".alpackages", root / "app" / ".alpackages"]
-    if symbols:
-        folders.append(Path(symbols))
-    found, seen = [], set()
-    for folder in folders:
-        if folder.is_dir() and not folder.is_symlink():
-            for path in folder.iterdir():
-                if path.is_file() and not path.is_symlink() and path.name.casefold() == filename:
-                    key = str(path.resolve())
-                    if key not in seen:
-                        seen.add(key)
-                        found.append(path)
-    if not found:
-        return {"action": "absent", "restored": []}
-    classified = []
-    for path in found:
-        info = package_info(path)
-        require(info["identity"] == config["identity"], "Unexpected Foundation filename identity")
-        if info["sha256"] == config["pin"] and info["friends"] == []:
-            kind = "approved"
-        elif info["sha256"] == config["testPin"] and info["friends"] == [TEST_FRIEND]:
-            kind = "collision"
-        else:
-            raise GateError("Unapproved Foundation package in dependency cache")
-        classified.append((path, kind, info["sha256"]))
-    collisions = [item for item in classified if item[1] == "collision"]
-    if not collisions:
-        return {"action": "already-approved", "restored": []}
-    with tempfile.TemporaryDirectory(prefix="foundation-restore-") as temp:
-        archive_path = Path(fetch_archive(Path(temp) / "apps.zip"))
-        require(file_hash(archive_path) == config["artifacts"]["Apps"][1], "Changed Foundation Apps artifact")
-        extracted = Path(temp) / "extracted"
-        extracted.mkdir()
-        extract_archive(archive_path, extracted)
-        approved = [path for path in extracted.glob("*.app") if file_hash(path) == config["pin"]]
-        require(len(approved) == 1, "Apps artifact does not contain the approved Foundation package")
-        info = package_info(approved[0])
-        require(info["identity"] == config["identity"] and info["friends"] == [] and info["sha256"] == config["pin"]
-                and info["sourceCommit"] == config["source"] and info["buildUrl"] == config["buildUrl"],
-                "Restored Foundation package failed candidate checks")
-        payload = approved[0].read_bytes()
-    restored = []
-    for path, _kind, digest in collisions:
-        require(file_hash(path) == digest, "Foundation cache changed during restore")
-        path.write_bytes(payload)
-        require(file_hash(path) == config["pin"] and package_info(path)["friends"] == [],
-                "Foundation restore did not land the approved package")
-        restored.append(str(path))
-    return {"action": "restored", "restored": restored}
-
-
-def _secret_text(value):
-    """AL-Go stores secret values base64-encoded inside the Secrets JSON object."""
-    try:
-        decoded = base64.b64decode(value, validate=True).decode("utf-8")
-    except (ValueError, UnicodeError):
-        return value
-    if re.fullmatch(r"[A-Za-z0-9_\-\.]{20,}", decoded):
-        return decoded
-    return value
-
-
-def workflow_token():
-    """Read the existing workflow token. Never include it in an error."""
-    raw = os.environ.get("Secrets") or ""
-    data = {}
-    if raw:
-        try:
-            data = json.loads(raw)
-        except json.JSONDecodeError:
-            try:
-                data = json.loads(base64.b64decode(raw))
-            except (json.JSONDecodeError, ValueError):
-                data = {}
-    if isinstance(data, dict):
-        for key in ("ghTokenWorkflow", "githubToken", "ghToken"):
-            if data.get(key):
-                return _secret_text(data[key])
-    for key in ("GH_TOKEN", "GITHUB_TOKEN"):
-        if os.environ.get(key):
-            return os.environ[key]
-    raise GateError("Foundation TestApps collision cannot be restored without the workflow token")
-
-
-def _token_candidates():
-    """AL-Go's probing path uses the base64 ghTokenWorkflow secret. GITHUB_TOKEN is the fallback."""
-    found = []
-    raw = os.environ.get("Secrets") or ""
-    data = {}
-    if raw:
-        try:
-            data = json.loads(raw)
-        except json.JSONDecodeError:
-            data = {}
-    if isinstance(data, dict):
-        for key in ("ghTokenWorkflow", "githubToken", "ghToken"):
-            if data.get(key):
-                text = _secret_text(data[key])
-                found.append((key, text, text != data[key]))
-    for key in ("GITHUB_TOKEN", "GH_TOKEN"):
-        if os.environ.get(key):
-            found.append((key, os.environ[key], False))
-    require(found, "Foundation TestApps collision cannot be restored without the workflow token")
-    return found
-
-
-def _read_capped(response, destination):
-    remaining = MAX_BYTES
-    with Path(destination).open("wb") as output:
-        while True:
-            chunk = response.read(1024 * 1024)
-            if not chunk:
-                break
-            remaining -= len(chunk)
-            require(remaining >= 0, "Foundation Apps artifact exceeds cap")
-            output.write(chunk)
-
-
-class _ArtifactRedirect(Exception):
-    def __init__(self, url):
-        self.url = url
-
-
-class _StopRedirect(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, req, fp, code, msg, headers, newurl):
-        raise _ArtifactRedirect(newurl)
-
-
-def _download_url_once(url, token, destination):
-    """Download a GitHub artifact zip. Do not send the token to the redirect host."""
-    request = urllib.request.Request(url, headers={
-        "Authorization": "Bearer " + token,
-        "User-Agent": "bifrost-attachments",
-        "Accept": "application/vnd.github+json",
-    })
-    opener = urllib.request.build_opener(_StopRedirect)
-    try:
-        response = opener.open(request, timeout=120)
-    except _ArtifactRedirect as redirected:
-        follow = urllib.request.Request(redirected.url, headers={"User-Agent": "bifrost-attachments"})
-        with urllib.request.urlopen(follow, timeout=120) as response:
-            _read_capped(response, destination)
-        return
-    except urllib.error.HTTPError as exc:
-        if exc.code in (502, 503, 504):
-            raise
-        host = urllib.request.urlparse(getattr(exc, "url", None) or url).netloc
-        raise GateError("Foundation Apps artifact download failed: HTTP " + str(exc.code) + " from " + host) from None
-    with response:
-        _read_capped(response, destination)
-
-
-def _download_url(url, token, destination):
-    """Retry a dropped connection. An HTTP auth or hash failure is not transient."""
-    for attempt in range(3):
-        try:
-            _download_url_once(url, token, destination)
-            return
-        except urllib.error.HTTPError as exc:
-            if exc.code not in (502, 503, 504) or attempt == 2:
-                raise
-        except (urllib.error.URLError, TimeoutError, ConnectionError, OSError):
-            if attempt == 2:
-                raise
-        time.sleep(attempt + 1)
-
-
-def download_apps_archive(destination, profile="candidate530"):
-    config = profile_config(profile)
-    artifact_id = config["artifacts"]["Apps"][0]
-    url = ("https://api.github.com/repos/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/artifacts/"
-           + str(artifact_id) + "/zip")
-    errors = []
-    for name, token, decoded in _token_candidates():
-        try:
-            _download_url(url, token, destination)
-            return destination
-        except GateError as exc:
-            errors.append(name + (" decoded" if decoded else "") + " len " + str(len(token)) + ": " + str(exc))
-    raise GateError("Foundation Apps artifact download failed: " + "; ".join(errors))
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['stage', 'validate', 'restore'])
-    parser.add_argument('--input', type=Path)
-    parser.add_argument('--destination', type=Path)
-    parser.add_argument('--root', type=Path)
-    parser.add_argument('--symbols', type=Path)
+    parser.add_argument('action', choices=['stage', 'validate'])
+    parser.add_argument('--input', type=Path, required=True)
+    parser.add_argument('--destination', type=Path, required=True)
     args = parser.parse_args()
     request = {}
     try:
-        if args.action == 'restore':
-            root = args.root or Path(os.environ.get("GITHUB_WORKSPACE") or ".")
-            result = restore_overwritten_foundation(
-                root, lambda destination: download_apps_archive(destination), symbols=args.symbols)
-            print(json.dumps(result))
-            return 0
-        require(args.input is not None and args.destination is not None, "stage/validate require --input and --destination")
         request = json.loads(args.input.read_text())
         if args.action == 'stage':
             arrays = stage(request, args.destination)
@@ -415,14 +203,13 @@ def main():
                      request['installTestApps'], request.get('symbols'))
         print('Foundation input ' + args.action + ' passed; signature trust not verified')
         return 0
-    except (GateError, OSError, ValueError, KeyError, zipfile.BadZipFile) as exc:
+    except (GateError, OSError, ValueError, KeyError, zipfile.BadZipFile):
         try:
-            if args.destination is not None:
-                paths = request.get('installApps', []) + request.get('installTestApps', [])
-                rejected_receipt(args.destination.parent / (args.destination.name + '-rejected.json'), request.get('context', {}), paths)
+            paths = request.get('installApps', []) + request.get('installTestApps', [])
+            rejected_receipt(args.destination.parent / (args.destination.name + '-rejected.json'), request.get('context', {}), paths)
         except (OSError, ValueError, KeyError):
             pass
-        print('Foundation input staging/selection failed: ' + str(exc), file=sys.stderr)
+        print('Foundation input staging/selection failed; original failure retained', file=sys.stderr)
         return 1
 
 

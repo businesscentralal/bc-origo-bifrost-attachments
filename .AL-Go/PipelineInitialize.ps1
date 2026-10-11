@@ -136,16 +136,3 @@ function Set-AppSourceCompilerCallback {
     Set-Variable -Name 'CompileAppWithBcCompilerFolder' -Value $callback -Scope 2
 }
 Set-AppSourceCompilerCallback
-
-# TestApps is extracted onto the same Publisher_Name_Version.app as Apps.
-# Put the pinned Apps package back before compilation reads the symbol cache.
-$foundationPython = Get-Command python3 -ErrorAction SilentlyContinue
-if (-not $foundationPython) {
-    $foundationPython = Get-Command python -ErrorAction Stop
-}
-# Keep the status line on the host log. This script's success stream is not a package path,
-# but the callback installer test invokes this tail and must not mix it into the returned .app.
-$foundationRestore = @(& $foundationPython.Source (Join-Path $env:GITHUB_WORKSPACE 'tools/stage_foundation_inputs.py') restore --root $env:GITHUB_WORKSPACE)
-$foundationRestoreExit = $LASTEXITCODE
-$foundationRestore | ForEach-Object { Write-Host $_ }
-if ($foundationRestoreExit -ne 0) { throw 'Foundation candidate restore failed.' }

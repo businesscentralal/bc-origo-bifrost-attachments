@@ -142,25 +142,6 @@ if ($Stage -eq 'BeforeCompile') {
         $translation = $translation -and $CompilationParams.ContainsKey($name) -and $CompilationParams[$name] -eq $false
     }
     $kind = if ($translation) { 'translation' } else { 'final' }
-    $python = Get-Command python3 -ErrorAction SilentlyContinue
-    if (-not $python) {
-        $python = Get-Command python -ErrorAction Stop
-    }
-    $restoreArgs = @((Join-Path $Root 'tools/stage_foundation_inputs.py'), 'restore', '--root', $Root)
-    if ($CompilationParams.appSymbolsFolder) {
-        $restoreArgs += @('--symbols', [string]$CompilationParams.appSymbolsFolder)
-    }
-    # This callback's success stream is the single returned .app path. Restore
-    # status must stay on the host log or PostCompile sees more than one package.
-    $restoreOutput = @(& $python.Source @restoreArgs)
-    $restoreExitCode = $LASTEXITCODE
-    $restoreOutput | ForEach-Object { Write-Host $_ }
-    if ($restoreExitCode -ne 0) { throw 'Foundation candidate restore failed.' }
-    # The gate counts byte-identical compiler symbol aliases, ReadyToRun
-    # wrappers of the same app, and same id+version packages with the same
-    # symbol reference and canonical compiler manifest as one package. It
-    # still fails on conflicting symbol content, compiler metadata, or
-    # versions. It does not change the app-symbol cache.
     Invoke-Gate 'before' @{
         context = $context
         kind = $kind
