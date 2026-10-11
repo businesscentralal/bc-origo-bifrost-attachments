@@ -333,11 +333,11 @@ codeunit 96212 "Storage Error Response Tests"
         // [SCENARIO] Invalid folder names produce localized prose with stable error keys.
         Initialize();
         AssertLocalizedUploadRefusal(1033,
-            'fileName must be a file name without folders; use path or folderPath for the destination folder.',
-            'a file name with no slash or backslash');
+            'Parameter "fileName" must be a file name without folders or relative segments.',
+            'a nonempty file name without slash or backslash');
         AssertLocalizedUploadRefusal(1039,
-            'fileName verður að vera skráarheiti án mappa; notaðu path eða folderPath fyrir áfangamöppuna.',
-            'skráarheiti án skástriks eða öfugs skástriks');
+            'Færibreytan "fileName" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.',
+            'skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik');
     end;
 
     /// <summary>Checks that localized expected text retains the attachment target identifiers.</summary>
@@ -365,21 +365,17 @@ codeunit 96212 "Storage Error Response Tests"
         TempArgument: Record "Message Argument ori" temporary;
         UploadSession: Record "Storage Upload Session ori";
         RequestJson: JsonObject;
-        SavedLanguageId: Integer;
         BeforeCount: Integer;
     begin
         // [GIVEN] A configured mock backend and an invalid file name containing a folder.
         BeforeCount := UploadSession.Count();
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('fileName', 'folder/file.txt');
-        SavedLanguageId := GlobalLanguage();
-        GlobalLanguage(LanguageId);
-        // [WHEN] Dispatching a real upload begin request.
-        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", RequestJson);
-        GlobalLanguage(SavedLanguageId);
+        // [WHEN] Dispatching a real upload begin request in the requested language.
+        ExecuteTypeWithRequestInLanguage(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", RequestJson, LanguageId);
         // [THEN] The refusal is translated, keys are stable, and no session was created.
         AssertErrorAnswer(TempArgument, 'InvalidParameter', 'fileName');
-        LibraryAssert.AreEqual(ExpectedMessage, ReadText(TempArgument.GetResponseJson(), 'message'), 'Localized refusal mismatch.');
+        LibraryAssert.AreEqual(ExpectedMessage, ReadText(TempArgument.GetResponseJson(), 'error'), 'Localized refusal mismatch.');
         LibraryAssert.AreEqual(ExpectedValue, ReadText(TempArgument.GetResponseJson(), 'expected'), 'Localized expected value mismatch.');
         LibraryAssert.AreEqual('folder/file.txt', ReadText(TempArgument.GetResponseJson(), 'received'), 'The received filename must remain unchanged.');
         LibraryAssert.AreEqual(BeforeCount, UploadSession.Count(), 'An invalid name must not create an upload session.');
@@ -389,17 +385,13 @@ codeunit 96212 "Storage Error Response Tests"
     var
         TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
-        SavedLanguageId: Integer;
     begin
         // [GIVEN] An unknown target and a valid identifier to isolate the target refusal.
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('target', 'Picture');
         RequestJson.Add('systemId', Format(CreateGuid(), 0, 4));
-        SavedLanguageId := GlobalLanguage();
-        GlobalLanguage(LanguageId);
-        // [WHEN] Dispatching a real attachment offload request.
-        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.Offload", RequestJson);
-        GlobalLanguage(SavedLanguageId);
+        // [WHEN] Dispatching a real attachment offload request in the requested language.
+        ExecuteTypeWithRequestInLanguage(TempArgument, TempArgument."Type"::"Storage.Attachment.Offload", RequestJson, LanguageId);
         // [THEN] Protocol target names and error keys stay stable in the localized response.
         AssertErrorAnswer(TempArgument, 'InvalidParameter', 'target');
         LibraryAssert.AreEqual(ExpectedValue, ReadText(TempArgument.GetResponseJson(), 'expected'), 'Expected target names must retain their wire spelling.');
@@ -552,6 +544,34 @@ codeunit 96212 "Storage Error Response Tests"
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
+        ResponseContent.GetSubText(ResponseText, 1);
+        ResponseJson.ReadFrom(ResponseText);
+        Clear(TempArgument);
+        TempArgument.Init();
+        TempArgument."Type" := MessageType;
+        TempArgument.Insert(true);
+        TempArgument.SetResponseJson(ResponseJson);
+    end;
+
+    local procedure ExecuteTypeWithRequestInLanguage(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer)
+    var
+        Dispatcher: Codeunit "Dispatcher ori";
+        RequestContent: BigText;
+        ResponseContent: BigText;
+        ResponseContentType: Text[100];
+        MessageVersion: Enum "Message Version ori";
+        EmptyTaskId: Guid;
+        MessageId: Guid;
+        ResponseTime: Duration;
+        RequestText: Text;
+        ResponseText: Text;
+        ResponseJson: JsonObject;
+    begin
+        RequestJson.WriteTo(RequestText);
+        RequestContent.AddText(RequestText);
+        // EnqueueAndProcess applies LanguageId. Execute resets the session to Foundation setup's default language.
+        Commit();
+        Dispatcher.EnqueueAndProcess(MessageType, MessageVersion, '', '', 'application/json', RequestContent, EmptyTaskId, LanguageId, MessageId, ResponseContent, ResponseContentType, ResponseTime);
         ResponseContent.GetSubText(ResponseText, 1);
         ResponseJson.ReadFrom(ResponseText);
         Clear(TempArgument);

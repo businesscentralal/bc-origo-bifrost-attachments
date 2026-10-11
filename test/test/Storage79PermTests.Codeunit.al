@@ -17,6 +17,8 @@ codeunit 96218 "Storage 79 Perm Tests ori"
 {
     Subtype = Test;
     TestPermissions = Restrictive;
+    // Dispatcher ori reads Foundation Setup ori for the response language. Indirect read keeps that call inside the restrictive actor.
+    Permissions = tabledata "Setup ori" = R;
 
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";

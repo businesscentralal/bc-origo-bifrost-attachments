@@ -248,10 +248,12 @@ codeunit 96213 "Data Exch Discovery Tests"
         LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains('code'), 'the error names code');
 
         Clear(RequestJson);
+        Clear(TempArgument);
         RequestJson.Add('entryNo', 1);
         RequestJson.Add('skip', -1);
-        asserterror ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Entry.Get", RequestJson);
-        LibraryAssert.ExpectedError('skip must be zero or greater');
+        ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Entry.Get", RequestJson);
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'negative skip');
+        LibraryAssert.IsTrue(ResponseText(TempArgument).Contains('skip'), 'the error names skip');
     end;
 
     [Test]
@@ -484,6 +486,11 @@ codeunit 96213 "Data Exch Discovery Tests"
     begin
         LibraryAssert.IsTrue(JsonObj.Get(PropertyName, Token), PropertyName);
         Result := Token.AsArray();
+    end;
+
+    local procedure ResponseText(var TempArgument: Record "Message Argument ori" temporary) Result: Text
+    begin
+        TempArgument.GetResponseJson().WriteTo(Result);
     end;
 
     local procedure ReadData(ResponseJson: JsonObject) DataObject: JsonObject

@@ -195,8 +195,7 @@ codeunit 96217 "Storage Native Fields Tests"
         Request.Add('storageCode', MockCodeTok);
         Faults.ConfigureNativeModifyFailure(AttachmentId);
         BindSubscription(Faults);
-        asserterror DispatchNativeOffload(Request);
-        LibraryAssert.ExpectedError('X75 native mirror persistence failure');
+        LibraryAssert.IsTrue(DispatchNativeOffload(Request).Contains('X75 native mirror persistence failure'), 'Native mirror failure must be reported.');
         UnbindSubscription(Faults);
         LibraryAssert.AreEqual(0, MockState.GetWriteCalls(), 'Native persistence must succeed before any irreversible provider write.');
         LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'Failure must not leave a remote orphan.');
@@ -237,7 +236,7 @@ codeunit 96217 "Storage Native Fields Tests"
         RecRef.Close();
     end;
 
-    local procedure DispatchNativeOffload(Request: JsonObject)
+    local procedure DispatchNativeOffload(Request: JsonObject) ResponseText: Text
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -248,5 +247,6 @@ codeunit 96217 "Storage Native Fields Tests"
         Request.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
+        ResponseContent.GetSubText(ResponseText, 1);
     end;
 }

@@ -137,7 +137,7 @@ codeunit 96205 "Storage Upload Tests"
         Session: Record "Storage Upload Session ori";
         TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
-        LeafFileNameErr: Label 'fileName must be a file name without folders', Locked = true;
+        LeafFileNameErr: Label 'must be a file name without folders', Locked = true;
     begin
         // [SCENARIO] #16 AC01 — a fileName that contains folders is rejected and creates no session.
         Initialize();
@@ -177,7 +177,7 @@ codeunit 96205 "Storage Upload Tests"
     var
         BeginHelp: Text;
         Overview: Text;
-        LeafFileNameErr: Label 'fileName must be a file name without folders', Locked = true;
+        LeafFileNameErr: Label 'must be a file name without folders', Locked = true;
         DefaultRootTok: Label 'bifrost-uploads/', Locked = true;
     begin
         // [SCENARIO] #16 — Upload.Begin help and the overview state the default root and the leaf-name rule.

@@ -58,6 +58,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
         ContractParts: Codeunit "Storage Contract Parts ori";
     begin
         Envelope := ContractParts.GetEnvelope(true);
+        Envelope.Add('messageType', 'DataExchange.Import.Run');
         exit(true);
     end;
 
@@ -114,9 +115,11 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
 
     /// <summary>Lists related message types.</summary>
     procedure GetRelated(var Related: JsonArray): Boolean
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        Related.Add('DataExchange.Definition.Get');
-        Related.Add('DataExchange.Entry.Get');
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Definition.Get', 'Read the definition used to create the header.'));
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Entry.Get', 'Read the created entry.'));
         exit(true);
     end;
 

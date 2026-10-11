@@ -59,6 +59,7 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
         ContractParts: Codeunit "Storage Contract Parts ori";
     begin
         Envelope := ContractParts.GetEnvelope(true);
+        Envelope.Add('messageType', 'DataExchange.Definition.Delete');
         exit(true);
     end;
 
@@ -115,9 +116,11 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
 
     /// <summary>Lists related message types.</summary>
     procedure GetRelated(var Related: JsonArray): Boolean
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        Related.Add('DataExchange.Definition.Get');
-        Related.Add('DataExchange.Type.List');
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Definition.Get', 'Read the definition before deleting it.'));
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Type.List', 'See which type still uses the definition.'));
         exit(true);
     end;
 

@@ -12,6 +12,14 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     Subtype = Test;
     TestPermissions = Restrictive;
     EventSubscriberInstance = Manual;
+    // Dispatcher ori reads Foundation Setup ori before the message runs. The other grants are the tables these refusals actually write.
+    Permissions =
+        tabledata "Setup ori" = R,
+        tabledata "Bank Export/Import Setup" = RIMD,
+        tabledata "Data Exch." = RIMD,
+        tabledata "Data Exch. Def" = RIMD,
+        tabledata "Data Exch. Line Def" = RIMD,
+        tabledata "Data Exchange Type" = RIMD;
 
     var
         LibraryAssert: Codeunit "Library Assert";

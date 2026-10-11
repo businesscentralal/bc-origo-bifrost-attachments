@@ -2,6 +2,7 @@ namespace Origo.Bifrost.Attachments;
 
 using Microsoft.EServices.EDocument;
 using Microsoft.Foundation.Attachment;
+using System.Reflection;
 using System.Utilities;
 
 /// <summary>
@@ -35,13 +36,16 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         Link: Record "Storage Attachment Link ori";
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
     begin
-        if IsHandled then begin
-            LogReadAlreadyHandled(DocumentAttachment.SystemId);
+        // A Bifrost link owns the bytes. Microsoft's external-storage module also subscribes and,
+        // because the native mirror sets Stored Externally, claims the read and looks in its own account.
+        // Serve the linked file even when that subscriber already set IsHandled.
+        Link.SetLoadFields("Storage Code", "Storage Path");
+        if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then begin
+            if IsHandled then
+                LogReadAlreadyHandled(DocumentAttachment.SystemId);
             exit;
         end;
-        Link.SetLoadFields("Storage Code", "Storage Path");
-        if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then
-            exit;
+        KeepMicrosoftModuleFromClaimingRead(DocumentAttachment);
         AttachmentMgt.FetchContent(Link."Storage Code", Link."Storage Path", TempBlob);
         IsHandled := true;
     end;
@@ -54,13 +58,13 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         TempBlob: Codeunit "Temp Blob";
         ContentInStream: InStream;
     begin
-        if IsHandled then begin
-            LogReadAlreadyHandled(DocumentAttachment.SystemId);
+        Link.SetLoadFields("Storage Code", "Storage Path");
+        if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then begin
+            if IsHandled then
+                LogReadAlreadyHandled(DocumentAttachment.SystemId);
             exit;
         end;
-        Link.SetLoadFields("Storage Code", "Storage Path");
-        if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then
-            exit;
+        KeepMicrosoftModuleFromClaimingRead(DocumentAttachment);
         AttachmentMgt.FetchContent(Link."Storage Code", Link."Storage Path", TempBlob);
         TempBlob.CreateInStream(ContentInStream);
         CopyStream(AttachmentOutStream, ContentInStream);
@@ -74,13 +78,13 @@ codeunit 10035636 "Storage Attachment Subscr ori"
     begin
         // Offloaded attachments have no local media, but the file is still available from storage,
         // so the UI must keep treating them as having content (download/preview stay enabled).
-        if IsHandled then begin
-            LogReadAlreadyHandled(DocumentAttachment.SystemId);
+        Link.SetLoadFields("Storage Code");
+        if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then begin
+            if IsHandled then
+                LogReadAlreadyHandled(DocumentAttachment.SystemId);
             exit;
         end;
-        Link.SetLoadFields("Storage Code");
-        if not Link.Get(Database::"Document Attachment", DocumentAttachment.SystemId) then
-            exit;
+        KeepMicrosoftModuleFromClaimingRead(DocumentAttachment);
         AttachmentIsAvailable := true;
         IsHandled := true;
     end;
@@ -118,6 +122,35 @@ codeunit 10035636 "Storage Attachment Subscr ori"
     local procedure TryDeleteRemote(var AttachmentMgt: Codeunit "Storage Attachment Mgt ori"; StorageCode: Code[20]; Path: Text)
     begin
         AttachmentMgt.DeleteRemote(StorageCode, Path);
+    end;
+
+    local procedure KeepMicrosoftModuleFromClaimingRead(var DocumentAttachment: Record "Document Attachment")
+    var
+        RecRef: RecordRef;
+        StoredInternallyFld: FieldRef;
+    begin
+        // Field 8753 is Stored Internally on External Storage - Document Attachments.
+        // That module claims the read when Stored Externally is set and Stored Internally is not.
+        // The native mirror sets exactly that pair, so a later subscriber would replace Bifrost bytes
+        // with an empty download from Microsoft's own file account. Marking the in-memory record
+        // internally stored makes that subscriber leave the read alone. The database row is unchanged.
+        RecRef.GetTable(DocumentAttachment);
+        if not RecRef.FieldExist(8753) then begin
+            RecRef.Close();
+            exit;
+        end;
+        StoredInternallyFld := RecRef.Field(8753);
+        if TryMarkStoredInternally(StoredInternallyFld) then
+            RecRef.SetTable(DocumentAttachment)
+        else
+            ClearLastError();
+        RecRef.Close();
+    end;
+
+    [TryFunction]
+    local procedure TryMarkStoredInternally(var StoredInternallyFld: FieldRef)
+    begin
+        StoredInternallyFld.Value := true;
     end;
 
     local procedure LogReadAlreadyHandled(RecSystemId: Guid)

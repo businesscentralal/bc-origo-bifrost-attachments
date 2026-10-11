@@ -8,6 +8,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-11) - restrictive dispatch, offloaded reads and Data Exchange contracts
+
+- Restrictive tests that call `Dispatcher ori` grant read on Foundation `Setup ori` (table 10077901). `Dispatcher ori.Execute` reads that table through `GetDefaultLanguageId`, and the call failed under `TestPermissions = Restrictive` with TableData 10077901 Read. The grant is the codeunit `Permissions` property on `Storage 79 Perm Tests ori` (96218) and `DataExch Refusal82 Tests ori` (96226), plus `tabledata "Setup ori" = R` on `Storage79 Test ori` (96218). Refusal82 also grants the Data Exchange and bank-setup tables those tests write.
+- Offloaded document-attachment reads stay on the Bifrost link when External Storage - Document Attachments is installed. That module treats the native mirror (`Stored Externally`, empty media, a filled external path) as its own file and answers `HasContent` / `GetAsTempBlob` from its account. The Bifrost subscriber now serves the linked bytes and marks the in-memory record stored internally so the Microsoft subscriber does not replace them. The database row is unchanged.
+- Data Exchange related chapters use Foundation `RelatedEntry` objects. Plain strings were read as message type "". `DataExchange.Export.Run` names `Storage.File.Create`. `DataExchange.Definition.Export` names `DataExchange.Definition.List`. `DataExchange.Definition.Import` is not a registered message type. The mutation envelopes include `messageType`. Type.List rows keep the seven shipped fields.
+- Icelandic refusals go through `EnqueueAndProcess` with the language id. `Execute` resets the session to the Foundation setup language, so `GlobalLanguage` alone came back in English. The fileName refusal text is the current label. Alias fixtures delete the committed `X75ALIAS` setup and its links before the next test. A missing file account on the setup card is committed before the expected error, so the Icelandic pass still finds the row. A negative `skip` is a structured error, not a thrown exception.
 
 
 ### Fixed (2026-10-11) - compiler symbol filename aliases
