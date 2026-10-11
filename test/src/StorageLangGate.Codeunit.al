@@ -13,14 +13,14 @@ codeunit 96223 "Storage Lang Gate ori"
     // Indirect read while this codeunit is on the stack. InherentPermissions does not accept tabledata on this compiler (AL0776).
     Permissions = tabledata "Setup ori" = R;
 
-    procedure Execute(MessageType: Enum "Message Type ori"; MessageVersion: Enum "Message Version ori"; Subject: Text; Source: Text; ContentType: Text; var RequestContent: BigText; var ResponseContent: BigText; var ResponseContentType: Text[100])
+    procedure Execute(MessageType: Enum "Message Type ori"; MessageVersion: Enum "Message Version ori"; Subject: Text[250]; Source: Text[250]; ContentType: Text[100]; var RequestContent: BigText; var ResponseContent: BigText; var ResponseContentType: Text[100])
     var
         Dispatcher: Codeunit "Dispatcher ori";
     begin
         Dispatcher.Execute(MessageType, MessageVersion, Subject, Source, ContentType, RequestContent, ResponseContent, ResponseContentType);
     end;
 
-    procedure EnqueueAndProcess(MessageType: Enum "Message Type ori"; MessageVersion: Enum "Message Version ori"; Subject: Text; Source: Text; ContentType: Text; var RequestContent: BigText; var TaskId: Guid; LanguageId: Integer; var MessageId: Guid; var ResponseContent: BigText; var ResponseContentType: Text[100]; var ResponseTime: Duration)
+    procedure EnqueueAndProcess(MessageType: Enum "Message Type ori"; MessageVersion: Enum "Message Version ori"; Subject: Text[250]; Source: Text[250]; ContentType: Text[100]; var RequestContent: BigText; var TaskId: Guid; LanguageId: Integer; var MessageId: Guid; var ResponseContent: BigText; var ResponseContentType: Text[100]; var ResponseTime: Duration)
     var
         Dispatcher: Codeunit "Dispatcher ori";
     begin
