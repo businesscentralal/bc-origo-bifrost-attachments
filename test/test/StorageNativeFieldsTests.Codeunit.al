@@ -165,6 +165,7 @@ codeunit 96217 "Storage Native Fields Tests"
         ContentOut: OutStream;
         ContentIn: InStream;
         ContentText: Text;
+        ResponseText: Text;
         MockCodeTok: Label 'X75NATIVE', Locked = true;
     begin
         // Requires the supported native extension. The missing-extension path is tested separately.
@@ -195,7 +196,8 @@ codeunit 96217 "Storage Native Fields Tests"
         Request.Add('storageCode', MockCodeTok);
         Faults.ConfigureNativeModifyFailure(AttachmentId);
         BindSubscription(Faults);
-        LibraryAssert.IsTrue(DispatchNativeOffload(Request).Contains('X75 native mirror persistence failure'), 'Native mirror failure must be reported.');
+        ResponseText := DispatchNativeOffload(Request);
+        LibraryAssert.IsTrue(ResponseText.Contains('X75 native mirror persistence failure'), 'Native mirror failure must be reported. Response: ' + ResponseText);
         UnbindSubscription(Faults);
         LibraryAssert.AreEqual(0, MockState.GetWriteCalls(), 'Native persistence must succeed before any irreversible provider write.');
         LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'Failure must not leave a remote orphan.');
@@ -221,7 +223,7 @@ codeunit 96217 "Storage Native Fields Tests"
         NativeModifyFailureId := AttachmentId;
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnBeforeModifyEvent', '', false, false)]
+    [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnAfterModifyEvent', '', false, false)]
     local procedure FailNativeMirrorModify(var Rec: Record "Document Attachment"; var xRec: Record "Document Attachment"; RunTrigger: Boolean)
     var
         RecRef: RecordRef;

@@ -35,7 +35,7 @@
 
 | Test set ID | Name | Purpose |
 |---|---|---|
-| 96218 | Storage79 Test ori | Enumerated test/assertion/lowering/mock codeunit execution; no production tabledata or wildcard |
+| 96218 | Storage79 Test ori | Enumerated test/assertion/lowering/mock codeunit execution, plus read on Foundation Setup ori for the dispatcher language; no attachment tabledata or wildcard |
 | 96219 | Storage79 Setup ori | Main's Attach grants with only setup IMD removed |
 | 96220 | Storage79 Source ori | Native attachment RIMD, no Customer read |
 | 96221 | Storage79 Target ori | Customer R and native attachment R, no native mutation |

@@ -12,14 +12,6 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     Subtype = Test;
     TestPermissions = Restrictive;
     EventSubscriberInstance = Manual;
-    // Dispatcher ori reads Foundation Setup ori before the message runs. The other grants are the tables these refusals actually write.
-    Permissions =
-        tabledata "Setup ori" = R,
-        tabledata "Bank Export/Import Setup" = RIMD,
-        tabledata "Data Exch." = RIMD,
-        tabledata "Data Exch. Def" = RIMD,
-        tabledata "Data Exch. Line Def" = RIMD,
-        tabledata "Data Exchange Type" = RIMD;
 
     var
         LibraryAssert: Codeunit "Library Assert";
@@ -1011,21 +1003,21 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
 
     local procedure Dispatch(MessageType: Enum "Message Type ori"; Payload: Text) Response: JsonObject
     var
-        Dispatcher: Codeunit "Dispatcher ori";
+        LangGate: Codeunit "Storage Lang Gate ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         ResponseType: Text[100];
         ResponseText: Text;
     begin
         RequestContent.AddText(Payload);
-        Dispatcher.Execute(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseType);
+        LangGate.Execute(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseType);
         ResponseContent.GetSubText(ResponseText, 1);
         LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'A real dispatch must return a JSON response.');
     end;
 
     local procedure DispatchLocale(Payload: Text; LanguageId: Integer) Response: JsonObject
     var
-        Dispatcher: Codeunit "Dispatcher ori";
+        LangGate: Codeunit "Storage Lang Gate ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         TaskId: Guid;
@@ -1035,7 +1027,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         ResponseText: Text;
     begin
         RequestContent.AddText(Payload);
-        Dispatcher.EnqueueAndProcess("Message Type ori"::"DataExchange.Import.Run", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseType, ResponseTime);
+        LangGate.EnqueueAndProcess("Message Type ori"::"DataExchange.Import.Run", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseType, ResponseTime);
         ResponseContent.GetSubText(ResponseText, 1);
         LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'The public queue path must return JSON.');
     end;

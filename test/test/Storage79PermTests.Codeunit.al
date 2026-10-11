@@ -17,8 +17,6 @@ codeunit 96218 "Storage 79 Perm Tests ori"
 {
     Subtype = Test;
     TestPermissions = Restrictive;
-    // Dispatcher ori reads Foundation Setup ori for the response language. Indirect read keeps that call inside the restrictive actor.
-    Permissions = tabledata "Setup ori" = R;
 
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
@@ -65,10 +63,11 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         StorageSetup.Get(StorageCode);
         StorageCard.OpenEdit();
         StorageCard.GoToRecord(StorageSetup);
-        asserterror StorageCard.Description.SetValue('X79 forbidden card change');
+        StorageCard.Description.SetValue('X79 forbidden card change');
+        // Field assignment stays in the page buffer. Closing writes the record, and the read-only role must refuse that write.
+        asserterror StorageCard.Close();
         LibraryAssert.AreNotEqual('', GetLastErrorText(), 'Refused page edit must explain the failure.');
         Observe();
-        StorageCard.Close();
         AssertSetupUnchanged();
     end;
 

@@ -145,15 +145,14 @@ codeunit 96205 "Storage Upload Tests"
         BeginReq.Add('storageCode', MockCodeTok);
         BeginReq.Add('fileName', 'bifrost-test/2026-09-12/chunked.bin');
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
-        AssertErrorResponse(TempArgument, 'InvalidParameter', 'fileName');
-        LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains(LeafFileNameErr), 'The error should say fileName must be a file name without folders.');
+        AssertFolderFileNameRefusal(TempArgument, LeafFileNameErr);
 
         Clear(BeginReq);
         BeginReq.Add('storageCode', MockCodeTok);
         BeginReq.Add('fileName', 'bifrost-test\chunked.bin');
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
-        AssertErrorResponse(TempArgument, 'InvalidParameter', 'fileName');
-        LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains(LeafFileNameErr), 'The error should say fileName must be a file name without folders.');
+        // A backslash is also an invalid derived path, so the fileName problem is collected with that path problem.
+        AssertFolderFileNameRefusal(TempArgument, LeafFileNameErr);
 
         Session.Reset();
         LibraryAssert.AreEqual(0, Session.Count(), 'A rejected fileName must not create an upload session.');
@@ -759,6 +758,43 @@ codeunit 96205 "Storage Upload Tests"
         Token: JsonToken;
     begin
         if not JsonObj.Get(PropertyName, Token) then
+            exit('');
+        if not Token.IsValue() then
+            exit('');
+        exit(Token.AsValue().AsText());
+    end;
+
+    local procedure AssertFolderFileNameRefusal(var TempArgument: Record "Message Argument ori" temporary; ExpectedText: Text)
+    var
+        ResponseJson: JsonObject;
+        Token: JsonToken;
+        ErrorToken: JsonToken;
+        Errors: JsonArray;
+        Problem: JsonObject;
+        Found: Boolean;
+    begin
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Error', ReadText(ResponseJson, 'status'), 'The call should answer with an error response.');
+        if ResponseJson.Get('errors', Token) then
+            Errors := Token.AsArray()
+        else
+            Errors.Add(ResponseJson);
+        foreach ErrorToken in Errors do begin
+            Problem := ErrorToken.AsObject();
+            if JsonTextOrBlank(Problem, 'parameter') = 'fileName' then begin
+                Found := true;
+                LibraryAssert.AreEqual('InvalidParameter', JsonTextOrBlank(Problem, 'code'), 'fileName must stay InvalidParameter.');
+                LibraryAssert.IsTrue(JsonTextOrBlank(Problem, 'error').Contains(ExpectedText), 'The error should say fileName must be a file name without folders.');
+            end;
+        end;
+        LibraryAssert.IsTrue(Found, 'The refusal must name fileName.');
+    end;
+
+    local procedure JsonTextOrBlank(DataObject: JsonObject; PropertyName: Text): Text
+    var
+        Token: JsonToken;
+    begin
+        if not DataObject.Get(PropertyName, Token) then
             exit('');
         if not Token.IsValue() then
             exit('');
