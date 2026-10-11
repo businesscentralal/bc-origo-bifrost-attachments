@@ -419,7 +419,10 @@ def symbol_inventory(folder, policy="appCache"):
             error.rejected_package = path
             raise
         identity = (info["identity"]["id"].lower(), version_tuple(info["identity"]["version"]))
-        require(identity not in identities, "Duplicate symbol identity/version")
+        if identity in identities:
+            error = GateError("Duplicate symbol identity/version")
+            error.rejected_package = path
+            raise error
         require(path.name.casefold() not in filenames, "Case-insensitive symbol filename collision")
         identities.add(identity)
         filenames.add(path.name.casefold())
@@ -431,6 +434,86 @@ def symbol_inventory(folder, policy="appCache"):
             "Symbol inventory membership changed during measurement")
     result.elapsed_seconds = time.monotonic() - started
     return result
+
+
+def _equivalent_symbol(kept, other):
+    """One package: identical bytes, or the same id and version with the same entries."""
+    return (kept["identity"] == other["identity"]
+            and (kept["sha256"] == other["sha256"] or kept["contentSha256"] == other["contentSha256"]))
+
+
+def collapse_equivalent_compiler_symbols(folder):
+    """Remove filename aliases from the compiler catalog and leave one package.
+
+    Byte-identical copies and same id+version packages with the same entry
+    content are deleted only after every group has been checked. The same app
+    id with different entry content, or two versions of that id, fails and the
+    folder is left unchanged. The app-symbol cache is not modified.
+    """
+    folder = Path(folder)
+    require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
+    limit = SYMBOL_POLICIES["compilerCatalog"]
+    deadline = time.monotonic() + INVENTORY_SECONDS
+    paths = []
+    for path in folder.iterdir():
+        budget_check(deadline)
+        if path.suffix.lower() == ".app":
+            paths.append(path)
+            require(len(paths) <= limit["packages"],
+                    "Symbol inventory exceeds " + str(limit["packages"]) + " packages (compilerCatalog)")
+    paths.sort()
+    require(sum(path.stat().st_size for path in paths) <= limit["bytes"], "Symbol aggregate-byte bound exceeded")
+    infos = []
+    for path in paths:
+        try:
+            info = package_info(path, deadline, allow_ready_to_run=True)
+        except GateError as error:
+            error.rejected_package = path
+            raise
+        info["file"] = path.name
+        infos.append(info)
+    by_id = {}
+    for info in infos:
+        by_id.setdefault(info["identity"]["id"].lower(), []).append(info)
+    for app_id, items in by_id.items():
+        versions = []
+        for info in items:
+            if info["identity"]["version"] not in versions:
+                versions.append(info["identity"]["version"])
+        if len(versions) > 1:
+            error = GateError("Duplicate symbol identity with conflicting version: "
+                              + app_id + " " + " vs ".join(versions))
+            error.rejected_package = folder / items[-1]["file"]
+            raise error
+    groups = {}
+    for info in infos:
+        key = (info["identity"]["id"].lower(), version_tuple(info["identity"]["version"]))
+        groups.setdefault(key, []).append(info)
+    removals = []
+    for items in groups.values():
+        if len(items) == 1:
+            continue
+        kept = items[0]
+        for other in items[1:]:
+            if _equivalent_symbol(kept, other):
+                removals.append({"retained": kept["file"], "removed": other["file"],
+                                 "sha256": kept["sha256"], "removedSha256": other["sha256"],
+                                 "contentSha256": kept["contentSha256"], "identity": kept["identity"]})
+                continue
+            error = GateError("Duplicate symbol identity/version with conflicting content: "
+                              + other["identity"]["publisher"] + " " + other["identity"]["name"] + " "
+                              + other["identity"]["version"])
+            error.rejected_package = folder / other["file"]
+            raise error
+    verified = []
+    for item in removals:
+        path = folder / item["removed"]
+        require(path.is_file() and not path.is_symlink() and file_hash(path, deadline) == item["removedSha256"],
+                "Catalog changed before alias removal")
+        verified.append(path)
+    for path in verified:
+        path.unlink()
+    return removals
 
 
 def inventory_measurement(items, policy):
@@ -564,6 +647,7 @@ def _before_compile(root, request):
     require(manifest["id"] in (product["id"], test["id"]), "Unexpected compilation project")
     app_type = "app" if manifest["id"] == product["id"] else "testApp"
     symbols = symbol_inventory(request["symbolsFolder"])
+    alias_removals = collapse_equivalent_compiler_symbols(request["compilerSymbolsFolder"])
     compiler_symbols = symbol_inventory(request["compilerSymbolsFolder"], "compilerCatalog")
     # Keep successful boundary measurements even if later identity/pin/resolution refuses.
     measured = {"context": context, "measurements": {
@@ -594,7 +678,7 @@ def _before_compile(root, request):
     snapshot = {"context": context, "kind": request["kind"], "appType": app_type, "symbols": symbols,
                 "symbolsFolder": str(Path(request["symbolsFolder"]).resolve()),
                 "compilerSymbolsFolder": str(Path(request["compilerSymbolsFolder"]).resolve()),
-                "compilerSymbols": compiler_symbols,
+                "compilerSymbols": compiler_symbols, "compilerAliasRemovals": alias_removals,
                 "measurements": {"appCache": inventory_measurement(symbols, "appCache"),
                                  "compilerCatalog": inventory_measurement(compiler_symbols, "compilerCatalog")},
                 "resolution": resolve_helper_inputs(manifest, symbols, compiler_symbols),

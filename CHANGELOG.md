@@ -10,6 +10,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 
 
+### Fixed (2026-10-11) - compiler symbol filename aliases
+
+- The AppSource before-compile gate treats a byte-identical compiler-symbol copy, or the same app id and version with the same package content, as one package. `Microsoft_<Name>.app` beside `Microsoft_<Name>_29.0.54011.56136.app` no longer fails the inventory. The same app id with different package content or a different version still fails, and no alias is removed in that case. The app-symbol cache still rejects every duplicate. No AL objects or IDs change.
+
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
 
 - Require the native action's exact completion marker before permitting compilation while preserving exact Foundation candidate identity, hash and provenance checks. Pin artifact lookup to workflow version `1.0.3.530`, containing app `28.0.3.530`. Rejection receipts prioritize the package that failed parsing, including failures beyond the 128-item diagnostic cap. Native callback and genuine-package mutation regressions cover silent success and retained offending bytes. Failure-receipt workflow upload remains with the pipeline owner for infrastructure review. No AL objects or IDs change; actual runner manifest diagnosis, Windows trust and product/runtime verification remain pending.

@@ -142,6 +142,9 @@ if ($Stage -eq 'BeforeCompile') {
         $translation = $translation -and $CompilationParams.ContainsKey($name) -and $CompilationParams[$name] -eq $false
     }
     $kind = if ($translation) { 'translation' } else { 'final' }
+    # The gate counts byte-identical and same-content id+version compiler
+    # symbol aliases as one package, and still fails on conflicting content
+    # or versions. It does not change the app-symbol cache.
     Invoke-Gate 'before' @{
         context = $context
         kind = $kind
