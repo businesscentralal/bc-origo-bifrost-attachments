@@ -1,6 +1,8 @@
 """TestApps filename collision restore. Synthetic packages, not artifact certification."""
+import base64
 import copy
 import io
+import json
 import struct
 import sys
 import tempfile
@@ -42,6 +44,13 @@ def archive_of(path, destination):
     with zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as archive:
         archive.write(path, path.name)
     return destination
+
+
+class WorkflowToken(unittest.TestCase):
+    def test_algo_secret_json_is_base64_decoded(self):
+        encoded = base64.b64encode(b"ghp_exampletokenvalue000").decode("ascii")
+        with patch.dict("os.environ", {"Secrets": json.dumps({"ghTokenWorkflow": encoded})}, clear=False):
+            self.assertEqual("ghp_exampletokenvalue000", S.workflow_token())
 
 
 class FoundationRestore(unittest.TestCase):

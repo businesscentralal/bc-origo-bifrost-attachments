@@ -255,6 +255,17 @@ def restore_overwritten_foundation(root, fetch_archive, profile="candidate530", 
     return {"action": "restored", "restored": restored}
 
 
+def _secret_text(value):
+    """AL-Go stores secret values base64-encoded inside the Secrets JSON object."""
+    try:
+        decoded = base64.b64decode(value, validate=True).decode("utf-8")
+    except (ValueError, UnicodeError):
+        return value
+    if re.fullmatch(r"[A-Za-z0-9_\-\.]{20,}", decoded):
+        return decoded
+    return value
+
+
 def workflow_token():
     """Read the existing workflow token. Never include it in an error."""
     raw = os.environ.get("Secrets") or ""
@@ -270,7 +281,7 @@ def workflow_token():
     if isinstance(data, dict):
         for key in ("ghTokenWorkflow", "githubToken", "ghToken"):
             if data.get(key):
-                return data[key]
+                return _secret_text(data[key])
     for key in ("GH_TOKEN", "GITHUB_TOKEN"):
         if os.environ.get(key):
             return os.environ[key]
