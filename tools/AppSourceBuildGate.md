@@ -175,13 +175,16 @@ transient compiler consumption nor signature trust.
 
 The complete compiler catalog is measured independently from the actual
 `appSymbolsFolder` package cache. The genuine helper receives its original
-folders and parameters. Equivalent compiler-catalog filename aliases — a
-byte-identical copy, or the same app id and version with the same package
-entry content — are removed before that measurement so the inventory counts
-one package. The same app id with different entry content, or two versions of
-that id, fails and no alias is removed. The app-symbol cache still rejects
-every duplicate app id and version. No other package is pruned and no private
-compiler view is used.
+folders and parameters. Equivalent compiler-catalog filename aliases are removed before that
+measurement so the inventory counts one package. A byte-identical copy, the
+same zip entry content, a ReadyToRun wrapper whose embedded app has that
+content, and the same app id and version with the same `SymbolReference.json`
+and canonical compiler manifest are one package. The versioned filename is
+kept. Build timestamps and `TRANSLATIONFILE` / `LCGTRANSLATIONFILE` packaging
+flags are not compiler conflicts. The same app id with a different symbol
+reference or compiler manifest, or two versions of that id, fails and no alias
+is removed. The app-symbol cache still rejects every duplicate app id and
+version. No other package is pruned and no private compiler view is used.
 The catalog limit is 256 packages and 1 GiB aggregate on disk; the app cache limit is
 128 packages and 512 MiB aggregate, including preexisting inputs and the output
 copy. Each package is limited to 128 MiB on disk and a 16 MiB manifest. The generic

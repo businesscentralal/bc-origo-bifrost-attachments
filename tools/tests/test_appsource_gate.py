@@ -617,7 +617,8 @@ class GenuinePackages(unittest.TestCase):
         self.assertEqual(1, len(compiler))
         self.assertEqual(1, len(list(folder.glob("*.app"))))
         self.assertEqual(1, len(snapshot["compilerAliasRemovals"]))
-        self.assertTrue((folder / "Foundation.app").is_file())
+        self.assertTrue((folder / "Foundation_28.0.3.530.app").is_file())
+        self.assertFalse((folder / "Foundation.app").is_file())
 
     def test_conflicting_compiler_versions_preserve_both_disk_hashes(self):
         self.state()

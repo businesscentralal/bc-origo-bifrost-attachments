@@ -183,6 +183,25 @@ def compile_spans(text):
     return spans
 
 
+def _compiler_manifest_document(node, namespace):
+    """Canonical compiler manifest. Timestamps and translation packaging flags are not inputs."""
+    ignored_flags = ("TRANSLATIONFILE", "LCGTRANSLATIONFILE")
+    attributes = {key: value for key, value in node.attrib.items()
+                  if not (node.tag == namespace + "Build" and key == "Timestamp")}
+    children = []
+    for child in list(node):
+        if (node.tag == namespace + "Features" and child.tag == namespace + "Feature"
+                and (child.text or "").strip() in ignored_flags):
+            continue
+        children.append(_compiler_manifest_document(child, namespace))
+    return [node.tag, sorted(attributes.items()), (node.text or "").strip(), children]
+
+
+def _compiler_manifest_hash(root):
+    namespace = "{http://schemas.microsoft.com/navx/2015/manifest}"
+    return digest(json.dumps(_compiler_manifest_document(root, namespace), sort_keys=True).encode())
+
+
 def package_info(path, deadline=None, *, allow_ready_to_run=False, measured_profile=None):
     """Stream bounded NAVX content and metadata; signature presence is not trust."""
     path = Path(path)
@@ -294,6 +313,9 @@ def package_info(path, deadline=None, *, allow_ready_to_run=False, measured_prof
             "sourceCommit": source.get("Commit", ""), "compilerVersion": build.get("CompilerVersion", ""),
             "buildUrl": build.get("Url", ""), "sha256": initial_hash,
             "contentSha256": digest(json.dumps(entries, sort_keys=True).encode()),
+            "symbolReferenceSha256": next((entry["sha256"] for entry in entries
+                                           if entry["name"] == "SymbolReference.json"), None),
+            "compilerManifestSha256": _compiler_manifest_hash(root),
             "bytes": before.st_size, "expandedBytes": expanded, "entryCount": len(items),
             "resourceProfile": initial_hash if profile else "generic",
             "signatureTailBytes": before.st_size - 40 - length}
@@ -445,18 +467,46 @@ def symbol_inventory(folder, policy="appCache"):
     return result
 
 
-def _equivalent_symbol(kept, other):
-    """One package: identical bytes, or the same id and version with the same entries."""
-    return (kept["identity"] == other["identity"]
-            and (kept["sha256"] == other["sha256"] or kept["contentSha256"] == other["contentSha256"]))
+def _symbol_conflict(kept, other):
+    """None when two same-identity packages are one compiler input.
+
+    Byte-identical files, identical zip entries, and a ReadyToRun wrapper whose
+    embedded app matches the other package's entries are the same package.
+    Otherwise SymbolReference.json and the canonical compiler manifest must
+    both be present and equal. A missing symbol reference is a conflict.
+    """
+    if kept["identity"] != other["identity"]:
+        return "identity"
+    if kept["sha256"] == other["sha256"] or kept["contentSha256"] == other["contentSha256"]:
+        return None
+    for left, right in ((kept, other), (other, kept)):
+        embedded = (left.get("readyToRun") or {}).get("embeddedContentSha256")
+        if embedded and embedded == right["contentSha256"]:
+            return None
+    left_symbol, right_symbol = kept.get("symbolReferenceSha256"), other.get("symbolReferenceSha256")
+    if not left_symbol or not right_symbol:
+        return "missing symbol reference"
+    if left_symbol != right_symbol:
+        return "symbol reference"
+    if kept.get("compilerManifestSha256") != other.get("compilerManifestSha256"):
+        return "compiler manifest"
+    return None
+
+
+def _prefer_retained_symbol(item):
+    """Keep the versioned artifact name; it is the catalog's primary filename."""
+    versioned = item["file"].casefold().endswith("_" + item["identity"]["version"].casefold() + ".app")
+    return (0 if versioned else 1, item["file"].casefold())
 
 
 def collapse_equivalent_compiler_symbols(folder):
     """Remove filename aliases from the compiler catalog and leave one package.
 
-    Byte-identical copies and same id+version packages with the same entry
-    content are deleted only after every group has been checked. The same app
-    id with different entry content, or two versions of that id, fails and the
+    Byte-identical copies, same entry content, a ReadyToRun wrapper of that
+    content, and the same id+version with the same symbol reference and
+    canonical compiler manifest are deleted only after every group has been
+    checked. The versioned filename is kept. The same app id with different
+    symbol or manifest content, or two versions of that id, fails and the
     folder is left unchanged. The app-symbol cache is not modified.
     """
     folder = Path(folder)
@@ -502,16 +552,21 @@ def collapse_equivalent_compiler_symbols(folder):
     for items in groups.values():
         if len(items) == 1:
             continue
+        items.sort(key=_prefer_retained_symbol)
         kept = items[0]
         for other in items[1:]:
-            if _equivalent_symbol(kept, other):
+            reason = _symbol_conflict(kept, other)
+            if reason is None:
                 removals.append({"retained": kept["file"], "removed": other["file"],
                                  "sha256": kept["sha256"], "removedSha256": other["sha256"],
-                                 "contentSha256": kept["contentSha256"], "identity": kept["identity"]})
+                                 "contentSha256": kept["contentSha256"],
+                                 "symbolReferenceSha256": kept.get("symbolReferenceSha256"),
+                                 "compilerManifestSha256": kept.get("compilerManifestSha256"),
+                                 "identity": kept["identity"]})
                 continue
-            error = GateError("Duplicate symbol identity/version with conflicting content: "
-                              + other["identity"]["publisher"] + " " + other["identity"]["name"] + " "
-                              + other["identity"]["version"])
+            error = GateError("Duplicate symbol identity/version with conflicting content ("
+                              + reason + "): " + other["identity"]["publisher"] + " "
+                              + other["identity"]["name"] + " " + other["identity"]["version"])
             error.rejected_package = folder / other["file"]
             raise error
     verified = []
