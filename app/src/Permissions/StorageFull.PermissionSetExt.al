@@ -5,12 +5,12 @@ using Origo.Bifrost;
 /// <summary>
 /// Adds the storage connector to Foundation's "BIFROST Full ori" role, so a Bifröst
 /// administrator gets it without a second assignment. The storage grants match the
-/// assignable "BIFROST Attach ori" set. Data Exchange read access is included from
-/// "BIFROST DataExch ori" so foreign tables are not granted on this extension.
+/// assignable "BIFROST Attach ori" set. Data Exchange table access stays on the
+/// assignable "BIFROST DataExch ori" set. A permission set extension cannot grant
+/// or include objects that another application defines.
 /// </summary>
 permissionsetextension 10035635 "Storage Full ori" extends "BIFROST Full ori"
 {
-    IncludedPermissionSets = "BIFROST DataExch ori";
     Permissions =
         tabledata "Storage Attachment Link ori" = RIMD,
         tabledata "Storage Setup ori" = RIMD,
