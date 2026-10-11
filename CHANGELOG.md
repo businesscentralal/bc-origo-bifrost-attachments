@@ -13,6 +13,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Fixed (2026-10-11) - compiler symbol filename aliases
 
 - The AppSource before-compile gate treats a compiler-symbol filename alias as one package when the bytes match, the package entries match, a ReadyToRun wrapper embeds that package, or the same app id and version has the same SymbolReference and canonical compiler manifest. The versioned filename is kept. Build timestamps and TRANSLATIONFILE/LCGTRANSLATIONFILE packaging flags are not compiler conflicts. A different symbol reference, compiler manifest, or version still fails, and no alias is removed in that case. The app-symbol cache still rejects every duplicate. No AL objects or IDs change.
+- The Current compiler catalog Base Application 28.5.54151.55751 (SHA256 a2e638554f9c97d37f760d6ab42703e1ed136fd229676e79bb1d1a8224a23d23, 98891185 disk bytes) is an exact measured ReadyToRun profile. That wrapper and its embedded app allow 16384 entries and 512 MiB expanded. The embedded app has 8602 entries and 373064901 expanded bytes; the wrapper adds 261371054. A compiler-catalog copy of that package is not charged again against the app-cache 512 MiB expanded bound. Package count and disk bytes still include the copy. When the Foundation TestApps package is extracted onto the approved Apps filename, BeforeCompile restores the pinned Apps bytes (28.0.3.530, zero friend grants) before the symbol cache is read. Any other Foundation hash still fails and is not replaced.
 
 ### Changed (2026-10-11) - pin the Current build to BC 28.5
 

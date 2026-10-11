@@ -231,7 +231,15 @@ profile: identity `437dbf0e-84ff-417a-965d-ed2bb9650972`, Microsoft,
 Base Application29.0.54011.55935, SHA256
 `10ebba923b6f8d3b6d676cc1f1db16a8a5d4519ff8ca4f45bbd2e778b52d289c`.
 The original embedded source has8665entries/379592378expanded bytes. For these
-exact bytes and identity only, the bound is16384entries/512MiBexpanded. Generic
+exact bytes and identity only, the bound is16384entries/512MiBexpanded. The Current
+build's Base Application wrapper `a2e638554f9c97d37f760d6ab42703e1ed136fd229676e79bb1d1a8224a23d23`
+(Microsoft Base Application 28.5.54151.55751, 98891185 disk bytes) is the same kind of
+exact profile: 9 outer entries, 261371054 outer expanded bytes, and an embedded app of
+8602 entries and 373064901 expanded bytes. That outer hash lifts the embedded app to
+16384 entries and 512 MiB expanded. A compiler-catalog copy of a package already measured
+under the catalog budget is not charged again against the app-cache 512 MiB expanded bound.
+The copy still counts toward the cache package count and disk-byte bound. Any other cache
+package still counts. Generic
 4096entries/128MiBexpanded and128MiBdisk limits remain; any changed or converted
 package hash needs its own measured technical disposition. Full CRC/hash reads
 under the deadline are still required. Folder aggregate budgets stay unchanged;
@@ -245,7 +253,10 @@ package SHA256`b95e0eccf7a4038531cea08f0441e757ac176c7c4ff06b1b8eb9d25ac0dd3a88`
 compiler18.1.43.7601 and zero friend grants. All identity, source, build and byte
 fields are required, including presence of the original signature content.
 Presence is not Windows signature trust. Candidate approval does not release
-actual runner equality, runtime or signing acceptance.
+actual runner equality, runtime or signing acceptance. When AL-Go extracts the
+Foundation TestApps package onto the same filename as the approved Apps package,
+BeforeCompile puts the pinned Apps bytes back before the symbol cache is read.
+Any other Foundation hash still fails and is not replaced.
 
 Staging defaults to the explicit `candidate530` profile, receipt schema2. It
 verifies both complete archives/provenance, preserves Apps bytes and excludes

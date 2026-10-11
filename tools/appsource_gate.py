@@ -49,6 +49,14 @@ MEASURED_PACKAGE_PROFILES = {
                      "name": "Base Application", "version": "29.0.54011.55935"},
         "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024,
     },
+    # ReadyToRun wrapper from sandbox/28.5.54151.55751/w1, disk size 98891185.
+    # Outer expansion is 261371054 bytes. The embedded app has 8602 entries and
+    # 373064901 expanded bytes. The outer hash lifts that embedded app.
+    "a2e638554f9c97d37f760d6ab42703e1ed136fd229676e79bb1d1a8224a23d23": {
+        "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
+                     "name": "Base Application", "version": "28.5.54151.55751"},
+        "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024,
+    },
 }
 FOUNDATION_CANDIDATE = {
     "identity": {"id": "7505e808-6e52-4b96-a328-82573391297a", "publisher": "Origo",
@@ -195,7 +203,7 @@ def _compiler_manifest_hash(root):
     return digest(json.dumps(_compiler_manifest_document(root, namespace), sort_keys=True).encode())
 
 
-def package_info(path, deadline=None, *, allow_ready_to_run=False):
+def package_info(path, deadline=None, *, allow_ready_to_run=False, measured_profile=None):
     """Stream bounded NAVX content and metadata; signature presence is not trust."""
     path = Path(path)
     deadline = time.monotonic() + INVENTORY_SECONDS if deadline is None else deadline
@@ -215,6 +223,8 @@ def package_info(path, deadline=None, *, allow_ready_to_run=False):
                     "Invalid NAVX payload length/header")
             initial_hash = file_hash(path, deadline)
             profile = MEASURED_PACKAGE_PROFILES.get(initial_hash)
+            if profile is None:
+                profile = measured_profile
             max_entries = profile["maxEntries"] if profile else PACKAGE_ENTRIES
             max_expanded = profile["maxExpandedBytes"] if profile else PACKAGE_BYTES
             with zipfile.ZipFile(PayloadView(stream, 40, length)) as archive:
@@ -363,7 +373,7 @@ def ready_to_run_info(path, before, archive, items, initial_hash, length, deadli
                             target.write(chunk)
             require(size == item.file_size, "Truncated expanded entry")
             entries.append({"name": item.filename, "sha256": sha.hexdigest()})
-        inner = package_info(inner_path, deadline)
+        inner = package_info(inner_path, deadline, measured_profile=profile)
         require(inner["identity"] == expected, "ReadyToRun embedded identity mismatch")
         if profile:
             require(inner["identity"] == profile["identity"], "Measured package profile identity mismatch")
@@ -417,9 +427,15 @@ class SymbolInventory(list):
     """List-compatible immutable receipt payload with local elapsed measurement."""
 
 
-def symbol_inventory(folder, policy="appCache"):
-    """Complete inventories use distinct finite catalog/cache resource policies."""
+def symbol_inventory(folder, policy="appCache", expanded_exemptions=()):
+    """Complete inventories use distinct finite catalog/cache resource policies.
+
+    App-cache expanded exemptions are exact compiler-catalog package hashes
+    already measured under the catalog budget. They still count toward the
+    cache package and disk-byte bounds. The catalog inventory never exempts.
+    """
     require(policy in SYMBOL_POLICIES, "Unknown symbol resource policy")
+    exemptions = set(expanded_exemptions) if policy == "appCache" else set()
     folder = Path(folder)
     require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
     limit, started = SYMBOL_POLICIES[policy], time.monotonic()
@@ -445,7 +461,11 @@ def symbol_inventory(folder, policy="appCache"):
         require(path.name.casefold() not in filenames, "Case-insensitive symbol filename collision")
         identities.add(identity)
         filenames.add(path.name.casefold())
-        expanded += info["expandedBytes"]
+        # Envelope plus embedded expansion for a catalog copy is already inside
+        # the catalog budget. Charging it again against the cache's 512 MiB
+        # expanded bound rejects the helper's dependency copy.
+        if info["sha256"] not in exemptions:
+            expanded += info["expandedBytes"]
         require(expanded <= limit.get("expandedBytes", limit["bytes"]), "Symbol aggregate expanded-byte bound exceeded")
         result.append({"file": path.name, **info})
     budget_check(deadline)
@@ -649,7 +669,7 @@ def reconcile_symbols(snapshot, request, output):
             "Changed compiler symbol path")
     compiler = symbol_inventory(request["compilerSymbolsFolder"], "compilerCatalog")
     require(compiler == snapshot["compilerSymbols"], "Compiler-folder inputs changed during helper call")
-    final = symbol_inventory(request["symbolsFolder"])
+    final = symbol_inventory(request["symbolsFolder"], expanded_exemptions={item["sha256"] for item in compiler})
     before = {s["file"]: s for s in snapshot["symbols"]}
     prepared = {s["file"]: s for s in compiler}
     after = {s["file"]: s for s in final}
@@ -698,9 +718,15 @@ def _before_compile(root, request):
     test = json.loads((root / "test/app.json").read_text(encoding="utf-8-sig"))
     require(manifest["id"] in (product["id"], test["id"]), "Unexpected compilation project")
     app_type = "app" if manifest["id"] == product["id"] else "testApp"
-    symbols = symbol_inventory(request["symbolsFolder"])
     alias_removals = collapse_equivalent_compiler_symbols(request["compilerSymbolsFolder"])
     compiler_symbols = symbol_inventory(request["compilerSymbolsFolder"], "compilerCatalog")
+    # The test compile remeasures the cache after the product compile copied
+    # catalog packages into it. Those exact hashes already passed the catalog
+    # budget; the cache expanded bound still applies to everything else.
+    symbols = symbol_inventory(
+        request["symbolsFolder"],
+        expanded_exemptions={item["sha256"] for item in compiler_symbols},
+    )
     # Keep successful boundary measurements even if later identity/pin/resolution refuses.
     measured = {"context": context, "measurements": {
         "appCache": inventory_measurement(symbols, "appCache"),
