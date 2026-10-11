@@ -49,12 +49,12 @@ MEASURED_PACKAGE_PROFILES = {
                      "name": "Base Application", "version": "29.0.54011.55935"},
         "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024,
     },
-    # Artifact 29.0.54011.56136. The generic 4096-entry check passed and the
-    # 128 MiB expanded cap did not. Disk size 111997691. Exact hash only.
+    # ReadyToRun wrapper from artifact 29.0.54011.56136, disk size 111997691.
+    # The outer hash lifts the embedded Base Application to the same bound.
     "ef3e37554444fd1b80ebe1b11fceace8e4c642405c552195b89b5bf9f9890823": {
         "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
                      "name": "Base Application", "version": "29.0.54011.56136"},
-        "maxEntries": 4096, "maxExpandedBytes": 512 * 1024 * 1024,
+        "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024,
     },
 }
 FOUNDATION_CANDIDATE = {
@@ -183,7 +183,7 @@ def compile_spans(text):
     return spans
 
 
-def package_info(path, deadline=None, *, allow_ready_to_run=False):
+def package_info(path, deadline=None, *, allow_ready_to_run=False, measured_profile=None):
     """Stream bounded NAVX content and metadata; signature presence is not trust."""
     path = Path(path)
     deadline = time.monotonic() + INVENTORY_SECONDS if deadline is None else deadline
@@ -203,6 +203,8 @@ def package_info(path, deadline=None, *, allow_ready_to_run=False):
                     "Invalid NAVX payload length/header")
             initial_hash = file_hash(path, deadline)
             profile = MEASURED_PACKAGE_PROFILES.get(initial_hash)
+            if profile is None:
+                profile = measured_profile
             max_entries = profile["maxEntries"] if profile else PACKAGE_ENTRIES
             max_expanded = profile["maxExpandedBytes"] if profile else PACKAGE_BYTES
             with zipfile.ZipFile(PayloadView(stream, 40, length)) as archive:
@@ -348,7 +350,7 @@ def ready_to_run_info(path, before, archive, items, initial_hash, length, deadli
                             target.write(chunk)
             require(size == item.file_size, "Truncated expanded entry")
             entries.append({"name": item.filename, "sha256": sha.hexdigest()})
-        inner = package_info(inner_path, deadline)
+        inner = package_info(inner_path, deadline, measured_profile=profile)
         require(inner["identity"] == expected, "ReadyToRun embedded identity mismatch")
         if profile:
             require(inner["identity"] == profile["identity"], "Measured package profile identity mismatch")

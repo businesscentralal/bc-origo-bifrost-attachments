@@ -233,9 +233,8 @@ exact bytes and identity only, the bound is16384entries/512MiBexpanded. Generic
 package hash needs its own measured technical disposition. Compiler artifact
 29.0.54011.56136 ships Base Application SHA256
 `ef3e37554444fd1b80ebe1b11fceace8e4c642405c552195b89b5bf9f9890823`
-(111997691 disk bytes). Its entry count is within the generic 4096 cap and
-its expanded size exceeds 128 MiB, so that exact hash uses 4096 entries and
-512 MiB expanded. Full CRC/hash reads
+(111997691 disk bytes). That wrapper hash, and the Base Application
+embedded in it, uses 16384 entries and 512 MiB expanded. Full CRC/hash reads
 under the deadline are still required. Folder aggregate budgets stay unchanged;
 proposed2GiBexpanded inventory capacity is not approved as validated capacity.
 

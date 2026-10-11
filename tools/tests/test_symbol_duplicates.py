@@ -4,6 +4,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from unittest.mock import patch
+
+from test_ready_to_run import wrap
 from test_symbol_policy import G, fixture
 
 
@@ -54,6 +57,17 @@ class CompilerSymbolAliases(unittest.TestCase):
             G.collapse_equivalent_compiler_symbols(self.catalog)
         self.assertTrue((self.catalog / "One-copy.app").is_file())
         self.assertTrue((self.catalog / "Two.app").is_file())
+
+    def test_profiled_wrapper_lifts_the_embedded_entry_bound(self):
+        inner = self.catalog / "inner-source.app"
+        identity = fixture(inner)
+        outer = self.catalog / "wrapper.app"
+        wrap(outer, inner.read_bytes(), identity)
+        profile = {"identity": identity, "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024}
+        with patch.dict(G.MEASURED_PACKAGE_PROFILES, {G.file_hash(outer): profile}), patch.object(G, "PACKAGE_ENTRIES", 1):
+            info = G.package_info(outer, allow_ready_to_run=True)
+        self.assertEqual(identity, info["identity"])
+        self.assertEqual(G.file_hash(inner), info["readyToRun"]["embeddedSha256"])
 
     def test_app_cache_still_rejects_a_byte_identical_duplicate(self):
         fixture(self.cache / "One.app")
