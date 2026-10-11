@@ -142,6 +142,16 @@ if ($Stage -eq 'BeforeCompile') {
         $translation = $translation -and $CompilationParams.ContainsKey($name) -and $CompilationParams[$name] -eq $false
     }
     $kind = if ($translation) { 'translation' } else { 'final' }
+    $python = Get-Command python3 -ErrorAction SilentlyContinue
+    if (-not $python) {
+        $python = Get-Command python -ErrorAction Stop
+    }
+    $restoreArgs = @((Join-Path $Root 'tools/stage_foundation_inputs.py'), 'restore', '--root', $Root)
+    if ($CompilationParams.appSymbolsFolder) {
+        $restoreArgs += @('--symbols', [string]$CompilationParams.appSymbolsFolder)
+    }
+    & $python.Source @restoreArgs
+    if ($LASTEXITCODE -ne 0) { throw 'Foundation candidate restore failed.' }
     # The gate counts byte-identical compiler symbol aliases, ReadyToRun
     # wrappers of the same app, and same id+version packages with the same
     # symbol reference and canonical compiler manifest as one package. It
