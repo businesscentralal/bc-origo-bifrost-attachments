@@ -10,7 +10,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-10-11) - pin the Current build to BC 28.5
 
-- The Current build artifact in `.AL-Go/settings.json` is `//sandbox/28.5.54151.55751/w1/latest`. `.github/AL-Go-Settings.json` does not set `artifact` and is unchanged. Next Minor and Next Major keep `////nextminor` and `////nextmajor` in their workflow settings, which override this pin. `app/app.json` and `test/app.json` already declare runtime `17.0` with application and platform `28.0.0.0`. No app version change.
+- The Current build artifact in `.AL-Go/settings.json` is `/sandbox/28.5.54151.55751/w1/latest`. AL-Go splits that setting on `/` and assigns the fifth segment to `select`; a second leading slash shifts `w1` into `select` and container creation rejects it. `.github/AL-Go-Settings.json` does not set `artifact` and is unchanged. Next Minor and Next Major keep `////nextminor` and `////nextmajor` in their workflow settings, which override this pin. `app/app.json` and `test/app.json` already declare runtime `17.0` with application and platform `28.0.0.0`. No app version change.
 
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
 
