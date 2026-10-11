@@ -1,7 +1,6 @@
 namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
-using System.IO;
 
 /// <summary>
 /// Adds the storage connector to Foundation's "BIFROST Full ori" role, so a Bifröst
