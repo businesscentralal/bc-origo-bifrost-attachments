@@ -10,7 +10,7 @@ using Origo.Bifrost;
 codeunit 96223 "Storage Lang Gate ori"
 {
     Access = Internal;
-    InherentPermissions = tabledata "Setup ori" = R;
+    // Indirect read while this codeunit is on the stack. InherentPermissions does not accept tabledata on this compiler (AL0776).
     Permissions = tabledata "Setup ori" = R;
 
     procedure Execute(MessageType: Enum "Message Type ori"; MessageVersion: Enum "Message Version ori"; Subject: Text; Source: Text; ContentType: Text; var RequestContent: BigText; var ResponseContent: BigText; var ResponseContentType: Text[100])
