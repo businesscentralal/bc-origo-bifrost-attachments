@@ -191,12 +191,12 @@ copy. Each package is limited to 128 MiB on disk and a 16 MiB manifest. The gene
 profile permits 128 MiB expanded content and 4096 ZIP entries; only the exact
 measured Base identity/hash below permits 512 MiB expanded content and 16384
 entries. The catalog has a separate 4 GiB expanded-work bound; the app cache keeps
-its 512 MiB expanded bound. Post-compile does not charge that 512 MiB again
-for an exact compiler-catalog copy: the helper's Base Application copy is
-envelope plus embedded expansion and already passed the catalog budget. That
-copy still counts toward the cache's 128-package and 512 MiB disk bounds, and
-every package that is not an exact catalog copy still counts toward the 512
-MiB expanded bound. The retained BC29 sample requires 1,863,664,153 bytes
+its 512 MiB expanded bound. Before and post compile do not charge that 512 MiB again for an exact
+compiler-catalog copy: the helper's Base Application copy is envelope plus
+embedded expansion and already passed the catalog budget. The test compile
+remeasures the same cache after the product compile. That copy still counts
+toward the cache's 128-package and 512 MiB disk bounds, and every package that
+is not an exact catalog copy still counts toward the 512 MiB expanded bound. The retained BC29 sample requires 1,863,664,153 bytes
 of wrapper plus embedded-app expansion. These finite bounds do not certify the
 complete runner catalog.
 Each full inventory has a 60 second elapsed budget with checks between 1 MiB reads.

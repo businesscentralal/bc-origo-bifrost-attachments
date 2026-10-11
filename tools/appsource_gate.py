@@ -720,9 +720,15 @@ def _before_compile(root, request):
     test = json.loads((root / "test/app.json").read_text(encoding="utf-8-sig"))
     require(manifest["id"] in (product["id"], test["id"]), "Unexpected compilation project")
     app_type = "app" if manifest["id"] == product["id"] else "testApp"
-    symbols = symbol_inventory(request["symbolsFolder"])
     alias_removals = collapse_equivalent_compiler_symbols(request["compilerSymbolsFolder"])
     compiler_symbols = symbol_inventory(request["compilerSymbolsFolder"], "compilerCatalog")
+    # The test compile remeasures the cache after the product compile copied
+    # catalog packages into it. Those exact hashes already passed the catalog
+    # budget; the cache expanded bound still applies to everything else.
+    symbols = symbol_inventory(
+        request["symbolsFolder"],
+        expanded_exemptions={item["sha256"] for item in compiler_symbols},
+    )
     # Keep successful boundary measurements even if later identity/pin/resolution refuses.
     measured = {"context": context, "measurements": {
         "appCache": inventory_measurement(symbols, "appCache"),
