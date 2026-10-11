@@ -95,6 +95,38 @@ class ArtifactDownload(unittest.TestCase):
             server.shutdown()
             server.server_close()
 
+    def test_dropped_connection_is_retried(self):
+        calls = {"n": 0}
+
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                calls["n"] += 1
+                if calls["n"] == 1:
+                    self.close_connection = True
+                    return
+                body = b"PK\x03\x04ok"
+                self.send_response(200)
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+
+            def log_message(self, fmt, *args):
+                return
+
+        server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        destination = Path(tempfile.mkdtemp()) / "artifact.bin"
+        try:
+            with patch.object(S.time, "sleep"):
+                S._download_url("http://127.0.0.1:%d/file" % server.server_address[1],
+                                "secret-token-value-0000", destination)
+            self.assertEqual(b"PK\x03\x04ok", destination.read_bytes())
+            self.assertGreaterEqual(calls["n"], 2)
+        finally:
+            server.shutdown()
+            server.server_close()
+
 
 class FoundationRestore(unittest.TestCase):
     def setUp(self):

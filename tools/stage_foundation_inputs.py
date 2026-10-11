@@ -11,6 +11,7 @@ import re
 import shutil
 import sys
 import tempfile
+import time
 import urllib.error
 import urllib.request
 import zipfile
@@ -332,7 +333,7 @@ class _StopRedirect(urllib.request.HTTPRedirectHandler):
         raise _ArtifactRedirect(newurl)
 
 
-def _download_url(url, token, destination):
+def _download_url_once(url, token, destination):
     """Download a GitHub artifact zip. Do not send the token to the redirect host."""
     request = urllib.request.Request(url, headers={
         "Authorization": "Bearer " + token,
@@ -348,10 +349,27 @@ def _download_url(url, token, destination):
             _read_capped(response, destination)
         return
     except urllib.error.HTTPError as exc:
+        if exc.code in (502, 503, 504):
+            raise
         host = urllib.request.urlparse(getattr(exc, "url", None) or url).netloc
         raise GateError("Foundation Apps artifact download failed: HTTP " + str(exc.code) + " from " + host) from None
     with response:
         _read_capped(response, destination)
+
+
+def _download_url(url, token, destination):
+    """Retry a dropped connection. An HTTP auth or hash failure is not transient."""
+    for attempt in range(3):
+        try:
+            _download_url_once(url, token, destination)
+            return
+        except urllib.error.HTTPError as exc:
+            if exc.code not in (502, 503, 504) or attempt == 2:
+                raise
+        except (urllib.error.URLError, TimeoutError, ConnectionError, OSError):
+            if attempt == 2:
+                raise
+        time.sleep(attempt + 1)
 
 
 def download_apps_archive(destination, profile="candidate530"):
