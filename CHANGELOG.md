@@ -17,7 +17,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-10-11) - pin the Current build to BC 28.5
 
-- The Current AL-Go build resolves artifacts from `/sandbox/28.5.54151.55751/w1/latest` (one leading slash, so storage stays the default). `.github/AL-Go-Settings.json` is unchanged. Next Minor and Next Major keep their workflow artifact overrides. Runtime 17.0 and application/platform 28.0.0.0 are already set in `app.json`; the app version is unchanged.
+- The Current AL-Go build resolves artifacts from `/sandbox/28.5.54151.55751/w1/latest` (one leading slash, so storage stays the default). `.github/AL-Go-Settings.json` is unchanged. Next Minor and Next Major keep their workflow artifact overrides. Runtime 17.0 and application/platform 28.0.0.0 are already set in `app.json`; the app version is unchanged. PostCompile reads `alc.exe` from `compiler/extension/bin/win32` when that is where the BC 28.5 compiler stores it.
 
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
 

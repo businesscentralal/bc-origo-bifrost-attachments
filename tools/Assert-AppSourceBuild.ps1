@@ -14,7 +14,7 @@ Set-StrictMode -Version Latest
 function Get-FileReceipt {
     param([string] $Path)
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
-        throw 'Required compiler/analyzer/helper input is absent.'
+        throw "Required compiler/analyzer/helper input is absent: $Path"
     }
     $file = Get-Item -LiteralPath $Path
     return @{ sha256 = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant(); version = $file.VersionInfo.FileVersion }
@@ -191,7 +191,11 @@ if ($Stage -eq 'PostCompile') {
     }
     $extension = Join-Path $CompilationParams.compilerFolder 'compiler/extension'
     $bin = Join-Path $extension 'bin'
-    $compiler = Join-Path $bin 'alc.exe'
+    # BC 28.5 stores alc.exe under bin\win32. Later compilers keep it in bin.
+    $compiler = Join-Path $bin 'win32/alc.exe'
+    if (-not (Test-Path -LiteralPath $compiler -PathType Leaf)) {
+        $compiler = Join-Path $bin 'alc.exe'
+    }
     $packageJson = Join-Path $extension 'package.json'
     $compilerPackage = Get-Content -LiteralPath $packageJson -Raw -Encoding UTF8 | ConvertFrom-Json
     $compilerFile = Get-FileReceipt $compiler
