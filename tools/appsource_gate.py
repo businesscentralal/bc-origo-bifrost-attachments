@@ -49,6 +49,13 @@ MEASURED_PACKAGE_PROFILES = {
                      "name": "Base Application", "version": "29.0.54011.55935"},
         "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024,
     },
+    # Artifact 29.0.54011.56136. The generic 4096-entry check passed and the
+    # 128 MiB expanded cap did not. Disk size 111997691. Exact hash only.
+    "ef3e37554444fd1b80ebe1b11fceace8e4c642405c552195b89b5bf9f9890823": {
+        "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
+                     "name": "Base Application", "version": "29.0.54011.56136"},
+        "maxEntries": 4096, "maxExpandedBytes": 512 * 1024 * 1024,
+    },
 }
 FOUNDATION_CANDIDATE = {
     "identity": {"id": "7505e808-6e52-4b96-a328-82573391297a", "publisher": "Origo",

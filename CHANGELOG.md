@@ -12,7 +12,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-11) - compiler symbol filename aliases
 
-- The AppSource before-compile gate treats a byte-identical compiler-symbol copy, or the same app id and version with the same package content, as one package. `Microsoft_<Name>.app` beside `Microsoft_<Name>_29.0.54011.56136.app` no longer fails the inventory. The same app id with different package content or a different version still fails, and no alias is removed in that case. The app-symbol cache still rejects every duplicate. No AL objects or IDs change.
+- The AppSource before-compile gate treats a byte-identical compiler-symbol copy, or the same app id and version with the same package content, as one package. `Microsoft_<Name>.app` beside `Microsoft_<Name>_29.0.54011.56136.app` no longer fails the inventory. The same app id with different package content or a different version still fails, and no alias is removed in that case. The app-symbol cache still rejects every duplicate. The current compiler catalog Base Application 29.0.54011.56136 (SHA256 ef3e37554444fd1b80ebe1b11fceace8e4c642405c552195b89b5bf9f9890823, 111997691 disk bytes) is an exact measured profile: its entry count is within 4096 and its expanded size exceeds the generic 128 MiB cap, so that hash allows 4096 entries and 512 MiB expanded. No AL objects or IDs change.
 
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
 

@@ -230,7 +230,12 @@ Base Application29.0.54011.55935, SHA256
 The original embedded source has8665entries/379592378expanded bytes. For these
 exact bytes and identity only, the bound is16384entries/512MiBexpanded. Generic
 4096entries/128MiBexpanded and128MiBdisk limits remain; any changed or converted
-package hash needs its own measured technical disposition. Full CRC/hash reads
+package hash needs its own measured technical disposition. Compiler artifact
+29.0.54011.56136 ships Base Application SHA256
+`ef3e37554444fd1b80ebe1b11fceace8e4c642405c552195b89b5bf9f9890823`
+(111997691 disk bytes). Its entry count is within the generic 4096 cap and
+its expanded size exceeds 128 MiB, so that exact hash uses 4096 entries and
+512 MiB expanded. Full CRC/hash reads
 under the deadline are still required. Folder aggregate budgets stay unchanged;
 proposed2GiBexpanded inventory capacity is not approved as validated capacity.
 
