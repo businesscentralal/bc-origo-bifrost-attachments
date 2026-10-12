@@ -410,7 +410,7 @@ def symbol_inventory(folder, policy="appCache"):
             require(len(paths) <= limit["packages"], "Symbol inventory exceeds " + str(limit["packages"]) + " packages (" + policy + ")")
     paths.sort()
     require(sum(path.stat().st_size for path in paths) <= limit["bytes"], "Symbol aggregate-byte bound exceeded")
-    result, identities, filenames, expanded = SymbolInventory(), set(), set(), 0
+    result, identities, filenames, expanded = SymbolInventory(), {}, set(), 0
     for path in paths:
         try:
             info = package_info(path, deadline, allow_ready_to_run=True)
@@ -419,9 +419,12 @@ def symbol_inventory(folder, policy="appCache"):
             error.rejected_package = path
             raise
         identity = (info["identity"]["id"].lower(), version_tuple(info["identity"]["version"]))
-        require(identity not in identities, "Duplicate symbol identity/version")
+        if identity in identities:
+            error = GateError("Duplicate symbol identity/version: " + identities[identity].name + " and " + path.name)
+            error.rejected_packages = (identities[identity], path)
+            raise error
         require(path.name.casefold() not in filenames, "Case-insensitive symbol filename collision")
-        identities.add(identity)
+        identities[identity] = path
         filenames.add(path.name.casefold())
         expanded += info["expandedBytes"]
         require(expanded <= limit.get("expandedBytes", limit["bytes"]), "Symbol aggregate expanded-byte bound exceeded")
@@ -603,7 +606,7 @@ def _before_compile(root, request):
     return snapshot
 
 
-def rejected_receipt(output, context, paths=(), *, folders=None, offending=None):
+def rejected_receipt(output, context, paths=(), *, folders=None, offending=None, offending_paths=()):
     """Record bounded disk identities only; never dump Settings or credentials."""
     deadline = time.monotonic() + INVENTORY_SECONDS
     candidates = [(Path(path), None) for path in paths]
@@ -627,10 +630,12 @@ def rejected_receipt(output, context, paths=(), *, folders=None, offending=None)
                     if len(candidates) >= 4096:
                         item["enumerationComplete"] = False
                         break
+    prioritized_paths = {Path(path) for path in offending_paths}
     if offending is not None:
-        offending = Path(offending)
-        prioritized = [(path, source) for path, source in candidates if path == offending]
-        candidates = prioritized + [(path, source) for path, source in candidates if path != offending]
+        prioritized_paths.add(Path(offending))
+    if prioritized_paths:
+        prioritized = [(path, source) for path, source in candidates if path in prioritized_paths]
+        candidates = prioritized + [(path, source) for path, source in candidates if path not in prioritized_paths]
     inventory = []
     truncated = len(candidates) > 128 or any(not f["enumerationComplete"] for f in folder_receipts)
     hashed_bytes = 0
@@ -639,7 +644,7 @@ def rejected_receipt(output, context, paths=(), *, folders=None, offending=None)
             truncated = True
             break
         item = {"path": str(path), "present": path.is_file()}
-        if offending is not None and path == offending:
+        if path in prioritized_paths:
             item["triggeredRejection"] = True
         if source is not None:
             item["sourceFolder"] = source
@@ -659,7 +664,7 @@ def rejected_receipt(output, context, paths=(), *, folders=None, offending=None)
                     inventory.append(item)
                     break
                 try:
-                    info = package_info(path, deadline)
+                    info = package_info(path, deadline, allow_ready_to_run=True)
                     item.update({k: info[k] for k in ("identity", "friends", "sourceCommit", "compilerVersion")})
                     # Build URLs may contain secrets in malformed/untrusted manifests.
                     url = info["buildUrl"]
@@ -686,7 +691,8 @@ def before_compile(root, request):
             directory.mkdir(parents=True, exist_ok=True)
             rejected_receipt(directory / "rejected-input.json", context, folders={
                 key: request[key] for key in ("symbolsFolder", "compilerSymbolsFolder") if key in request},
-                offending=getattr(error, "rejected_package", None))
+                offending=getattr(error, "rejected_package", None),
+                offending_paths=getattr(error, "rejected_packages", ()))
         except (OSError, ValueError, KeyError):
             pass
         raise

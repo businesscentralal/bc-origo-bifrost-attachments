@@ -62,6 +62,7 @@
     "tools/SharedAlpacaContainer.ps1",
     "tools/Test-SharedAlpacaContainer.ps1",
     ".AL-Go/**",
+    ".github/workflows/**",
     "tools/**"
   ]
 }

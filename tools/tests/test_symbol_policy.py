@@ -92,6 +92,30 @@ class SymbolPolicy(unittest.TestCase):
         with self.assertRaisesRegex(G.GateError, 'filename collision'):
             G.symbol_inventory(self.catalog, 'compilerCatalog')
 
+    def test_duplicate_pair_is_retained_beyond_diagnostic_cap(self):
+        for index in range(130):
+            fixture(self.catalog / f'A-{index:03}.app')
+        first = self.catalog / 'Z-First.app'
+        second = self.catalog / 'Z-Second.app'
+        identity = fixture(first)
+        shutil.copy2(first, second)
+        with self.assertRaisesRegex(G.GateError, 'Duplicate symbol identity/version') as caught:
+            G.symbol_inventory(self.catalog, 'compilerCatalog')
+        self.assertEqual((first, second), caught.exception.rejected_packages)
+        output = self.root / 'rejected.json'
+        G.rejected_receipt(output, {}, folders={'compilerSymbolsFolder': self.catalog},
+                           offending_paths=caught.exception.rejected_packages)
+        import json
+        receipt = json.loads(output.read_text())
+        pair = [item for item in receipt['inputs'] if item.get('triggeredRejection')]
+        self.assertEqual({str(first), str(second)}, {item['path'] for item in pair})
+        self.assertTrue(all(item['identity'] == identity for item in pair))
+        self.assertTrue(all(item['sha256'] == G.file_hash(first) for item in pair))
+        self.assertTrue(receipt['truncated'])
+        self.assertFalse(receipt['accepted'])
+        self.assertEqual(128, len(receipt['inputs']))
+        self.assertTrue(first.exists() and second.exists())
+
     def test_aggregate_disk_expansion_manifest_entry_and_time_bounds(self):
         fixture(self.catalog / 'One.app', content=b'A' * 10000)
         size = (self.catalog / 'One.app').stat().st_size

@@ -59,6 +59,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ## [28.0.0.4] — 2026-10-07
 
 ### Fixed
+- Preserve both rejected duplicate compiler symbol inputs in bounded diagnostics, and run Default/Test for workflow-only changes.
 
 - `Storage Contract Parts ori` (70013500) removes unused storage requirements from Data Exchange queries and record uploads, documents conditional attachment sources and accepted address aliases, and adds shared shipped Data Exchange mutation chapters for integration by #82.
 - `Data Exchange Query ori` (70013520) collects malformed filters, flags, dates and paging values before querying, refuses overlong codes and page sizes above 1000, preserves the zero/default page size of 100, and returns localized actionable error details.
