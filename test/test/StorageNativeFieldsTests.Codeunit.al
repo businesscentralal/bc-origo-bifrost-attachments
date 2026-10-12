@@ -273,6 +273,32 @@ codeunit 96217 "Storage Native Fields Tests"
     end;
 
     [Test]
+    procedure LinkedRead_LeavesStoredRowUnchangedAfterModifyFalse()
+    var
+        DocumentAttachment: Record "Document Attachment";
+        Link: Record "Storage Attachment Link ori";
+        AttachmentId: Guid;
+        ExpectedPath: Text;
+    begin
+        // [SCENARIO] Modify(false) still writes the caller's fields, so the in-memory mark must be cleared first.
+        AssertExternalStorageFieldPresent();
+        AttachmentId := OffloadLeafAttachment('linked-modify-false', 'X modify false bytes');
+        LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Offload must record a Bifrost link.');
+        ExpectedPath := NativePath(AttachmentId);
+
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsTrue(DocumentAttachment.HasContent(), 'A linked offload still reports content.');
+        DocumentAttachment."File Name" := 'read-then-modify-false';
+        DocumentAttachment.Modify(false);
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.AreEqual('read-then-modify-false', DocumentAttachment."File Name", 'Modify(false) is saved.');
+        LibraryAssert.IsFalse(DocumentAttachment."Document Reference ID".HasValue(), 'The media stays empty.');
+        LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'Modify(false) must not persist Stored Internally.');
+        LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'Stored Externally stays set.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The external path stays unchanged.');
+    end;
+
+    [Test]
     procedure MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule()
     var
         DocumentAttachment: Record "Document Attachment";
