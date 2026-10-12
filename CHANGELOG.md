@@ -29,6 +29,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - Icelandic refusals go through `EnqueueAndProcess` with the language id. `Execute` resets the session to the Foundation setup language, so `GlobalLanguage` alone came back in English. The fileName refusal text is the current label. Alias fixtures delete the committed `X75ALIAS` setup and its links before the next test. A missing file account on the setup card is committed before the expected error, so the Icelandic pass still finds the row.
 - `Lang Setup Read ori` (96235) and the `Setup ori` read on `Storage79 Test ori` (96218) are temporary test workarounds for core issue https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/issues/959. Remove them once that fix ships. `Dispatcher ori.Execute` reads Foundation `Setup ori` through `GetDefaultLanguageId`, and a `Permissions` property does not grant that cross-app read. Story 79 mock readback includes the connection base path. An empty upload commit is persisted before the refusal so the session remains. The native-mirror failure fixture keeps a leaf file name, and the test expects that error so it can check the rollback. Abort discards the session.
 
+### Fixed (2026-10-12) - offloaded document attachment reads
+
+- Offloaded document-attachment reads stay on the Bifrost link when External Storage - Document Attachments is installed. That module claims a row when Stored Externally is set, Stored Internally is not, the media is empty and the external path is filled, and it does not look at IsHandled. The read marks Stored Internally only in memory so the Microsoft subscriber leaves the bytes alone. A later modify subscriber writes the persisted false back, so a read, and a read followed by Modify, leave the stored row unchanged. A Microsoft-offloaded row with no Bifrost link is left to that module.
+
 
 
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)

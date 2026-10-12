@@ -50,6 +50,47 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         IsHandled := true;
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnBeforeModifyEvent', '', false, false)]
+    local procedure RestoreStoredInternallyBeforeWrite(var Rec: Record "Document Attachment"; var xRec: Record "Document Attachment"; RunTrigger: Boolean)
+    var
+        Link: Record "Storage Attachment Link ori";
+        RecRef: RecordRef;
+        StoredExternallyFld: FieldRef;
+        ExternalFilePathFld: FieldRef;
+        StoredInternallyFld: FieldRef;
+        StoredExternally: Boolean;
+        StoredInternally: Boolean;
+    begin
+        // The read subscribers mark Stored Internally on the caller's record so Microsoft's
+        // module does not claim the bytes. A later Modify, such as Document Attachment Details
+        // saving Rec after HasContent, would persist that mark next to Stored Externally and
+        // empty media. Put the persisted false back before the write. Rows without a Bifrost
+        // link, including Microsoft's own offloads, are left alone.
+        // Modify(false) still writes the caller's fields, so a false RunTrigger does not skip the restore.
+        if Rec.IsTemporary() or xRec.IsTemporary() then
+            exit;
+        if (not RunTrigger) and (xRec.SystemId <> Rec.SystemId) then
+            exit;
+        if not Link.Get(Database::"Document Attachment", Rec.SystemId) then
+            exit;
+        RecRef.GetTable(Rec);
+        if not RecRef.FieldExist(8750) or not RecRef.FieldExist(8752) or not RecRef.FieldExist(8753) then begin
+            RecRef.Close();
+            exit;
+        end;
+        StoredExternallyFld := RecRef.Field(8750);
+        ExternalFilePathFld := RecRef.Field(8752);
+        StoredInternallyFld := RecRef.Field(8753);
+        StoredExternally := StoredExternallyFld.Value;
+        StoredInternally := StoredInternallyFld.Value;
+        if StoredExternally and StoredInternally and (Format(ExternalFilePathFld.Value) <> '') then
+            if TryClearStoredInternally(StoredInternallyFld) then
+                RecRef.SetTable(Rec)
+            else
+                ClearLastError();
+        RecRef.Close();
+    end;
+
     [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnBeforeExportToStream', '', false, false)]
     local procedure ServeDocumentAttachmentToStream(var DocumentAttachment: Record "Document Attachment"; var AttachmentOutStream: OutStream; var IsHandled: Boolean)
     var
@@ -130,10 +171,10 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         StoredInternallyFld: FieldRef;
     begin
         // Field 8753 is Stored Internally on External Storage - Document Attachments.
-        // That module claims the read when Stored Externally is set and Stored Internally is not.
-        // The native mirror sets exactly that pair, so a later subscriber would replace Bifrost bytes
-        // with an empty download from Microsoft's own file account. Marking the in-memory record
-        // internally stored makes that subscriber leave the read alone. The database row is unchanged.
+        // That module claims the read when Stored Externally is set and Stored Internally is not,
+        // and it does not look at IsHandled. The native mirror sets exactly that pair.
+        // Marking the in-memory record internally stored makes that subscriber leave the read alone.
+        // RestoreStoredInternallyBeforeWrite puts the persisted false back before any Modify.
         RecRef.GetTable(DocumentAttachment);
         if not RecRef.FieldExist(8753) then begin
             RecRef.Close();
@@ -151,6 +192,12 @@ codeunit 10035636 "Storage Attachment Subscr ori"
     local procedure TryMarkStoredInternally(var StoredInternallyFld: FieldRef)
     begin
         StoredInternallyFld.Value := true;
+    end;
+
+    [TryFunction]
+    local procedure TryClearStoredInternally(var StoredInternallyFld: FieldRef)
+    begin
+        StoredInternallyFld.Value := false;
     end;
 
     local procedure LogReadAlreadyHandled(RecSystemId: Guid)
