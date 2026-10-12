@@ -150,9 +150,16 @@ codeunit 70013526 "DataExch Entry Get Impl ori" implements "Msg Interface ori", 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         Query: Codeunit "Data Exchange Query ori";
+        Reader: Codeunit "Storage Request Reader ori";
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
+        // Checked here, not in the query codeunit: that codeunit's indirect read would hide a missing user grant.
+        // Field rows are part of the default entry response, so both reads are required.
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch.", false) then
+            exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Field", false) then
+            exit;
         Query.GetEntry(Argument);
     end;
 }

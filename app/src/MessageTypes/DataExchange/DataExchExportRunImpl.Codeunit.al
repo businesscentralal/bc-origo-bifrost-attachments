@@ -192,6 +192,8 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
                 Argument.AddError("Bifrost Error Code ori"::InvalidParameter, InvalidKindErr, 'dataExchDefCode', DefinitionCode, ExpectedLbl, SelectDefinitionLbl);
         if Reader.RespondIfErrors(Argument) then
             exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch.", true) then
+            exit;
         DataExch.Init();
         DataExch."Data Exch. Def Code" := DefinitionCode;
         DataExch."File Name" := CopyStr(FileName, 1, MaxStrLen(DataExch."File Name"));

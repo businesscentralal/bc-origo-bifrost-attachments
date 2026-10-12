@@ -17,6 +17,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - The Current AL-Go build and `.github/Test Current.settings.json` resolve artifacts from `/sandbox/28.5.54151.55751/w1/latest` (one leading slash, so storage stays the default). The pin selects the compiler artifact only. The COSMO Alpaca test container is unchanged. `.github/AL-Go-Settings.json` is unchanged. Next Minor and Next Major keep their workflow artifact overrides. Runtime 17.0 and application/platform 28.0.0.0 are already set in `app.json`; the app version is unchanged. PostCompile reads `alc.exe` from `compiler/extension/bin/win32` when that is where the BC 28.5 compiler stores it.
 
+### Changed (2026-10-12) - Data Exchange permissions
+
+- Upgrade: `Storage Full ori` no longer grants the eight Data Exchange tables. AppSourceCop AA0050 and AS0110 reject those grants on a permission set extension. Holders of `BIFROST Full ori` who read or change Data Exchange data need `BIFROST DataExch ori` assigned as well. The tables stay on that assignable set.
+- A missing required parameter now includes `expected` and `nextStep`. Discovery reads and Data Exchange, document-attachment and link writes answer `PermissionDenied` before the platform throws.
+
 
 
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)

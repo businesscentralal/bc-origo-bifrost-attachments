@@ -150,9 +150,23 @@ codeunit 70013523 "DataExch Def Get Impl ori" implements "Msg Interface ori", "M
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         Query: Codeunit "Data Exchange Query ori";
+        Reader: Codeunit "Storage Request Reader ori";
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
+        // The query codeunit holds an indirect read on every discovery table. Refuse from this codeunit so a missing user grant stays visible.
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Def", false) then
+            exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Line Def", false) then
+            exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Column Def", false) then
+            exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Mapping", false) then
+            exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Field Mapping", false) then
+            exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exchange Type", false) then
+            exit;
         Query.GetDefinition(Argument);
     end;
 }

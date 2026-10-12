@@ -197,6 +197,8 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
                 Argument.AddError("Bifrost Error Code ori"::InvalidParameter, TypeErr, 'dataExchDefCode', DefCode, DefinitionExpectedLbl, SelectDefinitionLbl);
         if Reader.RespondIfErrors(Argument) then
             exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch.", true) then
+            exit;
         // This shipped operation creates a header only. It does not resolve storage or execute a provider/import pipeline.
         DataExch.Init();
         DataExch."Data Exch. Def Code" := DefCode;
