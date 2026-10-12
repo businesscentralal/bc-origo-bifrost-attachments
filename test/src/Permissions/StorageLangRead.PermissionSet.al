@@ -17,7 +17,6 @@ permissionset 96235 "Lang Setup Read ori"
 
     Permissions =
         tabledata "Setup ori" = R,
-        tabledata "Message ori" = RIMD,
         tabledata "Bank Export/Import Setup" = R,
         tabledata "Data Exch." = RIMD,
         tabledata "Data Exch. Column Def" = RIMD,
