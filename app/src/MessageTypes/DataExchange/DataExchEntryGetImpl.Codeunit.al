@@ -150,9 +150,25 @@ codeunit 70013526 "DataExch Entry Get Impl ori" implements "Msg Interface ori", 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         Query: Codeunit "Data Exchange Query ori";
+        Reader: Codeunit "Storage Request Reader ori";
+        RequestJson: JsonObject;
+        IncludeFieldsToken: JsonToken;
+        IncludeFields: Boolean;
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
+        // Checked here, not in the query codeunit: that codeunit's indirect read would hide a missing user grant.
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch.", false) then
+            exit;
+        IncludeFields := true;
+        RequestJson := Argument.GetRequestJson();
+        if RequestJson.Get('includeFields', IncludeFieldsToken) then
+            if IncludeFieldsToken.IsValue() then
+                if IncludeFieldsToken.AsValue().IsBoolean() then
+                    IncludeFields := IncludeFieldsToken.AsValue().AsBoolean();
+        if IncludeFields then
+            if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Field", false) then
+                exit;
         Query.GetEntry(Argument);
     end;
 }

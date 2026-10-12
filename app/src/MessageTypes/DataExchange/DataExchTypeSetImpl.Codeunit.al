@@ -197,6 +197,8 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
                 Argument.AddError("Bifrost Error Code ori"::InvalidParameter, InvalidKindErr, 'dataExchDefCode', DefinitionCode, ExpectedLbl, SelectDefinitionLbl);
         if Reader.RespondIfErrors(Argument) then
             exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exchange Type", true) then
+            exit;
         DataExchangeType.ReadIsolation := IsolationLevel::UpdLock;
         if not DataExchangeType.Get(TypeCode) then begin
             DataExchangeType.Init();

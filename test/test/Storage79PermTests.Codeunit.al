@@ -270,7 +270,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         UploadChunk.ReadIsolation := IsolationLevel::ReadCommitted;
         UploadChunk.SetRange("Upload Id", UploadId);
         LibraryAssert.IsTrue(UploadChunk.IsEmpty(), 'Committed chunks are cleared.');
-        LibraryAssert.AreEqual(Encode('X79 first second'), MockState.GetFileContent(UploadSession."Target Path"), 'Mock readback verifies byte order.');
+        LibraryAssert.AreEqual(Encode('X79 first second'), MockState.GetFileContent(StoredMockPath(UploadSession."Target Path")), 'Mock readback verifies byte order.');
     end;
 
     [Test]
@@ -287,6 +287,8 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         Initialize();
         LowerStorageActor();
         UploadId := BeginUpload(true);
+        // The refusal rolls the open transaction back. Persist the session first so the row remains.
+        Commit();
         AssertStructuredError(Dispatch(MessageType::"Storage.Upload.Commit", UploadRequest(UploadId)), 'PreconditionFailed');
         Observe();
         UploadSession.ReadIsolation := IsolationLevel::ReadCommitted;
@@ -417,7 +419,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         AttachmentLink.ReadIsolation := IsolationLevel::ReadCommitted;
         AttachmentLink.Get(Database::"Document Attachment", AttachmentId);
         StoragePath := AttachmentLink."Storage Path";
-        LibraryAssert.AreEqual(Encode('X79 inline bytes'), MockState.GetFileContent(StoragePath), 'Offload writes exact mock bytes.');
+        LibraryAssert.AreEqual(Encode('X79 inline bytes'), MockState.GetFileContent(StoredMockPath(StoragePath)), 'Offload writes exact mock bytes.');
         LowerNativeActor(true);
         DocumentAttachment.GetBySystemId(AttachmentId);
         AssertOpenAttachmentBytes(DocumentAttachment, 'X79 inline bytes');
@@ -842,6 +844,12 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         RequestJson.Add('no', CustomerNo);
         RequestJson.Add('fileName', 'X79-inline.txt');
         RequestJson.Add('contentBase64', Encode('X79 inline bytes'));
+    end;
+
+    local procedure StoredMockPath(RelativePath: Text): Text
+    begin
+        // The mock connector stores the connection base path in front of the relative address.
+        exit('X79-root/' + RelativePath.TrimStart('/').TrimEnd('/'));
     end;
 
     local procedure AttachmentRequest(AttachmentId: Guid) RequestJson: JsonObject
