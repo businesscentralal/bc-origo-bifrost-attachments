@@ -31,7 +31,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-12) - offloaded document attachment reads
 
-- Offloaded document-attachment reads stay on the Bifrost link when External Storage - Document Attachments is installed. That module claims a row when Stored Externally is set, Stored Internally is not, the media is empty and the external path is filled, and it does not look at IsHandled. The read marks Stored Internally only in memory so the Microsoft subscriber leaves the bytes alone. A later modify subscriber writes the persisted false back, so a read, and a read followed by Modify, leave the stored row unchanged. A Microsoft-offloaded row with no Bifrost link is left to that module.
+- Offloaded document-attachment reads stay on the Bifrost link when External Storage - Document Attachments is installed. That module claims a row when Stored Externally is set, Stored Internally is not, the media is empty and the external path is filled, and it does not look at IsHandled. The read marks Stored Internally only in memory so the Microsoft subscriber leaves the bytes alone. A later modify subscriber writes the persisted false back, so a read, and a read followed by Modify, leave the stored row unchanged. A Microsoft-offloaded row with no Bifrost link is not rewritten. On the BC 28.0 test container that module does not subscribe to OnBeforeHasContent, so HasContent stays false and the stored flags, path, empty media and missing link are unchanged after the read and after Modify.
 
 
 

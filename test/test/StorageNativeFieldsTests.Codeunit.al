@@ -276,6 +276,7 @@ codeunit 96217 "Storage Native Fields Tests"
     procedure MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule()
     var
         DocumentAttachment: Record "Document Attachment";
+        StoredAttachment: Record "Document Attachment";
         Link: Record "Storage Attachment Link ori";
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
         TempBlob: Codeunit "Temp Blob";
@@ -284,7 +285,7 @@ codeunit 96217 "Storage Native Fields Tests"
         AttachmentId: Guid;
         ExpectedPath: Text;
     begin
-        // [SCENARIO] A Microsoft-offloaded row with no Bifrost link is not claimed or rewritten by Bifrost.
+        // [SCENARIO] A Microsoft-offloaded row with no Bifrost link is not rewritten by Bifrost.
         AssertExternalStorageFieldPresent();
         TempBlob.CreateOutStream(ContentOut);
         ContentOut.WriteText('X microsoft bytes');
@@ -305,10 +306,18 @@ codeunit 96217 "Storage Native Fields Tests"
         LibraryAssert.AreEqual('ORIGOBCTEST:bifrost-test/ms-only.txt', ExpectedPath, 'The Microsoft path is stored.');
 
         DocumentAttachment.GetBySystemId(AttachmentId);
-        LibraryAssert.IsTrue(DocumentAttachment.HasContent(), 'The Microsoft module still claims an unlinked external row.');
+        // The BC 28.0 External Storage module does not subscribe to OnBeforeHasContent, so this call
+        // returns false. Bifrost must not claim the row either, and the stored mirror must stay as written.
+        DocumentAttachment.HasContent();
+        LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'HasContent must not create a Bifrost link.');
         LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'HasContent must not change the stored row.');
+        LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'HasContent must not change Stored Externally.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'HasContent must not change the external path.');
+        StoredAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsFalse(StoredAttachment."Document Reference ID".HasValue(), 'HasContent must not fill the media.');
         DocumentAttachment."File Name" := 'ms-read-then-modify';
         DocumentAttachment.Modify(true);
+        LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'Modify must not create a Bifrost link.');
         LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'Modify must keep Stored Internally false.');
         LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'Stored Externally stays set.');
         LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The Microsoft path stays unchanged.');
