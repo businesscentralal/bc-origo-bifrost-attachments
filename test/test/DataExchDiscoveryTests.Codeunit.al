@@ -494,6 +494,8 @@ codeunit 96213 "Data Exch Discovery Tests"
         Errors: JsonArray;
         Problem: JsonObject;
         Found: Boolean;
+        ErrorText: Text;
+        ProblemText: Text;
     begin
         LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'negative skip');
         if Response.Get('errors', Token) then
@@ -505,7 +507,13 @@ codeunit 96213 "Data Exch Discovery Tests"
             if ReadText(Problem, 'parameter') = 'skip' then begin
                 Found := true;
                 LibraryAssert.AreEqual('InvalidParameter', ReadText(Problem, 'code'), 'negative skip code');
-                LibraryAssert.IsTrue(ReadText(Problem, 'error').Contains('skip must be zero or greater'), 'negative skip message');
+                ErrorText := ReadText(Problem, 'error');
+                if ErrorText = '' then begin
+                    Problem.WriteTo(ProblemText);
+                    ErrorText := ProblemText;
+                end;
+                // ExpectedError matched this phrase without case. The structured error keeps the same words.
+                LibraryAssert.IsTrue(LowerCase(ErrorText).Contains('skip must be zero or greater'), ErrorText);
             end;
         end;
         LibraryAssert.IsTrue(Found, 'negative skip names parameter skip');
