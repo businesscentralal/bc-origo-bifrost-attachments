@@ -8,6 +8,15 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-12) - compiler symbol filename aliases
+
+- The AppSource before-compile gate treats a compiler-symbol filename alias as one package when the bytes match, the package entries match, a ReadyToRun wrapper embeds that package, or the same app id and version has the same SymbolReference and canonical compiler manifest. The versioned filename is kept. Build timestamps and TRANSLATIONFILE/LCGTRANSLATIONFILE packaging flags are not compiler conflicts. A different symbol reference, compiler manifest, or version still fails, and no alias is removed in that case. The app-symbol cache still rejects every duplicate. No AL objects or IDs change.
+- The Current compiler catalog Base Application 28.5.54151.55751 (SHA256 a2e638554f9c97d37f760d6ab42703e1ed136fd229676e79bb1d1a8224a23d23, 98891185 disk bytes) is an exact measured ReadyToRun profile. That wrapper and its embedded app allow 16384 entries and 512 MiB expanded. The embedded app has 8602 entries and 373064901 expanded bytes; the wrapper adds 261371054. A compiler-catalog copy of that package is not charged again against the app-cache 512 MiB expanded bound. Package count and disk bytes still include the copy. When the Foundation TestApps package is extracted onto the approved Apps filename, BeforeCompile restores the pinned Apps bytes (28.0.3.530, zero friend grants) before the symbol cache is read. Any other Foundation hash still fails and is not replaced.
+
+### Changed (2026-10-12) - pin the Current compile artifact to BC 28.5
+
+- The Current AL-Go build and `.github/Test Current.settings.json` resolve artifacts from `/sandbox/28.5.54151.55751/w1/latest` (one leading slash, so storage stays the default). The pin selects the compiler artifact only. The COSMO Alpaca test container is unchanged. `.github/AL-Go-Settings.json` is unchanged. Next Minor and Next Major keep their workflow artifact overrides. Runtime 17.0 and application/platform 28.0.0.0 are already set in `app.json`; the app version is unchanged. PostCompile reads `alc.exe` from `compiler/extension/bin/win32` when that is where the BC 28.5 compiler stores it.
+
 
 
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)

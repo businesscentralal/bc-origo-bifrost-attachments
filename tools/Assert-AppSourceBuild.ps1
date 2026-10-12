@@ -14,7 +14,7 @@ Set-StrictMode -Version Latest
 function Get-FileReceipt {
     param([string] $Path)
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
-        throw 'Required compiler/analyzer/helper input is absent.'
+        throw "Required compiler/analyzer/helper input is absent: $Path"
     }
     $file = Get-Item -LiteralPath $Path
     return @{ sha256 = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant(); version = $file.VersionInfo.FileVersion }
@@ -142,6 +142,20 @@ if ($Stage -eq 'BeforeCompile') {
         $translation = $translation -and $CompilationParams.ContainsKey($name) -and $CompilationParams[$name] -eq $false
     }
     $kind = if ($translation) { 'translation' } else { 'final' }
+    $python = Get-Command python3 -ErrorAction SilentlyContinue
+    if (-not $python) {
+        $python = Get-Command python -ErrorAction Stop
+    }
+    $restoreArgs = @((Join-Path $Root 'tools/stage_foundation_inputs.py'), 'restore', '--root', $Root)
+    if ($CompilationParams.appSymbolsFolder) {
+        $restoreArgs += @('--symbols', [string]$CompilationParams.appSymbolsFolder)
+    }
+    # This callback's success stream is the single returned .app path. Restore
+    # status must stay on the host log or PostCompile sees more than one package.
+    $restoreOutput = @(& $python.Source @restoreArgs)
+    $restoreExitCode = $LASTEXITCODE
+    $restoreOutput | ForEach-Object { Write-Host $_ }
+    if ($restoreExitCode -ne 0) { throw 'Foundation candidate restore failed.' }
     Invoke-Gate 'before' @{
         context = $context
         kind = $kind
@@ -177,7 +191,11 @@ if ($Stage -eq 'PostCompile') {
     }
     $extension = Join-Path $CompilationParams.compilerFolder 'compiler/extension'
     $bin = Join-Path $extension 'bin'
-    $compiler = Join-Path $bin 'alc.exe'
+    # BC 28.5 stores alc.exe under bin\win32. Later compilers keep it in bin.
+    $compiler = Join-Path $bin 'win32/alc.exe'
+    if (-not (Test-Path -LiteralPath $compiler -PathType Leaf)) {
+        $compiler = Join-Path $bin 'alc.exe'
+    }
     $packageJson = Join-Path $extension 'package.json'
     $compilerPackage = Get-Content -LiteralPath $packageJson -Raw -Encoding UTF8 | ConvertFrom-Json
     $compilerFile = Get-FileReceipt $compiler

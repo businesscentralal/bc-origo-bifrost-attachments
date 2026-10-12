@@ -45,6 +45,14 @@ try {
     if ($LASTEXITCODE -ne 0) {
         throw 'Bounded symbol policy regression checks failed.'
     }
+    & $python.Source -m unittest discover -s (Join-Path $PSScriptRoot 'tests') -p 'test_symbol_duplicates.py' -v
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Compiler symbol alias regression checks failed.'
+    }
+    & $python.Source -m unittest discover -s (Join-Path $PSScriptRoot 'tests') -p 'test_foundation_restore.py' -v
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Foundation candidate restore checks failed.'
+    }
     & $python.Source -m unittest discover -s (Join-Path $PSScriptRoot 'tests') -p 'test_ready_to_run.py' -v
     if ($LASTEXITCODE -ne 0) {
         throw 'ReadyToRun inventory regression checks failed.'

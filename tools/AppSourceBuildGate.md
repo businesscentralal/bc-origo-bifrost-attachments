@@ -173,9 +173,18 @@ transient compiler consumption nor signature trust.
 
 ## Separate compiler catalog and actual app cache (#78)
 
-The complete compiler catalog is preserved and measured independently from the
-actual `appSymbolsFolder` package cache. The genuine helper receives its original
-folders and parameters. No package is pruned and no private compiler view is used.
+The complete compiler catalog is measured independently from the actual
+`appSymbolsFolder` package cache. The genuine helper receives its original
+folders and parameters. Equivalent compiler-catalog filename aliases are removed before that
+measurement so the inventory counts one package. A byte-identical copy, the
+same zip entry content, a ReadyToRun wrapper whose embedded app has that
+content, and the same app id and version with the same `SymbolReference.json`
+and canonical compiler manifest are one package. The versioned filename is
+kept. Build timestamps and `TRANSLATIONFILE` / `LCGTRANSLATIONFILE` packaging
+flags are not compiler conflicts. The same app id with a different symbol
+reference or compiler manifest, or two versions of that id, fails and no alias
+is removed. The app-symbol cache still rejects every duplicate app id and
+version. No other package is pruned and no private compiler view is used.
 The catalog limit is 256 packages and 1 GiB aggregate on disk; the app cache limit is
 128 packages and 512 MiB aggregate, including preexisting inputs and the output
 copy. Each package is limited to 128 MiB on disk and a 16 MiB manifest. The generic
@@ -191,7 +200,8 @@ catalog/cache metadata, bytes, hashes, exact folders and dependency resolution
 must be measured on a current successful Default/Test runner before acceptance.
 
 The NAVX reader streams package and expanded-entry hashes, validates CRCs, rejects
-path symlinks, case-insensitive filename collisions and duplicate AppId/version,
+path symlinks, case-insensitive filename collisions and conflicting duplicate
+AppId/version content,
 and compares the input hash and stable file metadata before/after measurement.
 It records dependency, Application, Platform and PropagateDependencies metadata.
 The bounded resolver observes helper6.1.18 semantics: an existing highest
@@ -221,7 +231,15 @@ profile: identity `437dbf0e-84ff-417a-965d-ed2bb9650972`, Microsoft,
 Base Application29.0.54011.55935, SHA256
 `10ebba923b6f8d3b6d676cc1f1db16a8a5d4519ff8ca4f45bbd2e778b52d289c`.
 The original embedded source has8665entries/379592378expanded bytes. For these
-exact bytes and identity only, the bound is16384entries/512MiBexpanded. Generic
+exact bytes and identity only, the bound is16384entries/512MiBexpanded. The Current
+build's Base Application wrapper `a2e638554f9c97d37f760d6ab42703e1ed136fd229676e79bb1d1a8224a23d23`
+(Microsoft Base Application 28.5.54151.55751, 98891185 disk bytes) is the same kind of
+exact profile: 9 outer entries, 261371054 outer expanded bytes, and an embedded app of
+8602 entries and 373064901 expanded bytes. That outer hash lifts the embedded app to
+16384 entries and 512 MiB expanded. A compiler-catalog copy of a package already measured
+under the catalog budget is not charged again against the app-cache 512 MiB expanded bound.
+The copy still counts toward the cache package count and disk-byte bound. Any other cache
+package still counts. Generic
 4096entries/128MiBexpanded and128MiBdisk limits remain; any changed or converted
 package hash needs its own measured technical disposition. Full CRC/hash reads
 under the deadline are still required. Folder aggregate budgets stay unchanged;
@@ -235,7 +253,10 @@ package SHA256`b95e0eccf7a4038531cea08f0441e757ac176c7c4ff06b1b8eb9d25ac0dd3a88`
 compiler18.1.43.7601 and zero friend grants. All identity, source, build and byte
 fields are required, including presence of the original signature content.
 Presence is not Windows signature trust. Candidate approval does not release
-actual runner equality, runtime or signing acceptance.
+actual runner equality, runtime or signing acceptance. When AL-Go extracts the
+Foundation TestApps package onto the same filename as the approved Apps package,
+BeforeCompile puts the pinned Apps bytes back before the symbol cache is read.
+Any other Foundation hash still fails and is not replaced.
 
 Staging defaults to the explicit `candidate530` profile, receipt schema2. It
 verifies both complete archives/provenance, preserves Apps bytes and excludes

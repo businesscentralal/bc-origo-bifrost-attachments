@@ -49,6 +49,14 @@ MEASURED_PACKAGE_PROFILES = {
                      "name": "Base Application", "version": "29.0.54011.55935"},
         "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024,
     },
+    # ReadyToRun wrapper from sandbox/28.5.54151.55751/w1, disk size 98891185.
+    # Outer expansion is 261371054 bytes. The embedded app has 8602 entries and
+    # 373064901 expanded bytes. The outer hash lifts that embedded app.
+    "a2e638554f9c97d37f760d6ab42703e1ed136fd229676e79bb1d1a8224a23d23": {
+        "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
+                     "name": "Base Application", "version": "28.5.54151.55751"},
+        "maxEntries": 16384, "maxExpandedBytes": 512 * 1024 * 1024,
+    },
 }
 FOUNDATION_CANDIDATE = {
     "identity": {"id": "7505e808-6e52-4b96-a328-82573391297a", "publisher": "Origo",
@@ -176,7 +184,26 @@ def compile_spans(text):
     return spans
 
 
-def package_info(path, deadline=None, *, allow_ready_to_run=False):
+def _compiler_manifest_document(node, namespace):
+    """Canonical compiler manifest. Timestamps and translation packaging flags are not inputs."""
+    ignored_flags = ("TRANSLATIONFILE", "LCGTRANSLATIONFILE")
+    attributes = {key: value for key, value in node.attrib.items()
+                  if not (node.tag == namespace + "Build" and key == "Timestamp")}
+    children = []
+    for child in list(node):
+        if (node.tag == namespace + "Features" and child.tag == namespace + "Feature"
+                and (child.text or "").strip() in ignored_flags):
+            continue
+        children.append(_compiler_manifest_document(child, namespace))
+    return [node.tag, sorted(attributes.items()), (node.text or "").strip(), children]
+
+
+def _compiler_manifest_hash(root):
+    namespace = "{http://schemas.microsoft.com/navx/2015/manifest}"
+    return digest(json.dumps(_compiler_manifest_document(root, namespace), sort_keys=True).encode())
+
+
+def package_info(path, deadline=None, *, allow_ready_to_run=False, measured_profile=None):
     """Stream bounded NAVX content and metadata; signature presence is not trust."""
     path = Path(path)
     deadline = time.monotonic() + INVENTORY_SECONDS if deadline is None else deadline
@@ -196,6 +223,8 @@ def package_info(path, deadline=None, *, allow_ready_to_run=False):
                     "Invalid NAVX payload length/header")
             initial_hash = file_hash(path, deadline)
             profile = MEASURED_PACKAGE_PROFILES.get(initial_hash)
+            if profile is None:
+                profile = measured_profile
             max_entries = profile["maxEntries"] if profile else PACKAGE_ENTRIES
             max_expanded = profile["maxExpandedBytes"] if profile else PACKAGE_BYTES
             with zipfile.ZipFile(PayloadView(stream, 40, length)) as archive:
@@ -285,6 +314,9 @@ def package_info(path, deadline=None, *, allow_ready_to_run=False):
             "sourceCommit": source.get("Commit", ""), "compilerVersion": build.get("CompilerVersion", ""),
             "buildUrl": build.get("Url", ""), "sha256": initial_hash,
             "contentSha256": digest(json.dumps(entries, sort_keys=True).encode()),
+            "symbolReferenceSha256": next((entry["sha256"] for entry in entries
+                                           if entry["name"] == "SymbolReference.json"), None),
+            "compilerManifestSha256": _compiler_manifest_hash(root),
             "bytes": before.st_size, "expandedBytes": expanded, "entryCount": len(items),
             "resourceProfile": initial_hash if profile else "generic",
             "signatureTailBytes": before.st_size - 40 - length}
@@ -341,7 +373,7 @@ def ready_to_run_info(path, before, archive, items, initial_hash, length, deadli
                             target.write(chunk)
             require(size == item.file_size, "Truncated expanded entry")
             entries.append({"name": item.filename, "sha256": sha.hexdigest()})
-        inner = package_info(inner_path, deadline)
+        inner = package_info(inner_path, deadline, measured_profile=profile)
         require(inner["identity"] == expected, "ReadyToRun embedded identity mismatch")
         if profile:
             require(inner["identity"] == profile["identity"], "Measured package profile identity mismatch")
@@ -395,9 +427,15 @@ class SymbolInventory(list):
     """List-compatible immutable receipt payload with local elapsed measurement."""
 
 
-def symbol_inventory(folder, policy="appCache"):
-    """Complete inventories use distinct finite catalog/cache resource policies."""
+def symbol_inventory(folder, policy="appCache", expanded_exemptions=()):
+    """Complete inventories use distinct finite catalog/cache resource policies.
+
+    App-cache expanded exemptions are exact compiler-catalog package hashes
+    already measured under the catalog budget. They still count toward the
+    cache package and disk-byte bounds. The catalog inventory never exempts.
+    """
     require(policy in SYMBOL_POLICIES, "Unknown symbol resource policy")
+    exemptions = set(expanded_exemptions) if policy == "appCache" else set()
     folder = Path(folder)
     require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
     limit, started = SYMBOL_POLICIES[policy], time.monotonic()
@@ -423,7 +461,11 @@ def symbol_inventory(folder, policy="appCache"):
         require(path.name.casefold() not in filenames, "Case-insensitive symbol filename collision")
         identities.add(identity)
         filenames.add(path.name.casefold())
-        expanded += info["expandedBytes"]
+        # Envelope plus embedded expansion for a catalog copy is already inside
+        # the catalog budget. Charging it again against the cache's 512 MiB
+        # expanded bound rejects the helper's dependency copy.
+        if info["sha256"] not in exemptions:
+            expanded += info["expandedBytes"]
         require(expanded <= limit.get("expandedBytes", limit["bytes"]), "Symbol aggregate expanded-byte bound exceeded")
         result.append({"file": path.name, **info})
     budget_check(deadline)
@@ -431,6 +473,119 @@ def symbol_inventory(folder, policy="appCache"):
             "Symbol inventory membership changed during measurement")
     result.elapsed_seconds = time.monotonic() - started
     return result
+
+
+def _symbol_conflict(kept, other):
+    """None when two same-identity packages are one compiler input.
+
+    Byte-identical files, identical zip entries, and a ReadyToRun wrapper whose
+    embedded app matches the other package's entries are the same package.
+    Otherwise SymbolReference.json and the canonical compiler manifest must
+    both be present and equal. A missing symbol reference is a conflict.
+    """
+    if kept["identity"] != other["identity"]:
+        return "identity"
+    if kept["sha256"] == other["sha256"] or kept["contentSha256"] == other["contentSha256"]:
+        return None
+    for left, right in ((kept, other), (other, kept)):
+        embedded = (left.get("readyToRun") or {}).get("embeddedContentSha256")
+        if embedded and embedded == right["contentSha256"]:
+            return None
+    left_symbol, right_symbol = kept.get("symbolReferenceSha256"), other.get("symbolReferenceSha256")
+    if not left_symbol or not right_symbol:
+        return "missing symbol reference"
+    if left_symbol != right_symbol:
+        return "symbol reference"
+    if kept.get("compilerManifestSha256") != other.get("compilerManifestSha256"):
+        return "compiler manifest"
+    return None
+
+
+def _prefer_retained_symbol(item):
+    """Keep the versioned artifact name; it is the catalog's primary filename."""
+    versioned = item["file"].casefold().endswith("_" + item["identity"]["version"].casefold() + ".app")
+    return (0 if versioned else 1, item["file"].casefold())
+
+
+def collapse_equivalent_compiler_symbols(folder):
+    """Remove filename aliases from the compiler catalog and leave one package.
+
+    Byte-identical copies, same entry content, a ReadyToRun wrapper of that
+    content, and the same id+version with the same symbol reference and
+    canonical compiler manifest are deleted only after every group has been
+    checked. The versioned filename is kept. The same app id with different
+    symbol or manifest content, or two versions of that id, fails and the
+    folder is left unchanged. The app-symbol cache is not modified.
+    """
+    folder = Path(folder)
+    require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
+    limit = SYMBOL_POLICIES["compilerCatalog"]
+    deadline = time.monotonic() + INVENTORY_SECONDS
+    paths = []
+    for path in folder.iterdir():
+        budget_check(deadline)
+        if path.suffix.lower() == ".app":
+            paths.append(path)
+            require(len(paths) <= limit["packages"],
+                    "Symbol inventory exceeds " + str(limit["packages"]) + " packages (compilerCatalog)")
+    paths.sort()
+    require(sum(path.stat().st_size for path in paths) <= limit["bytes"], "Symbol aggregate-byte bound exceeded")
+    infos = []
+    for path in paths:
+        try:
+            info = package_info(path, deadline, allow_ready_to_run=True)
+        except GateError as error:
+            error.rejected_package = path
+            raise
+        info["file"] = path.name
+        infos.append(info)
+    by_id = {}
+    for info in infos:
+        by_id.setdefault(info["identity"]["id"].lower(), []).append(info)
+    for app_id, items in by_id.items():
+        versions = []
+        for info in items:
+            if info["identity"]["version"] not in versions:
+                versions.append(info["identity"]["version"])
+        if len(versions) > 1:
+            error = GateError("Duplicate symbol identity with conflicting version: "
+                              + app_id + " " + " vs ".join(versions))
+            error.rejected_package = folder / items[-1]["file"]
+            raise error
+    groups = {}
+    for info in infos:
+        key = (info["identity"]["id"].lower(), version_tuple(info["identity"]["version"]))
+        groups.setdefault(key, []).append(info)
+    removals = []
+    for items in groups.values():
+        if len(items) == 1:
+            continue
+        items.sort(key=_prefer_retained_symbol)
+        kept = items[0]
+        for other in items[1:]:
+            reason = _symbol_conflict(kept, other)
+            if reason is None:
+                removals.append({"retained": kept["file"], "removed": other["file"],
+                                 "sha256": kept["sha256"], "removedSha256": other["sha256"],
+                                 "contentSha256": kept["contentSha256"],
+                                 "symbolReferenceSha256": kept.get("symbolReferenceSha256"),
+                                 "compilerManifestSha256": kept.get("compilerManifestSha256"),
+                                 "identity": kept["identity"]})
+                continue
+            error = GateError("Duplicate symbol identity/version with conflicting content ("
+                              + reason + "): " + other["identity"]["publisher"] + " "
+                              + other["identity"]["name"] + " " + other["identity"]["version"])
+            error.rejected_package = folder / other["file"]
+            raise error
+    verified = []
+    for item in removals:
+        path = folder / item["removed"]
+        require(path.is_file() and not path.is_symlink() and file_hash(path, deadline) == item["removedSha256"],
+                "Catalog changed before alias removal")
+        verified.append(path)
+    for path in verified:
+        path.unlink()
+    return removals
 
 
 def inventory_measurement(items, policy):
@@ -514,7 +669,7 @@ def reconcile_symbols(snapshot, request, output):
             "Changed compiler symbol path")
     compiler = symbol_inventory(request["compilerSymbolsFolder"], "compilerCatalog")
     require(compiler == snapshot["compilerSymbols"], "Compiler-folder inputs changed during helper call")
-    final = symbol_inventory(request["symbolsFolder"])
+    final = symbol_inventory(request["symbolsFolder"], expanded_exemptions={item["sha256"] for item in compiler})
     before = {s["file"]: s for s in snapshot["symbols"]}
     prepared = {s["file"]: s for s in compiler}
     after = {s["file"]: s for s in final}
@@ -563,8 +718,15 @@ def _before_compile(root, request):
     test = json.loads((root / "test/app.json").read_text(encoding="utf-8-sig"))
     require(manifest["id"] in (product["id"], test["id"]), "Unexpected compilation project")
     app_type = "app" if manifest["id"] == product["id"] else "testApp"
-    symbols = symbol_inventory(request["symbolsFolder"])
+    alias_removals = collapse_equivalent_compiler_symbols(request["compilerSymbolsFolder"])
     compiler_symbols = symbol_inventory(request["compilerSymbolsFolder"], "compilerCatalog")
+    # The test compile remeasures the cache after the product compile copied
+    # catalog packages into it. Those exact hashes already passed the catalog
+    # budget; the cache expanded bound still applies to everything else.
+    symbols = symbol_inventory(
+        request["symbolsFolder"],
+        expanded_exemptions={item["sha256"] for item in compiler_symbols},
+    )
     # Keep successful boundary measurements even if later identity/pin/resolution refuses.
     measured = {"context": context, "measurements": {
         "appCache": inventory_measurement(symbols, "appCache"),
@@ -594,7 +756,7 @@ def _before_compile(root, request):
     snapshot = {"context": context, "kind": request["kind"], "appType": app_type, "symbols": symbols,
                 "symbolsFolder": str(Path(request["symbolsFolder"]).resolve()),
                 "compilerSymbolsFolder": str(Path(request["compilerSymbolsFolder"]).resolve()),
-                "compilerSymbols": compiler_symbols,
+                "compilerSymbols": compiler_symbols, "compilerAliasRemovals": alias_removals,
                 "measurements": {"appCache": inventory_measurement(symbols, "appCache"),
                                  "compilerCatalog": inventory_measurement(compiler_symbols, "compilerCatalog")},
                 "resolution": resolve_helper_inputs(manifest, symbols, compiler_symbols),
