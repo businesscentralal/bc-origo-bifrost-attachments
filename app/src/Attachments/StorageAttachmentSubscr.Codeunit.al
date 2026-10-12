@@ -52,6 +52,33 @@ codeunit 10035636 "Storage Attachment Subscr ori"
 
     [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnBeforeModifyEvent', '', false, false)]
     local procedure RestoreStoredInternallyBeforeWrite(var Rec: Record "Document Attachment"; var xRec: Record "Document Attachment"; RunTrigger: Boolean)
+    begin
+        // The read subscribers mark Stored Internally on the caller's record so Microsoft's
+        // module does not claim the bytes. A later Modify, such as Document Attachment Details
+        // saving Rec after HasContent, would persist that mark next to Stored Externally and
+        // empty media. Put the persisted false back before the write. Rows without a Bifrost
+        // link, including Microsoft's own offloads, are left alone.
+        // Modify(false) still writes the caller's fields, so a false RunTrigger does not skip the restore.
+        // Rename writes only the primary key and does not run OnModify, so it cannot persist the mark.
+        if Rec.IsTemporary() or xRec.IsTemporary() then
+            exit;
+        if (not RunTrigger) and (xRec.SystemId <> Rec.SystemId) then
+            exit;
+        RestorePersistedStoredInternally(Rec);
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnBeforeInsertEvent', '', false, false)]
+    local procedure RestoreStoredInternallyBeforeInsert(var Rec: Record "Document Attachment"; RunTrigger: Boolean)
+    begin
+        // TransferFields from a record just marked by HasContent copies Stored Internally onto the new row.
+        // Insert(false) still writes that copy. Put the persisted false back when this SystemId already has a Bifrost link.
+        // Rename is safe: it writes only the primary key and does not run OnInsert or OnModify.
+        if Rec.IsTemporary() then
+            exit;
+        RestorePersistedStoredInternally(Rec);
+    end;
+
+    local procedure RestorePersistedStoredInternally(var Rec: Record "Document Attachment")
     var
         Link: Record "Storage Attachment Link ori";
         RecRef: RecordRef;
@@ -61,16 +88,6 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         StoredExternally: Boolean;
         StoredInternally: Boolean;
     begin
-        // The read subscribers mark Stored Internally on the caller's record so Microsoft's
-        // module does not claim the bytes. A later Modify, such as Document Attachment Details
-        // saving Rec after HasContent, would persist that mark next to Stored Externally and
-        // empty media. Put the persisted false back before the write. Rows without a Bifrost
-        // link, including Microsoft's own offloads, are left alone.
-        // Modify(false) still writes the caller's fields, so a false RunTrigger does not skip the restore.
-        if Rec.IsTemporary() or xRec.IsTemporary() then
-            exit;
-        if (not RunTrigger) and (xRec.SystemId <> Rec.SystemId) then
-            exit;
         if not Link.Get(Database::"Document Attachment", Rec.SystemId) then
             exit;
         RecRef.GetTable(Rec);
@@ -174,7 +191,7 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         // That module claims the read when Stored Externally is set and Stored Internally is not,
         // and it does not look at IsHandled. The native mirror sets exactly that pair.
         // Marking the in-memory record internally stored makes that subscriber leave the read alone.
-        // RestoreStoredInternallyBeforeWrite puts the persisted false back before any Modify.
+        // RestorePersistedStoredInternally puts the persisted false back before Modify or Insert.
         RecRef.GetTable(DocumentAttachment);
         if not RecRef.FieldExist(8753) then begin
             RecRef.Close();

@@ -299,6 +299,41 @@ codeunit 96217 "Storage Native Fields Tests"
     end;
 
     [Test]
+    procedure LinkedRead_TransferFieldsInsert_DoesNotPersistStoredInternally()
+    var
+        DocumentAttachment: Record "Document Attachment";
+        CopyAttachment: Record "Document Attachment";
+        Link: Record "Storage Attachment Link ori";
+        AttachmentId: Guid;
+        CopyId: Guid;
+        ExpectedPath: Text;
+    begin
+        // [SCENARIO] TransferFields from a just-read record must not insert Stored Internally next to the native mirror.
+        AssertExternalStorageFieldPresent();
+        AttachmentId := OffloadLeafAttachment('linked-insert', 'X insert copy bytes');
+        LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Offload must record a Bifrost link.');
+        ExpectedPath := NativePath(AttachmentId);
+
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsTrue(DocumentAttachment.HasContent(), 'A linked offload still reports content.');
+        CopyAttachment.Init();
+        CopyAttachment.TransferFields(DocumentAttachment);
+        CopyAttachment."Line No." := DocumentAttachment."Line No." + 1;
+        CopyAttachment.Insert(true);
+        CopyId := CopyAttachment.SystemId;
+        LibraryAssert.AreNotEqual(AttachmentId, CopyId, 'Insert stores a new row.');
+        LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", CopyId), 'Insert must not create a Bifrost link.');
+        LibraryAssert.IsFalse(StoredInternally(CopyId), 'Insert must not persist Stored Internally.');
+        LibraryAssert.IsTrue(StoredExternally(CopyId), 'Stored Externally is copied.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(CopyId), 'The external path is copied.');
+        CopyAttachment.GetBySystemId(CopyId);
+        LibraryAssert.IsFalse(CopyAttachment."Document Reference ID".HasValue(), 'The media stays empty.');
+        LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'The source row stays unchanged.');
+        LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'The source Stored Externally stays set.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The source path stays unchanged.');
+    end;
+
+    [Test]
     procedure MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule()
     var
         DocumentAttachment: Record "Document Attachment";

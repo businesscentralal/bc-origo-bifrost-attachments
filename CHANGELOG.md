@@ -33,6 +33,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Fixed (2026-10-12) - offloaded document attachment reads
 
 - Offloaded document-attachment reads stay on the Bifrost link when External Storage - Document Attachments is installed. That module claims a row when Stored Externally is set, Stored Internally is not, the media is empty and the external path is filled, and it does not look at IsHandled. The read marks Stored Internally only in memory so the Microsoft subscriber leaves the bytes alone. Codeunit 10035636 `Storage Attachment Subscr ori` writes the persisted false back before Modify, including Modify(false), so a read and a later save leave the stored row unchanged. Test codeunit 96217 `Storage Native Fields Tests` covers that read, both Modify calls, and a Microsoft-offloaded row with no Bifrost link. A Microsoft-offloaded row with no Bifrost link is not rewritten. On the BC 28.0 test container that module does not subscribe to OnBeforeHasContent, so HasContent stays false and the stored flags, path, empty media and missing link are unchanged after the read and after Modify.
+- Codeunit 10035636 `Storage Attachment Subscr ori` clears that in-memory Stored Internally mark on insert when the record SystemId already has a Bifrost link. TransferFields from a just-read record followed by Insert therefore stores the persisted false. Rename only writes the primary key and does not run OnInsert or OnModify, so it cannot store the mark. Test codeunit 96217 `Storage Native Fields Tests` covers that insert.
 
 
 
