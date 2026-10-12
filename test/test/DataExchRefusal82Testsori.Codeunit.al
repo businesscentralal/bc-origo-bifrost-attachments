@@ -1040,7 +1040,9 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     var
         LowerPermissions: Codeunit "Library - Lower Permissions";
     begin
+        // Temporary test workaround for https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/issues/959.
         // A Permissions property does not grant Foundation's setup read. SetExact assigns it directly.
+        // Remove Lang Setup Read ori once that core fix ships.
         // BIFROST API ori keeps the table and codeunit rights the message implementations already use.
         LowerPermissions.StopLoggingNAVPermissions();
         LowerPermissions.StartLoggingNAVPermissions();

@@ -7,8 +7,9 @@ using System.IO;
 
 /// <summary>
 /// Direct grants for a restrictive dispatcher call. Setup ori is the language read Foundation does not
-/// carry. The Data Exchange grants are the tables those message types read or change. Indirect Permissions
-/// on a caller codeunit did not grant the setup read.
+/// carry. Temporary test workaround for https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/issues/959
+/// until that core fix ships; remove this set then. The Data Exchange grants are the tables those message
+/// types read or change. Indirect Permissions on a caller codeunit did not grant the setup read.
 /// </summary>
 permissionset 96235 "Lang Setup Read ori"
 {

@@ -2,7 +2,7 @@ namespace Origo.Bifrost.Attachments.Test;
 
 using Origo.Bifrost;
 
-/// <summary>Execution support for restrictive story79 tests. Grants the Foundation setup read the dispatcher requires, and no attachment table data.</summary>
+/// <summary>Execution support for restrictive story79 tests. The Foundation Setup ori read is a temporary test workaround for https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/issues/959 until that core fix ships. No attachment table data.</summary>
 permissionset 96218 "Storage79 Test ori"
 {
     Assignable = true;

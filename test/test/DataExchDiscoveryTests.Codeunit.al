@@ -252,8 +252,7 @@ codeunit 96213 "Data Exch Discovery Tests"
         RequestJson.Add('entryNo', 1);
         RequestJson.Add('skip', -1);
         ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Entry.Get", RequestJson);
-        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'negative skip');
-        LibraryAssert.IsTrue(ResponseBody(TempArgument).Contains('skip'), 'the error names skip');
+        AssertSkipProblem(TempArgument.GetResponseJson());
     end;
 
     [Test]
@@ -488,9 +487,28 @@ codeunit 96213 "Data Exch Discovery Tests"
         Result := Token.AsArray();
     end;
 
-    local procedure ResponseBody(var TempArgument: Record "Message Argument ori" temporary) Result: Text
+    local procedure AssertSkipProblem(Response: JsonObject)
+    var
+        Token: JsonToken;
+        ErrorToken: JsonToken;
+        Errors: JsonArray;
+        Problem: JsonObject;
+        Found: Boolean;
     begin
-        TempArgument.GetResponseJson().WriteTo(Result);
+        LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'negative skip');
+        if Response.Get('errors', Token) then
+            Errors := Token.AsArray()
+        else
+            Errors.Add(Response);
+        foreach ErrorToken in Errors do begin
+            Problem := ErrorToken.AsObject();
+            if ReadText(Problem, 'parameter') = 'skip' then begin
+                Found := true;
+                LibraryAssert.AreEqual('InvalidParameter', ReadText(Problem, 'code'), 'negative skip code');
+                LibraryAssert.IsTrue(ReadText(Problem, 'error').Contains('skip must be zero or greater'), 'negative skip message');
+            end;
+        end;
+        LibraryAssert.IsTrue(Found, 'negative skip names parameter skip');
     end;
 
     local procedure ReadData(ResponseJson: JsonObject) DataObject: JsonObject
