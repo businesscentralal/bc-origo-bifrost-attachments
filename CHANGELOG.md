@@ -19,8 +19,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-10-12) - Data Exchange permissions
 
-- Upgrade: `Storage Full ori` no longer grants the eight Data Exchange tables. AppSourceCop AA0050 and AS0110 reject those grants on a permission set extension. Holders of `BIFROST Full ori` who read or change Data Exchange data need `BIFROST DataExch ori` assigned as well. The tables stay on that assignable set.
-- A missing required parameter now includes `expected` and `nextStep`. Discovery reads and Data Exchange, document-attachment and link writes answer `PermissionDenied` before the platform throws.
+- Upgrade: permissionsetextension 10035635 `Storage Full ori` no longer grants the eight Data Exchange tables. AppSourceCop AA0050 and AS0110 reject those grants on a permission set extension. Holders of `BIFROST Full ori` who read or change Data Exchange data need permissionset 70013548 `BIFROST DataExch ori` assigned as well. The tables stay on that assignable set.
+- A missing required parameter now includes `expected` and `nextStep`. Codeunit 10035682 `Storage Request Reader ori` collects that shape. Discovery reads in codeunit 70013523 `DataExch Def Get Impl ori` and codeunit 70013526 `DataExch Entry Get Impl ori`, and writes in codeunit 70013534 `DataExch Export Run Impl ori`, codeunit 70013540 `DataExch Import Run Impl ori`, codeunit 70013531 `DataExch Type Set Impl ori` and codeunit 10035635 `Storage Attachment Mgt ori`, answer `PermissionDenied` before the platform throws.
 
 ### Fixed (2026-10-12) - BC 28.5 test contracts
 
