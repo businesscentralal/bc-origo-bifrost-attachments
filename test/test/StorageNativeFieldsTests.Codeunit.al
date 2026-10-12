@@ -165,7 +165,6 @@ codeunit 96217 "Storage Native Fields Tests"
         ContentOut: OutStream;
         ContentIn: InStream;
         ContentText: Text;
-        ResponseText: Text;
         MockCodeTok: Label 'X75NATIVE', Locked = true;
     begin
         // Requires the supported native extension. The missing-extension path is tested separately.
@@ -200,8 +199,8 @@ codeunit 96217 "Storage Native Fields Tests"
         Request.Add('storageCode', MockCodeTok);
         Faults.ConfigureNativeModifyFailure(AttachmentId);
         BindSubscription(Faults);
-        ResponseText := DispatchNativeOffload(Request);
-        LibraryAssert.IsTrue(ResponseText.Contains('X75 native mirror persistence failure'), 'Native mirror failure must be reported. Response: ' + ResponseText);
+        asserterror DispatchNativeOffload(Request);
+        LibraryAssert.ExpectedError('X75 native mirror persistence failure');
         UnbindSubscription(Faults);
         LibraryAssert.AreEqual(0, MockState.GetWriteCalls(), 'Native persistence must succeed before any irreversible provider write.');
         LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'Failure must not leave a remote orphan.');
@@ -242,15 +241,7 @@ codeunit 96217 "Storage Native Fields Tests"
         RecRef.Close();
     end;
 
-    local procedure DispatchNativeOffload(Request: JsonObject) ResponseText: Text
-    begin
-        // The mirror failure is a real Error so the offload transaction rolls back. Catch it here and keep checking that rollback.
-        if not TryDispatchNativeOffload(Request, ResponseText) then
-            ResponseText := GetLastErrorText();
-    end;
-
-    [TryFunction]
-    local procedure TryDispatchNativeOffload(Request: JsonObject; var ResponseText: Text)
+    local procedure DispatchNativeOffload(Request: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -261,6 +252,5 @@ codeunit 96217 "Storage Native Fields Tests"
         Request.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
-        ResponseContent.GetSubText(ResponseText, 1);
     end;
 }
