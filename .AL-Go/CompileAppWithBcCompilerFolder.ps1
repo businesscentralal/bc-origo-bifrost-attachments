@@ -6,6 +6,9 @@ function Enable-LinuxCompilerManifestStamps {
     # BcContainerHelper 6.1.19 stamps /SourceCommit and /BuildUrl only when the compiler
     # file version is at least 12.0.12.41479. Linux ELF alc has no PE file version, so the
     # helper skips those arguments and the package commit does not match the run.
+    if (-not ($IsLinux -or $IsMacOS)) {
+        return
+    }
     $command = Get-Command Compile-AppWithBcCompilerFolder -ErrorAction Stop
     $body = $command.Definition
     if ($body -match 'no PE file version') {
