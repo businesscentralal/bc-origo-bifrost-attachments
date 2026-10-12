@@ -188,6 +188,10 @@ codeunit 96217 "Storage Native Fields Tests"
         DocumentAttachment.Init();
         DocumentAttachment.ImportFromStream(ContentIn, 'native-failure.txt');
         DocumentAttachment.Insert(true);
+        // Offload refuses a blank or folded name before the native mirror runs. Keep a leaf name.
+        DocumentAttachment."File Name" := 'native-failure';
+        DocumentAttachment."File Extension" := 'txt';
+        DocumentAttachment.Modify(true);
         AttachmentId := DocumentAttachment.SystemId;
         Commit();
         Request.Add('target', 'DocumentAttachment');
@@ -222,7 +226,7 @@ codeunit 96217 "Storage Native Fields Tests"
         NativeModifyFailureId := AttachmentId;
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnBeforeModifyEvent', '', false, false)]
+    [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnAfterModifyEvent', '', false, false)]
     local procedure FailNativeMirrorModify(var Rec: Record "Document Attachment"; var xRec: Record "Document Attachment"; RunTrigger: Boolean)
     var
         RecRef: RecordRef;

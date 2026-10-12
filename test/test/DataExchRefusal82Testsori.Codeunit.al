@@ -1010,7 +1010,9 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         ResponseText: Text;
     begin
         RequestContent.AddText(Payload);
+        AllowDispatcherLanguageRead();
         Dispatcher.Execute(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseType);
+        StopDispatcherLanguageRead();
         ResponseContent.GetSubText(ResponseText, 1);
         LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'A real dispatch must return a JSON response.');
     end;
@@ -1027,9 +1029,32 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         ResponseText: Text;
     begin
         RequestContent.AddText(Payload);
+        AllowDispatcherLanguageRead();
         Dispatcher.EnqueueAndProcess("Message Type ori"::"DataExchange.Import.Run", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseType, ResponseTime);
+        StopDispatcherLanguageRead();
         ResponseContent.GetSubText(ResponseText, 1);
         LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'The public queue path must return JSON.');
+    end;
+
+    local procedure AllowDispatcherLanguageRead()
+    var
+        LowerPermissions: Codeunit "Library - Lower Permissions";
+    begin
+        // Temporary test workaround for https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/issues/959.
+        // A Permissions property does not grant Foundation's setup read. SetExact assigns it directly.
+        // Remove Lang Setup Read ori once that core fix ships.
+        // BIFROST API ori keeps the table and codeunit rights the message implementations already use.
+        LowerPermissions.StopLoggingNAVPermissions();
+        LowerPermissions.StartLoggingNAVPermissions();
+        LowerPermissions.SetExactPermissionSet('Lang Setup Read ori');
+        LowerPermissions.AddPermissionSet('BIFROST API ori');
+    end;
+
+    local procedure StopDispatcherLanguageRead()
+    var
+        LowerPermissions: Codeunit "Library - Lower Permissions";
+    begin
+        LowerPermissions.StopLoggingNAVPermissions();
     end;
 
     local procedure EntryCount(DefinitionCode: Code[20]): Integer

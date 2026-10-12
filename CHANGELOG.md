@@ -22,6 +22,13 @@ Business Central release versioning (`major.minor.build.revision`).
 - Upgrade: `Storage Full ori` no longer grants the eight Data Exchange tables. AppSourceCop AA0050 and AS0110 reject those grants on a permission set extension. Holders of `BIFROST Full ori` who read or change Data Exchange data need `BIFROST DataExch ori` assigned as well. The tables stay on that assignable set.
 - A missing required parameter now includes `expected` and `nextStep`. Discovery reads and Data Exchange, document-attachment and link writes answer `PermissionDenied` before the platform throws.
 
+### Fixed (2026-10-12) - BC 28.5 test contracts
+
+- Test message-argument buffers named `TempArgument` are temporary records, which CodeCop AA0237 requires.
+- Data Exchange related chapters use Foundation `RelatedEntry` objects. Plain strings were read as message type "". `DataExchange.Export.Run` names `Storage.File.Create`. `DataExchange.Definition.Export` names `DataExchange.Definition.List`. `DataExchange.Definition.Import` is not a registered message type. The mutation envelopes include `messageType`. Type.List rows keep the seven shipped fields. A negative `skip` is `InvalidParameter` on parameter `skip` and the message contains `skip must be zero or greater`.
+- Icelandic refusals go through `EnqueueAndProcess` with the language id. `Execute` resets the session to the Foundation setup language, so `GlobalLanguage` alone came back in English. The fileName refusal text is the current label. Alias fixtures delete the committed `X75ALIAS` setup and its links before the next test. A missing file account on the setup card is committed before the expected error, so the Icelandic pass still finds the row.
+- `Lang Setup Read ori` (96235) and the `Setup ori` read on `Storage79 Test ori` (96218) are temporary test workarounds for core issue https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/issues/959. Remove them once that fix ships. `Dispatcher ori.Execute` reads Foundation `Setup ori` through `GetDefaultLanguageId`, and a `Permissions` property does not grant that cross-app read. Story 79 mock readback includes the connection base path. An empty upload commit is persisted before the refusal so the session remains. The native-mirror failure fixture keeps a leaf file name, and the test expects that error so it can check the rollback. Abort discards the session.
+
 
 
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)

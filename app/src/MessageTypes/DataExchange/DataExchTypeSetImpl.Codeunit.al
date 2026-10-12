@@ -58,6 +58,7 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         ContractParts: Codeunit "Storage Contract Parts ori";
     begin
         Envelope := ContractParts.GetEnvelope(true);
+        Envelope.Add('messageType', 'DataExchange.Type.Set');
         exit(true);
     end;
 
@@ -114,9 +115,11 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
 
     /// <summary>Lists related Data Exchange message types.</summary>
     procedure GetRelated(var Related: JsonArray): Boolean
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        Related.Add('DataExchange.Definition.Get');
-        Related.Add('Storage.Upload.CommitToRecord');
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Definition.Get', 'Read the import definition this type uses.'));
+        Related.Add(ContractMgt.RelatedEntry('Storage.Upload.CommitToRecord', 'Attach a committed upload to a record.'));
         exit(true);
     end;
 
