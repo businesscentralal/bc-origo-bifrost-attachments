@@ -222,9 +222,9 @@ codeunit 96217 "Storage Native Fields Tests"
     [Test]
     procedure ExternalStorageModule_IsPresentInTheTestContainer()
     var
-        ModuleInfo: ModuleInfo;
         RecRef: RecordRef;
         ExternalStorageAppId: Guid;
+        ModuleInfo: ModuleInfo;
     begin
         // [SCENARIO] The read path under test is the installed External Storage module, not a missing-field no-op.
         ExternalStorageAppId := '5f2e93a0-6083-4718-b05a-7ac89be5644d';
