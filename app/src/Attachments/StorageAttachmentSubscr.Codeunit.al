@@ -71,8 +71,8 @@ codeunit 10035636 "Storage Attachment Subscr ori"
     local procedure RestoreStoredInternallyBeforeInsert(var Rec: Record "Document Attachment"; RunTrigger: Boolean)
     begin
         // TransferFields from a record just marked by HasContent copies Stored Internally onto the new row.
-        // Insert(false) still writes that copy. Put the persisted false back when this SystemId already has a Bifrost link.
-        // Rename is safe: it writes only the primary key and does not run OnInsert or OnModify.
+        // Insert assigns a new SystemId before this event, so the copy is recognized by the mirrored external path of the existing Bifrost link.
+        // Insert(false) still writes that copy. Rename is safe: it writes only the primary key and does not run OnInsert or OnModify.
         if Rec.IsTemporary() then
             exit;
         RestorePersistedStoredInternally(Rec);
@@ -88,8 +88,6 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         StoredExternally: Boolean;
         StoredInternally: Boolean;
     begin
-        if not Link.Get(Database::"Document Attachment", Rec.SystemId) then
-            exit;
         RecRef.GetTable(Rec);
         if not RecRef.FieldExist(8750) or not RecRef.FieldExist(8752) or not RecRef.FieldExist(8753) then begin
             RecRef.Close();
@@ -101,11 +99,33 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         StoredExternally := StoredExternallyFld.Value;
         StoredInternally := StoredInternallyFld.Value;
         if StoredExternally and StoredInternally and (Format(ExternalFilePathFld.Value) <> '') then
-            if TryClearStoredInternally(StoredInternallyFld) then
-                RecRef.SetTable(Rec)
-            else
-                ClearLastError();
+            if Link.Get(Database::"Document Attachment", Rec.SystemId) or MirroredPathHasBifrostLink(Format(ExternalFilePathFld.Value)) then
+                if TryClearStoredInternally(StoredInternallyFld) then
+                    RecRef.SetTable(Rec)
+                else
+                    ClearLastError();
         RecRef.Close();
+    end;
+
+    local procedure MirroredPathHasBifrostLink(ExternalPath: Text): Boolean
+    var
+        Link: Record "Storage Attachment Link ori";
+        StorageCode: Code[20];
+        StoragePath: Text;
+        ColonAt: Integer;
+    begin
+        // Field 8752 is stored as "<storage code>:<storage path>", matching Storage Attachment Link ori.
+        ColonAt := StrPos(ExternalPath, ':');
+        if ColonAt <= 1 then
+            exit(false);
+        StorageCode := CopyStr(CopyStr(ExternalPath, 1, ColonAt - 1), 1, MaxStrLen(StorageCode));
+        StoragePath := CopyStr(ExternalPath, ColonAt + 1);
+        if (StorageCode = '') or (StoragePath = '') then
+            exit(false);
+        Link.SetRange("Table ID", Database::"Document Attachment");
+        Link.SetRange("Storage Code", StorageCode);
+        Link.SetRange("Storage Path", CopyStr(StoragePath, 1, MaxStrLen(Link."Storage Path")));
+        exit(not Link.IsEmpty());
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnBeforeExportToStream', '', false, false)]
