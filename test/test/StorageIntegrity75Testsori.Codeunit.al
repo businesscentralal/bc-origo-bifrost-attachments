@@ -588,8 +588,10 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         MockState: Codeunit "Storage Mock State";
     begin
         MockState.Reset();
-        Link.SetRange("Storage Code", MockCodeTok);
+        Link.SetFilter("Storage Code", '%1|%2', MockCodeTok, 'X75ALIAS');
         Link.DeleteAll();
+        if StorageSetup.Get('X75ALIAS') then
+            StorageSetup.Delete();
         if StorageSetup.Get(MockCodeTok) then
             StorageSetup.Delete();
         StorageSetup.Init();

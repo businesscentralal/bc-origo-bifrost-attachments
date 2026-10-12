@@ -20,7 +20,7 @@ codeunit 96214 "Storage Link Guard Tests"
     procedure DataRecordsSet_OnAttachmentLink_ReturnsHint()
     var
         Link: Record "Storage Attachment Link ori";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         SetRequest: JsonObject;
         RecordObject: JsonObject;
         PrimaryKey: JsonObject;
@@ -64,7 +64,7 @@ codeunit 96214 "Storage Link Guard Tests"
     procedure DataRecordsGet_OnAttachmentLink_ReturnsRows()
     var
         Link: Record "Storage Attachment Link ori";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         GetRequest: JsonObject;
         ResponseJson: JsonObject;
         ResultToken: JsonToken;
@@ -128,7 +128,7 @@ codeunit 96214 "Storage Link Guard Tests"
         LibraryAssert.AreEqual('valid.txt', Link."File Name", 'The valid link file name must be unchanged.');
     end;
 
-    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;

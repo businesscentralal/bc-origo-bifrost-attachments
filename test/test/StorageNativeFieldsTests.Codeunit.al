@@ -188,6 +188,10 @@ codeunit 96217 "Storage Native Fields Tests"
         DocumentAttachment.Init();
         DocumentAttachment.ImportFromStream(ContentIn, 'native-failure.txt');
         DocumentAttachment.Insert(true);
+        // Offload refuses a blank or folded name before the native mirror runs. Keep a leaf name.
+        DocumentAttachment."File Name" := 'native-failure';
+        DocumentAttachment."File Extension" := 'txt';
+        DocumentAttachment.Modify(true);
         AttachmentId := DocumentAttachment.SystemId;
         Commit();
         Request.Add('target', 'DocumentAttachment');
@@ -215,6 +219,173 @@ codeunit 96217 "Storage Native Fields Tests"
         Commit();
     end;
 
+    [Test]
+    procedure ExternalStorageModule_IsPresentInTheTestContainer()
+    var
+        RecRef: RecordRef;
+        ExternalStorageAppId: Guid;
+        ModuleInfo: ModuleInfo;
+    begin
+        // [SCENARIO] The read path under test is the installed External Storage module, not a missing-field no-op.
+        ExternalStorageAppId := '5f2e93a0-6083-4718-b05a-7ac89be5644d';
+        LibraryAssert.IsTrue(NavApp.GetModuleInfo(ExternalStorageAppId, ModuleInfo), 'External Storage - Document Attachments must be installed in the test container.');
+        RecRef.Open(Database::"Document Attachment");
+        LibraryAssert.IsTrue(RecRef.FieldExist(8753), 'Field 8753 Stored Internally must exist.');
+        RecRef.Close();
+    end;
+
+    [Test]
+    procedure LinkedRead_LeavesStoredRowUnchangedAfterModify()
+    var
+        DocumentAttachment: Record "Document Attachment";
+        Link: Record "Storage Attachment Link ori";
+        TempBlob: Codeunit "Temp Blob";
+        ContentIn: InStream;
+        AttachmentId: Guid;
+        ExpectedPath: Text;
+        ReadBack: Text;
+    begin
+        // [SCENARIO] A Bifrost read must not persist Stored Internally next to the native mirror.
+        AssertExternalStorageFieldPresent();
+        AttachmentId := OffloadLeafAttachment('linked-read', 'X linked read bytes');
+        LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Offload must record a Bifrost link.');
+        ExpectedPath := NativePath(AttachmentId);
+        LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'The stored mirror keeps Stored Internally false.');
+        LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'The stored mirror keeps Stored Externally true.');
+
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsTrue(DocumentAttachment.HasContent(), 'A linked offload still reports content.');
+        DocumentAttachment.GetAsTempBlob(TempBlob);
+        TempBlob.CreateInStream(ContentIn);
+        ContentIn.ReadText(ReadBack);
+        LibraryAssert.AreEqual('X linked read bytes', ReadBack, 'The Bifrost link serves the bytes.');
+        LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'The read must not change the stored row.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The read must not change the external path.');
+
+        DocumentAttachment."File Name" := 'read-then-modify';
+        DocumentAttachment.Modify(true);
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.AreEqual('read-then-modify', DocumentAttachment."File Name", 'The later modify is saved.');
+        LibraryAssert.IsFalse(DocumentAttachment."Document Reference ID".HasValue(), 'The media stays empty.');
+        LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'Modify after a read must not persist Stored Internally.');
+        LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'Stored Externally stays set.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The external path stays unchanged.');
+    end;
+
+    [Test]
+    procedure LinkedRead_LeavesStoredRowUnchangedAfterModifyFalse()
+    var
+        DocumentAttachment: Record "Document Attachment";
+        Link: Record "Storage Attachment Link ori";
+        AttachmentId: Guid;
+        ExpectedPath: Text;
+    begin
+        // [SCENARIO] Modify(false) still writes the caller's fields, so the in-memory mark must be cleared first.
+        AssertExternalStorageFieldPresent();
+        AttachmentId := OffloadLeafAttachment('linked-modify-false', 'X modify false bytes');
+        LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Offload must record a Bifrost link.');
+        ExpectedPath := NativePath(AttachmentId);
+
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsTrue(DocumentAttachment.HasContent(), 'A linked offload still reports content.');
+        DocumentAttachment."File Name" := 'read-then-modify-false';
+        DocumentAttachment.Modify(false);
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.AreEqual('read-then-modify-false', DocumentAttachment."File Name", 'Modify(false) is saved.');
+        LibraryAssert.IsFalse(DocumentAttachment."Document Reference ID".HasValue(), 'The media stays empty.');
+        LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'Modify(false) must not persist Stored Internally.');
+        LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'Stored Externally stays set.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The external path stays unchanged.');
+    end;
+
+    [Test]
+    procedure LinkedRead_TransferFieldsInsert_DoesNotPersistStoredInternally()
+    var
+        DocumentAttachment: Record "Document Attachment";
+        CopyAttachment: Record "Document Attachment";
+        Link: Record "Storage Attachment Link ori";
+        AttachmentId: Guid;
+        CopyId: Guid;
+        ExpectedPath: Text;
+    begin
+        // [SCENARIO] TransferFields from a just-read record must not insert Stored Internally next to the native mirror.
+        AssertExternalStorageFieldPresent();
+        AttachmentId := OffloadLeafAttachment('linked-insert', 'X insert copy bytes');
+        LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Offload must record a Bifrost link.');
+        ExpectedPath := NativePath(AttachmentId);
+
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsTrue(DocumentAttachment.HasContent(), 'A linked offload still reports content.');
+        CopyAttachment.Init();
+        CopyAttachment.TransferFields(DocumentAttachment);
+        CopyAttachment."Line No." := DocumentAttachment."Line No." + 1;
+        CopyAttachment.Insert(true);
+        CopyId := CopyAttachment.SystemId;
+        LibraryAssert.AreNotEqual(AttachmentId, CopyId, 'Insert stores a new row.');
+        LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", CopyId), 'Insert must not create a Bifrost link.');
+        LibraryAssert.IsFalse(StoredInternally(CopyId), 'Insert must not persist Stored Internally.');
+        LibraryAssert.IsTrue(StoredExternally(CopyId), 'Stored Externally is copied.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(CopyId), 'The external path is copied.');
+        CopyAttachment.GetBySystemId(CopyId);
+        LibraryAssert.IsFalse(CopyAttachment."Document Reference ID".HasValue(), 'The media stays empty.');
+        LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'The source row stays unchanged.');
+        LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'The source Stored Externally stays set.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The source path stays unchanged.');
+    end;
+
+    [Test]
+    procedure MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule()
+    var
+        DocumentAttachment: Record "Document Attachment";
+        StoredAttachment: Record "Document Attachment";
+        Link: Record "Storage Attachment Link ori";
+        AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
+        TempBlob: Codeunit "Temp Blob";
+        ContentOut: OutStream;
+        ContentIn: InStream;
+        AttachmentId: Guid;
+        ExpectedPath: Text;
+    begin
+        // [SCENARIO] A Microsoft-offloaded row with no Bifrost link is not rewritten by Bifrost.
+        AssertExternalStorageFieldPresent();
+        TempBlob.CreateOutStream(ContentOut);
+        ContentOut.WriteText('X microsoft bytes');
+        TempBlob.CreateInStream(ContentIn);
+        DocumentAttachment.Init();
+        DocumentAttachment.ImportFromStream(ContentIn, 'ms-only.txt');
+        DocumentAttachment.Insert(true);
+        DocumentAttachment."File Name" := 'ms-only';
+        DocumentAttachment."File Extension" := 'txt';
+        DocumentAttachment.Modify(true);
+        AttachmentId := DocumentAttachment.SystemId;
+        AttachmentMgt.SetNativeExternalStorageFields(AttachmentId, 'ORIGOBCTEST', 'bifrost-test/ms-only.txt');
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        Clear(DocumentAttachment."Document Reference ID");
+        DocumentAttachment.Modify(true);
+        LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'This row has no Bifrost link.');
+        ExpectedPath := NativePath(AttachmentId);
+        LibraryAssert.AreEqual('ORIGOBCTEST:bifrost-test/ms-only.txt', ExpectedPath, 'The Microsoft path is stored.');
+
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        // The BC 28.0 External Storage module does not subscribe to OnBeforeHasContent, so this call
+        // returns false. Bifrost must not claim the row either, and the stored mirror must stay as written.
+        DocumentAttachment.HasContent();
+        LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'HasContent must not create a Bifrost link.');
+        LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'HasContent must not change the stored row.');
+        LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'HasContent must not change Stored Externally.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'HasContent must not change the external path.');
+        StoredAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsFalse(StoredAttachment."Document Reference ID".HasValue(), 'HasContent must not fill the media.');
+        DocumentAttachment."File Name" := 'ms-read-then-modify';
+        DocumentAttachment.Modify(true);
+        LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'Modify must not create a Bifrost link.');
+        LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'Modify must keep Stored Internally false.');
+        LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'Stored Externally stays set.');
+        LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The Microsoft path stays unchanged.');
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsFalse(DocumentAttachment."Document Reference ID".HasValue(), 'The media stays empty.');
+    end;
+
     /// <summary>Arms this manually bound subscriber only for the named attachment fixture.</summary>
     /// <param name="AttachmentId">The fixture whose native mirror persistence must fail.</param>
     internal procedure ConfigureNativeModifyFailure(AttachmentId: Guid)
@@ -222,7 +393,7 @@ codeunit 96217 "Storage Native Fields Tests"
         NativeModifyFailureId := AttachmentId;
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnBeforeModifyEvent', '', false, false)]
+    [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnAfterModifyEvent', '', false, false)]
     local procedure FailNativeMirrorModify(var Rec: Record "Document Attachment"; var xRec: Record "Document Attachment"; RunTrigger: Boolean)
     var
         RecRef: RecordRef;
@@ -235,6 +406,104 @@ codeunit 96217 "Storage Native Fields Tests"
             if RecRef.Field(8750).Value then
                 Error(FailureErr);
         RecRef.Close();
+    end;
+
+    local procedure AssertExternalStorageFieldPresent()
+    var
+        RecRef: RecordRef;
+    begin
+        RecRef.Open(Database::"Document Attachment");
+        LibraryAssert.IsTrue(RecRef.FieldExist(8753), 'Field 8753 Stored Internally must exist.');
+        RecRef.Close();
+    end;
+
+    local procedure OffloadLeafAttachment(FileName: Text; Content: Text): Guid
+    var
+        DocumentAttachment: Record "Document Attachment";
+        StorageSetup: Record "Storage Setup ori";
+        MockState: Codeunit "Storage Mock State";
+        TempBlob: Codeunit "Temp Blob";
+        Response: JsonObject;
+        Request: JsonObject;
+        ContentOut: OutStream;
+        ContentIn: InStream;
+        ResponseText: Text;
+        Token: JsonToken;
+        MockCodeTok: Label 'X75READ', Locked = true;
+    begin
+        MockState.Reset();
+        if StorageSetup.Get(MockCodeTok) then
+            StorageSetup.Delete();
+        StorageSetup.Init();
+        StorageSetup.Code := MockCodeTok;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup.Enabled := true;
+        StorageSetup.Insert();
+        TempBlob.CreateOutStream(ContentOut);
+        ContentOut.WriteText(Content);
+        TempBlob.CreateInStream(ContentIn);
+        DocumentAttachment.Init();
+        DocumentAttachment.ImportFromStream(ContentIn, FileName + '.txt');
+        DocumentAttachment.Insert(true);
+        DocumentAttachment."File Name" := CopyStr(FileName, 1, MaxStrLen(DocumentAttachment."File Name"));
+        DocumentAttachment."File Extension" := 'txt';
+        DocumentAttachment.Modify(true);
+        Request.Add('target', 'DocumentAttachment');
+        Request.Add('systemId', Format(DocumentAttachment.SystemId, 0, 4));
+        Request.Add('storageCode', MockCodeTok);
+        ResponseText := DispatchOffloadResponse(Request);
+        LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'Offload must return JSON.');
+        LibraryAssert.IsTrue(Response.Get('status', Token), 'Offload status');
+        LibraryAssert.AreEqual('Success', Token.AsValue().AsText(), 'Offload must succeed.');
+        exit(DocumentAttachment.SystemId);
+    end;
+
+    local procedure DispatchOffloadResponse(Request: JsonObject) ResponseText: Text
+    var
+        Dispatcher: Codeunit "Dispatcher ori";
+        RequestContent: BigText;
+        ResponseContent: BigText;
+        RequestText: Text;
+        ResponseContentType: Text[100];
+    begin
+        Request.WriteTo(RequestText);
+        RequestContent.AddText(RequestText);
+        Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
+        ResponseContent.GetSubText(ResponseText, 1);
+    end;
+
+    local procedure StoredInternally(AttachmentId: Guid): Boolean
+    begin
+        exit(NativeBoolean(AttachmentId, 8753));
+    end;
+
+    local procedure StoredExternally(AttachmentId: Guid): Boolean
+    begin
+        exit(NativeBoolean(AttachmentId, 8750));
+    end;
+
+    local procedure NativeBoolean(AttachmentId: Guid; FieldNo: Integer): Boolean
+    var
+        RecRef: RecordRef;
+        Value: Boolean;
+    begin
+        RecRef.Open(Database::"Document Attachment");
+        RecRef.GetBySystemId(AttachmentId);
+        Value := RecRef.Field(FieldNo).Value;
+        RecRef.Close();
+        exit(Value);
+    end;
+
+    local procedure NativePath(AttachmentId: Guid): Text
+    var
+        RecRef: RecordRef;
+        Value: Text;
+    begin
+        RecRef.Open(Database::"Document Attachment");
+        RecRef.GetBySystemId(AttachmentId);
+        Value := Format(RecRef.Field(8752).Value);
+        RecRef.Close();
+        exit(Value);
     end;
 
     local procedure DispatchNativeOffload(Request: JsonObject)

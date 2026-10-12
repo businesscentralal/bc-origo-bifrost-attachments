@@ -108,9 +108,11 @@ codeunit 70013536 "DataExch Def Export Impl ori" implements "Msg Interface ori",
 
     /// <summary>Lists related Data Exchange message types.</summary>
     procedure GetRelated(var Related: JsonArray): Boolean
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        Related.Add('DataExchange.Definition.Get');
-        Related.Add('DataExchange.Definition.Import');
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Definition.Get', 'Read the definition before exporting it.'));
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Definition.List', 'Find a definition to export.'));
         exit(true);
     end;
 
