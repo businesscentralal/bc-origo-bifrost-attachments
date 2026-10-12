@@ -191,14 +191,38 @@ if ($Stage -eq 'PostCompile') {
     }
     $extension = Join-Path $CompilationParams.compilerFolder 'compiler/extension'
     $bin = Join-Path $extension 'bin'
-    # BC 28.5 stores alc.exe under bin\win32. Later compilers keep it in bin.
-    $compiler = Join-Path $bin 'win32/alc.exe'
-    if (-not (Test-Path -LiteralPath $compiler -PathType Leaf)) {
-        $compiler = Join-Path $bin 'alc.exe'
+    # BC 28.5 stores the Windows compiler at bin\win32\alc.exe. Linux runners compile with bin\alc.
+    # A Windows binary shipped in the same folder has no file version when this hook runs on Linux.
+    $compilerNames = @('win32/alc.exe', 'alc.exe', 'linux/alc', 'alc')
+    if ($IsLinux -or $IsMacOS) {
+        $compilerNames = @('linux/alc', 'alc', 'alc.exe', 'win32/alc.exe')
+    }
+    $compiler = $null
+    $compilerFile = $null
+    foreach ($compilerName in $compilerNames) {
+        $candidate = Join-Path $bin $compilerName
+        if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
+            continue
+        }
+        $candidateFile = Get-FileReceipt $candidate
+        if (-not $compiler) {
+            $compiler = $candidate
+            $compilerFile = $candidateFile
+        }
+        if ($candidateFile.version) {
+            $compiler = $candidate
+            $compilerFile = $candidateFile
+            break
+        }
+    }
+    if (-not $compiler) {
+        throw 'Compiler executable file version unavailable.'
     }
     $packageJson = Join-Path $extension 'package.json'
     $compilerPackage = Get-Content -LiteralPath $packageJson -Raw -Encoding UTF8 | ConvertFrom-Json
-    $compilerFile = Get-FileReceipt $compiler
+    if (-not $compilerFile.version) {
+        $compilerFile.version = [string]$compilerPackage.version
+    }
     if (-not $compilerFile.version) {
         throw 'Compiler executable file version unavailable.'
     }
