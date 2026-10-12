@@ -301,8 +301,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         Observe();
         Clear(UploadSession);
         UploadSession.ReadIsolation := IsolationLevel::ReadCommitted;
-        UploadSession.Get(UploadId);
-        LibraryAssert.AreEqual(UploadSession.Status::Aborted, UploadSession.Status, 'Abort is persisted.');
+        LibraryAssert.IsFalse(UploadSession.Get(UploadId), 'Abort discards the session.');
         UploadChunk.ReadIsolation := IsolationLevel::ReadCommitted;
         UploadChunk.SetRange("Upload Id", UploadId);
         LibraryAssert.IsTrue(UploadChunk.IsEmpty(), 'Abort clears its persisted chunks.');

@@ -243,6 +243,14 @@ codeunit 96217 "Storage Native Fields Tests"
     end;
 
     local procedure DispatchNativeOffload(Request: JsonObject) ResponseText: Text
+    begin
+        // The mirror failure is a real Error so the offload transaction rolls back. Catch it here and keep checking that rollback.
+        if not TryDispatchNativeOffload(Request, ResponseText) then
+            ResponseText := GetLastErrorText();
+    end;
+
+    [TryFunction]
+    local procedure TryDispatchNativeOffload(Request: JsonObject; var ResponseText: Text)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
