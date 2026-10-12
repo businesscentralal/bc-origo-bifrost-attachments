@@ -20,6 +20,46 @@ function Get-FileReceipt {
     return @{ sha256 = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant(); version = $file.VersionInfo.FileVersion }
 }
 
+function Get-CompilerBannerVersion {
+    param([string] $Root)
+    $logPath = Join-Path $Root 'BuildOutput.txt'
+    if (-not (Test-Path -LiteralPath $logPath -PathType Leaf)) {
+        throw 'Compiler banner unavailable: BuildOutput.txt is absent.'
+    }
+    $bytes = [System.IO.File]::ReadAllBytes($logPath)
+    if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
+        $text = [System.Text.Encoding]::Unicode.GetString($bytes)
+    }
+    elseif ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFE -and $bytes[1] -eq 0xFF) {
+        $text = [System.Text.Encoding]::BigEndianUnicode.GetString($bytes)
+    }
+    else {
+        $text = [System.Text.UTF8Encoding]::new($true).GetString($bytes)
+    }
+    $ansi = [regex]::new(([char]27) + '\[[0-?]*[ -/]*[@-~]')
+    $stamp = [regex]::new('^\d{4}-\d{2}-\d{2}T\S+Z\s+')
+    $bannerPattern = [regex]::new('^Microsoft \(R\) AL Compiler version (\S+)')
+    $startPattern = [regex]::new("^Compilation started for project '([^']+)' containing '(\d+)' files")
+    $compiler = $null
+    $last = $null
+    # -split treats a negative limit as "do not split". Regex.Split keeps CR and LF lines.
+    foreach ($original in [regex]::Split($text, '\r\n|\n|\r')) {
+        $line = $stamp.Replace($ansi.Replace($original, ''), '').Trim()
+        $bannerMatch = $bannerPattern.Match($line)
+        if ($bannerMatch.Success) {
+            $compiler = $bannerMatch.Groups[1].Value
+        }
+        if ($startPattern.Match($line).Success -and $compiler) {
+            $last = $compiler
+            $compiler = $null
+        }
+    }
+    if (-not $last) {
+        throw 'Compiler banner unavailable.'
+    }
+    return $last
+}
+
 function Get-Context {
     foreach ($name in 'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_JOB', 'GITHUB_SHA', 'BuildMode') {
         if (-not [Environment]::GetEnvironmentVariable($name)) {
@@ -193,12 +233,16 @@ if ($Stage -eq 'PostCompile') {
     $bin = Join-Path $extension 'bin'
     # BC 28.5 stores the Windows compiler at bin\win32\alc.exe. Linux runners compile with bin\alc.
     # A Windows binary shipped in the same folder has no file version when this hook runs on Linux.
+    # The gate compares compilerVersion with the banner and the package CompilerVersion.
+    # The compiler package.json version is not that banner.
     $compilerNames = @('win32/alc.exe', 'alc.exe', 'linux/alc', 'alc')
     if ($IsLinux -or $IsMacOS) {
         $compilerNames = @('linux/alc', 'alc', 'alc.exe', 'win32/alc.exe')
     }
+    $banner = Get-CompilerBannerVersion -Root $Root
     $compiler = $null
     $compilerFile = $null
+    $versionedMismatch = $null
     foreach ($compilerName in $compilerNames) {
         $candidate = Join-Path $bin $compilerName
         if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
@@ -209,23 +253,30 @@ if ($Stage -eq 'PostCompile') {
             $compiler = $candidate
             $compilerFile = $candidateFile
         }
-        if ($candidateFile.version) {
+        if ($candidateFile.version -eq $banner) {
             $compiler = $candidate
             $compilerFile = $candidateFile
+            $versionedMismatch = $null
             break
+        }
+        if ($candidateFile.version) {
+            $versionedMismatch = $candidateFile.version
         }
     }
     if (-not $compiler) {
-        throw 'Compiler executable file version unavailable.'
+        throw 'Compiler executable unavailable.'
+    }
+    if ($compilerFile.version -ne $banner) {
+        if ($compilerFile.version) {
+            throw "Compiler file version $($compilerFile.version) does not match banner $banner."
+        }
+        if ($versionedMismatch) {
+            throw "Compiler file version $versionedMismatch does not match banner $banner."
+        }
+        $compilerFile.version = $banner
     }
     $packageJson = Join-Path $extension 'package.json'
     $compilerPackage = Get-Content -LiteralPath $packageJson -Raw -Encoding UTF8 | ConvertFrom-Json
-    if (-not $compilerFile.version) {
-        $compilerFile.version = [string]$compilerPackage.version
-    }
-    if (-not $compilerFile.version) {
-        throw 'Compiler executable file version unavailable.'
-    }
     $parameters.compilerVersion = $compilerFile.version
     $parameters.compilerExtensionVersion = $compilerPackage.version
     $tools = @{ compiler = $compilerFile; compilerPackage = (Get-FileReceipt $packageJson) }
