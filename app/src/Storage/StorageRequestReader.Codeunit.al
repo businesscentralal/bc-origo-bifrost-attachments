@@ -46,6 +46,13 @@ codeunit 10035682 "Storage Request Reader ori"
         SendRelativePathLbl: Label 'Send a path inside the connection, e.g. invoices/2026/INV-001.pdf.', Comment = 'is-IS=Sendu slóð innan tengingarinnar, t.d. invoices/2026/INV-001.pdf.';
         SendBase64Lbl: Label 'Encode the file bytes as standard base64 and send them again.', Comment = 'is-IS=Kóðaðu bæti skrárinnar sem venjulegt base64 og sendu þau aftur.';
         SplitIntoChunksLbl: Label 'Send the file in parts with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.', Comment = 'is-IS=Sendu skrána í hlutum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.';
+        MissingValueLbl: Label '(missing)', Comment = 'is-IS=(vantar)';
+        RequiredParameterExpectedLbl: Label 'a value for "%1"', Comment = '%1 = parameter name, is-IS=gildi fyrir "%1"';
+        ProvideParameterLbl: Label 'Provide "%1" and send the request again.', Comment = '%1 = parameter name, is-IS=Gefðu upp "%1" og sendu beiðnina aftur.';
+        TableReadDeniedErr: Label 'You do not have permission to read table %1.', Comment = '%1 = table id, is-IS=Þú hefur ekki heimild til að lesa töflu %1.';
+        TableWriteDeniedErr: Label 'You do not have permission to change table %1.', Comment = '%1 = table id, is-IS=Þú hefur ekki heimild til að breyta töflu %1.';
+        TablePermissionExpectedLbl: Label 'permission to use table %1', Comment = '%1 = table id, is-IS=heimild til að nota töflu %1';
+        TablePermissionNextStepLbl: Label 'Ask an administrator to grant access to table %1, then send the request again.', Comment = '%1 = table id, is-IS=Biddu kerfisstjóra um aðgang að töflu %1 og sendu beiðnina svo aftur.';
 
     /// <summary>
     /// Reads a text value. Absent, JSON null and an empty string count as not given: a required
@@ -450,6 +457,33 @@ codeunit 10035682 "Storage Request Reader ori"
         exit(true);
     end;
 
+    /// <summary>Answers PermissionDenied when the caller cannot read or change the table, before a platform permission error.</summary>
+    /// <param name="Argument">The message argument that receives the refusal.</param>
+    /// <param name="TableId">The table the operation is about to use.</param>
+    /// <param name="RequireWrite">Whether the operation changes the table.</param>
+    /// <returns>True when the response is already a permission refusal.</returns>
+    internal procedure RespondIfTablePermissionDenied(var Argument: Record "Message Argument ori"; TableId: Integer; RequireWrite: Boolean): Boolean
+    var
+        CheckedRecord: RecordRef;
+        Allowed: Boolean;
+        DeniedErr: Text;
+    begin
+        CheckedRecord.Open(TableId);
+        if RequireWrite then
+            Allowed := CheckedRecord.WritePermission()
+        else
+            Allowed := CheckedRecord.ReadPermission();
+        CheckedRecord.Close();
+        if Allowed then
+            exit(false);
+        if RequireWrite then
+            DeniedErr := StrSubstNo(TableWriteDeniedErr, TableId)
+        else
+            DeniedErr := StrSubstNo(TableReadDeniedErr, TableId);
+        Argument.RespondWithError("Bifrost Error Code ori"::PermissionDenied, DeniedErr, 'tableId', Format(TableId, 0, 9), StrSubstNo(TablePermissionExpectedLbl, TableId), StrSubstNo(TablePermissionNextStepLbl, TableId));
+        exit(true);
+    end;
+
     [TryFunction]
     local procedure TryReadMutationRequest(var Argument: Record "Message Argument ori"; var RequestJson: JsonObject)
     begin
@@ -460,7 +494,7 @@ codeunit 10035682 "Storage Request Reader ori"
     begin
         if not Required then
             exit(true);
-        Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(RequiredParameterMissingErr, ParameterName), ParameterName, '', '', '');
+        Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(RequiredParameterMissingErr, ParameterName), ParameterName, MissingValueLbl, StrSubstNo(RequiredParameterExpectedLbl, ParameterName), StrSubstNo(ProvideParameterLbl, ParameterName));
         exit(false);
     end;
 

@@ -73,6 +73,17 @@ jobs:
         run: ./tools/Test-PermissionCoverage.ps1
 
 
+  SymbolDuplicateGate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Equivalent compiler symbol aliases
+        run: |
+          python3 -m unittest discover -s tools/tests -p test_symbol_duplicates.py -v
+          python3 -m unittest discover -s tools/tests -p test_foundation_restore.py -v
+
   IcelandicKeywordCounts:
     runs-on: ubuntu-latest
     steps:

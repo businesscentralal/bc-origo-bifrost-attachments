@@ -105,7 +105,14 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         // [THEN] Actual payload and response metadata agree, including both seeded rows.
         Rows := AssertTypeListData(Response, 2);
         foreach Token in Rows do begin
-            LibraryAssert.AreEqual(2, Token.AsObject().Keys().Count(), 'Each row has exactly code and description.');
+            LibraryAssert.AreEqual(7, Token.AsObject().Keys().Count(), 'Each row has the shipped type fields.');
+            LibraryAssert.IsTrue(Token.AsObject().Contains('code'), 'code');
+            LibraryAssert.IsTrue(Token.AsObject().Contains('description'), 'description');
+            LibraryAssert.IsTrue(Token.AsObject().Contains('dataExchDefCode'), 'dataExchDefCode');
+            LibraryAssert.IsTrue(Token.AsObject().Contains('userFeedbackCodeunit'), 'userFeedbackCodeunit');
+            LibraryAssert.IsTrue(Token.AsObject().Contains('validationCodeunit'), 'validationCodeunit');
+            LibraryAssert.IsTrue(Token.AsObject().Contains('dataHandlingCodeunit'), 'dataHandlingCodeunit');
+            LibraryAssert.IsTrue(Token.AsObject().Contains('type'), 'type');
             case JsonText(Token.AsObject(), 'code') of
                 'BIFT69-TYPE-A':
                     begin
