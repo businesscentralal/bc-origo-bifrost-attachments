@@ -15,7 +15,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-10-12) - pin the Current compile artifact to BC 28.5
 
-- The Current AL-Go build and `.github/Test Current.settings.json` resolve artifacts from `/sandbox/28.5.54151.55751/w1/latest` (one leading slash, so storage stays the default). The pin selects the compiler artifact only. The COSMO Alpaca test container is unchanged. `.github/AL-Go-Settings.json` is unchanged. Next Minor and Next Major keep their workflow artifact overrides. Runtime 17.0 and application/platform 28.0.0.0 are already set in `app.json`; the app version is unchanged. PostCompile reads `alc.exe` from `compiler/extension/bin/win32` when that is where the BC 28.5 compiler stores it.
+- The Current AL-Go build and `.github/Test Current.settings.json` resolve artifacts from `/sandbox/28.5.54151.55751/w1/latest` (one leading slash, so storage stays the default). The pin selects the compiler artifact only. The COSMO Alpaca test container is unchanged. `.github/AL-Go-Settings.json` is unchanged. Next Minor and Next Major keep their workflow artifact overrides. Runtime 17.0 and application/platform 28.0.0.0 are already set in `app.json`; the app version is unchanged. PostCompile reads the Windows compiler from `compiler/extension/bin/win32` when that file has a version. A Linux runner uses `bin/alc` and, when the executable has no file version, the compiler package version.
 
 ### Changed (2026-10-12) - Data Exchange permissions
 
