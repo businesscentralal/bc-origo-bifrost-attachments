@@ -46,7 +46,7 @@ codeunit 96203 "Storage Attachment Field Tests"
     procedure Offloaded_TrueAfterOffload_IncDoc()
     var
         Attachment: Record "Incoming Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         // [SCENARIO] After offloading, the Bifrost Offloaded FlowField reports true.
         Initialize();
@@ -67,7 +67,7 @@ codeunit 96203 "Storage Attachment Field Tests"
     procedure Offloaded_FalseAfterRestore_IncDoc()
     var
         Attachment: Record "Incoming Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         // [SCENARIO] After restoring, the Bifrost Offloaded FlowField goes back to false.
         Initialize();
@@ -110,7 +110,7 @@ codeunit 96203 "Storage Attachment Field Tests"
     procedure Offloaded_TrueAfterOffload_DocAttach()
     var
         DocAttachment: Record "Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         // [SCENARIO] After offloading a document attachment, the Bifrost Offloaded FlowField reports true.
         Initialize();
@@ -135,8 +135,8 @@ codeunit 96203 "Storage Attachment Field Tests"
         Att1: Record "Incoming Document Attachment";
         Att2: Record "Incoming Document Attachment";
         Att3: Record "Incoming Document Attachment";
-        TempArgument: Record "Message Argument ori";
-        TempOffloadArg: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        TempOffloadArg: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         ResultArray: JsonArray;
@@ -171,8 +171,8 @@ codeunit 96203 "Storage Attachment Field Tests"
     var
         DocAtt1: Record "Document Attachment";
         DocAtt2: Record "Document Attachment";
-        TempArgument: Record "Message Argument ori";
-        TempOffloadArg: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        TempOffloadArg: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         ResultArray: JsonArray;
@@ -204,7 +204,7 @@ codeunit 96203 "Storage Attachment Field Tests"
     [Test]
     procedure OffloadHelp_DocumentsCandidateDiscovery()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         ContractMgt: Codeunit "Msg Contract Mgt ori";
         Contract: JsonObject;
         MessageType: Enum "Message Type ori";
@@ -309,7 +309,7 @@ codeunit 96203 "Storage Attachment Field Tests"
         DocAttachment.FindLast();
     end;
 
-    local procedure OffloadAttachment(var TempArgument: Record "Message Argument ori"; Target: Text; SystemId: Guid)
+    local procedure OffloadAttachment(var TempArgument: Record "Message Argument ori" temporary; Target: Text; SystemId: Guid)
     var
         RequestJson: JsonObject;
     begin
@@ -320,7 +320,7 @@ codeunit 96203 "Storage Attachment Field Tests"
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Offload should succeed.');
     end;
 
-    local procedure RestoreAttachment(var TempArgument: Record "Message Argument ori"; Target: Text; SystemId: Guid)
+    local procedure RestoreAttachment(var TempArgument: Record "Message Argument ori" temporary; Target: Text; SystemId: Guid)
     var
         RequestJson: JsonObject;
     begin
@@ -330,7 +330,7 @@ codeunit 96203 "Storage Attachment Field Tests"
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Restore should succeed.');
     end;
 
-    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;

@@ -60,6 +60,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         LinkPermissionErr: Label 'You do not have permission to update Bifröst storage attachment links.', Comment = 'is-IS=Þú hefur ekki heimild til að uppfæra viðhengjatengingar Bifröst geymslu.';
         TargetPermissionErr: Label 'You do not have permission to update the linked Business Central table %1.', Comment = '%1 = table id, is-IS=Þú hefur ekki heimild til að uppfæra tengdu Business Central töfluna %1.';
         ReadPermissionErr: Label 'You do not have permission to read table %1.', Comment = '%1 = table id, is-IS=Þú hefur ekki heimild til að lesa töflu %1.';
+        ReadPermissionExpectedLbl: Label 'permission to read table %1', Comment = '%1 = table id, is-IS=heimild til að lesa töflu %1';
+        ReadPermissionNextStepLbl: Label 'Ask an administrator to grant read access to table %1, then send the request again.', Comment = '%1 = table id, is-IS=Biddu kerfisstjóra um lesaðgang að töflu %1 og sendu beiðnina svo aftur.';
         UnknownTableErr: Label 'Table %1 does not exist.', Comment = '%1 = table id, is-IS=Tafla %1 er ekki til.';
         UnknownTableNameErr: Label 'No table named "%1" exists.', Comment = '%1 = table name, is-IS=Engin tafla heitir "%1".';
         UnknownTableNextStepLbl: Label 'Find the table with Help.Tables.Get.', Comment = 'is-IS=Finndu töfluna með Help.Tables.Get.';
@@ -132,6 +134,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         if Reader.RespondIfErrors(Argument) then
             exit(false);
         if not RequestMgt.CheckUnlinkedDestination(Argument, StorageSetup.Code, Path, 'path') then
+            exit(false);
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Storage Attachment Link ori", true) then
             exit(false);
 
         // The database writes happen first, then the upload last. The upload is the only step that
@@ -378,6 +382,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         CheckAttachmentFileName(Argument, FileName);
         if Reader.RespondIfErrors(Argument) then
             exit(false);
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Document Attachment", true) then begin
+            RecordRef.Close();
+            exit(false);
+        end;
         if FromStorage then begin
             CheckNativePathLength(Argument, Database::"Document Attachment", StorageSetup.Code, StoragePath, 'path');
             if Reader.RespondIfErrors(Argument) then
@@ -440,6 +448,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         CheckAttachmentFileName(Argument, FileName);
         if Reader.RespondIfErrors(Argument) then
             exit(false);
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Document Attachment", true) then begin
+            RecordRef.Close();
+            exit(false);
+        end;
         TempBlob.CreateInStream(ContentInStream);
         DocumentAttachment.Init();
         DocumentAttachment.SaveAttachmentFromStream(ContentInStream, RecordRef, FileName);
@@ -558,7 +570,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
 
         RecordRef.Open(TableId);
         if not RecordRef.ReadPermission() then begin
-            Argument.AddError("Bifrost Error Code ori"::PermissionDenied, StrSubstNo(ReadPermissionErr, TableId), TableParameter, Format(TableId, 0, 9), '', '');
+            Argument.AddError("Bifrost Error Code ori"::PermissionDenied, StrSubstNo(ReadPermissionErr, TableId), TableParameter, Format(TableId, 0, 9), StrSubstNo(ReadPermissionExpectedLbl, TableId), StrSubstNo(ReadPermissionNextStepLbl, TableId));
             exit(false);
         end;
 

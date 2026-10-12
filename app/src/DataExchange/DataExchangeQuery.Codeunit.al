@@ -33,6 +33,7 @@ codeunit 70013520 "Data Exchange Query ori"
         UnknownDirectionErr: Label 'direction must be Import or Export.', Comment = 'is-IS=direction verður að vera Import eða Export.';
         BooleanParamErr: Label '''%1'' must be a boolean.', Comment = '%1 = parameter name||is-IS=''%1'' verður að vera Boole-gildi.';
         IntegerParamErr: Label '''%1'' must be an integer.', Comment = '%1 = parameter name||is-IS=''%1'' verður að vera heiltala.';
+        NonNegativeParamErr: Label '%1 must be zero or greater.', Comment = '%1 = parameter name||is-IS=%1 verður að vera núll eða stærri.';
         DateParamErr: Label '''%1'' must be an invariant date (YYYY-MM-DD) or datetime.', Comment = '%1 = parameter name||is-IS=''%1'' verður að vera dagsetning á óháðu sniði (YYYY-MM-DD) eða dagsetning og tími.';
         FileTooLargeErr: Label 'File content is %1 bytes, which is above the 1 MB limit for includeFileContent.', Comment = '%1 = byte length||is-IS=Skráarinnihaldið er %1 bæti, sem er yfir 1 MB hámarkinu fyrir includeFileContent.';
         FileSizeExpectedLbl: Label 'at most 1 MB', Comment = 'is-IS=að hámarki 1 MB';
@@ -607,7 +608,10 @@ codeunit 70013520 "Data Exchange Query ori"
         if IsIntegerText(Written) then
             if Evaluate(IntegerValue, Written, 9) then begin
                 if IntegerValue < Minimum then
-                    Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(IntegerParamErr, ParameterName), ParameterName, Written, Expected, StrSubstNo(SendIntegerLbl, ParameterName));
+                    if Minimum = 0 then
+                        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(NonNegativeParamErr, ParameterName), ParameterName, Written, Expected, StrSubstNo(SendIntegerLbl, ParameterName))
+                    else
+                        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(IntegerParamErr, ParameterName), ParameterName, Written, Expected, StrSubstNo(SendIntegerLbl, ParameterName));
                 exit;
             end;
         Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(IntegerParamErr, ParameterName), ParameterName, Written, Expected, StrSubstNo(SendIntegerLbl, ParameterName));
