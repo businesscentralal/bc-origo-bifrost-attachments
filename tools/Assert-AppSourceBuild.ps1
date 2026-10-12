@@ -290,7 +290,18 @@ if ($Stage -eq 'PostCompile') {
     $helper = Get-Command Run-AlPipeline -ErrorAction Stop
     $compileHelper = Get-Command Compile-AppWithBcCompilerFolder -ErrorAction Stop
     $tools.helper = Get-FileReceipt $helper.ScriptBlock.File
-    $tools.compileHelper = Get-FileReceipt $compileHelper.ScriptBlock.File
+    # The Linux stamp patch replaces the in-memory command, which then has no script path.
+    $compileHelperPath = [string]$compileHelper.ScriptBlock.File
+    if (-not $compileHelperPath -and $compileHelper.Module) {
+        $nested = Join-Path (Split-Path $compileHelper.Module.Path -Parent) 'CompilerFolderHandling/Compile-AppWithBcCompilerFolder.ps1'
+        if (Test-Path -LiteralPath $nested -PathType Leaf) {
+            $compileHelperPath = $nested
+        }
+        else {
+            $compileHelperPath = [string]$compileHelper.Module.Path
+        }
+    }
+    $tools.compileHelper = Get-FileReceipt $compileHelperPath
     $tools.alpacaOverride = Get-FileReceipt (Join-Path $Root '.alpaca/Scripts/Overrides/RunAlPipeline/PreCompileApp.ps1')
     $parameters.tools = $tools
     $parameters.appManifestSha256 = (Get-FileReceipt (Join-Path $CompilationParams.appProjectFolder 'app.json')).sha256
