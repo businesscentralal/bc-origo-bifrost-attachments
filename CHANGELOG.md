@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-13) - API surface inventory provenance
+
+- Refresh 13 stale file hashes in `api-surface-objects.json` and add `hashSourceSha` (`079378953494ce569db7d1139543955dc6843c73`) to record hash provenance separately from the reviewed inventory decisions. Update `API-SURFACE.md` with the provenance note. No AL objects or IDs change.
+
 ### Fixed (2026-10-12) - compiler symbol filename aliases
 
 - The AppSource before-compile gate treats a compiler-symbol filename alias as one package when the bytes match, the package entries match, a ReadyToRun wrapper embeds that package, or the same app id and version has the same SymbolReference and canonical compiler manifest. The versioned filename is kept. Build timestamps and TRANSLATIONFILE/LCGTRANSLATIONFILE packaging flags are not compiler conflicts. A different symbol reference, compiler manifest, or version still fails, and no alias is removed in that case. The app-symbol cache still rejects every duplicate. No AL objects or IDs change.
