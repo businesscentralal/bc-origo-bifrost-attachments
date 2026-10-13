@@ -10,7 +10,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-13) - compiler catalog measurement capacity (#109)
 
-- Give the complete compiler catalog and alias normalization a finite 180-second window after the BC28.5 Windows runner exceeded the former 60-second window. Individual package and app-cache measurements remain limited to 60 seconds. Package counts, disk bytes, expanded bytes, entry limits and conflict refusal are unchanged; normalization enforces the existing expanded-work bound before removing aliases. No AL objects or IDs change.
+- `tools/appsource_gate.py` and `tools/AppSourceBuildGate.md`: give the complete compiler catalog and alias normalization a finite 180-second window after the BC28.5 Windows runner exceeded the former 60-second window. Individual package and app-cache measurements remain limited to 60 seconds. Package counts, disk bytes, expanded bytes, entry limits and conflict refusal are unchanged; normalization enforces the existing expanded-work bound before removing aliases. No AL objects or IDs change. `tools/tests/test_appsource_gate.py` covers the separate deadlines and expanded-work enforcement.
 
 ### Fixed (2026-10-13) - missing Icelandic labels (#109)
 
@@ -18,8 +18,9 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-13) - Default build verification (#109)
 
-- Preserve both rejected duplicate compiler symbol inputs in bounded diagnostics, and run Default/Test for workflow-only changes.
-- Exercise the rejection-receipt hash-I/O failure with a valid NAVX package after compiler-symbol normalization validates package headers first. Both receipt-write and hash-I/O failures retain the original gate refusal. No AL objects or IDs change.
+- `tools/appsource_gate.py` preserves both rejected duplicate compiler symbol inputs in bounded diagnostics, documented in `tools/AppSourceBuildGate.md` and covered by `tools/tests/test_appsource_gate.py`.
+- `.AL-Go/settings.json` adds `.github/workflows/**` to `fullBuildPatterns`; `tools/Test-BifrostPipeline.ps1` asserts that workflow and guard changes run Default/Test.
+- `tools/tests/test_symbol_policy.py` exercises the rejection-receipt hash-I/O failure with a valid NAVX package after compiler-symbol normalization validates package headers first. Both receipt-write and hash-I/O failures retain the original gate refusal. No AL objects or IDs change.
 
 ### Fixed (2026-10-12) - compiler symbol filename aliases
 
@@ -51,7 +52,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 
 
-### Fixed (2026-10-10) - UAT dependency installation
+### Fixed (2026-10-10) - UAT dependency installation (#109)
 
 - UAT feature-app deployment uses the Foundation app already deployed by its own pipeline in Dev scope, avoiding an unauthorized AppSource Foundation installation. `.github/AL-Go-Settings.json`: `DeployToBifrost.DependencyInstallMode = "ignore"`. AppSource delivery is unchanged; no AL objects or IDs change.
 
@@ -99,6 +100,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ## [28.0.0.4] — 2026-10-07
 
 ### Fixed
+
 - `Storage Contract Parts ori` (70013500) removes unused storage requirements from Data Exchange queries and record uploads, documents conditional attachment sources and accepted address aliases, and adds shared shipped Data Exchange mutation chapters for integration by #82.
 - `Data Exchange Query ori` (70013520) collects malformed filters, flags, dates and paging values before querying, refuses overlong codes and page sizes above 1000, preserves the zero/default page size of 100, and returns localized actionable error details.
 - Read/query discovery wording is localized in `DataExch Def List Impl ori` (70013522), `DataExch Def Get Impl ori` (70013523), `DataExch Type List Impl ori` (70013524), `DataExch Entry List Impl ori` (70013525), and `DataExch Entry Get Impl ori` (70013526). `Storage Contract Batch2 Tests` (96216) adds #69 contract and full-dispatch regression coverage; exact-tip execution and final XLF integration remain verification gates.
