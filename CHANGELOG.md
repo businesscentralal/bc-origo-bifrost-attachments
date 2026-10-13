@@ -10,7 +10,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-13) - compiler catalog measurement capacity (#109)
 
-- `tools/appsource_gate.py` and `tools/AppSourceBuildGate.md`: give the complete compiler catalog and alias normalization a finite 180-second window after the BC28.5 Windows runner exceeded the former 60-second window. Individual package and app-cache measurements remain limited to 60 seconds. Package counts, disk bytes, expanded bytes, entry limits and conflict refusal are unchanged; normalization enforces the existing expanded-work bound before removing aliases. No AL objects or IDs change. `tools/tests/test_appsource_gate.py` covers the separate deadlines and expanded-work enforcement.
+- `tools/appsource_gate.py` and `tools/AppSourceBuildGate.md`: give the complete compiler catalog and alias normalization a finite 180-second window after the BC28.5 Windows runner exceeded the former 60-second window. Individual package and app-cache measurements remain limited to 60 seconds. Package counts, disk bytes, expanded bytes, entry limits and conflict refusal are unchanged; normalization enforces the existing expanded-work bound before removing aliases. No AL objects or IDs change. `tools/tests/test_symbol_policy.py` covers the separate deadlines and expanded-work enforcement.
 
 ### Fixed (2026-10-13) - missing Icelandic labels (#109)
 
@@ -18,9 +18,9 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-13) - Default build verification (#109)
 
-- `tools/appsource_gate.py` preserves both rejected duplicate compiler symbol inputs in bounded diagnostics, documented in `tools/AppSourceBuildGate.md` and covered by `tools/tests/test_appsource_gate.py`.
+- `tools/appsource_gate.py` preserves both rejected duplicate compiler symbol inputs in bounded diagnostics, documented in `tools/AppSourceBuildGate.md` and covered by `tools/tests/test_symbol_policy.py`.
 - `.AL-Go/settings.json` adds `.github/workflows/**` to `fullBuildPatterns`; `tools/Test-BifrostPipeline.ps1` asserts that workflow and guard changes run Default/Test.
-- `tools/tests/test_symbol_policy.py` exercises the rejection-receipt hash-I/O failure with a valid NAVX package after compiler-symbol normalization validates package headers first. Both receipt-write and hash-I/O failures retain the original gate refusal. No AL objects or IDs change.
+- `tools/tests/test_appsource_gate.py` exercises the rejection-receipt hash-I/O failure with a valid NAVX package after compiler-symbol normalization validates package headers first. Both receipt-write and hash-I/O failures retain the original gate refusal. No AL objects or IDs change.
 
 ### Fixed (2026-10-12) - compiler symbol filename aliases
 
