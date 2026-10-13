@@ -3,6 +3,7 @@ namespace Origo.Bifrost.Attachments.Test;
 using Microsoft.EServices.EDocument;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
+using System.ExternalFileStorage;
 using System.Text;
 using System.Utilities;
 
@@ -563,6 +564,39 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         Clear(TempArgument);
         Provider.CheckProviderBudget(TempArgument, 4570, 'path', 'Xdir/Xfile.', false);
         LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'Trailing-dot aliases require prewrite refusal.');
+    end;
+
+    /// <summary>An installed Blob connector of any build passes the package gate and is judged by its account schema.</summary>
+    [Test]
+    procedure Scenario_AC04_AnyBlobConnectorBuild_ReachesAccountCheck()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Provider: Codeunit "Storage Ext File Impl ori";
+        Errors: JsonArray;
+        ErrorToken: JsonToken;
+        Scope: Text;
+        Address: Text;
+        CaseSensitive: Boolean;
+    begin
+        // Story #75, AC04 | Time: none | Risk: an exact connector version pin refused every write on other BC builds.
+        if not "Ext. File Storage Connector".Ordinals().Contains(4560) then
+            exit; // The Blob connector app is not installed in this environment.
+        if StorageSetup.Get('X75BLOB') then
+            StorageSetup.Delete();
+        StorageSetup.Init();
+        StorageSetup.Code := 'X75BLOB';
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
+        StorageSetup.Connector := "Ext. File Storage Connector".FromInteger(4560);
+        StorageSetup."File Account Id" := CreateGuid();
+        StorageSetup.Insert();
+
+        LibraryAssert.IsFalse(Provider.ResolvePhysicalAddress(TempArgument, StorageSetup, 'X75/file.txt', Scope, Address, CaseSensitive), 'An unregistered account must not resolve.');
+
+        Errors := TempArgument.GetCollectedErrorsJson();
+        LibraryAssert.AreEqual(1, Errors.Count(), 'Exactly one refusal is expected.');
+        Errors.Get(0, ErrorToken);
+        LibraryAssert.AreEqual('registered account metadata', ReadText(ErrorToken.AsObject(), 'received'), 'The installed connector build must pass the package gate and fail only on the missing account.');
     end;
 
     /// <summary>A copy-stage failure rolls back links while retaining source readability and exposing the duplicate.</summary>

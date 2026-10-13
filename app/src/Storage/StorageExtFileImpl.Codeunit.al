@@ -370,11 +370,9 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
             4570:
                 ModuleId := '79447b11-8301-4d02-a546-2261eb811296';
         end;
-        if not NavApp.GetModuleInfo(ModuleId, AccountModule) then
-            exit(false);
-        // Exact source inspected at 28.5.54151.55751. Other packages need schema/source evidence.
-        exit((AccountModule.AppVersion.Major = 28) and (AccountModule.AppVersion.Minor = 5) and
-             (AccountModule.AppVersion.Build = 54151) and (AccountModule.AppVersion.Revision = 55751));
+        // Any installed build is accepted: the caller verifies the account table, field numbers,
+        // names and types before reading, so a changed schema is refused there, not by version.
+        exit(NavApp.GetModuleInfo(ModuleId, AccountModule));
     end;
 
     local procedure IsMetadataField(Account: RecordRef; FieldNumber: Integer; FieldName: Text; ExpectedType: FieldType): Boolean
