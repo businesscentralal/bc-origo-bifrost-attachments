@@ -5,7 +5,8 @@ using System.IO;
 /// <summary>
 /// Read access to Data Exchange discovery. Import, process and export grants stay out
 /// until those message types exist. Holders do not need <c>BIFROST Attach ori</c>.
-/// <c>Storage Full ori</c> adds the same read grants to <c>BIFROST Full ori</c>.
+/// Assign this set for Data Exchange table access. A permission set extension cannot
+/// grant or include these tables.
 /// </summary>
 permissionset 70013548 "BIFROST DataExch ori"
 {

@@ -14,10 +14,50 @@ Set-StrictMode -Version Latest
 function Get-FileReceipt {
     param([string] $Path)
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
-        throw 'Required compiler/analyzer/helper input is absent.'
+        throw "Required compiler/analyzer/helper input is absent: $Path"
     }
     $file = Get-Item -LiteralPath $Path
     return @{ sha256 = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant(); version = $file.VersionInfo.FileVersion }
+}
+
+function Get-CompilerBannerVersion {
+    param([string] $Root)
+    $logPath = Join-Path $Root 'BuildOutput.txt'
+    if (-not (Test-Path -LiteralPath $logPath -PathType Leaf)) {
+        throw 'Compiler banner unavailable: BuildOutput.txt is absent.'
+    }
+    $bytes = [System.IO.File]::ReadAllBytes($logPath)
+    if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
+        $text = [System.Text.Encoding]::Unicode.GetString($bytes)
+    }
+    elseif ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFE -and $bytes[1] -eq 0xFF) {
+        $text = [System.Text.Encoding]::BigEndianUnicode.GetString($bytes)
+    }
+    else {
+        $text = [System.Text.UTF8Encoding]::new($true).GetString($bytes)
+    }
+    $ansi = [regex]::new(([char]27) + '\[[0-?]*[ -/]*[@-~]')
+    $stamp = [regex]::new('^\d{4}-\d{2}-\d{2}T\S+Z\s+')
+    $bannerPattern = [regex]::new('^Microsoft \(R\) AL Compiler version (\S+)')
+    $startPattern = [regex]::new("^Compilation started for project '([^']+)' containing '(\d+)' files")
+    $compiler = $null
+    $last = $null
+    # -split treats a negative limit as "do not split". Regex.Split keeps CR and LF lines.
+    foreach ($original in [regex]::Split($text, '\r\n|\n|\r')) {
+        $line = $stamp.Replace($ansi.Replace($original, ''), '').Trim()
+        $bannerMatch = $bannerPattern.Match($line)
+        if ($bannerMatch.Success) {
+            $compiler = $bannerMatch.Groups[1].Value
+        }
+        if ($startPattern.Match($line).Success -and $compiler) {
+            $last = $compiler
+            $compiler = $null
+        }
+    }
+    if (-not $last) {
+        throw 'Compiler banner unavailable.'
+    }
+    return $last
 }
 
 function Get-Context {
@@ -142,6 +182,20 @@ if ($Stage -eq 'BeforeCompile') {
         $translation = $translation -and $CompilationParams.ContainsKey($name) -and $CompilationParams[$name] -eq $false
     }
     $kind = if ($translation) { 'translation' } else { 'final' }
+    $python = Get-Command python3 -ErrorAction SilentlyContinue
+    if (-not $python) {
+        $python = Get-Command python -ErrorAction Stop
+    }
+    $restoreArgs = @((Join-Path $Root 'tools/stage_foundation_inputs.py'), 'restore', '--root', $Root)
+    if ($CompilationParams.appSymbolsFolder) {
+        $restoreArgs += @('--symbols', [string]$CompilationParams.appSymbolsFolder)
+    }
+    # This callback's success stream is the single returned .app path. Restore
+    # status must stay on the host log or PostCompile sees more than one package.
+    $restoreOutput = @(& $python.Source @restoreArgs)
+    $restoreExitCode = $LASTEXITCODE
+    $restoreOutput | ForEach-Object { Write-Host $_ }
+    if ($restoreExitCode -ne 0) { throw 'Foundation candidate restore failed.' }
     Invoke-Gate 'before' @{
         context = $context
         kind = $kind
@@ -177,13 +231,52 @@ if ($Stage -eq 'PostCompile') {
     }
     $extension = Join-Path $CompilationParams.compilerFolder 'compiler/extension'
     $bin = Join-Path $extension 'bin'
-    $compiler = Join-Path $bin 'alc.exe'
+    # BC 28.5 stores the Windows compiler at bin\win32\alc.exe. Linux runners compile with bin\alc.
+    # A Windows binary shipped in the same folder has no file version when this hook runs on Linux.
+    # The gate compares compilerVersion with the banner and the package CompilerVersion.
+    # The compiler package.json version is not that banner.
+    $compilerNames = @('win32/alc.exe', 'alc.exe', 'linux/alc', 'alc')
+    if ($IsLinux -or $IsMacOS) {
+        $compilerNames = @('linux/alc', 'alc', 'alc.exe', 'win32/alc.exe')
+    }
+    $banner = Get-CompilerBannerVersion -Root $Root
+    $compiler = $null
+    $compilerFile = $null
+    $versionedMismatch = $null
+    foreach ($compilerName in $compilerNames) {
+        $candidate = Join-Path $bin $compilerName
+        if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
+            continue
+        }
+        $candidateFile = Get-FileReceipt $candidate
+        if (-not $compiler) {
+            $compiler = $candidate
+            $compilerFile = $candidateFile
+        }
+        if ($candidateFile.version -eq $banner) {
+            $compiler = $candidate
+            $compilerFile = $candidateFile
+            $versionedMismatch = $null
+            break
+        }
+        if ($candidateFile.version) {
+            $versionedMismatch = $candidateFile.version
+        }
+    }
+    if (-not $compiler) {
+        throw 'Compiler executable unavailable.'
+    }
+    if ($compilerFile.version -ne $banner) {
+        if ($compilerFile.version) {
+            throw "Compiler file version $($compilerFile.version) does not match banner $banner."
+        }
+        if ($versionedMismatch) {
+            throw "Compiler file version $versionedMismatch does not match banner $banner."
+        }
+        $compilerFile.version = $banner
+    }
     $packageJson = Join-Path $extension 'package.json'
     $compilerPackage = Get-Content -LiteralPath $packageJson -Raw -Encoding UTF8 | ConvertFrom-Json
-    $compilerFile = Get-FileReceipt $compiler
-    if (-not $compilerFile.version) {
-        throw 'Compiler executable file version unavailable.'
-    }
     $parameters.compilerVersion = $compilerFile.version
     $parameters.compilerExtensionVersion = $compilerPackage.version
     $tools = @{ compiler = $compilerFile; compilerPackage = (Get-FileReceipt $packageJson) }
@@ -197,7 +290,18 @@ if ($Stage -eq 'PostCompile') {
     $helper = Get-Command Run-AlPipeline -ErrorAction Stop
     $compileHelper = Get-Command Compile-AppWithBcCompilerFolder -ErrorAction Stop
     $tools.helper = Get-FileReceipt $helper.ScriptBlock.File
-    $tools.compileHelper = Get-FileReceipt $compileHelper.ScriptBlock.File
+    # The Linux stamp patch replaces the in-memory command, which then has no script path.
+    $compileHelperPath = [string]$compileHelper.ScriptBlock.File
+    if (-not $compileHelperPath -and $compileHelper.Module) {
+        $nested = Join-Path (Split-Path $compileHelper.Module.Path -Parent) 'CompilerFolderHandling/Compile-AppWithBcCompilerFolder.ps1'
+        if (Test-Path -LiteralPath $nested -PathType Leaf) {
+            $compileHelperPath = $nested
+        }
+        else {
+            $compileHelperPath = [string]$compileHelper.Module.Path
+        }
+    }
+    $tools.compileHelper = Get-FileReceipt $compileHelperPath
     $tools.alpacaOverride = Get-FileReceipt (Join-Path $Root '.alpaca/Scripts/Overrides/RunAlPipeline/PreCompileApp.ps1')
     $parameters.tools = $tools
     $parameters.appManifestSha256 = (Get-FileReceipt (Join-Path $CompilationParams.appProjectFolder 'app.json')).sha256

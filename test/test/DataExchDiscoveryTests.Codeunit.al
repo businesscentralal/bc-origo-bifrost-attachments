@@ -56,7 +56,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     [Test]
     procedure DefinitionListAndGet_RenderSeededDefinitionInOrder()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         DataObject: JsonObject;
@@ -143,7 +143,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     procedure TypeList_EmptyCompany_ReturnsCountZero()
     var
         DataExchType: Record "Data Exchange Type";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         DataObject: JsonObject;
     begin
@@ -159,7 +159,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     [Test]
     procedure EntryGet_PagesFields_AndRefusesFileAboveOneMegabyte()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
         DataObject: JsonObject;
         Fields: JsonArray;
@@ -213,7 +213,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     [Test]
     procedure DataRecordsSet_OnDataExch_ReturnsHint()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         SetRequest: JsonObject;
         RecordObject: JsonObject;
         Fields: JsonObject;
@@ -239,7 +239,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     [Test]
     procedure NegativeSkip_AndMissingCode_ReturnErrors()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
     begin
         // [SCENARIO] A missing definition code is status Error, and a negative skip is rejected.
@@ -248,10 +248,11 @@ codeunit 96213 "Data Exch Discovery Tests"
         LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains('code'), 'the error names code');
 
         Clear(RequestJson);
+        Clear(TempArgument);
         RequestJson.Add('entryNo', 1);
         RequestJson.Add('skip', -1);
-        asserterror ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Entry.Get", RequestJson);
-        LibraryAssert.ExpectedError('skip must be zero or greater');
+        ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Entry.Get", RequestJson);
+        AssertSkipProblem(TempArgument.GetResponseJson());
     end;
 
     [Test]
@@ -426,7 +427,7 @@ codeunit 96213 "Data Exch Discovery Tests"
         exit(DataExch."Entry No.");
     end;
 
-    local procedure ExecuteType(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteType(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -484,6 +485,38 @@ codeunit 96213 "Data Exch Discovery Tests"
     begin
         LibraryAssert.IsTrue(JsonObj.Get(PropertyName, Token), PropertyName);
         Result := Token.AsArray();
+    end;
+
+    local procedure AssertSkipProblem(Response: JsonObject)
+    var
+        Token: JsonToken;
+        ErrorToken: JsonToken;
+        Errors: JsonArray;
+        Problem: JsonObject;
+        Found: Boolean;
+        ErrorText: Text;
+        ProblemText: Text;
+    begin
+        LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'negative skip');
+        if Response.Get('errors', Token) then
+            Errors := Token.AsArray()
+        else
+            Errors.Add(Response);
+        foreach ErrorToken in Errors do begin
+            Problem := ErrorToken.AsObject();
+            if ReadText(Problem, 'parameter') = 'skip' then begin
+                Found := true;
+                LibraryAssert.AreEqual('InvalidParameter', ReadText(Problem, 'code'), 'negative skip code');
+                ErrorText := ReadText(Problem, 'error');
+                if ErrorText = '' then begin
+                    Problem.WriteTo(ProblemText);
+                    ErrorText := ProblemText;
+                end;
+                // ExpectedError matched this phrase without case. The structured error keeps the same words.
+                LibraryAssert.IsTrue(LowerCase(ErrorText).Contains('skip must be zero or greater'), ErrorText);
+            end;
+        end;
+        LibraryAssert.IsTrue(Found, 'negative skip names parameter skip');
     end;
 
     local procedure ReadData(ResponseJson: JsonObject) DataObject: JsonObject

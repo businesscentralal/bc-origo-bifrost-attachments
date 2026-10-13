@@ -192,6 +192,7 @@ codeunit 96207 "Storage Setup Page Tests"
         StorageSetup.Get(MockCodeTok);
         Clear(StorageSetup."File Account Id");
         StorageSetup.Modify();
+        Commit();
         SavedLanguageId := GlobalLanguage();
         GlobalLanguage(LanguageId);
         StorageCard.OpenEdit();

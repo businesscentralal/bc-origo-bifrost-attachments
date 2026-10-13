@@ -606,15 +606,33 @@ class GenuinePackages(unittest.TestCase):
         self.assertNotIn("sha256", item)
         self.assertTrue(receipt["truncated"])
 
-    def test_duplicate_compiler_inputs_preserve_both_disk_hashes(self):
+    def test_byte_identical_compiler_alias_is_one_package(self):
         self.state()
-        for name in ("One.app", "Two.app"):
-            shutil.copy2(self.foundation, self.root / "compiler-symbols" / name)
-        with self.assertRaisesRegex(G.GateError, "Duplicate symbol identity/version"):
+        folder = self.root / "compiler-symbols"
+        shutil.copy2(self.foundation_candidate, folder / "Foundation.app")
+        shutil.copy2(self.foundation_candidate, folder / "Foundation_28.0.3.530.app")
+        snapshot = G.before_compile(self.root, self.rejection_request())
+        foundation_id = "7505e808-6e52-4b96-a328-82573391297a"
+        compiler = [s for s in snapshot["compilerSymbols"] if s["identity"]["id"] == foundation_id]
+        self.assertEqual(1, len(compiler))
+        self.assertEqual(1, len(list(folder.glob("*.app"))))
+        self.assertEqual(1, len(snapshot["compilerAliasRemovals"]))
+        self.assertTrue((folder / "Foundation_28.0.3.530.app").is_file())
+        self.assertFalse((folder / "Foundation.app").is_file())
+
+    def test_conflicting_compiler_versions_preserve_both_disk_hashes(self):
+        self.state()
+        folder = self.root / "compiler-symbols"
+        shutil.copy2(self.foundation, folder / "One.app")
+        shutil.copy2(self.foundation_candidate, folder / "Two.app")
+        with self.assertRaisesRegex(G.GateError, "conflicting version"):
             G.before_compile(self.root, self.rejection_request())
+        self.assertTrue((folder / "One.app").is_file())
+        self.assertTrue((folder / "Two.app").is_file())
         items = [i for i in self.rejection_receipt()["inputs"] if i["sourceFolder"] == "compilerSymbolsFolder"]
         self.assertEqual(2, len(items))
-        self.assertEqual([G.file_hash(self.foundation)] * 2, [i["sha256"] for i in items])
+        self.assertEqual(sorted([G.file_hash(self.foundation), G.file_hash(self.foundation_candidate)]),
+                         sorted(i["sha256"] for i in items))
 
     def test_manifest_rejection_after_receipt_cap_retains_offending_hash(self):
         self.state()

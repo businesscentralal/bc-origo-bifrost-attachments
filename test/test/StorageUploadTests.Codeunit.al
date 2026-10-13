@@ -27,7 +27,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure BeginAppendCommit_TwoChunks_RoundtripsContent()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         UploadId: Text;
         Path: Text;
     begin
@@ -50,7 +50,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Commit_OutOfOrderChunks_AssemblesInSequence()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         UploadId: Text;
         Path: Text;
     begin
@@ -70,7 +70,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Append_DuplicateSequence_ReplacesChunk()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         UploadId: Text;
         Path: Text;
     begin
@@ -91,7 +91,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Commit_SizeMismatch_ReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
         UploadId: Text;
     begin
@@ -116,7 +116,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Commit_NoChunks_ReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         UploadId: Text;
         Path: Text;
     begin
@@ -135,9 +135,9 @@ codeunit 96205 "Storage Upload Tests"
     procedure Begin_FileNameWithFolder_ReturnsErrorAndCreatesNoSession()
     var
         Session: Record "Storage Upload Session ori";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
-        LeafFileNameErr: Label 'fileName must be a file name without folders', Locked = true;
+        LeafFileNameErr: Label 'must be a file name without folders', Locked = true;
     begin
         // [SCENARIO] #16 AC01 — a fileName that contains folders is rejected and creates no session.
         Initialize();
@@ -145,15 +145,14 @@ codeunit 96205 "Storage Upload Tests"
         BeginReq.Add('storageCode', MockCodeTok);
         BeginReq.Add('fileName', 'bifrost-test/2026-09-12/chunked.bin');
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
-        AssertErrorResponse(TempArgument, 'InvalidParameter', 'fileName');
-        LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains(LeafFileNameErr), 'The error should say fileName must be a file name without folders.');
+        AssertFolderFileNameRefusal(TempArgument, LeafFileNameErr);
 
         Clear(BeginReq);
         BeginReq.Add('storageCode', MockCodeTok);
         BeginReq.Add('fileName', 'bifrost-test\chunked.bin');
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
-        AssertErrorResponse(TempArgument, 'InvalidParameter', 'fileName');
-        LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'error').Contains(LeafFileNameErr), 'The error should say fileName must be a file name without folders.');
+        // A backslash is also an invalid derived path, so the fileName problem is collected with that path problem.
+        AssertFolderFileNameRefusal(TempArgument, LeafFileNameErr);
 
         Session.Reset();
         LibraryAssert.AreEqual(0, Session.Count(), 'A rejected fileName must not create an upload session.');
@@ -177,7 +176,7 @@ codeunit 96205 "Storage Upload Tests"
     var
         BeginHelp: Text;
         Overview: Text;
-        LeafFileNameErr: Label 'fileName must be a file name without folders', Locked = true;
+        LeafFileNameErr: Label 'must be a file name without folders', Locked = true;
         DefaultRootTok: Label 'bifrost-uploads/', Locked = true;
     begin
         // [SCENARIO] #16 — Upload.Begin help and the overview state the default root and the leaf-name rule.
@@ -191,7 +190,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Abort_OpenSession_RemovesSessionAndChunks()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Session: Record "Storage Upload Session ori";
         Chunk: Record "Storage Upload Chunk ori";
         AbortReq: JsonObject;
@@ -216,7 +215,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Append_UnknownUploadId_ReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         AppendReq: JsonObject;
     begin
@@ -238,7 +237,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Status_OpenSession_ReportsProgress()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         StatusReq: JsonObject;
         UploadId: Text;
         Path: Text;
@@ -264,7 +263,7 @@ codeunit 96205 "Storage Upload Tests"
     var
         IncomingDocumentAttachment: Record "Incoming Document Attachment";
         Link: Record "Storage Attachment Link ori";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         ContentBlob: Codeunit System.Utilities."Temp Blob";
         LinkReq: JsonObject;
         ContentInStream: InStream;
@@ -312,7 +311,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Begin_WithoutStorageCode_CreatesBufferSession()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
     begin
         // [SCENARIO] Begin without storageCode creates a buffer-only session.
@@ -328,7 +327,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure Commit_BufferSession_ReturnsNoStorageCodeError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
         CommitReq: JsonObject;
         UploadId: Text;
@@ -355,7 +354,7 @@ codeunit 96205 "Storage Upload Tests"
     procedure CommitToRecord_OnCustomer_RoundtripsContent()
     var
         DocAttachment: Record "Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
         CommitReq: JsonObject;
         UploadId: Text;
@@ -391,7 +390,7 @@ codeunit 96205 "Storage Upload Tests"
     procedure CommitToRecord_IncomingDocument_CreatesAttachment()
     var
         IncomingDocAttachment: Record "Incoming Document Attachment";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
         CommitReq: JsonObject;
         UploadId: Text;
@@ -423,7 +422,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure CommitToRecord_UnknownTarget_ReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
         CommitReq: JsonObject;
         UploadId: Text;
@@ -447,7 +446,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure CommitToRecord_NoChunks_ReturnsError()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
         CommitReq: JsonObject;
         UploadId: Text;
@@ -469,7 +468,7 @@ codeunit 96205 "Storage Upload Tests"
     [Test]
     procedure UploadTables_AreRestrictedFromDataRecords()
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         // [SCENARIO] The upload tables are blocked from the generic Data.Records.* message types.
         Initialize();
@@ -485,7 +484,7 @@ codeunit 96205 "Storage Upload Tests"
     procedure DataRecordsSet_OnStorageSetup_ReturnsError()
     var
         StorageSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         SetRequest: JsonObject;
         GetRequest: JsonObject;
         RecordObject: JsonObject;
@@ -618,7 +617,7 @@ codeunit 96205 "Storage Upload Tests"
 
     local procedure BeginUpload(FileName: Text; FolderPath: Text; var UploadId: Text; var Path: Text)
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
     begin
         BeginReq.Add('storageCode', MockCodeTok);
@@ -633,12 +632,12 @@ codeunit 96205 "Storage Upload Tests"
 
     local procedure AppendChunk(UploadId: Text; SequenceNo: Integer; ContentText: Text)
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
     begin
         AppendChunk(TempArgument, UploadId, SequenceNo, ContentText);
     end;
 
-    local procedure AppendChunk(var TempArgument: Record "Message Argument ori"; UploadId: Text; SequenceNo: Integer; ContentText: Text)
+    local procedure AppendChunk(var TempArgument: Record "Message Argument ori" temporary; UploadId: Text; SequenceNo: Integer; ContentText: Text)
     var
         Base64Convert: Codeunit "Base64 Convert";
         AppendReq: JsonObject;
@@ -650,7 +649,7 @@ codeunit 96205 "Storage Upload Tests"
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Append should succeed.');
     end;
 
-    local procedure CommitUpload(var TempArgument: Record "Message Argument ori"; UploadId: Text)
+    local procedure CommitUpload(var TempArgument: Record "Message Argument ori" temporary; UploadId: Text)
     var
         CommitReq: JsonObject;
     begin
@@ -661,7 +660,7 @@ codeunit 96205 "Storage Upload Tests"
 
     local procedure GetStoredText(Path: Text): Text
     var
-        TempArgument: Record "Message Argument ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Base64Convert: Codeunit "Base64 Convert";
         TempBlob: Codeunit System.Utilities."Temp Blob";
         GetReq: JsonObject;
@@ -680,7 +679,7 @@ codeunit 96205 "Storage Upload Tests"
         exit(Result);
     end;
 
-    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -714,12 +713,12 @@ codeunit 96205 "Storage Upload Tests"
                 DataObject := Token.AsObject();
     end;
 
-    local procedure ReadDataText(var TempArgument: Record "Message Argument ori"; PropertyName: Text): Text
+    local procedure ReadDataText(var TempArgument: Record "Message Argument ori" temporary; PropertyName: Text): Text
     begin
         exit(ReadObjText(ReadData(TempArgument.GetResponseJson()), PropertyName));
     end;
 
-    local procedure ReadDataInt(var TempArgument: Record "Message Argument ori"; PropertyName: Text): Integer
+    local procedure ReadDataInt(var TempArgument: Record "Message Argument ori" temporary; PropertyName: Text): Integer
     var
         DataObject: JsonObject;
         Token: JsonToken;
@@ -731,7 +730,7 @@ codeunit 96205 "Storage Upload Tests"
         exit(0);
     end;
 
-    local procedure ReadDataBool(var TempArgument: Record "Message Argument ori"; PropertyName: Text): Boolean
+    local procedure ReadDataBool(var TempArgument: Record "Message Argument ori" temporary; PropertyName: Text): Boolean
     var
         DataObject: JsonObject;
         Token: JsonToken;
@@ -765,7 +764,44 @@ codeunit 96205 "Storage Upload Tests"
         exit(Token.AsValue().AsText());
     end;
 
-    local procedure AssertErrorResponse(var TempArgument: Record "Message Argument ori"; ExpectedCode: Text; ExpectedParameter: Text)
+    local procedure AssertFolderFileNameRefusal(var TempArgument: Record "Message Argument ori" temporary; ExpectedText: Text)
+    var
+        ResponseJson: JsonObject;
+        Token: JsonToken;
+        ErrorToken: JsonToken;
+        Errors: JsonArray;
+        Problem: JsonObject;
+        Found: Boolean;
+    begin
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Error', ReadText(ResponseJson, 'status'), 'The call should answer with an error response.');
+        if ResponseJson.Get('errors', Token) then
+            Errors := Token.AsArray()
+        else
+            Errors.Add(ResponseJson);
+        foreach ErrorToken in Errors do begin
+            Problem := ErrorToken.AsObject();
+            if JsonTextOrBlank(Problem, 'parameter') = 'fileName' then begin
+                Found := true;
+                LibraryAssert.AreEqual('InvalidParameter', JsonTextOrBlank(Problem, 'code'), 'fileName must stay InvalidParameter.');
+                LibraryAssert.IsTrue(JsonTextOrBlank(Problem, 'error').Contains(ExpectedText), 'The error should say fileName must be a file name without folders.');
+            end;
+        end;
+        LibraryAssert.IsTrue(Found, 'The refusal must name fileName.');
+    end;
+
+    local procedure JsonTextOrBlank(DataObject: JsonObject; PropertyName: Text): Text
+    var
+        Token: JsonToken;
+    begin
+        if not DataObject.Get(PropertyName, Token) then
+            exit('');
+        if not Token.IsValue() then
+            exit('');
+        exit(Token.AsValue().AsText());
+    end;
+
+    local procedure AssertErrorResponse(var TempArgument: Record "Message Argument ori" temporary; ExpectedCode: Text; ExpectedParameter: Text)
     var
         ResponseJson: JsonObject;
         WrongCodeErr: Label 'Expected an error with code %1.', Comment = '%1 = error code', Locked = true;
