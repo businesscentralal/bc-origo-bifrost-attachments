@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-13) - missing Icelandic labels (#109)
+
+- Add the ten missing is-IS translation units generated from the existing bilingual labels in `Data Exchange Query ori` (70013520), `Storage Attachment Mgt ori` (10035635) and `Storage Request Reader ori` (10035682). Existing translation units are unchanged.
+
 ### Fixed (2026-10-13) - Default build verification (#109)
 
 - Preserve both rejected duplicate compiler symbol inputs in bounded diagnostics, and run Default/Test for workflow-only changes.
