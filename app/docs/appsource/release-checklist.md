@@ -9,6 +9,14 @@ locale: en-US
 
 **Source baseline:** Attachments `b42ad90eaee2803205408a1cac8b0d9752b91c0e`; historical Foundation comparison `0fb78c0be538bd77c482c70eddbbef451f697cc9`; approved pinned standards `ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f`. Source inspection is not signed-artifact or runtime proof. No release candidate has been certified by this package.
 
+## Record current candidate evidence
+
+Branch `fix/attachments-open-issues-20261013`, checked on 13.10.2026. App and test compiled with AL compiler 18.1.43.24897 (VS Code AL extension) and CodeCop, UICop and AppSourceCop at 0 errors and 0 warnings, against Bifrost Foundation 28.0.4.0 symbols (manifest floor stays 28.0.1.0). Published to bc28-w1 (W1, BC 28) and tested there. A local build is not the signed release candidate; #80 still owns that.
+
+| Issue | Evidence | Remaining |
+|---|---|---|
+| [#71](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/71) | Generated `Bifrost Attachments.g.xlf` (491 trans-units) SHA256 `82e596238676140738e2a26ac1008eb0a37614c99bd3f14e4e0e4cdec323cc1d`; committed `Bifrost Attachments.is-IS.xlf` SHA256 `8bbee1c6cddd7b67555e8be2293920006bef173a2aeba695ac612ad747eb5bdb`. `tools/Test-IcelandicXlfInSync.ps1` passes; a second `Update-IcelandicXlf.ps1` run leaves the file unchanged (490 targets from `is-IS=` comments, 1 kept, 0 without Icelandic). LCID 1033/1039 behaviour: `Language72_Discovery_ExactEnglish`/`ExactIcelandic` (96274), the 1039 refusal checks in 96226 and the 1039 Definition.List check in Batch2 passed on bc28-w1. | None in source. UI walk-through in Icelandic belongs to #80 candidate QA. |
+
 ## Confirm identity and markets
 
 | Item | Source evidence | Release gate / accountable owner |
