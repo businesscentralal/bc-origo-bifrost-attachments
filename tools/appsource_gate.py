@@ -38,6 +38,7 @@ PACKAGE_BYTES = 128 * 1024 * 1024
 MANIFEST_BYTES = 16 * 1024 * 1024
 PACKAGE_ENTRIES = 4096
 INVENTORY_SECONDS = 60
+COMPILER_CATALOG_SECONDS = 180
 MEASURED_PACKAGE_PROFILES = {
     "05d37036733b4df5ffaf31d3d779ec48af63465da6f694ff15a7e0b228abc1b8": {
         "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
@@ -439,7 +440,7 @@ def symbol_inventory(folder, policy="appCache", expanded_exemptions=()):
     folder = Path(folder)
     require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
     limit, started = SYMBOL_POLICIES[policy], time.monotonic()
-    deadline = started + INVENTORY_SECONDS
+    deadline = started + (COMPILER_CATALOG_SECONDS if policy == "compilerCatalog" else INVENTORY_SECONDS)
     paths = []
     for path in folder.iterdir():
         budget_check(deadline)
@@ -451,7 +452,7 @@ def symbol_inventory(folder, policy="appCache", expanded_exemptions=()):
     result, identities, filenames, expanded = SymbolInventory(), {}, set(), 0
     for path in paths:
         try:
-            info = package_info(path, deadline, allow_ready_to_run=True)
+            info = package_info(path, min(deadline, time.monotonic() + INVENTORY_SECONDS), allow_ready_to_run=True)
         except GateError as error:
             # Retain the actual failing input even beyond the diagnostic item cap.
             error.rejected_package = path
@@ -523,7 +524,7 @@ def collapse_equivalent_compiler_symbols(folder):
     folder = Path(folder)
     require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
     limit = SYMBOL_POLICIES["compilerCatalog"]
-    deadline = time.monotonic() + INVENTORY_SECONDS
+    deadline = time.monotonic() + COMPILER_CATALOG_SECONDS
     paths = []
     for path in folder.iterdir():
         budget_check(deadline)
@@ -533,13 +534,15 @@ def collapse_equivalent_compiler_symbols(folder):
                     "Symbol inventory exceeds " + str(limit["packages"]) + " packages (compilerCatalog)")
     paths.sort()
     require(sum(path.stat().st_size for path in paths) <= limit["bytes"], "Symbol aggregate-byte bound exceeded")
-    infos = []
+    infos, expanded = [], 0
     for path in paths:
         try:
-            info = package_info(path, deadline, allow_ready_to_run=True)
+            info = package_info(path, min(deadline, time.monotonic() + INVENTORY_SECONDS), allow_ready_to_run=True)
         except GateError as error:
             error.rejected_package = path
             raise
+        expanded += info["expandedBytes"]
+        require(expanded <= limit.get("expandedBytes", limit["bytes"]), "Symbol aggregate expanded-byte bound exceeded")
         info["file"] = path.name
         infos.append(info)
     by_id = {}
@@ -595,7 +598,8 @@ def inventory_measurement(items, policy):
     return {"policy": policy, "limits": SYMBOL_POLICIES[policy], "packages": len(items),
             "bytes": sum(s["bytes"] for s in items), "expandedBytes": sum(s["expandedBytes"] for s in items),
             "inventorySha256": digest(json.dumps(items, sort_keys=True).encode()),
-            "elapsedSeconds": getattr(items, "elapsed_seconds", None), "elapsedBudgetSeconds": INVENTORY_SECONDS,
+            "elapsedSeconds": getattr(items, "elapsed_seconds", None), "elapsedBudgetSeconds": COMPILER_CATALOG_SECONDS if policy == "compilerCatalog" else INVENTORY_SECONDS,
+            "packageElapsedBudgetSeconds": INVENTORY_SECONDS,
             "runnerCapacityValidated": False}
 
 

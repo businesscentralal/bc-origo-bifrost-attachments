@@ -132,6 +132,45 @@ class SymbolPolicy(unittest.TestCase):
         with patch.object(G, 'INVENTORY_SECONDS', -1), self.assertRaisesRegex(G.GateError, 'elapsed budget'):
             G.symbol_inventory(self.catalog, 'compilerCatalog')
 
+    def test_catalog_and_cache_have_distinct_finite_elapsed_limits(self):
+        path = self.catalog / 'One.app'
+        fixture(path)
+        original = G.package_info
+        observed = []
+        def measure(p, deadline=None, **kwargs):
+            observed.append(deadline)
+            return original(p, deadline, **kwargs)
+        with patch.object(G.time, 'monotonic', return_value=0), patch.object(G, 'package_info', side_effect=measure):
+            catalog = G.symbol_inventory(self.catalog, 'compilerCatalog')
+        self.assertEqual([G.INVENTORY_SECONDS], observed)
+        self.assertEqual(G.COMPILER_CATALOG_SECONDS, G.inventory_measurement(catalog, 'compilerCatalog')['elapsedBudgetSeconds'])
+        self.assertEqual(G.INVENTORY_SECONDS, G.inventory_measurement(catalog, 'compilerCatalog')['packageElapsedBudgetSeconds'])
+        with patch.object(G.time, 'monotonic', side_effect=[0, G.COMPILER_CATALOG_SECONDS + 1]), self.assertRaisesRegex(G.GateError, 'elapsed budget'):
+            G.symbol_inventory(self.catalog, 'compilerCatalog')
+        with patch.object(G.time, 'monotonic', side_effect=[0, G.INVENTORY_SECONDS + 1]), self.assertRaisesRegex(G.GateError, 'elapsed budget'):
+            G.symbol_inventory(self.catalog, 'appCache')
+
+    def test_single_package_keeps_its_60_second_limit_inside_catalog(self):
+        fixture(self.catalog / 'One.app')
+        clock = [0]
+        original = G.package_info
+        def slow_package(path, deadline=None, **kwargs):
+            clock[0] = G.INVENTORY_SECONDS + 1
+            return original(path, deadline, **kwargs)
+        with patch.object(G.time, 'monotonic', side_effect=lambda: clock[0]), patch.object(G, 'package_info', side_effect=slow_package):
+            with self.assertRaisesRegex(G.GateError, 'elapsed budget'):
+                G.symbol_inventory(self.catalog, 'compilerCatalog')
+        self.assertLess(clock[0], G.COMPILER_CATALOG_SECONDS)
+
+    def test_normalization_preserves_catalog_expanded_work_bound(self):
+        path = self.catalog / 'One.app'
+        fixture(path)
+        info = G.package_info(path)
+        with patch.dict(G.SYMBOL_POLICIES, {'compilerCatalog': {'packages': 256, 'bytes': info['bytes'] + 1, 'expandedBytes': info['expandedBytes'] - 1}}):
+            with self.assertRaisesRegex(G.GateError, 'aggregate expanded'):
+                G.collapse_equivalent_compiler_symbols(self.catalog)
+        self.assertTrue(path.exists())
+
     def test_streams_bounded_reads_and_detects_mid_measurement_mutation(self):
         path = self.catalog / 'One.app'
         fixture(path, content=b'A' * (2 * G.CHUNK_BYTES + 10))

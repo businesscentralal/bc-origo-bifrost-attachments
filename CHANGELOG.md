@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-13) - compiler catalog measurement capacity (#109)
+
+- Give the complete compiler catalog and alias normalization a finite 180-second window after the BC28.5 Windows runner exceeded the former 60-second window. Individual package and app-cache measurements remain limited to 60 seconds. Package counts, disk bytes, expanded bytes, entry limits and conflict refusal are unchanged; normalization enforces the existing expanded-work bound before removing aliases. No AL objects or IDs change.
+
 ### Fixed (2026-10-13) - missing Icelandic labels (#109)
 
 - Add the ten missing is-IS translation units generated from the existing bilingual labels in `Data Exchange Query ori` (70013520), `Storage Attachment Mgt ori` (10035635) and `Storage Request Reader ori` (10035682). Existing translation units are unchanged.
