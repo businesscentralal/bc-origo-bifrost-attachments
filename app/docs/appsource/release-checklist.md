@@ -15,6 +15,7 @@ Branch `fix/attachments-open-issues-20261013`, checked on 13.10.2026. App and te
 
 | Issue | Evidence | Remaining |
 |---|---|---|
+| [#74](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/74) | `main` CI/CD run [38410916716](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/38410916716) at `ac36688` (build 28.0.0.84): Default and Test jobs succeeded, app and test compiled with `failOn: warning`; Test job ran 263 tests in 19 codeunits, 263 passed. The branch adds 4 tests (267 of 267 on bc28-w1). Source guard `Test-UniqueObjectIds.ps1` passes; no app symbol of its own is loaded (the Foundation and Microsoft packages are the only dependencies). | Exact-tip CI of this branch once its PR is open. |
 | [#71](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/71) | Generated `Bifrost Attachments.g.xlf` (491 trans-units) SHA256 `82e596238676140738e2a26ac1008eb0a37614c99bd3f14e4e0e4cdec323cc1d`; committed `Bifrost Attachments.is-IS.xlf` SHA256 `8bbee1c6cddd7b67555e8be2293920006bef173a2aeba695ac612ad747eb5bdb`. `tools/Test-IcelandicXlfInSync.ps1` passes; a second `Update-IcelandicXlf.ps1` run leaves the file unchanged (490 targets from `is-IS=` comments, 1 kept, 0 without Icelandic). LCID 1033/1039 behaviour: `Language72_Discovery_ExactEnglish`/`ExactIcelandic` (96274), the 1039 refusal checks in 96226 and the 1039 Definition.List check in Batch2 passed on bc28-w1. | None in source. UI walk-through in Icelandic belongs to #80 candidate QA. |
 
 ## Confirm identity and markets
@@ -48,7 +49,7 @@ The test app's in-memory Mock connector is internal automated-test infrastructur
 
 ## Close technical and human gates
 
-- [ ] #74 / worker-3 canonical PR84 compilation repair integrated through authorized merges; exact app/test build reports show 0 errors and 0 warnings.
+- [x] #74 compilation repair integrated on `main`; CI run 38410916716 Default and Test compiled with `failOn: warning` and 263 of 263 tests passed (see the evidence table above).
 - [ ] #78 compiled-package/compiler gates and infrastructure integration reviewed by ori-haraldurb; no workflow patch is applied by this documentation task.
 - [ ] #69/#82 contracts and refusals match shipped behavior; #75 linked-file safety and #76 lifecycle takeover are proven; #77 public surface audit completed.
 - [ ] #70 help and #71/#72 translations complete; #79 setup/usage and denied-user tests run with genuine non-SUPER identities.
@@ -90,7 +91,6 @@ Foundation is the comparison for evidence discipline: compiler/compiled-artifact
 | [#75](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/75) | worker-9; [PR90](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/90) | Linked-file safety |
 | [#76](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/76) | worker-10; [PR85](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/85) | Lifecycle retry proof |
 | [#77](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/77) | worker-4 + Gunnar; [PR86](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86) | Publication/baseline/consumer/range/affix evidence |
-| [#78](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/78) | worker-6; [PR94](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/94) | Input/compiler/package gates; PR91 separate pipeline owner / ori-haraldurb |
 | [#79](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/79) | worker-5; [PR95](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/95) | Genuine restricted identities/activation/provider access |
 | [#80](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80) | worker-8; no mapped PR in this snapshot | Immutable candidate QA, all markets/providers; explicit holds retained |
 | [#81](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/81) | worker-6; [PR88](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/88) | Working material only; formal scenarios and dry-run held |
