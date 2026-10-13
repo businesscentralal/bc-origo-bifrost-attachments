@@ -38,6 +38,7 @@ PACKAGE_BYTES = 128 * 1024 * 1024
 MANIFEST_BYTES = 16 * 1024 * 1024
 PACKAGE_ENTRIES = 4096
 INVENTORY_SECONDS = 60
+COMPILER_CATALOG_SECONDS = 180
 MEASURED_PACKAGE_PROFILES = {
     "05d37036733b4df5ffaf31d3d779ec48af63465da6f694ff15a7e0b228abc1b8": {
         "identity": {"id": "437dbf0e-84ff-417a-965d-ed2bb9650972", "publisher": "Microsoft",
@@ -439,7 +440,7 @@ def symbol_inventory(folder, policy="appCache", expanded_exemptions=()):
     folder = Path(folder)
     require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
     limit, started = SYMBOL_POLICIES[policy], time.monotonic()
-    deadline = started + INVENTORY_SECONDS
+    deadline = started + (COMPILER_CATALOG_SECONDS if policy == "compilerCatalog" else INVENTORY_SECONDS)
     paths = []
     for path in folder.iterdir():
         budget_check(deadline)
@@ -448,18 +449,21 @@ def symbol_inventory(folder, policy="appCache", expanded_exemptions=()):
             require(len(paths) <= limit["packages"], "Symbol inventory exceeds " + str(limit["packages"]) + " packages (" + policy + ")")
     paths.sort()
     require(sum(path.stat().st_size for path in paths) <= limit["bytes"], "Symbol aggregate-byte bound exceeded")
-    result, identities, filenames, expanded = SymbolInventory(), set(), set(), 0
+    result, identities, filenames, expanded = SymbolInventory(), {}, set(), 0
     for path in paths:
         try:
-            info = package_info(path, deadline, allow_ready_to_run=True)
+            info = package_info(path, min(deadline, time.monotonic() + INVENTORY_SECONDS), allow_ready_to_run=True)
         except GateError as error:
             # Retain the actual failing input even beyond the diagnostic item cap.
             error.rejected_package = path
             raise
         identity = (info["identity"]["id"].lower(), version_tuple(info["identity"]["version"]))
-        require(identity not in identities, "Duplicate symbol identity/version")
+        if identity in identities:
+            error = GateError("Duplicate symbol identity/version: " + identities[identity].name + " and " + path.name)
+            error.rejected_packages = (identities[identity], path)
+            raise error
         require(path.name.casefold() not in filenames, "Case-insensitive symbol filename collision")
-        identities.add(identity)
+        identities[identity] = path
         filenames.add(path.name.casefold())
         # Envelope plus embedded expansion for a catalog copy is already inside
         # the catalog budget. Charging it again against the cache's 512 MiB
@@ -520,7 +524,7 @@ def collapse_equivalent_compiler_symbols(folder):
     folder = Path(folder)
     require(folder.is_dir() and not folder.is_symlink(), "Actual symbol folder absent or linked")
     limit = SYMBOL_POLICIES["compilerCatalog"]
-    deadline = time.monotonic() + INVENTORY_SECONDS
+    deadline = time.monotonic() + COMPILER_CATALOG_SECONDS
     paths = []
     for path in folder.iterdir():
         budget_check(deadline)
@@ -530,13 +534,15 @@ def collapse_equivalent_compiler_symbols(folder):
                     "Symbol inventory exceeds " + str(limit["packages"]) + " packages (compilerCatalog)")
     paths.sort()
     require(sum(path.stat().st_size for path in paths) <= limit["bytes"], "Symbol aggregate-byte bound exceeded")
-    infos = []
+    infos, expanded = [], 0
     for path in paths:
         try:
-            info = package_info(path, deadline, allow_ready_to_run=True)
+            info = package_info(path, min(deadline, time.monotonic() + INVENTORY_SECONDS), allow_ready_to_run=True)
         except GateError as error:
             error.rejected_package = path
             raise
+        expanded += info["expandedBytes"]
+        require(expanded <= limit.get("expandedBytes", limit["bytes"]), "Symbol aggregate expanded-byte bound exceeded")
         info["file"] = path.name
         infos.append(info)
     by_id = {}
@@ -592,7 +598,8 @@ def inventory_measurement(items, policy):
     return {"policy": policy, "limits": SYMBOL_POLICIES[policy], "packages": len(items),
             "bytes": sum(s["bytes"] for s in items), "expandedBytes": sum(s["expandedBytes"] for s in items),
             "inventorySha256": digest(json.dumps(items, sort_keys=True).encode()),
-            "elapsedSeconds": getattr(items, "elapsed_seconds", None), "elapsedBudgetSeconds": INVENTORY_SECONDS,
+            "elapsedSeconds": getattr(items, "elapsed_seconds", None), "elapsedBudgetSeconds": COMPILER_CATALOG_SECONDS if policy == "compilerCatalog" else INVENTORY_SECONDS,
+            "packageElapsedBudgetSeconds": INVENTORY_SECONDS,
             "runnerCapacityValidated": False}
 
 
@@ -765,7 +772,7 @@ def _before_compile(root, request):
     return snapshot
 
 
-def rejected_receipt(output, context, paths=(), *, folders=None, offending=None):
+def rejected_receipt(output, context, paths=(), *, folders=None, offending=None, offending_paths=()):
     """Record bounded disk identities only; never dump Settings or credentials."""
     deadline = time.monotonic() + INVENTORY_SECONDS
     candidates = [(Path(path), None) for path in paths]
@@ -789,10 +796,12 @@ def rejected_receipt(output, context, paths=(), *, folders=None, offending=None)
                     if len(candidates) >= 4096:
                         item["enumerationComplete"] = False
                         break
+    prioritized_paths = {Path(path) for path in offending_paths}
     if offending is not None:
-        offending = Path(offending)
-        prioritized = [(path, source) for path, source in candidates if path == offending]
-        candidates = prioritized + [(path, source) for path, source in candidates if path != offending]
+        prioritized_paths.add(Path(offending))
+    if prioritized_paths:
+        prioritized = [(path, source) for path, source in candidates if path in prioritized_paths]
+        candidates = prioritized + [(path, source) for path, source in candidates if path not in prioritized_paths]
     inventory = []
     truncated = len(candidates) > 128 or any(not f["enumerationComplete"] for f in folder_receipts)
     hashed_bytes = 0
@@ -801,7 +810,7 @@ def rejected_receipt(output, context, paths=(), *, folders=None, offending=None)
             truncated = True
             break
         item = {"path": str(path), "present": path.is_file()}
-        if offending is not None and path == offending:
+        if path in prioritized_paths:
             item["triggeredRejection"] = True
         if source is not None:
             item["sourceFolder"] = source
@@ -821,7 +830,7 @@ def rejected_receipt(output, context, paths=(), *, folders=None, offending=None)
                     inventory.append(item)
                     break
                 try:
-                    info = package_info(path, deadline)
+                    info = package_info(path, deadline, allow_ready_to_run=True)
                     item.update({k: info[k] for k in ("identity", "friends", "sourceCommit", "compilerVersion")})
                     # Build URLs may contain secrets in malformed/untrusted manifests.
                     url = info["buildUrl"]
@@ -848,7 +857,8 @@ def before_compile(root, request):
             directory.mkdir(parents=True, exist_ok=True)
             rejected_receipt(directory / "rejected-input.json", context, folders={
                 key: request[key] for key in ("symbolsFolder", "compilerSymbolsFolder") if key in request},
-                offending=getattr(error, "rejected_package", None))
+                offending=getattr(error, "rejected_package", None),
+                offending_paths=getattr(error, "rejected_packages", ()))
         except (OSError, ValueError, KeyError):
             pass
         raise

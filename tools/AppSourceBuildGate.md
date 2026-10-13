@@ -194,7 +194,7 @@ entries. The catalog has a separate 4 GiB expanded-work bound; the app cache kee
 its 512 MiB expanded bound. The retained BC29 sample requires 1,863,664,153 bytes
 of wrapper plus embedded-app expansion. These finite bounds do not certify the
 complete runner catalog.
-Each full inventory has a 60 second elapsed budget with checks between 1 MiB reads.
+The compiler catalog has a finite 180 second elapsed budget, including alias normalization. Every individual package and the app-cache inventory retain their 60 second budgets, with checks between 1 MiB reads. Alias normalization also enforces the existing 4 GiB catalog expanded-work bound before removing any alias. The BC28.5 runner catalog contains 178 packages / 407,716,896 disk bytes; the rejected Windows run exhausted the former 60 second catalog window. The exact public-artifact reconstruction matches every one of the 124 captured runner hashes. After three equivalent aliases are removed, its 175 packages account for 3,983,563,745 expanded bytes; the normalized inventory hash is unchanged by the deadline separation.
 These finite design limits are **not validated Windows runner capacity**. Actual
 catalog/cache metadata, bytes, hashes, exact folders and dependency resolution
 must be measured on a current successful Default/Test runner before acceptance.

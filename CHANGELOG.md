@@ -8,6 +8,20 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-13) - compiler catalog measurement capacity (#109)
+
+- `tools/appsource_gate.py` and `tools/AppSourceBuildGate.md`: give the complete compiler catalog and alias normalization a finite 180-second window after the BC28.5 Windows runner exceeded the former 60-second window. Individual package and app-cache measurements remain limited to 60 seconds. Package counts, disk bytes, expanded bytes, entry limits and conflict refusal are unchanged; normalization enforces the existing expanded-work bound before removing aliases. No AL objects or IDs change. `tools/tests/test_symbol_policy.py` covers the separate deadlines and expanded-work enforcement.
+
+### Fixed (2026-10-13) - missing Icelandic labels (#109)
+
+- Add the ten missing is-IS translation units generated from the existing bilingual labels in `Data Exchange Query ori` (70013520), `Storage Attachment Mgt ori` (10035635) and `Storage Request Reader ori` (10035682). Existing translation units are unchanged.
+
+### Fixed (2026-10-13) - Default build verification (#109)
+
+- `tools/appsource_gate.py` preserves both rejected duplicate compiler symbol inputs in bounded diagnostics, documented in `tools/AppSourceBuildGate.md` and covered by `tools/tests/test_symbol_policy.py`.
+- `.AL-Go/settings.json` adds `.github/workflows/**` to `fullBuildPatterns`; `tools/Test-BifrostPipeline.ps1` asserts that workflow and guard changes run Default/Test.
+- `tools/tests/test_appsource_gate.py` exercises the rejection-receipt hash-I/O failure with a valid NAVX package after compiler-symbol normalization validates package headers first. Both receipt-write and hash-I/O failures retain the original gate refusal. No AL objects or IDs change.
+
 ### Changed (2026-10-13) - API surface inventory provenance
 
 - Refresh 13 stale file hashes in `api-surface-objects.json` and add `hashSourceSha` (`079378953494ce569db7d1139543955dc6843c73`) to record hash provenance separately from the reviewed inventory decisions. Update `API-SURFACE.md` with the provenance note. No AL objects or IDs change.
@@ -40,6 +54,11 @@ Business Central release versioning (`major.minor.build.revision`).
 - Codeunit 10035636 `Storage Attachment Subscr ori` clears that in-memory Stored Internally mark on insert when a Bifrost link exists for the record SystemId or, after Insert assigns a new SystemId, for the mirrored external path. TransferFields from a just-read record followed by Insert therefore stores the persisted false. Rename only writes the primary key and does not run OnInsert or OnModify, so it cannot store the mark. Test codeunit 96217 `Storage Native Fields Tests` covers that insert.
 
 
+
+
+### Fixed (2026-10-10) - UAT dependency installation (#109)
+
+- UAT feature-app deployment uses the Foundation app already deployed by its own pipeline in Dev scope, avoiding an unauthorized AppSource Foundation installation. `.github/AL-Go-Settings.json`: `DeployToBifrost.DependencyInstallMode = "ignore"`. AppSource delivery is unchanged; no AL objects or IDs change.
 
 ### Fixed (2026-10-08) - build gate completion and rejection custody (#78)
 

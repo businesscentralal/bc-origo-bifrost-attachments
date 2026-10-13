@@ -525,6 +525,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=heiltala sem er stærri en eða jöfn 0</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Data Exchange Query ori - NamedType NonNegativeLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 3006731351 - NamedType 3551436450" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 must be zero or greater.</source>
+          <target>%1 verður að vera núll eða stærri.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = parameter name||is-IS=%1 verður að vera núll eða stærri.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Data Exchange Query ori - NamedType NonNegativeParamErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 3006731351 - NamedType 3654618550" size-unit="char" translate="yes" xml:space="preserve">
           <source>Send includeFileContent as false or omit it; retrieve the file through its storage workflow.</source>
           <target>Sendu includeFileContent sem false eða slepptu því; sæktu skrána í gegnum geymsluferlið.</target>
@@ -1286,6 +1292,18 @@
           <target>Þú hefur ekki heimild til að lesa töflu %1.</target>
           <note from="Developer" annotates="general" priority="2">%1 = table id, is-IS=Þú hefur ekki heimild til að lesa töflu %1.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType ReadPermissionErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 3411163615" size-unit="char" translate="yes" xml:space="preserve">
+          <source>permission to read table %1</source>
+          <target>heimild til að lesa töflu %1</target>
+          <note from="Developer" annotates="general" priority="2">%1 = table id, is-IS=heimild til að lesa töflu %1</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType ReadPermissionExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 4257014658" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ask an administrator to grant read access to table %1, then send the request again.</source>
+          <target>Biddu kerfisstjóra um lesaðgang að töflu %1 og sendu beiðnina svo aftur.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = table id, is-IS=Biddu kerfisstjóra um lesaðgang að töflu %1 og sendu beiðnina svo aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType ReadPermissionNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 2064023099" size-unit="char" translate="yes" xml:space="preserve">
           <source>recordSystemId or no</source>
@@ -2169,6 +2187,12 @@
           <note from="Developer" annotates="general" priority="2">%1 = parameter, %2 = received value, %3 = type, %4 = expected format, is-IS=Færibreyta "%1" hefur gildið "%2", sem er ekki í gildu sniði (%3). Væntanlegt er %4.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType InvalidParameterFormatErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 2374435183" size-unit="char" translate="yes" xml:space="preserve">
+          <source>(missing)</source>
+          <target>(vantar)</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=(vantar)</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType MissingValueLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 2831739807" size-unit="char" translate="yes" xml:space="preserve">
           <source>Parameter "%1" has value %2, but it cannot be negative.</source>
           <target>Færibreyta "%1" hefur gildið %2 en það má ekki vera neikvætt.</target>
@@ -2204,6 +2228,18 @@
           <target>%1 vandamál í beiðninni. Engu var breytt.</target>
           <note from="Developer" annotates="general" priority="2">%1 = number of problems, is-IS=%1 vandamál í beiðninni. Engu var breytt.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType ProblemsInRequestErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 3422360684" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Provide "%1" and send the request again.</source>
+          <target>Gefðu upp "%1" og sendu beiðnina aftur.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = parameter name, is-IS=Gefðu upp "%1" og sendu beiðnina aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType ProvideParameterLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 4177780640" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a value for "%1"</source>
+          <target>gildi fyrir "%1"</target>
+          <note from="Developer" annotates="general" priority="2">%1 = parameter name, is-IS=gildi fyrir "%1"</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType RequiredParameterExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 1379219779" size-unit="char" translate="yes" xml:space="preserve">
           <source>Required parameter "%1" is missing.</source>
@@ -2246,6 +2282,30 @@
           <target>Sendu skrána í hlutum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Sendu skrána í hlutum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType SplitIntoChunksLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 3375169987" size-unit="char" translate="yes" xml:space="preserve">
+          <source>permission to use table %1</source>
+          <target>heimild til að nota töflu %1</target>
+          <note from="Developer" annotates="general" priority="2">%1 = table id, is-IS=heimild til að nota töflu %1</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType TablePermissionExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 2947535590" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ask an administrator to grant access to table %1, then send the request again.</source>
+          <target>Biddu kerfisstjóra um aðgang að töflu %1 og sendu beiðnina svo aftur.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = table id, is-IS=Biddu kerfisstjóra um aðgang að töflu %1 og sendu beiðnina svo aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType TablePermissionNextStepLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 2390650810" size-unit="char" translate="yes" xml:space="preserve">
+          <source>You do not have permission to read table %1.</source>
+          <target>Þú hefur ekki heimild til að lesa töflu %1.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = table id, is-IS=Þú hefur ekki heimild til að lesa töflu %1.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType TableReadDeniedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 1055857827" size-unit="char" translate="yes" xml:space="preserve">
+          <source>You do not have permission to change table %1.</source>
+          <target>Þú hefur ekki heimild til að breyta töflu %1.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = table id, is-IS=Þú hefur ekki heimild til að breyta töflu %1.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType TableWriteDeniedErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 1879669363" size-unit="char" translate="yes" xml:space="preserve">
           <source>a JSON string</source>
