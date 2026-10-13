@@ -55,7 +55,7 @@ Run provider-dependent rows against Azure Blob Storage, Azure File Share and Sha
 | Working input | Disposition |
 |---|---|
 | Foundation | Approved 28.0.2.523 at source `336b91d9fff11b71ae5cd75dee08186d4218bf07`, run 37544940349 attempt 2; exact package SHA256 and zero friends in source inventory. Historical 517/518 are not current input. |
-| Shipping source | Inventory records unchanged Attachments baseline b42ad90e; 34 declared wire types remain planned, not certified. Reconcile against actual PR84 repaired main only after its approved merge. |
+| Shipping source | Inventory regenerated from c656965b (13.10.2026) with unique ordinals; 34 declared wire types remain planned, not certified. Rerun `tools/generate_source_inventory.py` on the #80 candidate commit before freezing scenarios. |
 | Formal plan release | Requires immutable #80 passing QA plus explicit QA hold release; no formal validator scenario or dry-run executed by this update. |
 | Access and providers | #79 / worker-5 plus Gunnar/provider owner supply genuine restricted identities and provider access; #80 / worker-8 supplies actual provider/market results. Synthetic identity/provider assertions do not certify these rows. |
 

@@ -7,7 +7,7 @@ locale: en-US
 
 # Collect Attachments release evidence
 
-**Source baseline:** Attachments `b42ad90eaee2803205408a1cac8b0d9752b91c0e`; historical Foundation comparison `0fb78c0be538bd77c482c70eddbbef451f697cc9`; approved pinned standards `ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f`. Source inspection is not signed-artifact or runtime proof. No release candidate has been certified by this package.
+**Source baseline:** Attachments `c656965b3ad1291b75854e5b40edecf8038d21f8` (inventory regenerated 13.10.2026; the 06.10 baseline was `b42ad90eaee2803205408a1cac8b0d9752b91c0e`); historical Foundation comparison `0fb78c0be538bd77c482c70eddbbef451f697cc9`; approved pinned standards `ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f`. Source inspection is not signed-artifact or runtime proof. No release candidate has been certified by this package.
 
 ## Record current candidate evidence
 
