@@ -277,6 +277,97 @@ codeunit 96213 "Data Exch Discovery Tests"
         LibraryAssert.IsTrue(Markdown.Contains('take'), 'take parameter');
     end;
 
+    [Test]
+    procedure EntryList_Paging_UsesFoundationDefaults()
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        RequestJson: JsonObject;
+        DataObject: JsonObject;
+    begin
+        // [SCENARIO] #69: skip/take are read by the app itself and keep Foundation's defaults (skip 0, take 100; take 0 means 100).
+        ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Entry.List", RequestJson);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Entry.List without paging');
+        DataObject := ReadData(TempArgument.GetResponseJson());
+        LibraryAssert.AreEqual(0, ReadObjInt(DataObject, 'skip'), 'default skip');
+        LibraryAssert.AreEqual(100, ReadObjInt(DataObject, 'take'), 'default take');
+
+        RequestJson.Add('skip', 2);
+        RequestJson.Add('take', 0);
+        ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Entry.List", RequestJson);
+        DataObject := ReadData(TempArgument.GetResponseJson());
+        LibraryAssert.AreEqual(2, ReadObjInt(DataObject, 'skip'), 'requested skip');
+        LibraryAssert.AreEqual(100, ReadObjInt(DataObject, 'take'), 'take 0 uses the default');
+
+        Clear(RequestJson);
+        RequestJson.Add('take', 1001);
+        ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Entry.List", RequestJson);
+        LibraryAssert.AreEqual('Error', ReadText(TempArgument.GetResponseJson(), 'status'), 'take above 1000 is refused');
+        LibraryAssert.AreEqual('take', ReadText(TempArgument.GetResponseJson(), 'parameter'), 'the refusal names take');
+    end;
+
+    [Test]
+    procedure HelpGuides_NameEveryRegisteredType()
+    var
+        MessageType: Enum "Message Type ori";
+        StorageGuide: Text;
+        DataExchangeGuide: Text;
+        TypeName: Text;
+    begin
+        // [SCENARIO] #115: Help.Storage.Get and Help.DataExchange.Get return a non-empty Markdown guide that names every
+        // registered type of their family, so a new type cannot be added without the guide noticing.
+        StorageGuide := HelpMarkdown(MessageType::"Help.Storage.Get");
+        DataExchangeGuide := HelpMarkdown(MessageType::"Help.DataExchange.Get");
+        LibraryAssert.IsTrue(StorageGuide.StartsWith('# '), 'storage guide starts with a heading');
+        LibraryAssert.IsTrue(DataExchangeGuide.StartsWith('# '), 'Data Exchange guide starts with a heading');
+        foreach TypeName in Enum::"Message Type ori".Names() do begin
+            if TypeName.StartsWith('Storage.') then
+                LibraryAssert.IsTrue(StorageGuide.Contains('`' + TypeName + '`'), 'storage guide names ' + TypeName);
+            if TypeName.StartsWith('DataExchange.') then
+                LibraryAssert.IsTrue(DataExchangeGuide.Contains('`' + TypeName + '`'), 'Data Exchange guide names ' + TypeName);
+        end;
+    end;
+
+    [Test]
+    procedure Contract_DataExchange_NamesItsOwnPermissionSetAndSubject()
+    var
+        MessageType: Enum "Message Type ori";
+    begin
+        // [SCENARIO] #115: Data Exchange types report BIFROST DataExch ori, storage types BIFROST Attach ori,
+        // and the Data Exchange subject no longer describes a storage message.
+        LibraryAssert.AreEqual('BIFROST DataExch ori', ContractText(MessageType::"DataExchange.Type.List", '$.effect.permissionSet'), 'Type.List permission set');
+        LibraryAssert.AreEqual('BIFROST DataExch ori', ContractText(MessageType::"DataExchange.Entry.List", '$.effect.permissionSet'), 'Entry.List permission set');
+        LibraryAssert.AreEqual('BIFROST DataExch ori', ContractText(MessageType::"Help.DataExchange.Get", '$.effect.permissionSet'), 'Help.DataExchange.Get permission set');
+        LibraryAssert.AreEqual('BIFROST Attach ori', ContractText(MessageType::"Storage.File.List", '$.effect.permissionSet'), 'Storage.File.List permission set');
+        LibraryAssert.IsFalse(ContractText(MessageType::"DataExchange.Definition.Get", '$.envelope.subject.description').Contains('storage'), 'Data Exchange subject wording');
+    end;
+
+    local procedure HelpMarkdown(MessageType: Enum "Message Type ori"): Text
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        RequestJson: JsonObject;
+        DataObject: JsonObject;
+        Markdown: Text;
+    begin
+        ExecuteType(TempArgument, MessageType, RequestJson);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'help status');
+        DataObject := ReadData(TempArgument.GetResponseJson());
+        LibraryAssert.AreEqual('markdown', ReadObjText(DataObject, 'format'), 'help format');
+        Markdown := ReadObjText(DataObject, 'markdown');
+        LibraryAssert.AreNotEqual('', Markdown, 'help markdown must not be empty');
+        exit(Markdown);
+    end;
+
+    local procedure ContractText(MessageType: Enum "Message Type ori"; Path: Text): Text
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        Token: JsonToken;
+    begin
+        LibraryAssert.IsTrue(ContractMgt.GetContract(MessageType, Contract), 'the type has a contract');
+        LibraryAssert.IsTrue(Contract.SelectToken(Path, Token), 'contract contains ' + Path);
+        exit(Token.AsValue().AsText());
+    end;
+
     local procedure SeedDefinition()
     var
         DataExchDef: Record "Data Exch. Def";

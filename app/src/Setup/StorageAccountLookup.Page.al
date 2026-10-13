@@ -57,14 +57,14 @@ page 10035635 "Storage Account Lookup ori"
 
     /// <summary>Restricts the listed accounts to a single connector.</summary>
     /// <param name="Connector">The connector whose accounts are shown.</param>
-    procedure SetConnector(Connector: Enum "Ext. File Storage Connector")
+    internal procedure SetConnector(Connector: Enum "Ext. File Storage Connector")
     begin
         ConnectorFilter := Connector;
     end;
 
     /// <summary>Copies the selected account into the caller's record.</summary>
     /// <param name="TempFileAccount">Out: the selected file account.</param>
-    procedure GetSelectedAccount(var TempFileAccount: Record "File Account" temporary)
+    internal procedure GetSelectedAccount(var TempFileAccount: Record "File Account" temporary)
     begin
         TempFileAccount := Rec;
     end;

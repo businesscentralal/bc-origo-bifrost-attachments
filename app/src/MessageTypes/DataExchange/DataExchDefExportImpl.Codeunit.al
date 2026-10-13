@@ -25,7 +25,7 @@ codeunit 70013536 "DataExch Def Export Impl ori" implements "Msg Interface ori",
     /// <summary>Describes the existing message operation.</summary>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Exports a Data Exchange definition header for reinstall.', Comment = 'is-IS=Flytur út haus skilgreiningar gagnaskipta til enduruppsetningar.';
+        DescriptionLbl: Label 'Returns the header of a Data Exchange definition: code, name and type.', Comment = 'is-IS=Skilar haus skilgreiningar gagnaskipta: kóða, heiti og gerð.';
     begin
         exit(DescriptionLbl);
     end;
@@ -41,26 +41,27 @@ codeunit 70013536 "DataExch Def Export Impl ori" implements "Msg Interface ori",
     /// <summary>Describes when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Returns the definition code, type, and name so it can be imported again.', Comment = 'is-IS=Skilar kóða, gerð og heiti skilgreiningar svo hægt sé að flytja hana inn aftur.';
+        SelectionDescriptionLbl: Label 'Returns only the code, name and type of one definition; DataExchange.Definition.Get also returns its lines and mappings.', Comment = 'is-IS=Skilar aðeins kóða, heiti og gerð einnar skilgreiningar; DataExchange.Definition.Get skilar einnig línum hennar og vörpunum.';
     begin
         exit(SelectionDescriptionLbl);
     end;
 
     /// <summary>Declares the existing message name and supported version.</summary>
     procedure GetEnvelope(var Envelope: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
+        Envelope := ContractParts.GetDataExchangeEnvelope(true);
         Envelope.Add('messageType', 'DataExchange.Definition.Export');
-        Envelope.Add('version', 1);
         exit(true);
     end;
 
     /// <summary>Declares the Microsoft table targeted by this message.</summary>
     procedure GetTarget(var Target: JsonArray): Boolean
     var
-        TargetJson: JsonObject;
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        TargetJson.Add('table', 'Data Exch. Def');
-        Target.Add(TargetJson);
+        Target := ContractParts.GetDataExchangeTarget('DataExchange.Definition.Export');
         exit(true);
     end;
 
@@ -75,28 +76,28 @@ codeunit 70013536 "DataExch Def Export Impl ori" implements "Msg Interface ori",
 
     /// <summary>Describes the existing response fields.</summary>
     procedure GetResponse(var Response: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Response.Add('status', 'Success');
-        Response.Add('code', '');
+        Response := ContractParts.GetResponse('DataExchange.Definition.Export');
         exit(true);
     end;
 
     /// <summary>Describes the existing refusal conditions.</summary>
     procedure GetErrors(var Errors: JsonArray): Boolean
     var
-        ErrorJson: JsonObject;
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        ErrorJson.Add('code', 'InvalidParameter');
-        ErrorJson.Add('when', 'code was not found');
-        Errors.Add(ErrorJson);
+        Errors := ContractParts.GetErrors('DataExchange.Definition.Export');
         exit(true);
     end;
 
     /// <summary>Declares the effects of this operation.</summary>
     procedure GetEffect(var Effect: JsonObject): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Effect.Add('writes', false);
-        Effect.Add('posts', false);
+        Effect := ContractParts.GetEffect('DataExchange.Definition.Export');
         exit(true);
     end;
 
@@ -131,14 +132,14 @@ codeunit 70013536 "DataExch Def Export Impl ori" implements "Msg Interface ori",
     /// <summary>Summarizes the existing operation.</summary>
     procedure GetOverview(var Overview: Text): Boolean
     begin
-        Overview := 'Reads a data exchange definition so it can be installed in another company.';
+        Overview := 'Returns the header of one Data Exchange definition: its code, name and type.';
         exit(true);
     end;
 
     /// <summary>Describes the limits of the currently implemented operation.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     begin
-        Notes := 'Returns the header. Line and column mapping XML is the compiler follow-up for issue 26.';
+        Notes := 'Only the header is returned. Line, column and mapping definitions are not part of the answer; read them with DataExchange.Definition.Get.';
         exit(true);
     end;
 
@@ -151,31 +152,14 @@ codeunit 70013536 "DataExch Def Export Impl ori" implements "Msg Interface ori",
     /// <summary>Executes the existing Data Exchange operation and writes its response to the argument.</summary>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
-        DataExchDef: Record "Data Exch. Def";
-        RequestJson: JsonObject;
-        ResponseJson: JsonObject;
-        Token: JsonToken;
-        DefinitionCode: Code[20];
-        MissingCodeErr: Label 'code is required.', Comment = 'is-IS=code er nauðsynlegt.';
-        DefinitionNotFoundErr: Label 'Data exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
+        DataExchangeQuery: Codeunit "Data Exchange Query ori";
+        Reader: Codeunit "Storage Request Reader ori";
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
-        RequestJson := Argument.GetRequestJson();
-        if not RequestJson.Get('code', Token) then begin
-            Argument.RespondWithError(MissingCodeErr);
+        // The query codeunit holds an indirect read. Refuse from this codeunit so a missing user grant stays visible.
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Def", false) then
             exit;
-        end;
-        DefinitionCode := CopyStr(Token.AsValue().AsText(), 1, MaxStrLen(DefinitionCode));
-        if not DataExchDef.Get(DefinitionCode) then begin
-            Argument.RespondWithError(StrSubstNo(DefinitionNotFoundErr, DefinitionCode));
-            exit;
-        end;
-        ResponseJson.Add('status', 'Success');
-        ResponseJson.Add('code', DataExchDef.Code);
-        ResponseJson.Add('name', DataExchDef.Name);
-        ResponseJson.Add('type', Format(DataExchDef.Type));
-        Argument.SetResponseJson(ResponseJson);
-        Argument."Content Type" := Argument.GetContentTypeJson();
+        DataExchangeQuery.ExportDefinition(Argument);
     end;
 }

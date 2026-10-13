@@ -29,9 +29,9 @@
         "to": 70013549
       }
     ],
-    "help": "https://businesscentralal.github.io/bifrost/en-us/attachments/",
-    "EULA": "https://businesscentralal.github.io/bifrost/en-us/foundation/eula/",
-    "privacyStatement": "https://businesscentralal.github.io/bifrost/en-us/foundation/privacy/",
+    "help": "https://docs.bifrost.origo.is/en-us/attachments/",
+    "EULA": "https://docs.bifrost.origo.is/en-us/licensing/eula/",
+    "privacyStatement": "https://docs.bifrost.origo.is/en-us/licensing/privacy/",
     "url": "https://www.origo.is/",
     "logo": "assets/Logo250x250.png",
     "screenshots": [],

@@ -696,6 +696,46 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Refused definitions must not create headers.');
     end;
 
+    /// <summary>Definition.Export refuses a missing, wrong-typed, overlong or unknown code with a complete structured error.</summary>
+    [Test]
+    procedure Scenario_AC01_DefinitionExport_RefusesBadCode()
+    var
+        Response: JsonObject;
+        OverlongCode: Text;
+    begin
+        // Story #82, AC01/AC02 | Time: none | Risk: a truncated code could export the wrong definition.
+        // [GIVEN] No request code, a JSON number, a 21-character code and a code that does not exist.
+        // [WHEN] Each is dispatched to DataExchange.Definition.Export.
+        // [THEN] Each answers a structured refusal on "code"; the overlong value is echoed in full, never truncated.
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{}');
+        AssertRefusal(Response, 'MissingParameter', 'code', '');
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":7}');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'code', '7');
+        OverlongCode := PadStr('', 21, 'X');
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":"' + OverlongCode + '"}');
+        AssertRefusal(Response, 'InvalidParameter', 'code', OverlongCode);
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":"X82MISSING"}');
+        AssertRefusal(Response, 'RecordNotFound', 'code', 'X82MISSING');
+    end;
+
+    /// <summary>Definition.Export answers the stored header with the enum name of the type.</summary>
+    [Test]
+    procedure Scenario_AC03_DefinitionExport_ReturnsHeader()
+    var
+        DefinitionCode: Code[20];
+        Response: JsonObject;
+    begin
+        // Story #82, AC03 | Time: none | Risk: the shipped flat wire shape must stay unchanged.
+        // [GIVEN] A Generic Export definition.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Export");
+        // [WHEN] DataExchange.Definition.Export is dispatched for its exact code.
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":"' + DefinitionCode + '"}');
+        // [THEN] The flat answer carries status, code and the type name.
+        AssertText(Response, 'status', 'Success');
+        AssertText(Response, 'code', DefinitionCode);
+        AssertText(Response, 'type', 'Generic Export');
+    end;
+
     /// <summary>File-name boundary is accepted exactly; one character beyond is refused.</summary>
     [Test]
     procedure Scenario_AC02_ExportFileNameBounds_NeverTruncates()

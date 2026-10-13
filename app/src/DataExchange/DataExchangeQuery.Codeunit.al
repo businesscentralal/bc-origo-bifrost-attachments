@@ -129,6 +129,36 @@ codeunit 70013520 "Data Exchange Query ori"
         RespondSuccess(Argument, DefinitionDetailToJson(DataExchDef));
     end;
 
+    /// <summary>Returns the header of one Data Exch. Def (code, name, type) as DataExchange.Definition.Export answers it.</summary>
+    /// <param name="Argument">The message argument. Receives the success or error response.</param>
+    procedure ExportDefinition(var Argument: Record "Message Argument ori")
+    var
+        DataExchDef: Record "Data Exch. Def";
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        CodeText: Text;
+    begin
+        RequestJson := Argument.GetRequestJson();
+        ReadText(Argument, RequestJson, 'code', true, MaxStrLen(DataExchDef.Code), CodeText);
+        if RespondIfErrors(Argument) then
+            exit;
+
+        DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
+        DataExchDef.SetLoadFields(Code, Name, Type);
+        if not DataExchDef.Get(CodeText) then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(UnknownDefErr, CodeText), 'code', CodeText, ChooseDefinitionLbl, ChooseDefinitionLbl);
+            exit;
+        end;
+
+        // The shipped wire shape is flat: status, code, name and type at the top level.
+        ResponseJson.Add('status', 'Success');
+        ResponseJson.Add('code', DataExchDef.Code);
+        ResponseJson.Add('name', DataExchDef.Name);
+        ResponseJson.Add('type', EnumName(DataExchDef.Type));
+        Argument.SetResponseJson(ResponseJson);
+        Argument."Content Type" := Argument.GetContentTypeJson();
+    end;
+
     /// <summary>
     /// Lists Data Exchange Type rows. Codeunit names and the definition type are resolved
     /// from the linked Data Exch. Def, which is where those fields are stored.
@@ -152,7 +182,7 @@ codeunit 70013520 "Data Exchange Query ori"
         RespondSuccess(Argument, DataObject);
     end;
 
-    /// <summary>Lists Data Exch. entries. <c>skip</c>/<c>take</c> go through <c>EvaluateSkipTake</c>.</summary>
+    /// <summary>Lists Data Exch. entries. <c>skip</c>/<c>take</c> follow Foundation paging (default 100, at most 1000).</summary>
     /// <param name="Argument">The message argument. Receives the success or error response.</param>
     procedure ListEntries(var Argument: Record "Message Argument ori")
     var
@@ -170,7 +200,7 @@ codeunit 70013520 "Data Exchange Query ori"
         DefCode: Text;
     begin
         RequestJson := Argument.GetRequestJson();
-        ReadPaging(Argument, RequestJson);
+        ReadPaging(Argument, RequestJson, Skip, Take);
         ReadFilterDateTime(Argument, RequestJson, 'dateFrom', DateFrom, HasFrom);
         ReadFilterDateTime(Argument, RequestJson, 'dateTo', DateTo, HasTo);
         ReadText(Argument, RequestJson, 'dataExchDefCode', false, MaxStrLen(DataExch."Data Exch. Def Code"), DefCode);
@@ -178,7 +208,6 @@ codeunit 70013520 "Data Exchange Query ori"
             Argument.AddError("Bifrost Error Code ori"::InvalidParameter, DateRangeErr, 'dateFrom', Format(DateFrom, 0, 9), DateRangeExpectedLbl, CorrectDateRangeLbl);
         if RespondIfErrors(Argument) then
             exit;
-        Argument.EvaluateSkipTake(RequestJson, Skip, Take);
         DataExch.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExch.SetLoadFields("Entry No.", "File Name", "File Content", "Data Exch. Def Code", "Data Exch. Line Def Code", "Incoming Entry No.", "Related Record", SystemCreatedAt);
         if DefCode <> '' then
@@ -211,7 +240,7 @@ codeunit 70013520 "Data Exchange Query ori"
     end;
 
     /// <summary>
-    /// Returns one Data Exch. entry. Fields are paged with <c>EvaluateSkipTake</c> when
+    /// Returns one Data Exch. entry. Fields are paged with <c>skip</c>/<c>take</c> when
     /// <c>includeFields</c> is true (the default). <c>includeFileContent</c> is refused above 1 MB.
     /// </summary>
     /// <param name="Argument">The message argument. Receives the success or error response.</param>
@@ -228,13 +257,12 @@ codeunit 70013520 "Data Exchange Query ori"
         ContentLength: Integer;
     begin
         RequestJson := Argument.GetRequestJson();
-        ReadPaging(Argument, RequestJson);
+        ReadPaging(Argument, RequestJson, Skip, Take);
         ReadBoolean(Argument, RequestJson, 'includeFields', true, IncludeFields);
         ReadBoolean(Argument, RequestJson, 'includeFileContent', false, IncludeFileContent);
         ReadInteger(Argument, RequestJson, 'entryNo', true, 1, EntryNo);
         if RespondIfErrors(Argument) then
             exit;
-        Argument.EvaluateSkipTake(RequestJson, Skip, Take);
 
         DataExch.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExch.SetLoadFields("Entry No.", "File Name", "File Content", "Data Exch. Def Code", "Data Exch. Line Def Code", "Incoming Entry No.", "Related Record", SystemCreatedAt);
@@ -574,15 +602,17 @@ codeunit 70013520 "Data Exchange Query ori"
         end;
     end;
 
-    local procedure ReadPaging(var Argument: Record "Message Argument ori"; RequestJson: JsonObject)
-    var
-        Parsed: Integer;
+    // Same defaults as Foundation's EvaluateSkipTake: skip 0, take 100 when absent or zero; take above 1000 is refused.
+    local procedure ReadPaging(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; var Skip: Integer; var Take: Integer)
     begin
-        ReadInteger(Argument, RequestJson, 'skip', false, 0, Parsed);
-        Clear(Parsed);
-        ReadInteger(Argument, RequestJson, 'take', false, 0, Parsed);
-        if Parsed > 1000 then
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, PagingLimitErr, 'take', Format(Parsed, 0, 9), PagingExpectedLbl, StrSubstNo(SendIntegerLbl, 'take'));
+        Skip := 0;
+        Take := 0;
+        ReadInteger(Argument, RequestJson, 'skip', false, 0, Skip);
+        ReadInteger(Argument, RequestJson, 'take', false, 0, Take);
+        if Take > 1000 then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, PagingLimitErr, 'take', Format(Take, 0, 9), PagingExpectedLbl, StrSubstNo(SendIntegerLbl, 'take'));
+        if Take <= 0 then
+            Take := 100;
     end;
 
     local procedure ReadInteger(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; Minimum: Integer; var IntegerValue: Integer)

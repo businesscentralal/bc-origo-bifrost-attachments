@@ -334,6 +334,41 @@ codeunit 96217 "Storage Native Fields Tests"
     end;
 
     [Test]
+    procedure LinkedRead_TransferFieldsInsert_SlashVariantPath_DoesNotPersistStoredInternally()
+    var
+        DocumentAttachment: Record "Document Attachment";
+        CopyAttachment: Record "Document Attachment";
+        RecRef: RecordRef;
+        AttachmentId: Guid;
+        CopyId: Guid;
+        ExpectedPath: Text;
+        VariantPath: Text;
+        ColonAt: Integer;
+    begin
+        // [SCENARIO] #75: the mirrored external path is matched to the Bifrost link by its canonical form, so a copy
+        // whose path carries an extra leading slash is still recognized and Stored Internally is not persisted.
+        AssertExternalStorageFieldPresent();
+        AttachmentId := OffloadLeafAttachment('linked-insert-slash', 'X slash copy bytes');
+        ExpectedPath := NativePath(AttachmentId);
+        ColonAt := StrPos(ExpectedPath, ':');
+        LibraryAssert.IsTrue(ColonAt > 1, 'The mirrored path is <storage code>:<path>.');
+        VariantPath := CopyStr(ExpectedPath, 1, ColonAt) + '/' + CopyStr(ExpectedPath, ColonAt + 1);
+
+        DocumentAttachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsTrue(DocumentAttachment.HasContent(), 'A linked offload still reports content.');
+        CopyAttachment.Init();
+        CopyAttachment.TransferFields(DocumentAttachment);
+        CopyAttachment."Line No." := DocumentAttachment."Line No." + 1;
+        RecRef.GetTable(CopyAttachment);
+        RecRef.Field(8752).Value := VariantPath;
+        RecRef.SetTable(CopyAttachment);
+        CopyAttachment.Insert(true);
+        CopyId := CopyAttachment.SystemId;
+        LibraryAssert.AreEqual(VariantPath, NativePath(CopyId), 'The slash variant path is stored as written.');
+        LibraryAssert.IsFalse(StoredInternally(CopyId), 'A slash variant of the linked path must not persist Stored Internally.');
+    end;
+
+    [Test]
     procedure MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule()
     var
         DocumentAttachment: Record "Document Attachment";

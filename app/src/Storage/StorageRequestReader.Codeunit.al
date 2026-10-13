@@ -340,18 +340,18 @@ codeunit 10035682 "Storage Request Reader ori"
         exit(RequestMgt.CanonicalPath(Path));
     end;
 
-    /// <summary>Parses request data read-only and collects malformed or non-object input.</summary>
+    /// <summary>Checks read-only that the request data is a JSON object and collects malformed or non-object input.</summary>
+    /// <remarks>Call it before the worker runs, so the worker can read the request with <c>Argument.GetRequestJson()</c>.</remarks>
     /// <param name="Argument">The request and Foundation collector.</param>
-    /// <param name="RequestJson">Receives the parsed request object.</param>
     /// <returns>True when the data is a JSON object.</returns>
-    internal procedure ReadMutationRequest(var Argument: Record "Message Argument ori"; var RequestJson: JsonObject): Boolean
+    internal procedure ReadMutationRequest(var Argument: Record "Message Argument ori"): Boolean
     var
+        RequestJson: JsonObject;
         InvalidRequestErr: Label 'The request data must be a JSON object.', Comment = 'is-IS=Gögn beiðninnar verða að vera JSON-hlutur.';
         InvalidRequestLbl: Label 'malformed JSON or a non-object value', Comment = 'is-IS=ógilt JSON eða gildi sem er ekki hlutur';
         ObjectExpectedLbl: Label 'a JSON object containing the request parameters', Comment = 'is-IS=JSON-hlutur sem inniheldur færibreytur beiðninnar';
         SendObjectLbl: Label 'Send the parameters as a valid JSON object and retry.', Comment = 'is-IS=Sendu færibreyturnar sem gildan JSON-hlut og reyndu aftur.';
     begin
-        Clear(RequestJson);
         if TryReadMutationRequest(Argument, RequestJson) then
             exit(true);
         Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, InvalidRequestErr, 'data', InvalidRequestLbl, ObjectExpectedLbl, SendObjectLbl);

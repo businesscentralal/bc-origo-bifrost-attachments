@@ -277,6 +277,41 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'Unsafe file paths must not reach the connector.');
     end;
 
+    /// <summary>Inner double slashes, backslashes and dot segments are refused before any connector call.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC01_InnerSlashVariants_RejectWithoutWrites()
+    var
+        Link: Record "Storage Attachment Link ori";
+        MockState: Codeunit "Storage Mock State";
+        RequestJson: JsonObject;
+        Response: JsonObject;
+        AttachmentId: Guid;
+        FileCountBefore: Integer;
+    begin
+        // Story #75, AC01 | Time: no date dependence | Risk: a provider that collapses "//" would address the linked file.
+        Initialize();
+        // [GIVEN] A linked file at Xdir/Xfile.txt.
+        AttachmentId := CreateLinked('Xdir/Xfile.txt');
+        FileCountBefore := MockState.FilePaths().Count();
+        // [WHEN] Create requests spell a path with an inner double slash, a backslash or a dot segment.
+        Response := Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest('Xdir//Xnew.txt', 'bad'));
+        AssertRefusal(Response, 'InvalidParameter');
+        Response := Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest('Xdir\Xnew.txt', 'bad'));
+        AssertRefusal(Response, 'InvalidParameter');
+        Response := Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest('Xdir/./Xnew.txt', 'bad'));
+        AssertRefusal(Response, 'InvalidParameter');
+        // [WHEN] A delete names the linked file with an inner double slash.
+        RequestJson.Add('storageCode', MockCodeTok);
+        RequestJson.Add('path', 'Xdir//Xfile.txt');
+        Response := Execute(Enum::"Message Type ori"::"Storage.File.Delete", RequestJson);
+        AssertRefusal(Response, 'InvalidParameter');
+        // [THEN] Nothing reached the connector and the link is unchanged.
+        LibraryAssert.AreEqual(FileCountBefore, MockState.FilePaths().Count(), 'Unsafe paths must not reach the connector.');
+        LibraryAssert.IsTrue(Link.Get(Database::"Incoming Document Attachment", AttachmentId), 'The link must remain.');
+        LibraryAssert.AreEqual('Xdir/Xfile.txt', Link."Storage Path", 'The link path must be unchanged.');
+    end;
+
     /// <summary>A generated overlength offload path is refused while the only content remains local.</summary>
     [Test]
     [TransactionModel(TransactionModel::AutoCommit)]

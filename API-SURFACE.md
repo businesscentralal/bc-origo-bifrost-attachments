@@ -3,9 +3,9 @@
 | Release gate | Decision at audited main |
 |---|---|
 | Marketplace publication / previous baseline | **BLOCKED**: Gunnar confirms no current Attachments offer; historical publication/validation and baseline evidence remain unavailable. |
-| Access reduction | **HOLD**: preserve existing access until publication and consumer evidence permits a specific reduction. |
+| Access reduction | **DONE 2026-10-13**: no Attachments offer exists (Gunnar, #83), so there is no published baseline or foreign consumer. The two state enums and the Storage Setup / Storage Account Lookup helper procedures are now Internal; the unbound Definition.Import and Entry.Delete codeunits were removed. |
 | Provider contract | **KEEP**: Storage Connector ori, Storage Type ori and table Storage Setup ori (10035636) remain public. Storage Type stays extensible. |
-| State enums | **HOLD**: Storage Attachment Target ori (10035635) and Storage Upload Status ori (10035637) are candidates for Internal. |
+| State enums | **DONE**: Storage Attachment Target ori (10035635) and Storage Upload Status ori (10035637) are Access = Internal. |
 | Registered ranges and affix | **BLOCKED**: Gunnar / Partner Center allocation owner must supply authoritative evidence for both ranges and `ori`. |
 | Full AppSourceCop / product and test compile / runtime | **INCOMPLETE**: PR84 and audit PR86 have merged; exact current-source compile/analyzer/runtime and QA evidence still required. Merge is not verification. |
 | Independent review | Pending; this audit is an author inventory, not independent certification. |
@@ -80,11 +80,6 @@ does not make an event subscriber unused.
 
 | Object kind / ID / source | Signature | Fixed-length parameter types |
 |---|---|---|
-| page 10035635 [Storage Account Lookup ori](app/src/Setup/StorageAccountLookup.Page.al) | `SetConnector(Connector: Enum "Ext. File Storage Connector")` | None |
-| page 10035635 [Storage Account Lookup ori](app/src/Setup/StorageAccountLookup.Page.al) | `GetSelectedAccount(var TempFileAccount: Record "File Account" temporary)` | None |
-| table 10035636 [Storage Setup ori](app/src/Setup/StorageSetup.Table.al) | `ClearFileAccount()` | None |
-| table 10035636 [Storage Setup ori](app/src/Setup/StorageSetup.Table.al) | `HasFileAccount(): Boolean` | None |
-| table 10035636 [Storage Setup ori](app/src/Setup/StorageSetup.Table.al) | `TestConnection()` | None |
 | interface — [Storage Connector ori](app/src/Storage/StorageConnector.Interface.al) | `TestConnection(StorageSetup: Record "Storage Setup ori")` | None |
 | interface — [Storage Connector ori](app/src/Storage/StorageConnector.Interface.al) | `ListEntries(StorageSetup: Record "Storage Setup ori"; Path: Text; EntryType: Enum "Ext. File Storage File Type"; var TempFileAccountContent: Record "File Account Content" temporary)` | None |
 | interface — [Storage Connector ori](app/src/Storage/StorageConnector.Interface.al) | `GetFile(StorageSetup: Record "Storage Setup ori"; Path: Text; var TempBlob: Codeunit "Temp Blob")` | None |
@@ -105,7 +100,7 @@ does not make an event subscriber unused.
 | table 10035635 [Storage Attachment Link ori](app/src/Attachments/StorageAttachmentLink.Table.al) | Internal | false | 14 app / 11 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035635 [Storage Attachment Mgt ori](app/src/Attachments/StorageAttachmentMgt.Codeunit.al) | Internal | not declared / not applicable | 9 app / 4 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035636 [Storage Attachment Subscr ori](app/src/Attachments/StorageAttachmentSubscr.Codeunit.al) | Internal | not declared / not applicable | 2 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
-| enum 10035635 [Storage Attachment Target ori](app/src/Attachments/StorageAttachmentTarget.Enum.al) | Public (default) | false | 1 app / 0 test files | HOLD: candidate Internal after publication/baseline and consumer gates |
+| enum 10035635 [Storage Attachment Target ori](app/src/Attachments/StorageAttachmentTarget.Enum.al) | Internal | false | 1 app / 0 test files | KEEP Internal: no published baseline or consumer (no Attachments offer, #83); state enum used only inside the app |
 | tableextension 10035636 [Storage Doc. Attach. ori](app/src/Attachments/StorageDocAttach.TableExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
 | tableextension 10035635 [Storage Inc. Doc. Attach. ori](app/src/Attachments/StorageIncDocAttach.TableExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
 | codeunit 70013520 [Data Exchange Query ori](app/src/DataExchange/DataExchangeQuery.Codeunit.al) | Internal | not declared / not applicable | 7 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
@@ -124,9 +119,7 @@ does not make an event subscriber unused.
 | enumextension 70013521 [DataExch Def Exp EnumExt ori](app/src/MessageTypes/DataExchange/DataExchDefExpEnumExt.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
 | codeunit 70013536 [DataExch Def Export Impl ori](app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 1 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 70013523 [DataExch Def Get Impl ori](app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
-| codeunit 70013545 [DataExch Def Import Impl ori](app/src/MessageTypes/DataExchange/DataExchDefImportImpl.Codeunit.al) | Internal | not declared / not applicable | 0 app / 1 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 70013522 [DataExch Def List Impl ori](app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
-| codeunit 70013544 [DataExch Entry Del Impl ori](app/src/MessageTypes/DataExchange/DataExchEntryDelImpl.Codeunit.al) | Internal | not declared / not applicable | 0 app / 1 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 70013526 [DataExch Entry Get Impl ori](app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 70013525 [DataExch Entry List Impl ori](app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enumextension 70013519 [DataExch Export MsgType ori](app/src/MessageTypes/DataExchange/DataExchExportMsgType.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
@@ -181,7 +174,7 @@ does not make an event subscriber unused.
 | codeunit 10035665 [Storage Upload Mgt ori](app/src/Upload/StorageUploadMgt.Codeunit.al) | Internal | not declared / not applicable | 8 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035679 [Storage Upload Purge ori](app/src/Upload/StorageUploadPurge.Codeunit.al) | Internal | not declared / not applicable | 3 app / 3 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | table 10035638 [Storage Upload Session ori](app/src/Upload/StorageUploadSession.Table.al) | Internal | false | 6 app / 7 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
-| enum 10035637 [Storage Upload Status ori](app/src/Upload/StorageUploadStatus.Enum.al) | Public (default) | false | 2 app / 0 test files | HOLD: candidate Internal after publication/baseline and consumer gates |
+| enum 10035637 [Storage Upload Status ori](app/src/Upload/StorageUploadStatus.Enum.al) | Internal | false | 2 app / 0 test files | KEEP Internal: no published baseline or consumer (no Attachments offer, #83); state enum used only inside the app |
 
 ## Bound the consumer search
 

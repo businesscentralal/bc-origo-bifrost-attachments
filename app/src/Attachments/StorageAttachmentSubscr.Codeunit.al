@@ -110,6 +110,7 @@ codeunit 10035636 "Storage Attachment Subscr ori"
     local procedure MirroredPathHasBifrostLink(ExternalPath: Text): Boolean
     var
         Link: Record "Storage Attachment Link ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
         StorageCode: Code[20];
         StoragePath: Text;
         ColonAt: Integer;
@@ -122,10 +123,19 @@ codeunit 10035636 "Storage Attachment Subscr ori"
         StoragePath := CopyStr(ExternalPath, ColonAt + 1);
         if (StorageCode = '') or (StoragePath = '') then
             exit(false);
+        // Compare canonical paths (#75): a mirrored or stored value with outer slashes still names the same file.
+        // The comparison is exact and case-sensitive, so a mismatch only keeps the local content flag.
+        StoragePath := RequestMgt.CanonicalPath(StoragePath);
+        Link.ReadIsolation := IsolationLevel::ReadCommitted;
+        Link.SetLoadFields("Table ID", "Storage Code", "Storage Path");
         Link.SetRange("Table ID", Database::"Document Attachment");
         Link.SetRange("Storage Code", StorageCode);
-        Link.SetRange("Storage Path", CopyStr(StoragePath, 1, MaxStrLen(Link."Storage Path")));
-        exit(not Link.IsEmpty());
+        if Link.FindSet() then
+            repeat
+                if RequestMgt.PathsEqual(RequestMgt.CanonicalPath(Link."Storage Path"), StoragePath, true) then
+                    exit(true);
+            until Link.Next() = 0;
+        exit(false);
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnBeforeExportToStream', '', false, false)]

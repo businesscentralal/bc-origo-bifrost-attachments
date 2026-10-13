@@ -57,7 +57,7 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Envelope := ContractParts.GetEnvelope(true);
+        Envelope := ContractParts.GetDataExchangeEnvelope(true);
         Envelope.Add('messageType', 'DataExchange.Type.Set');
         exit(true);
     end;
@@ -158,9 +158,16 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
     /// <summary>Validates raw inputs before any write, preserving the caller transaction on execution failure.</summary>
     /// <param name="Argument">The licensed request and response.</param>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
+    var
+        Reader: Codeunit "Storage Request Reader ori";
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
+        // A non-object request is refused here, before the worker reads it with GetRequestJson.
+        if not Reader.ReadMutationRequest(Argument) then begin
+            Reader.RespondIfErrors(Argument);
+            exit;
+        end;
         // No Boolean return: preserve the caller transaction and propagate postwrite errors.
         Codeunit.Run(Codeunit::"DataExch Type Set Impl ori", Argument);
     end;
@@ -180,11 +187,10 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         ExpectedLbl: Label 'an existing Generic Import definition', Comment = 'is-IS=fyrirliggjandi Generic Import-skilgreining';
         SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and select a definition of an accepted kind using its exact code.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og veldu skilgreiningu af leyfðri tegund með nákvæmum kóða hennar.';
     begin
-        if Reader.ReadMutationRequest(Argument, RequestJson) then begin
-            Reader.ReadMutationCode(Argument, RequestJson, 'code', TypeCode);
-            Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefinitionCode);
-            Reader.ReadMutationText(Argument, RequestJson, 'description', false, MaxStrLen(DataExchangeType.Description), Description);
-        end;
+        RequestJson := Argument.GetRequestJson();
+        Reader.ReadMutationCode(Argument, RequestJson, 'code', TypeCode);
+        Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefinitionCode);
+        Reader.ReadMutationText(Argument, RequestJson, 'description', false, MaxStrLen(DataExchangeType.Description), Description);
         if Reader.RespondIfErrors(Argument) then
             exit;
         DataExchDef.SetLoadFields(Type);

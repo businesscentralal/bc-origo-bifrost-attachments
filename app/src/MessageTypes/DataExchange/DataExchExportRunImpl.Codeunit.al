@@ -31,7 +31,7 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     /// <summary>Describes the existing message operation.</summary>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Exports through a Data Exchange definition to a named file.', Comment = 'is-IS=Flytur út með skilgreiningu gagnaskipta í nafngreinda skrá.';
+        DescriptionLbl: Label 'Creates a Data Exch. entry for an export definition and a target file name, without producing the file.', Comment = 'is-IS=Býr til gagnaskiptafærslu fyrir útflutningsskilgreiningu og heiti markskrár án þess að búa skrána til.';
     begin
         exit(DescriptionLbl);
     end;
@@ -47,7 +47,7 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     /// <summary>Describes when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Runs an export definition and returns the file name.', Comment = 'is-IS=Keyrir útflutningsskilgreiningu og skilar skráarheitinu.';
+        SelectionDescriptionLbl: Label 'Registers an export entry for a definition other than Generic Import; it does not run the export or write to storage.', Comment = 'is-IS=Skráir útflutningsfærslu fyrir aðra skilgreiningu en Generic Import; hún keyrir ekki útflutninginn og skrifar ekki í geymslu.';
     begin
         exit(SelectionDescriptionLbl);
     end;
@@ -57,7 +57,7 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Envelope := ContractParts.GetEnvelope(true);
+        Envelope := ContractParts.GetDataExchangeEnvelope(true);
         Envelope.Add('messageType', 'DataExchange.Export.Run');
         exit(true);
     end;
@@ -145,7 +145,7 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     /// <summary>Describes the limits of the currently implemented operation.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     begin
-        Notes := 'Payment export uses the same type when the definition type is Payment Export. The compiler pass must bind the export stream to storage.';
+        Notes := 'Only the Data Exch. entry is created. The export pipeline is not run and nothing is written to storage. Payment Export definitions are accepted like any other definition that is not Generic Import.';
         exit(true);
     end;
 
@@ -158,9 +158,16 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     /// <summary>Validates raw inputs before any write, preserving the caller transaction on execution failure.</summary>
     /// <param name="Argument">The licensed request and response.</param>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
+    var
+        Reader: Codeunit "Storage Request Reader ori";
     begin
         Argument.AssertIsLicensed();
         Argument.AssertVersion1();
+        // A non-object request is refused here, before the worker reads it with GetRequestJson.
+        if not Reader.ReadMutationRequest(Argument) then begin
+            Reader.RespondIfErrors(Argument);
+            exit;
+        end;
         // No Boolean return: preserve the caller transaction and propagate postwrite errors.
         Codeunit.Run(Codeunit::"DataExch Export Run Impl ori", Argument);
     end;
@@ -179,10 +186,9 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
         ExpectedLbl: Label 'an existing definition other than Generic Import', Comment = 'is-IS=fyrirliggjandi skilgreining af annarri tegund en Generic Import';
         SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and select a definition of an accepted kind using its exact code.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og veldu skilgreiningu af leyfðri tegund með nákvæmum kóða hennar.';
     begin
-        if Reader.ReadMutationRequest(Argument, RequestJson) then begin
-            Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefinitionCode);
-            Reader.ReadMutationText(Argument, RequestJson, 'fileName', true, MaxStrLen(DataExch."File Name"), FileName);
-        end;
+        RequestJson := Argument.GetRequestJson();
+        Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefinitionCode);
+        Reader.ReadMutationText(Argument, RequestJson, 'fileName', true, MaxStrLen(DataExch."File Name"), FileName);
         if Reader.RespondIfErrors(Argument) then
             exit;
         DataExchDef.SetLoadFields(Type);

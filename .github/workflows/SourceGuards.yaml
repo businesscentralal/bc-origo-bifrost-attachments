@@ -5,9 +5,8 @@ name: Source Guards
 # tableView is validated before SetView, the parameter names a contract declares are the keys the code reads and the
 # other way round, nothing is declared obsolete, every page, query and report is granted by an assignable permission
 # set, no answer mixes a Locked English sentence with translated text, and every Icelandic keyword list is complete.
-# Contract parameter keys and mixed-language labels are copied in tools/ but not run here yet:
-# the shared contract chapters declare keys individual list types do not read, and several Locked
-# telemetry and refusal labels predate the Foundation rule. Enabling those two jobs would fail on main.
+# Contract parameter keys (#69) and mixed-language labels (#72) run here since 13.10.2026, when both passed
+# with an empty allow-list.
 # The Icelandic xlf check (tools/Test-IcelandicXlfInSync.ps1) needs a build and is run by hand before a PR.
 
 on:
@@ -72,6 +71,34 @@ jobs:
         shell: pwsh
         run: ./tools/Test-PermissionCoverage.ps1
 
+
+  ContractParameterKeys:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: The guard checks itself
+        shell: pwsh
+        run: ./tools/Test-ContractParameterKeys.ps1 -SelfTest
+
+      - name: Contract parameters and the keys the code reads agree
+        shell: pwsh
+        run: ./tools/Test-ContractParameterKeys.ps1
+
+  MixedLanguageLabels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: The guard checks itself
+        shell: pwsh
+        run: ./tools/Test-MixedLanguageLabels.ps1 -SelfTest
+
+      - name: No answer mixes a Locked English sentence with translated text
+        shell: pwsh
+        run: ./tools/Test-MixedLanguageLabels.ps1
 
   SymbolDuplicateGate:
     runs-on: ubuntu-latest
