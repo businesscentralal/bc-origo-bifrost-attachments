@@ -8,6 +8,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-13) - Default build verification (#109)
+
+- Preserve both rejected duplicate compiler symbol inputs in bounded diagnostics, and run Default/Test for workflow-only changes.
+- Exercise the rejection-receipt hash-I/O failure with a valid NAVX package after compiler-symbol normalization validates package headers first. Both receipt-write and hash-I/O failures retain the original gate refusal. No AL objects or IDs change.
+
 ### Fixed (2026-10-12) - compiler symbol filename aliases
 
 - The AppSource before-compile gate treats a compiler-symbol filename alias as one package when the bytes match, the package entries match, a ReadyToRun wrapper embeds that package, or the same app id and version has the same SymbolReference and canonical compiler manifest. The versioned filename is kept. Build timestamps and TRANSLATIONFILE/LCGTRANSLATIONFILE packaging flags are not compiler conflicts. A different symbol reference, compiler manifest, or version still fails, and no alias is removed in that case. The app-symbol cache still rejects every duplicate. No AL objects or IDs change.
@@ -86,8 +91,6 @@ Business Central release versioning (`major.minor.build.revision`).
 ## [28.0.0.4] — 2026-10-07
 
 ### Fixed
-- Preserve both rejected duplicate compiler symbol inputs in bounded diagnostics, and run Default/Test for workflow-only changes.
-
 - `Storage Contract Parts ori` (70013500) removes unused storage requirements from Data Exchange queries and record uploads, documents conditional attachment sources and accepted address aliases, and adds shared shipped Data Exchange mutation chapters for integration by #82.
 - `Data Exchange Query ori` (70013520) collects malformed filters, flags, dates and paging values before querying, refuses overlong codes and page sizes above 1000, preserves the zero/default page size of 100, and returns localized actionable error details.
 - Read/query discovery wording is localized in `DataExch Def List Impl ori` (70013522), `DataExch Def Get Impl ori` (70013523), `DataExch Type List Impl ori` (70013524), `DataExch Entry List Impl ori` (70013525), and `DataExch Entry Get Impl ori` (70013526). `Storage Contract Batch2 Tests` (96216) adds #69 contract and full-dispatch regression coverage; exact-tip execution and final XLF integration remain verification gates.

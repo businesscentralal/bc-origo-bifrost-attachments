@@ -669,16 +669,20 @@ class GenuinePackages(unittest.TestCase):
 
     def test_rejection_receipt_io_failure_preserves_original_gate_error(self):
         self.state()
-        (self.root / "compiler-symbols/Bad.app").write_bytes(b"bad")
+        package = self.root / "compiler-symbols/Bad.app"
         for operation in ("write_text", "file_hash"):
             with self.subTest(operation=operation):
-                # Collection and write failures cannot replace the original refusal.
+                # Normalization validates the header before hashing. Use a valid
+                # NAVX for the hash failure so that it reaches the intended seam.
                 if operation == "file_hash":
+                    shutil.copy2(self.foundation_candidate, package)
                     target = patch.object(G, operation, side_effect=OSError("inventory IO failed"))
+                    expected_error = "Invalid compiled NAVX payload/manifest"
                 else:
+                    package.write_bytes(b"bad")
                     target = patch.object(Path, operation, side_effect=OSError("receipt IO failed"))
-                expected_error = "Invalid compiled NAVX payload/manifest" if operation == "file_hash" else "Invalid NAVX header"
-            with target, self.assertRaisesRegex(G.GateError, expected_error):
+                    expected_error = "Invalid NAVX header"
+                with target, self.assertRaisesRegex(G.GateError, expected_error):
                     G.before_compile(self.root, self.rejection_request())
 
     def test_inventory_cap_and_missing_folder_are_failures(self):
