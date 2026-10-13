@@ -18,6 +18,11 @@ attributable to [PR86](https://github.com/businesscentralal/bc-origo-bifrost-att
 and commit `ef39ae86b5729038877b2427e9a892487ce09728`; the inventory above is
 a refresh of current product source, not a rewrite of that historical snapshot.
 
+File hashes were refreshed against main `079378953494ce569db7d1139543955dc6843c73`.
+Only the 13 stale file hashes changed; object identities, decisions, consumer counts and
+the procedure inventory retain the audit snapshot above. `hashSourceSha` records the
+file-hash snapshot separately from the original `sourceSha`.
+
 This change adds audit records only. No object, procedure, interface member, enum value,
 wire name, access, extensibility, identity or allocation is changed.
 
