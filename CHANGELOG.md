@@ -10,7 +10,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-14) - native refusal diagnostics and published help evidence (#70, #79, #82)
 
-- `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.
+- `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.
 - Attachments help pages are published through businesscentralal/bifrost PR100. At docs main `af179cc00f2842a15d8ea9bace890ae51031c171`, the unmodified `Test-HelpLinks.ps1` checks 7 pages with 0 problems in both locale trees; the 10 EN/IS help and landing URLs return HTTP 200. These are help checks, separate from native/UI/MCP acceptance.
 
 ### Fixed (2026-10-13) - help guides, Data Exchange contracts and refusals (#69, #70, #72, #75, #76, #77, #81, #82, #115)

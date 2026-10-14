@@ -996,7 +996,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Response := DispatchImport(DefinitionCode, 'XSTORAGE', 'X82.csv');
         AssertText(Response, 'status', 'Accepted');
         LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'First call must actually write before the later failure.');
-        DispatchDelete(DefinitionCode);
+        FailOnReturnedResponse(DispatchDelete(DefinitionCode));
     end;
 
     local procedure CreateDefinition(DefinitionType: Enum "Data Exchange Definition Type"): Code[20]
