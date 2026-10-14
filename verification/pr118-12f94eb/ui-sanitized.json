@@ -1,0 +1,104 @@
+{
+  "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+  "containerId": "f0f2270c46e6",
+  "executed": 4,
+  "passed": 4,
+  "failed": 0,
+  "skipped": 0,
+  "languageSelection": "is-IS selected through My Settings; actual translated page titles verified",
+  "setupRetries": [
+    {
+      "step": "My Settings language lookup",
+      "firstAttempt": "Language row lookup in the parent settings frame timed out; no is-IS page scenario executed in that attempt.",
+      "diagnosis": "Actual Icelandic row was in a separate lookup frame.",
+      "repair": "Select the visible exact Icelandic row across live frames, then confirm My Settings.",
+      "result": "Both actual is-IS page scenarios passed"
+    }
+  ],
+  "results": [
+    {
+      "containerId": "f0f2270c46e6",
+      "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "not deployed; native verification remains blocked",
+      "locale": "en-US",
+      "page": 10035637,
+      "title": "Bifrost Storage Setup",
+      "checkedAt": "2026-10-14T15:59:07.171Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "empty owned company fixture; no pre-existing storage account used"
+      ],
+      "columns": [
+        "Code",
+        "Description",
+        "Connector",
+        "File Account Name",
+        "Enabled"
+      ]
+    },
+    {
+      "containerId": "f0f2270c46e6",
+      "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "not deployed; native verification remains blocked",
+      "locale": "en-US",
+      "page": 10035635,
+      "title": "Select File Account",
+      "checkedAt": "2026-10-14T15:59:12.930Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "empty owned company fixture; no pre-existing storage account used"
+      ],
+      "columns": [
+        "Name"
+      ]
+    },
+    {
+      "containerId": "f0f2270c46e6",
+      "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "not deployed; native verification remains blocked",
+      "locale": "is-IS",
+      "page": 10035637,
+      "title": "Uppsetning Bifr\u00f6st geymslu",
+      "checkedAt": "2026-10-14T16:02:47.326Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "empty owned company fixture; no pre-existing storage account used"
+      ],
+      "columns": [
+        "L\u00fdsing"
+      ]
+    },
+    {
+      "containerId": "f0f2270c46e6",
+      "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "not deployed; native verification remains blocked",
+      "locale": "is-IS",
+      "page": 10035635,
+      "title": "Velja skr\u00e1areikning",
+      "checkedAt": "2026-10-14T16:02:50.739Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "empty owned company fixture; no pre-existing storage account used"
+      ],
+      "columns": [
+        "Heiti"
+      ]
+    }
+  ]
+}

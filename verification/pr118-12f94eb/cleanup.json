@@ -1,0 +1,12 @@
+{
+  "id": "f0f2270c46e6",
+  "owner": "worker-7",
+  "deletedHTTP": 204,
+  "verifiedAbsentHTTP": 404,
+  "verifiedAt": "2026-10-14T16:04:13.877Z",
+  "activeEnvironmentRecordRemoved": true,
+  "nativeTestsExecuted": 0,
+  "McpMessagesExecuted": 0,
+  "fixtureDataCreated": false,
+  "previousContainerCleanupReplayed": false
+}

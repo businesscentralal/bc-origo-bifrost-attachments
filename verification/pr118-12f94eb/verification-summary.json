@@ -1,0 +1,271 @@
+{
+  "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+  "compile": {
+    "app": {
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "analyzers": [
+        "CodeCop",
+        "UICop",
+        "AppSourceCop"
+      ],
+      "files": 79,
+      "log": "/workspace/evidence/attachments118-worker7/repair-20261014-1537/compiler/app.log"
+    },
+    "test": {
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "analyzers": [
+        "CodeCop",
+        "UICop",
+        "AppSourceCop"
+      ],
+      "files": 37,
+      "log": "/workspace/evidence/attachments118-worker7/repair-20261014-1537/compiler/test.log"
+    }
+  },
+  "nativeFullSuite": {
+    "fullSuite": false,
+    "executed": 0,
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0,
+    "verified": false,
+    "reason": "Supported own native setup pending; no unchanged licence-refused suite replay. Prior574 native268/212/56/0 remains failed historical evidence."
+  },
+  "ui": {
+    "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+    "containerId": "f0f2270c46e6",
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "languageSelection": "is-IS selected through My Settings; actual translated page titles verified",
+    "setupRetries": [
+      {
+        "step": "My Settings language lookup",
+        "firstAttempt": "Language row lookup in the parent settings frame timed out; no is-IS page scenario executed in that attempt.",
+        "diagnosis": "Actual Icelandic row was in a separate lookup frame.",
+        "repair": "Select the visible exact Icelandic row across live frames, then confirm My Settings.",
+        "result": "Both actual is-IS page scenarios passed"
+      }
+    ],
+    "results": [
+      {
+        "containerId": "f0f2270c46e6",
+        "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+        "appVersion": "28.0.0.4",
+        "testAppVersion": "not deployed; native verification remains blocked",
+        "locale": "en-US",
+        "page": 10035637,
+        "title": "Bifrost Storage Setup",
+        "checkedAt": "2026-10-14T15:59:07.171Z",
+        "passed": true,
+        "checks": [
+          "authenticated owned Web Client",
+          "translated title and columns",
+          "read-only list rendered without application error",
+          "empty owned company fixture; no pre-existing storage account used"
+        ],
+        "columns": [
+          "Code",
+          "Description",
+          "Connector",
+          "File Account Name",
+          "Enabled"
+        ]
+      },
+      {
+        "containerId": "f0f2270c46e6",
+        "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+        "appVersion": "28.0.0.4",
+        "testAppVersion": "not deployed; native verification remains blocked",
+        "locale": "en-US",
+        "page": 10035635,
+        "title": "Select File Account",
+        "checkedAt": "2026-10-14T15:59:12.930Z",
+        "passed": true,
+        "checks": [
+          "authenticated owned Web Client",
+          "translated title and columns",
+          "read-only list rendered without application error",
+          "empty owned company fixture; no pre-existing storage account used"
+        ],
+        "columns": [
+          "Name"
+        ]
+      },
+      {
+        "containerId": "f0f2270c46e6",
+        "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+        "appVersion": "28.0.0.4",
+        "testAppVersion": "not deployed; native verification remains blocked",
+        "locale": "is-IS",
+        "page": 10035637,
+        "title": "Uppsetning Bifr\u00f6st geymslu",
+        "checkedAt": "2026-10-14T16:02:47.326Z",
+        "passed": true,
+        "checks": [
+          "authenticated owned Web Client",
+          "translated title and columns",
+          "read-only list rendered without application error",
+          "empty owned company fixture; no pre-existing storage account used"
+        ],
+        "columns": [
+          "L\u00fdsing"
+        ]
+      },
+      {
+        "containerId": "f0f2270c46e6",
+        "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+        "appVersion": "28.0.0.4",
+        "testAppVersion": "not deployed; native verification remains blocked",
+        "locale": "is-IS",
+        "page": 10035635,
+        "title": "Velja skr\u00e1areikning",
+        "checkedAt": "2026-10-14T16:02:50.739Z",
+        "passed": true,
+        "checks": [
+          "authenticated owned Web Client",
+          "translated title and columns",
+          "read-only list rendered without application error",
+          "empty owned company fixture; no pre-existing storage account used"
+        ],
+        "columns": [
+          "Heiti"
+        ]
+      }
+    ]
+  },
+  "mcp": {
+    "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+    "verified": false,
+    "executed": 0,
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0,
+    "newFixtureDataCreated": false,
+    "scope": "Original PR118 touched types remain required. No product message type changed in this test-diagnostic commit. Claude6171190903 only covers574; one-offTester UAT-after-deploy exception retained; FileShare119 stillunverified."
+  },
+  "help": {
+    "checkedAt": "2026-10-14T15:54:04.775663+00:00",
+    "candidateSha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+    "docsSha": "af179cc00f2842a15d8ea9bace890ae51031c171",
+    "guard": {
+      "pages": 7,
+      "problems": 0,
+      "exitCode": 0
+    },
+    "http": {
+      "executed": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "routes": [
+        {
+          "url": "https://docs.bifrost.origo.is/en-us/attachments/",
+          "status": 200,
+          "title": "Bifr\u00f6st Attachments | Bifr\u00f6st",
+          "passed": true,
+          "sha256": "ebd46fadbc0fe864da83cc14f4a1e0428ffe1855d1b2bfa75a54bc414aa57059"
+        },
+        {
+          "url": "https://docs.bifrost.origo.is/en-us/help/attachments/attachments-setup",
+          "status": 200,
+          "title": "Bifrost Attachments Setup | Bifr\u00f6st",
+          "passed": true,
+          "sha256": "0a79dbc6e8c5be60998997f4a6f869e7cdc102fee1642a691c1dc86bb2752c59"
+        },
+        {
+          "url": "https://docs.bifrost.origo.is/en-us/help/attachments/storage-account-lookup",
+          "status": 200,
+          "title": "Select File Account | Bifr\u00f6st",
+          "passed": true,
+          "sha256": "2d30cb09ea13daaebf5b77a9e171cca1dce5c91f67825563d9ba8b8110a2ad51"
+        },
+        {
+          "url": "https://docs.bifrost.origo.is/en-us/help/attachments/storage-card",
+          "status": 200,
+          "title": "Bifrost Storage Connection | Bifr\u00f6st",
+          "passed": true,
+          "sha256": "e16fb0fb9343fe4dfa532b58aaac5d23fd93b0a7b3c059501bd9b4a76d95d254"
+        },
+        {
+          "url": "https://docs.bifrost.origo.is/en-us/help/attachments/storage-setup",
+          "status": 200,
+          "title": "Bifrost Storage Setup | Bifr\u00f6st",
+          "passed": true,
+          "sha256": "4d44d9c994bc22ef446be31649e928f2f55f5d5b536c7b72dba0dd04b9dc87e7"
+        },
+        {
+          "url": "https://docs.bifrost.origo.is/is-is/attachments/",
+          "status": 200,
+          "title": "Bifr\u00f6st Attachments | Bifr\u00f6st",
+          "passed": true,
+          "sha256": "f760fd3d90ce3cbd9bad448f071cc5cfe495dc043e397f748a3b980691a78cca"
+        },
+        {
+          "url": "https://docs.bifrost.origo.is/is-is/help/attachments/attachments-setup",
+          "status": 200,
+          "title": "Uppsetning Bifr\u00f6st vi\u00f0hengja | Bifr\u00f6st",
+          "passed": true,
+          "sha256": "913661e2d7730f24fc87adcaaa8b996ee125fc5d189335fd03a9b7795dd466ab"
+        },
+        {
+          "url": "https://docs.bifrost.origo.is/is-is/help/attachments/storage-account-lookup",
+          "status": 200,
+          "title": "Velja skr\u00e1areikning | Bifr\u00f6st",
+          "passed": true,
+          "sha256": "f7eb6a5bd9a4e624e34709effe34e68fec8436b6f5702150efbd98d53d46f7c2"
+        },
+        {
+          "url": "https://docs.bifrost.origo.is/is-is/help/attachments/storage-card",
+          "status": 200,
+          "title": "Bifr\u00f6st geymslutenging | Bifr\u00f6st",
+          "passed": true,
+          "sha256": "2bc4ac0313fbd6cebab4c457a9017d775bff1729872d6769fa3a0b139b2873d5"
+        },
+        {
+          "url": "https://docs.bifrost.origo.is/is-is/help/attachments/storage-setup",
+          "status": 200,
+          "title": "Uppsetning Bifr\u00f6st geymslu | Bifr\u00f6st",
+          "passed": true,
+          "sha256": "c14a5d7d2a11165e8dd8e8d8dfd1917f574d0b9feb67dae8634627898edf781a"
+        }
+      ]
+    },
+    "serverDeploymentShaAttested": false,
+    "firstCheckedCandidateSha": "574ebd81832b21afebdfd5f956d4441cc9164a50",
+    "guardRerunAtCurrentTip": "2026-10-14T15:53:08.973734+00:00",
+    "httpSourceRoutesUnchanged": true,
+    "httpCandidateProvenance": "LiveHTTP checks executed at published12f94eb with unchanged appURLs. No server deployment SHA attested."
+  },
+  "ci": {
+    "runId": 38592598079,
+    "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+    "status": "in_progress",
+    "testCounts": "not yet available",
+    "Default": "success",
+    "Test": "in_progress",
+    "sourceGuardsRun": 38592597381,
+    "pipelineGuardsRun": 38592597435
+  },
+  "cleanup": {
+    "id": "f0f2270c46e6",
+    "owner": "worker-7",
+    "deletedHTTP": 204,
+    "verifiedAbsentHTTP": 404,
+    "verifiedAt": "2026-10-14T16:04:13.877Z",
+    "activeEnvironmentRecordRemoved": true,
+    "nativeTestsExecuted": 0,
+    "McpMessagesExecuted": 0,
+    "fixtureDataCreated": false,
+    "previousContainerCleanupReplayed": false
+  },
+  "H2": "pending Gunnar; correction6169399539 remains binding",
+  "Claude": "fresh exact-tip verification requested1791993289.135369; no current-head receipt yet",
+  "reviewReadiness": false,
+  "recordedAt": "2026-10-14T16:06:17.442937+00:00"
+}
