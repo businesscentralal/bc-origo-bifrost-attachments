@@ -1,0 +1,477 @@
+{
+  "sha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+  "containerId": "f077769b0b34",
+  "fullSuite": true,
+  "filtered": false,
+  "total": 268,
+  "executed": 268,
+  "passed": 268,
+  "failed": 0,
+  "skipped": 0,
+  "failures": [],
+  "perCodeunit": {
+    "96203 Storage Attachment Field Tests": {
+      "executed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96204 Storage Connector Tests": {
+      "executed": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96205 Storage Upload Tests": {
+      "executed": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96206 Storage Attach Record Tests": {
+      "executed": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96207 Storage Setup Page Tests": {
+      "executed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96208 Storage App Registry Tests": {
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96209 Storage Takeover Tests": {
+      "executed": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96210 Storage Takeover Probe Tests": {
+      "executed": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96211 Storage Msg Conformance Tests": {
+      "executed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96212 Storage Error Response Tests": {
+      "executed": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96213 Data Exch Discovery Tests": {
+      "executed": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96214 Storage Link Guard Tests": {
+      "executed": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96215 Storage Contract Batch1 Tests": {
+      "executed": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96216 Storage Contract Batch2 Tests": {
+      "executed": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96217 Storage Native Fields Tests": {
+      "executed": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96218 Storage 79 Perm Tests ori": {
+      "executed": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96225 Storage Integrity 75 Tests ori": {
+      "executed": 23,
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96226 DataExch Refusal82 Tests ori": {
+      "executed": 42,
+      "passed": 42,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96274 Attachments Build Tests ori": {
+      "executed": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "junitSha256": "dbdc444dbfe341218005917b71b9d738838c5494181abbb7bb342356817ab67c",
+  "foundationVersion": "28.0.4.556",
+  "foundationSourceSha": "f8d53b4bd8ec8409048524bb5689515db898e04d",
+  "supportedFoundationTestsInstalled": true,
+  "checkedAt": "2026-10-14T17:58:01.709608+00:00",
+  "historical56": {
+    "total": 56,
+    "passed": 56,
+    "failed": 0,
+    "notFound": 0,
+    "rows": [
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_GrantedSetupCard_PersistsChange",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_ReadOnlySetupCard_RefusesChange",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_MissingSetupInsert_LeavesNoRow",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_MissingSetupModify_PreservesRow",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_MissingSetupDelete_PreservesRow",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_ActualRoles_DispatchSharedHelp",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_GrantedFilesAndDirectories_Roundtrip",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_InvalidFileInput_PreservesState",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_EmptyUpload_RefusesCommitThenAborts",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_GrantedNativeTarget_PersistsContent",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_MissingSourceRead_CreatesNothing",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_MissingTargetWrite_PreservesUpload",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_GenericImport_CreatesOnlyHeader",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_PayrollImport_CreatesOnlyHeader",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_AbsentFields_CollectsAllThree",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_WrongTypes_CollectsAllWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_NullFields_CollectsAllWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_ObjectFields_CollectsAllWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_EmptyFields_CollectsAllWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_Lowercase_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_MixedCase_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_UnicodeCase_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_LeadingSpace_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_TrailingSpace_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_Overlong_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_Code20AndPath2048_AcceptsExactBounds",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_Path2049_RefusesWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_Traversal_RefusesWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_MalformedOrScalar_RefusesData",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_UnknownAndWrongKind_RefusesDefinition",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_DeleteUnreferenced_DeletesChildren",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_DeleteTypeReferenced_PreservesTree",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_DeleteBankReferenced_PreservesTree",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_DeleteMissing_ReportsCompleteError",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_TwoLocales_CollectsLocalizedErrors",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_AfterInsertFailure_RollsBack",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_AfterDeleteFailure_RollsBack",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_ChainedFailure_RollsBackEarlierImport",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_SpacesOnly_ReportsCompleteCodeError",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_Export_CreatesOnlyNamedHeader",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_ExportPayroll_PreservesShippedPredicate",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_DefinitionExport_RefusesBadCode",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_DefinitionExport_ReturnsHeader",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_ExportFileNameBounds_NeverTruncates",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_TypeSetOverlongDescription_PreservesExisting",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_TypeSetPayroll_DoesNotCreateType",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_ExportAfterInsertFailure_RollsBack",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal",
+        "historicalStatus": "failed",
+        "currentStatus": "passed"
+      }
+    ]
+  }
+}

@@ -1,0 +1,814 @@
+{
+  "sha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+  "containerId": "f077769b0b34",
+  "fullSuite": true,
+  "filtered": false,
+  "total": 268,
+  "executed": 268,
+  "passed": 212,
+  "failed": 56,
+  "skipped": 0,
+  "failures": [
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC01_GrantedSetupCard_PersistsChange",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerStorageActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC01_GrantedSetupCard_PersistsChange line 7 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC02_ReadOnlySetupCard_RefusesChange",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC02_ReadOnlySetupCard_RefusesChange line 7 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC02_MissingSetupInsert_LeavesNoRow",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC02_MissingSetupInsert_LeavesNoRow line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC02_MissingSetupModify_PreservesRow",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC02_MissingSetupModify_PreservesRow line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC02_MissingSetupDelete_PreservesRow",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC02_MissingSetupDelete_PreservesRow line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC01_ActualRoles_DispatchSharedHelp",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerStorageActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC01_ActualRoles_DispatchSharedHelp line 8 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerStorageActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow line 14 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC01_GrantedFilesAndDirectories_Roundtrip",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerStorageActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC01_GrantedFilesAndDirectories_Roundtrip line 9 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC02_InvalidFileInput_PreservesState",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerStorageActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC02_InvalidFileInput_PreservesState line 8 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerStorageActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC02_EmptyUpload_RefusesCommitThenAborts",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerStorageActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC02_EmptyUpload_RefusesCommitThenAborts line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC01_GrantedNativeTarget_PersistsContent",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerStorageActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerNativeActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC01_GrantedNativeTarget_PersistsContent line 8 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC02_MissingSourceRead_CreatesNothing",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerStorageActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC02_MissingSourceRead_CreatesNothing line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96218 Storage 79 Perm Tests ori",
+      "name": "Scenario_AC02_MissingTargetWrite_PreservesUpload",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites. Response code: .",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nStorage 79 Perm Tests ori(CodeUnit 96218).AssertSuccess line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerActor line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerStorageActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).LowerNativeActor line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nStorage 79 Perm Tests ori(CodeUnit 96218).Scenario_AC02_MissingTargetWrite_PreservesUpload line 13 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC03_GenericImport_CreatesOnlyHeader",
+      "message": "Assert.AreEqual failed. Expected:<Accepted> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC03_GenericImport_CreatesOnlyHeader line 12 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC03_PayrollImport_CreatesOnlyHeader",
+      "message": "Assert.AreEqual failed. Expected:<Accepted> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC03_PayrollImport_CreatesOnlyHeader line 12 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC01_AbsentFields_CollectsAllThree",
+      "message": "Assert.IsTrue failed. Missing property code. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertThreeInputErrors line 3 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC01_AbsentFields_CollectsAllThree line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_WrongTypes_CollectsAllWithoutWrite",
+      "message": "Assert.IsTrue failed. Missing property code. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertThreeInputErrors line 3 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_WrongTypes_CollectsAllWithoutWrite line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_NullFields_CollectsAllWithoutWrite",
+      "message": "Assert.IsTrue failed. Missing property code. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertThreeInputErrors line 3 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_NullFields_CollectsAllWithoutWrite line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_ObjectFields_CollectsAllWithoutWrite",
+      "message": "Assert.IsTrue failed. Missing property code. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertThreeInputErrors line 3 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_ObjectFields_CollectsAllWithoutWrite line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_EmptyFields_CollectsAllWithoutWrite",
+      "message": "Assert.IsTrue failed. Missing property code. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertThreeInputErrors line 3 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_EmptyFields_CollectsAllWithoutWrite line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_Lowercase_RefusesRawCode",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_Lowercase_RefusesRawCode line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_MixedCase_RefusesRawCode",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_MixedCase_RefusesRawCode line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_UnicodeCase_RefusesRawCode",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_UnicodeCase_RefusesRawCode line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_LeadingSpace_RefusesRawCode",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_LeadingSpace_RefusesRawCode line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_TrailingSpace_RefusesRawCode",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_TrailingSpace_RefusesRawCode line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_Overlong_RefusesRawCode",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_Overlong_RefusesRawCode line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_Code20AndPath2048_AcceptsExactBounds",
+      "message": "Assert.AreEqual failed. Expected:<Accepted> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_Code20AndPath2048_AcceptsExactBounds line 15 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_Path2049_RefusesWithoutWrite",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_Path2049_RefusesWithoutWrite line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_Traversal_RefusesWithoutWrite",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_Traversal_RefusesWithoutWrite line 17 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_MalformedOrScalar_RefusesData",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_MalformedOrScalar_RefusesData line 20 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC01_UnknownAndWrongKind_RefusesDefinition",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC01_UnknownAndWrongKind_RefusesDefinition line 13 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC03_DeleteUnreferenced_DeletesChildren",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC03_DeleteUnreferenced_DeletesChildren line 14 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC01_DeleteTypeReferenced_PreservesTree",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC01_DeleteTypeReferenced_PreservesTree line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC01_DeleteBankReferenced_PreservesTree",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC01_DeleteBankReferenced_PreservesTree line 18 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC01_DeleteMissing_ReportsCompleteError",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC01_DeleteMissing_ReportsCompleteError line 12 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC03_TwoLocales_CollectsLocalizedErrors",
+      "message": "Assert.IsTrue failed. Missing property code. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertThreeInputErrors line 3 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC03_TwoLocales_CollectsLocalizedErrors line 13 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC04_AfterInsertFailure_RollsBack",
+      "message": "Assert.ExpectedError failed. Expected: X82 postwrite failure. Actual: Assert.Fail failed. Dispatch returned without raising. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).ExpectedError line 7 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC04_AfterInsertFailure_RollsBack line 16 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC04_AfterDeleteFailure_RollsBack",
+      "message": "Assert.ExpectedError failed. Expected: X82 postwrite failure. Actual: Assert.Fail failed. Dispatch returned without raising. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).ExpectedError line 7 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC04_AfterDeleteFailure_RollsBack line 16 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC04_ChainedFailure_RollsBackEarlierImport",
+      "message": "Assert.ExpectedError failed. Expected: X82 postwrite failure. Actual: Assert.AreEqual failed. Expected:<Accepted> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}..",
+      "detail": "Library Assert(CodeUnit 130002).ExpectedError line 7 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC04_ChainedFailure_RollsBackEarlierImport line 14 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey",
+      "message": "Assert.AreEqual failed. Expected:<Accepted> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey line 13 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_SpacesOnly_ReportsCompleteCodeError",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_SpacesOnly_ReportsCompleteCodeError line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC03_Export_CreatesOnlyNamedHeader",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC03_Export_CreatesOnlyNamedHeader line 9 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC03_ExportPayroll_PreservesShippedPredicate",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC03_ExportPayroll_PreservesShippedPredicate line 8 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite line 8 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC01_DefinitionExport_RefusesBadCode",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC01_DefinitionExport_RefusesBadCode line 10 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC03_DefinitionExport_ReturnsHeader",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC03_DefinitionExport_ReturnsHeader line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_ExportFileNameBounds_NeverTruncates",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_ExportFileNameBounds_NeverTruncates line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_TypeSetOverlongDescription_PreservesExisting",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_TypeSetOverlongDescription_PreservesExisting line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite line 9 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC01_TypeSetPayroll_DoesNotCreateType",
+      "message": "Assert.IsTrue failed. Missing property parameter. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}",
+      "detail": "Library Assert(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).TextProperty line 4 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).FindError line 6 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertRefusal line 5 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC01_TypeSetPayroll_DoesNotCreateType line 9 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC04_ExportAfterInsertFailure_RollsBack",
+      "message": "Assert.ExpectedError failed. Expected: X82 postwrite failure. Actual: Assert.Fail failed. Dispatch returned without raising. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).ExpectedError line 7 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC04_ExportAfterInsertFailure_RollsBack line 12 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert",
+      "message": "Assert.ExpectedError failed. Expected: X82 type postwrite failure. Actual: Assert.Fail failed. Dispatch returned without raising. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).ExpectedError line 7 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert line 13 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    },
+    {
+      "classname": "96226 DataExch Refusal82 Tests ori",
+      "name": "Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal",
+      "message": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status. {\"status\":\"Error\",\"code\":\"<missing or non-value>\"}.",
+      "detail": "Library Assert(CodeUnit 130002).AreEqual line 3 - Library Assert by Microsoft version 28.5.54151.56267\nDataExch Refusal82 Tests ori(CodeUnit 96226).AssertText line 2 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nDataExch Refusal82 Tests ori(CodeUnit 96226).Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal line 13 - Bifrost Attachments - Tests by Origo version 28.0.0.6\nTest Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56267\nTest Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56267\nTest Suite Mgt.(CodeUnit 130456).RunNextTest line 20 - Test Runner by Microsoft version 28.5.54151.56267\nCommand Line Test Tool(Page 130455).RunNextTest - OnAction(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56267\n"
+    }
+  ],
+  "perCodeunit": {
+    "96203 Storage Attachment Field Tests": {
+      "executed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96204 Storage Connector Tests": {
+      "executed": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96205 Storage Upload Tests": {
+      "executed": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96206 Storage Attach Record Tests": {
+      "executed": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96207 Storage Setup Page Tests": {
+      "executed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96208 Storage App Registry Tests": {
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96209 Storage Takeover Tests": {
+      "executed": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96210 Storage Takeover Probe Tests": {
+      "executed": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96211 Storage Msg Conformance Tests": {
+      "executed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96212 Storage Error Response Tests": {
+      "executed": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96213 Data Exch Discovery Tests": {
+      "executed": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96214 Storage Link Guard Tests": {
+      "executed": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96215 Storage Contract Batch1 Tests": {
+      "executed": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96216 Storage Contract Batch2 Tests": {
+      "executed": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96217 Storage Native Fields Tests": {
+      "executed": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96218 Storage 79 Perm Tests ori": {
+      "executed": 28,
+      "passed": 14,
+      "failed": 14,
+      "skipped": 0
+    },
+    "96225 Storage Integrity 75 Tests ori": {
+      "executed": 23,
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0
+    },
+    "96226 DataExch Refusal82 Tests ori": {
+      "executed": 42,
+      "passed": 0,
+      "failed": 42,
+      "skipped": 0
+    },
+    "96274 Attachments Build Tests ori": {
+      "executed": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "junitSha256": "11988de77347da3b2f404c12d1e42e0e784a56276cfb5843194dfd86e9886125",
+  "foundationVersion": "28.0.4.556",
+  "foundationSourceSha": "f8d53b4bd8ec8409048524bb5689515db898e04d",
+  "supportedFoundationTestsInstalled": true,
+  "checkedAt": "2026-10-14T17:47:32.544676+00:00",
+  "historical56": {
+    "total": 56,
+    "passed": 0,
+    "failed": 56,
+    "notFound": 0,
+    "rows": [
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_GrantedSetupCard_PersistsChange",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_ReadOnlySetupCard_RefusesChange",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_MissingSetupInsert_LeavesNoRow",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_MissingSetupModify_PreservesRow",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_MissingSetupDelete_PreservesRow",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_ActualRoles_DispatchSharedHelp",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_GrantedFilesAndDirectories_Roundtrip",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_InvalidFileInput_PreservesState",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_EmptyUpload_RefusesCommitThenAborts",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC01_GrantedNativeTarget_PersistsContent",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_MissingSourceRead_CreatesNothing",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96218 Storage 79 Perm Tests ori",
+        "test": "Scenario_AC02_MissingTargetWrite_PreservesUpload",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_GenericImport_CreatesOnlyHeader",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_PayrollImport_CreatesOnlyHeader",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_AbsentFields_CollectsAllThree",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_WrongTypes_CollectsAllWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_NullFields_CollectsAllWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_ObjectFields_CollectsAllWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_EmptyFields_CollectsAllWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_Lowercase_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_MixedCase_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_UnicodeCase_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_LeadingSpace_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_TrailingSpace_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_Overlong_RefusesRawCode",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_Code20AndPath2048_AcceptsExactBounds",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_Path2049_RefusesWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_Traversal_RefusesWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_MalformedOrScalar_RefusesData",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_UnknownAndWrongKind_RefusesDefinition",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_DeleteUnreferenced_DeletesChildren",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_DeleteTypeReferenced_PreservesTree",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_DeleteBankReferenced_PreservesTree",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_DeleteMissing_ReportsCompleteError",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_TwoLocales_CollectsLocalizedErrors",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_AfterInsertFailure_RollsBack",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_AfterDeleteFailure_RollsBack",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_ChainedFailure_RollsBackEarlierImport",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_SpacesOnly_ReportsCompleteCodeError",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_Export_CreatesOnlyNamedHeader",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_ExportPayroll_PreservesShippedPredicate",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_DefinitionExport_RefusesBadCode",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_DefinitionExport_ReturnsHeader",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_ExportFileNameBounds_NeverTruncates",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_TypeSetOverlongDescription_PreservesExisting",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC01_TypeSetPayroll_DoesNotCreateType",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_ExportAfterInsertFailure_RollsBack",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      },
+      {
+        "codeunit": "96226 DataExch Refusal82 Tests ori",
+        "test": "Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal",
+        "historicalStatus": "failed",
+        "currentStatus": "failed"
+      }
+    ]
+  }
+}

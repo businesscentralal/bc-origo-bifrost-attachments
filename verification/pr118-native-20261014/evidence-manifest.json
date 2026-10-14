@@ -1,0 +1,31 @@
+{
+  "candidateSha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+  "files": {
+    "acceptance-matrix.json": "7b71bedb12b444d2a5c040c8ecfc0c731d0675e4aa54e1ad96c3494570dd6bbf",
+    "attachments118-native56-response-metadata-20261014.json": "ec8d7609a487d268e269a7a0a6cf4c65630b8fda2f6d06108f137db45ffe4dc3",
+    "attachments118-supported-native-http-setup-20261014-worker7.json": "209141ad5d2b2250faf119779aafc3d8d54d431a43d2e2ddd7c44c0512ad02e4",
+    "cleanup.json": "44f353f724ff37dd32b6a2a356c2a250ff9674d1e920195060588c8eca51cfe0",
+    "deployment-12f.json": "f697bb125b92878fba62c00159a74ccd3b0f99546dd7909c88d856a7f54fee4f",
+    "deployment-1c.json": "df82f7c6d21d10a0fbe42919a7a9e1e0a329e83cb1517e53504e4ef504043a90",
+    "foundation-paired-artifact-provenance.json": "192726ab85e8b0174fa8b665146306a712b31758cd31dc083add6fcce090017d",
+    "foundation-tests-install-diagnosis.json": "7ccead4c0052ac1e1a4a97c9389a839620c0fc148866082285aa265fd60cec00",
+    "full-suite12-http.junit.xml": "fb2bcb5854be61cde53564405d013b143bb3fc2901eefe50f13e51bbeffb1d1e",
+    "full-suite1c.junit.xml": "dbdc444dbfe341218005917b71b9d738838c5494181abbb7bb342356817ab67c",
+    "github-candidate-final.json": "d1f5bc63ac03ff966fcf1ef61dd0ad20590def273c3b53a496b74175ffa4b335",
+    "http-enabled-Bifrost-Attachments.png": "bdb1077afddfea71c326fe7d431519f141595cbe2056959cf88998544e77021c",
+    "http-enabled-Bifrost-Foundation.png": "bf9c927805e0a83339e2cba4bc7bf6e1cc4fc500275e501d68e6518a4ad1ca9d",
+    "http-settings-repair.json": "274babfce340f5740e81f914d2e432b27192cd362c9179ac5cc6ee11a9b4dced",
+    "native-summary12-http.json": "154a7f41d022be3fe67c073e5ed369dd31192898194831011f26d18c338697ee",
+    "native-summary12.json": "bedc07e2cfdae708bd077936d96881e54ab7741f3a07b9e4d7dbb0dc178f6c08",
+    "native-summary1c.json": "733961d67c3dec278c6afe662a4de9362772718fd921db5f9e68b5d8457ba3ba",
+    "ui-en-US-10035635.png": "b8c21b970abfffabd6c22eb4bb45b0eb9c029be6da89a4485f0ccd4de8af156f",
+    "ui-en-US-10035637.png": "fee51163b99f162a78ee7f9a811cb85eb49d0cbdd772fea48cb6cb56b4c3fa4c",
+    "ui-is-IS-10035635.png": "5e276aa3eb06881945517be8be3d28c258b4ff0500e395dfed4dc19111b9ea71",
+    "ui-is-IS-10035637.png": "7fc7af2053277c51bb313c3323741a748259977781ebc538f15d782b4f5df1f7",
+    "ui-sanitized.json": "d5c4d191855be14dd45dbcdaaec177031abc85883ca05111c54840c9b9d28198"
+  },
+  "sanitized": true,
+  "sourceChanged": false,
+  "compileProvenance": "Retained exact-tip0/0 app+test compile; existing verification/pr118-1c8453a logs. Republished packages byte-matched.",
+  "newMcpExecutions": 0
+}

@@ -1,0 +1,41 @@
+{
+  "containerId": "f077769b0b34",
+  "sourceSha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+  "foundationSha": "f8d53b4bd8ec8409048524bb5689515db898e04d",
+  "owned": true,
+  "packages": [
+    {
+      "kind": "foundation",
+      "name": "Bifrost Foundation",
+      "version": "28.0.4.556",
+      "artifactSha256": "7628c9b4111a609af7d02690bc1e6a639516b0f76bfaaf19071c184c61248b55",
+      "deployedSha256": "7628c9b4111a609af7d02690bc1e6a639516b0f76bfaaf19071c184c61248b55",
+      "exactBytesMatch": true
+    },
+    {
+      "kind": "foundation-tests",
+      "name": "Bifrost Foundation - Tests",
+      "version": "28.0.4.556",
+      "artifactSha256": "76e3bff6fbdf2a6c013254156579516fcb45bcc6d4ee4d9f4c086d6f696c1661",
+      "deployedSha256": "76e3bff6fbdf2a6c013254156579516fcb45bcc6d4ee4d9f4c086d6f696c1661",
+      "exactBytesMatch": true
+    },
+    {
+      "kind": "app",
+      "name": "Bifrost Attachments",
+      "version": "28.0.0.4",
+      "artifactSha256": "021458e81d5db4a005e199c397048e443c02deb1fd82ee21277dfe764cef7b3b",
+      "deployedSha256": "021458e81d5db4a005e199c397048e443c02deb1fd82ee21277dfe764cef7b3b",
+      "exactBytesMatch": true
+    },
+    {
+      "kind": "test",
+      "name": "Bifrost Attachments - Tests",
+      "version": "28.0.0.6",
+      "artifactSha256": "a2295ffffcc7a995f42a046ec30846be7cb07b58d9de3d6f3d88113c8bc1b6fe",
+      "deployedSha256": "a2295ffffcc7a995f42a046ec30846be7cb07b58d9de3d6f3d88113c8bc1b6fe",
+      "exactBytesMatch": true
+    }
+  ],
+  "verifiedAt": "2026-10-14T17:56:49.331Z"
+}

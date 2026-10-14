@@ -1,0 +1,26 @@
+{
+  "containerId": "f077769b0b34",
+  "owner": "worker-7",
+  "sourceSha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+  "settings": [
+    {
+      "name": "Bifrost Foundation",
+      "before": "false",
+      "after": "true",
+      "persisted": "true",
+      "changed": true,
+      "readBackAt": "2026-10-14T17:53:24.236Z"
+    },
+    {
+      "name": "Bifrost Attachments",
+      "before": "false",
+      "after": "true",
+      "persisted": "true",
+      "changed": true,
+      "readBackAt": "2026-10-14T17:53:34.016Z"
+    }
+  ],
+  "method": "Native BC Web Client Extension Settings; only Allow HttpClient Requests changed",
+  "eulaLicenceTrialWrites": false,
+  "sourceChanged": false
+}

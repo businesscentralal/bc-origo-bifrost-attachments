@@ -1,0 +1,28 @@
+{
+  "id": "attachments118-native56-response-metadata-20261014",
+  "repo": "businesscentralal/bc-origo-bifrost-attachments",
+  "reviewedSha": "574ebd81832b21afebdfd5f956d4441cc9164a50",
+  "source": {
+    "reviewUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/118#pullrequestreview-5518580185",
+    "reviewer": "Grok PR Reviewer"
+  },
+  "category": "confirmed test-diagnostic gap; native product causality remains unresolved",
+  "applicability": "PR118 tests96218/96226",
+  "finding": "Retained56native failures omit individual response codes;6missing-code assertions differ from canonical EULA payload and5postwrite expectations do not establish execution of mutation.",
+  "rootCause": "Assertion messages omitted stable status/code metadata;ASSERTERROR on returned JSON raised its own generic expected-error exception before response diagnostics. Missing runtime payloads prevent attributing every failure to EULA.",
+  "whyChecksMissed": "CI/historical suite passed under different configured environments; their result did not establish native behavior on the owned unlicensed container.",
+  "prevention": "Preserve exact expected injected error and state assertions; include only bounded status/code/errorCount metadata when a response returns or an assertion fails. Require supported exact-tip full owned rerun; never infer56 EULA-only failures.",
+  "status": "Current1c native268/268/0/0 verified; all56historical names passed after supported setup/normal HTTP flags. No product handler defect established; shipping/licence MCP remains independent.",
+  "evidence": [
+    "/workspace/evidence/attachments118-worker7/repair-20261014-1615/native-diagnosis.json",
+    "/workspace/evidence/attachments118-worker7/repair-20261014-1615/compile.json",
+    "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/1c8453a42bc27a046342761a0373dc660ba4f590",
+    "/workspace/evidence/attachments118-worker7/native-20261014-1733/native-summary1c.json",
+    "/workspace/evidence/attachments118-worker7/native-20261014-1733/http-settings-repair.json",
+    "/workspace/evidence/attachments118-worker7/native-20261014-1733/cleanup.json"
+  ],
+  "newNativeExecutions": 804,
+  "occurrences": 1,
+  "recordedAt": "2026-10-14T15:50:45.354667+00:00",
+  "updatedAt": "2026-10-14T18:02:25.841838+00:00"
+}

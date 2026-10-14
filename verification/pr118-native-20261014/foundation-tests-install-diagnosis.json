@@ -1,0 +1,18 @@
+{
+  "statusCode": 422,
+  "errorCount": 3082,
+  "errorCodes": [
+    "AL0161"
+  ],
+  "firstErrorLines": [
+    "test/Metadata/BankRecContractTests.Codeunit.al(104,22): error AL0161: 'Codeunit Origo.Bifrost.\"Posting Gate ori\"' is inaccessible due to its protection level",
+    "src/HelpLicenseUsageWriteImpl.Codeunit.al(32,22): error AL0161: 'Codeunit Origo.Bifrost.\"License Hash ori\"' is inaccessible due to its protection level",
+    "src/HelpLicenseUsageWriteImpl.Codeunit.al(58,25): error AL0161: 'Codeunit Origo.Bifrost.\"Cosmos Database ori\"' is inaccessible due to its protection level",
+    "src/HelpLicenseUsageWriteImpl.Codeunit.al(94,25): error AL0161: 'Codeunit Origo.Bifrost.\"Cosmos Database ori\"' is inaccessible due to its protection level",
+    "test/IncomingDocument/IncomingDocCreateTests.Codeunit.al(27,23): error AL0161: 'Table Origo.Bifrost.\"Message ori\"' is inaccessible due to its protection level",
+    "test/TestTools/TestToolsTests.Codeunit.al(90,25): error AL0161: 'Table Origo.Bifrost.\"ChangeLog Guard Exception ori\"' is inaccessible due to its protection level",
+    "test/IncomingDocument/IncomingDocCreateTests.Codeunit.al(67,23): error AL0161: 'Table Origo.Bifrost.\"Message ori\"' is inaccessible due to its protection level"
+  ],
+  "cause": "Production Foundation artifact strips internalsVisibleTo; normal paired TestApps artifact required for Foundation Tests installation",
+  "sourceChange": false
+}

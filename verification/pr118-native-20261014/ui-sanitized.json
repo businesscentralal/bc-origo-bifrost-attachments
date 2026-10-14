@@ -1,0 +1,106 @@
+{
+  "sha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+  "containerId": "f077769b0b34",
+  "languageSelection": "is-IS selected through My Settings; actual translated page titles verified",
+  "executed": 4,
+  "passed": 4,
+  "failed": 0,
+  "results": [
+    {
+      "containerId": "f077769b0b34",
+      "sha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "28.0.0.6; supported Foundation Tests initialization installed",
+      "locale": "en-US",
+      "page": 10035637,
+      "title": "Bifrost Storage Setup",
+      "checkedAt": "2026-10-14T17:58:06.513Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "Owned company; no pre-existing storage account fixture used"
+      ],
+      "columns": [
+        "Code",
+        "Description",
+        "Connector",
+        "File Account Name",
+        "Enabled"
+      ],
+      "observedText": "\nSkip to main content\nCRONUS International Ltd.\nFinance\nCash Management\nSales\nPurchasing\nShopify\nAll Reports\n\ue700\nBifrost Storage Setup:\nAll\n\ue70d\n\ue721\nNew\nDelete\n\ue72d\n\ue71c\n\t\nCode\n\t\n\t\nDescription\n\t\nConnector\n\t\nFile Account Name\n\t\nEnabled\n\t\n\t\t\n\t\t\t\t\t\n(There is nothing to show in this view)\n\nCode, sorted in Ascending order\n\nUse the Left and Right arrow keys to adjust the size. Use the Escape key to undo or the Enter key to accept."
+    },
+    {
+      "containerId": "f077769b0b34",
+      "sha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "28.0.0.6; supported Foundation Tests initialization installed",
+      "locale": "en-US",
+      "page": 10035635,
+      "title": "Select File Account",
+      "checkedAt": "2026-10-14T17:58:09.185Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "Owned company; no pre-existing storage account fixture used"
+      ],
+      "columns": [
+        "Name"
+      ],
+      "observedText": "\nSkip to main content\nCRONUS International Ltd.\nFinance\nCash Management\nSales\nPurchasing\nShopify\nAll Reports\n\ue700\nSelect File Account:\nAll\n\ue70d\n\ue721\n\ue72d\n\ue71c\n\t\nName\n\t\n\t\n\t\t\n\t\n(There is nothing to show in this view)\nUse the Left and Right arrow keys to adjust the size. Use the Escape key to undo or the Enter key to accept.\n\nName, sorted in Ascending order"
+    },
+    {
+      "containerId": "f077769b0b34",
+      "sha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "28.0.0.6; supported Foundation Tests initialization installed",
+      "locale": "is-IS",
+      "page": 10035637,
+      "title": "Uppsetning Bifr\u00f6st geymslu",
+      "checkedAt": "2026-10-14T18:00:12.340Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "Owned company; no pre-existing storage account fixture used"
+      ],
+      "columns": [
+        "L\u00fdsing"
+      ],
+      "observedText": "Dynamics 365 Business Central\n\ue721\n\uea8f\n\ue713\n\ue897\nG\nFara \u00ed a\u00f0alefni\nCRONUS International Ltd.\nFinance\nCash Management\nSales\nPurchasing\nShopify\nAllar sk\u00fdrslur\n\ue700\nUppsetning Bifr\u00f6st geymslu:\nAllt\n\ue70d\n\ue721\nN\u00fdtt\nEy\u00f0a\n\ue72d\n\ue71c\n\t\nK\u00f3\u00f0i\n\t\n\t\nL\u00fdsing\n\t\nTengill\n\t\nHeiti skr\u00e1areiknings\n\t\nVirk\n\t\n\t\t\n\t\t\t\t\t\n(\u00dea\u00f0 eru engin atri\u00f0i til a\u00f0 s\u00fdna \u00ed \u00feessu yfirliti)\n\nK\u00f3\u00f0i, ra\u00f0a\u00f0 \u00ed p\u00f6ntunina H\u00e6kkandi\n\nNota\u00f0u h\u00e6gri og vinstri \u00f6rvalyklana til a\u00f0 stilla st\u00e6r\u00f0ina. Nota\u00f0u Escape-lykilinn til a\u00f0 afturkalla e\u00f0a Enter-lykilinn til a\u00f0 sta\u00f0festa."
+    },
+    {
+      "containerId": "f077769b0b34",
+      "sha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "28.0.0.6; supported Foundation Tests initialization installed",
+      "locale": "is-IS",
+      "page": 10035635,
+      "title": "Velja skr\u00e1areikning",
+      "checkedAt": "2026-10-14T18:00:15.677Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "Owned company; no pre-existing storage account fixture used"
+      ],
+      "columns": [
+        "Heiti"
+      ],
+      "observedText": "Dynamics 365 Business Central\n\ue721\n\uea8f\n\ue713\n\ue897\nG\nFara \u00ed a\u00f0alefni\nCRONUS International Ltd.\nFinance\nCash Management\nSales\nPurchasing\nShopify\nAllar sk\u00fdrslur\n\ue700\nVelja skr\u00e1areikning:\nAllt\n\ue70d\n\ue721\n\ue72d\n\ue71c\n\t\nHeiti\n\t\n\t\n\t\t\n\t\n(\u00dea\u00f0 eru engin atri\u00f0i til a\u00f0 s\u00fdna \u00ed \u00feessu yfirliti)\nNota\u00f0u h\u00e6gri og vinstri \u00f6rvalyklana til a\u00f0 stilla st\u00e6r\u00f0ina. Nota\u00f0u Escape-lykilinn til a\u00f0 afturkalla e\u00f0a Enter-lykilinn til a\u00f0 sta\u00f0festa.\n\nHeiti, ra\u00f0a\u00f0 \u00ed p\u00f6ntunina H\u00e6kkandi"
+    }
+  ],
+  "skipped": 0,
+  "retry": {
+    "languagePickerAttempts": 2,
+    "initialAttempt": "Keyboard typing did not fill Search Available Languages;2ENpage checks passed, ISselection not completed",
+    "repair": "Fill the visible language search input directly and pressEnter; actual Icelandic selection confirmed through translated page titles",
+    "existingENResultsReused": true
+  },
+  "deploymentProvenance": "/workspace/evidence/attachments118-worker7/native-20261014-1733/deployment-1c.json"
+}

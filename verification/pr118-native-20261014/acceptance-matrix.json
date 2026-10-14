@@ -1,0 +1,57 @@
+{
+  "candidateSha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+  "issueCompletionClaimed": false,
+  "issues": [
+    {
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/70",
+      "implemented": "Separate docs100 published; stale wording corrected",
+      "verified": "Unmodified guard7pages/0problems;HTTP10/10; source routes unchanged",
+      "pending": "No issue closure claimed"
+    },
+    {
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/79",
+      "implemented": "Bounded canary refusal code diagnostic in96218",
+      "verified": "current1c28/28nativepermission tests96218; full268/268/0/0",
+      "pending": "Current-tip Claude/Reviewer review remains"
+    },
+    {
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/82",
+      "implemented": "Bounded response/fault diagnostics, including later chained delete, in96226",
+      "verified": "current1c42/42native refusal/rollback tests96226; full268/268/0/0",
+      "pending": "Current-tip Claude/Reviewer review remains"
+    },
+    {
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/119",
+      "implemented": "No source transfer or licence setup writes; retained scoped disposition",
+      "verified": "0newMCPexecutions/passes; native pass does not prove shipping licensing",
+      "pending": "Claude Code premerge bc28-w1 exact1c licence-gated MCP, including retained FileShare scope; latest specific assignment1791994657 supersedes old native setup hold"
+    }
+  ],
+  "otherRequiredGates": {
+    "compile": "both0errors0warnings/all3analyzers",
+    "UI": "current1c fresh4/4EN/ISpage scenarios; lookup retry captured and resolved",
+    "configuredCI": "current1c268executed268passed0failed0skipped/artifact11912581945",
+    "ownedNative": "current1c268/268/0/0; all56historical failures passed",
+    "H2": "Gunnar sign-off stillpending",
+    "Claude": "Current1c licence-gated MCP and full independent verification onbc28-w1 beforemerge; assignment1791994657; genuine current-head receipt pending",
+    "Grok": "Current fullSHA clearance pending after applicable Claude/H2 gates",
+    "ownedCleanup": "f077769b0b34 deletion204/verifiedGET404"
+  },
+  "taskId": "1791994657.682599",
+  "nativeSetupAuthority": "1791994657.682599",
+  "nativeFixtureSetup": "Supported immutable Foundation Tests28.0.4.556 install codeunit98803; no direct/manual licence or EULA changes",
+  "requestedCandidateSha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+  "supportedNativeSetup": {
+    "status": "verified",
+    "foundationTestProductArtifact": 11880621739,
+    "foundationTestsArtifact": 11880641612,
+    "sameRun": 38531018790,
+    "foundationSha": "f8d53b4bd8ec8409048524bb5689515db898e04d",
+    "sourceFilesCompared": 466,
+    "sourceFilesChanged": 0,
+    "installCodeunit": 98803,
+    "approval": "1791994657.682599",
+    "evidence": "/workspace/evidence/attachments118-worker7/native-20261014-1733/deployment-12f.json",
+    "shippingMcpProof": false
+  }
+}

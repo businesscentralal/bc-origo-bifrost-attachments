@@ -1,0 +1,19 @@
+{
+  "id": "f077769b0b34",
+  "owner": "worker-7",
+  "deletedHTTP": 204,
+  "verifiedAbsentHTTP": 404,
+  "verifiedAt": "2026-10-14T18:01:11.408Z",
+  "activeEnvironmentRecordRemoved": true,
+  "nativeTestsExecuted": 804,
+  "nativeRunEvidence": [
+    "native-summary12.json",
+    "native-summary12-http.json",
+    "native-summary1c.json"
+  ],
+  "McpMessagesExecuted": 0,
+  "businessFixtureDataCreated": true,
+  "supportedFoundationTestsInstalled": true,
+  "testSuiteMetadataCreatedByTestApp": true,
+  "previousContainerCleanupReplayed": false
+}

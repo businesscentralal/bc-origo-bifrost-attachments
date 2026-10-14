@@ -1,0 +1,29 @@
+{
+  "id": "attachments118-supported-native-http-setup-20261014-worker7",
+  "repo": "businesscentralal/bc-origo-bifrost-attachments",
+  "source": {
+    "assignmentTs": "1791994657.682599",
+    "sourceUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1791994657682599",
+    "originalFindingUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/118#pullrequestreview-5518580185"
+  },
+  "reviewedSha": "12f94eb75b351c31e80b4f1e6f2b796c602ede02",
+  "category": "confirmed owned native setup gap; no product handler defect established",
+  "finding": "Production Foundation artifact had no IVT for Foundation Tests; supported paired Test artifact installs Tests98803 successfully. Even then full native run failed56 because Foundation/Attachments HTTP settings were disabled. Both normal UI flags were repaired and persisted; unchanged requested12f full suite268/268/0/0, all56historical names passed.",
+  "rootCause": "Owned native provisioning omitted paired Foundation Test product artifact plus standard HTTP request settings. EULA-only attribution was not justified; early generic failure envelopes lacked useful codes.",
+  "whyChecksMissed": "Paired CI enabled/installed native prerequisites; prior owned deployment used production artifact and did not verify HTTP switches. Old compile/CI did not prove same environment.",
+  "prevention": "For scoped native checks use same-run immutable Foundation Test product+Tests artifacts, verify declared IVT and installed98803, enable/check ordinary owned extension HTTP flags in Web Client, byte-match exact candidate/dependencies, recount full JUnit by test name. Keep licence-gated shipping MCP with Claude; no manual licence writes or environment spoofing.",
+  "status": "Current1c native268/268/0/0 verified; all56historical names passed after supported setup/normal HTTP flags. No product handler defect established; shipping/licence MCP remains independent.",
+  "evidence": [
+    "/workspace/evidence/attachments118-worker7/native-20261014-1733/foundation-paired-artifact-provenance.json",
+    "/workspace/evidence/attachments118-worker7/native-20261014-1733/http-settings-repair.json",
+    "/workspace/evidence/attachments118-worker7/native-20261014-1733/native-summary12-http.json",
+    "/workspace/evidence/attachments118-worker7/native-20261014-1733/native-summary1c.json",
+    "/workspace/evidence/attachments118-worker7/native-20261014-1733/http-settings-repair.json",
+    "/workspace/evidence/attachments118-worker7/native-20261014-1733/cleanup.json"
+  ],
+  "occurrences": 1,
+  "recordedAt": "2026-10-14T17:57:49.457073+00:00",
+  "scope": "PR118 native configuration only; not global shipping/licensing proof",
+  "newNativeExecutions": 804,
+  "updatedAt": "2026-10-14T18:02:25.841838+00:00"
+}
