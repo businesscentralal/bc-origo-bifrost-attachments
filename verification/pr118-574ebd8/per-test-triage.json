@@ -1,0 +1,465 @@
+{
+  "sha": "574ebd81832b21afebdfd5f956d4441cc9164a50",
+  "foundationCommit": "f8d53b4bd8ec8409048524bb5689515db898e04d",
+  "foundationVersion": "28.0.4.556",
+  "counts": {
+    "executed": 268,
+    "passed": 212,
+    "failed": 56,
+    "skipped": 0
+  },
+  "confirmedProductDefects": [],
+  "underlyingHandlerBehaviorsUnresolved": 56,
+  "eulaRefusalDirectlyObserved": "Help.Storage.Get MCP actual EULA_REQUIRED after current-main deployed byte-match",
+  "nativeEulaCausality": "Boundary applies to all observed dispatched failures by source, but56 individualnative response payloads are not captured; no blanket proof or closure claimed",
+  "rows": [
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC01_GrantedSetupCard_PersistsChange",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC02_ReadOnlySetupCard_RefusesChange",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC02_MissingSetupInsert_LeavesNoRow",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC02_MissingSetupModify_PreservesRow",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC02_MissingSetupDelete_PreservesRow",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC01_ActualRoles_DispatchSharedHelp",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC01_GrantedFilesAndDirectories_Roundtrip",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC02_InvalidFileInput_PreservesState",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC02_EmptyUpload_RefusesCommitThenAborts",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC01_GrantedNativeTarget_PersistsContent",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC02_MissingSourceRead_CreatesNothing",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96218 Storage 79 Perm Tests ori",
+      "test": "Scenario_AC02_MissingTargetWrite_PreservesUpload",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Actual dispatched operation must succeed with its role and prerequisites..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC03_GenericImport_CreatesOnlyHeader",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Accepted> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC03_PayrollImport_CreatesOnlyHeader",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Accepted> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC01_AbsentFields_CollectsAllThree",
+      "actualFailure": "Assert.IsTrue failed. Missing property code",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_WrongTypes_CollectsAllWithoutWrite",
+      "actualFailure": "Assert.IsTrue failed. Missing property code",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_NullFields_CollectsAllWithoutWrite",
+      "actualFailure": "Assert.IsTrue failed. Missing property code",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_ObjectFields_CollectsAllWithoutWrite",
+      "actualFailure": "Assert.IsTrue failed. Missing property code",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_EmptyFields_CollectsAllWithoutWrite",
+      "actualFailure": "Assert.IsTrue failed. Missing property code",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_Lowercase_RefusesRawCode",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_MixedCase_RefusesRawCode",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_UnicodeCase_RefusesRawCode",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_LeadingSpace_RefusesRawCode",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_TrailingSpace_RefusesRawCode",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_Overlong_RefusesRawCode",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_Code20AndPath2048_AcceptsExactBounds",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Accepted> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_Path2049_RefusesWithoutWrite",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_Traversal_RefusesWithoutWrite",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_MalformedOrScalar_RefusesData",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC01_UnknownAndWrongKind_RefusesDefinition",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC03_DeleteUnreferenced_DeletesChildren",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC01_DeleteTypeReferenced_PreservesTree",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC01_DeleteBankReferenced_PreservesTree",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC01_DeleteMissing_ReportsCompleteError",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC03_TwoLocales_CollectsLocalizedErrors",
+      "actualFailure": "Assert.IsTrue failed. Missing property code",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC04_AfterInsertFailure_RollsBack",
+      "actualFailure": "Microsoft.Dynamics.Nav.Types.Exceptions.NavNCLAssertErrorException: An error was expected inside an ASSERTERROR statement.\\   at Microsoft.Dynamics.Nav.Runtime.NavMethodScope.AssertErrorAsync(Func`1 body)\\   at Microsoft.Dynamics.Nav.BusinessApplication.Codeunit96226.Scenario_AC04_AfterInsertFailure_RollsBack()\\   at Microsoft.Dynamics.Nav.Runtime.NavTestCodeunit.ExecuteTestMethodAsync(MethodInfo method, TestTransactionModel transactionModel, Boolean isAsync)",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC04_AfterDeleteFailure_RollsBack",
+      "actualFailure": "Microsoft.Dynamics.Nav.Types.Exceptions.NavNCLAssertErrorException: An error was expected inside an ASSERTERROR statement.\\   at Microsoft.Dynamics.Nav.Runtime.NavMethodScope.AssertErrorAsync(Func`1 body)\\   at Microsoft.Dynamics.Nav.BusinessApplication.Codeunit96226.Scenario_AC04_AfterDeleteFailure_RollsBack()\\   at Microsoft.Dynamics.Nav.Runtime.NavTestCodeunit.ExecuteTestMethodAsync(MethodInfo method, TestTransactionModel transactionModel, Boolean isAsync)",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC04_ChainedFailure_RollsBackEarlierImport",
+      "actualFailure": "Assert.ExpectedError failed. Expected: X82 postwrite failure. Actual: Assert.AreEqual failed. Expected:<Accepted> (Text). Actual:<Error> (Text). Unexpected value for status..",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Accepted> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_SpacesOnly_ReportsCompleteCodeError",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC03_Export_CreatesOnlyNamedHeader",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC03_ExportPayroll_PreservesShippedPredicate",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC01_DefinitionExport_RefusesBadCode",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC03_DefinitionExport_ReturnsHeader",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_ExportFileNameBounds_NeverTruncates",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_TypeSetOverlongDescription_PreservesExisting",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC01_TypeSetPayroll_DoesNotCreateType",
+      "actualFailure": "Assert.IsTrue failed. Missing property parameter",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC04_ExportAfterInsertFailure_RollsBack",
+      "actualFailure": "Microsoft.Dynamics.Nav.Types.Exceptions.NavNCLAssertErrorException: An error was expected inside an ASSERTERROR statement.\\   at Microsoft.Dynamics.Nav.Runtime.NavMethodScope.AssertErrorAsync(Func`1 body)\\   at Microsoft.Dynamics.Nav.BusinessApplication.Codeunit96226.Scenario_AC04_ExportAfterInsertFailure_RollsBack()\\   at Microsoft.Dynamics.Nav.Runtime.NavTestCodeunit.ExecuteTestMethodAsync(MethodInfo method, TestTransactionModel transactionModel, Boolean isAsync)",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert",
+      "actualFailure": "Microsoft.Dynamics.Nav.Types.Exceptions.NavNCLAssertErrorException: An error was expected inside an ASSERTERROR statement.\\   at Microsoft.Dynamics.Nav.Runtime.NavMethodScope.AssertErrorAsync(Func`1 body)\\   at Microsoft.Dynamics.Nav.BusinessApplication.Codeunit96226.Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert()\\   at Microsoft.Dynamics.Nav.Runtime.NavTestCodeunit.ExecuteTestMethodAsync(MethodInfo method, TestTransactionModel transactionModel, Boolean isAsync)",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    },
+    {
+      "codeunit": "96226 DataExch Refusal82 Tests ori",
+      "test": "Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal",
+      "actualFailure": "Assert.AreEqual failed. Expected:<Success> (Text). Actual:<Error> (Text). Unexpected value for status.",
+      "classification": "handler behavior unresolved behind confirmed same-environment EULA dispatch boundary",
+      "evidence": "native JUnit actual assertion; test source dispatches via Dispatcher.Execute/EnqueueAndProcess; deployed Foundation checks unsatisfied EULA before handler; current-main MCP proves EULA_REQUIRED",
+      "causalityLimit": "The native per-test response payload was not captured. Do not declare an underlying product defect fixed or assume every assertion failure has no independent defect. Re-run this case after authorized boundary resolution; assertions remain unchanged."
+    }
+  ]
+}

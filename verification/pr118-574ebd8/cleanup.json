@@ -1,0 +1,10 @@
+{
+  "containerId": "f0c55dcd3a85",
+  "owner": "worker-7",
+  "deletedHTTP": 204,
+  "verifiedAbsentHTTP": 404,
+  "verifiedAt": "2026-10-14T09:41:36.316943+00:00",
+  "mcpFixtureDataCreated": false,
+  "nativeSelfSeededFixtures": "owned container deleted; no shared/customer resources used",
+  "activeEnvironmentRecordRemoved": true
+}

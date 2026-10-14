@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Test-UniqueObjectIds",
+    "exitCode": 0,
+    "log": "/workspace/evidence/attachments118-worker7/Test-UniqueObjectIds.log"
+  },
+  {
+    "name": "Test-NoClientCallstack",
+    "exitCode": 0,
+    "log": "/workspace/evidence/attachments118-worker7/Test-NoClientCallstack.log"
+  },
+  {
+    "name": "Test-ValidatedTableView",
+    "exitCode": 0,
+    "log": "/workspace/evidence/attachments118-worker7/Test-ValidatedTableView.log"
+  },
+  {
+    "name": "Test-NoObsolete",
+    "exitCode": 0,
+    "log": "/workspace/evidence/attachments118-worker7/Test-NoObsolete.log"
+  },
+  {
+    "name": "Test-PermissionCoverage",
+    "exitCode": 0,
+    "log": "/workspace/evidence/attachments118-worker7/Test-PermissionCoverage.log"
+  },
+  {
+    "name": "Test-ContractParameterKeys",
+    "exitCode": 0,
+    "log": "/workspace/evidence/attachments118-worker7/Test-ContractParameterKeys.log"
+  },
+  {
+    "name": "Test-MixedLanguageLabels",
+    "exitCode": 0,
+    "log": "/workspace/evidence/attachments118-worker7/Test-MixedLanguageLabels.log"
+  },
+  {
+    "name": "Test-IcelandicKeywordCounts",
+    "exitCode": 0,
+    "log": "/workspace/evidence/attachments118-worker7/Test-IcelandicKeywordCounts.log"
+  },
+  {
+    "name": "Test-TakeoverSafety",
+    "exitCode": 0,
+    "log": "/workspace/evidence/attachments118-worker7/Test-TakeoverSafety.log"
+  },
+  {
+    "name": "Test-IcelandicXlfInSync",
+    "exitCode": 0,
+    "log": "/workspace/evidence/attachments118-worker7/Test-IcelandicXlfInSync.log"
+  }
+]

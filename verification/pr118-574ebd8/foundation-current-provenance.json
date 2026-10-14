@@ -1,0 +1,10 @@
+{
+  "mainSha": "f8d53b4bd8ec8409048524bb5689515db898e04d",
+  "runId": 38531018790,
+  "artifactId": 11879801497,
+  "version": "28.0.4.556",
+  "artifactSha256": "0f26c476ac1fe69f0b19da5ce5714773c6b95d4d71ed74545a4bda6202113525",
+  "deployedSha256": "0f26c476ac1fe69f0b19da5ce5714773c6b95d4d71ed74545a4bda6202113525",
+  "exactBytesMatch": true,
+  "containerId": "f0c55dcd3a85"
+}

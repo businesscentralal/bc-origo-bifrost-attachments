@@ -1,0 +1,98 @@
+{
+  "sha": "574ebd81832b21afebdfd5f956d4441cc9164a50",
+  "containerId": "f0c55dcd3a85",
+  "languageSelection": "is-IS selected through My Settings; actual translated page titles verified",
+  "executed": 4,
+  "passed": 4,
+  "failed": 0,
+  "results": [
+    {
+      "containerId": "f0c55dcd3a85",
+      "sha": "574ebd81832b21afebdfd5f956d4441cc9164a50",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "28.0.0.6",
+      "locale": "en-US",
+      "page": 10035637,
+      "title": "Bifrost Storage Setup",
+      "checkedAt": "2026-10-14T09:27:45.735Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "empty owned company fixture; no pre-existing storage account used"
+      ],
+      "columns": [
+        "Code",
+        "Description",
+        "Connector",
+        "File Account Name",
+        "Enabled"
+      ],
+      "observedText": "\nSkip to main content\nCRONUS International Ltd.\nFinance\nCash Management\nSales\nPurchasing\nShopify\nAll Reports\n\nBifrost Storage Setup:\nAll\n\n\nNew\nDelete\n\n\n\t\nCode\n\t\n\t\nDescription\n\t\nConnector\n\t\nFile Account Name\n\t\nEnabled\n\t\n\t\t\n\t\t\t\t\t\n(There is nothing to show in this view)\n\nCode, sorted in Ascending order\n\nUse the Left and Right arrow keys to adjust the size. Use the Escape key to undo or the Enter key to accept."
+    },
+    {
+      "containerId": "f0c55dcd3a85",
+      "sha": "574ebd81832b21afebdfd5f956d4441cc9164a50",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "28.0.0.6",
+      "locale": "en-US",
+      "page": 10035635,
+      "title": "Select File Account",
+      "checkedAt": "2026-10-14T09:27:50.464Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "empty owned company fixture; no pre-existing storage account used"
+      ],
+      "columns": [
+        "Name"
+      ],
+      "observedText": "\nSkip to main content\nCRONUS International Ltd.\nFinance\nCash Management\nSales\nPurchasing\nShopify\nAll Reports\n\nSelect File Account:\nAll\n\n\n\n\n\t\nName\n\t\n\t\n\t\t\n\t\n(There is nothing to show in this view)\nUse the Left and Right arrow keys to adjust the size. Use the Escape key to undo or the Enter key to accept.\n\nName, sorted in Ascending order"
+    },
+    {
+      "containerId": "f0c55dcd3a85",
+      "sha": "574ebd81832b21afebdfd5f956d4441cc9164a50",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "28.0.0.6",
+      "locale": "is-IS",
+      "page": 10035637,
+      "title": "Uppsetning Bifröst geymslu",
+      "checkedAt": "2026-10-14T09:28:03.805Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "empty owned company fixture; no pre-existing storage account used"
+      ],
+      "columns": [
+        "Lýsing"
+      ],
+      "observedText": "\nFara í aðalefni\nCRONUS International Ltd.\nFinance\nCash Management\nSales\nPurchasing\nShopify\nAllar skýrslur\n\nUppsetning Bifröst geymslu:\nAllt\n\n\nNýtt\nEyða\n\n\n\t\nKóði\n\t\n\t\nLýsing\n\t\nTengill\n\t\nHeiti skráareiknings\n\t\nVirk\n\t\n\t\t\n\t\t\t\t\t\n(Það eru engin atriði til að sýna í þessu yfirliti)\n\nKóði, raðað í pöntunina Hækkandi\n\nNotaðu hægri og vinstri örvalyklana til að stilla stærðina. Notaðu Escape-lykilinn til að afturkalla eða Enter-lykilinn til að staðfesta."
+    },
+    {
+      "containerId": "f0c55dcd3a85",
+      "sha": "574ebd81832b21afebdfd5f956d4441cc9164a50",
+      "appVersion": "28.0.0.4",
+      "testAppVersion": "28.0.0.6",
+      "locale": "is-IS",
+      "page": 10035635,
+      "title": "Velja skráareikning",
+      "checkedAt": "2026-10-14T09:28:10.268Z",
+      "passed": true,
+      "checks": [
+        "authenticated owned Web Client",
+        "translated title and columns",
+        "read-only list rendered without application error",
+        "empty owned company fixture; no pre-existing storage account used"
+      ],
+      "columns": [
+        "Heiti"
+      ],
+      "observedText": "\nFara í aðalefni\nCRONUS International Ltd.\nFinance\nCash Management\nSales\nPurchasing\nShopify\nAllar skýrslur\n\nVelja skráareikning:\nAllt\n\n\n\n\n\t\nHeiti\n\t\n\t\n\t\t\n\t\n(Það eru engin atriði til að sýna í þessu yfirliti)\nNotaðu hægri og vinstri örvalyklana til að stilla stærðina. Notaðu Escape-lykilinn til að afturkalla eða Enter-lykilinn til að staðfesta.\n\nHeiti, raðað í pöntunina Hækkandi"
+    }
+  ]
+}
