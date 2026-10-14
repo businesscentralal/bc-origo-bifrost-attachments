@@ -734,8 +734,16 @@ codeunit 96218 "Storage 79 Perm Tests ori"
     end;
 
     local procedure AssertSuccess(ResponseJson: JsonObject)
+    var
+        CodeToken: JsonToken;
+        ResponseCode: Text;
     begin
-        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Actual dispatched operation must succeed with its role and prerequisites.');
+        // A failed role canary must expose its stable refusal code without logging identity or request data.
+        if ResponseJson.Get('code', CodeToken) then
+            if CodeToken.IsValue() then
+                if not CodeToken.AsValue().IsNull() then
+                    ResponseCode := CopyStr(CodeToken.AsValue().AsText(), 1, 100);
+        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Actual dispatched operation must succeed with its role and prerequisites. Response code: ' + ResponseCode);
     end;
 
     local procedure AssertStructuredError(ResponseJson: JsonObject; ExpectedCode: Text)

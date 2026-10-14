@@ -524,7 +524,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Faults.ConfigureFailure(DefinitionCode, true, false);
         BindSubscription(Faults);
         // [WHEN] The operation mutates and the standard event subscriber raises.
-        asserterror DispatchImport(DefinitionCode, 'XSTORAGE', 'X82.csv');
+        asserterror FailOnReturnedResponse(DispatchImport(DefinitionCode, 'XSTORAGE', 'X82.csv'));
         LibraryAssert.ExpectedError('X82 postwrite failure');
         UnbindSubscription(Faults);
         // [THEN] The mutation rolled back, including trigger-deleted children.
@@ -553,7 +553,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Faults.ConfigureFailure(DefinitionCode, false, true);
         BindSubscription(Faults);
         // [WHEN] The operation mutates and the standard event subscriber raises.
-        asserterror DispatchDelete(DefinitionCode);
+        asserterror FailOnReturnedResponse(DispatchDelete(DefinitionCode));
         LibraryAssert.ExpectedError('X82 postwrite failure');
         UnbindSubscription(Faults);
         // [THEN] The mutation rolled back, including trigger-deleted children.
@@ -852,7 +852,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Commit();
         Faults.ConfigureFailure(DefinitionCode, true, false);
         BindSubscription(Faults);
-        asserterror DispatchExport(DefinitionCode, 'X82.csv');
+        asserterror FailOnReturnedResponse(DispatchExport(DefinitionCode, 'X82.csv'));
         LibraryAssert.ExpectedError('X82 postwrite failure');
         UnbindSubscription(Faults);
         LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'Failed export must roll back header.');
@@ -876,7 +876,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Commit();
         Faults.ConfigureTypeFailure(DefinitionCode);
         BindSubscription(Faults);
-        asserterror DispatchTypeSet(DefinitionCode, DefinitionCode, true, 'X82 failure');
+        asserterror FailOnReturnedResponse(DispatchTypeSet(DefinitionCode, DefinitionCode, true, 'X82 failure'));
         LibraryAssert.ExpectedError('X82 type postwrite failure');
         UnbindSubscription(Faults);
         LibraryAssert.IsFalse(DataExchangeType.Get(DefinitionCode), 'Failed modify must also roll back prior insert.');
@@ -905,7 +905,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Commit();
         Faults.ConfigureTypeFailure(OtherDefinitionCode);
         BindSubscription(Faults);
-        asserterror DispatchTypeSet(DefinitionCode, OtherDefinitionCode, true, 'X82 replacement');
+        asserterror FailOnReturnedResponse(DispatchTypeSet(DefinitionCode, OtherDefinitionCode, true, 'X82 replacement'));
         LibraryAssert.ExpectedError('X82 type postwrite failure');
         UnbindSubscription(Faults);
         DataExchangeType.Get(DefinitionCode);
@@ -1161,14 +1161,47 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
 
     local procedure AssertText(Response: JsonObject; PropertyName: Text; ExpectedText: Text)
     begin
-        LibraryAssert.AreEqual(ExpectedText, TextProperty(Response, PropertyName), 'Unexpected value for ' + PropertyName);
+        LibraryAssert.AreEqual(ExpectedText, TextProperty(Response, PropertyName), 'Unexpected value for ' + PropertyName + '. ' + ResponseDiagnostic(Response));
+    end;
+
+    local procedure FailOnReturnedResponse(Response: JsonObject)
+    begin
+        // ExpectedError still requires the injected fault text. This distinct assertion cannot satisfy it.
+        LibraryAssert.Fail('Dispatch returned without raising. ' + ResponseDiagnostic(Response));
+    end;
+
+    local procedure ResponseDiagnostic(Response: JsonObject): Text
+    var
+        Diagnostic: JsonObject;
+        ErrorsToken: JsonToken;
+        DiagnosticText: Text;
+    begin
+        // Only bounded status/code metadata: never log request content, identities, URLs or provider secrets.
+        Diagnostic.Add('status', DiagnosticProperty(Response, 'status'));
+        Diagnostic.Add('code', DiagnosticProperty(Response, 'code'));
+        if Response.Get('errors', ErrorsToken) then
+            if ErrorsToken.IsArray() then
+                Diagnostic.Add('errorCount', ErrorsToken.AsArray().Count());
+        Diagnostic.WriteTo(DiagnosticText);
+        exit(DiagnosticText);
+    end;
+
+    local procedure DiagnosticProperty(Response: JsonObject; PropertyName: Text): Text
+    var
+        PropertyToken: JsonToken;
+    begin
+        if Response.Get(PropertyName, PropertyToken) then
+            if PropertyToken.IsValue() then
+                if not PropertyToken.AsValue().IsNull() then
+                    exit(CopyStr(PropertyToken.AsValue().AsText(), 1, 100));
+        exit('<missing or non-value>');
     end;
 
     local procedure TextProperty(Response: JsonObject; PropertyName: Text): Text
     var
         PropertyToken: JsonToken;
     begin
-        LibraryAssert.IsTrue(Response.Get(PropertyName, PropertyToken), 'Missing property ' + PropertyName);
+        LibraryAssert.IsTrue(Response.Get(PropertyName, PropertyToken), 'Missing property ' + PropertyName + '. ' + ResponseDiagnostic(Response));
         exit(PropertyToken.AsValue().AsText());
     end;
 
