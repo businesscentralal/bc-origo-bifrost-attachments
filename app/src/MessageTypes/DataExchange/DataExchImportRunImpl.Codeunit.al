@@ -57,7 +57,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Envelope := ContractParts.GetEnvelope(true);
+        Envelope := ContractParts.GetDataExchangeEnvelope(true);
         Envelope.Add('messageType', 'DataExchange.Import.Run');
         exit(true);
     end;
@@ -162,9 +162,16 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Validates all input before creating a header; execution errors propagate in the caller transaction.</summary>
     /// <param name="Argument">The licensed request and response.</param>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
+    var
+        Reader: Codeunit "Storage Request Reader ori";
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
+        // A non-object request is refused here, before the worker reads it with GetRequestJson.
+        if not Reader.ReadMutationRequest(Argument) then begin
+            Reader.RespondIfErrors(Argument);
+            exit;
+        end;
         // No Boolean return: do not introduce an implicit commit or catch postwrite errors.
         Codeunit.Run(Codeunit::"DataExch Import Run Impl ori", Argument);
     end;
@@ -184,12 +191,11 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
         DefinitionExpectedLbl: Label 'an existing Generic Import or Payroll Import definition', Comment = 'is-IS=fyrirliggjandi skilgreining fyrir Generic Import eða Payroll Import';
         SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and use the exact code of a Generic Import or Payroll Import definition.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningar fyrir Generic Import eða Payroll Import.';
     begin
-        if Reader.ReadMutationRequest(Argument, RequestJson) then begin
-            Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefCode);
-            Reader.ReadMutationCode(Argument, RequestJson, 'storageCode', StorageCode);
-            if Reader.ReadMutationText(Argument, RequestJson, 'path', true, 2048, Path) then
-                Reader.CheckPath(Argument, 'path', Path);
-        end;
+        RequestJson := Argument.GetRequestJson();
+        Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefCode);
+        Reader.ReadMutationCode(Argument, RequestJson, 'storageCode', StorageCode);
+        if Reader.ReadMutationText(Argument, RequestJson, 'path', true, 2048, Path) then
+            Reader.CheckPath(Argument, 'path', Path);
         if Reader.RespondIfErrors(Argument) then
             exit;
         DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;

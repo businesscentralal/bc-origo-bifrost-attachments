@@ -85,7 +85,7 @@ table 10035636 "Storage Setup ori"
     }
 
     /// <summary>Clears the selected file account when the connector changes.</summary>
-    procedure ClearFileAccount()
+    internal procedure ClearFileAccount()
     begin
         Clear("File Account Id");
         Clear("File Account Name");
@@ -93,13 +93,13 @@ table 10035636 "Storage Setup ori"
 
     /// <summary>Returns true when a file account has been selected for this row.</summary>
     /// <returns>True when <c>File Account Id</c> is not the empty GUID.</returns>
-    procedure HasFileAccount(): Boolean
+    internal procedure HasFileAccount(): Boolean
     begin
         exit(not IsNullGuid("File Account Id"));
     end;
 
     /// <summary>Tests the storage connection and shows a success message, or errors if the backend cannot be reached.</summary>
-    procedure TestConnection()
+    internal procedure TestConnection()
     var
         StorageConnector: Interface "Storage Connector ori";
         ConnectionOkMsg: Label 'The storage connection ''%1'' is reachable.', Comment = '%1 = storage code||is-IS=Hægt er að ná sambandi við geymslutenginguna ''%1''.';

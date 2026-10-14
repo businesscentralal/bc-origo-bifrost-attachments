@@ -58,7 +58,7 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Envelope := ContractParts.GetEnvelope(true);
+        Envelope := ContractParts.GetDataExchangeEnvelope(true);
         Envelope.Add('messageType', 'DataExchange.Definition.Delete');
         exit(true);
     end;
@@ -163,9 +163,16 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     /// <summary>Validates the key and references before deleting; execution errors propagate in the caller transaction.</summary>
     /// <param name="Argument">The licensed request and response.</param>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
+    var
+        Reader: Codeunit "Storage Request Reader ori";
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
+        // A non-object request is refused here, before the worker reads it with GetRequestJson.
+        if not Reader.ReadMutationRequest(Argument) then begin
+            Reader.RespondIfErrors(Argument);
+            exit;
+        end;
         // No Boolean return: retain the caller transaction and the existing Foundation exception boundary.
         Codeunit.Run(Codeunit::"DataExch Def Delete Impl ori", Argument);
     end;
@@ -186,8 +193,8 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
         SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and use the exact definition code.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningarinnar.';
         RemoveReferenceLbl: Label 'Review the Data Exchange Types and Bank Export/Import Setup that use this definition. Change those references before retrying deletion.', Comment = 'is-IS=Farðu yfir tegundir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.';
     begin
-        if Reader.ReadMutationRequest(Argument, RequestJson) then
-            Reader.ReadMutationCode(Argument, RequestJson, 'code', DefCode);
+        RequestJson := Argument.GetRequestJson();
+        Reader.ReadMutationCode(Argument, RequestJson, 'code', DefCode);
         if Reader.RespondIfErrors(Argument) then
             exit;
         DataExchDef.ReadIsolation := IsolationLevel::UpdLock;

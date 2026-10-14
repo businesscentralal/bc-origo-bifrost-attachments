@@ -3,6 +3,7 @@ namespace Origo.Bifrost.Attachments.Test;
 using Microsoft.EServices.EDocument;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
+using System.ExternalFileStorage;
 using System.Text;
 using System.Utilities;
 
@@ -277,6 +278,41 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'Unsafe file paths must not reach the connector.');
     end;
 
+    /// <summary>Inner double slashes, backslashes and dot segments are refused before any connector call.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_AC01_InnerSlashVariants_RejectWithoutWrites()
+    var
+        Link: Record "Storage Attachment Link ori";
+        MockState: Codeunit "Storage Mock State";
+        RequestJson: JsonObject;
+        Response: JsonObject;
+        AttachmentId: Guid;
+        FileCountBefore: Integer;
+    begin
+        // Story #75, AC01 | Time: no date dependence | Risk: a provider that collapses "//" would address the linked file.
+        Initialize();
+        // [GIVEN] A linked file at Xdir/Xfile.txt.
+        AttachmentId := CreateLinked('Xdir/Xfile.txt');
+        FileCountBefore := MockState.FilePaths().Count();
+        // [WHEN] Create requests spell a path with an inner double slash, a backslash or a dot segment.
+        Response := Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest('Xdir//Xnew.txt', 'bad'));
+        AssertRefusal(Response, 'InvalidParameter');
+        Response := Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest('Xdir\Xnew.txt', 'bad'));
+        AssertRefusal(Response, 'InvalidParameter');
+        Response := Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest('Xdir/./Xnew.txt', 'bad'));
+        AssertRefusal(Response, 'InvalidParameter');
+        // [WHEN] A delete names the linked file with an inner double slash.
+        RequestJson.Add('storageCode', MockCodeTok);
+        RequestJson.Add('path', 'Xdir//Xfile.txt');
+        Response := Execute(Enum::"Message Type ori"::"Storage.File.Delete", RequestJson);
+        AssertRefusal(Response, 'InvalidParameter');
+        // [THEN] Nothing reached the connector and the link is unchanged.
+        LibraryAssert.AreEqual(FileCountBefore, MockState.FilePaths().Count(), 'Unsafe paths must not reach the connector.');
+        LibraryAssert.IsTrue(Link.Get(Database::"Incoming Document Attachment", AttachmentId), 'The link must remain.');
+        LibraryAssert.AreEqual('Xdir/Xfile.txt', Link."Storage Path", 'The link path must be unchanged.');
+    end;
+
     /// <summary>A generated overlength offload path is refused while the only content remains local.</summary>
     [Test]
     [TransactionModel(TransactionModel::AutoCommit)]
@@ -528,6 +564,39 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         Clear(TempArgument);
         Provider.CheckProviderBudget(TempArgument, 4570, 'path', 'Xdir/Xfile.', false);
         LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'Trailing-dot aliases require prewrite refusal.');
+    end;
+
+    /// <summary>An installed Blob connector of any build passes the package gate and is judged by its account schema.</summary>
+    [Test]
+    procedure Scenario_AC04_AnyBlobConnectorBuild_ReachesAccountCheck()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Provider: Codeunit "Storage Ext File Impl ori";
+        Errors: JsonArray;
+        ErrorToken: JsonToken;
+        Scope: Text;
+        Address: Text;
+        CaseSensitive: Boolean;
+    begin
+        // Story #75, AC04 | Time: none | Risk: an exact connector version pin refused every write on other BC builds.
+        if not "Ext. File Storage Connector".Ordinals().Contains(4560) then
+            exit; // The Blob connector app is not installed in this environment.
+        if StorageSetup.Get('X75BLOB') then
+            StorageSetup.Delete();
+        StorageSetup.Init();
+        StorageSetup.Code := 'X75BLOB';
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
+        StorageSetup.Connector := "Ext. File Storage Connector".FromInteger(4560);
+        StorageSetup."File Account Id" := CreateGuid();
+        StorageSetup.Insert();
+
+        LibraryAssert.IsFalse(Provider.ResolvePhysicalAddress(TempArgument, StorageSetup, 'X75/file.txt', Scope, Address, CaseSensitive), 'An unregistered account must not resolve.');
+
+        Errors := TempArgument.GetCollectedErrorsJson();
+        LibraryAssert.AreEqual(1, Errors.Count(), 'Exactly one refusal is expected.');
+        Errors.Get(0, ErrorToken);
+        LibraryAssert.AreEqual('registered account metadata', ReadText(ErrorToken.AsObject(), 'received'), 'The installed connector build must pass the package gate and fail only on the missing account.');
     end;
 
     /// <summary>A copy-stage failure rolls back links while retaining source readability and exposing the duplicate.</summary>

@@ -89,7 +89,10 @@ class ApiSurfaceMatrixTests(unittest.TestCase):
         self.assert_finding('Storage Setup table provider contract attribution missing')
 
     def test_public_table_members_cannot_be_attributed_to_page(self):
-        self.document = self.document.replace('| table 10035636 [Storage Setup ori](app/src/Setup/StorageSetup.Table.al) | `', '| page 10035637 [Storage Setup ori](app/src/Setup/StorageSetup.Page.al) | `')
+        # The table has no public members since 2026-10-13; make one public in the copy and document it under the page.
+        path = self.root / 'app/src/Setup/StorageSetup.Table.al'
+        path.write_text(path.read_text(encoding='utf-8-sig').replace('    internal procedure HasFileAccount', '    procedure HasFileAccount', 1), encoding='utf-8')
+        self.document += '\n| page 10035637 [Storage Setup ori](app/src/Setup/StorageSetup.Page.al) | `HasFileAccount(): Boolean` | None |\n'
         self.assert_finding('Document public member kind/identity mismatch: app/src/Setup/StorageSetup.Table.al')
 
     def test_provider_signature_requires_setup_record(self):

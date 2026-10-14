@@ -51,7 +51,7 @@ codeunit 70013500 "Storage Contract Parts ori"
         InlineLimitLbl: Label 'The requested inline file content exceeds 1 MiB.', Comment = 'is-IS=Umbeðið innfellt skráarinnihald er yfir 1 MiB.';
         OmitInlineLbl: Label 'Omit includeFileContent or send false and retrieve the file through storage.', Comment = 'is-IS=Slepptu includeFileContent eða sendu false og sæktu skrána í gegnum geymslu.';
         DataExchangeChangesLbl: Label 'Writes Data Exchange definition, type or entry records within the operation transaction. Import.Run and Export.Run currently stage an entry header only.', Comment = 'is-IS=Skrifar skilgreiningar, gerðir eða færslur gagnaskipta innan færslubókunar aðgerðarinnar. Import.Run og Export.Run undirbúa nú aðeins færsluhaus.';
-        DataExchangePreconditionsLbl: Label 'The caller may access Data Exchange; supplied definitions and entries must exist and support the operation. Storage is required only for DataExchange.Import.Run.', Comment = 'is-IS=Kallandi má nálgast gagnaskipti; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Geymsla er aðeins nauðsynleg fyrir DataExchange.Import.Run.';
+        DataExchangePreconditionsLbl: Label 'The caller holds BIFROST DataExch ori; supplied definitions and entries must exist and support the operation. No storage connection is used.', Comment = 'is-IS=Kallandi hefur BIFROST DataExch ori; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Engin geymslutenging er notuð.';
 
 
     /// <summary>Builds the envelope shared by storage requests.</summary>
@@ -67,6 +67,31 @@ codeunit 70013500 "Storage Contract Parts ori"
         Envelope.Add('dataRequired', DataRequired);
         Envelope.Add('version', '1.0');
         Envelope.Add('contentType', 'text/json');
+    end;
+
+    /// <summary>Builds the envelope shared by Data Exchange requests.</summary>
+    /// <param name="DataRequired">Whether the request must carry data.</param>
+    /// <returns>The envelope chapter.</returns>
+    procedure GetDataExchangeEnvelope(DataRequired: Boolean) Envelope: JsonObject
+    var
+        Subject: JsonObject;
+        Forms: JsonArray;
+    begin
+        Subject.Add('use', 'notUsed');
+        Subject.Add('forms', Forms);
+        Subject.Add('description', 'The Data Exchange message is identified by its message type; it has no subject record.');
+        Envelope.Add('subject', Subject);
+        Envelope.Add('dataRequired', DataRequired);
+        Envelope.Add('version', '1.0');
+        Envelope.Add('contentType', 'text/json');
+    end;
+
+    /// <summary>Tells whether a message type belongs to the Data Exchange family, including its help type.</summary>
+    /// <param name="MessageType">The message type name.</param>
+    /// <returns>True for DataExchange.* and Help.DataExchange.Get.</returns>
+    procedure IsDataExchangeType(MessageType: Text): Boolean
+    begin
+        exit(MessageType.StartsWith('DataExchange.') or (MessageType = 'Help.DataExchange.Get'));
     end;
 
     /// <summary>Builds the request parameters read by one message type.</summary>
@@ -445,8 +470,12 @@ codeunit 70013500 "Storage Contract Parts ori"
             end;
         end;
         Effect.Add('idempotent', MessageType in ['Storage.Account.List', 'Storage.File.List', 'Storage.File.Get', 'Storage.File.Exists', 'Storage.Directory.List', 'Storage.Directory.Exists', 'Storage.Upload.Status', 'DataExchange.Definition.List', 'DataExchange.Definition.Get', 'DataExchange.Type.List', 'DataExchange.Entry.List', 'DataExchange.Entry.Get']);
-        Effect.Add('permissionSet', 'BIFROST Attach ori');
-        if MessageType.StartsWith('DataExchange.') then
+        // The Data Exchange tables are granted by BIFROST DataExch ori only; BIFROST Attach ori does not include them.
+        if IsDataExchangeType(MessageType) then
+            Effect.Add('permissionSet', 'BIFROST DataExch ori')
+        else
+            Effect.Add('permissionSet', 'BIFROST Attach ori');
+        if IsDataExchangeType(MessageType) then
             Effect.Add('preconditions', DataExchangePreconditionsLbl)
         else
             Effect.Add('preconditions', 'The storage connection exists, is enabled and permits the requested operation.');

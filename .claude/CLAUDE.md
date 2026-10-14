@@ -18,6 +18,7 @@ Tests: 96200-96299 (migrated from 92700-92799 with offset +3500)
 Object ids re-derived 06.10.2026 after main compile repair: app block 10035635-10035684 is in use through 10035682 (`Storage Request Reader ori`); free in that block 10035683-10035684. Second block 70013500-70013549: codeunit 70013500 (`Storage Contract Parts ori`), Data Exchange codeunits 70013520-70013526, 70013531, 70013534, 70013536, 70013540, 70013543-70013545; enumextension objects 70013510, 70013511, 70013514, 70013516, 70013519, 70013521; message-type values 70013510-70013516, 70013519, 70013521-70013523; permission set 70013548. Free codeunit IDs in that block: 70013501-70013519, 70013527-70013530, 70013532-70013533, 70013535, 70013537-70013539, 70013541-70013542, 70013546-70013549. Next available codeunit after the highest used codeunit is 70013546. Free message-type ordinals in the discovery subrange: 70013517-70013518 and 70013520. Tests are in use through 96217. Codeunit 96274 (`Attachments Build Tests ori`) is adopted file by file from worker-8/PR87 for the existing #74 fixture under the consolidation decision; worker-3 is its single integration writer. Worker-9 reserved 96226 remains reserved and unused by this repair. Do not reuse either reservation for unrelated work.
 
 Compile collision repair (06.10.2026): newer `DataExch Entry Del Impl ori` moved from duplicate codeunit 70013521 to 70013544; `DataExch Def Import Impl ori` moved from duplicate codeunit 70013524 to 70013545. Earlier Help Get (70013521) and Type List (70013524) keep their IDs. `DataExchange.Import.Run` moved from duplicate ordinal 70013516 to 70013522; `DataExchange.Definition.Delete` moved from duplicate ordinal 70013519 to 70013523. Earlier Type.Set (70013516) and Export.Run (70013519) keep their ordinals. Message names and bindings are unchanged. No object-ID MCP tool is available; allocation used the standards manual fallback after scanning every app/test declaration and message enum extension.
+Retired 13.10.2026: codeunits 70013544 (`DataExch Entry Del Impl ori`) and 70013545 (`DataExch Def Import Impl ori`) were removed because no message type was bound to them (parked roadmap #24/#26). Do not reuse either id.
 Register any further block in the workbook before using it - never squeeze objects into a
 neighbouring app's range.
 
@@ -84,9 +85,9 @@ Documentation lives in businesscentralal/bifrost (site bifrost.origo.is); no Hel
 folders in this repo - deviation from the Origo PR gateway check 8 approved by the user
 2026-09-06.
 
-- Product docs: https://businesscentralal.github.io/bifrost/en-us/attachments/
-- In-product help: https://businesscentralal.github.io/bifrost/en-us/help/attachments/
-- Extensibility guide: https://businesscentralal.github.io/bifrost/en-us/extensibility/
+- Product docs: https://docs.bifrost.origo.is/en-us/attachments/
+- In-product help: https://docs.bifrost.origo.is/en-us/help/attachments/
+- Extensibility guide: https://docs.bifrost.origo.is/en-us/documentation/
 
 Context-sensitive help pages are addressed by Docusaurus slug (`attachments-setup`,
 `storage-setup`, `storage-card`, `storage-account-lookup`), not by HTML file name. The setup
@@ -211,9 +212,10 @@ Key rules always in effect:
   company: `CE Storage Attachment Link` (10075985) -> `Storage Attachment Link ori` (10035635)
   and `Cloud Events Storage Setup` (10075986) -> `Storage Setup ori` (10035636) with
   `DataTransfer`, plus the `Access Control` re-grant from `CE Storage` to `BIFROST Attach ori`.
-  The generator `gen_install.py` is archived in
-  `bc-origo-bifrost-core/tools/migration/archive/hnitbjorg/` - regenerate from there, never
-  hand-edit.
+  The generator `gen_install.py` (DataTransfer copies only) is archived in
+  `D:\Git\Private\_bifrost-migration-archive\hnitbjorg\` (not a repo). The FieldExist guards, the
+  permission probe, the install/upgrade retry and the telemetry exist only in the codeunit and are
+  maintained by hand; keep the generated copy blocks unchanged.
 - Transient tables (upload sessions and chunks) are not copied by design.
 
 ## Test App Rules
@@ -236,5 +238,5 @@ Key rules always in effect:
 - Full message-type test reports live in
   `test/reports/Bifrost_Attachments_MessageType_TestReport_<date>.md` (internal, not published).
   The generator `make_report.py` and the type list `hnitbjorg_types.txt` are archived in
-  `bc-origo-bifrost-core/tools/migration/archive/hnitbjorg/`. The open defect list from the last
+  `D:\Git\Private\_bifrost-migration-archive\hnitbjorg\`. The open defect list from the last
   run is in that report's "Defects and observations" section - fix from there.

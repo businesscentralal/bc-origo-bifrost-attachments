@@ -524,7 +524,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Faults.ConfigureFailure(DefinitionCode, true, false);
         BindSubscription(Faults);
         // [WHEN] The operation mutates and the standard event subscriber raises.
-        asserterror DispatchImport(DefinitionCode, 'XSTORAGE', 'X82.csv');
+        asserterror FailOnReturnedResponse(DispatchImport(DefinitionCode, 'XSTORAGE', 'X82.csv'));
         LibraryAssert.ExpectedError('X82 postwrite failure');
         UnbindSubscription(Faults);
         // [THEN] The mutation rolled back, including trigger-deleted children.
@@ -553,7 +553,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Faults.ConfigureFailure(DefinitionCode, false, true);
         BindSubscription(Faults);
         // [WHEN] The operation mutates and the standard event subscriber raises.
-        asserterror DispatchDelete(DefinitionCode);
+        asserterror FailOnReturnedResponse(DispatchDelete(DefinitionCode));
         LibraryAssert.ExpectedError('X82 postwrite failure');
         UnbindSubscription(Faults);
         // [THEN] The mutation rolled back, including trigger-deleted children.
@@ -696,6 +696,46 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Refused definitions must not create headers.');
     end;
 
+    /// <summary>Definition.Export refuses a missing, wrong-typed, overlong or unknown code with a complete structured error.</summary>
+    [Test]
+    procedure Scenario_AC01_DefinitionExport_RefusesBadCode()
+    var
+        Response: JsonObject;
+        OverlongCode: Text;
+    begin
+        // Story #82, AC01/AC02 | Time: none | Risk: a truncated code could export the wrong definition.
+        // [GIVEN] No request code, a JSON number, a 21-character code and a code that does not exist.
+        // [WHEN] Each is dispatched to DataExchange.Definition.Export.
+        // [THEN] Each answers a structured refusal on "code"; the overlong value is echoed in full, never truncated.
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{}');
+        AssertRefusal(Response, 'MissingParameter', 'code', '');
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":7}');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'code', '7');
+        OverlongCode := PadStr('', 21, 'X');
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":"' + OverlongCode + '"}');
+        AssertRefusal(Response, 'InvalidParameter', 'code', OverlongCode);
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":"X82MISSING"}');
+        AssertRefusal(Response, 'RecordNotFound', 'code', 'X82MISSING');
+    end;
+
+    /// <summary>Definition.Export answers the stored header with the enum name of the type.</summary>
+    [Test]
+    procedure Scenario_AC03_DefinitionExport_ReturnsHeader()
+    var
+        DefinitionCode: Code[20];
+        Response: JsonObject;
+    begin
+        // Story #82, AC03 | Time: none | Risk: the shipped flat wire shape must stay unchanged.
+        // [GIVEN] A Generic Export definition.
+        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Export");
+        // [WHEN] DataExchange.Definition.Export is dispatched for its exact code.
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":"' + DefinitionCode + '"}');
+        // [THEN] The flat answer carries status, code and the type name.
+        AssertText(Response, 'status', 'Success');
+        AssertText(Response, 'code', DefinitionCode);
+        AssertText(Response, 'type', 'Generic Export');
+    end;
+
     /// <summary>File-name boundary is accepted exactly; one character beyond is refused.</summary>
     [Test]
     procedure Scenario_AC02_ExportFileNameBounds_NeverTruncates()
@@ -812,7 +852,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Commit();
         Faults.ConfigureFailure(DefinitionCode, true, false);
         BindSubscription(Faults);
-        asserterror DispatchExport(DefinitionCode, 'X82.csv');
+        asserterror FailOnReturnedResponse(DispatchExport(DefinitionCode, 'X82.csv'));
         LibraryAssert.ExpectedError('X82 postwrite failure');
         UnbindSubscription(Faults);
         LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'Failed export must roll back header.');
@@ -836,7 +876,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Commit();
         Faults.ConfigureTypeFailure(DefinitionCode);
         BindSubscription(Faults);
-        asserterror DispatchTypeSet(DefinitionCode, DefinitionCode, true, 'X82 failure');
+        asserterror FailOnReturnedResponse(DispatchTypeSet(DefinitionCode, DefinitionCode, true, 'X82 failure'));
         LibraryAssert.ExpectedError('X82 type postwrite failure');
         UnbindSubscription(Faults);
         LibraryAssert.IsFalse(DataExchangeType.Get(DefinitionCode), 'Failed modify must also roll back prior insert.');
@@ -865,7 +905,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Commit();
         Faults.ConfigureTypeFailure(OtherDefinitionCode);
         BindSubscription(Faults);
-        asserterror DispatchTypeSet(DefinitionCode, OtherDefinitionCode, true, 'X82 replacement');
+        asserterror FailOnReturnedResponse(DispatchTypeSet(DefinitionCode, OtherDefinitionCode, true, 'X82 replacement'));
         LibraryAssert.ExpectedError('X82 type postwrite failure');
         UnbindSubscription(Faults);
         DataExchangeType.Get(DefinitionCode);
@@ -956,7 +996,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Response := DispatchImport(DefinitionCode, 'XSTORAGE', 'X82.csv');
         AssertText(Response, 'status', 'Accepted');
         LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'First call must actually write before the later failure.');
-        DispatchDelete(DefinitionCode);
+        FailOnReturnedResponse(DispatchDelete(DefinitionCode));
     end;
 
     local procedure CreateDefinition(DefinitionType: Enum "Data Exchange Definition Type"): Code[20]
@@ -1121,14 +1161,47 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
 
     local procedure AssertText(Response: JsonObject; PropertyName: Text; ExpectedText: Text)
     begin
-        LibraryAssert.AreEqual(ExpectedText, TextProperty(Response, PropertyName), 'Unexpected value for ' + PropertyName);
+        LibraryAssert.AreEqual(ExpectedText, TextProperty(Response, PropertyName), 'Unexpected value for ' + PropertyName + '. ' + ResponseDiagnostic(Response));
+    end;
+
+    local procedure FailOnReturnedResponse(Response: JsonObject)
+    begin
+        // ExpectedError still requires the injected fault text. This distinct assertion cannot satisfy it.
+        LibraryAssert.Fail('Dispatch returned without raising. ' + ResponseDiagnostic(Response));
+    end;
+
+    local procedure ResponseDiagnostic(Response: JsonObject): Text
+    var
+        Diagnostic: JsonObject;
+        ErrorsToken: JsonToken;
+        DiagnosticText: Text;
+    begin
+        // Only bounded status/code metadata: never log request content, identities, URLs or provider secrets.
+        Diagnostic.Add('status', DiagnosticProperty(Response, 'status'));
+        Diagnostic.Add('code', DiagnosticProperty(Response, 'code'));
+        if Response.Get('errors', ErrorsToken) then
+            if ErrorsToken.IsArray() then
+                Diagnostic.Add('errorCount', ErrorsToken.AsArray().Count());
+        Diagnostic.WriteTo(DiagnosticText);
+        exit(DiagnosticText);
+    end;
+
+    local procedure DiagnosticProperty(Response: JsonObject; PropertyName: Text): Text
+    var
+        PropertyToken: JsonToken;
+    begin
+        if Response.Get(PropertyName, PropertyToken) then
+            if PropertyToken.IsValue() then
+                if not PropertyToken.AsValue().IsNull() then
+                    exit(CopyStr(PropertyToken.AsValue().AsText(), 1, 100));
+        exit('<missing or non-value>');
     end;
 
     local procedure TextProperty(Response: JsonObject; PropertyName: Text): Text
     var
         PropertyToken: JsonToken;
     begin
-        LibraryAssert.IsTrue(Response.Get(PropertyName, PropertyToken), 'Missing property ' + PropertyName);
+        LibraryAssert.IsTrue(Response.Get(PropertyName, PropertyToken), 'Missing property ' + PropertyName + '. ' + ResponseDiagnostic(Response));
         exit(PropertyToken.AsValue().AsText());
     end;
 

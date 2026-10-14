@@ -693,22 +693,10 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Eyðir skilgreiningu. Hafnar skilgreiningu sem er notuð af gerð gagnaskipta eða uppsetningu bankaútflutnings eða innflutnings.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method GetSelectionDescription - NamedType SelectionLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 1813886267 - Method 3571782927 - NamedType 3897527576" size-unit="char" translate="yes" xml:space="preserve">
-          <source>code is required.</source>
-          <target>code er nauðsynlegt.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=code er nauðsynlegt.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Export Impl ori - Method ExecuteBifrostTask - NamedType MissingCodeErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1813886267 - Method 3571782927 - NamedType 366797909" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Data exchange definition %1 was not found.</source>
-          <target>Skilgreining gagnaskipta %1 fannst ekki.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Export Impl ori - Method ExecuteBifrostTask - NamedType DefinitionNotFoundErr</note>
-        </trans-unit>
         <trans-unit id="Codeunit 1813886267 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Exports a Data Exchange definition header for reinstall.</source>
-          <target>Flytur út haus skilgreiningar gagnaskipta til enduruppsetningar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Flytur út haus skilgreiningar gagnaskipta til enduruppsetningar.</note>
+          <source>Returns the header of a Data Exchange definition: code, name and type.</source>
+          <target>Skilar haus skilgreiningar gagnaskipta: kóða, heiti og gerð.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skilar haus skilgreiningar gagnaskipta: kóða, heiti og gerð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Export Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1813886267 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
@@ -718,9 +706,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Export Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1813886267 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Returns the definition code, type, and name so it can be imported again.</source>
-          <target>Skilar kóða, gerð og heiti skilgreiningar svo hægt sé að flytja hana inn aftur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skilar kóða, gerð og heiti skilgreiningar svo hægt sé að flytja hana inn aftur.</note>
+          <source>Returns only the code, name and type of one definition; DataExchange.Definition.Get also returns its lines and mappings.</source>
+          <target>Skilar aðeins kóða, heiti og gerð einnar skilgreiningar; DataExchange.Definition.Get skilar einnig línum hennar og vörpunum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skilar aðeins kóða, heiti og gerð einnar skilgreiningar; DataExchange.Definition.Get skilar einnig línum hennar og vörpunum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Export Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 146493229 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -741,30 +729,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Skilar einni skilgreiningu gagnaskipta með línuskilgreiningum, dálkum og vörpun; gefðu upp kóða úr listaboðgerðinni.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Get Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 3701244740 - Method 3571782927 - NamedType 1830439019" size-unit="char" translate="yes" xml:space="preserve">
-          <source>definitionXml is required.</source>
-          <target>definitionXml er nauðsynlegt.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=definitionXml er nauðsynlegt.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Import Impl ori - Method ExecuteBifrostTask - NamedType MissingErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3701244740 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Imports a data exchange definition from XML.</source>
-          <target>Flytur inn skilgreiningu gagnaskipta úr XML.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Flytur inn skilgreiningu gagnaskipta úr XML.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Import Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3701244740 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
-          <source>data exchange definition import, xml</source>
-          <target>flytja inn skilgreiningu gagnaskipta, xml</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=flytja inn skilgreiningu gagnaskipta, xml</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Import Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3701244740 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Installs a data exchange definition from definitionXml.</source>
-          <target>Setur upp skilgreiningu gagnaskipta úr definitionXml.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Setur upp skilgreiningu gagnaskipta úr definitionXml.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Import Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2730585033 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lists Data Exchange definitions, with the Data Exchange Type codes that reference each one.</source>
           <target>Listar skilgreiningar gagnaskipta með kóðum þeirra gerða gagnaskipta sem vísa í hverja skilgreiningu.</target>
@@ -782,42 +746,6 @@
           <target>Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu sækiboðgerðina til að sjá alla vörpun.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu sækiboðgerðina til að sjá alla vörpun.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def List Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4228422237 - Method 3571782927 - NamedType 2247369567" size-unit="char" translate="yes" xml:space="preserve">
-          <source>entryNo is required.</source>
-          <target>entryNo er nauðsynlegt.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=entryNo er nauðsynlegt.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Del Impl ori - Method ExecuteBifrostTask - NamedType MissingEntryErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4228422237 - Method 3571782927 - NamedType 3351274" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Data Exch. entry %1 was not found.</source>
-          <target>Gagnaskiptafærsla %1 fannst ekki.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = entry no.||is-IS=Gagnaskiptafærsla %1 fannst ekki.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Del Impl ori - Method ExecuteBifrostTask - NamedType NotFoundErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4228422237 - Method 3571782927 - NamedType 3133460102" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Data Exch. entry %1 is referenced by an incoming document.</source>
-          <target>Vísað er í gagnaskiptafærslu %1 úr innkomuskjali.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = entry no.||is-IS=Vísað er í gagnaskiptafærslu %1 úr innkomuskjali.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Del Impl ori - Method ExecuteBifrostTask - NamedType ReferencedErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4228422237 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Deletes a Data Exch. entry that is not referenced by an incoming document.</source>
-          <target>Eyðir gagnaskiptafærslu sem ekki er vísað í úr innkomuskjali.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir gagnaskiptafærslu sem ekki er vísað í úr innkomuskjali.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Del Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4228422237 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
-          <source>data exchange delete, entry delete</source>
-          <target>eyða gagnaskiptum, eyða færslu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=eyða gagnaskiptum, eyða færslu</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Del Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4228422237 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Deletes a Data Exch. entry and its fields.</source>
-          <target>Eyðir gagnaskiptafærslu og reitum hennar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir gagnaskiptafærslu og reitum hennar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Del Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 625919956 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Returns one Data Exch. entry, with paged fields and optional file content up to 1 MB.</source>
@@ -880,9 +808,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Run Impl ori - Method ExportHeader - NamedType SelectDefinitionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3322002649 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Exports through a Data Exchange definition to a named file.</source>
-          <target>Flytur út með skilgreiningu gagnaskipta í nafngreinda skrá.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Flytur út með skilgreiningu gagnaskipta í nafngreinda skrá.</note>
+          <source>Creates a Data Exch. entry for an export definition and a target file name, without producing the file.</source>
+          <target>Býr til gagnaskiptafærslu fyrir útflutningsskilgreiningu og heiti markskrár án þess að búa skrána til.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Býr til gagnaskiptafærslu fyrir útflutningsskilgreiningu og heiti markskrár án þess að búa skrána til.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Run Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3322002649 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
@@ -892,10 +820,16 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Run Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3322002649 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Runs an export definition and returns the file name.</source>
-          <target>Keyrir útflutningsskilgreiningu og skilar skráarheitinu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Keyrir útflutningsskilgreiningu og skilar skráarheitinu.</note>
+          <source>Registers an export entry for a definition other than Generic Import; it does not run the export or write to storage.</source>
+          <target>Skráir útflutningsfærslu fyrir aðra skilgreiningu en Generic Import; hún keyrir ekki útflutninginn og skrifar ekki í geymslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skráir útflutningsfærslu fyrir aðra skilgreiningu en Generic Import; hún keyrir ekki útflutninginn og skrifar ekki í geymslu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Run Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2737179671 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Returns a Markdown overview of Data Exchange discovery: pipeline, phases, decision tree and chaining.</source>
+          <target>Skilar Markdown-yfirliti yfir uppgötvun gagnaskipta: ferli, áföngum, ákvörðunartré og keðjun.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skilar Markdown-yfirliti yfir uppgötvun gagnaskipta: ferli, áföngum, ákvörðunartré og keðjun.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Help Get Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2737179671 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>data exchange help, import discovery, data exchange overview</source>
@@ -1462,9 +1396,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangeFailureLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3872168394" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The caller may access Data Exchange; supplied definitions and entries must exist and support the operation. Storage is required only for DataExchange.Import.Run.</source>
-          <target>Kallandi má nálgast gagnaskipti; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Geymsla er aðeins nauðsynleg fyrir DataExchange.Import.Run.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Kallandi má nálgast gagnaskipti; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Geymsla er aðeins nauðsynleg fyrir DataExchange.Import.Run.</note>
+          <source>The caller holds BIFROST DataExch ori; supplied definitions and entries must exist and support the operation. No storage connection is used.</source>
+          <target>Kallandi hefur BIFROST DataExch ori; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Engin geymslutenging er notuð.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Kallandi hefur BIFROST DataExch ori; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Engin geymslutenging er notuð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangePreconditionsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1754493333" size-unit="char" translate="yes" xml:space="preserve">

@@ -53,7 +53,7 @@ codeunit 70013524 "DataExch Type List Impl ori" implements "Msg Interface ori", 
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Envelope := ContractParts.GetEnvelope(false);
+        Envelope := ContractParts.GetDataExchangeEnvelope(false);
         exit(true);
     end;
 

@@ -7,6 +7,7 @@ namespace Origo.Bifrost.Attachments;
 /// </summary>
 enum 10035635 "Storage Attachment Target ori"
 {
+    Access = Internal;
     Extensible = false;
     Caption = 'Bifrost Storage Attachment Target', Comment = 'is-IS=Markmið viðhengis Bifröst geymslu';
 

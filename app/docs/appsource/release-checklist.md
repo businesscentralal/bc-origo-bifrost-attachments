@@ -7,7 +7,17 @@ locale: en-US
 
 # Collect Attachments release evidence
 
-**Source baseline:** Attachments `b42ad90eaee2803205408a1cac8b0d9752b91c0e`; historical Foundation comparison `0fb78c0be538bd77c482c70eddbbef451f697cc9`; approved pinned standards `ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f`. Source inspection is not signed-artifact or runtime proof. No release candidate has been certified by this package.
+**Source baseline:** Attachments `c656965b3ad1291b75854e5b40edecf8038d21f8` (inventory regenerated 13.10.2026; the 06.10 baseline was `b42ad90eaee2803205408a1cac8b0d9752b91c0e`); historical Foundation comparison `0fb78c0be538bd77c482c70eddbbef451f697cc9`; approved pinned standards `ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f`. Source inspection is not signed-artifact or runtime proof. No release candidate has been certified by this package.
+
+## Record current candidate evidence
+
+Branch `fix/attachments-open-issues-20261013`, checked on 13.10.2026. App and test compiled with AL compiler 18.1.43.24897 (VS Code AL extension) and CodeCop, UICop and AppSourceCop at 0 errors and 0 warnings, against Bifrost Foundation 28.0.4.0 symbols (manifest floor stays 28.0.1.0). Published to bc28-w1 (W1, BC 28) and tested there. A local build is not the signed release candidate; #80 still owns that.
+
+| Issue | Evidence | Remaining |
+|---|---|---|
+| [#74](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/74) | `main` CI/CD run [38410916716](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/38410916716) at `ac36688` (build 28.0.0.84): Default and Test jobs succeeded, app and test compiled with `failOn: warning`; Test job ran 263 tests in 19 codeunits, 263 passed. The branch adds 4 tests (267 of 267 on bc28-w1). Source guard `Test-UniqueObjectIds.ps1` passes; no app symbol of its own is loaded (the Foundation and Microsoft packages are the only dependencies). | Exact-tip CI of this branch once its PR is open. |
+| [#78](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/78) | `.AL-Go/settings.json` sets `enableCodeCop`, `enableUICop`, `enableCodeAnalyzersOnTestApps` and Alpaca test-app CodeCop/UICop/AppSourceCop, `failOn: warning`; the effective settings in run 38410916716 show them true. `AppSource gate` stages before/post/finalize passed in Default (one app) and Test (app and test app). The Default artifact `Origo_Bifrost Attachments_28.0.0.84.app` (SHA256 `3bb134c4184d4e01e07f45a8e161d801240bec8feaa06bad9ea13676d9d357e4`) has an empty `<InternalsVisibleTo />` in its manifest; the Default job ran the AL-Go Sign step with `CodeSigning-2025`. | Signature trust check on Windows and infrastructure-owner review of workflow changes (ori-haraldurb). |
+| [#71](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/71) | Generated `Bifrost Attachments.g.xlf` (491 trans-units) SHA256 `82e596238676140738e2a26ac1008eb0a37614c99bd3f14e4e0e4cdec323cc1d`; committed `Bifrost Attachments.is-IS.xlf` SHA256 `8bbee1c6cddd7b67555e8be2293920006bef173a2aeba695ac612ad747eb5bdb`. `tools/Test-IcelandicXlfInSync.ps1` passes; a second `Update-IcelandicXlf.ps1` run leaves the file unchanged (490 targets from `is-IS=` comments, 1 kept, 0 without Icelandic). LCID 1033/1039 behaviour: `Language72_Discovery_ExactEnglish`/`ExactIcelandic` (96274), the 1039 refusal checks in 96226 and the 1039 Definition.List check in Batch2 passed on bc28-w1. | None in source. UI walk-through in Icelandic belongs to #80 candidate QA. |
 
 ## Confirm identity and markets
 
@@ -30,8 +40,8 @@ locale: en-US
 | Listing text | `app/app.json` brief/description names Azure Blob, Azure File Share, SharePoint, uploads and offloading | Offer owner: approve Attachments-specific name, summary, description, categories and supported languages; match only proven shipping features |
 | Logo | `app/assets/Logo250x250.png` exists in the source | Offer owner: approve rights, branding and current Partner Center dimensions/variants; source existence is not listing approval |
 | Screenshots | Manifest `screenshots: []` | #80 / worker-8 supplies candidate screenshots; offer owner approves English/Icelandic captions, rights and listing assets. Use synthetic data and remove identifiers |
-| Product/help | `https://businesscentralal.github.io/bifrost/en-us/attachments/`; context help uses `{0}/help/attachments/` | #70 / documentation owners: confirm exact shipped page help routes, redirects and accessibility; internal-review coordinates externally published changes |
-| Legal | EULA `https://businesscentralal.github.io/bifrost/en-us/foundation/eula/`; privacy `https://businesscentralal.github.io/bifrost/en-us/foundation/privacy/` | Gunnar / legal owner: confirm these shared policies explicitly cover Attachments and external file handling. A manifest URL is not legal acceptance |
+| Product/help | `https://docs.bifrost.origo.is/en-us/attachments/`; context help uses `https://docs.bifrost.origo.is/{0}/help/attachments/` (same contract as Foundation). On 2026-10-13 every Attachments route answered 404 because `apps.ts` in businesscentralal/bifrost lists published apps only (Foundation, Language Models) | #70 / documentation owners: confirm exact shipped page help routes, redirects and accessibility; internal-review coordinates externally published changes |
+| Legal | EULA `https://docs.bifrost.origo.is/en-us/licensing/eula/`; privacy `https://docs.bifrost.origo.is/en-us/licensing/privacy/` (both HTTP 200 on 2026-10-13, the same URLs Foundation ships) | Gunnar / legal owner: confirm these shared policies explicitly cover Attachments and external file handling. A manifest URL is not legal acceptance |
 | Support | Publisher website `https://www.origo.is/`; no separate support contact evidenced here | Gunnar / offer owner: approved support URL/contact, response process and customer-facing dependency guidance |
 | Provider prerequisites | BC External File Storage connector apps and registered File Accounts; Attachments stores account references | Gunnar / provider owner: validator-accessible dedicated Azure Blob, Azure File Share and SharePoint fixtures, constrained rights, quotas and availability window. Provide secrets separately using an approved secure channel |
 | Foundation activation/API | Foundation's setup, licensing and public message transport are required | #79/#80: actual non-SUPER role names, license/activation steps and secure authenticated transport instructions from the tested candidate |
@@ -40,7 +50,7 @@ The test app's in-memory Mock connector is internal automated-test infrastructur
 
 ## Close technical and human gates
 
-- [ ] #74 / worker-3 canonical PR84 compilation repair integrated through authorized merges; exact app/test build reports show 0 errors and 0 warnings.
+- [x] #74 compilation repair integrated on `main`; CI run 38410916716 Default and Test compiled with `failOn: warning` and 263 of 263 tests passed (see the evidence table above).
 - [ ] #78 compiled-package/compiler gates and infrastructure integration reviewed by ori-haraldurb; no workflow patch is applied by this documentation task.
 - [ ] #69/#82 contracts and refusals match shipped behavior; #75 linked-file safety and #76 lifecycle takeover are proven; #77 public surface audit completed.
 - [ ] #70 help and #71/#72 translations complete; #79 setup/usage and denied-user tests run with genuine non-SUPER identities.

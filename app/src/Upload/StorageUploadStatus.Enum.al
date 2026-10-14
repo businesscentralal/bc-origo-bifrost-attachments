@@ -8,6 +8,7 @@ namespace Origo.Bifrost.Attachments;
 /// </summary>
 enum 10035637 "Storage Upload Status ori"
 {
+    Access = Internal;
     Extensible = false;
     Caption = 'Bifrost Storage Upload Status', Comment = 'is-IS=Staða upphleðslu Bifröst geymslu';
 
