@@ -1,0 +1,73 @@
+{
+  "docsSha": "ff6cdbfde771ac9a34cafa9cb59ad7c3ed2736bb",
+  "exitCode": 0,
+  "locales": [
+    "en-US",
+    "is-IS"
+  ],
+  "warnings": 0,
+  "brokenLinkDiagnostics": false,
+  "routes": [
+    {
+      "locale": "en-us",
+      "slug": "attachments-setup",
+      "exists": true,
+      "forwardToEnglish": false,
+      "hasContent": true
+    },
+    {
+      "locale": "en-us",
+      "slug": "storage-setup",
+      "exists": true,
+      "forwardToEnglish": false,
+      "hasContent": true
+    },
+    {
+      "locale": "en-us",
+      "slug": "storage-card",
+      "exists": true,
+      "forwardToEnglish": false,
+      "hasContent": true
+    },
+    {
+      "locale": "en-us",
+      "slug": "storage-account-lookup",
+      "exists": true,
+      "forwardToEnglish": false,
+      "hasContent": true
+    },
+    {
+      "locale": "is-is",
+      "slug": "attachments-setup",
+      "exists": true,
+      "forwardToEnglish": false,
+      "hasContent": true
+    },
+    {
+      "locale": "is-is",
+      "slug": "storage-setup",
+      "exists": true,
+      "forwardToEnglish": false,
+      "hasContent": true
+    },
+    {
+      "locale": "is-is",
+      "slug": "storage-card",
+      "exists": true,
+      "forwardToEnglish": false,
+      "hasContent": true
+    },
+    {
+      "locale": "is-is",
+      "slug": "storage-account-lookup",
+      "exists": true,
+      "forwardToEnglish": false,
+      "hasContent": true
+    }
+  ],
+  "ipBoundary": "expected7 hits until worker6 separately authorized exception",
+  "structure": "0 errors0warnings",
+  "HelpLinks": "7 pages0problems",
+  "publicationOwner": "worker-6 / Tryggvi docs team",
+  "checkedAt": "2026-10-14T09:44:38.674190+00:00"
+}

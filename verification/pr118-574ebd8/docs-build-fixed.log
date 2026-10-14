@@ -1,0 +1,28 @@
+
+> bifrost-docs@0.0.0 build
+> node tools/copy-apps-json.mjs && npm run build:en && npm run build:is && node tools/build-root.mjs
+
+copy-apps-json: static/apps.json refreshed from data/apps.json
+
+> bifrost-docs@0.0.0 build:en
+> cross-env DOCUSAURUS_LOCALE=en-US docusaurus build --locale en-US --out-dir build/en-us
+
+[INFO] [en-US] Creating an optimized production build...
+[webpackbar] ℹ Compiling Client
+[webpackbar] ℹ Compiling Server
+[webpackbar] ✔ Server: Compiled successfully in 20.03s
+[webpackbar] ✔ Client: Compiled successfully in 20.96s
+[SUCCESS] Generated static files in "build/en-us".
+[INFO] Use `npm run serve` command to test your build locally.
+
+> bifrost-docs@0.0.0 build:is
+> cross-env DOCUSAURUS_LOCALE=is-IS docusaurus build --locale is-IS --out-dir build/is-is
+
+[INFO] [is-IS] Creating an optimized production build...
+[webpackbar] ℹ Compiling Client
+[webpackbar] ℹ Compiling Server
+[webpackbar] ✔ Server: Compiled successfully in 2.05m
+[webpackbar] ✔ Client: Compiled successfully in 3.81m
+[SUCCESS] Generated static files in "build/is-is".
+[INFO] Use `npm run serve` command to test your build locally.
+build-root: wrote index.html, 404.html, llms.txt and apps.json for https://docs.bifrost.origo.is/
