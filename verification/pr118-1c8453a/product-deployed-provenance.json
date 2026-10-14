@@ -1,0 +1,27 @@
+{
+  "sha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+  "appVersion": "28.0.0.4",
+  "containerId": "f0c8b00d970e",
+  "compiledSha256": "021458e81d5db4a005e199c397048e443c02deb1fd82ee21277dfe764cef7b3b",
+  "downloadedSha256": "021458e81d5db4a005e199c397048e443c02deb1fd82ee21277dfe764cef7b3b",
+  "exactBytesMatch": true,
+  "checkedAt": "2026-10-14T16:33:36.143379+00:00",
+  "foundation": {
+    "sourceSha": "f8d53b4bd8ec8409048524bb5689515db898e04d",
+    "version": "28.0.4.556",
+    "publishedArtifactSha256": "0f26c476ac1fe69f0b19da5ce5714773c6b95d4d71ed74545a4bda6202113525",
+    "downloadedSha256": "0f26c476ac1fe69f0b19da5ce5714773c6b95d4d71ed74545a4bda6202113525",
+    "exactBytesMatch": true
+  },
+  "nativeTestsExecuted": 0,
+  "McpMessagesExecuted": 0,
+  "testApp": {
+    "version": "28.0.0.6",
+    "compiledSha256": "a2295ffffcc7a995f42a046ec30846be7cb07b58d9de3d6f3d88113c8bc1b6fe",
+    "downloadedSha256": "a2295ffffcc7a995f42a046ec30846be7cb07b58d9de3d6f3d88113c8bc1b6fe",
+    "exactBytesMatch": true,
+    "deployedAfterUI": true,
+    "testsExecuted": 0,
+    "installsTestSuiteMetadataOnly": true
+  }
+}

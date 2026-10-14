@@ -1,0 +1,13 @@
+{
+  "id": "f0c8b00d970e",
+  "owner": "worker-7",
+  "deletedHTTP": 204,
+  "verifiedAbsentHTTP": 404,
+  "verifiedAt": "2026-10-14T16:34:49.597Z",
+  "activeEnvironmentRecordRemoved": true,
+  "nativeTestsExecuted": 0,
+  "McpMessagesExecuted": 0,
+  "businessFixtureDataCreated": false,
+  "testSuiteMetadataCreatedByTestApp": true,
+  "previousContainerCleanupReplayed": false
+}

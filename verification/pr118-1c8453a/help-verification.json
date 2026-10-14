@@ -1,0 +1,89 @@
+{
+  "candidateSha": "1c8453a42bc27a046342761a0373dc660ba4f590",
+  "docsSha": "af179cc00f2842a15d8ea9bace890ae51031c171",
+  "guard": {
+    "pages": 7,
+    "problems": 0,
+    "exitCode": 0
+  },
+  "http": {
+    "executed": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "routes": [
+      {
+        "url": "https://docs.bifrost.origo.is/en-us/attachments/",
+        "status": 200,
+        "title": "Bifr\u00f6st Attachments | Bifr\u00f6st",
+        "passed": true,
+        "sha256": "ebd46fadbc0fe864da83cc14f4a1e0428ffe1855d1b2bfa75a54bc414aa57059"
+      },
+      {
+        "url": "https://docs.bifrost.origo.is/en-us/help/attachments/attachments-setup",
+        "status": 200,
+        "title": "Bifrost Attachments Setup | Bifr\u00f6st",
+        "passed": true,
+        "sha256": "0a79dbc6e8c5be60998997f4a6f869e7cdc102fee1642a691c1dc86bb2752c59"
+      },
+      {
+        "url": "https://docs.bifrost.origo.is/en-us/help/attachments/storage-account-lookup",
+        "status": 200,
+        "title": "Select File Account | Bifr\u00f6st",
+        "passed": true,
+        "sha256": "2d30cb09ea13daaebf5b77a9e171cca1dce5c91f67825563d9ba8b8110a2ad51"
+      },
+      {
+        "url": "https://docs.bifrost.origo.is/en-us/help/attachments/storage-card",
+        "status": 200,
+        "title": "Bifrost Storage Connection | Bifr\u00f6st",
+        "passed": true,
+        "sha256": "e16fb0fb9343fe4dfa532b58aaac5d23fd93b0a7b3c059501bd9b4a76d95d254"
+      },
+      {
+        "url": "https://docs.bifrost.origo.is/en-us/help/attachments/storage-setup",
+        "status": 200,
+        "title": "Bifrost Storage Setup | Bifr\u00f6st",
+        "passed": true,
+        "sha256": "4d44d9c994bc22ef446be31649e928f2f55f5d5b536c7b72dba0dd04b9dc87e7"
+      },
+      {
+        "url": "https://docs.bifrost.origo.is/is-is/attachments/",
+        "status": 200,
+        "title": "Bifr\u00f6st Attachments | Bifr\u00f6st",
+        "passed": true,
+        "sha256": "f760fd3d90ce3cbd9bad448f071cc5cfe495dc043e397f748a3b980691a78cca"
+      },
+      {
+        "url": "https://docs.bifrost.origo.is/is-is/help/attachments/attachments-setup",
+        "status": 200,
+        "title": "Uppsetning Bifr\u00f6st vi\u00f0hengja | Bifr\u00f6st",
+        "passed": true,
+        "sha256": "913661e2d7730f24fc87adcaaa8b996ee125fc5d189335fd03a9b7795dd466ab"
+      },
+      {
+        "url": "https://docs.bifrost.origo.is/is-is/help/attachments/storage-account-lookup",
+        "status": 200,
+        "title": "Velja skr\u00e1areikning | Bifr\u00f6st",
+        "passed": true,
+        "sha256": "f7eb6a5bd9a4e624e34709effe34e68fec8436b6f5702150efbd98d53d46f7c2"
+      },
+      {
+        "url": "https://docs.bifrost.origo.is/is-is/help/attachments/storage-card",
+        "status": 200,
+        "title": "Bifr\u00f6st geymslutenging | Bifr\u00f6st",
+        "passed": true,
+        "sha256": "2bc4ac0313fbd6cebab4c457a9017d775bff1729872d6769fa3a0b139b2873d5"
+      },
+      {
+        "url": "https://docs.bifrost.origo.is/is-is/help/attachments/storage-setup",
+        "status": 200,
+        "title": "Uppsetning Bifr\u00f6st geymslu | Bifr\u00f6st",
+        "passed": true,
+        "sha256": "c14a5d7d2a11165e8dd8e8d8dfd1917f574d0b9feb67dae8634627898edf781a"
+      }
+    ]
+  },
+  "serverDeploymentShaAttested": false,
+  "checkedAt": "2026-10-14T16:20:45.093547+00:00"
+}
