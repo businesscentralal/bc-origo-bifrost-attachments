@@ -257,12 +257,20 @@
     "checkedAt": "2026-10-14T16:20:45.093547+00:00"
   },
   "ci": {
-    "runId": 38596878492,
     "sha": "1c8453a42bc27a046342761a0373dc660ba4f590",
-    "status": "in_progress",
-    "Default": "success",
-    "Test": "in_progress",
-    "testCounts": "not yet available"
+    "runId": 38596878492,
+    "artifactId": 11912581945,
+    "fullSuite": true,
+    "total": 268,
+    "executed": 268,
+    "passed": 268,
+    "failed": 0,
+    "skipped": 0,
+    "junitSha256": "25a4e03156413942d62735e1d86a63b8c680294ec74fdaf978fc4d618372e516",
+    "checkedAt": "2026-10-14T16:47:44.515595+00:00",
+    "ownedFoundation556ResultNotProved": true,
+    "status": "completed",
+    "conclusion": "success"
   },
   "cleanup": {
     "id": "f0c8b00d970e",
@@ -280,5 +288,5 @@
   "H2": "pendingGunnar",
   "Claude": "fresh1c request1791994940.930739; no currentheadreceipt",
   "reviewReadiness": false,
-  "recordedAt": "2026-10-14T16:36:17.343347+00:00"
+  "recordedAt": "2026-10-14T16:50:10.809609+00:00"
 }

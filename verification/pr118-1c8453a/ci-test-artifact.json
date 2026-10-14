@@ -1,0 +1,20 @@
+{
+  "id": 11912581945,
+  "node_id": "MDg6QXJ0aWZhY3QxMTkxMjU4MTk0NQ==",
+  "name": "bc-origo-bifrost-attachments-fix_attachments-open-issues-20261013-TestTestResults-PR118-20261014",
+  "size_in_bytes": 6006,
+  "url": "https://api.github.com/repos/businesscentralal/bc-origo-bifrost-attachments/actions/artifacts/11912581945",
+  "archive_download_url": "https://api.github.com/repos/businesscentralal/bc-origo-bifrost-attachments/actions/artifacts/11912581945/zip",
+  "expired": false,
+  "digest": "sha256:6db0c4a7ef6acca1ddaaa04843e3d75c736df27e5b4fb195c517a9863b0bb6cd",
+  "created_at": "2026-10-14T16:34:39Z",
+  "updated_at": "2026-10-14T16:34:39Z",
+  "expires_at": "2027-01-12T16:17:57Z",
+  "workflow_run": {
+    "id": 38596878492,
+    "repository_id": 1358106860,
+    "head_repository_id": 1358106860,
+    "head_branch": "fix/attachments-open-issues-20261013",
+    "head_sha": "1c8453a42bc27a046342761a0373dc660ba4f590"
+  }
+}
