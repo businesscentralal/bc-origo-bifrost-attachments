@@ -176,8 +176,11 @@ codeunit 96228 "Storage Refusal122 Tests ori"
 
     local procedure Initialize(var StorageSetup: Record "Storage Setup ori")
     var
+        LowerPermissions: Codeunit "Library - Lower Permissions";
         MockState: Codeunit "Storage Mock State";
     begin
+        // Fixture setup uses the runner's original grants; the actor phase remains restrictive.
+        LowerPermissions.StopLoggingNAVPermissions();
         MockState.Reset();
         StorageSetup.Init();
         StorageSetup.Code := NewCode();
@@ -207,6 +210,7 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         EntryToken: JsonToken;
     begin
         // [GIVEN] A self-created definition and a storage code that does not exist.
+        LowerPermissions.StopLoggingNAVPermissions();
         Definition.Code := NewCode();
         Definition.Type := Definition.Type::"Generic Import";
         Definition.Insert(true);
@@ -228,7 +232,7 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         ResponseContent.GetSubText(ResponseText, 1);
         LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'The registered handler must return JSON.');
         // [THEN] The documented alternative accepts the references but only creates a header.
-        LibraryAssert.AreEqual('Accepted', TextProperty(Response, 'status'), 'The documented reference-only request must be accepted.');
+        LibraryAssert.AreEqual('Accepted', TextProperty(Response, 'status'), 'The documented reference-only request must be accepted. Self-created request response: ' + CopyStr(ResponseText, 1, 1000));
         LibraryAssert.IsTrue(Response.Get('entryNo', EntryToken), 'Return the actual created header.');
         DataExch.Get(EntryToken.AsValue().AsInteger());
         LibraryAssert.AreEqual(Definition.Code, DataExch."Data Exch. Def Code", 'The header must use the supplied definition.');
