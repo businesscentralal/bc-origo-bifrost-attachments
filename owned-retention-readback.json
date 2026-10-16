@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-16T18:52:34.166Z",
+  "ok": true,
+  "statusCode": 200,
+  "id": "f0c991d445a8",
+  "name": "codex-worker3-attachments122-retained-1792162093",
+  "status": {
+    "state": "Stopped",
+    "imageBuilding": false,
+    "imageBuildError": false
+  },
+  "resourceWrites": 0,
+  "candidateSha": "dffe555d8281c9e03637e01b21d3b476f843c8bf",
+  "stopReceipt": {
+    "at": "2026-10-16T18:51:41.031Z",
+    "id": "f0c991d445a8",
+    "action": "Stop",
+    "ok": true,
+    "statusCode": 204,
+    "writes": 1,
+    "deleted": false
+  },
+  "retained": true,
+  "deleted": false,
+  "deleteRequires": "Actual Tester postdeployUAT pass AND issue122closure"
+}

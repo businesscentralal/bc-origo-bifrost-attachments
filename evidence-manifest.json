@@ -29,7 +29,8 @@
     "source-inventory-guard.log": "a6bb539b6e65ca2754f0929bbe948807a711b7755abf8d454a8800fc200692ba",
     "ui-summary.json": "79bfb6a555ef7e0731ec2793d58d5770fa25aee6b9ec4f0935fbd484ecf41488",
     "unchanged-safety-audit.json": "456e60e4aaecce0e138ac40c87c214a32709f5890bbe01ee03d1f44ece509c07",
-    "xlf-guard.log": "e313183a073e395b647a1b77d1f8e3bc29dfb995c1a50153e3fbab741ab9b5b0"
+    "xlf-guard.log": "e313183a073e395b647a1b77d1f8e3bc29dfb995c1a50153e3fbab741ab9b5b0",
+    "owned-retention-readback.json": "c6b11dd50a24d41db06f8a5d640a2250098442c43012ccd39aa6707bb8cecd56"
   },
   "sanitizedAllowListOnly": true,
   "noCredentials": true
