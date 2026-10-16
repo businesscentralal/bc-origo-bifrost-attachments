@@ -1,0 +1,14 @@
+{
+  "observedAt": "2026-10-16T12:01:43.126398+00:00",
+  "observedSourceSha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
+  "containerId": "f001336c42b3",
+  "foundationVersion": "28.0.4.556",
+  "tool": "get_message_type_help",
+  "messageType": "DataExchange.Import.Run",
+  "lcid": 1033,
+  "result": "EULA_REQUIRED before dispatch",
+  "functionalCasesExecuted": 0,
+  "functionalPasses": 0,
+  "currentCandidateMcpVerified": false,
+  "note": "Historical core gate observation retained as external dependency; not a current-candidate MCP pass. No blocked probe replay or EULA/licensing/trial writes. Standard HTTP capability setup changed no EULA state. Owned runtime subsequently deleted204/GET404."
+}
