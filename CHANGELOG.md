@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-16) - caller-language contract chapters (#126)
+
+- `Storage Contract Parts ori` (70013500) uses Icelandic-translated labels for shared Storage and Data Exchange chapter text, preserving message names and JSON keys. `Storage Msg Conformance Tests` (96211) checks bilingual descriptions and chapters, the public contract aggregation path and three-part names. Public contract localization still depends on Foundation preserving the caller language.
+
 ### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
 
 - `Storage Contract Parts ori` (70013500) describes `DataExchange.Import.Run` references precisely: `storageCode` and `path` receive syntax checks, but no storage/file lookup occurs, neither reference is stored on the entry header, and no file content is read. This selects issue #122 AC01's documentation alternative and preserves the existing header-only behavior.
