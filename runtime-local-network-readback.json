@@ -1,0 +1,6 @@
+{
+  "checkedAt": "2026-10-16T08:55:41.670Z",
+  "error": "fetch failed",
+  "cause": "UND_ERR_CONNECT_TIMEOUT",
+  "causeMessage": "Connect Timeout Error (attempted address: cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com:443, timeout: 10000ms)"
+}

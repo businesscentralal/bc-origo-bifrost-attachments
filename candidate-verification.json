@@ -3,7 +3,7 @@
   "branch": "fix/122-storage-refusals-worker3",
   "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/fix/122-storage-refusals-worker3",
   "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/2215e7ae7d37372d1983f607ade63c63f5838eb8",
-  "recordedAt": "2026-10-16T08:45:13.438030+00:00",
+  "recordedAt": "2026-10-16T08:58:08.579719+00:00",
   "scope": "122 original AC1-3 only; File.Delete proposal excluded",
   "sourceTreeClean": true,
   "sourceHashes": [
@@ -543,7 +543,7 @@
       "passed": 0,
       "failed": 0,
       "skipped": 0,
-      "status": "NOT RUN: COSMO unreachable; not a full-suite pass"
+      "status": "NOT RUN: worker-3 local HTTPS connection to canonical COSMO host times out; configured COSMO resource tool succeeds but cannot provision through the local runbook path"
     },
     "newTests": {
       "authored": 9,
@@ -566,7 +566,25 @@
       "passed": 0,
       "status": "UNVERIFIED",
       "fixturesCreated": [],
-      "cleanup": "No fixture created; owned-container creation outcome unknown, no ID returned"
+      "cleanup": "No fixtures or resource ID; successful configured COSMO readback after both failed creates shows zero matching task resources. No deletion or404 claimed."
+    },
+    "resourceReadback": {
+      "checkedAt": "2026-10-16T08:56:56.160Z",
+      "ok": true,
+      "statusCode": 200,
+      "total": 11,
+      "own": []
+    },
+    "localNetworkReadback": {
+      "checkedAt": "2026-10-16T08:55:41.670Z",
+      "error": "fetch failed",
+      "cause": "UND_ERR_CONNECT_TIMEOUT",
+      "causeMessage": "Connect Timeout Error (attempted address: cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com:443, timeout: 10000ms)"
+    },
+    "creationAttempts": {
+      "attempts": 2,
+      "resourceIdsReturned": 0,
+      "result": "Both local runbook attempts returned fetch failed. Resource state reconciled after each before any subsequent create."
     }
   },
   "sourceGuards": [
