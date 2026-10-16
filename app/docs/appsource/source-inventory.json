@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "c656965b3ad1291b75854e5b40edecf8038d21f8",
+  "sourceSha": "15dbfd50c6d38f8575d1552724942f38b1812e82",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -253,8 +253,8 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-13T21:34:25.425174+00:00",
-  "inventoryPreparedFromDocumentationHead": "c656965b3ad1291b75854e5b40edecf8038d21f8",
+  "refreshedAt": "2026-10-14T20:59:58.607511+00:00",
+  "inventoryPreparedFromDocumentationHead": "15dbfd50c6d38f8575d1552724942f38b1812e82",
   "productSourceBaselineUnchanged": false,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
@@ -288,13 +288,13 @@
   "productSourceFiles": {
     "app/src/Attachments/StorageAttachKeySubscr.Codeunit.al": "9f4ebfa7cfbc9473b9560027811023d90d95b8ddc3329e328d110ba803e676b9",
     "app/src/Attachments/StorageAttachmentLink.Table.al": "180f0c589cee4b4ff814b655e7174bce3cdd57f2df135570bc8a01077be29973",
-    "app/src/Attachments/StorageAttachmentMgt.Codeunit.al": "cc2edb806c0671fe5f3ed08256aade86f7279da7a93388b9ed017caeafaa45b1",
+    "app/src/Attachments/StorageAttachmentMgt.Codeunit.al": "919ed32ba10aa6da2d36b48f9ed58bad15b865b13bc51fe6ff24b88e190ec74e",
     "app/src/Attachments/StorageAttachmentSubscr.Codeunit.al": "8017ed3578db9352759778a91117e3deb4d0304fca3d2d03328025cda863e4ce",
     "app/src/Attachments/StorageAttachmentTarget.Enum.al": "84f27d1684433e418f02262d92b70b988109af24d832af93f490e319f0fa6686",
     "app/src/Attachments/StorageDocAttach.TableExt.al": "6ef7bdf57b838d8a07b6d13182648783c18203886e519e5a37eaebb450eded77",
     "app/src/Attachments/StorageIncDocAttach.TableExt.al": "83dda0fcd50bccdefc01016ad720d6a72b6dbeb885ef6e2067249309dd5bc27f",
     "app/src/DataExchange/DataExchangeQuery.Codeunit.al": "5148ac6437ba79c2286607a84a185580c8c44537e090e3bc7e548ce8e3d8d8af",
-    "app/src/Install/StorageTakeover.Codeunit.al": "15e00e1ba3a2eadf38ca3aa1801b72bf16917afcad655d4df7dd40fee5a5d3ce",
+    "app/src/Install/StorageTakeover.Codeunit.al": "22f3490cdf9b8bb3ac7f2f8eafd3a1b18ab28701f271150d6ce9fa60478b5bdd",
     "app/src/Install/StorageTakeoverState.Codeunit.al": "c178794a5ab7b24e1a60d1ff3db1a30a6edc85de1793d6db56994fe2bd7397cc",
     "app/src/Lifecycle/StorageInstall.Codeunit.al": "a5f8ad920581432a2f0be3dfbab5cfa168cee33913c1fb75539c591582e217d2",
     "app/src/Lifecycle/StorageLinkUpgrade.Codeunit.al": "f375032de37967f2339a4342e10dfdde86aa2ecc0e49eb7aad5ec517b08a6b61",
@@ -387,8 +387,8 @@
     "test/src/StorageTypeTest.EnumExt.al": "2476a20bca399542e16d35dece078d9fe83ecf22efb07b770d75b0295acba217",
     "test/test/AttachmentsBuildTestsori.Codeunit.al": "8c4e6e925e7774d049a43fc1bcc110b13c6d3fc0a5e4d961c1e99df1c7c9b49d",
     "test/test/DataExchDiscoveryTests.Codeunit.al": "ca67720f2271493a793bb075a11c0085789fa5177d03ea2b835bb8d55fb243f7",
-    "test/test/DataExchRefusal82Testsori.Codeunit.al": "4ad94b37c99e6bd2c1ca8d5341a6b9f126ce71a7b68b8e71ca2d85ef56cbcc38",
-    "test/test/Storage79PermTests.Codeunit.al": "564fd584bed49a71377b5f7e0c037f6b201065af0a22b315b0dcbdfb6638cbbf",
+    "test/test/DataExchRefusal82Testsori.Codeunit.al": "0477dde96088bfa1cc99ca7fc230115e4fd45603f382a3e517fe74215f6a50a1",
+    "test/test/Storage79PermTests.Codeunit.al": "21d501d074369521c787e1e5090d0270fdb747825289d7b04f9fae309efe43f8",
     "test/test/StorageAppRegistryTests.Codeunit.al": "168998fab9d4ead88a32ab5278569e0d055504c73619141a954927a161af80f3",
     "test/test/StorageAttachRecordTests.Codeunit.al": "d49110ee008788e38fb89359924bebe2cc5cff5c8cf1008ac3693b38e226803f",
     "test/test/StorageAttachmentFieldTests.Codeunit.al": "710fac018372e870458e6179f0f0853df946b3c64111fb11530198b6330904e7",
@@ -403,6 +403,7 @@
     "test/test/StorageSetupPageTests.Codeunit.al": "9f5ce28dc41197e791f3a29c72cd117f951e9b2a6262222d4d6e94792074720b",
     "test/test/StorageTakeoverProbeTests.Codeunit.al": "5f4a8d429f625b48dd1ca9425dcd1d99d2eb1818e87c4a0507298353b8d51de3",
     "test/test/StorageTakeoverTests.Codeunit.al": "5db520b3f0f7689041a08812440ac3b6d09d92325fbad29bc0597823cec4ae78",
+    "test/test/StorageTelemetry121Tests.Codeunit.al": "b5ef8fee63a7ab6d8b9e606d684060f185223f2362a4712cf2c126e704fe6235",
     "test/test/StorageUploadTests.Codeunit.al": "b108a0d9b358664df9c99e48f87b8b08f3c45a97f7dabba204f6d01e1f9f1ee2"
   },
   "listingAssets": {

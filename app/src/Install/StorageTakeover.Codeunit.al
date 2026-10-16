@@ -229,14 +229,23 @@ codeunit 10035676 "Storage Takeover ori"
         TakeoverState: Codeunit "Storage Takeover State ori";
         Dimensions: Dictionary of [Text, Text];
     begin
-        Dimensions.Add('company', CompanyName());
-        Dimensions.Add('tableId', Format(DeniedTableId, 0, 9));
-        Dimensions.Add('error', CopyStr(ErrorText, 1, 250));
-        Dimensions.Add('phase', ExecutionPhase());
+        Dimensions := TakeOverSkippedDimensions(DeniedTableId);
         TakeoverState.SetLastSkip(DeniedTableId, ErrorText);
         Telemetry.LogMessage(
             'ORI-BIF-0002', TakeOverSkippedTelemetryTxt, Verbosity::Normal,
             DataClassification::SystemMetadata, TelemetryScope::ExtensionPublisher, Dimensions);
+    end;
+
+    /// <summary>Builds skip telemetry without company names or free error text.</summary>
+    internal procedure TakeOverSkippedDimensions(DeniedTableId: Integer) Dimensions: Dictionary of [Text, Text]
+    begin
+        Dimensions.Add('tableId', Format(DeniedTableId, 0, 9));
+        if DeniedTableId = Database::"Access Control" then
+            Dimensions.Add('errorCode', 'WritePermissionDenied')
+        else
+            Dimensions.Add('errorCode', 'ReadPermissionDenied');
+        Dimensions.Add('operation', 'TakeOver');
+        Dimensions.Add('phase', ExecutionPhase());
     end;
 
     /// <summary>Names the lifecycle phase the take-over runs in, for telemetry: install, upgrade or manual.</summary>

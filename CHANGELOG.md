@@ -8,6 +8,13 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-14) - safe publisher telemetry (#121)
+
+- `Storage Attachment Mgt ori` (10035635) logs a fixed native-field assignment failure code and the set/clear operation instead of raw error text. `BFA-EXTSTOR-01` and the attachment system ID remain stable.
+- `Storage Takeover ori` (10035676) removes the company name and free-text error dimension from `ORI-BIF-0002`. It retains the table ID and lifecycle phase and adds fixed read/write permission-denial codes and the takeover operation. Caller behavior and the session-local skip diagnostic remain unchanged.
+- `Storage Telemetry121 Tests ori` (96227) checks the bounded metadata fields, offload/restore operation distinction and read/write denial categories. No public message contract or user-facing label changes.
+
+
 ### Fixed (2026-10-14) - native refusal diagnostics and published help evidence (#70, #79, #82)
 
 - `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.

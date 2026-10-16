@@ -1,5 +1,5 @@
 {
-  "hashSourceSha": "branch fix/attachments-open-issues-20261013 (pre-commit working tree)",
+  "hashSourceSha": "15dbfd50c6d38f8575d1552724942f38b1812e82",
   "sourceSha": "fca2943658e9843d3cfcce80ff6093657e8bd51e",
   "appId": "672df32a-a0c5-4a22-b591-0efa38023e95",
   "appVersion": "28.0.0.4",
@@ -87,7 +87,7 @@
       "id": 10035635,
       "name": "Storage Attachment Mgt ori",
       "file": "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
-      "sha256": "cc2edb806c0671fe5f3ed08256aade86f7279da7a93388b9ed017caeafaa45b1",
+      "sha256": "919ed32ba10aa6da2d36b48f9ed58bad15b865b13bc51fe6ff24b88e190ec74e",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -106,9 +106,10 @@
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/test/StorageIntegrity75Testsori.Codeunit.al",
-        "test/test/StorageNativeFieldsTests.Codeunit.al"
+        "test/test/StorageNativeFieldsTests.Codeunit.al",
+        "test/test/StorageTelemetry121Tests.Codeunit.al"
       ],
-      "nonLocalProcedureCount": 17,
+      "nonLocalProcedureCount": 18,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -230,7 +231,7 @@
       "id": 10035676,
       "name": "Storage Takeover ori",
       "file": "app/src/Install/StorageTakeover.Codeunit.al",
-      "sha256": "15e00e1ba3a2eadf38ca3aa1801b72bf16917afcad655d4df7dd40fee5a5d3ce",
+      "sha256": "22f3490cdf9b8bb3ac7f2f8eafd3a1b18ab28701f271150d6ce9fa60478b5bdd",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -244,9 +245,10 @@
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/test/StorageTakeoverProbeTests.Codeunit.al",
-        "test/test/StorageTakeoverTests.Codeunit.al"
+        "test/test/StorageTakeoverTests.Codeunit.al",
+        "test/test/StorageTelemetry121Tests.Codeunit.al"
       ],
-      "nonLocalProcedureCount": 4,
+      "nonLocalProcedureCount": 5,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
