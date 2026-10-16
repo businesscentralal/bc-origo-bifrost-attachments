@@ -99,29 +99,45 @@ codeunit 96211 "Storage Msg Conformance Tests"
     end;
 
     [Test]
-    procedure Scenario_AC02_PublicContract_UsesCallerLanguage()
+    procedure Scenario_AC02_PublicHelp_StaysEnglish()
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
         EnglishContract: JsonObject;
         IcelandicContract: JsonObject;
+        RestoredContract: JsonObject;
         EnglishText: Text;
         IcelandicText: Text;
+        RestoredText: Text;
+        IcelandicLanguageAfterHelp: Integer;
+        Ordinal: Integer;
         SavedLanguage: Integer;
     begin
-        // Story #126, AC02/03 | Time: independent of Today()/WorkDate() | Risk: Foundation must preserve request language.
-        // [GIVEN] Public contract aggregation is the path used by message-type help.
+        // Story #126, AC02/03 | Gunnar D7 option B, Architect 1792190477: public help is English-only.
+        // [GIVEN] Every Attachments type uses Foundation's public contract aggregation.
         SavedLanguage := GlobalLanguage();
-        GlobalLanguage(1033);
-        ContractMgt.GetContract(Enum::"Message Type ori"::"Storage.Account.List", EnglishContract);
-        EnglishContract.WriteTo(EnglishText);
-        // [WHEN] The caller requests the same contract in Icelandic.
-        GlobalLanguage(1039);
-        ContractMgt.GetContract(Enum::"Message Type ori"::"Storage.Account.List", IcelandicContract);
-        IcelandicContract.WriteTo(IcelandicText);
+        foreach Ordinal in AppOrdinals() do begin
+            Clear(EnglishContract);
+            Clear(IcelandicContract);
+            Clear(RestoredContract);
+            GlobalLanguage(1033);
+            ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(Ordinal), EnglishContract);
+            EnglishContract.WriteTo(EnglishText);
+            // [WHEN] Help is requested at 1033, 1039 and again at 1033.
+            GlobalLanguage(1039);
+            ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(Ordinal), IcelandicContract);
+            IcelandicLanguageAfterHelp := GlobalLanguage();
+            IcelandicContract.WriteTo(IcelandicText);
+            GlobalLanguage(1033);
+            ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(Ordinal), RestoredContract);
+            RestoredContract.WriteTo(RestoredText);
+            GlobalLanguage(SavedLanguage);
+            // [THEN] Public help is English at both LCIDs without changing the caller's language.
+            LibraryAssert.AreNotEqual('{}', EnglishText, TypeName(Ordinal) + ' public contract must exist.');
+            LibraryAssert.AreEqual(EnglishText, IcelandicText, TypeName(Ordinal) + ' public help stays English at 1039.');
+            LibraryAssert.AreEqual(EnglishText, RestoredText, TypeName(Ordinal) + ' restored English help.');
+            LibraryAssert.AreEqual(1039, IcelandicLanguageAfterHelp, TypeName(Ordinal) + ' help restores the caller language.');
+        end;
         GlobalLanguage(SavedLanguage);
-        // [THEN] Aggregation must not force English over a translated chapter.
-        LibraryAssert.IsTrue(EnglishText.Contains('The storage message is identified by its message type'), 'Public English chapter.');
-        LibraryAssert.IsTrue(IcelandicText.Contains('Geymsluboðin eru auðkennd með boðgerð sinni'), 'Public Icelandic chapter must preserve caller language.');
     end;
 
     [Test]

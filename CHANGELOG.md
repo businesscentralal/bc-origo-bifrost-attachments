@@ -12,9 +12,9 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - `Storage Contract Parts ori` (70013500) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
 
-### Changed (2026-10-16) - caller-language contract chapters (#126)
+### Changed (2026-10-16) - public help language and translated descriptions (#126)
 
-- `Storage Contract Parts ori` (70013500) uses Icelandic-translated labels for shared Storage and Data Exchange chapter text, preserving message names and JSON keys. `Storage Msg Conformance Tests` (96211) checks bilingual descriptions and chapters, the public contract aggregation path and three-part names. Public contract localization still depends on Foundation preserving the caller language.
+- `Storage Contract Parts ori` (70013500) retains translated shared Storage and Data Exchange labels, preserving message names and JSON keys. Public help follows Gunnar's D7 option B: English-only at both 1033 and 1039. `Storage Msg Conformance Tests` (96211) checks identical non-empty public contracts for all 34 types at 1033 → 1039 → 1033 and verifies that help restores the caller's language. App-supplied Storage response/discovery descriptions remain bilingual; stored descriptions remain verbatim. Direct chapter-label translation coverage and three-part-name coverage remain.
 
 ### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
 
