@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-16T22:25:46.699Z",
+  "ok": true,
+  "statusCode": 200,
+  "id": "f0c991d445a8",
+  "name": "codex-worker3-attachments122-retained-1792162093",
+  "status": {
+    "state": "Stopped",
+    "imageBuilding": false,
+    "imageBuildError": false
+  },
+  "resourceWrites": 0
+}

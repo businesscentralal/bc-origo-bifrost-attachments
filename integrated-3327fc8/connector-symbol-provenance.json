@@ -1,0 +1,102 @@
+[
+  {
+    "file": "Microsoft.External_File_Storage_Azure_Blob_Service_Connector.28.0.0.0.app",
+    "sha256": "aa094059ca791a9e3a9d725b06adfed01ec9610b8b199c5cfcfe84a9ff2d48ff",
+    "identity": {
+      "Id": "c9ce86fe-cb70-4b79-be03-d21856b1a4ca",
+      "Name": "External File Storage - Azure Blob Service Connector",
+      "Publisher": "Microsoft",
+      "Brief": "Enables file and folder operations for Azure Blob Service Containers via the External File Storage Module with Business Central.",
+      "Description": "This app enables file and folder operations for Azure Blob Service Containers via the External File Storage Module with Business Central.",
+      "Version": "28.5.54151.56408",
+      "CompatibilityId": "0.0.0.0",
+      "PrivacyStatement": "https://go.microsoft.com/fwlink/?linkid=724009",
+      "EULA": "https://go.microsoft.com/fwlink/?linkid=2009120",
+      "Help": "https://go.microsoft.com/fwlink/?linkid=2134520",
+      "HelpBaseUrl": "",
+      "ContextSensitiveHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2134520",
+      "Url": "https://go.microsoft.com/fwlink/?linkid=724011",
+      "Logo": "/logo/ExtensionLogo.png",
+      "Platform": "28.0.0.0",
+      "Application": "28.5.0.0",
+      "Runtime": "17.0",
+      "Target": "Cloud",
+      "ShowMyCode": "False"
+    }
+  },
+  {
+    "file": "Microsoft.External_File_Storage_Azure_File_Service_Connector.28.0.0.0.app",
+    "sha256": "818a2150637beae58139a69c6a720529d597d0b607ca634d891b277d86518c33",
+    "identity": {
+      "Id": "79447b11-8301-4d02-a546-2261eb811296",
+      "Name": "External File Storage - Azure File Service Connector",
+      "Publisher": "Microsoft",
+      "Brief": "Enables file and folder operations for Azure File Services via the External File Storage Module with Business Central.",
+      "Description": "This app enables file and folder operations for Azure File Services via the External File Storage Module with Business Central.",
+      "Version": "28.5.54151.56408",
+      "CompatibilityId": "0.0.0.0",
+      "PrivacyStatement": "https://go.microsoft.com/fwlink/?linkid=724009",
+      "EULA": "https://go.microsoft.com/fwlink/?linkid=2009120",
+      "Help": "https://go.microsoft.com/fwlink/?linkid=2134520",
+      "HelpBaseUrl": "",
+      "ContextSensitiveHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2134520",
+      "Url": "https://go.microsoft.com/fwlink/?linkid=724011",
+      "Logo": "/logo/ExtensionLogo.png",
+      "Platform": "28.0.0.0",
+      "Application": "28.5.0.0",
+      "Runtime": "17.0",
+      "Target": "Cloud",
+      "ShowMyCode": "False"
+    }
+  },
+  {
+    "file": "Microsoft.External_File_Storage_SFTP_Connector.28.0.0.0.app",
+    "sha256": "2e36d5c619d5b18c45b1e13f766a7ed009b7b810e4c101c42cb04d78f32ea6f2",
+    "identity": {
+      "Id": "e0df20ef-75a2-4fae-8e3a-88140ab29507",
+      "Name": "External File Storage - SFTP Connector",
+      "Publisher": "Microsoft",
+      "Brief": "Enables file and folder operations for SFTP folders and files via the External File Storage Module with Business Central.",
+      "Description": "This app enables file and folder operations for SFTP folders and files via the External File Storage Module with Business Central.",
+      "Version": "28.5.54151.56408",
+      "CompatibilityId": "0.0.0.0",
+      "PrivacyStatement": "https://go.microsoft.com/fwlink/?linkid=724009",
+      "EULA": "https://go.microsoft.com/fwlink/?linkid=2009120",
+      "Help": "https://go.microsoft.com/fwlink/?linkid=2134520",
+      "HelpBaseUrl": "",
+      "ContextSensitiveHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2134520",
+      "Url": "https://go.microsoft.com/fwlink/?linkid=724011",
+      "Logo": "/logo/ExtensionLogo.png",
+      "Platform": "28.0.0.0",
+      "Application": "28.5.0.0",
+      "Runtime": "17.0",
+      "Target": "Cloud",
+      "ShowMyCode": "False"
+    }
+  },
+  {
+    "file": "Microsoft.External_File_Storage_SharePoint_Connector.28.0.0.0.app",
+    "sha256": "8f395bc958f70e5c5e1a29da457bf8af5cfbe837338b28eb1642c7e4243b9fee",
+    "identity": {
+      "Id": "34bfcef7-f8ed-449f-94be-74024cadba3b",
+      "Name": "External File Storage - SharePoint Connector",
+      "Publisher": "Microsoft",
+      "Brief": "Enables file and folder operations for SharePoint folders and files via the External File Storage Module with Business Central.",
+      "Description": "This app enables file and folder operations for SharePoint folders and files via the External File Storage Module with Business Central.",
+      "Version": "28.5.54151.56408",
+      "CompatibilityId": "0.0.0.0",
+      "PrivacyStatement": "https://go.microsoft.com/fwlink/?linkid=724009",
+      "EULA": "https://go.microsoft.com/fwlink/?linkid=2009120",
+      "Help": "https://go.microsoft.com/fwlink/?linkid=2134520",
+      "HelpBaseUrl": "",
+      "ContextSensitiveHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2134520",
+      "Url": "https://go.microsoft.com/fwlink/?linkid=724011",
+      "Logo": "/logo/ExtensionLogo.png",
+      "Platform": "28.0.0.0",
+      "Application": "28.5.0.0",
+      "Runtime": "17.0",
+      "Target": "Cloud",
+      "ShowMyCode": "False"
+    }
+  }
+]

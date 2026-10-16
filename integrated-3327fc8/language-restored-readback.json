@@ -1,0 +1,14 @@
+{
+  "containerId": "f0c991d445a8",
+  "sha": "3327fc84ddb252111b697d78aad440b9448d1f52",
+  "verifiedAt": "2026-10-16T22:24:30.057Z",
+  "languageValues": [
+    {
+      "text": "Language\nEnglish (United States)",
+      "html": "<div id=\"b8\" class=\"ms-nav-edit-control-container edit-control-disabled show-border\" controlname=\"LanguageName\"><a class=\"ms-nav-edit-control-caption thm-bgcolor--minflat thm-font-size-small thm-segoeNormal thm-color--brand-secondary--not_FCM\" id=\"b8lbl\" tabindex=\"-1\" role=\"button\">Language</a><div class=\"edit-container thm-bgcolor--minflat edit-container-read ms-nav-editcontrolandonebuttoncontainer\" container=\"true\"><a draggable=\"false\" tabindex=\"-1\" unselectable=\"on\" role=\"button\" title=\"Review or update the value for Language\" aria-label=\"Review or update the value for Language\" class=\"ms-nav-assisteditbutton-embedded icon-MoreEllipsis edit-action-control thm-icon-color--style-standard_minflat_45 thm-icon-color--brand-primary_mintint_45--hover thm-bgcolor--mintint--hover ms-nav-button-1 ms-nav-button-separate\" aria-controls=\"b8ee\"></a><span class=\"stringcontrol-read value thm-font-size-small thm-segoeNormal thm-color--style-standard_medmaxflat_45--not_FCM thm-bgcolor--medmaxflat thm-bdrcolor--brand-primary_minflat_45--focus--not_FCM thm-outlinecolor--brand-primary_minflat_45--focus--not_FCM\" tabindex=\"0\" id=\"b8ee\" role=\"textbox\" aria-readonly=\"true\" title=\"English (United States)\" aria-labelledby=\"b8lbl\">English (United States)</span></div></div>",
+      "inputs": []
+    }
+  ],
+  "restoredToEnglish": true,
+  "readOnly": true
+}

@@ -1,0 +1,22 @@
+{
+  "sha": "3327fc84ddb252111b697d78aad440b9448d1f52",
+  "containerId": "f0c991d445a8",
+  "fullSuite": true,
+  "testSuite": "DEFAULT",
+  "testCodeunitFilter": null,
+  "extensionFilter": null,
+  "executed": 285,
+  "passed": 285,
+  "failed": 0,
+  "skipped": 0,
+  "issue122": {
+    "executed": 12,
+    "passed": 12
+  },
+  "issue124RestrictedActor": {
+    "executed": 2,
+    "passed": 2
+  },
+  "xmlPath": "after-standard-http-full-suite.junit.xml",
+  "auditAt": "2026-10-16T22:25:45.974310+00:00"
+}
