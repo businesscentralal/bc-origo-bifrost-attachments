@@ -1498,9 +1498,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CommitWhenCompleteLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3110451621" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Configured storage connections without secrets.</source>
-          <target>Uppsettar geymslutengingar án leyndarmála.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Uppsettar geymslutengingar án leyndarmála.</note>
+          <source>Configured storage connections without secrets. Each description is the stored Storage Setup ori.Description value, returned unchanged in every language, including app-seeded values; no translation table is used.</source>
+          <target>Uppsettar geymslutengingar án leyndarmála. Hver lýsing er vistað gildi reitsins Storage Setup ori.Description og er skilað óbreytt á öllum tungumálum, einnig þegar forritið stofnaði gildið; engin þýðingartafla er notuð.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Uppsettar geymslutengingar án leyndarmála. Hver lýsing er vistað gildi reitsins Storage Setup ori.Description og er skilað óbreytt á öllum tungumálum, einnig þegar forritið stofnaði gildið; engin þýðingartafla er notuð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ConfiguredStorageConnectionsWithoutSecretsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 4057454151" size-unit="char" translate="yes" xml:space="preserve">

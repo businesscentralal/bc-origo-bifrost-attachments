@@ -95,7 +95,7 @@ codeunit 70013500 "Storage Contract Parts ori"
         TheAttachmentTableAndSystemIdIdentifyLbl: Label 'The attachment table and SystemId identify the attachment.', Comment = 'is-IS=Viðhengjataflan og SystemId auðkenna viðhengið.';
         TheStorageConnectorOverviewAndMessageLbl: Label 'The storage connector overview and message type guidance.', Comment = 'is-IS=Yfirlit yfir geymslutengilinn og leiðbeiningar um boðgerðir.';
         TheDataExchangeDiscoveryOverviewAndLbl: Label 'The Data Exchange discovery overview and workflow guidance.', Comment = 'is-IS=Yfirlit yfir gagnaskiptagerðir og leiðbeiningar um verkflæði.';
-        ConfiguredStorageConnectionsWithoutSecretsLbl: Label 'Configured storage connections without secrets.', Comment = 'is-IS=Uppsettar geymslutengingar án leyndarmála.';
+        ConfiguredStorageConnectionsWithoutSecretsLbl: Label 'Configured storage connections without secrets. Each description is the stored Storage Setup ori.Description value, returned unchanged in every language, including app-seeded values; no translation table is used.', Comment = 'is-IS=Uppsettar geymslutengingar án leyndarmála. Hver lýsing er vistað gildi reitsins Storage Setup ori.Description og er skilað óbreytt á öllum tungumálum, einnig þegar forritið stofnaði gildið; engin þýðingartafla er notuð.';
         TheRequestedDirectoryPathLbl: Label 'The requested directory path.', Comment = 'is-IS=Umbeðin möppuslóð.';
         TheFilesOrDirectoriesFoundAtLbl: Label 'The files or directories found at the path.', Comment = 'is-IS=Skrárnar eða möppurnar sem fundust á slóðinni.';
         TheDownloadedFilePathLbl: Label 'The downloaded file path.', Comment = 'is-IS=Slóð sóttu skrárinnar.';

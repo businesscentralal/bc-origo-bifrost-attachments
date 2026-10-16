@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-16) - stored storage descriptions (#126)
+
+- `Storage Contract Parts ori` (70013500) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
+
 ### Changed (2026-10-16) - caller-language contract chapters (#126)
 
 - `Storage Contract Parts ori` (70013500) uses Icelandic-translated labels for shared Storage and Data Exchange chapter text, preserving message names and JSON keys. `Storage Msg Conformance Tests` (96211) checks bilingual descriptions and chapters, the public contract aggregation path and three-part names. Public contract localization still depends on Foundation preserving the caller language.
