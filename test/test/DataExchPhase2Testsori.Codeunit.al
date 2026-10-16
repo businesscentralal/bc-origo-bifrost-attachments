@@ -149,6 +149,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         Link.SetRange("Inc. Doc. Entry No.", EntryNo);
         LibraryAssert.AreEqual(1, Link.Count(), 'AC04 keeps the storage link.');
         LibraryAssert.AreEqual(false, ReadDataBool(TempArgument, 'processed'), 'AC04 does not process unless asked.');
+        AssertLinkedContentServed(EntryNo, 'vendor,amount');
     end;
 
     [Test]
@@ -190,6 +191,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         LibraryAssert.AreEqual(TypeCode, IncomingDocument."Data Exchange Type", 'AC04 process keeps the type.');
         Link.SetRange("Inc. Doc. Entry No.", EntryNo);
         LibraryAssert.AreEqual(1, Link.Count(), 'AC04 process keeps the storage link.');
+        AssertLinkedContentServed(EntryNo, 'vendor,amount');
         DataObject := ReadData(ResponseJson);
         LibraryAssert.IsTrue(DataObject.Get('processErrors', Token), 'AC04 process returns processErrors.');
         ProcessErrors := Token.AsArray();
@@ -276,6 +278,23 @@ codeunit 96237 "DataExch Phase2 Tests ori"
             'AC07 names CommitToRecord.');
         IncomingDocument.Get(EntryNo);
         LibraryAssert.AreEqual('', IncomingDocument."Data Exchange Type", 'AC07 leaves the field empty.');
+    end;
+
+    local procedure AssertLinkedContentServed(EntryNo: Integer; Expected: Text)
+    var
+        Attachment: Record "Incoming Document Attachment";
+        ContentBlob: Codeunit System.Utilities."Temp Blob";
+        ContentInStream: InStream;
+        ReadBack: Text;
+    begin
+        Attachment.SetRange("Incoming Document Entry No.", EntryNo);
+        LibraryAssert.AreEqual(1, Attachment.Count(), 'AC04 has one incoming attachment.');
+        Attachment.FindFirst();
+        LibraryAssert.IsFalse(Attachment.Content.HasValue(), 'AC04 clears local content so the read uses the storage link.');
+        LibraryAssert.IsTrue(Attachment.GetContent(ContentBlob), 'AC04 GetContent serves the linked file.');
+        ContentBlob.CreateInStream(ContentInStream);
+        ContentInStream.ReadText(ReadBack);
+        LibraryAssert.AreEqual(Expected, ReadBack, 'AC04 served bytes match the stored file.');
     end;
 
     local procedure Initialize()
