@@ -8,6 +8,15 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Added (2026-10-16) - Data Exchange Phase 2 incoming documents (#23)
+
+- `Storage.Upload.CommitToRecord` (IncomingDocument) and `Storage.Attachment.CreateLinked` accept optional `dataExchangeType`, `process` and `vendorNo`. An unknown type is refused before any write and leaves the upload session Open (AC01, AC03, AC04).
+- Isolated codeunit `DataExch Inc Doc Proc ori` (70013532) runs `Incoming Document.CreateDocumentWithDataExchange` after `Commit()`, so a processing failure leaves the incoming document. Success stays `Success` with `processed`, `createdDocument` and `processErrors[]` (AC02). Process errors are read from `Error Message.Message`; the removed `Description` field is not used.
+- `Data.Records.Set` cannot write `Incoming Document."Data Exchange Type"` (field-level, nextStep `Storage.Upload.CommitToRecord / DataExchange.Type.Set`) or `Data Exchange Type` rows (table-level, hint `DataExchange.Type.Set`) (AC07). The write-restriction subscribers take the `Force` parameter from pinned Foundation `28.0.3.530`. Force does not reopen those tables or fields.
+- `BIFROST Attach ori` grants Incoming Document RM / Incoming Document Attachment RIMD and execute of the processor. `BIFROST DataExch ori` executes Type.Set and the processor; Data Exchange Type table write stays off that set so it remains the #79 discovery role. Storage Full does not grant Data Exchange tables (AS0110).
+- Tests: `DataExch Phase2 Tests ori` (96237). AC06 remains Tester sandbox verification after merge/UAT.
+- `api-surface-objects.json` and `API-SURFACE.md` include codeunit 70013532 and the current hashes of the changed shipping files. The procedure CSV line-number snapshot was not rebuilt.
+
 ### Fixed (2026-10-14) - native refusal diagnostics and published help evidence (#70, #79, #82)
 
 - `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.

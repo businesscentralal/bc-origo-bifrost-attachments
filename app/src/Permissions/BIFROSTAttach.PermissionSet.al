@@ -1,5 +1,7 @@
 namespace Origo.Bifrost.Attachments;
 
+using Microsoft.EServices.EDocument;
+
 /// <summary>
 /// Everything a user needs to work with the storage connector: the four tables, the setup and
 /// card pages, the connectors and the message type implementations. This set is complete on its
@@ -15,11 +17,14 @@ permissionset 10035666 "BIFROST Attach ori"
     Caption = 'Bifrost Storage', Comment = 'is-IS=Bifröst geymsla';
 
     Permissions =
+        tabledata "Incoming Document" = RM,
+        tabledata "Incoming Document Attachment" = RIMD,
         tabledata "Storage Attachment Link ori" = RIMD,
         tabledata "Storage Setup ori" = RIMD,
         tabledata "Storage Upload Chunk ori" = RIMD,
         tabledata "Storage Upload Session ori" = RIMD,
         codeunit "Attachments Registration ori" = X,
+        codeunit "DataExch Inc Doc Proc ori" = X,
         codeunit "Storage Account List Impl ori" = X,
         codeunit "Storage Att. Offload Impl ori" = X,
         codeunit "Storage Att. Restore Impl ori" = X,

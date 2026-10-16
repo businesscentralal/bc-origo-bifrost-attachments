@@ -3,9 +3,10 @@ namespace Origo.Bifrost.Attachments;
 using System.IO;
 
 /// <summary>
-/// Read access to Data Exchange discovery. Import, process and export grants stay out
-/// until those message types exist. Holders do not need <c>BIFROST Attach ori</c>.
-/// Assign this set for Data Exchange table access. A permission set extension cannot
+/// Read access to Data Exchange discovery, plus execute of <c>DataExchange.Type.Set</c>.
+/// Table write on <c>Data Exchange Type</c> stays off this set so it remains the #79
+/// read-only discovery role; Type.Set still hard-fails without table write at Execute.
+/// Holders do not need <c>BIFROST Attach ori</c>. A permission set extension cannot
 /// grant or include these tables.
 /// </summary>
 permissionset 70013548 "BIFROST DataExch ori"
@@ -29,5 +30,7 @@ permissionset 70013548 "BIFROST DataExch ori"
         codeunit "DataExch Entry Get Impl ori" = X,
         codeunit "DataExch Entry List Impl ori" = X,
         codeunit "DataExch Help Get Impl ori" = X,
-        codeunit "DataExch Type List Impl ori" = X;
+        codeunit "DataExch Inc Doc Proc ori" = X,
+        codeunit "DataExch Type List Impl ori" = X,
+        codeunit "DataExch Type Set Impl ori" = X;
 }

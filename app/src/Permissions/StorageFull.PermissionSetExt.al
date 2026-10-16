@@ -23,6 +23,7 @@ permissionsetextension 10035635 "Storage Full ori" extends "BIFROST Full ori"
         codeunit "DataExch Entry Get Impl ori" = X,
         codeunit "DataExch Entry List Impl ori" = X,
         codeunit "DataExch Help Get Impl ori" = X,
+        codeunit "DataExch Inc Doc Proc ori" = X,
         codeunit "DataExch Type List Impl ori" = X,
         codeunit "Storage Account List Impl ori" = X,
         codeunit "Storage Contract Parts ori" = X,
