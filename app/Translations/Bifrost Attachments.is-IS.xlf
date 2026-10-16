@@ -2002,9 +2002,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType EmptyDirectoryExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 3351711685" size-unit="char" translate="yes" xml:space="preserve">
-          <source>List the files and subdirectories, remove their contents, then retry.</source>
-          <target>Sýndu skrár og undirmöppur, fjarlægðu innihald þeirra og reyndu svo aftur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sýndu skrár og undirmöppur, fjarlægðu innihald þeirra og reyndu svo aftur.</note>
+          <source>List the files and subdirectories, remove those entries, then retry.</source>
+          <target>Sýndu skrár og undirmöppur, fjarlægðu þær og reyndu svo aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sýndu skrár og undirmöppur, fjarlægðu þær og reyndu svo aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType EmptyDirectoryNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 2236668011" size-unit="char" translate="yes" xml:space="preserve">

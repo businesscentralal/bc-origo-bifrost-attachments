@@ -416,7 +416,7 @@ codeunit 70013500 "Storage Contract Parts ori"
         if MessageType in ['Storage.File.Delete', 'Storage.Directory.Delete'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'A linked Business Central attachment prevents the delete.', 'Restore or remove the attachment first.'));
         if MessageType = 'Storage.Directory.Delete' then
-            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The directory is not empty.', 'List its files and subdirectories, remove their contents, then retry.'));
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The directory is not empty.', 'List its files and subdirectories, remove those entries, then retry.'));
         if MessageType in ['Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The upload session is missing, closed or incomplete.', 'Begin a new session or complete the missing chunks.'));
         if MessageType in ['DataExchange.Definition.Get'] then
