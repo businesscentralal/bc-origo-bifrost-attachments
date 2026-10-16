@@ -13,11 +13,16 @@
   "full-suite-result.json": "baa259ef2f03683c93c92473cfe943932efb0d98493141b6d544fba17750d05c",
   "inventory-delta.json": "c45de4ad3ea14cb5c27bef3db26bfd12a54eca99e0037c36856a4c925854aad4",
   "native-current-counts.json": "71474e04bce0d77b9456040092561e6c8fd4a01ce77d392644e5a3dc4a9bca2a",
+  "owned-data-after.log": "0c5410a52300f4ca0c958391074dd82525587c10d22c3a8f9476b140f1ec11e7",
   "owned-data-cleanup.json": "20f5038b22e5fc6542c0e6503c690e5812cb32adf506c2068a906c334eb1544b",
   "owned-environment.json": "7e776b2933801cc8d665f3081402967b620e4627b5d9383b19584abb836bb972",
   "README.md": "a06d1852f7372e2ad420a4098d2108b4616c5531171420f24bfbc191e47d4e27",
   "scope.json": "58deae8b07263e2f523a6ac9719d3b4bfd4861edaca0ca83fc1055f37849c4d1",
   "setup-retries.json": "d21f3ef2d3784051773e0c26759c947c6d67b7dc6e122f8a795bac9f2a9352a1",
+  "static-matrix.json": "c146015eff72f173a9fe3f17472d8906dca6bc4cd33db20f2976acd7c8cec2bf",
+  "testapp-removal-readback.log": "eb674d0bff61ca4b85e4fdc0a42c18baf25990eda2ffeffd60ced9b65844da93",
+  "ui-attempt1-results.json": "11c18bc6a795dcd688c524831ea0f425c50d1c2a3df2deb751354530b8b44c73",
+  "ui-attempt2-results.json": "3e48f102b159cbf38cb7423f386e0a5b870d0931b543fcf5a4a7ea803973fcc7",
   "ui-en-US-10035635.png": "3951350f276e5816b6f0b83b538821e8a96ca2d41370814099ae4c63d0894b0d",
   "ui-en-US-10035635.txt": "9687c5e811632bc55cfd0b633f9f6baa6f95c54d84c606864ada4dd7af88ba48",
   "ui-en-US-10035637.png": "79e298515fc94f9db0953ae958fc64d100243a47b53c4abcecd1d06e2bc12be7",
@@ -26,5 +31,6 @@
   "ui-is-IS-10035635.txt": "208470bc1ee759bf000f161e6992fda72b89aa87a312b4da8bd85e843e143205",
   "ui-is-IS-10035637.png": "7810fbcc55aa13fe11a0f3728a868b3b512f28b5885a949590f2a30a2b07591d",
   "ui-is-IS-10035637.txt": "3a06dd8f8927b8afcd03d405acbb88010e2b6657d20daa2cd030179333b372f2",
+  "ui-restore.log": "44da75957e487fea5c0aba6e3dfb2387b9e248c04cb79ea85808da0e2e4ff95f",
   "ui-results.json": "8bf3991dfe2b92d89b71d478fc0be5211cb118890e8bde6f965b04ecc61e7a96"
 }

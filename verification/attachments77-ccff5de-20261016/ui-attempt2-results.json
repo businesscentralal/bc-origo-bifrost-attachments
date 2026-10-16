@@ -1,0 +1,57 @@
+{
+  "sha": "ccff5de4cd606bf6868fb8160504a47608f49e39",
+  "containerId": "f09c5823ec0a",
+  "appVersion": "28.0.0.4",
+  "testAppVersion": "28.0.0.6",
+  "scenarios": [
+    {
+      "page": 10035637,
+      "language": "en-US",
+      "lcid": 1033,
+      "expectedCaption": "Bifrost Storage Setup",
+      "passed": true,
+      "screenshot": "ui-en-US-10035637.png",
+      "at": "2026-10-16T18:42:01.890Z"
+    },
+    {
+      "page": 10035635,
+      "language": "en-US",
+      "lcid": 1033,
+      "expectedCaption": "Select File Account",
+      "passed": true,
+      "screenshot": "ui-en-US-10035635.png",
+      "at": "2026-10-16T18:42:05.300Z"
+    },
+    {
+      "page": 10035637,
+      "language": "is-IS",
+      "lcid": 1039,
+      "expectedCaption": "Uppsetning Bifröst geymslu",
+      "passed": true,
+      "screenshot": "ui-is-IS-10035637.png",
+      "at": "2026-10-16T18:42:16.319Z"
+    },
+    {
+      "page": 10035635,
+      "language": "is-IS",
+      "lcid": 1039,
+      "expectedCaption": "Velja skráareikning",
+      "passed": true,
+      "screenshot": "ui-is-IS-10035635.png",
+      "at": "2026-10-16T18:42:19.674Z"
+    }
+  ],
+  "languageSelection": "Actual My Settings page9204 Language lookup; no URL language override",
+  "verified": false,
+  "createsBusinessData": false,
+  "languageRestored": false,
+  "languageChanges": [
+    {
+      "before": "Language\nEnglish (United States)",
+      "after": "Language\nIcelandic (Iceland)",
+      "at": "2026-10-16T18:42:12.858Z"
+    }
+  ],
+  "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('English (United States)', { exact: true }).first()\u001b[22m\n\u001b[2m    - locator resolved to <span id=\"bbee\" tabindex=\"0\" role=\"textbox\" aria-readonly=\"true\" aria-labelledby=\"bblbl\" title=\"English (United States)\" class=\"stringcontrol-read value thm-font-size-small thm-segoeNormal thm-color--style-standard_medmaxflat_45--not_FCM thm-bgcolor--medmaxflat thm-bdrcolor--brand-primary_minflat_45--focus--not_FCM thm-outlinecolor--brand-primary_minflat_45--focus--not_FCM\">English (United States)</span>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <td tabindex=\"-1\" role=\"gridcell\" aria-readonly=\"true\" data-focusable=\"true\" data-prev-tabindex=\"-1\" class=\"thm-bdrcolor--palette--1301147839--border-top--not_FCM thm-bdrcolor--palette--1301147839--border-right--edit-mode-grid thm-bgcolor--minflat--safe-sel-l1-hover--view-mode-grid thm-bgcolor--mintint--hover--edit-mode-grid thm-bgcolor--medtint--grid-row-selected thm-bgcolor--palette--1726194350--grid-row-selected--edit-mode-grid thm-bgcolor--medtint--grid-row-focused--multiselect-grid thm-bgcolo…>…</td> from <div class=\"spa-view spa-task-dialog appear-fadeout animate no-animations shown\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <td tabindex=\"-1\" role=\"gridcell\" aria-readonly=\"true\" data-focusable=\"true\" data-prev-tabindex=\"-1\" class=\"thm-bdrcolor--palette--1301147839--border-top--not_FCM thm-bdrcolor--palette--1301147839--border-right--edit-mode-grid thm-bgcolor--minflat--safe-sel-l1-hover--view-mode-grid thm-bgcolor--mintint--hover--edit-mode-grid thm-bgcolor--medtint--grid-row-selected thm-bgcolor--palette--1726194350--grid-row-selected--edit-mode-grid thm-bgcolor--medtint--grid-row-focused--multiselect-grid thm-bgcolo…>…</td> from <div class=\"spa-view spa-task-dialog appear-fadeout animate no-animations shown\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    57 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <td tabindex=\"-1\" role=\"gridcell\" aria-readonly=\"true\" data-focusable=\"true\" data-prev-tabindex=\"-1\" class=\"thm-bdrcolor--palette--1301147839--border-top--not_FCM thm-bdrcolor--palette--1301147839--border-right--edit-mode-grid thm-bgcolor--minflat--safe-sel-l1-hover--view-mode-grid thm-bgcolor--mintint--hover--edit-mode-grid thm-bgcolor--medtint--grid-row-selected thm-bgcolor--palette--1726194350--grid-row-selected--edit-mode-grid thm-bgcolor--medtint--grid-row-focused--multiselect-grid thm-bgcolo…>…</td> from <div class=\"spa-view spa-task-dialog appear-fadeout animate no-animations shown\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+  "finishedAt": "2026-10-16T18:42:53.798Z"
+}

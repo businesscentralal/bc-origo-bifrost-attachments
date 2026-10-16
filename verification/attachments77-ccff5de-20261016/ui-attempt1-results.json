@@ -1,0 +1,32 @@
+{
+  "sha": "ccff5de4cd606bf6868fb8160504a47608f49e39",
+  "containerId": "f09c5823ec0a",
+  "appVersion": "28.0.0.4",
+  "testAppVersion": "28.0.0.6",
+  "scenarios": [
+    {
+      "page": 10035637,
+      "language": "en-US",
+      "lcid": 1033,
+      "expectedCaption": "Bifrost Storage Setup",
+      "passed": true,
+      "screenshot": "ui-en-US-10035637.png",
+      "at": "2026-10-16T18:35:23.435Z"
+    },
+    {
+      "page": 10035635,
+      "language": "en-US",
+      "lcid": 1033,
+      "expectedCaption": "Select File Account",
+      "passed": true,
+      "screenshot": "ui-en-US-10035635.png",
+      "at": "2026-10-16T18:35:26.921Z"
+    }
+  ],
+  "languageSelection": "Actual My Settings page9204 Language lookup; no URL language override",
+  "verified": false,
+  "createsBusinessData": false,
+  "languageRestored": false,
+  "error": "Language lookup missing Icelandic (Iceland)",
+  "finishedAt": "2026-10-16T18:35:40.525Z"
+}

@@ -1,0 +1,7 @@
+
+Welcome to the Server Admin Tool Shell!
+For a complete list of Server cmdlets type
+
+Get-Command -Module Microsoft.Dynamics.Nav.Management
+C:\Program Files\Microsoft Dynamics NAV\280\Service\Management
+Owned test app absent from default tenant; uninstall/unpublish cleanup verified.
