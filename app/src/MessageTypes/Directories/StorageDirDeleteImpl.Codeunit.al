@@ -132,7 +132,7 @@ codeunit 10035645 "Storage Dir Delete Impl ori" implements "Msg Interface ori", 
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
-        exit(Enum::"Msg Direction ori"::Outbound);
+        exit(Enum::"Msg Direction ori"::Inbound);
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

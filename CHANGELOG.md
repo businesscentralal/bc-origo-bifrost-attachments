@@ -8,6 +8,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-16) - storage write direction (#130)
+
+- External storage writes were declared Outbound, so they used the read path and skipped the write gate. `Storage.File.Create` (10035649), `Storage.File.Delete` (10035650), `Storage.File.Copy` (10035648), `Storage.File.Move` (10035654), `Storage.Directory.Create` (10035644) and `Storage.Directory.Delete` (10035645) now report message direction Inbound. Read types stay Outbound. Contract effects are unchanged.
+- `Storage Direction130 Tests ori` (96229) asserts that every Storage write or irreversible effect is Inbound, and that every Attachments type matches its contract effect, in LCIDs 1033 and 1039. `Storage Connector Tests` (96204) uses the same effect rule.
+
 ### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
 
 - `Storage Contract Parts ori` (70013500) describes `DataExchange.Import.Run` references precisely: `storageCode` and `path` receive syntax checks, but no storage/file lookup occurs, neither reference is stored on the entry header, and no file content is read. This selects issue #122 AC01's documentation alternative and preserves the existing header-only behavior.
