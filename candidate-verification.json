@@ -1,11 +1,119 @@
 {
-  "candidateSha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-  "branch": "fix/122-storage-refusals-worker3",
-  "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/fix/122-storage-refusals-worker3",
-  "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/2215e7ae7d37372d1983f607ade63c63f5838eb8",
-  "recordedAt": "2026-10-16T08:58:08.579719+00:00",
-  "scope": "122 original AC1-3 only; File.Delete proposal excluded",
-  "sourceTreeClean": true,
+  "candidateSha": "d22cea51e8060b4f15ffe456a7b76ea1888a51a2",
+  "candidate": {
+    "repo": "businesscentralal/bc-origo-bifrost-attachments",
+    "branch": "fix/122-storage-refusals-worker3",
+    "sha": "d22cea51e8060b4f15ffe456a7b76ea1888a51a2",
+    "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/fix/122-storage-refusals-worker3",
+    "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/d22cea51e8060b4f15ffe456a7b76ea1888a51a2",
+    "remoteVerifiedAt": "2026-10-16T12:17:55.379Z"
+  },
+  "recordedAt": "2026-10-16T12:23:22.476640+00:00",
+  "compile": {
+    "at": "2026-10-16T12:16:46.735571+00:00",
+    "compiler": "/workspace/runtime/al181/extension/bin/alc.dll",
+    "compilerSha256": "ef19d8da1bf12c42140e84de31c7129a1698cb379cb52df11f00870f6ac7b9b4",
+    "sourceHead": "d22cea51e8060b4f15ffe456a7b76ea1888a51a2",
+    "workingDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "foundationProvenance": "Retained Foundation556 Test product from original immutable artifact; see dependency-provenance.json",
+    "foundationVersion": "28.0.4.556",
+    "apps": {
+      "app": {
+        "exit": 0,
+        "errors": 0,
+        "warnings": 0,
+        "artifactSha256": "283aeb964823e0c0e49c8a26c754d2b9e9009f9abbdfe7be872ba97186d5e999"
+      },
+      "testApp": {
+        "exit": 0,
+        "errors": 0,
+        "warnings": 0,
+        "artifactSha256": "e1fe4af43b94e68a6269190330225f2677ef7a9b66b314aac704732738e07f1a"
+      }
+    }
+  },
+  "analyzersAppliedToBothApps": [
+    "CodeCop",
+    "UICop",
+    "AppSourceCop"
+  ],
+  "guards": {
+    "sha": "d22cea51e8060b4f15ffe456a7b76ea1888a51a2",
+    "results": [
+      {
+        "guard": "ContractParameterKeys",
+        "exit": 0
+      },
+      {
+        "guard": "MixedLanguageLabels",
+        "exit": 0
+      },
+      {
+        "guard": "NoClientCallstack",
+        "exit": 0
+      },
+      {
+        "guard": "NoObsolete",
+        "exit": 0
+      },
+      {
+        "guard": "PermissionCoverage",
+        "exit": 0
+      },
+      {
+        "guard": "ValidatedTableView",
+        "exit": 0
+      },
+      {
+        "guard": "IcelandicKeywordCounts",
+        "exit": 0
+      },
+      {
+        "guard": "IcelandicXlfInSync",
+        "exit": 0
+      },
+      {
+        "guard": "UniqueObjectIds",
+        "exit": 0
+      }
+    ]
+  },
+  "native": {
+    "fullSuite": true,
+    "total": 277,
+    "passed": 219,
+    "failed": 58,
+    "skipped": 0,
+    "newTests": {
+      "total": 9,
+      "passed": 7,
+      "failed": 2
+    }
+  },
+  "ui": {
+    "executed": 4,
+    "passed": 4,
+    "failed": 0,
+    "languages": [
+      1033,
+      1039
+    ],
+    "scope": "Related setup navigation/localized captions only; no provider operation claimed"
+  },
+  "mcp": {
+    "types": [
+      "DataExchange.Import.Run",
+      "Storage.Directory.Delete"
+    ],
+    "functionalExecuted": 0,
+    "passed": 0,
+    "status": "UNVERIFIED",
+    "dependency": "Core API EULA_REQUIRED pre-dispatch; no EULA/trial/licence writes. Gate observed before test-only repair; no blocked probe replay."
+  },
+  "acceptance": "Original122AC01-AC03 only; not complete",
+  "prReady": false,
+  "deliveryComplete": false,
+  "httpDependency": "Two new import native tests stop at automatic HTTP setup guard for registered apps; prior56 dispatcher assertions also remain failed. No per-app workaround or exclusion.",
   "sourceHashes": [
     {
       "path": "app/AppSourceCop.json",
@@ -481,7 +589,7 @@
     },
     {
       "path": "test/test/StorageRefusal122Tests.Codeunit.al",
-      "sha256": "fa94b48314cbb481a63269a98b056cc374ef9bd66d84c0eb759bd2ae76dba620"
+      "sha256": "8d135abc5f766bc9a247bd64c70a8067b9c8d7f194d1cd1229abeaa914322517"
     },
     {
       "path": "test/test/StorageSetupPageTests.Codeunit.al",
@@ -499,175 +607,5 @@
       "path": "test/test/StorageUploadTests.Codeunit.al",
       "sha256": "b108a0d9b358664df9c99e48f87b8b08f3c45a97f7dabba204f6d01e1f9f1ee2"
     }
-  ],
-  "compile": {
-    "at": "2026-10-16T08:42:35.897532+00:00",
-    "compiler": "/workspace/runtime/al181/extension/bin/alc.dll",
-    "compilerSha256": "ef19d8da1bf12c42140e84de31c7129a1698cb379cb52df11f00870f6ac7b9b4",
-    "sourceHead": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-    "workingDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "foundationProvenance": "Retained Foundation556 Test product from original immutable artifact; see dependency-provenance.json",
-    "foundationVersion": "28.0.4.556",
-    "apps": {
-      "app": {
-        "exit": 0,
-        "errors": 0,
-        "warnings": 0,
-        "artifactSha256": "45d7de265f2768322bd077047c0b3a1153f5988ff60910c5037e76ecad69dd47"
-      },
-      "testApp": {
-        "exit": 0,
-        "errors": 0,
-        "warnings": 0,
-        "artifactSha256": "8de66a8e62d219f0bef80657aa134425be72db5d27ba4dc4b5bcd143cc3c1d06"
-      }
-    },
-    "analyzersAppliedToBothApps": [
-      {
-        "name": "CodeCop",
-        "sha256": "d029772acc06f463fcdfe72262aab36bf3f6f8c10b020dced543e7aef74692cb"
-      },
-      {
-        "name": "UICop",
-        "sha256": "f46fc3b3caf33033411a5e7198b8f380df6b6a20161e4640b80717ede09dd0ee"
-      },
-      {
-        "name": "AppSourceCop",
-        "sha256": "efb8cc7d5dede50f9ab51991691daddd45afed7c470f78f09affad8e6ee58eaf"
-      }
-    ]
-  },
-  "runtime": {
-    "fullSuite": {
-      "executed": 0,
-      "passed": 0,
-      "failed": 0,
-      "skipped": 0,
-      "status": "NOT RUN: worker-3 local HTTPS connection to canonical COSMO host times out; configured COSMO resource tool succeeds but cannot provision through the local runbook path"
-    },
-    "newTests": {
-      "authored": 9,
-      "executed": 0
-    },
-    "ui": {
-      "executed": 0,
-      "languagesRequired": [
-        1033,
-        1039
-      ],
-      "status": "NOT RUN"
-    },
-    "mcp": {
-      "touchedMessageTypes": [
-        "DataExchange.Import.Run",
-        "Storage.Directory.Delete"
-      ],
-      "executed": 0,
-      "passed": 0,
-      "status": "UNVERIFIED",
-      "fixturesCreated": [],
-      "cleanup": "No fixtures or resource ID; successful configured COSMO readback after both failed creates shows zero matching task resources. No deletion or404 claimed."
-    },
-    "resourceReadback": {
-      "checkedAt": "2026-10-16T08:56:56.160Z",
-      "ok": true,
-      "statusCode": 200,
-      "total": 11,
-      "own": []
-    },
-    "localNetworkReadback": {
-      "checkedAt": "2026-10-16T08:55:41.670Z",
-      "error": "fetch failed",
-      "cause": "UND_ERR_CONNECT_TIMEOUT",
-      "causeMessage": "Connect Timeout Error (attempted address: cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com:443, timeout: 10000ms)"
-    },
-    "creationAttempts": {
-      "attempts": 2,
-      "resourceIdsReturned": 0,
-      "result": "Both local runbook attempts returned fetch failed. Resource state reconciled after each before any subsequent create."
-    }
-  },
-  "sourceGuards": [
-    {
-      "name": "NoClientCallstack",
-      "sha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-      "exit": 0,
-      "lastOutput": "No call stack is returned or documented to callers.\n"
-    },
-    {
-      "name": "ValidatedTableView",
-      "sha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-      "exit": 0,
-      "lastOutput": "Every applied tableView is validated first.\n"
-    },
-    {
-      "name": "NoObsolete",
-      "sha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-      "exit": 0,
-      "lastOutput": "No obsolete declaration and no AL0432/AL0667 pragma in the app, apart from the allow-listed VAT Amount Line pragmas.\n"
-    },
-    {
-      "name": "PermissionCoverage",
-      "sha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-      "exit": 0,
-      "lastOutput": "Every page, query, report and xmlport is granted by an assignable permission set.\n"
-    },
-    {
-      "name": "ContractParameterKeys",
-      "sha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-      "exit": 0,
-      "lastOutput": "Every contract parameter is a key the code reads, and every key the code reads is declared (0 allow-listed).\n"
-    },
-    {
-      "name": "MixedLanguageLabels",
-      "sha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-      "exit": 0,
-      "lastOutput": "No procedure answers a Locked English sentence.\n"
-    },
-    {
-      "name": "IcelandicKeywordCounts",
-      "sha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-      "exit": 0,
-      "lastOutput": "Every Icelandic keyword list has at least as many entries as the English one (34 in the source, 34 in the xlf).\n"
-    },
-    {
-      "name": "UniqueObjectIds",
-      "sha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-      "exit": 0,
-      "lastOutput": "Unique object IDs: no object or enum value collisions.\n"
-    },
-    {
-      "name": "IcelandicXlfInSync",
-      "sha": "2215e7ae7d37372d1983f607ade63c63f5838eb8",
-      "exit": 0,
-      "lastOutput": "The committed is-IS.xlf is what tools/Update-IcelandicXlf.ps1 generates from the build.\n"
-    }
-  ],
-  "apiSurface": {
-    "staticOnly": true,
-    "objectsChecked": 79,
-    "errors": []
-  },
-  "acceptance": [
-    {
-      "id": "AC01",
-      "implemented": "Documentation alternative: syntax-only caller references; not resolved, read or persisted. Existing header-only handler unchanged.",
-      "verified": "Both apps compiled; contract/source guards pass. Native/MCP runtime pending."
-    },
-    {
-      "id": "AC02",
-      "implemented": "Files and subdirectories preflight; localized PreconditionFailed with parameter, expected and nextStep; linked-attachment guard first; documented contract.",
-      "verified": "Compiled. Native/provider/UI/MCP runtime pending."
-    },
-    {
-      "id": "AC03",
-      "implemented": "9 tests in96228, bilingual source labels and generated is-IS XLF; no new warning suppressions or skipped tests.",
-      "verified": "Product/test compilation0errors0warnings with all three analyzers;9guards and79-object inventory pass; native execution pending."
-    }
-  ],
-  "prReady": false,
-  "claudeVerified": false,
-  "grokCleared": false,
-  "supersedesSha": "8dc7af8a2f93454fc7cf2430c8cf033d1e62335a",
-  "supersessionReason": "Recovery instructions now explicitly require removal of child entries, not only their contents; both apps recompiled at replacement SHA, no runtime passes transferred."
+  ]
 }

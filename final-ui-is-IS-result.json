@@ -1,0 +1,25 @@
+{
+  "candidateSha": "d22cea51e8060b4f15ffe456a7b76ea1888a51a2",
+  "containerId": "f001336c42b3",
+  "results": [
+    {
+      "locale": "is-IS",
+      "lcid": 1039,
+      "pageId": 10035677,
+      "expectedCaption": "Uppsetning Bifröst viðhengja",
+      "passed": true,
+      "scenario": "Authenticated owned setup page navigation and localized caption; no provider/data mutation",
+      "checkedAt": "2026-10-16T12:21:39.367Z"
+    },
+    {
+      "locale": "is-IS",
+      "lcid": 1039,
+      "pageId": 10035637,
+      "expectedCaption": "Uppsetning Bifröst geymslu",
+      "passed": true,
+      "scenario": "Authenticated owned setup page navigation and localized caption; no provider/data mutation",
+      "checkedAt": "2026-10-16T12:21:41.698Z"
+    }
+  ],
+  "limitation": "Related setup UI only; functional touched-message responses require MCP licensing disposition. No provider deletion via UI claimed."
+}
