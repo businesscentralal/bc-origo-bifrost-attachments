@@ -1,0 +1,18 @@
+{
+  "sha": "ccff5de4cd606bf6868fb8160504a47608f49e39",
+  "baseSha": "b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005",
+  "changedFiles": [
+    "API-SURFACE.md",
+    "api-surface-objects.json",
+    "api-surface-procedures.csv"
+  ],
+  "alChanged": false,
+  "testChanged": false,
+  "messageTypesChanged": [],
+  "pipelineChanged": false,
+  "manifestsChanged": false,
+  "translationsChanged": false,
+  "objectIdentitiesHashesAccessDecisionsFieldsEnumValuesUnchanged": 79,
+  "procedureSignaturesAndAccessUnchanged": 774,
+  "reason": "Audit documentation and inventory provenance/local consumer lists/declaration-line metadata only; no executable or wire contract change"
+}

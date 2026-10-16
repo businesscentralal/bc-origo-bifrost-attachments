@@ -1,0 +1,785 @@
+{
+  "sourceSha": "b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005",
+  "consumerObjectsChanged": 11,
+  "procedureLinesChanged": 31,
+  "consumerChanges": [
+    {
+      "file": "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
+      "beforeApp": [
+        "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "afterApp": [
+        "app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "beforeTest": [
+        "test/src/Permissions/Storage79Column.PermissionSet.al",
+        "test/src/Permissions/Storage79Def.PermissionSet.al",
+        "test/src/Permissions/Storage79Entry.PermissionSet.al",
+        "test/src/Permissions/Storage79Field.PermissionSet.al",
+        "test/src/Permissions/Storage79FldMap.PermissionSet.al",
+        "test/src/Permissions/Storage79Line.PermissionSet.al",
+        "test/src/Permissions/Storage79Map.PermissionSet.al",
+        "test/src/Permissions/Storage79Type.PermissionSet.al"
+      ],
+      "afterTest": [
+        "test/src/Permissions/Storage79Column.PermissionSet.al",
+        "test/src/Permissions/Storage79Def.PermissionSet.al",
+        "test/src/Permissions/Storage79Entry.PermissionSet.al",
+        "test/src/Permissions/Storage79Field.PermissionSet.al",
+        "test/src/Permissions/Storage79FldMap.PermissionSet.al",
+        "test/src/Permissions/Storage79Line.PermissionSet.al",
+        "test/src/Permissions/Storage79Map.PermissionSet.al",
+        "test/src/Permissions/Storage79Type.PermissionSet.al"
+      ]
+    },
+    {
+      "file": "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+      "beforeApp": [
+        "app/src/MessageTypes/DataExchange/DataExchDefDelMsgType.EnumExt.al"
+      ],
+      "afterApp": [
+        "app/src/MessageTypes/DataExchange/DataExchDefDelMsgType.EnumExt.al"
+      ],
+      "beforeTest": [],
+      "afterTest": [
+        "test/src/Permissions/LangSetupRead.PermissionSet.al"
+      ]
+    },
+    {
+      "file": "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
+      "beforeApp": [
+        "app/src/MessageTypes/DataExchange/DataExchExportMsgType.EnumExt.al"
+      ],
+      "afterApp": [
+        "app/src/MessageTypes/DataExchange/DataExchExportMsgType.EnumExt.al"
+      ],
+      "beforeTest": [
+        "test/test/AttachmentsBuildTestsori.Codeunit.al"
+      ],
+      "afterTest": [
+        "test/src/Permissions/LangSetupRead.PermissionSet.al",
+        "test/test/AttachmentsBuildTestsori.Codeunit.al"
+      ]
+    },
+    {
+      "file": "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
+      "beforeApp": [
+        "app/src/MessageTypes/DataExchange/DataExchImportMsgType.EnumExt.al"
+      ],
+      "afterApp": [
+        "app/src/MessageTypes/DataExchange/DataExchImportMsgType.EnumExt.al"
+      ],
+      "beforeTest": [],
+      "afterTest": [
+        "test/src/Permissions/LangSetupRead.PermissionSet.al"
+      ]
+    },
+    {
+      "file": "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
+      "beforeApp": [
+        "app/src/MessageTypes/DataExchange/DataExchTypeSetEnumExt.EnumExt.al"
+      ],
+      "afterApp": [
+        "app/src/MessageTypes/DataExchange/DataExchTypeSetEnumExt.EnumExt.al"
+      ],
+      "beforeTest": [
+        "test/test/AttachmentsBuildTestsori.Codeunit.al"
+      ],
+      "afterTest": [
+        "test/src/Permissions/LangSetupRead.PermissionSet.al",
+        "test/test/AttachmentsBuildTestsori.Codeunit.al"
+      ]
+    },
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "beforeApp": [
+        "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachRecordImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "afterApp": [
+        "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachRecordImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "beforeTest": [],
+      "afterTest": [
+        "test/test/StorageRefusal122Tests.Codeunit.al"
+      ]
+    },
+    {
+      "file": "app/src/Setup/StorageSetup.Page.al",
+      "beforeApp": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/Install/StorageTakeover.Codeunit.al",
+        "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Setup/AttachmentsSetup.Page.al",
+        "app/src/Setup/StorageCard.Page.al",
+        "app/src/Setup/StorageConnPart.Page.al",
+        "app/src/Setup/StorageSetup.Table.al",
+        "app/src/Storage/StorageConnector.Interface.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+        "app/src/Storage/StorageRequestMgt.Codeunit.al",
+        "app/src/Storage/StorageRequestReader.Codeunit.al",
+        "app/src/Upload/StorageDataRestriction.Codeunit.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "afterApp": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/Install/StorageTakeover.Codeunit.al",
+        "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Setup/AttachmentsSetup.Page.al",
+        "app/src/Setup/StorageCard.Page.al",
+        "app/src/Setup/StorageConnPart.Page.al",
+        "app/src/Setup/StorageSetup.Table.al",
+        "app/src/Storage/StorageConnector.Interface.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+        "app/src/Storage/StorageRequestMgt.Codeunit.al",
+        "app/src/Storage/StorageRequestReader.Codeunit.al",
+        "app/src/Upload/StorageDataRestriction.Codeunit.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "beforeTest": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/src/StorageMockImpl.Codeunit.al",
+        "test/test/Storage79PermTests.Codeunit.al",
+        "test/test/StorageAttachmentFieldTests.Codeunit.al",
+        "test/test/StorageAttachRecordTests.Codeunit.al",
+        "test/test/StorageConnectorTests.Codeunit.al",
+        "test/test/StorageErrorResponseTests.Codeunit.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
+        "test/test/StorageNativeFieldsTests.Codeunit.al",
+        "test/test/StorageSetupPageTests.Codeunit.al",
+        "test/test/StorageTakeoverProbeTests.Codeunit.al",
+        "test/test/StorageUploadTests.Codeunit.al"
+      ],
+      "afterTest": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/src/StorageMockImpl.Codeunit.al",
+        "test/test/Storage79PermTests.Codeunit.al",
+        "test/test/StorageAttachRecordTests.Codeunit.al",
+        "test/test/StorageAttachmentFieldTests.Codeunit.al",
+        "test/test/StorageConnectorTests.Codeunit.al",
+        "test/test/StorageErrorResponseTests.Codeunit.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
+        "test/test/StorageNativeFieldsTests.Codeunit.al",
+        "test/test/StorageRefusal122Tests.Codeunit.al",
+        "test/test/StorageSetupPageTests.Codeunit.al",
+        "test/test/StorageTakeoverProbeTests.Codeunit.al",
+        "test/test/StorageUploadTests.Codeunit.al"
+      ]
+    },
+    {
+      "file": "app/src/Setup/StorageSetup.Table.al",
+      "beforeApp": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/Install/StorageTakeover.Codeunit.al",
+        "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Setup/AttachmentsSetup.Page.al",
+        "app/src/Setup/StorageCard.Page.al",
+        "app/src/Setup/StorageConnPart.Page.al",
+        "app/src/Setup/StorageSetup.Page.al",
+        "app/src/Storage/StorageConnector.Interface.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+        "app/src/Storage/StorageRequestMgt.Codeunit.al",
+        "app/src/Storage/StorageRequestReader.Codeunit.al",
+        "app/src/Upload/StorageDataRestriction.Codeunit.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "afterApp": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/Install/StorageTakeover.Codeunit.al",
+        "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Setup/AttachmentsSetup.Page.al",
+        "app/src/Setup/StorageCard.Page.al",
+        "app/src/Setup/StorageConnPart.Page.al",
+        "app/src/Setup/StorageSetup.Page.al",
+        "app/src/Storage/StorageConnector.Interface.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+        "app/src/Storage/StorageRequestMgt.Codeunit.al",
+        "app/src/Storage/StorageRequestReader.Codeunit.al",
+        "app/src/Upload/StorageDataRestriction.Codeunit.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "beforeTest": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/src/StorageMockImpl.Codeunit.al",
+        "test/test/Storage79PermTests.Codeunit.al",
+        "test/test/StorageAttachmentFieldTests.Codeunit.al",
+        "test/test/StorageAttachRecordTests.Codeunit.al",
+        "test/test/StorageConnectorTests.Codeunit.al",
+        "test/test/StorageErrorResponseTests.Codeunit.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
+        "test/test/StorageNativeFieldsTests.Codeunit.al",
+        "test/test/StorageSetupPageTests.Codeunit.al",
+        "test/test/StorageTakeoverProbeTests.Codeunit.al",
+        "test/test/StorageUploadTests.Codeunit.al"
+      ],
+      "afterTest": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/src/StorageMockImpl.Codeunit.al",
+        "test/test/Storage79PermTests.Codeunit.al",
+        "test/test/StorageAttachRecordTests.Codeunit.al",
+        "test/test/StorageAttachmentFieldTests.Codeunit.al",
+        "test/test/StorageConnectorTests.Codeunit.al",
+        "test/test/StorageErrorResponseTests.Codeunit.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
+        "test/test/StorageNativeFieldsTests.Codeunit.al",
+        "test/test/StorageRefusal122Tests.Codeunit.al",
+        "test/test/StorageSetupPageTests.Codeunit.al",
+        "test/test/StorageTakeoverProbeTests.Codeunit.al",
+        "test/test/StorageUploadTests.Codeunit.al"
+      ]
+    },
+    {
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "beforeApp": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/Setup/StorageSetup.Table.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+        "app/src/Storage/StorageRequestMgt.Codeunit.al",
+        "app/src/Storage/StorageType.Enum.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "afterApp": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/Setup/StorageSetup.Table.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+        "app/src/Storage/StorageRequestMgt.Codeunit.al",
+        "app/src/Storage/StorageType.Enum.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "beforeTest": [
+        "test/src/StorageMockImpl.Codeunit.al",
+        "test/src/StorageTypeTest.EnumExt.al"
+      ],
+      "afterTest": [
+        "test/src/StorageMockImpl.Codeunit.al",
+        "test/src/StorageTypeTest.EnumExt.al",
+        "test/test/StorageRefusal122Tests.Codeunit.al"
+      ]
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "beforeApp": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachRecordImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+        "app/src/Storage/StorageRequestReader.Codeunit.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "afterApp": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/Attachments/StorageAttachmentSubscr.Codeunit.al",
+        "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/Attachments/StorageAttachRecordImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+        "app/src/Storage/StorageRequestReader.Codeunit.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "beforeTest": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al"
+      ],
+      "afterTest": [
+        "test/src/Permissions/LangSetupRead.PermissionSet.al",
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/StorageIntegrity75Testsori.Codeunit.al",
+        "test/test/StorageRefusal122Tests.Codeunit.al"
+      ]
+    },
+    {
+      "file": "app/src/Storage/StorageRequestReader.Codeunit.al",
+      "beforeApp": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+        "app/src/Storage/StorageRequestMgt.Codeunit.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "afterApp": [
+        "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+        "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+        "app/src/Storage/StorageRequestMgt.Codeunit.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "beforeTest": [
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/StorageErrorResponseTests.Codeunit.al"
+      ],
+      "afterTest": [
+        "test/src/Permissions/LangSetupRead.PermissionSet.al",
+        "test/src/Permissions/Storage79Link.PermissionSet.al",
+        "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/StorageErrorResponseTests.Codeunit.al"
+      ]
+    }
+  ],
+  "lineChanges": [
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "signature": "GetEnvelope(DataRequired: Boolean) Envelope: JsonObject",
+      "before": 58,
+      "after": 59
+    },
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "signature": "GetDataExchangeEnvelope(DataRequired: Boolean) Envelope: JsonObject",
+      "before": 75,
+      "after": 76
+    },
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "signature": "IsDataExchangeType(MessageType: Text): Boolean",
+      "before": 92,
+      "after": 93
+    },
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "signature": "GetParameters(MessageType: Text) Parameters: JsonArray",
+      "before": 98,
+      "after": 99
+    },
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "signature": "GetAttachmentTarget() Target: JsonArray",
+      "before": 226,
+      "after": 228
+    },
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "signature": "GetDataExchangeTarget(MessageType: Text) Target: JsonArray",
+      "before": 236,
+      "after": 238
+    },
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "signature": "GetResponse(MessageType: Text) Response: JsonObject",
+      "before": 251,
+      "after": 253
+    },
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "signature": "GetErrors(MessageType: Text) Errors: JsonArray",
+      "before": 396,
+      "after": 398
+    },
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "signature": "GetEffect(MessageType: Text) Effect: JsonObject",
+      "before": 429,
+      "after": 433
+    },
+    {
+      "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "signature": "GetRelated(MessageType: Text) Related: JsonArray",
+      "before": 485,
+      "after": 489
+    },
+    {
+      "file": "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+      "signature": "AddUnverifiedOperation(var Argument: Record \"Message Argument ori\"; ParameterName: Text; Capability: Text)",
+      "before": 433,
+      "after": 431
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "PathIsSafe(Path: Text): Boolean",
+      "before": 41,
+      "after": 44
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "CanonicalPath(Path: Text): Text",
+      "before": 65,
+      "after": 68
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "CombinedPath(BasePath: Text; Path: Text): Text",
+      "before": 71,
+      "after": 74
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "PathsEqual(FirstPath: Text; SecondPath: Text; CaseSensitive: Boolean): Boolean",
+      "before": 83,
+      "after": 86
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "CheckUnlinkedDestination(var Argument: Record \"Message Argument ori\"; StorageCode: Code[20]; Path: Text; ParameterName: Text): Boolean",
+      "before": 105,
+      "after": 108
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ThrowUnsafePath(Path: Text)",
+      "before": 124,
+      "after": 127
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ReadSetup(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; var StorageSetup: Record \"Storage Setup ori\"; var Connector: Interface \"Storage Connector ori\"): Boolean",
+      "before": 138,
+      "after": 141
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ResolveSetup(var Argument: Record \"Message Argument ori\"; StorageCode: Text; ParameterName: Text; var StorageSetup: Record \"Storage Setup ori\"; var Connector: Interface \"Storage Connector ori\"): Boolean",
+      "before": 159,
+      "after": 162
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "GetText(RequestJson: JsonObject; PropertyName: Text): Text",
+      "before": 177,
+      "after": 180
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ExecuteList(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; EntryType: Enum \"Ext. File Storage File Type\")",
+      "before": 196,
+      "after": 199
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ExecuteGetFile(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+      "before": 222,
+      "after": 225
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ExecuteCreateFile(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; var TempBlob: Codeunit \"Temp Blob\")",
+      "before": 248,
+      "after": 251
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ExecuteDeleteFile(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+      "before": 270,
+      "after": 273
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ExecuteCreateDirectory(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+      "before": 293,
+      "after": 296
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ExecuteDeleteDirectory(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+      "before": 310,
+      "after": 313
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ExecuteCopyFile(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; SourcePath: Text; TargetPath: Text)",
+      "before": 334,
+      "after": 346
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ExecuteMoveFile(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; SourcePath: Text; TargetPath: Text)",
+      "before": 352,
+      "after": 364
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ExecuteFileExists(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+      "before": 391,
+      "after": 403
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "ExecuteDirectoryExists(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+      "before": 403,
+      "after": 415
+    },
+    {
+      "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "signature": "RespondSuccess(var Argument: Record \"Message Argument ori\"; DataObject: JsonObject)",
+      "before": 476,
+      "after": 488
+    }
+  ],
+  "signaturesChanged": 0,
+  "accessDecisionsChanged": 0
+}

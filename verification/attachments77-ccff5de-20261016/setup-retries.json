@@ -1,0 +1,22 @@
+{
+  "sha": "ccff5de4cd606bf6868fb8160504a47608f49e39",
+  "unitFailures": 0,
+  "sourceRepairNeeded": false,
+  "details": [
+    {
+      "step": "Default deployment preparation",
+      "observed": "Initial HTTP422 rejected dependent test-app compilation while friend test app was still published; original extensions were restored.",
+      "resolution": "Read actual identity/state; uninstall once, unpublish in the actual default tenant, verify absence, then publish no-friend Default successfully and compare downloaded bytes."
+    },
+    {
+      "step": "Owned read-only cleanup verification",
+      "observed": "The application database CRONUS contains no tenant storage rows; Get-NAVTenant identified the actual default database.",
+      "resolution": "Read8operational storage tables in the owned tenant; all counts0. No database writes were used for cleanup."
+    },
+    {
+      "step": "UI automation setup",
+      "observed": "Initial language navigation used an obsolete settings page, then an English tooltip and an underlying Region value during Icelandic restore.",
+      "resolution": "Use actual My Settings9204, active language lookup, locale-independent grid cells and localized confirmation.4final acceptance scenarios passed; English restored. Earlier private navigation diagnostics retained."
+    }
+  ]
+}

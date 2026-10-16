@@ -1,0 +1,14 @@
+{
+  "sha": "ccff5de4cd606bf6868fb8160504a47608f49e39",
+  "containerId": "f09c5823ec0a",
+  "mode": "Default",
+  "version": "28.0.0.4",
+  "compiledSha256": "f4653a4391d7d15211cf7052d1a3717af26e35c8a39af92d4470eb06c78d6c0a",
+  "deployedSha256": "f4653a4391d7d15211cf7052d1a3717af26e35c8a39af92d4470eb06c78d6c0a",
+  "deployedBytesMatch": true,
+  "friendCount": 0,
+  "testAppUnpublished": true,
+  "testAppAbsenceEvidence": "testapp-removal-readback.log",
+  "signed": false,
+  "signatureTrustClaimed": false
+}

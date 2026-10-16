@@ -1,0 +1,44 @@
+{
+  "sha": "ccff5de4cd606bf6868fb8160504a47608f49e39",
+  "containerId": "f09c5823ec0a",
+  "verifiedAt": "2026-10-16T18:39:45.910Z",
+  "verification": "Read-only SQL counts in owned default tenant;4operational storage tables in each of2companies",
+  "tables": [
+    {
+      "name": "CRONUS International Ltd_$Storage Attachment Link ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "count": 0
+    },
+    {
+      "name": "CRONUS International Ltd_$Storage Setup ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "count": 0
+    },
+    {
+      "name": "CRONUS International Ltd_$Storage Upload Chunk ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "count": 0
+    },
+    {
+      "name": "CRONUS International Ltd_$Storage Upload Session ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "count": 0
+    },
+    {
+      "name": "My Company$Storage Attachment Link ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "count": 0
+    },
+    {
+      "name": "My Company$Storage Setup ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "count": 0
+    },
+    {
+      "name": "My Company$Storage Upload Chunk ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "count": 0
+    },
+    {
+      "name": "My Company$Storage Upload Session ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "count": 0
+    }
+  ],
+  "mcpFixturesCreated": 0,
+  "uiBusinessFixturesCreated": 0,
+  "developmentContainerDeleted": false,
+  "developmentContainerRetention": "Standing1792155806.391819: retain until Tester post-deploy UAT pass and issue closure; no UAT deletion performed"
+}

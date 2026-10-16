@@ -1,0 +1,8 @@
+{
+  "id": "f09c5823ec0a",
+  "name": "codex-worker4-attachments77-20261016",
+  "createdAt": "2026-10-16T18:21:41.746Z",
+  "worker": "worker-4",
+  "issue": 77,
+  "cleanupRule": "Retain development environment until Tester UAT pass and issue closure per standing1792155806.391819"
+}

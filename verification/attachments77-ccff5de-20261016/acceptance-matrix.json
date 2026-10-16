@@ -1,0 +1,33 @@
+{
+  "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/77",
+  "sha": "ccff5de4cd606bf6868fb8160504a47608f49e39",
+  "issueComplete": false,
+  "criteria": {
+    "AC01": {
+      "implemented": "Current79-object/774-procedure/11-public-member matrix and local consumers/declaration lines reconciled",
+      "verified": "79source identities/hashes;774signatures/access retained;14static regressions",
+      "pending": "Independent review; authoritative historical publication/baseline and tenant/provider consumer disposition",
+      "owner": "worker-4 + Claude Code/Grok Reviewer; Gunnar/product evidence owner"
+    },
+    "AC02": {
+      "verified": "Default product, Test product and test app compile0errors0warnings with all3analyzers; current native280/280/0/0; Default UI4/4 EN/IS",
+      "pending": "Independent exact-head verification/current CI; historical baseline comparison when authoritative baseline exists",
+      "owner": "worker-4 + Claude Code; Gunnar baseline input"
+    },
+    "AC03": {
+      "implemented": "Already narrowed by PR118; this PR adds no access change and records specific baseline/consumer hold",
+      "pending": "Product-owner acceptance of historical baseline/foreign-consumer disposition",
+      "owner": "Gunnar / product owner"
+    },
+    "AC04": {
+      "implemented": "Existing release checklist preserves both declared ranges and ori/Origo without reassignment",
+      "pending": "Authoritative registered10035635–10035684,70013500–70013549 and ori/Origo evidence attached to release checklist",
+      "owner": "Gunnar / allocation and publisher registration owners"
+    }
+  },
+  "mcp": {
+    "touchedMessageTypes": [],
+    "notApplicableReason": "Only API-SURFACE.md and non-executable API inventory JSON/CSV metadata changed. All79object identities/hashes/access decisions and774procedure signatures/effective access are unchanged; no AL, message registration, wire contract, permissions, manifests, translations or pipeline edits."
+  },
+  "resourceRetention": "Retain owned development container f09c5823ec0a until Bifrost Tester post-deployment UAT pass and issue closure per1792155806.391819; no UAT data deletion."
+}
