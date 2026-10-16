@@ -2,12 +2,12 @@
   "candidateSha": "d22cea51e8060b4f15ffe456a7b76ea1888a51a2",
   "containerId": "f001336c42b3",
   "artifactSha256": "e1fe4af43b94e68a6269190330225f2677ef7a9b66b314aac704732738e07f1a",
-  "at": "2026-10-16T12:18:09.430Z",
+  "at": "2026-10-16T12:41:29.201Z",
   "result": {
     "fileName": "testApp.app",
     "bytes": 134828,
     "statusCode": 200,
-    "durationMs": 5474,
+    "durationMs": 6014,
     "developerBaseUrl": "https://cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com/f001336c42b3dev",
     "body": null,
     "ok": true

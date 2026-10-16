@@ -6,9 +6,9 @@
     "sha": "d22cea51e8060b4f15ffe456a7b76ea1888a51a2",
     "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/fix/122-storage-refusals-worker3",
     "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/d22cea51e8060b4f15ffe456a7b76ea1888a51a2",
-    "remoteVerifiedAt": "2026-10-16T12:17:55.379Z"
+    "remoteVerifiedAt": "2026-10-16T12:42:52.940Z"
   },
-  "recordedAt": "2026-10-16T12:23:22.476640+00:00",
+  "recordedAt": "2026-10-16T12:46:35.609228+00:00",
   "compile": {
     "at": "2026-10-16T12:16:46.735571+00:00",
     "compiler": "/workspace/runtime/al181/extension/bin/alc.dll",
@@ -80,15 +80,17 @@
   },
   "native": {
     "fullSuite": true,
+    "suite": "DEFAULT",
     "total": 277,
-    "passed": 219,
-    "failed": 58,
+    "passed": 277,
+    "failed": 0,
     "skipped": 0,
     "newTests": {
       "total": 9,
-      "passed": 7,
-      "failed": 2
-    }
+      "passed": 9,
+      "failed": 0
+    },
+    "afterSupportedOwnedHttpConfiguration": true
   },
   "ui": {
     "executed": 4,
@@ -113,7 +115,7 @@
   "acceptance": "Original122AC01-AC03 only; not complete",
   "prReady": false,
   "deliveryComplete": false,
-  "httpDependency": "Two new import native tests stop at automatic HTTP setup guard for registered apps; prior56 dispatcher assertions also remain failed. No per-app workaround or exclusion.",
+  "httpDependency": "Resolved through shipped Microsoft Extension Settings page2511 on own runtime; both flags persistedtrue after candidate republish; unchanged guard/assertions and no licensing writes.",
   "sourceHashes": [
     {
       "path": "app/AppSourceCop.json",
@@ -607,5 +609,49 @@
       "path": "test/test/StorageUploadTests.Codeunit.al",
       "sha256": "b108a0d9b358664df9c99e48f87b8b08f3c45a97f7dabba204f6d01e1f9f1ee2"
     }
-  ]
+  ],
+  "nativeBeforeStandardHttp": {
+    "fullSuite": true,
+    "total": 277,
+    "passed": 219,
+    "failed": 58,
+    "skipped": 0,
+    "newTests": {
+      "total": 9,
+      "passed": 7,
+      "failed": 2
+    }
+  },
+  "cleanup": {
+    "startedAt": "2026-10-16T12:45:55.416Z",
+    "containerId": "f001336c42b3",
+    "owner": "worker-3",
+    "deleteRequests": 1,
+    "fixtureCleanup": "Owned UI rows X72EN154080580 and X72IS154182171 plus all own native company data removed with entire owned ephemeral container; no provider/MCP fixtures were created",
+    "reads": [
+      {
+        "at": "2026-10-16T12:45:55.918Z",
+        "statusCode": 404,
+        "ok": false
+      }
+    ],
+    "before": {
+      "statusCode": 200,
+      "id": "f001336c42b3",
+      "displayName": "codex-worker3-attachments122-1792136811",
+      "status": {
+        "state": "Running",
+        "statusMessage": "Running",
+        "imageBuilding": false,
+        "imageBuildError": false
+      }
+    },
+    "delete": {
+      "statusCode": 204,
+      "ok": true,
+      "at": "2026-10-16T12:45:55.816Z"
+    },
+    "verifiedAbsent": true,
+    "finishedAt": "2026-10-16T12:45:55.931Z"
+  }
 }

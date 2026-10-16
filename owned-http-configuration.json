@@ -1,0 +1,40 @@
+{
+  "containerId": "f001336c42b3",
+  "supportedSurface": "Microsoft Extension Settings page2511; standard development runtime capability",
+  "eulaLicenseTrialWrites": 0,
+  "sourceGuardOrAssertionsChanged": false,
+  "results": [
+    {
+      "appName": "Bifrost Foundation",
+      "appId": "7505e808-6e52-4b96-a328-82573391297a",
+      "before": false,
+      "after": true,
+      "verifiedBy": "Close/reopen Extension Settings page2511; checked exact app ID and persisted flag",
+      "at": "2026-10-16T12:33:32.780Z"
+    },
+    {
+      "appName": "Bifrost Attachments",
+      "appId": "672df32a-a0c5-4a22-b591-0efa38023e95",
+      "before": false,
+      "after": true,
+      "verifiedBy": "Close/reopen Extension Settings page2511; checked exact app ID and persisted flag",
+      "at": "2026-10-16T12:34:34.748Z"
+    },
+    {
+      "appName": "Bifrost Foundation",
+      "appId": "7505e808-6e52-4b96-a328-82573391297a",
+      "before": true,
+      "after": true,
+      "verifiedBy": "Close/reopen Extension Settings page2511; checked exact app ID and persisted flag",
+      "at": "2026-10-16T12:41:40.137Z"
+    },
+    {
+      "appName": "Bifrost Attachments",
+      "appId": "672df32a-a0c5-4a22-b591-0efa38023e95",
+      "before": true,
+      "after": true,
+      "verifiedBy": "Close/reopen Extension Settings page2511; checked exact app ID and persisted flag",
+      "at": "2026-10-16T12:41:47.621Z"
+    }
+  ]
+}

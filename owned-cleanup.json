@@ -1,0 +1,32 @@
+{
+  "startedAt": "2026-10-16T12:45:55.416Z",
+  "containerId": "f001336c42b3",
+  "owner": "worker-3",
+  "deleteRequests": 1,
+  "fixtureCleanup": "Owned UI rows X72EN154080580 and X72IS154182171 plus all own native company data removed with entire owned ephemeral container; no provider/MCP fixtures were created",
+  "reads": [
+    {
+      "at": "2026-10-16T12:45:55.918Z",
+      "statusCode": 404,
+      "ok": false
+    }
+  ],
+  "before": {
+    "statusCode": 200,
+    "id": "f001336c42b3",
+    "displayName": "codex-worker3-attachments122-1792136811",
+    "status": {
+      "state": "Running",
+      "statusMessage": "Running",
+      "imageBuilding": false,
+      "imageBuildError": false
+    }
+  },
+  "delete": {
+    "statusCode": 204,
+    "ok": true,
+    "at": "2026-10-16T12:45:55.816Z"
+  },
+  "verifiedAbsent": true,
+  "finishedAt": "2026-10-16T12:45:55.931Z"
+}

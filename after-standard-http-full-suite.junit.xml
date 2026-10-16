@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="96203 Storage Attachment Field Tests" timestamp="2026-10-16T12:42:26" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.263" tests="0" failures="0" errors="0" skipped="0" total="8">
+    <testcase classname="96203 Storage Attachment Field Tests" name="Offloaded_FalseForNewIncDocAttachment" time="0.023" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="Offloaded_TrueAfterOffload_IncDoc" time="0.036" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="Offloaded_FalseAfterRestore_IncDoc" time="0.037" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="Offloaded_FalseForNewDocAttachment" time="0.016" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="Offloaded_TrueAfterOffload_DocAttach" time="0.034" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="DataRecordsGet_IncDoc_FiltersByOffloaded" time="0.06" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="DataRecordsGet_DocAttach_FiltersByOffloaded" time="0.05" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="OffloadHelp_DocumentsCandidateDiscovery" time="0.007" />
+  </testsuite>
+  <testsuite name="96204 Storage Connector Tests" timestamp="2026-10-16T12:42:28" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.57" tests="0" failures="0" errors="0" skipped="0" total="28">
+    <testcase classname="96204 Storage Connector Tests" name="EveryStorageTypeHasMetadataAndHelp" time="0.017" />
+    <testcase classname="96204 Storage Connector Tests" name="EveryMessageTypeHelpExplainsUsage" time="0.01" />
+    <testcase classname="96204 Storage Connector Tests" name="HelpStorageGetReturnsOverviewMarkdown" time="0.007" />
+    <testcase classname="96204 Storage Connector Tests" name="StorageHelpUsesCurrentMcpToolNames" time="0.02" />
+    <testcase classname="96204 Storage Connector Tests" name="HelpTextContainsNoLiteralUnicodeEscapes" time="0.01" />
+    <testcase classname="96204 Storage Connector Tests" name="HelpStorageGetReportsInstalledAppVersion" time="0.006" />
+    <testcase classname="96204 Storage Connector Tests" name="MutatingOutboundStorageHelpDocumentsSideEffects" time="0.007" />
+    <testcase classname="96204 Storage Connector Tests" name="DeleteHelpDocumentsLinkedAttachmentGuards" time="0.006" />
+    <testcase classname="96204 Storage Connector Tests" name="AccountListReturnsConfiguredCode" time="0.017" />
+    <testcase classname="96204 Storage Connector Tests" name="FileCreateThenGetRoundtripsContent" time="0.02" />
+    <testcase classname="96204 Storage Connector Tests" name="FileExistsReflectsCreateAndDelete" time="0.026" />
+    <testcase classname="96204 Storage Connector Tests" name="FileDelete_LinkedAttachment_ReturnsError" time="0.033" />
+    <testcase classname="96204 Storage Connector Tests" name="DirectoryDelete_ContainsLinkedAttachment_ReturnsError" time="0.043" />
+    <testcase classname="96204 Storage Connector Tests" name="FileMove_LinkedAttachment_UpdatesLinkPath" time="0.034" />
+    <testcase classname="96204 Storage Connector Tests" name="CreateLinked_DuplicatePath_ReturnsError" time="0.027" />
+    <testcase classname="96204 Storage Connector Tests" name="FileListReturnsEntriesUnderPath" time="0.027" />
+    <testcase classname="96204 Storage Connector Tests" name="DirectoryCreateExistsDelete" time="0.027" />
+    <testcase classname="96204 Storage Connector Tests" name="UnknownStorageCodeReturnsError" time="0.013" />
+    <testcase classname="96204 Storage Connector Tests" name="DisabledConnectionIsRejected" time="0.016" />
+    <testcase classname="96204 Storage Connector Tests" name="MissingPathReturnsError" time="0.013" />
+    <testcase classname="96204 Storage Connector Tests" name="RelativePathSegmentIsRejected" time="0.014" />
+    <testcase classname="96204 Storage Connector Tests" name="RelativePathWithBackslashesIsRejected" time="0.016" />
+    <testcase classname="96204 Storage Connector Tests" name="CurrentDirectorySegmentIsRejected" time="0.013" />
+    <testcase classname="96204 Storage Connector Tests" name="DotsInsideAFileNameAreAccepted" time="0.013" />
+    <testcase classname="96204 Storage Connector Tests" name="GetMissingFileReturnsError" time="0.024" />
+    <testcase classname="96204 Storage Connector Tests" name="DocumentAttachmentOffloadRestoreRoundtrip" time="0.034" />
+    <testcase classname="96204 Storage Connector Tests" name="OffloadPreservesDocumentAttachmentUiBehaviour" time="0.04" />
+    <testcase classname="96204 Storage Connector Tests" name="OffloadPreservesIncomingDocumentUiBehaviour" time="0.037" />
+  </testsuite>
+  <testsuite name="96205 Storage Upload Tests" timestamp="2026-10-16T12:42:31" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.563" tests="0" failures="0" errors="0" skipped="0" total="21">
+    <testcase classname="96205 Storage Upload Tests" name="BeginAppendCommit_TwoChunks_RoundtripsContent" time="0.053" />
+    <testcase classname="96205 Storage Upload Tests" name="Commit_OutOfOrderChunks_AssemblesInSequence" time="0.037" />
+    <testcase classname="96205 Storage Upload Tests" name="Append_DuplicateSequence_ReplacesChunk" time="0.046" />
+    <testcase classname="96205 Storage Upload Tests" name="Commit_SizeMismatch_ReturnsError" time="0.027" />
+    <testcase classname="96205 Storage Upload Tests" name="Commit_NoChunks_ReturnsError" time="0.02" />
+    <testcase classname="96205 Storage Upload Tests" name="Begin_FileNameWithFolder_ReturnsErrorAndCreatesNoSession" time="0.02" />
+    <testcase classname="96205 Storage Upload Tests" name="Begin_LeafFileNameWithFolderPath_UsesFolderPath" time="0.013" />
+    <testcase classname="96205 Storage Upload Tests" name="UploadBeginHelpStatesDefaultRoot" time="0.007" />
+    <testcase classname="96205 Storage Upload Tests" name="Abort_OpenSession_RemovesSessionAndChunks" time="0.023" />
+    <testcase classname="96205 Storage Upload Tests" name="Append_UnknownUploadId_ReturnsError" time="0.013" />
+    <testcase classname="96205 Storage Upload Tests" name="Status_OpenSession_ReportsProgress" time="0.023" />
+    <testcase classname="96205 Storage Upload Tests" name="CreateLinked_FromUploadedFile_AttachesToNewIncomingDoc" time="0.043" />
+    <testcase classname="96205 Storage Upload Tests" name="Begin_WithoutStorageCode_CreatesBufferSession" time="0.016" />
+    <testcase classname="96205 Storage Upload Tests" name="Commit_BufferSession_ReturnsNoStorageCodeError" time="0.03" />
+    <testcase classname="96205 Storage Upload Tests" name="CommitToRecord_OnCustomer_RoundtripsContent" time="0.053" />
+    <testcase classname="96205 Storage Upload Tests" name="CommitToRecord_IncomingDocument_CreatesAttachment" time="0.03" />
+    <testcase classname="96205 Storage Upload Tests" name="CommitToRecord_UnknownTarget_ReturnsError" time="0.027" />
+    <testcase classname="96205 Storage Upload Tests" name="CommitToRecord_NoChunks_ReturnsError" time="0.02" />
+    <testcase classname="96205 Storage Upload Tests" name="UploadTables_AreRestrictedFromDataRecords" time="0.014" />
+    <testcase classname="96205 Storage Upload Tests" name="DataRecordsSet_OnStorageSetup_ReturnsError" time="0.034" />
+    <testcase classname="96205 Storage Upload Tests" name="UploadMessageTypes_HaveMetadataAndHelp" time="0.014" />
+  </testsuite>
+  <testsuite name="96206 Storage Attach Record Tests" timestamp="2026-10-16T12:42:34" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.241" tests="0" failures="0" errors="0" skipped="0" total="10">
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_FromBase64_OnCustomer" time="0.03" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_FromContentBase64_OnCustomer" time="0.02" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_RejectsContentAndContentBase64" time="0.023" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecordHelpDocumentsContentBase64First" time="0.006" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_OnFixedAsset" time="0.027" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_ByRecordSystemId" time="0.024" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_CopiesFromIncomingDocument" time="0.03" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_FromStorage_IsBornOffloaded" time="0.033" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_RejectsTwoContentSources" time="0.024" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_RejectsUnknownRecord" time="0.024" />
+  </testsuite>
+  <testsuite name="96207 Storage Setup Page Tests" timestamp="2026-10-16T12:42:37" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.444" tests="0" failures="0" errors="0" skipped="0" total="8">
+    <testcase classname="96207 Storage Setup Page Tests" name="AttachmentsSetupPage_Opens_ListsStorageConnections" time="0.07" />
+    <testcase classname="96207 Storage Setup Page Tests" name="AttachmentsSetupPage_AllSetupActions_AreEnabled" time="0.034" />
+    <testcase classname="96207 Storage Setup Page Tests" name="BifrostSetupPage_ExposesOnlyTheAppsAction" time="0.193" />
+    <testcase classname="96207 Storage Setup Page Tests" name="Purge_WithAbandonedSessions_DeletesSessionsAndChunks" time="0.02" />
+    <testcase classname="96207 Storage Setup Page Tests" name="Purge_WithoutData_ReportsZeroAndSucceeds" time="0.01" />
+    <testcase classname="96207 Storage Setup Page Tests" name="PurgeAction_OnSetupPage_PurgesAndInformsTheUser" time="0.037" />
+    <testcase classname="96207 Storage Setup Page Tests" name="Scenario_AC02_NoAccount_BilingualPageRefusal" time="0.043" />
+    <testcase classname="96207 Storage Setup Page Tests" name="Scenario_AC02_ReachableConnection_BilingualPageMessage" time="0.037" />
+  </testsuite>
+  <testsuite name="96208 Storage App Registry Tests" timestamp="2026-10-16T12:42:40" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.007" tests="0" failures="0" errors="0" skipped="0" total="1">
+    <testcase classname="96208 Storage App Registry Tests" name="AppRegistry_ListsThisApp_WithItsSetupPage" time="0.007" />
+  </testsuite>
+  <testsuite name="96209 Storage Takeover Tests" timestamp="2026-10-16T12:42:42" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.077" tests="0" failures="0" errors="0" skipped="0" total="3">
+    <testcase classname="96209 Storage Takeover Tests" name="TakeOverAccessControl_LegacyRow_InsertsMatchingBifrostRole" time="0.037" />
+    <testcase classname="96209 Storage Takeover Tests" name="TakeOverAccessControl_ExistingBifrostRow_DoesNotDuplicate" time="0.03" />
+    <testcase classname="96209 Storage Takeover Tests" name="TakeOverAccessControl_NoLegacyRows_GrantsZeroWithoutError" time="0.01" />
+  </testsuite>
+  <testsuite name="96210 Storage Takeover Probe Tests" timestamp="2026-10-16T12:42:45" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.192" tests="0" failures="0" errors="0" skipped="0" total="9">
+    <testcase classname="96210 Storage Takeover Probe Tests" name="AC01_ProbeDenied_SkipsTakeOverWithoutError" time="0.007" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="AC01b_AccessControlWriteDenied_SkipsWithoutError" time="0.01" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="AC02_ProbeOk_RunsTakeOverWithoutError" time="0.01" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="AC03_LegacyAbsent_NoOpWithoutError" time="0.014" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="Scenario_AC01_TaggedUpgradeDenied_RetriesWithoutChangingTargets" time="0.024" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="Scenario_AC02_DeniedInstallThenPermittedUpgrade_RegrantsOnce" time="0.057" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="Scenario_AC03_LegacyAbsent_RepeatedUpgradePreservesTargets" time="0.02" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="Scenario_AC01_UntaggedDeniedUpgrade_PurgesAndRecordsTag" time="0.037" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="Scenario_AC03_TagFixture_PreservesUnrelatedTags" time="0.013" />
+  </testsuite>
+  <testsuite name="96211 Storage Msg Conformance Tests" timestamp="2026-10-16T12:42:47" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.087" tests="0" failures="0" errors="0" skipped="0" total="8">
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Help_EveryType_HasTitleAndRequiredSections" time="0.017" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Description_EveryType_IsOneCallerFacingSentence" time="0.01" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="RelatedTypes_EveryHelp_NameExistingTypes" time="0.017" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="FilterTable_EveryType_IsZeroOrExistingTable" time="0.01" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="FilterTable_AttachmentTypes_NameTheirRecordTable" time="0.006" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Keywords_EveryBusinessType_HasEnglishAndIcelandic" time="0.01" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="SelectionDescription_EveryBusinessType_IsOwnSentence" time="0.01" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Keywords_ChunkQuery_HitsAppendNotSingleUpload" time="0.007" />
+  </testsuite>
+  <testsuite name="96212 Storage Error Response Tests" timestamp="2026-10-16T12:42:51" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.458" tests="0" failures="0" errors="0" skipped="0" total="21">
+    <testcase classname="96212 Storage Error Response Tests" name="FileGet_NoStorageCodeNoPath_ReportsBothMissing" time="0.047" />
+    <testcase classname="96212 Storage Error Response Tests" name="FileGet_UnknownStorageCode_ReturnsRecordNotFoundWithNextStep" time="0.02" />
+    <testcase classname="96212 Storage Error Response Tests" name="FileGet_DisabledConnection_ReturnsPreconditionFailed" time="0.024" />
+    <testcase classname="96212 Storage Error Response Tests" name="FileGet_DotDotPath_ReturnsInvalidParameter" time="0.017" />
+    <testcase classname="96212 Storage Error Response Tests" name="FileCreate_NotBase64_ReturnsInvalidParameterFormat" time="0.026" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadAppend_ThreeBadValues_ReportsAllTogether" time="0.02" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadAppend_FractionalSequence_ReturnsInvalidParameterFormat" time="0.024" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadAppend_DigitStringSequence_IsAccepted" time="0.026" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadBegin_NegativeDeclaredSize_ReturnsInvalidParameter" time="0.017" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadBegin_Session_AdvertisesLargestChunk" time="0.016" />
+    <testcase classname="96212 Storage Error Response Tests" name="ContentLimit_ExactlyMaximum_IsAcceptedOneByteMoreIsNot" time="0.01" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadStatus_UnknownUploadId_ReturnsRecordNotFound" time="0.017" />
+    <testcase classname="96212 Storage Error Response Tests" name="Offload_UnknownTargetAndNoSystemId_ReportsBoth" time="0.02" />
+    <testcase classname="96212 Storage Error Response Tests" name="Offload_UnknownSystemId_ReturnsRecordNotFound" time="0.02" />
+    <testcase classname="96212 Storage Error Response Tests" name="Restore_AttachmentNotOffloaded_ReturnsPreconditionFailed" time="0.027" />
+    <testcase classname="96212 Storage Error Response Tests" name="CreateForRecord_TextTableId_ReturnsInvalidParameterFormat" time="0.02" />
+    <testcase classname="96212 Storage Error Response Tests" name="Scenario_AC01_UploadFolder_BilingualRefusalPreservesKeys" time="0.04" />
+    <testcase classname="96212 Storage Error Response Tests" name="Scenario_AC01_UnknownTarget_BilingualExpectedPreservesTokens" time="0.026" />
+    <testcase classname="96212 Storage Error Response Tests" name="Scenario_AC02_UploadBegin_BilingualSuccessKeepsStoredFilename" time="0.024" />
+    <testcase classname="96212 Storage Error Response Tests" name="DiscoveryDescription_English_UsesSourceText" time="0.007" />
+    <testcase classname="96212 Storage Error Response Tests" name="DiscoveryDescription_Icelandic_UsesTranslation" time="0.01" />
+  </testsuite>
+  <testsuite name="96213 Data Exch Discovery Tests" timestamp="2026-10-16T12:42:54" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.227" tests="0" failures="0" errors="0" skipped="0" total="10">
+    <testcase classname="96213 Data Exch Discovery Tests" name="RepairedBindings_ResolveTheirOwnTargetTables" time="0.007" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="DefinitionListAndGet_RenderSeededDefinitionInOrder" time="0.054" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="TypeList_EmptyCompany_ReturnsCountZero" time="0.013" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="EntryGet_PagesFields_AndRefusesFileAboveOneMegabyte" time="0.056" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="DataRecordsSet_OnDataExch_ReturnsHint" time="0.017" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="NegativeSkip_AndMissingCode_ReturnErrors" time="0.016" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="Help_NamesTypes_AndCarriesPaginationLimits" time="0.01" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="EntryList_Paging_UsesFoundationDefaults" time="0.03" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="HelpGuides_NameEveryRegisteredType" time="0.017" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="Contract_DataExchange_NamesItsOwnPermissionSetAndSubject" time="0.007" />
+  </testsuite>
+  <testsuite name="96214 Storage Link Guard Tests" timestamp="2026-10-16T12:42:58" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.077" tests="0" failures="0" errors="0" skipped="0" total="3">
+    <testcase classname="96214 Storage Link Guard Tests" name="DataRecordsSet_OnAttachmentLink_ReturnsHint" time="0.037" />
+    <testcase classname="96214 Storage Link Guard Tests" name="DataRecordsGet_OnAttachmentLink_ReturnsRows" time="0.03" />
+    <testcase classname="96214 Storage Link Guard Tests" name="PurgeOrphanLinks_RemovesEmptyKeys_KeepsValidRow" time="0.01" />
+  </testsuite>
+  <testsuite name="96215 Storage Contract Batch1 Tests" timestamp="2026-10-16T12:43:01" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.02" tests="0" failures="0" errors="0" skipped="0" total="2">
+    <testcase classname="96215 Storage Contract Batch1 Tests" name="Batch1_AllTypes_HaveRequiredContractChapters" time="0.01" />
+    <testcase classname="96215 Storage Contract Batch1 Tests" name="Batch1_Effects_MatchOperation" time="0.01" />
+  </testsuite>
+  <testsuite name="96216 Storage Contract Batch2 Tests" timestamp="2026-10-16T12:43:04" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.314" tests="0" failures="0" errors="0" skipped="0" total="19">
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="TypeList_Contract_DeclaresCountAndTypesOnce" time="0.007" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="TypeList_EmptyRequest_CountMatchesTypes" time="0.043" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_TypeList_SeededRows_MatchResponseContract" time="0.026" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Batch2_AllTypes_HaveRequiredContractChapters" time="0.01" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Batch2_Effects_MatchOperation" time="0.013" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC02_QueryContracts_DoNotRequireStorage" time="0.01" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC02_AttachmentContracts_DeclareAcceptedAliases" time="0.007" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC02_MutationContracts_MatchShippedKeys" time="0.013" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC02_MutationContracts_ReplaceStaleParameters" time="0.006" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_DefinitionList_NoStorage_ReturnsSeededRow" time="0.027" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_DefinitionFilters_Malformed_ReturnCompleteErrors" time="0.013" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_DefinitionFilters_Unknown_ReturnCompleteErrors" time="0.013" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_EntryGet_InvalidInputs_CollectsEveryProblem" time="0.023" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_EntryList_MalformedInputs_ReturnsFiveErrors" time="0.016" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_EntryList_ZeroTake_PreservesDefault" time="0.017" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_EntryList_ReversedDates_Refused" time="0.013" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_DefinitionGet_CodeBoundary_NoTruncation" time="0.023" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_DefinitionGet_MissingCode_CompleteRefusal" time="0.014" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_InvalidDirection_BilingualRefusals" time="0.02" />
+  </testsuite>
+  <testsuite name="96217 Storage Native Fields Tests" timestamp="2026-10-16T12:43:08" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.213" tests="0" failures="0" errors="0" skipped="0" total="11">
+    <testcase classname="96217 Storage Native Fields Tests" name="NativeFields_WhenExtensionMissing_SetAndClearDoNotError" time="0.007" />
+    <testcase classname="96217 Storage Native Fields Tests" name="NativeFields_WhenPresent_SetAndClearRoundTrip" time="0.016" />
+    <testcase classname="96217 Storage Native Fields Tests" name="Scenario_AC06_MissingRecord_SetAndClearDoNotInsert" time="0.007" />
+    <testcase classname="96217 Storage Native Fields Tests" name="Scenario_AC06_AssignmentFailure_PreservesPersistedFields" time="0.01" />
+    <testcase classname="96217 Storage Native Fields Tests" name="NativeMirrorModifyFailure_PreventsExternalUpload" time="0.026" />
+    <testcase classname="96217 Storage Native Fields Tests" name="ExternalStorageModule_IsPresentInTheTestContainer" time="0.007" />
+    <testcase classname="96217 Storage Native Fields Tests" name="LinkedRead_LeavesStoredRowUnchangedAfterModify" time="0.036" />
+    <testcase classname="96217 Storage Native Fields Tests" name="LinkedRead_LeavesStoredRowUnchangedAfterModifyFalse" time="0.033" />
+    <testcase classname="96217 Storage Native Fields Tests" name="LinkedRead_TransferFieldsInsert_DoesNotPersistStoredInternally" time="0.024" />
+    <testcase classname="96217 Storage Native Fields Tests" name="LinkedRead_TransferFieldsInsert_SlashVariantPath_DoesNotPersistStoredInternally" time="0.03" />
+    <testcase classname="96217 Storage Native Fields Tests" name="MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule" time="0.017" />
+  </testsuite>
+  <testsuite name="96218 Storage 79 Perm Tests ori" timestamp="2026-10-16T12:43:13" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="1.309" tests="0" failures="0" errors="0" skipped="0" total="28">
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedSetupCard_PersistsChange" time="0.083" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlySetupCard_RefusesChange" time="0.05" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingSetupInsert_LeavesNoRow" time="0.02" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingSetupModify_PreservesRow" time="0.026" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingSetupDelete_PreservesRow" time="0.027" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_ActualRoles_DispatchSharedHelp" time="0.037" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow" time="0.03" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedFilesAndDirectories_Roundtrip" time="0.097" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_InvalidFileInput_PreservesState" time="0.03" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks" time="0.06" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_EmptyUpload_RefusesCommitThenAborts" time="0.06" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedNativeTarget_PersistsContent" time="0.086" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingSourceRead_CreatesNothing" time="0.03" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingTargetWrite_PreservesUpload" time="0.057" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedOffloadOpenRestore_Roundtrips" time="0.063" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingLinkWrite_PreservesNativeAndStorage" time="0.04" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedDataExchange_ReadsSeededGraph" time="0.097" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyTypeSet_PreservesGraph" time="0.04" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyImportRun_CreatesNoEntry" time="0.04" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyExportRun_CreatesNoEntry" time="0.034" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingEntryRead_PreservesGraph" time="0.036" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingColumnRead_PreservesGraph" time="0.043" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingDefinitionRead_PreservesGraph" time="0.04" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingFieldRead_PreservesGraph" time="0.033" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingFieldMappingRead_PreservesGraph" time="0.034" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingLineRead_PreservesGraph" time="0.033" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingMappingRead_PreservesGraph" time="0.036" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingTypeRead_PreservesGraph" time="0.047" />
+  </testsuite>
+  <testsuite name="96225 Storage Integrity 75 Tests ori" timestamp="2026-10-16T12:43:19" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="1.51" tests="0" failures="0" errors="0" skipped="0" total="23">
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_SlashDeletes_PreserveLinkedContent" time="0.11" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_LegacySlashLink_RejectsCanonicalDelete" time="0.09" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC02_CreateLinkedTarget_PreservesBytesAndLink" time="0.076" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC02_TransfersToLinkedTarget_PreserveBothFiles" time="0.104" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC02_UploadTargetBecomesLinked_PreservesSession" time="0.09" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_SlashSourceMove_UpdatesOnlyMatchingLink" time="0.103" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_Path2047To2049_RejectsOnlyOverFieldLimit" time="0.077" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_BasePlusPathTooLong_RejectsBeforeWrite" time="0.026" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_Name249To251_RejectsBeforeSessionInsert" time="0.05" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC04_TraversalAndFileRoot_RejectWithoutWrites" time="0.037" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_InnerSlashVariants_RejectWithoutWrites" time="0.09" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_GeneratedOffloadTooLong_PreservesLocalBlob" time="0.063" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC04_ConnectorMoveFailure_RollsBackLink" time="0.067" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_SelfMoveAlias_PreservesSource" time="0.034" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_BaseRootAlias_PreservesIntendedTarget" time="0.063" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC02_DisabledAlias_ProtectsPhysicalDestination" time="0.083" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_AliasMove_PreservesEachRelativeRoot" time="0.057" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC04_AliasRootEscape_PreservesSource" time="0.07" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_CaseAndLiteralKeys_PreserveDistinctFiles" time="0.073" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_ProviderBudgets_RejectExactOverlimits" time="0.014" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC04_AnyBlobConnectorBuild_ReachesAccountCheck" time="0.01" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC04_PostCopyFault_RetainsReadableSourceAndDuplicate" time="0.077" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_DirectMoveOverlong_PreservesLinkAndContent" time="0.046" />
+  </testsuite>
+  <testsuite name="96226 DataExch Refusal82 Tests ori" timestamp="2026-10-16T12:43:25" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="1.056" tests="0" failures="0" errors="0" skipped="0" total="42">
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_GenericImport_CreatesOnlyHeader" time="0.11" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_PayrollImport_CreatesOnlyHeader" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_AbsentFields_CollectsAllThree" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_WrongTypes_CollectsAllWithoutWrite" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_NullFields_CollectsAllWithoutWrite" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_ObjectFields_CollectsAllWithoutWrite" time="0.016" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_EmptyFields_CollectsAllWithoutWrite" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_Lowercase_RefusesRawCode" time="0.024" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_MixedCase_RefusesRawCode" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_UnicodeCase_RefusesRawCode" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_LeadingSpace_RefusesRawCode" time="0.026" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_TrailingSpace_RefusesRawCode" time="0.024" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_Overlong_RefusesRawCode" time="0.027" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_Code20AndPath2048_AcceptsExactBounds" time="0.016" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_Path2049_RefusesWithoutWrite" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_Traversal_RefusesWithoutWrite" time="0.03" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_MalformedOrScalar_RefusesData" time="0.07" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_UnknownAndWrongKind_RefusesDefinition" time="0.023" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_DeleteUnreferenced_DeletesChildren" time="0.023" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_DeleteTypeReferenced_PreservesTree" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_DeleteBankReferenced_PreservesTree" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_DeleteMissing_ReportsCompleteError" time="0.014" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_TwoLocales_CollectsLocalizedErrors" time="0.04" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_AfterInsertFailure_RollsBack" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_AfterDeleteFailure_RollsBack" time="0.023" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_ChainedFailure_RollsBackEarlierImport" time="0.027" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey" time="0.016" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_SpacesOnly_ReportsCompleteCodeError" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_Export_CreatesOnlyNamedHeader" time="0.014" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_ExportPayroll_PreservesShippedPredicate" time="0.013" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite" time="0.023" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_DefinitionExport_RefusesBadCode" time="0.037" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_DefinitionExport_ReturnsHeader" time="0.014" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_ExportFileNameBounds_NeverTruncates" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription" time="0.04" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_TypeSetOverlongDescription_PreservesExisting" time="0.03" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_TypeSetPayroll_DoesNotCreateType" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_ExportAfterInsertFailure_RollsBack" time="0.026" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert" time="0.027" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal" time="0.027" />
+  </testsuite>
+  <testsuite name="96228 Storage Refusal122 Tests ori" timestamp="2026-10-16T12:43:30" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.115" tests="0" failures="0" errors="0" skipped="0" total="9">
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC01_UnknownReferences_CreateOnlyHeader1033" time="0.043" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC01_UnknownReferences_CreateOnlyHeader1039" time="0.016" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC01_Contract_ExplainsUnvalidatedReferences" time="0.007" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_FileChild_RefusesAndPreservesContent" time="0.006" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_DirectoryChild_RefusesAndPreservesTree" time="0.01" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_BasePath_RefusesNestedFile" time="0.01" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_EmptyDirectory_DeletesOnlyTarget" time="0.007" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_Contract_ListsNonEmptyPrecondition" time="0.006" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_NonEmptyDirectory_Localizes1039" time="0.01" />
+  </testsuite>
+  <testsuite name="96274 Attachments Build Tests ori" timestamp="2026-10-16T12:43:35" hostname="f001336c42b3-business-central-7d55578f84-fmlmc" time="0.219" tests="0" failures="0" errors="0" skipped="0" total="13">
+    <testcase classname="96274 Attachments Build Tests ori" name="Language72_Discovery_ExactEnglish" time="0.007" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Language72_Discovery_ExactIcelandic" time="0.01" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_MessageTypes_ResolveDistinctContracts" time="0.006" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC02_TypeSet_ImportDefinitionIsPersisted" time="0.04" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC02_TypeSet_MissingDefinitionDoesNotWrite" time="0.014" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC02_TypeSet_ExportDefinitionDoesNotWrite" time="0.016" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC02_DefinitionExport_ReturnsExistingHeader" time="0.03" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_DefinitionDelete_UnusedHeaderIsRemoved" time="0.02" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_DefinitionDelete_ReferencedHeaderIsPreserved" time="0.016" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_DefinitionDelete_MissingHeaderDoesNotWrite" time="0.013" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_ExportRun_ExportHeaderIsPersisted" time="0.016" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_ExportRun_ImportDefinitionDoesNotWrite" time="0.017" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_ExportRun_MissingFileNameDoesNotWrite" time="0.014" />
+  </testsuite>
+</testsuites>
