@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-16) - inherent read of external account tables (#124)
+
+- `Storage Ext File Impl ori` (10035661) grants read on table 4560 `Ext. Blob Storage Account` and table 4570 `Ext. File Share Account`. `InherentPermissions` cannot name those tables (AL0720: they belong to the connector apps), so the grant is the codeunit `Permissions` property, which requires the Azure Blob and Azure File Share connector dependencies. `RecordRef.ReadPermission` does not observe that indirect read and returned `PermissionDenied` for SUPER on storageCode TEST. Address resolution now reads the account under the grant. `Storage 124 Addr Tests ori` (96236) with permission set `Storage124 Read ori` (96236) resolves a Blob address and a File Share address as a non-SUPER user from rows the test creates.
+
 ### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
 
 - `Storage Contract Parts ori` (70013500) describes `DataExchange.Import.Run` references precisely: `storageCode` and `path` receive syntax checks, but no storage/file lookup occurs, neither reference is stored on the entry header, and no file content is read. This selects issue #122 AC01's documentation alternative and preserves the existing header-only behavior.
