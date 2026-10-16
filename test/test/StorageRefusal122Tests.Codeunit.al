@@ -249,6 +249,9 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         RequestMgt: Codeunit "Storage Request Mgt ori";
         Connector: Interface "Storage Connector ori";
     begin
+        TempArgument.Init();
+        TempArgument."Type" := TempArgument."Type"::"Storage.Directory.Delete";
+        TempArgument.Insert(true);
         Connector := StorageSetup."Storage Type";
         RequestMgt.ExecuteDeleteDirectory(TempArgument, StorageSetup, Connector, Path);
         exit(TempArgument.GetResponseJson());
