@@ -1,0 +1,194 @@
+[
+  {
+    "file": "app/src/Attachments/StorageAttachmentLink.Table.al",
+    "kind": "table",
+    "id": 10035635,
+    "name": "Storage Attachment Link ori"
+  },
+  {
+    "file": "app/src/Attachments/StorageAttachmentTarget.Enum.al",
+    "kind": "enum",
+    "id": 10035635,
+    "name": "Storage Attachment Target ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035640,
+    "name": "Storage Attach Link Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 70013543,
+    "name": "DataExch Def Delete Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 70013523,
+    "name": "DataExch Def Get Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 70013522,
+    "name": "DataExch Def List Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 70013525,
+    "name": "DataExch Entry List Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 70013524,
+    "name": "DataExch Type List Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 70013531,
+    "name": "DataExch Type Set Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035645,
+    "name": "Storage Dir Delete Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035648,
+    "name": "Storage File Copy Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035649,
+    "name": "Storage File Create Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035650,
+    "name": "Storage File Delete Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035655,
+    "name": "Storage Help Get Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+    "kind": "codeunit",
+    "id": 70013500,
+    "name": "Storage Contract Parts ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035656,
+    "name": "Storage Upload Abort Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035657,
+    "name": "Storage Upload Append Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035658,
+    "name": "Storage Upload Begin Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035659,
+    "name": "Storage Upload Commit Impl ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035669,
+    "name": "Storage Upload Commit Rec ori"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035660,
+    "name": "Storage Upload Status Impl ori"
+  },
+  {
+    "file": "app/src/Setup/AttachmentsSetup.Page.al",
+    "kind": "page",
+    "id": 10035677,
+    "name": "Attachments Setup ori"
+  },
+  {
+    "file": "app/src/Setup/StorageSetup.Table.al",
+    "kind": "table",
+    "id": 10035636,
+    "name": "Storage Setup ori"
+  },
+  {
+    "file": "app/src/Setup/StorageSetupWizard.Page.al",
+    "kind": "page",
+    "id": 10035638,
+    "name": "Storage Setup Wizard ori"
+  },
+  {
+    "file": "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035661,
+    "name": "Storage Ext File Impl ori"
+  },
+  {
+    "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035662,
+    "name": "Storage Request Mgt ori"
+  },
+  {
+    "file": "app/src/Storage/StorageRequestReader.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035682,
+    "name": "Storage Request Reader ori"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadChunk.Table.al",
+    "kind": "table",
+    "id": 10035637,
+    "name": "Storage Upload Chunk ori"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadMgt.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035665,
+    "name": "Storage Upload Mgt ori"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadPurge.Codeunit.al",
+    "kind": "codeunit",
+    "id": 10035679,
+    "name": "Storage Upload Purge ori"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadSession.Table.al",
+    "kind": "table",
+    "id": 10035638,
+    "name": "Storage Upload Session ori"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadStatus.Enum.al",
+    "kind": "enum",
+    "id": 10035637,
+    "name": "Storage Upload Status ori"
+  }
+]

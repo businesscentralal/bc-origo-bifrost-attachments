@@ -1,0 +1,1 @@
+Issue72 glossary candidate ff0170791e8fcaf54b9b9cde4c74627b9487eaca. Both apps0errors/0warnings;9static guards pass. Full native/UI/MCP NOT RUN. No PR readiness or issue/AppSource completion. Retained owner Sindri(worker-3).

@@ -1,0 +1,434 @@
+[
+  {
+    "file": "app/src/Attachments/StorageAttachmentLink.Table.al",
+    "line": 51,
+    "before": "Caption = 'Incoming Document Entry No.', Comment = 'is-IS=Færslunúmer innkomandi skjals';",
+    "after": "Caption = 'Incoming Document Entry No.', Comment = 'is-IS=Færslunúmer skjals í innleið';"
+  },
+  {
+    "file": "app/src/Attachments/StorageAttachmentLink.Table.al",
+    "line": 52,
+    "before": "ToolTip = 'Specifies the incoming document entry number, when the target is an incoming document attachment.', Comment = 'is-IS=Tilgreinir færslunúmer innkomandi skjals þegar markmiðið er viðhengi innkomandi skjals.';",
+    "after": "ToolTip = 'Specifies the incoming document entry number, when the target is an incoming document attachment.', Comment = 'is-IS=Tilgreinir færslunúmer skjals í innleið þegar markmiðið er viðhengi skjals í innleið.';"
+  },
+  {
+    "file": "app/src/Attachments/StorageAttachmentLink.Table.al",
+    "line": 56,
+    "before": "Caption = 'Incoming Document Line No.', Comment = 'is-IS=Línunúmer innkomandi skjals';",
+    "after": "Caption = 'Incoming Document Line No.', Comment = 'is-IS=Línunúmer skjals í innleið';"
+  },
+  {
+    "file": "app/src/Attachments/StorageAttachmentLink.Table.al",
+    "line": 57,
+    "before": "ToolTip = 'Specifies the incoming document attachment line number, when the target is an incoming document attachment.', Comment = 'is-IS=Tilgreinir línunúmer viðhengis innkomandi skjals þegar markmiðið er viðhengi innkomandi skjals.';",
+    "after": "ToolTip = 'Specifies the incoming document attachment line number, when the target is an incoming document attachment.', Comment = 'is-IS=Tilgreinir línunúmer viðhengis skjals í innleið þegar markmiðið er viðhengi skjals í innleið.';"
+  },
+  {
+    "file": "app/src/Attachments/StorageAttachmentTarget.Enum.al",
+    "line": 22,
+    "before": "Caption = 'Incoming Document', Comment = 'is-IS=Innkomandi skjal';",
+    "after": "Caption = 'Incoming Document', Comment = 'is-IS=Skjal í innleið';"
+  },
+  {
+    "file": "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+    "line": 37,
+    "before": "DescriptionLbl: Label 'Attaches a file already in storage to a new or existing incoming document, served transparently from storage.', Comment = 'is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal; skráin er aðgengileg beint úr geymslu.';",
+    "after": "DescriptionLbl: Label 'Attaches a file already in storage to a new or existing incoming document, served transparently from storage.', Comment = 'is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi skjal í innleið; skráin er aðgengileg beint úr geymslu.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+    "line": 49,
+    "before": "KeywordsLbl: Label 'link stored file to incoming document, incoming document from storage, register a stored invoice, create incoming document from cloud file, attach blob to incoming document, scanned bill already in storage', Comment = 'is-IS=tengja geymda skrá við innkomið skjal, innkomið skjal úr geymslu, skrá geymdan reikning, stofna innkomið skjal úr skýjaskrá, hengja skrá úr geymslu við innkomið skjal, skannaður reikningur í geymslu';",
+    "after": "KeywordsLbl: Label 'link stored file to incoming document, incoming document from storage, register a stored invoice, create incoming document from cloud file, attach blob to incoming document, scanned bill already in storage', Comment = 'is-IS=tengja geymda skrá við skjal í innleið, skjal í innleið úr geymslu, skrá geymdan reikning, stofna skjal í innleið úr skýjaskrá, hengja skrá úr geymslu við skjal í innleið, skannaður reikningur í geymslu';"
+  },
+  {
+    "file": "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+    "line": 58,
+    "before": "SelectionDescriptionLbl: Label 'Attaches a file that already sits in storage to a new or existing incoming document without copying it into the database.', Comment = 'is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal án þess að afrita hana í gagnagrunninn.';",
+    "after": "SelectionDescriptionLbl: Label 'Attaches a file that already sits in storage to a new or existing incoming document without copying it into the database.', Comment = 'is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi skjal í innleið án þess að afrita hana í gagnagrunninn.';"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+    "line": 151,
+    "before": "NotesLbl: Label 'Does not delete a definition that a Data Exchange Type or Bank Export/Import Setup still uses.', Comment = 'is-IS=Eyðir ekki skilgreiningu sem tegund gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn.';",
+    "after": "NotesLbl: Label 'Does not delete a definition that a Data Exchange Type or Bank Export/Import Setup still uses.', Comment = 'is-IS=Eyðir ekki skilgreiningu sem gerð gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn.';"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+    "line": 192,
+    "before": "UnreferencedExpectedLbl: Label 'a definition not used by a Data Exchange Type or Bank Export/Import Setup', Comment = 'is-IS=skilgreining sem er ekki notuð í tegund gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings';",
+    "after": "UnreferencedExpectedLbl: Label 'a definition not used by a Data Exchange Type or Bank Export/Import Setup', Comment = 'is-IS=skilgreining sem er ekki notuð í gerð gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings';"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+    "line": 194,
+    "before": "RemoveReferenceLbl: Label 'Review the Data Exchange Types and Bank Export/Import Setup that use this definition. Change those references before retrying deletion.', Comment = 'is-IS=Farðu yfir tegundir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.';",
+    "after": "RemoveReferenceLbl: Label 'Review the Data Exchange Types and Bank Export/Import Setup that use this definition. Change those references before retrying deletion.', Comment = 'is-IS=Farðu yfir gerðir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.';"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+    "line": 46,
+    "before": "SelectionDescriptionLbl: Label 'Returns one Data Exchange definition with line definitions, columns and mappings; pass a code from the list type.', Comment = 'is-IS=Skilar einni skilgreiningu gagnaskipta með línuskilgreiningum, dálkum og vörpun; gefðu upp kóða úr listaboðgerðinni.';",
+    "after": "SelectionDescriptionLbl: Label 'Returns one Data Exchange definition with line definitions, columns and mappings; pass a code from the list type.', Comment = 'is-IS=Skilar einni skilgreiningu gagnaskipta með línuskilgreiningum, dálkum og vörpun; gefðu upp kóða úr skilaboðategundinni fyrir lista.';"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
+    "line": 46,
+    "before": "SelectionDescriptionLbl: Label 'Lists available Data Exchange definitions and their filters; use the get type for full mappings.', Comment = 'is-IS=Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu sækiboðgerðina til að sjá alla vörpun.';",
+    "after": "SelectionDescriptionLbl: Label 'Lists available Data Exchange definitions and their filters; use the get type for full mappings.', Comment = 'is-IS=Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu skilaboðategundina fyrir lestur til að sjá alla vörpun.';"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
+    "line": 38,
+    "before": "KeywordsLbl: Label 'list data exchange entries, processed imports, imported files', Comment = 'is-IS=lista færslur gagnaskipta, unnar innflutningar, innfluttar skrár';",
+    "after": "KeywordsLbl: Label 'list data exchange entries, processed imports, imported files', Comment = 'is-IS=lista færslur gagnaskipta, unnir innflutningar, innfluttar skrár';"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
+    "line": 46,
+    "before": "SelectionDescriptionLbl: Label 'Lists processed Data Exchange entries with filters and paging; use entry get to read fields.', Comment = 'is-IS=Listar afgreiddar gagnaskiptafærslur með síum og síðuskiptingu; notaðu færslusækiboðgerðina til að lesa reiti.';",
+    "after": "SelectionDescriptionLbl: Label 'Lists processed Data Exchange entries with filters and paging; use entry get to read fields.', Comment = 'is-IS=Listar afgreiddar gagnaskiptafærslur með síum og síðuskiptingu; notaðu skilaboðategundina fyrir lestur færslu til að lesa reiti.';"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
+    "line": 38,
+    "before": "KeywordsLbl: Label 'list data exchange types, incoming document types, exchange type codes', Comment = 'is-IS=lista tegundir gagnaskipta, tegundir innkomandi skjala, tegundakóðar gagnaskipta';",
+    "after": "KeywordsLbl: Label 'list data exchange types, incoming document types, exchange type codes', Comment = 'is-IS=lista gerðir gagnaskipta, gerðir skjala í innleið, kóðar gerða gagnaskipta';"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
+    "line": 46,
+    "before": "SelectionDescriptionLbl: Label 'Lists Data Exchange Types and their definition codes; use definition get to inspect the referenced format.', Comment = 'is-IS=Listar gerðir gagnaskipta og skilgreiningarkóða þeirra; notaðu skilgreiningarsækiboðgerðina til að skoða sniðið sem vísað er í.';",
+    "after": "SelectionDescriptionLbl: Label 'Lists Data Exchange Types and their definition codes; use definition get to inspect the referenced format.', Comment = 'is-IS=Listar gerðir gagnaskipta og skilgreiningarkóða þeirra; notaðu skilaboðategundina fyrir lestur skilgreiningar til að skoða sniðið sem vísað er í.';"
+  },
+  {
+    "file": "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
+    "line": 42,
+    "before": "KeywordsLbl: Label 'data exchange type, incoming document type, set definition', Comment = 'is-IS=gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu';",
+    "after": "KeywordsLbl: Label 'data exchange type, incoming document type, set definition', Comment = 'is-IS=gerð gagnaskipta, gerð skjals í innleið, stilla skilgreiningu';"
+  },
+  {
+    "file": "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+    "line": 48,
+    "before": "SelectionDescriptionLbl: Label 'Deletes a folder from a storage connection; to remove a single file use the file delete type instead.', Comment = 'is-IS=Eyðir möppu úr geymslutengingu; notaðu boðgerðina fyrir eyðingu skráa til að eyða einni skrá.';",
+    "after": "SelectionDescriptionLbl: Label 'Deletes a folder from a storage connection; to remove a single file use the file delete type instead.', Comment = 'is-IS=Eyðir möppu úr geymslutengingu; notaðu skilaboðategundina fyrir eyðingu skráa til að eyða einni skrá.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+    "line": 48,
+    "before": "SelectionDescriptionLbl: Label 'Copies a file to another path within the same storage connection and keeps the original; use the move type to relocate it instead.', Comment = 'is-IS=Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu boðgerðina fyrir færslu skráa til að færa hana.';",
+    "after": "SelectionDescriptionLbl: Label 'Copies a file to another path within the same storage connection and keeps the original; use the move type to relocate it instead.', Comment = 'is-IS=Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu skilaboðategundina fyrir færslu skráa til að færa hana.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+    "line": 49,
+    "before": "SelectionDescriptionLbl: Label 'Uploads a whole file of up to 240 MiB to a storage path in one call; use the chunked upload types for larger files or files sent in parts.', Comment = 'is-IS=Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu boðgerðir fyrir hlutaupphleðslu fyrir stærri skrár eða skrár sendar í hlutum.';",
+    "after": "SelectionDescriptionLbl: Label 'Uploads a whole file of up to 240 MiB to a storage path in one call; use the chunked upload types for larger files or files sent in parts.', Comment = 'is-IS=Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu skilaboðategundir fyrir bútaupphleðslu fyrir stærri skrár eða skrár sendar í bútum.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+    "line": 48,
+    "before": "SelectionDescriptionLbl: Label 'Deletes a single file from a storage connection; to remove a whole folder use the directory delete type instead.', Comment = 'is-IS=Eyðir einni skrá úr geymslutengingu; notaðu boðgerðina fyrir eyðingu mappa til að eyða heilli möppu.';",
+    "after": "SelectionDescriptionLbl: Label 'Deletes a single file from a storage connection; to remove a whole folder use the directory delete type instead.', Comment = 'is-IS=Eyðir einni skrá úr geymslutengingu; notaðu skilaboðategundina fyrir eyðingu mappa til að eyða heilli möppu.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
+    "line": 26,
+    "before": "DescriptionLbl: Label 'Returns a Markdown overview of the storage connector and all its message types. No request body is required.', Comment = 'is-IS=Skilar Markdown-yfirliti yfir geymslutengilinn og allar boðgerðir hans. Enginn meginmálshluti beiðni er nauðsynlegur.';",
+    "after": "DescriptionLbl: Label 'Returns a Markdown overview of the storage connector and all its message types. No request body is required.', Comment = 'is-IS=Skilar Markdown-yfirliti yfir geymslutengilinn og allar skilaboðategundir hans. Enginn meginmálshluti beiðni er nauðsynlegur.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
+    "line": 33,
+    "before": "KeywordsLbl: Label 'storage help, storage message types, how to use storage, storage API overview, storage documentation', Comment = 'is-IS=geymslu hjálp, geymsluboðgerðir, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl';",
+    "after": "KeywordsLbl: Label 'storage help, storage message types, how to use storage, storage API overview, storage documentation', Comment = 'is-IS=geymsluhjálp, skilaboðategundir geymslu, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl';"
+  },
+  {
+    "file": "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
+    "line": 40,
+    "before": "SelectionDescriptionLbl: Label 'Returns the storage connector guide and message type map; use a specific storage type to perform an operation.', Comment = 'is-IS=Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir boðgerðir; notaðu tiltekna geymsluboðgerð til að framkvæma aðgerð.';",
+    "after": "SelectionDescriptionLbl: Label 'Returns the storage connector guide and message type map; use a specific storage type to perform an operation.', Comment = 'is-IS=Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir skilaboðategundir; notaðu tiltekna skilaboðategund geymslu til að framkvæma aðgerð.';"
+  },
+  {
+    "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+    "line": 25,
+    "before": "TypeCodeLbl: Label 'The Data Exchange Type code, at most 20 characters.', Comment = 'is-IS=Kóði gagnaskiptagerðar, að hámarki 20 stafir.';",
+    "after": "TypeCodeLbl: Label 'The Data Exchange Type code, at most 20 characters.', Comment = 'is-IS=Kóði gerðar gagnaskipta, að hámarki 20 stafir.';"
+  },
+  {
+    "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+    "line": 28,
+    "before": "TypeDescriptionLbl: Label 'Optional description within the Data Exchange Type Description field length.', Comment = 'is-IS=Valfrjáls lýsing innan lengdar lýsingarreits gagnaskiptagerðar.';",
+    "after": "TypeDescriptionLbl: Label 'Optional description within the Data Exchange Type Description field length.', Comment = 'is-IS=Valfrjáls lýsing innan lengdar lýsingarreits gerðar gagnaskipta.';"
+  },
+  {
+    "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+    "line": 41,
+    "before": "MatchingTypesLbl: Label 'The Data Exchange Types and their linked definitions.', Comment = 'is-IS=Gagnaskiptagerðir og tengdar skilgreiningar þeirra.';",
+    "after": "MatchingTypesLbl: Label 'The Data Exchange Types and their linked definitions.', Comment = 'is-IS=Gerðir gagnaskipta og tengdar skilgreiningar þeirra.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+    "line": 33,
+    "before": "DescriptionLbl: Label 'Discards an open upload session and all its chunks without writing to storage.', Comment = 'is-IS=Fleygir opinni upphleðslulotu og öllum hlutum hennar án þess að skrifa í geymslu.';",
+    "after": "DescriptionLbl: Label 'Discards an open upload session and all its chunks without writing to storage.', Comment = 'is-IS=Fleygir opinni upphleðslulotu og öllum bútum hennar án þess að skrifa í geymslu.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+    "line": 54,
+    "before": "SelectionDescriptionLbl: Label 'Discards an open upload session and its chunks without writing anything to storage or to any record.', Comment = 'is-IS=Fleygir opinni upphleðslulotu og hlutum hennar án þess að skrifa í geymslu eða á neina færslu.';",
+    "after": "SelectionDescriptionLbl: Label 'Discards an open upload session and its chunks without writing anything to storage or to any record.', Comment = 'is-IS=Fleygir opinni upphleðslulotu og bútum hennar án þess að skrifa í geymslu eða á neina færslu.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+    "line": 34,
+    "before": "DescriptionLbl: Label 'Appends one base64 chunk of up to 240 MiB to an open upload session.', Comment = 'is-IS=Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu.';",
+    "after": "DescriptionLbl: Label 'Appends one base64 chunk of up to 240 MiB to an open upload session.', Comment = 'is-IS=Bætir einum base64-búti allt að 240 MiB við opna upphleðslulotu.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+    "line": 46,
+    "before": "KeywordsLbl: Label 'send next chunk, append chunk, upload next part, add part to upload, continue upload, send file piece', Comment = 'is-IS=senda næsta bút, bæta við bút, hlaða upp næsta hluta, bæta hluta við upphleðslu, halda upphleðslu áfram, senda hluta skrár';",
+    "after": "KeywordsLbl: Label 'send next chunk, append chunk, upload next part, add part to upload, continue upload, send file piece', Comment = 'is-IS=senda næsta bút, bæta við búti, hlaða upp næsta bút, bæta búti við upphleðslu, halda upphleðslu áfram, senda bút skrár';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+    "line": 55,
+    "before": "SelectionDescriptionLbl: Label 'Adds one base64 chunk of up to 240 MiB to an open upload session; call it once per part in sequence before committing.', Comment = 'is-IS=Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern hluta í réttri röð áður en upphleðslu er lokið.';",
+    "after": "SelectionDescriptionLbl: Label 'Adds one base64 chunk of up to 240 MiB to an open upload session; call it once per part in sequence before committing.', Comment = 'is-IS=Bætir einum base64-búti allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern bút í réttri röð áður en upphleðsla er staðfest.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+    "line": 33,
+    "before": "DescriptionLbl: Label 'Opens a chunked upload session for a file larger than one call can carry, sent as chunks of up to 240 MiB each.', Comment = 'is-IS=Opnar upphleðslulotu fyrir skrá sem rúmast ekki í einu kalli; hún er send í hlutum sem eru allt að 240 MiB hver.';",
+    "after": "DescriptionLbl: Label 'Opens a chunked upload session for a file larger than one call can carry, sent as chunks of up to 240 MiB each.', Comment = 'is-IS=Opnar upphleðslulotu fyrir skrá sem rúmast ekki í einu kalli; hún er send í bútum sem eru allt að 240 MiB hver.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+    "line": 45,
+    "before": "KeywordsLbl: Label 'start a large upload, upload a big file, chunked upload, upload in parts, stream a file, resumable upload, start upload session, file too large for one call', Comment = 'is-IS=hefja stóra upphleðslu, hlaða upp stórri skrá, upphleðsla í hlutum, hlaða upp í bútum, streyma skrá, upphleðsla sem má halda áfram, hefja upphleðslulotu, skrá of stór fyrir eitt kall';",
+    "after": "KeywordsLbl: Label 'start a large upload, upload a big file, chunked upload, upload in parts, stream a file, resumable upload, start upload session, file too large for one call', Comment = 'is-IS=hefja stóra upphleðslu, hlaða upp stórri skrá, upphleðsla í bútum, hlaða upp í bútum, streyma skrá, upphleðsla sem má halda áfram, hefja upphleðslulotu, skrá of stór fyrir eitt kall';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+    "line": 54,
+    "before": "SelectionDescriptionLbl: Label 'Opens a chunked upload session for files over 240 MiB or streamed in parts; use the single-call file create for anything that fits in one request.', Comment = 'is-IS=Opnar upphleðslulotu fyrir skrár yfir 240 MiB eða skrár sendar í hlutum; notaðu skráarstofnun í einu kalli fyrir skrár sem rúmast í einni beiðni.';",
+    "after": "SelectionDescriptionLbl: Label 'Opens a chunked upload session for files over 240 MiB or streamed in parts; use the single-call file create for anything that fits in one request.', Comment = 'is-IS=Opnar upphleðslulotu fyrir skrár yfir 240 MiB eða skrár sendar í bútum; notaðu skráarstofnun í einu kalli fyrir skrár sem rúmast í einni beiðni.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+    "line": 34,
+    "before": "DescriptionLbl: Label 'Assembles an upload session''s chunks and writes the file to the storage connection.', Comment = 'is-IS=Sameinar hluta upphleðslulotu og skrifar skrána í geymslutenginguna.';",
+    "after": "DescriptionLbl: Label 'Assembles an upload session''s chunks and writes the file to the storage connection.', Comment = 'is-IS=Sameinar búta upphleðslulotu og skrifar skrána í geymslutenginguna.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+    "line": 46,
+    "before": "KeywordsLbl: Label 'finish upload to storage, complete the upload, save uploaded file to cloud, commit upload, assemble the chunks, finalise upload, finalize upload', Comment = 'is-IS=ljúka upphleðslu í geymslu, klára upphleðslu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, ljúka upphleðslu, staðfesta upphleðsluna';",
+    "after": "KeywordsLbl: Label 'finish upload to storage, complete the upload, save uploaded file to cloud, commit upload, assemble the chunks, finalise upload, finalize upload', Comment = 'is-IS=staðfesta upphleðslu í geymslu, staðfesta upphleðslulotu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, staðfesta upphleðslu skráar, staðfesta upphleðsluna';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+    "line": 55,
+    "before": "SelectionDescriptionLbl: Label 'Assembles the chunks of an upload session and writes the file to its storage connection; it does not attach the file to any record.', Comment = 'is-IS=Sameinar hluta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu.';",
+    "after": "SelectionDescriptionLbl: Label 'Assembles the chunks of an upload session and writes the file to its storage connection; it does not attach the file to any record.', Comment = 'is-IS=Sameinar búta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
+    "line": 35,
+    "before": "DescriptionLbl: Label 'Assembles uploaded chunks and attaches the file directly to a record without external storage.', Comment = 'is-IS=Sameinar upphlaðna hluta og tengir skrána beint við færslu án ytri geymslu.';",
+    "after": "DescriptionLbl: Label 'Assembles uploaded chunks and attaches the file directly to a record without external storage.', Comment = 'is-IS=Sameinar upphlaðna búta og tengir skrána beint við færslu án ytri geymslu.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
+    "line": 47,
+    "before": "KeywordsLbl: Label 'attach large file to record, attach big pdf to vendor, finish upload as attachment, large incoming document, upload big scan to incoming document, attach uploaded file without storage, save upload as document attachment', Comment = 'is-IS=hengja stóra skrá við færslu, hengja stóra pdf við lánardrottin, ljúka upphleðslu sem viðhengi, stórt innkomið skjal, hlaða stórri skönnun í innkomið skjal, hengja upphlaðna skrá við án geymslu, vista upphleðslu sem viðhengi';",
+    "after": "KeywordsLbl: Label 'attach large file to record, attach big pdf to vendor, finish upload as attachment, large incoming document, upload big scan to incoming document, attach uploaded file without storage, save upload as document attachment', Comment = 'is-IS=hengja stóra skrá við færslu, hengja stóra pdf við lánardrottin, staðfesta upphleðslu sem viðhengi, stórt skjal í innleið, hlaða stórri skönnun í skjal í innleið, hengja upphlaðna skrá við án geymslu, vista upphleðslu sem viðhengi';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
+    "line": 56,
+    "before": "SelectionDescriptionLbl: Label 'Assembles an upload session and attaches the file to a Business Central record or incoming document in the database, with no storage connection.', Comment = 'is-IS=Sameinar upphleðslulotu og tengir skrána við Business Central færslu eða innkomuskjal í gagnagrunninum, án geymslutengingar.';",
+    "after": "SelectionDescriptionLbl: Label 'Assembles an upload session and attaches the file to a Business Central record or incoming document in the database, with no storage connection.', Comment = 'is-IS=Sameinar upphleðslulotu og tengir skrána við Business Central færslu eða skjal í innleið í gagnagrunninum, án geymslutengingar.';"
+  },
+  {
+    "file": "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+    "line": 55,
+    "before": "SelectionDescriptionLbl: Label 'Reports the bytes and chunk count received by an upload session without changing it, to confirm progress before committing.', Comment = 'is-IS=Skilar fjölda bæta og hluta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðslu er lokið.';",
+    "after": "SelectionDescriptionLbl: Label 'Reports the bytes and chunk count received by an upload session without changing it, to confirm progress before committing.', Comment = 'is-IS=Skilar fjölda bæta og búta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðsla er staðfest.';"
+  },
+  {
+    "file": "app/src/Setup/AttachmentsSetup.Page.al",
+    "line": 51,
+    "before": "ToolTip = 'Run the guided setup to add a new file storage account (Azure Blob, Azure File Share, SharePoint, etc.).', Comment = 'is-IS=Keyra leiðsagnarforritið til að bæta við nýjum skráargeymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).';",
+    "after": "ToolTip = 'Run the guided setup to add a new file storage account (Azure Blob, Azure File Share, SharePoint, etc.).', Comment = 'is-IS=Keyra leiðsagnarforritið til að bæta við nýjum skráageymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).';"
+  },
+  {
+    "file": "app/src/Setup/AttachmentsSetup.Page.al",
+    "line": 59,
+    "before": "ToolTip = 'View and manage the registered file storage accounts.', Comment = 'is-IS=Skoða og stjórna skráðum skráargeymslureikningum.';",
+    "after": "ToolTip = 'View and manage the registered file storage accounts.', Comment = 'is-IS=Skoða og stjórna skráðum skráageymslureikningum.';"
+  },
+  {
+    "file": "app/src/Setup/AttachmentsSetup.Page.al",
+    "line": 67,
+    "before": "ToolTip = 'View and manage storage connections used to route Bifrost file requests to file accounts.', Comment = 'is-IS=Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga.';",
+    "after": "ToolTip = 'View and manage storage connections used to route Bifrost file requests to file accounts.', Comment = 'is-IS=Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifröst á skráageymslureikninga.';"
+  },
+  {
+    "file": "app/src/Setup/AttachmentsSetup.Page.al",
+    "line": 75,
+    "before": "ToolTip = 'Deletes abandoned upload sessions and their chunks. Sessions that were never committed or aborted leave data behind; this action removes it.', Comment = 'is-IS=Eyðir yfirgefnum upphleðslulotum og bitum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.';",
+    "after": "ToolTip = 'Deletes abandoned upload sessions and their chunks. Sessions that were never committed or aborted leave data behind; this action removes it.', Comment = 'is-IS=Eyðir yfirgefnum upphleðslulotum og bútum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.';"
+  },
+  {
+    "file": "app/src/Setup/AttachmentsSetup.Page.al",
+    "line": 89,
+    "before": "ToolTip = 'Opens the Bifrost setup wizard, which enables HTTP client requests for all Bifrost apps and walks through the credentials of every app.', Comment = 'is-IS=Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir auðkenni hvers forrits.';",
+    "after": "ToolTip = 'Opens the Bifrost setup wizard, which enables HTTP client requests for all Bifrost apps and walks through the credentials of every app.', Comment = 'is-IS=Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir aðgangsupplýsingar hvers forrits.';"
+  },
+  {
+    "file": "app/src/Setup/StorageSetup.Table.al",
+    "line": 116,
+    "before": "NoAccountErr: Label 'Select a file account before testing the connection.', Comment = 'is-IS=Veldu skráarreikning áður en tengingin er prófuð.';",
+    "after": "NoAccountErr: Label 'Select a file account before testing the connection.', Comment = 'is-IS=Veldu skráareikning áður en tengingin er prófuð.';"
+  },
+  {
+    "file": "app/src/Setup/StorageSetupWizard.Page.al",
+    "line": 30,
+    "before": "InstructionalText = 'This wizard helps you set up external storage for Bifrost. The extension exposes Azure Blob, Azure File Share and SharePoint connectors as Bifrost message types, giving read/write access to cloud storage from Business Central.', Comment = 'is-IS=Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðagerðir Bifrastar og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central.';",
+    "after": "InstructionalText = 'This wizard helps you set up external storage for Bifrost. The extension exposes Azure Blob, Azure File Share and SharePoint connectors as Bifrost message types, giving read/write access to cloud storage from Business Central.', Comment = 'is-IS=Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðategundir Bifröst og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central.';"
+  },
+  {
+    "file": "app/src/Setup/StorageSetupWizard.Page.al",
+    "line": 35,
+    "before": "InstructionalText = 'You need a configured file storage account (Azure Blob, Azure File Share, or SharePoint) and outbound HTTP must be enabled for this extension.', Comment = 'is-IS=Þú þarft uppsettan skráargeymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.';",
+    "after": "InstructionalText = 'You need a configured file storage account (Azure Blob, Azure File Share, or SharePoint) and outbound HTTP must be enabled for this extension.', Comment = 'is-IS=Þú þarft uppsettan skráageymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.';"
+  },
+  {
+    "file": "app/src/Setup/StorageSetupWizard.Page.al",
+    "line": 64,
+    "before": "InstructionalText = 'HTTP client requests are enabled. You can now configure storage connections from the Bifrost Storage Setup page. Use the Storage Setup Wizard action on the Bifrost Setup page to add file accounts.', Comment = 'is-IS=HTTP-biðlarabeiðnir eru virkar. Þú getur nú stillt geymslutengingar á uppsetningarsíðu Bifröst geymslu. Notaðu aðgerðina Leiðsagnarforrit geymsluuppsetningar á uppsetningarsíðu Bifrastar til að bæta við skráargeymslureikningum.';",
+    "after": "InstructionalText = 'HTTP client requests are enabled. You can now configure storage connections from the Bifrost Storage Setup page. Use the Storage Setup Wizard action on the Bifrost Setup page to add file accounts.', Comment = 'is-IS=HTTP-biðlarabeiðnir eru virkar. Þú getur nú stillt geymslutengingar á uppsetningarsíðu Bifröst geymslu. Notaðu aðgerðina Leiðsagnarforrit geymsluuppsetningar á uppsetningarsíðu Bifröst til að bæta við skráageymslureikningum.';"
+  },
+  {
+    "file": "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+    "line": 37,
+    "before": "NoAccountErr: Label 'Storage connection ''%1'' has no file account selected.', Comment = '%1 = storage code';",
+    "after": "NoAccountErr: Label 'Storage connection ''%1'' has no file account selected.', Comment = '%1 = storage code||is-IS=Geymslutengingin „%1“ hefur engan skráareikning valinn.';"
+  },
+  {
+    "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+    "line": 20,
+    "before": "MoveRecoveryLbl: Label 'linked move recovery after remote acknowledgement loss', Comment = 'is-IS=endurheimt tengdrar færslu eftir tap á staðfestingu frá fjargeymslu';",
+    "after": "MoveRecoveryLbl: Label 'linked move recovery after remote acknowledgement loss', Comment = 'is-IS=endurheimt tengdrar tilfærslu eftir tap á staðfestingu frá fjargeymslu';"
+  },
+  {
+    "file": "app/src/Storage/StorageRequestReader.Codeunit.al",
+    "line": 22,
+    "before": "RequiredParameterMissingErr: Label 'Required parameter \"%1\" is missing.', Comment = '%1 = parameter name, is-IS=Nauðsynleg færibreyta \"%1\" vantar.';",
+    "after": "RequiredParameterMissingErr: Label 'Required parameter \"%1\" is missing.', Comment = '%1 = parameter name, is-IS=Nauðsynlega færibreytu \"%1\" vantar.';"
+  },
+  {
+    "file": "app/src/Storage/StorageRequestReader.Codeunit.al",
+    "line": 48,
+    "before": "SplitIntoChunksLbl: Label 'Send the file in parts with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.', Comment = 'is-IS=Sendu skrána í hlutum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.';",
+    "after": "SplitIntoChunksLbl: Label 'Send the file in parts with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.', Comment = 'is-IS=Sendu skrána í bútum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadChunk.Table.al",
+    "line": 21,
+    "before": "Caption = 'Bifrost Storage Upload Chunk', Comment = 'is-IS=Upphleðslubiti Bifröst geymslu';",
+    "after": "Caption = 'Bifrost Storage Upload Chunk', Comment = 'is-IS=Upphleðslubútur Bifröst geymslu';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadChunk.Table.al",
+    "line": 32,
+    "before": "ToolTip = 'Specifies the upload session this chunk belongs to.', Comment = 'is-IS=Tilgreinir upphleðslulotuna sem þessi biti tilheyrir.';",
+    "after": "ToolTip = 'Specifies the upload session this chunk belongs to.', Comment = 'is-IS=Tilgreinir upphleðslulotuna sem þessi bútur tilheyrir.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadChunk.Table.al",
+    "line": 37,
+    "before": "ToolTip = 'Specifies the position of this chunk in the assembled file; chunks are concatenated in ascending sequence order.', Comment = 'is-IS=Tilgreinir staðsetningu þessa bita í samsettu skránni; bitar eru tengdir saman í hækkandi raðnúmeri.';",
+    "after": "ToolTip = 'Specifies the position of this chunk in the assembled file; chunks are concatenated in ascending sequence order.', Comment = 'is-IS=Tilgreinir staðsetningu þessa búts í samsettu skránni; bútar eru tengdir saman í hækkandi raðnúmeri.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadChunk.Table.al",
+    "line": 42,
+    "before": "ToolTip = 'Specifies the decoded bytes of this chunk.', Comment = 'is-IS=Tilgreinir afkóðuð bæti þessa bita.';",
+    "after": "ToolTip = 'Specifies the decoded bytes of this chunk.', Comment = 'is-IS=Tilgreinir afkóðuð bæti þessa búts.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadChunk.Table.al",
+    "line": 47,
+    "before": "ToolTip = 'Specifies the number of bytes held by this chunk.', Comment = 'is-IS=Tilgreinir fjölda bæta sem þessi biti geymir.';",
+    "after": "ToolTip = 'Specifies the number of bytes held by this chunk.', Comment = 'is-IS=Tilgreinir fjölda bæta sem þessi bútur geymir.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadMgt.Codeunit.al",
+    "line": 32,
+    "before": "NotOpenErr: Label 'The upload session is %1, not open; it has already been committed or aborted.', Comment = '%1 = session status, is-IS=Upphleðslulotan er %1, ekki opin; henni hefur þegar verið lokið eða hún verið hætt.';",
+    "after": "NotOpenErr: Label 'The upload session is %1, not open; it has already been committed or aborted.', Comment = '%1 = session status, is-IS=Upphleðslulotan er %1, ekki opin; hún hefur þegar verið staðfest eða hætt við hana.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadMgt.Codeunit.al",
+    "line": 35,
+    "before": "NoChunksErr: Label 'The upload session has no chunks to commit.', Comment = 'is-IS=Upphleðslulotan hefur enga hluta til að ljúka.';",
+    "after": "NoChunksErr: Label 'The upload session has no chunks to commit.', Comment = 'is-IS=Upphleðslulotan hefur enga búta til að staðfesta.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadMgt.Codeunit.al",
+    "line": 37,
+    "before": "ChunkGapErr: Label 'The upload session is missing one or more chunks: it holds %1 chunks, numbered %2 to %3.', Comment = '%1 = chunk count, %2 = first sequence, %3 = last sequence, is-IS=Það vantar einn eða fleiri hluta í upphleðslulotuna: hún hefur %1 hluta, númeraða %2 til %3.';",
+    "after": "ChunkGapErr: Label 'The upload session is missing one or more chunks: it holds %1 chunks, numbered %2 to %3.', Comment = '%1 = chunk count, %2 = first sequence, %3 = last sequence, is-IS=Það vantar einn eða fleiri búta í upphleðslulotuna: hún hefur %1 búta, númeraða %2 til %3.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadMgt.Codeunit.al",
+    "line": 38,
+    "before": "ChunkGapNextStepLbl: Label 'Call Storage.Upload.Status, append the missing sequence numbers, then commit again.', Comment = 'is-IS=Kallaðu á Storage.Upload.Status, bættu við þeim raðnúmerum sem vantar og ljúktu svo aftur.';",
+    "after": "ChunkGapNextStepLbl: Label 'Call Storage.Upload.Status, append the missing sequence numbers, then commit again.', Comment = 'is-IS=Kallaðu á Storage.Upload.Status, bættu við þeim raðnúmerum sem vantar og staðfestu svo aftur.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadMgt.Codeunit.al",
+    "line": 41,
+    "before": "SizeMismatchNextStepLbl: Label 'Append the missing chunks, or re-send a chunk whose content was wrong, then commit again.', Comment = 'is-IS=Bættu við hlutunum sem vantar eða sendu aftur hluta með röngu innihaldi og ljúktu svo aftur.';",
+    "after": "SizeMismatchNextStepLbl: Label 'Append the missing chunks, or re-send a chunk whose content was wrong, then commit again.', Comment = 'is-IS=Bættu við bútunum sem vantar eða sendu aftur bút með röngu innihaldi og staðfestu svo aftur.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadPurge.Codeunit.al",
+    "line": 15,
+    "before": "PurgedMsg: Label 'Purged %1 upload session(s) and %2 chunk(s).', Comment = '%1 = session count, %2 = chunk count||is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 bita.';",
+    "after": "PurgedMsg: Label 'Purged %1 upload session(s) and %2 chunk(s).', Comment = '%1 = session count, %2 = chunk count||is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 búta.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadSession.Table.al",
+    "line": 57,
+    "before": "ToolTip = 'Specifies the total number of bytes received across all appended chunks.', Comment = 'is-IS=Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta bita.';",
+    "after": "ToolTip = 'Specifies the total number of bytes received across all appended chunks.', Comment = 'is-IS=Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta búta.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadSession.Table.al",
+    "line": 61,
+    "before": "Caption = 'Chunk Count', Comment = 'is-IS=Fjöldi bita';",
+    "after": "Caption = 'Chunk Count', Comment = 'is-IS=Fjöldi búta';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadSession.Table.al",
+    "line": 62,
+    "before": "ToolTip = 'Specifies how many chunks have been appended to the session.', Comment = 'is-IS=Tilgreinir hversu margir bitar hafa verið viðbættir lotunni.';",
+    "after": "ToolTip = 'Specifies how many chunks have been appended to the session.', Comment = 'is-IS=Tilgreinir hversu margir bútar hafa verið viðbættir lotunni.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadSession.Table.al",
+    "line": 67,
+    "before": "ToolTip = 'Specifies whether the session is open for further chunks, has been committed to storage, or was aborted.', Comment = 'is-IS=Tilgreinir hvort lotan er opin fyrir frekari bita, hefur verið staðfest í geymslu, eða var hætt við.';",
+    "after": "ToolTip = 'Specifies whether the session is open for further chunks, has been committed to storage, or was aborted.', Comment = 'is-IS=Tilgreinir hvort lotan er opin fyrir frekari búta, hefur verið staðfest í geymslu, eða var hætt við.';"
+  },
+  {
+    "file": "app/src/Upload/StorageUploadStatus.Enum.al",
+    "line": 18,
+    "before": "Caption = 'Open', Comment = 'is-IS=Opið';",
+    "after": "Caption = 'Open', Comment = 'is-IS=Opin';"
+  }
+]

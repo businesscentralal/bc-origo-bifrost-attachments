@@ -1,0 +1,6 @@
+{
+  "finding": "Glossary normalization collapsed7Icelandic Upload.Commit search phrases to5distinct entries",
+  "cause": "Several finish/finalize synonyms now correctly use sta\u00f0festa but became exact duplicates",
+  "fix": "Seven distinct contextual search phrases, all preserving the agreed commit term; no guard or threshold changed",
+  "runtimeEvidence": false
+}
