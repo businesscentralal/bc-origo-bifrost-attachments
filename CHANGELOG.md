@@ -8,6 +8,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-16) - provider path preflight (#122)
+
+- `Storage Ext File Impl ori` (10035661) checks mutation path budgets using the configured base path without reading connector account tables. Provider facades still validate accounts; physical identity resolution and linked-attachment alias protection remain unchanged. Existing SharePoint and File Share Unicode refusals remain in place.
+- `Storage Refusal122 Tests ori` (96228) covers account-independent path preflight, complete Blob path bounds and unchanged provider capability refusals. Real-provider UAT is tracked separately from these native regressions.
+
+
 ### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
 
 - `Storage Contract Parts ori` (70013500) describes `DataExchange.Import.Run` references precisely: `storageCode` and `path` receive syntax checks, but no storage/file lookup occurs, neither reference is stored on the entry header, and no file content is read. This selects issue #122 AC01's documentation alternative and preserves the existing header-only behavior.

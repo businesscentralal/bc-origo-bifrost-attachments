@@ -3,6 +3,7 @@ namespace Origo.Bifrost.Attachments.Test;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
+using System.ExternalFileStorage;
 
 /// <summary>Issue 122: explicit header-only import references and safe directory refusals.</summary>
 codeunit 96228 "Storage Refusal122 Tests ori"
@@ -172,6 +173,78 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         LibraryAssert.IsTrue(ResponseText.Contains('ekki tóm'), 'Translate the non-empty explanation.');
         LibraryAssert.IsTrue(ResponseText.Contains('undirmöppur'), 'Translate the recovery step.');
         LibraryAssert.IsTrue(MockState.HasFile('X122/Xfile.txt'), 'Localized refusal must preserve content.');
+    end;
+
+    /// <summary>Mutation path preflight does not require a direct read of the provider account.</summary>
+    [Test]
+    procedure Scenario_AC02_ProviderPath_DoesNotReadAccount()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Provider: Codeunit "Storage Ext File Impl ori";
+    begin
+        // [GIVEN] An unregistered account: account validation belongs to the facade,
+        // while this pure preflight checks only the complete provider path.
+        InitializeProviderSetup(StorageSetup, 4560);
+        StorageSetup."Base Path" := 'Xbase';
+        // [WHEN] A normal Blob path is validated before directory deletion.
+        LibraryAssert.IsTrue(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', 'X122', true), 'Path preflight must not require direct account-table read permission.');
+        // [THEN] No permission or missing-account error was collected by path validation.
+        LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'Account access must remain in the provider facade or physical alias resolution.');
+    end;
+
+    /// <summary>The complete base-prefixed Blob budget is still enforced before provider IO.</summary>
+    [Test]
+    procedure Scenario_AC02_ProviderPath_RejectsOverlongBase()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Provider: Codeunit "Storage Ext File Impl ori";
+        ErrorsText: Text;
+    begin
+        // [GIVEN] Individually valid components whose combined Blob name exceeds1024.
+        InitializeProviderSetup(StorageSetup, 4560);
+        StorageSetup."Base Path" := PadStr('X', 250, 'a');
+        // [WHEN] The mutation path is checked without accessing an account.
+        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', PadStr('X', 800, 'b'), true), 'Validate the complete base-prefixed name.');
+        TempArgument.GetCollectedErrorsJson().WriteTo(ErrorsText);
+        // [THEN] The path budget, not permission or metadata access, causes refusal.
+        LibraryAssert.IsTrue(ErrorsText.Contains('InvalidParameter'), 'Keep a typed path-boundary refusal.');
+        LibraryAssert.IsFalse(ErrorsText.Contains('PermissionDenied'), 'Do not replace path validation with account access.');
+    end;
+
+    /// <summary>File Share Unicode ambiguity and unverified SharePoint mutations stay refused.</summary>
+    [Test]
+    procedure Scenario_AC02_ProviderPath_KeepsCapabilityRefusals()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Provider: Codeunit "Storage Ext File Impl ori";
+        ErrorsText: Text;
+    begin
+        // [GIVEN] File Share with a non-ASCII base path.
+        InitializeProviderSetup(StorageSetup, 4570);
+        StorageSetup."Base Path" := 'Xmöppur';
+        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', 'X122', true), 'Keep the File Share Unicode comparison gate.');
+        TempArgument.GetCollectedErrorsJson().WriteTo(ErrorsText);
+        LibraryAssert.IsTrue(ErrorsText.Contains('File Share Unicode comparison'), 'Do not relax the existing comparison constraint.');
+        // [WHEN] A SharePoint mutation is checked.
+        Clear(TempArgument);
+        InitializeProviderSetup(StorageSetup, 4580);
+        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', 'X122', true), 'Keep the existing unverified SharePoint operation refusal.');
+        TempArgument.GetCollectedErrorsJson().WriteTo(ErrorsText);
+        // [THEN] Removing an unused metadata read does not authorize SharePoint writes.
+        LibraryAssert.IsTrue(ErrorsText.Contains('SharePoint decoded library root and comparison'), 'Preserve the SharePoint capability boundary.');
+    end;
+
+    local procedure InitializeProviderSetup(var StorageSetup: Record "Storage Setup ori"; ConnectorId: Integer)
+    begin
+        Clear(StorageSetup);
+        StorageSetup.Code := NewCode();
+        StorageSetup.Enabled := true;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
+        StorageSetup.Connector := "Ext. File Storage Connector".FromInteger(ConnectorId);
+        StorageSetup."File Account Id" := CreateGuid();
     end;
 
     local procedure Initialize(var StorageSetup: Record "Storage Setup ori")
