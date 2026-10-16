@@ -17,7 +17,9 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
     Access = Internal;
     // Gunnar, 16 Oct 2026: app.json depends on all four Microsoft SaaS External File Storage connectors, so these tables always exist.
     // Azure Blob 4560 and Azure File 4570 are read here for address resolution. This Permissions grant is that indirect read; RecordRef.ReadPermission does not observe it.
-    // SharePoint and SFTP are dependencies so storage setup always has every Microsoft connector. Their account tables are not read here.
+    // SharePoint (4580) and SFTP (4621): address resolution never opens those account tables.
+    // SharePoint returns an unverified operation after a path-length check, and SFTP goes through the generic connector path.
+    // They need no read grant and no restricted-user test. The dependency only guarantees the connectors are installed.
     Permissions =
         tabledata 4560 = R,
         tabledata 4570 = R;
@@ -278,7 +280,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
             4570:
                 CheckFileSharePath(Argument, ParameterName, Address, IsDirectory);
             4580:
-                // Caller must supply the complete decoded server-relative path, including library root.
+                // Path-length check only. Address resolution never opens the SharePoint account table.
                 Reader.CheckAddressLength(Argument, ParameterName, Address, 400);
         end;
     end;
@@ -314,11 +316,12 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
                 end;
             4580:
                 begin
+                    // Unverified operation. Do not open the SharePoint account table. No read grant and no restricted-user test.
                     AddUnverifiedOperation(Argument, 'storageCode', SharePointRootLbl);
                     exit(false);
                 end;
             else
-                // No guessed provider limits or case folding for partner connectors.
+                // Generic connector path, including SFTP (4621). Do not open the account table.
                 exit(true);
         end;
         if not TryReadPublicAccount(ConnectorId, StorageSetup."File Account Id", AccountTableName, RootFieldName, HostName, RootName) then begin
