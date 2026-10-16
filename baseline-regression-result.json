@@ -1,0 +1,15 @@
+{
+  "ok": false,
+  "passed": 0,
+  "failed": 1,
+  "skipped": 0,
+  "errors": 0,
+  "failures": [
+    {
+      "name": "Scenario_AC02_ProviderPath_DoesNotReadAccount",
+      "message": "Assert.IsTrue failed. Path preflight must not require direct account-table read permission.",
+      "classname": "96228 Storage Refusal122 Tests ori"
+    }
+  ],
+  "durationMs": 23601
+}

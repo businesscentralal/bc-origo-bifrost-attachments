@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-16T18:43:25.046000+00:00",
+  "containerId": "f0c991d445a8",
+  "appSourceSha": "b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005",
+  "appVersion": "28.0.0.4",
+  "appArtifactProvenance": "/workspace/evidence/tasks/1792162093.010509/deployed-provenance.json",
+  "testSourceSha": "dffe555d8281c9e03637e01b21d3b476f843c8bf",
+  "testVersion": "28.0.0.6",
+  "testArtifactSha256": "a7b915536b40669646bfddbe115e0302129e81576d07d9c9a991b067653cdfcf",
+  "scope": "Focused baseline-regression experiment, not fullSuite or repairedcandidate pass",
+  "expected": "One executed failing new account-independent preflight regression on old product; repairedproduct not deployed yet"
+}

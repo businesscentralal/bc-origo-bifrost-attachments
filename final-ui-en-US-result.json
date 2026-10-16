@@ -1,0 +1,25 @@
+{
+  "candidateSha": "dffe555d8281c9e03637e01b21d3b476f843c8bf",
+  "containerId": "f0c991d445a8",
+  "results": [
+    {
+      "locale": "en-US",
+      "lcid": 1033,
+      "pageId": 10035677,
+      "expectedCaption": "Bifrost Attachments Setup",
+      "passed": true,
+      "scenario": "Authenticated owned setup page navigation and localized caption; no provider/data mutation",
+      "checkedAt": "2026-10-16T18:47:46.897Z"
+    },
+    {
+      "locale": "en-US",
+      "lcid": 1033,
+      "pageId": 10035637,
+      "expectedCaption": "Bifrost Storage Setup",
+      "passed": true,
+      "scenario": "Authenticated owned setup page navigation and localized caption; no provider/data mutation",
+      "checkedAt": "2026-10-16T18:47:49.703Z"
+    }
+  ],
+  "limitation": "Related setup UI only; functional touched-message responses require MCP licensing disposition. No provider deletion via UI claimed."
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="96228 Storage Refusal122 Tests ori" timestamp="2026-10-16T18:43:49" hostname="f0c991d445a8-business-central-758f587579-dlbjl" time="3.48" tests="0" failures="1" errors="0" skipped="0" total="1">
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_ProviderPath_DoesNotReadAccount" time="3.48" result="Fail">
+      <failure message="Assert.IsTrue failed. Path preflight must not require direct account-table read permission.">"Library Assert"(CodeUnit 130002).IsTrue line 3 - Library Assert by Microsoft version 28.5.54151.56408
+"Storage Refusal122 Tests ori"(CodeUnit 96228).Scenario_AC02_ProviderPath_DoesNotReadAccount line 11 - Bifrost Attachments - Tests by Origo version 28.0.0.6
+"Test Runner - Mgt"(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56408
+"Test Runner - Isol. Codeunit"(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56408
+"Test Suite Mgt."(CodeUnit 130456).RunTests line 2 - Test Runner by Microsoft version 28.5.54151.56408
+"Test Suite Mgt."(CodeUnit 130456).RunSelectedTests line 35 - Test Runner by Microsoft version 28.5.54151.56408
+"Command Line Test Tool"(Page 130455)."RunSelectedTests - OnAction"(Trigger) line 7 - Test Runner by Microsoft version 28.5.54151.56408</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

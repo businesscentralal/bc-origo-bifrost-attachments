@@ -1,0 +1,38 @@
+{
+  "sourceSha": "dffe555d8281c9e03637e01b21d3b476f843c8bf",
+  "containerId": "f0c991d445a8",
+  "name": "codex-worker3-attachments122-retained-1792162093",
+  "uploadedPackages": {
+    "app": {
+      "sha": "dffe555d8281c9e03637e01b21d3b476f843c8bf",
+      "containerId": "f0c991d445a8",
+      "artifactSha256": "fae3a1deadd55278d783bfa6d61f6137ba14a58e23b3acc74d2299b8aebf033e",
+      "at": "2026-10-16T18:44:24.773Z"
+    },
+    "testApp": {
+      "sha": "dffe555d8281c9e03637e01b21d3b476f843c8bf",
+      "containerId": "f0c991d445a8",
+      "artifactSha256": "a7b915536b40669646bfddbe115e0302129e81576d07d9c9a991b067653cdfcf",
+      "at": "2026-10-16T18:42:58.069Z"
+    }
+  },
+  "developerVersions": {
+    "app": "28.0.0.4",
+    "testApp": "28.0.0.6",
+    "foundation": "28.0.4.556"
+  },
+  "publishStatus": {
+    "app": 200,
+    "testApp": 200
+  },
+  "sameRetainedContainer": true,
+  "newContainerCreates": 0,
+  "foundationTestsInstalls": 0,
+  "eulaTrialLicenseWrites": 0,
+  "mcp": {
+    "executed": 0,
+    "passed": 0,
+    "verified": false
+  },
+  "limitation": "Artifacts are developer Test-product builds. Native/UI are not real-provider or licensed functionalMCP proof; source/package/provenance and exacttip independent verification remain separate."
+}

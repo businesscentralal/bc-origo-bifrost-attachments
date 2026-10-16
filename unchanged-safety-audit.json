@@ -1,0 +1,10 @@
+{
+  "candidateSha": "dffe555d8281c9e03637e01b21d3b476f843c8bf",
+  "baseSha": "b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005",
+  "onlyChangedProviderProcedure": "CheckMutationPath",
+  "outsideChangedProcedureByteEquivalentAfterLineEndingNormalization": true,
+  "sharedProviderResolverModuleVersionGateAndBudgetsUnchanged": true,
+  "unchangedAliasFile": true,
+  "effect": "Remove unnecessary account read from pure mutation budgets; physical alias checks remain fail closed",
+  "limits": "Static scope proof, not real-provider or effective-user permission verification"
+}

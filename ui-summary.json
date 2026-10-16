@@ -1,0 +1,49 @@
+{
+  "sha": "dffe555d8281c9e03637e01b21d3b476f843c8bf",
+  "containerId": "f0c991d445a8",
+  "total": 4,
+  "passed": 4,
+  "failed": 0,
+  "skipped": 0,
+  "results": [
+    {
+      "locale": "en-US",
+      "lcid": 1033,
+      "pageId": 10035677,
+      "expectedCaption": "Bifrost Attachments Setup",
+      "passed": true,
+      "scenario": "Authenticated owned setup page navigation and localized caption; no provider/data mutation",
+      "checkedAt": "2026-10-16T18:47:46.897Z"
+    },
+    {
+      "locale": "en-US",
+      "lcid": 1033,
+      "pageId": 10035637,
+      "expectedCaption": "Bifrost Storage Setup",
+      "passed": true,
+      "scenario": "Authenticated owned setup page navigation and localized caption; no provider/data mutation",
+      "checkedAt": "2026-10-16T18:47:49.703Z"
+    },
+    {
+      "locale": "is-IS",
+      "lcid": 1039,
+      "pageId": 10035677,
+      "expectedCaption": "Uppsetning Bifr\u00f6st vi\u00f0hengja",
+      "passed": true,
+      "scenario": "Authenticated owned setup page navigation and localized caption; no provider/data mutation",
+      "checkedAt": "2026-10-16T18:48:58.090Z"
+    },
+    {
+      "locale": "is-IS",
+      "lcid": 1039,
+      "pageId": 10035637,
+      "expectedCaption": "Uppsetning Bifr\u00f6st geymslu",
+      "passed": true,
+      "scenario": "Authenticated owned setup page navigation and localized caption; no provider/data mutation",
+      "checkedAt": "2026-10-16T18:49:00.787Z"
+    }
+  ],
+  "scope": "Authenticated own setup page navigation and localized captions pages10035677/10035637; no provider/message mutation claimed",
+  "EnglishRestorationVerified": true,
+  "restorationEvidence": "language-restored-readback.json"
+}
