@@ -16,7 +16,8 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
 {
     Access = Internal;
     // Gunnar, 16 Oct 2026: app.json depends on all four Microsoft SaaS External File Storage connectors, so these tables always exist.
-    // Azure Blob 4560 and Azure File 4570 are read here for address resolution. This Permissions grant is that indirect read; RecordRef.ReadPermission does not observe it.
+    // Azure Blob 4560 and Azure File 4570 are read here for address resolution.
+    // BIFROST Attach ori grants indirect read (r) on those tables. Storage Full ori cannot: a permission set extension may not grant another application's tables. This property only raises an indirect permission the user already has; a user with no permission gets nothing. RecordRef.ReadPermission does not observe it.
     // SharePoint (4580) and SFTP (4621): address resolution never opens those account tables.
     // SharePoint returns an unverified operation after a path-length check, and SFTP goes through the generic connector path.
     // They need no read grant and no restricted-user test. The dependency only guarantees the connectors are installed.
