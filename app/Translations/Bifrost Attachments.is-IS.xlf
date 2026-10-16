@@ -1347,119 +1347,11 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Áfangaslóðin er lengri en viðhengjatengingin leyfir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - Method UpdateMovedStorageFile - NamedType MovePathTooLongErr</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3085574056" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Accepted alias of contentBase64. Do not send both.</source>
-          <target>Samþykkt samheiti fyrir contentBase64. Ekki senda bæði.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Samþykkt samheiti fyrir contentBase64. Ekki senda bæði.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType AcceptedAliasOfContentBase64DoNotLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 990053741" size-unit="char" translate="yes" xml:space="preserve">
-          <source>A linked Business Central attachment prevents the delete.</source>
-          <target>Tengt Business Central viðhengi kemur í veg fyrir eyðinguna.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tengt Business Central viðhengi kemur í veg fyrir eyðinguna.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ALinkedBusinessCentralAttachmentPreventsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3369054588" size-unit="char" translate="yes" xml:space="preserve">
-          <source>An existing incoming document entry number.</source>
-          <target>Númer fyrirliggjandi færslu innkomandi skjals.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Númer fyrirliggjandi færslu innkomandi skjals.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType AnExistingIncomingDocumentEntryNumberLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 607623984" size-unit="char" translate="yes" xml:space="preserve">
-          <source>An optional replacement file name.</source>
-          <target>Valfrjálst skráarheiti í stað upprunalegs heitis.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjálst skráarheiti í stað upprunalegs heitis.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType AnOptionalReplacementFileNameLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1217583657" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Assembles the staged chunks and writes the file to the external storage. The external write happens outside the Business Central transaction and is not rolled back with it.</source>
-          <target>Setur undirbúnar gagnaeiningar saman og skrifar skrána í ytri geymslu. Ytri skrifin fara fram utan færslubókunar Business Central og eru ekki afturkölluð með henni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Setur undirbúnar gagnaeiningar saman og skrifar skrána í ytri geymslu. Ytri skrifin fara fram utan færslubókunar Business Central og eru ekki afturkölluð með henni.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType AssemblesTheStagedChunksAndWritesLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1593875030" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Attach a chunked upload directly to a record.</source>
-          <target>Hengdu upphleðslu í gagnaeiningum beint við færslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hengdu upphleðslu í gagnaeiningum beint við færslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType AttachAChunkedUploadDirectlyToLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3947726254" size-unit="char" translate="yes" xml:space="preserve">
           <source>Required with path when attaching a stored file. Omit for inline content or a source attachment.</source>
           <target>Nauðsynlegt með path þegar skrá úr geymslu er hengd við. Slepptu fyrir innfellt innihald eða upprunaviðhengi.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Nauðsynlegt með path þegar skrá úr geymslu er hengd við. Slepptu fyrir innfellt innihald eða upprunaviðhengi.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType AttachmentStorageLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1793268126" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Attach the committed file.</source>
-          <target>Hengdu staðfestu skrána við.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hengdu staðfestu skrána við.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType AttachTheCommittedFileLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3643270810" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Attach the completed file without storage.</source>
-          <target>Hengdu fullgerðu skrána við án geymslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hengdu fullgerðu skrána við án geymslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType AttachTheCompletedFileWithoutStorageLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 9793390" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Begin a new session or complete the missing chunks.</source>
-          <target>Byrjaðu nýja lotu eða bættu við gagnaeiningunum sem vantar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Byrjaðu nýja lotu eða bættu við gagnaeiningunum sem vantar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType BeginANewSessionOrCompleteLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1281303077" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Bring the file back into the database.</source>
-          <target>Færðu skrána aftur inn í gagnagrunninn.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færðu skrána aftur inn í gagnagrunninn.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType BringTheFileBackIntoTheLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2782695035" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Bring the linked file into the database.</source>
-          <target>Færðu tengdu skrána inn í gagnagrunninn.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færðu tengdu skrána inn í gagnagrunninn.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType BringTheLinkedFileIntoTheLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3135118442" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Bytes accumulated so far.</source>
-          <target>Bæti sem hafa safnast hingað til.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Bæti sem hafa safnast hingað til.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType BytesAccumulatedSoFarLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1021337686" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Check received bytes.</source>
-          <target>Athugaðu móttekin bæti.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu móttekin bæti.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CheckReceivedBytesLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1968989762" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Check the path, connection and connector error details.</source>
-          <target>Athugaðu slóðina, tenginguna og villuupplýsingar tengilsins.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu slóðina, tenginguna og villuupplýsingar tengilsins.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CheckThePathConnectionAndConnectorLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 49557322" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Check whether a file exists without downloading it.</source>
-          <target>Athugaðu hvort skrá sé til án þess að sækja hana.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu hvort skrá sé til án þess að sækja hana.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CheckWhetherAFileExistsWithoutLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1081008905" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Check whether the directory exists first.</source>
-          <target>Athugaðu fyrst hvort mappan sé til.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu fyrst hvort mappan sé til.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CheckWhetherTheDirectoryExistsFirstLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2796897332" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Check whether the file exists first.</source>
-          <target>Athugaðu fyrst hvort skráin sé til.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu fyrst hvort skráin sé til.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CheckWhetherTheFileExistsFirstLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1263117455" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Choose a configured storage connection.</source>
-          <target>Veldu uppsetta geymslutengingu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Veldu uppsetta geymslutengingu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ChooseAConfiguredStorageConnectionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1416534910" size-unit="char" translate="yes" xml:space="preserve">
           <source>Choose an existing compatible definition using DataExchange.Definition.List.</source>
@@ -1473,53 +1365,11 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Ráðlögð stærð hrárrar gagnaeiningar í bætum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ChunkSizeHintLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1422213460" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Chunks stored so far.</source>
-          <target>Gagnaeiningar sem hafa verið vistaðar hingað til.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Gagnaeiningar sem hafa verið vistaðar hingað til.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ChunksStoredSoFarLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2118133398" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Column definitions.</source>
-          <target>Dálkaskilgreiningar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Dálkaskilgreiningar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ColumnDefinitionsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3295693776" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Commit the completed upload.</source>
-          <target>Staðfestu fullgerðu upphleðsluna.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Staðfestu fullgerðu upphleðsluna.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CommitTheCompletedUploadLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1826309114" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Commit when complete.</source>
-          <target>Staðfestu þegar allt er tilbúið.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Staðfestu þegar allt er tilbúið.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CommitWhenCompleteLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3110451621" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Configured storage connections without secrets. Each description is the stored Storage Setup ori.Description value, returned unchanged in every language, including app-seeded values; no translation table is used.</source>
-          <target>Uppsettar geymslutengingar án leyndarmála. Hver lýsing er vistað gildi reitsins Storage Setup ori.Description og er skilað óbreytt á öllum tungumálum, einnig þegar forritið stofnaði gildið; engin þýðingartafla er notuð.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Uppsettar geymslutengingar án leyndarmála. Hver lýsing er vistað gildi reitsins Storage Setup ori.Description og er skilað óbreytt á öllum tungumálum, einnig þegar forritið stofnaði gildið; engin þýðingartafla er notuð.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ConfiguredStorageConnectionsWithoutSecretsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4057454151" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Copy the file while keeping the original.</source>
-          <target>Afritaðu skrána og haltu upprunalegu skránni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Afritaðu skrána og haltu upprunalegu skránni.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CopyTheFileWhileKeepingTheLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2314764910" size-unit="char" translate="yes" xml:space="preserve">
           <source>Correct every reported parameter using expected and nextStep, then retry.</source>
           <target>Leiðréttu allar tilgreindar færibreytur samkvæmt expected og nextStep og reyndu aftur.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Leiðréttu allar tilgreindar færibreytur samkvæmt expected og nextStep og reyndu aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CorrectInputLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1170525069" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Create a new linked attachment.</source>
-          <target>Stofnaðu nýtt tengt viðhengi.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Stofnaðu nýtt tengt viðhengi.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CreateANewLinkedAttachmentLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2655661050" size-unit="char" translate="yes" xml:space="preserve">
           <source>The created Data Exchange entry number.</source>
@@ -1575,42 +1425,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Gerðarheiti skilgreiningar.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DefinitionTypeLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2078798162" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Deletes the entry in the external storage. The delete happens outside the Business Central transaction and cannot be undone.</source>
-          <target>Eyðir færslunni í ytri geymslu. Eyðingin fer fram utan færslubókunar Business Central og verður ekki afturkölluð.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir færslunni í ytri geymslu. Eyðingin fer fram utan færslubókunar Business Central og verður ekki afturkölluð.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DeletesTheEntryInTheExternalLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1602170565" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Description for a new incoming document.</source>
-          <target>Lýsing fyrir nýtt innkomandi skjal.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Lýsing fyrir nýtt innkomandi skjal.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DescriptionForANewIncomingDocumentLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2493594559" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Discover available Data Exchange definitions.</source>
-          <target>Finndu tiltækar gagnaskiptaskilgreiningar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Finndu tiltækar gagnaskiptaskilgreiningar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DiscoverAvailableDataExchangeDefinitionsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2141396196" size-unit="char" translate="yes" xml:space="preserve">
-          <source>DocumentAttachment or IncomingDocument.</source>
-          <target>DocumentAttachment eða IncomingDocument.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=DocumentAttachment eða IncomingDocument.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DocumentAttachmentOrIncomingDocumentLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 208820721" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Download one listed file.</source>
-          <target>Sæktu eina af skránum á listanum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sæktu eina af skránum á listanum.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DownloadOneListedFileLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4266046447" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Download the committed file.</source>
-          <target>Sæktu staðfestu skrána.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sæktu staðfestu skrána.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DownloadTheCommittedFileLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3914119869" size-unit="char" translate="yes" xml:space="preserve">
           <source>The existing export definition code, at most 20 characters.</source>
           <target>Kóði fyrirliggjandi útflutningsskilgreiningar, að hámarki 20 stafir.</target>
@@ -1623,41 +1437,11 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Heiti úttaksskrár innan lengdar skráarheitisreits gagnaskipta.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ExportFileNameLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 531133113" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Field mappings.</source>
-          <target>Reitavarpanir.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Reitavarpanir.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType FieldMappingsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3244507552" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Find another definition code.</source>
-          <target>Finndu annan skilgreiningarkóða.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Finndu annan skilgreiningarkóða.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType FindAnotherDefinitionCodeLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4076545188" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Find another entry.</source>
-          <target>Finndu aðra færslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Finndu aðra færslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType FindAnotherEntryLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3875959254" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Find a storageCode.</source>
-          <target>Finndu storageCode.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Finndu storageCode.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType FindAStorageCodeLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2315934710" size-unit="char" translate="yes" xml:space="preserve">
           <source>The existing import definition code, at most 20 characters.</source>
           <target>Kóði fyrirliggjandi innflutningsskilgreiningar, að hámarki 20 stafir.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Kóði fyrirliggjandi innflutningsskilgreiningar, að hámarki 20 stafir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ImportDefinitionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3672284450" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Import or Export.</source>
-          <target>Import eða Export.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Import eða Export.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ImportOrExportLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2751879078" size-unit="char" translate="yes" xml:space="preserve">
           <source>Caller reference only: checked for path syntax, not validated for file existence and not stored on the entry header. No file is read.</source>
@@ -1671,29 +1455,11 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Aðeins tilvísun kallanda: snið er athugað en ekki hvort geymslutenging sé skilgreind og tilvísunin er ekki vistuð í færsluhausnum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ImportStorageLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3417432067" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Inclusive end date or datetime.</source>
-          <target>Lokadagsetning eða dagsetning og tími, að meðtöldum lokum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Lokadagsetning eða dagsetning og tími, að meðtöldum lokum.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType InclusiveEndDateOrDatetimeLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1144170986" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Inclusive start date or datetime.</source>
-          <target>Upphafsdagsetning eða dagsetning og tími, að meðtöldu upphafi.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Upphafsdagsetning eða dagsetning og tími, að meðtöldu upphafi.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType InclusiveStartDateOrDatetimeLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3476905374" size-unit="char" translate="yes" xml:space="preserve">
           <source>Description for a new IncomingDocument; ignored for DocumentAttachment.</source>
           <target>Lýsing fyrir nýtt IncomingDocument; hunsað fyrir DocumentAttachment.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Lýsing fyrir nýtt IncomingDocument; hunsað fyrir DocumentAttachment.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType IncomingDescriptionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1350974741" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Inline file content encoded as base64.</source>
-          <target>Innfellt skráarinnihald kóðað sem base64.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Innfellt skráarinnihald kóðað sem base64.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType InlineFileContentEncodedAsBase64Lbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1544357562" size-unit="char" translate="yes" xml:space="preserve">
           <source>The requested inline file content exceeds 1 MiB.</source>
@@ -1713,83 +1479,11 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Færibreyta er utan leyfilegra gilda eða lengdar.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType InvalidInputLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2635291134" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Line definitions.</source>
-          <target>Línuskilgreiningar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Línuskilgreiningar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType LineDefinitionsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2716907273" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Links the Business Central attachment to the external file and clears its local content, then writes the file to the external storage. The external write happens outside the Business Central transaction and is not rolled back with it.</source>
-          <target>Tengir Business Central viðhengið við ytri skrána og tæmir staðbundið innihald þess og skrifar síðan skrána í ytri geymslu. Ytri skrifin fara fram utan færslubókunar Business Central og eru ekki afturkölluð með henni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tengir Business Central viðhengið við ytri skrána og tæmir staðbundið innihald þess og skrifar síðan skrána í ytri geymslu. Ytri skrifin fara fram utan færslubókunar Business Central og eru ekki afturkölluð með henni.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType LinksTheBusinessCentralAttachmentToLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3251670545" size-unit="char" translate="yes" xml:space="preserve">
-          <source>List available definitions.</source>
-          <target>Listaðu tiltækar skilgreiningar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listaðu tiltækar skilgreiningar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ListAvailableDefinitionsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1286452168" size-unit="char" translate="yes" xml:space="preserve">
-          <source>List files after choosing a storageCode.</source>
-          <target>Listaðu skrár eftir að hafa valið storageCode.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listaðu skrár eftir að hafa valið storageCode.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ListFilesAfterChoosingAStorageCodeLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1794044016" size-unit="char" translate="yes" xml:space="preserve">
-          <source>List files in a storage connection.</source>
-          <target>Listaðu skrár í geymslutengingu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listaðu skrár í geymslutengingu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ListFilesInAStorageConnectionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3136066057" size-unit="char" translate="yes" xml:space="preserve">
-          <source>List files instead of subdirectories.</source>
-          <target>Listaðu skrár í stað undirmappa.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listaðu skrár í stað undirmappa.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ListFilesInsteadOfSubdirectoriesLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2563893343" size-unit="char" translate="yes" xml:space="preserve">
-          <source>List its files and subdirectories, remove those entries, then retry.</source>
-          <target>Listaðu skrár og undirmöppur hennar, fjarlægðu þær færslur og reyndu síðan aftur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listaðu skrár og undirmöppur hennar, fjarlægðu þær færslur og reyndu síðan aftur.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ListItsFilesAndSubdirectoriesRemoveLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3281026077" size-unit="char" translate="yes" xml:space="preserve">
-          <source>List processed Data Exchange entries.</source>
-          <target>Listaðu unnar gagnaskiptafærslur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listaðu unnar gagnaskiptafærslur.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ListProcessedDataExchangeEntriesLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1464368489" size-unit="char" translate="yes" xml:space="preserve">
-          <source>List subdirectories instead of files.</source>
-          <target>Listaðu undirmöppur í stað skráa.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listaðu undirmöppur í stað skráa.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ListSubdirectoriesInsteadOfFilesLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2172742550" size-unit="char" translate="yes" xml:space="preserve">
-          <source>List the directory contents.</source>
-          <target>Listaðu innihald möppunnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listaðu innihald möppunnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ListTheDirectoryContentsLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3263058254" size-unit="char" translate="yes" xml:space="preserve">
           <source>Number of matching rows.</source>
           <target>Fjöldi samsvarandi færslna.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Fjöldi samsvarandi færslna.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType MatchingCountLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1923077969" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Matching definitions.</source>
-          <target>Samsvarandi skilgreiningar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Samsvarandi skilgreiningar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType MatchingDefinitionsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2432407053" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Matching entries.</source>
-          <target>Samsvarandi færslur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Samsvarandi færslur.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType MatchingEntriesLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 162992574" size-unit="char" translate="yes" xml:space="preserve">
           <source>The Data Exchange Types and their linked definitions.</source>
@@ -1809,83 +1503,17 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Uppgefinn skilgreiningarkóði er ekki til.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType MissingRecordLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4121993121" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Move inline content to storage later.</source>
-          <target>Færðu innfellt innihald í geymslu síðar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færðu innfellt innihald í geymslu síðar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType MoveInlineContentToStorageLaterLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2583799507" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Move the created attachment to storage later.</source>
-          <target>Færðu nýstofnaða viðhengið í geymslu síðar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færðu nýstofnaða viðhengið í geymslu síðar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType MoveTheCreatedAttachmentToStorageLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1433613116" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Move the file and remove the original path.</source>
-          <target>Færðu skrána og fjarlægðu upprunalegu slóðina.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færðu skrána og fjarlægðu upprunalegu slóðina.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType MoveTheFileAndRemoveTheLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 764260391" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Move the file back to storage.</source>
-          <target>Færðu skrána aftur í geymslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færðu skrána aftur í geymslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType MoveTheFileBackToStorageLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3624314024" size-unit="char" translate="yes" xml:space="preserve">
           <source>Several parameters are invalid; errors lists every problem.</source>
           <target>Margar færibreytur eru ógildar; errors telur upp öll vandamálin.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Margar færibreytur eru ógildar; errors telur upp öll vandamálin.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType MultipleInputLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 745610895" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Number of matching definitions.</source>
-          <target>Fjöldi samsvarandi skilgreininga.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Fjöldi samsvarandi skilgreininga.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType NumberOfMatchingDefinitionsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 475100427" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Number of matching entries.</source>
-          <target>Fjöldi samsvarandi færslna.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Fjöldi samsvarandi færslna.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType NumberOfMatchingEntriesLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3376941120" size-unit="char" translate="yes" xml:space="preserve">
           <source>Omit includeFileContent or send false and retrieve the file through storage.</source>
           <target>Slepptu includeFileContent eða sendu false og sæktu skrána í gegnum geymslu.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Slepptu includeFileContent eða sendu false og sæktu skrána í gegnum geymslu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType OmitInlineLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3091334248" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Optional definition code filter.</source>
-          <target>Valfrjáls sía fyrir skilgreiningarkóða.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls sía fyrir skilgreiningarkóða.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType OptionalDefinitionCodeFilterLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4218462067" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Optional definition type filter.</source>
-          <target>Valfrjáls sía fyrir gerð skilgreiningar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls sía fyrir gerð skilgreiningar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType OptionalDefinitionTypeFilterLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 918537426" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Optional destination folder.</source>
-          <target>Valfrjáls áfangamappa.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls áfangamappa.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType OptionalDestinationFolderLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4226136389" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Optional file content.</source>
-          <target>Valfrjálst skráarinnihald.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjálst skráarinnihald.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType OptionalFileContentLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2288583148" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Paged entry fields.</source>
-          <target>Reitir færslunnar í síðuskiptu svari.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Reitir færslunnar í síðuskiptu svari.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType PagedEntryFieldsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 822589615" size-unit="char" translate="yes" xml:space="preserve">
           <source>Number of rows or fields skipped.</source>
@@ -1898,66 +1526,6 @@
           <target>Virk síðustærð.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Virk síðustærð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType PagingTakeLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3975973943" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Read one definition in full.</source>
-          <target>Lestu eina skilgreiningu í heild.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Lestu eina skilgreiningu í heild.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ReadOneDefinitionInFullLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 424006736" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Read one entry and its fields.</source>
-          <target>Lestu eina færslu og reiti hennar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Lestu eina færslu og reiti hennar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ReadOneEntryAndItsFieldsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1660111686" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Reads only; nothing is changed.</source>
-          <target>Les eingöngu; engu er breytt.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Les eingöngu; engu er breytt.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ReadsOnlyNothingIsChangedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2851046093" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Read the referenced definition.</source>
-          <target>Lestu skilgreininguna sem vísað er í.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Lestu skilgreininguna sem vísað er í.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ReadTheReferencedDefinitionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3285929392" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Remove a directory.</source>
-          <target>Fjarlægðu möppu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Fjarlægðu möppu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType RemoveADirectoryLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1743538941" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Restore or remove the attachment first.</source>
-          <target>Endurheimtu eða fjarlægðu viðhengið fyrst.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Endurheimtu eða fjarlægðu viðhengið fyrst.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType RestoreOrRemoveTheAttachmentFirstLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1452272932" size-unit="char" translate="yes" xml:space="preserve">
-          <source>See which type uses a definition.</source>
-          <target>Sjáðu hvaða gerð notar skilgreiningu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sjáðu hvaða gerð notar skilgreiningu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType SeeWhichTypeUsesADefinitionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1678472010" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Send another chunk.</source>
-          <target>Sendu aðra gagnaeiningu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sendu aðra gagnaeiningu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType SendAnotherChunkLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2802171694" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Send each chunk.</source>
-          <target>Sendu hverja gagnaeiningu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sendu hverja gagnaeiningu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType SendEachChunkLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3921799978" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Send valid base64 content.</source>
-          <target>Sendu gilt base64-innihald.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sendu gilt base64-innihald.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType SendValidBase64ContentLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2539551719" size-unit="char" translate="yes" xml:space="preserve">
           <source>Rows or fields to skip; a nonnegative integer.</source>
@@ -1977,12 +1545,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Nauðsynlegt með sourceSystemId: IncomingDocument eða DocumentAttachment. Veldu nákvæmlega eina uppsprettu: contentBase64 (eða content), storageCode með path eða sourceTarget með sourceSystemId.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType SourceTargetLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1685309486" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Start a fresh upload.</source>
-          <target>Byrjaðu nýja upphleðslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Byrjaðu nýja upphleðslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType StartAFreshUploadLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1668354185" size-unit="char" translate="yes" xml:space="preserve">
           <source>Provide the named parameter and retry.</source>
           <target>Gefðu upp tilgreinda færibreytu og reyndu aftur.</target>
@@ -1994,354 +1556,6 @@
           <target>Síðustærð frá 0 til 1000. Sleppi eða 0 notar 100; hærri gildum er hafnað.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Síðustærð frá 0 til 1000. Sleppi eða 0 notar 100; hærri gildum er hafnað.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TakeDescriptionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3833583068" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The aborted upload session id.</source>
-          <target>Auðkenni upphleðslulotunnar sem var hætt við.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Auðkenni upphleðslulotunnar sem var hætt við.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheAbortedUploadSessionIdLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 932581962" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The accepted chunk sequence.</source>
-          <target>Samþykkt raðnúmer gagnaeiningar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Samþykkt raðnúmer gagnaeiningar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheAcceptedChunkSequenceLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1144280520" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The affected path.</source>
-          <target>Slóðin sem aðgerðin hefur áhrif á.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Slóðin sem aðgerðin hefur áhrif á.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheAffectedPathLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3427410245" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The attachment file name.</source>
-          <target>Skráarheiti viðhengisins.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skráarheiti viðhengisins.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheAttachmentFileNameLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 813619030" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The attachment SystemId.</source>
-          <target>SystemId viðhengisins.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=SystemId viðhengisins.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheAttachmentSystemIdLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3813392093" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The attachment table and SystemId identify the attachment.</source>
-          <target>Viðhengjataflan og SystemId auðkenna viðhengið.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Viðhengjataflan og SystemId auðkenna viðhengið.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheAttachmentTableAndSystemIdIdentifyLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1578042170" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The attachment table: IncomingDocument or DocumentAttachment.</source>
-          <target>Viðhengjataflan: IncomingDocument eða DocumentAttachment.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Viðhengjataflan: IncomingDocument eða DocumentAttachment.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheAttachmentTableIncomingDocumentOrDocumentAttachmentLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 908598496" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The attachment table.</source>
-          <target>Viðhengjataflan.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Viðhengjataflan.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheAttachmentTableLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1011440133" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The attachment target.</source>
-          <target>Viðhengjamarkið.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Viðhengjamarkið.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheAttachmentTargetLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2703857779" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The checked path.</source>
-          <target>Slóðin sem var athuguð.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Slóðin sem var athuguð.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheCheckedPathLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1699398602" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The chunk content encoded as base64.</source>
-          <target>Innihald gagnaeiningarinnar kóðað sem base64.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Innihald gagnaeiningarinnar kóðað sem base64.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheChunkContentEncodedAsBase64Lbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1376644888" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The committed file path.</source>
-          <target>Slóð staðfestu skrárinnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Slóð staðfestu skrárinnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheCommittedFilePathLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4187222297" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The committed upload session id.</source>
-          <target>Auðkenni staðfestu upphleðslulotunnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Auðkenni staðfestu upphleðslulotunnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheCommittedUploadSessionIdLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2110382799" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The complete file content encoded as base64.</source>
-          <target>Allt innihald skrárinnar kóðað sem base64.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Allt innihald skrárinnar kóðað sem base64.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheCompleteFileContentEncodedAsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 975227387" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The configured storage connection code. Resolve it with Storage.Account.List.</source>
-          <target>Kóði uppsettrar geymslutengingar. Finndu hann með Storage.Account.List.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Kóði uppsettrar geymslutengingar. Finndu hann með Storage.Account.List.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheConfiguredStorageConnectionCodeResolveLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1934349577" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The contentBase64 value is not valid base64.</source>
-          <target>Gildið í contentBase64 er ekki gilt base64.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Gildið í contentBase64 er ekki gilt base64.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheContentBase64ValueIsNotValidLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1229300934" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The Data Exchange discovery overview and workflow guidance.</source>
-          <target>Yfirlit yfir gagnaskiptagerðir og leiðbeiningar um verkflæði.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Yfirlit yfir gagnaskiptagerðir og leiðbeiningar um verkflæði.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDataExchangeDiscoveryOverviewAndLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3660224617" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The Data Exchange entry number.</source>
-          <target>Númer gagnaskiptafærslunnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Númer gagnaskiptafærslunnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDataExchangeEntryNumberLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2194518720" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The Data Exchange message is identified by its message type; it has no subject record.</source>
-          <target>Gagnaskiptaboðin eru auðkennd með boðgerð sinni; þau hafa enga efnisfærslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Gagnaskiptaboðin eru auðkennd með boðgerð sinni; þau hafa enga efnisfærslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDataExchangeMessageIsIdentifiedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4015028348" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The definition code does not exist.</source>
-          <target>Skilgreiningarkóðinn er ekki til.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skilgreiningarkóðinn er ekki til.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDefinitionCodeDoesNotExistLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2133350645" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The definition code.</source>
-          <target>Skilgreiningarkóðinn.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skilgreiningarkóðinn.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDefinitionCodeLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1210317973" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The destination file path relative to the connection base path.</source>
-          <target>Áfangaslóð skrárinnar miðað við grunnslóð tengingarinnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Áfangaslóð skrárinnar miðað við grunnslóð tengingarinnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDestinationFilePathRelativeToLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3319331595" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The destination folder.</source>
-          <target>Áfangamappan.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Áfangamappan.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDestinationFolderLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1084094014" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The destination path.</source>
-          <target>Áfangaslóðin.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Áfangaslóðin.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDestinationPathLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2867407692" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The directory is not empty.</source>
-          <target>Mappan er ekki tóm.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Mappan er ekki tóm.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDirectoryIsNotEmptyLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3172012035" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The directory path relative to the connection base path.</source>
-          <target>Slóð möppunnar miðað við grunnslóð tengingarinnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Slóð möppunnar miðað við grunnslóð tengingarinnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDirectoryPathRelativeToTheLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1278575639" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The downloaded file path.</source>
-          <target>Slóð sóttu skrárinnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Slóð sóttu skrárinnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheDownloadedFilePathLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 804658529" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The entry number does not exist.</source>
-          <target>Færslunúmerið er ekki til.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færslunúmerið er ekki til.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheEntryNumberDoesNotExistLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1575667336" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The entry number.</source>
-          <target>Færslunúmerið.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færslunúmerið.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheEntryNumberLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1110535120" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The expected total size in bytes.</source>
-          <target>Áætluð heildarstærð í bætum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Áætluð heildarstærð í bætum.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheExpectedTotalSizeInBytesLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1549283061" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The file content encoded as base64.</source>
-          <target>Innihald skrárinnar kóðað sem base64.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Innihald skrárinnar kóðað sem base64.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheFileContentEncodedAsBase64Lbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2344246628" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The file or directory path relative to the connection base path.</source>
-          <target>Slóð skrárinnar eða möppunnar miðað við grunnslóð tengingarinnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Slóð skrárinnar eða möppunnar miðað við grunnslóð tengingarinnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheFileOrDirectoryPathRelativeLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1867120122" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The file path in storage.</source>
-          <target>Slóð skrárinnar í geymslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Slóð skrárinnar í geymslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheFilePathInStorageLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1187498482" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The file size in bytes.</source>
-          <target>Stærð skrárinnar í bætum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Stærð skrárinnar í bætum.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheFileSizeInBytesLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 196855953" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The files or directories found at the path.</source>
-          <target>Skrárnar eða möppurnar sem fundust á slóðinni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skrárnar eða möppurnar sem fundust á slóðinni.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheFilesOrDirectoriesFoundAtLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2470155401" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The final attachment file name.</source>
-          <target>Endanlegt skráarheiti viðhengisins.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Endanlegt skráarheiti viðhengisins.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheFinalAttachmentFileNameLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2370992867" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The full destination path.</source>
-          <target>Öll áfangaslóðin.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Öll áfangaslóðin.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheFullDestinationPathLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1932745159" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The host record primary key.</source>
-          <target>Aðallykill hýsilfærslunnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Aðallykill hýsilfærslunnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheHostRecordPrimaryKeyLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 564511946" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The host record SystemId.</source>
-          <target>SystemId hýsilfærslunnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=SystemId hýsilfærslunnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheHostRecordSystemIdLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3328523111" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The host record table id.</source>
-          <target>Töfluauðkenni hýsilfærslunnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Töfluauðkenni hýsilfærslunnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheHostRecordTableIdLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2651829617" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The host record table name.</source>
-          <target>Töfluheiti hýsilfærslunnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Töfluheiti hýsilfærslunnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheHostRecordTableNameLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 719971216" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The leaf file name.</source>
-          <target>Skráarheitið án slóðar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skráarheitið án slóðar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheLeafFileNameLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 444489651" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The maximum raw chunk size.</source>
-          <target>Hámarksstærð hrárrar gagnaeiningar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hámarksstærð hrárrar gagnaeiningar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheMaximumRawChunkSizeLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3798242594" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The new attachment SystemId.</source>
-          <target>SystemId nýja viðhengisins.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=SystemId nýja viðhengisins.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheNewAttachmentSystemIdLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2459961750" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The one-based chunk sequence.</source>
-          <target>Raðnúmer gagnaeiningar, talið frá einum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Raðnúmer gagnaeiningar, talið frá einum.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheOneBasedChunkSequenceLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3004640345" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The requested directory path.</source>
-          <target>Umbeðin möppuslóð.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Umbeðin möppuslóð.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheRequestedDirectoryPathLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4068915578" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The resulting status.</source>
-          <target>Staðan að aðgerð lokinni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Staðan að aðgerð lokinni.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheResultingStatusLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 999609093" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The source file path in storage.</source>
-          <target>Slóð upprunaskrárinnar í geymslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Slóð upprunaskrárinnar í geymslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheSourceFilePathInStorageLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4278408942" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The source file path relative to the connection base path.</source>
-          <target>Slóð upprunaskrárinnar miðað við grunnslóð tengingarinnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Slóð upprunaskrárinnar miðað við grunnslóð tengingarinnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheSourceFilePathRelativeToLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1237506981" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The storage connection exists, is enabled and permits the requested operation.</source>
-          <target>Geymslutengingin er til, virk og leyfir umbeðna aðgerð.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Geymslutengingin er til, virk og leyfir umbeðna aðgerð.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheStorageConnectionExistsIsEnabledLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2980206752" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The storage connection.</source>
-          <target>Geymslutengingin.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Geymslutengingin.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheStorageConnectionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1964748422" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The storage connector overview and message type guidance.</source>
-          <target>Yfirlit yfir geymslutengilinn og leiðbeiningar um boðgerðir.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Yfirlit yfir geymslutengilinn og leiðbeiningar um boðgerðir.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheStorageConnectorOverviewAndMessageLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1085849179" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The storage connector rejects or cannot complete the operation.</source>
-          <target>Geymslutengillinn hafnar aðgerðinni eða getur ekki lokið henni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Geymslutengillinn hafnar aðgerðinni eða getur ekki lokið henni.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheStorageConnectorRejectsOrCannotLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 4239834863" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The storage message is identified by its message type; it has no subject record.</source>
-          <target>Geymsluboðin eru auðkennd með boðgerð sinni; þau hafa enga efnisfærslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Geymsluboðin eru auðkennd með boðgerð sinni; þau hafa enga efnisfærslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheStorageMessageIsIdentifiedByLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 261420193" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The storage path.</source>
-          <target>Geymsluslóðin.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Geymsluslóðin.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheStoragePathLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1557750661" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The upload session id.</source>
-          <target>Auðkenni upphleðslulotunnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Auðkenni upphleðslulotunnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheUploadSessionIdLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2048279206" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The upload session is missing, closed or incomplete.</source>
-          <target>Upphleðslulotuna vantar, henni er lokað eða hún er ófullgerð.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Upphleðslulotuna vantar, henni er lokað eða hún er ófullgerð.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheUploadSessionIsMissingClosedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2868278625" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The upload state.</source>
-          <target>Staða upphleðslunnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Staða upphleðslunnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TheUploadStateLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1992131761" size-unit="char" translate="yes" xml:space="preserve">
           <source>The Data Exchange Type code, at most 20 characters.</source>
@@ -2360,18 +1574,6 @@
           <target>Vísað er í skilgreininguna eða hún er ósamhæf við þessa aðgerð.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Vísað er í skilgreininguna eða hún er ósamhæf við þessa aðgerð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType UnusableDefinitionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3445374365" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Upload a file instead of downloading it.</source>
-          <target>Hladdu upp skrá í stað þess að sækja hana.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hladdu upp skrá í stað þess að sækja hana.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType UploadAFileInsteadOfDownloadingLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 542102917" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Upload a file larger than the single-call limit.</source>
-          <target>Hladdu upp skrá sem er stærri en hámark fyrir eitt kall.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hladdu upp skrá sem er stærri en hámark fyrir eitt kall.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType UploadAFileLargerThanTheLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1972291748" size-unit="char" translate="yes" xml:space="preserve">
           <source>The session file name.</source>
@@ -2414,66 +1616,6 @@
           <target>Heiti töflu sem má nota í stað tableId fyrir DocumentAttachment.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Heiti töflu sem má nota í stað tableId fyrir DocumentAttachment.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType UploadTableNameLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3019224281" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Use DataExchange.Definition.List first.</source>
-          <target>Notaðu DataExchange.Definition.List fyrst.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Notaðu DataExchange.Definition.List fyrst.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType UseDataExchangeDefinitionListFirstLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2356442242" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Use DataExchange.Entry.List first.</source>
-          <target>Notaðu DataExchange.Entry.List fyrst.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Notaðu DataExchange.Entry.List fyrst.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType UseDataExchangeEntryListFirstLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3217707035" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Use the path of a committed upload.</source>
-          <target>Notaðu slóð staðfestrar upphleðslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Notaðu slóð staðfestrar upphleðslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType UseThePathOfACommittedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1235382521" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Whether the path exists.</source>
-          <target>Hvort slóðin sé til.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hvort slóðin sé til.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType WhetherThePathExistsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2715945335" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Whether to include fields.</source>
-          <target>Hvort reitir eigi að fylgja.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hvort reitir eigi að fylgja.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType WhetherToIncludeFieldsLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 217437757" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Whether to include file content.</source>
-          <target>Hvort skráarinnihald eigi að fylgja.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hvort skráarinnihald eigi að fylgja.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType WhetherToIncludeFileContentLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 3980565588" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Writes Business Central records only (upload session, chunks or document attachments) inside the caller's transaction; the external storage is not changed.</source>
-          <target>Skrifar eingöngu Business Central færslur (upphleðslulotu, gagnaeiningar eða skjalaviðhengi) innan færslubókunar kallandans; ytri geymslunni er ekki breytt.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skrifar eingöngu Business Central færslur (upphleðslulotu, gagnaeiningar eða skjalaviðhengi) innan færslubókunar kallandans; ytri geymslunni er ekki breytt.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType WritesBusinessCentralRecordsOnlyUploadLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 1322618630" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Writes the content back into the Business Central attachment, then deletes the offloaded file in the external storage. The delete happens outside the Business Central transaction and cannot be undone.</source>
-          <target>Skrifar innihaldið aftur í Business Central viðhengið og eyðir síðan útvistuðu skránni úr ytri geymslu. Eyðingin fer fram utan færslubókunar Business Central og verður ekki afturkölluð.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skrifar innihaldið aftur í Business Central viðhengið og eyðir síðan útvistuðu skránni úr ytri geymslu. Eyðingin fer fram utan færslubókunar Business Central og verður ekki afturkölluð.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType WritesTheContentBackIntoTheLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 2897120629" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Writes to the external storage. The external write happens outside the Business Central transaction and is not rolled back with it.</source>
-          <target>Skrifar í ytri geymslu. Ytri skrifin fara fram utan færslubókunar Business Central og eru ekki afturkölluð með henni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skrifar í ytri geymslu. Ytri skrifin fara fram utan færslubókunar Business Central og eru ekki afturkölluð með henni.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType WritesToTheExternalStorageTheLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 727233193" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Write the completed file to storage.</source>
-          <target>Skrifaðu fullgerðu skrána í geymslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skrifaðu fullgerðu skrána í geymslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType WriteTheCompletedFileToStorageLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 225158890 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Creates a directory in the configured storage connection.</source>
@@ -2570,12 +1712,6 @@
           <target>hlutastilling Blob</target>
           <note from="Developer" annotates="general" priority="2">is-IS=hlutastilling Blob</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Ext File Impl ori - NamedType BlobSegmentModeLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 932189238 - NamedType 2190257260" size-unit="char" translate="yes" xml:space="preserve">
-          <source>connector package schema</source>
-          <target>skema tengipakka</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=skema tengipakka</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Ext File Impl ori - NamedType ConnectorSchemaLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 932189238 - NamedType 3256376113" size-unit="char" translate="yes" xml:space="preserve">
           <source>at most 250 directory components</source>

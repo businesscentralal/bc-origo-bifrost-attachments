@@ -65,7 +65,7 @@ codeunit 96211 "Storage Msg Conformance Tests"
     end;
 
     [Test]
-    procedure Scenario_AC02_ChapterLabels_FollowBothLanguages()
+    procedure Scenario_D7_Envelope_StaysEnglish()
     var
         Contract: Interface "Msg Contract ori";
         EnglishEnvelope: JsonObject;
@@ -76,8 +76,8 @@ codeunit 96211 "Storage Msg Conformance Tests"
         RestoredText: Text;
         SavedLanguage: Integer;
     begin
-        // Story #126, AC02/03 | Time: independent of Today()/WorkDate() | Risk: Foundation aggregation tested separately.
-        // [GIVEN] The Storage.Account.List contract uses translatable chapter labels.
+        // Story #126, D7 option B | Time: independent of Today()/WorkDate() | Risk: aggregation tested separately.
+        // [GIVEN] The Storage.Account.List envelope is English-only public help.
         SavedLanguage := GlobalLanguage();
         Contract := Enum::"Message Type ori"::"Storage.Account.List";
         GlobalLanguage(1033);
@@ -91,15 +91,15 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Contract.GetEnvelope(RestoredEnvelope);
         RestoredEnvelope.WriteTo(RestoredText);
         GlobalLanguage(SavedLanguage);
-        // [THEN] Text follows the caller while protocol values remain unchanged.
+        // [THEN] Public chapter text and protocol values stay unchanged at either LCID.
         LibraryAssert.IsTrue(EnglishText.Contains('The storage message is identified by its message type'), 'English envelope description.');
-        LibraryAssert.IsTrue(IcelandicText.Contains('Geymsluboðin eru auðkennd með boðgerð sinni'), 'Icelandic envelope description.');
+        LibraryAssert.AreEqual(EnglishText, IcelandicText, 'English-only envelope at Icelandic caller LCID.');
         LibraryAssert.AreEqual(EnglishText, RestoredText, 'Changing back to English restores the same chapter.');
         LibraryAssert.AreEqual('notUsed', SubjectUse(IcelandicEnvelope), 'The protocol value remains language-independent.');
     end;
 
     [Test]
-    procedure Scenario_AC02_PublicHelp_StaysEnglish()
+    procedure Scenario_D7_PublicHelp_StaysEnglish()
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
         EnglishContract: JsonObject;
@@ -112,7 +112,7 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Ordinal: Integer;
         SavedLanguage: Integer;
     begin
-        // Story #126, AC02/03 | Gunnar D7 option B, Architect 1792190477: public help is English-only.
+        // Story #126, D7 option B, Architect 1792190477 / Claude 1792194099: public help is English-only.
         // [GIVEN] Every Attachments type uses Foundation's public contract aggregation.
         SavedLanguage := GlobalLanguage();
         foreach Ordinal in AppOrdinals() do begin
