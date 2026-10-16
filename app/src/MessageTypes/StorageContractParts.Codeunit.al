@@ -262,7 +262,7 @@ codeunit 70013500 "Storage Contract Parts ori"
             'Help.DataExchange.Get':
                 Fields.Add(ContractMgt.ResponseField('markdown', 'string', 'The Data Exchange discovery overview and workflow guidance.'));
             'Storage.Account.List':
-                Fields.Add(ContractMgt.ResponseField('accounts', 'array', 'Configured storage connections without secrets.'));
+                Fields.Add(ContractMgt.ResponseField('accounts', 'array', 'Configured storage connections without secrets. Each description is the stored Storage Setup ori.Description value, returned unchanged in every language, including app-seeded values; no translation table is used.'));
             'Storage.File.List', 'Storage.Directory.List':
                 begin
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The requested directory path.'));

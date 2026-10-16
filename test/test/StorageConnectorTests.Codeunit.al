@@ -200,6 +200,62 @@ codeunit 96204 "Storage Connector Tests"
     end;
 
     [Test]
+    procedure Scenario_AC01_StoredDescription_IsVerbatimBothLanguages()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        SavedLanguage: Integer;
+        EnglishDescription: Text;
+        IcelandicDescription: Text;
+        RestoredDescription: Text;
+        StoredDescription: Text[100];
+    begin
+        // Story #126 AC01/03, Architect1792176648 | Time: independent | Risk: native dispatcher, not licensed MCP proof.
+        // [GIVEN] Customer-entered Icelandic text in an account row created by this test.
+        Initialize();
+        StoredDescription := 'Geymsla viðhengja / customer text';
+        StorageSetup.Get(MockCodeTok);
+        StorageSetup.Description := StoredDescription;
+        StorageSetup.Modify();
+        SavedLanguage := GlobalLanguage();
+        // [WHEN] Account discovery runs in English, Icelandic, then English again.
+        GlobalLanguage(1033);
+        EnglishDescription := ReadConfiguredAccountDescription();
+        GlobalLanguage(1039);
+        IcelandicDescription := ReadConfiguredAccountDescription();
+        GlobalLanguage(1033);
+        RestoredDescription := ReadConfiguredAccountDescription();
+        GlobalLanguage(SavedLanguage);
+        // [THEN] Stored customer data is verbatim in each response and never rewritten.
+        LibraryAssert.AreEqual(StoredDescription, EnglishDescription, '1033 preserves the customer description.');
+        LibraryAssert.AreEqual(StoredDescription, IcelandicDescription, '1039 preserves the customer description.');
+        LibraryAssert.AreEqual(StoredDescription, RestoredDescription, 'Returning to 1033 preserves the customer description.');
+        StorageSetup.Get(MockCodeTok);
+        LibraryAssert.AreEqual(StoredDescription, StorageSetup.Description, 'Discovery must not rewrite stored data.');
+    end;
+
+    local procedure ReadConfiguredAccountDescription(): Text
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        ResponseJson: JsonObject;
+        DataObject: JsonObject;
+        AccountObject: JsonObject;
+        AccountsToken: JsonToken;
+        AccountToken: JsonToken;
+    begin
+        ExecuteType(TempArgument, TempArgument."Type"::"Storage.Account.List");
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'Account discovery must reach the native response.');
+        DataObject := ReadData(ResponseJson);
+        LibraryAssert.IsTrue(DataObject.Get('accounts', AccountsToken), 'Account response must contain accounts.');
+        foreach AccountToken in AccountsToken.AsArray() do begin
+            AccountObject := AccountToken.AsObject();
+            if ReadText(AccountObject, 'code') = MockCodeTok then
+                exit(ReadText(AccountObject, 'description'));
+        end;
+        LibraryAssert.Fail('Account discovery must return the row created by this test.');
+    end;
+
+    [Test]
     procedure FileCreateThenGetRoundtripsContent()
     var
         TempArgument: Record "Message Argument ori" temporary;

@@ -23,6 +23,151 @@ codeunit 96211 "Storage Msg Conformance Tests"
         LastOrdinal: Integer;
 
     [Test]
+    procedure Scenario_AC01_Descriptions_FollowBothLanguages()
+    var
+        MessageInterface: Interface "Msg Interface ori";
+        EnglishDescriptions: Dictionary of [Integer, Text];
+        IcelandicDescriptions: Dictionary of [Integer, Text];
+        RestoredDescriptions: Dictionary of [Integer, Text];
+        Ordinal: Integer;
+        SavedLanguage: Integer;
+    begin
+        // Story #126, AC01/03 | Time: independent of Today()/WorkDate() | Risk: compiled XLF required.
+        // [GIVEN] Every Attachments message type, with caller-facing label descriptions.
+        Initialize();
+        SavedLanguage := GlobalLanguage();
+        GlobalLanguage(1033);
+        foreach Ordinal in AppOrdinals() do begin
+            MessageInterface := Enum::"Message Type ori".FromInteger(Ordinal);
+            EnglishDescriptions.Add(Ordinal, MessageInterface.GetDescription());
+        end;
+        // [WHEN] The caller changes from English to Icelandic, then back to English.
+        GlobalLanguage(1039);
+        foreach Ordinal in AppOrdinals() do begin
+            MessageInterface := Enum::"Message Type ori".FromInteger(Ordinal);
+            IcelandicDescriptions.Add(Ordinal, MessageInterface.GetDescription());
+        end;
+        GlobalLanguage(1033);
+        foreach Ordinal in AppOrdinals() do begin
+            MessageInterface := Enum::"Message Type ori".FromInteger(Ordinal);
+            RestoredDescriptions.Add(Ordinal, MessageInterface.GetDescription());
+        end;
+        GlobalLanguage(SavedLanguage);
+        // [THEN] Both translations exist and no previous language leaks into the next response.
+        foreach Ordinal in AppOrdinals() do begin
+            LibraryAssert.AreNotEqual('', EnglishDescriptions.Get(Ordinal), TypeName(Ordinal) + ' English description.');
+            LibraryAssert.AreNotEqual('', IcelandicDescriptions.Get(Ordinal), TypeName(Ordinal) + ' Icelandic description.');
+            LibraryAssert.AreNotEqual(EnglishDescriptions.Get(Ordinal), IcelandicDescriptions.Get(Ordinal), TypeName(Ordinal) + ' translated description.');
+            LibraryAssert.AreEqual(EnglishDescriptions.Get(Ordinal), RestoredDescriptions.Get(Ordinal), TypeName(Ordinal) + ' restored English description.');
+        end;
+        LibraryAssert.IsTrue(EnglishDescriptions.Get(Enum::"Message Type ori"::"Storage.Account.List".AsInteger()).StartsWith('Lists the configured storage connections'), '1033 selects English, not just a different translation.');
+        LibraryAssert.IsTrue(IcelandicDescriptions.Get(Enum::"Message Type ori"::"Storage.Account.List".AsInteger()).StartsWith('Listar uppsettar geymslutengingar'), '1039 selects Icelandic.');
+    end;
+
+    [Test]
+    procedure Scenario_D7_Envelope_StaysEnglish()
+    var
+        Contract: Interface "Msg Contract ori";
+        EnglishEnvelope: JsonObject;
+        IcelandicEnvelope: JsonObject;
+        RestoredEnvelope: JsonObject;
+        EnglishText: Text;
+        IcelandicText: Text;
+        RestoredText: Text;
+        SavedLanguage: Integer;
+    begin
+        // Story #126, D7 option B | Time: independent of Today()/WorkDate() | Risk: aggregation tested separately.
+        // [GIVEN] The Storage.Account.List envelope is English-only public help.
+        SavedLanguage := GlobalLanguage();
+        Contract := Enum::"Message Type ori"::"Storage.Account.List";
+        GlobalLanguage(1033);
+        Contract.GetEnvelope(EnglishEnvelope);
+        EnglishEnvelope.WriteTo(EnglishText);
+        // [WHEN] The same chapter is built in Icelandic and again in English.
+        GlobalLanguage(1039);
+        Contract.GetEnvelope(IcelandicEnvelope);
+        IcelandicEnvelope.WriteTo(IcelandicText);
+        GlobalLanguage(1033);
+        Contract.GetEnvelope(RestoredEnvelope);
+        RestoredEnvelope.WriteTo(RestoredText);
+        GlobalLanguage(SavedLanguage);
+        // [THEN] Public chapter text and protocol values stay unchanged at either LCID.
+        LibraryAssert.IsTrue(EnglishText.Contains('The storage message is identified by its message type'), 'English envelope description.');
+        LibraryAssert.AreEqual(EnglishText, IcelandicText, 'English-only envelope at Icelandic caller LCID.');
+        LibraryAssert.AreEqual(EnglishText, RestoredText, 'Changing back to English restores the same chapter.');
+        LibraryAssert.AreEqual('notUsed', SubjectUse(IcelandicEnvelope), 'The protocol value remains language-independent.');
+    end;
+
+    [Test]
+    procedure Scenario_D7_PublicHelp_StaysEnglish()
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        EnglishContract: JsonObject;
+        IcelandicContract: JsonObject;
+        RestoredContract: JsonObject;
+        EnglishText: Text;
+        IcelandicText: Text;
+        RestoredText: Text;
+        IcelandicLanguageAfterHelp: Integer;
+        Ordinal: Integer;
+        SavedLanguage: Integer;
+    begin
+        // Story #126, D7 option B, Architect 1792190477 / Claude 1792194099: public help is English-only.
+        // [GIVEN] Every Attachments type uses Foundation's public contract aggregation.
+        SavedLanguage := GlobalLanguage();
+        foreach Ordinal in AppOrdinals() do begin
+            Clear(EnglishContract);
+            Clear(IcelandicContract);
+            Clear(RestoredContract);
+            GlobalLanguage(1033);
+            ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(Ordinal), EnglishContract);
+            EnglishContract.WriteTo(EnglishText);
+            // [WHEN] Help is requested at 1033, 1039 and again at 1033.
+            GlobalLanguage(1039);
+            ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(Ordinal), IcelandicContract);
+            IcelandicLanguageAfterHelp := GlobalLanguage();
+            IcelandicContract.WriteTo(IcelandicText);
+            GlobalLanguage(1033);
+            ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(Ordinal), RestoredContract);
+            RestoredContract.WriteTo(RestoredText);
+            GlobalLanguage(SavedLanguage);
+            // [THEN] Public help is English at both LCIDs without changing the caller's language.
+            LibraryAssert.AreNotEqual('{}', EnglishText, TypeName(Ordinal) + ' public contract must exist.');
+            LibraryAssert.AreEqual(EnglishText, IcelandicText, TypeName(Ordinal) + ' public help stays English at 1039.');
+            LibraryAssert.AreEqual(EnglishText, RestoredText, TypeName(Ordinal) + ' restored English help.');
+            LibraryAssert.AreEqual(1039, IcelandicLanguageAfterHelp, TypeName(Ordinal) + ' help restores the caller language.');
+        end;
+        GlobalLanguage(SavedLanguage);
+    end;
+
+    [Test]
+    procedure Scenario_AC04_MessageNames_StayThreePart()
+    var
+        Ordinal: Integer;
+        Segments: List of [Text];
+    begin
+        // Story #126, AC04 | Time: independent of Today()/WorkDate() | Risk: None.
+        // [GIVEN] Every registered Attachments message type.
+        Initialize();
+        foreach Ordinal in AppOrdinals() do begin
+            // [WHEN] The public name is split into segments.
+            Segments := TypeName(Ordinal).Split('.');
+            // [THEN] Localization never changes the three-part protocol name.
+            LibraryAssert.AreEqual(3, Segments.Count(), TypeName(Ordinal) + ' must have three parts.');
+        end;
+    end;
+
+    local procedure SubjectUse(Envelope: JsonObject): Text
+    var
+        SubjectToken: JsonToken;
+        UseToken: JsonToken;
+    begin
+        Envelope.Get('subject', SubjectToken);
+        SubjectToken.AsObject().Get('use', UseToken);
+        exit(UseToken.AsValue().AsText());
+    end;
+
+    [Test]
     procedure Help_EveryType_HasTitleAndRequiredSections()
     var
         Ordinal: Integer;
