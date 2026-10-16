@@ -7,95 +7,56 @@ locale: en-US
 
 # Collect Attachments release evidence
 
-**Source baseline:** Attachments `c656965b3ad1291b75854e5b40edecf8038d21f8` (inventory regenerated 13.10.2026; the 06.10 baseline was `b42ad90eaee2803205408a1cac8b0d9752b91c0e`); historical Foundation comparison `0fb78c0be538bd77c482c70eddbbef451f697cc9`; approved pinned standards `ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f`. Source inspection is not signed-artifact or runtime proof. No release candidate has been certified by this package.
+**Preparation, not release certification.** Source observations are recorded in [source-inventory.json](source-inventory.json). Final release evidence must identify one accepted signed candidate; a merged PR, compile pass or successful deployment alone does not close #81.
 
-## Record current candidate evidence
+## Select and prove the candidate
 
-Branch `fix/attachments-open-issues-20261013`, checked on 13.10.2026. App and test compiled with AL compiler 18.1.43.24897 (VS Code AL extension) and CodeCop, UICop and AppSourceCop at 0 errors and 0 warnings, against Bifrost Foundation 28.0.4.0 symbols (manifest floor stays 28.0.1.0). Published to bc28-w1 (W1, BC 28) and tested there. A local build is not the signed release candidate; #80 still owns that.
+- [ ] Architect identifies the integrated main SHA under [decision1792179827](https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749): #72, #122 repair `dffe555`, PR127, PR128 and PR129; PR129 may be excluded only as that decision specifies. Build87/b66d1f2 is not the candidate.
+- [ ] Main Default and Test are green with nonzero executed tests, zero failures/skips and a signed no-friend Default Apps artifact. Record full SHA, run/attempt/artifact IDs, package version/SHA256 and source/build metadata.
+- [ ] #78 / Reginn and ori-haraldurb reconcile the actual installed Foundation variant/hash against accepted input and verify Windows package signature trust. Compiler success or matching package size is insufficient.
+- [ ] #80 / Þráinn records the exact acceptance matrix: 14 markets, 36 provider cases, 10 lifecycle cases, Web Client UI and public MCP in LCIDs1033/1039; retain actual counts and sanitized evidence. No mocks or other candidates' receipts substitute for this.
 
-| Issue | Evidence | Remaining |
+Historical [build87 receipt](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6222103811) at `b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005` reports app/test compile0errors/0warnings and 280executed/280passed/0failed/0skipped, package28.0.0.87. Existing Test-lane suppressions are disclosed there; this is not a no-suppression certification. It is historical input, not evidence for the future integrated candidate. PR128 merged16October; PR127/#122 integration and PR129 disposition still require current receipts.
+
+## Confirm identity, markets and dependencies
+
+| Item | Source evidence | Required release evidence / owner |
 |---|---|---|
-| [#74](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/74) | `main` CI/CD run [38410916716](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/38410916716) at `ac36688` (build 28.0.0.84): Default and Test jobs succeeded, app and test compiled with `failOn: warning`; Test job ran 263 tests in 19 codeunits, 263 passed. The branch adds 4 tests (267 of 267 on bc28-w1). Source guard `Test-UniqueObjectIds.ps1` passes; no app symbol of its own is loaded (the Foundation and Microsoft packages are the only dependencies). | Exact-tip CI of this branch once its PR is open. |
-| [#78](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/78) | `.AL-Go/settings.json` sets `enableCodeCop`, `enableUICop`, `enableCodeAnalyzersOnTestApps` and Alpaca test-app CodeCop/UICop/AppSourceCop, `failOn: warning`; the effective settings in run 38410916716 show them true. `AppSource gate` stages before/post/finalize passed in Default (one app) and Test (app and test app). The Default artifact `Origo_Bifrost Attachments_28.0.0.84.app` (SHA256 `3bb134c4184d4e01e07f45a8e161d801240bec8feaa06bad9ea13676d9d357e4`) has an empty `<InternalsVisibleTo />` in its manifest; the Default job ran the AL-Go Sign step with `CodeSigning-2025`. | Signature trust check on Windows and infrastructure-owner review of workflow changes (ori-haraldurb). |
-| [#71](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/71) | Generated `Bifrost Attachments.g.xlf` (491 trans-units) SHA256 `82e596238676140738e2a26ac1008eb0a37614c99bd3f14e4e0e4cdec323cc1d`; committed `Bifrost Attachments.is-IS.xlf` SHA256 `8bbee1c6cddd7b67555e8be2293920006bef173a2aeba695ac612ad747eb5bdb`. `tools/Test-IcelandicXlfInSync.ps1` passes; a second `Update-IcelandicXlf.ps1` run leaves the file unchanged (490 targets from `is-IS=` comments, 1 kept, 0 without Icelandic). LCID 1033/1039 behaviour: `Language72_Discovery_ExactEnglish`/`ExactIcelandic` (96274), the 1039 refusal checks in 96226 and the 1039 Definition.List check in Batch2 passed on bc28-w1. | None in source. UI walk-through in Icelandic belongs to #80 candidate QA. |
+| Identity | Bifrost Attachments; Origo; `672df32a-a0c5-4a22-b591-0efa38023e95` | #80: signed manifest and listing agree |
+| Version | Source28.0.0.4 | #80: actual packaged and deployed version, never inferred from source |
+| BC floor | Application/platform28.0.0.0, runtime17.0, Cloud | #80 / Architect: actual supported build/country matrix. CI28.5 success does not prove the declared BC28 floor with newly required connector versions |
+| Foundation | `7505e808-6e52-4b96-a328-82573391297a`, Origo, source minimum28.0.1.0 | #78/#80: accepted package version/hash/source, actual runtime hash and signature trust; historical523 is not the active pin |
+| Connectors | Production External File Storage and registered File Accounts; PR127 proposes four explicit Microsoft dependencies at28.5 | PR127 owner / Architect / #80: final merged names/IDs/versions/hashes, runtime compatibility and availability in every market. SFTP dependency does not add SFTP to the approved three-provider scope |
+| Markets | IS,GB,DK,NO,SE,FI,DE,FR,NL,AT,CH,IE,PT,ES | #80: [14-row evidence plan](market-evidence-plan.md); Gunnar/offer owner: separately authorized Partner Center comparison |
+| Languages | en-US/is-IS | #80: actual UI and public MCP1033/1039 at candidate; #72/PR129 disposition reflected without promising unshipped behavior |
+| Registered suffix and both ranges | `ori`;10035635–10035684;70013500–70013549 | Gunnar / designated registration owner via Architect: authoritative allocation/registration evidence; #77 source audit alone is insufficient |
+| Historical validation baseline | Not established by the no-offer decision | Gunnar / designated publisher owner: baseline identity and applicable validation history, or explicit no-baseline evidence |
+| New offer and genuine ID | 6October no-offer decision; `deliverToAppSource` unconfigured | Gunnar / offer owner: future separately authorized creation and genuine app/offer mapping. Never invent/copy an ID or create an offer under #81 |
 
-## Confirm identity and markets
+## Collect operator materials and access
 
-| Item | Source evidence | Release gate / accountable owner |
+| Material | Working input | Acceptance / named owner |
 |---|---|---|
-| App | `Bifrost Attachments`, publisher `Origo`, AppId `672df32a-a0c5-4a22-b591-0efa38023e95` | #80 / worker-8: match signed manifest and listing |
-| Version | Source `28.0.0.4` | #80 / worker-8: record actual packaged/deployed version; do not infer it from source |
-| BC floor | Application/platform `28.0.0.0`, runtime `17.0`, Cloud | #80 / worker-8: prove supported releases with unchanged floor |
-| Foundation | AppId `7505e808-6e52-4b96-a328-82573391297a`, Origo, minimum `28.0.1.0` | #74 / worker-3 canonical PR84 and #80 / worker-8: current approved 523 input recorded below; availability per market and runtime still unproven |
-| Countries | IS, GB, DK, NO, SE, FI, DE, FR, NL, AT, CH, IE, PT, ES | `app/AppSourceCop.json`; [CSV](partner-center-markets.csv). #80 / worker-8: fourteen-market evidence and Partner Center comparison |
-| Locales | `en-US`, `is-IS` | #71/#72: translations and runtime language proof; locales are not the market list |
-| Registered suffix/ranges | Source `ori`; `10035635–10035684` and `70013500–70013549` | Gunnar / offer owner: registration evidence for publisher suffix and both ranges. Source declarations alone do not prove registration |
-| New Attachments offer | Gunnar confirmed on 2026-10-06: no Partner Center offer exists; no existing product ID is available | Gunnar / offer owner: future offer creation requires separate authorization; this assignment prepares the material only |
-| Genuine offer/product ID | Unavailable until the new Attachments offer is created; `deliverToAppSource` remains unconfigured | Gunnar / offer owner: supply the genuine new offer ID after authorized creation; internal-review must confirm its Attachments mapping before any separately approved configuration change. Never copy Foundation's ID or invent a dummy |
+| Listing | Manifest describes Azure Blob Storage, Azure File Share, SharePoint, uploads and offloading | Offer owner: approve name, summary, description, categories and languages matching proven shipping capabilities |
+| Logo | Source250×250 PNG; SHA256 `0f9185810ff29e9c77c7258d7b7bd3a51f5fcaa2bed0bcbf4288fd673fc0cc60` | Offer owner: actual rights/branding and current required asset variants |
+| Screenshots | Manifest has no screenshots | #80 provides exact-candidate EN/IS synthetic-data captures; offer owner approves rights/captions; remove secrets and personal identifiers |
+| Help | Manifest product URL `https://docs.bifrost.origo.is/en-us/attachments/`; context pattern `https://docs.bifrost.origo.is/{0}/help/attachments/` | Documentation owners / Architect: current candidate's page routes, translations, redirects/accessibility and publication receipt. The13October404 observation is historical, not a current outage claim. #81 does not edit their site |
+| Legal | Manifest EULA/privacy use shared `/en-us/licensing/eula/` and `/en-us/licensing/privacy/` routes | Gunnar / legal owner: actual Attachments and external-file-processing coverage, accepted revision and accessibility; HTTP status alone is insufficient |
+| Support | Manifest publisher website `https://www.origo.is/` | Gunnar / support owner: approved contact/URL, response process and dependency guidance |
+| Provider access | Dedicated Blob/File Share/SharePoint account, root, quota and availability window per validator | Provider owner through Architect: genuine constrained access, secure credential references and revocation/cleanup ownership; no secrets in artifacts |
+| Restricted identities | Separate non-SUPER setup, usage and denied actors; genuine independent sessions where required | #79 / designated identity owner: approved secure allocations and effective grant union. AL LowerPermissions and seeded audit fields do not prove distinct SaaS identities |
+| Activation and transport | Foundation public API/license prerequisites | #79/#80: actual supported activation/transport/roles on candidate. No backend EULA/trial/licence writes or harness-as-shipping proof |
 
-## Collect listing, asset and external-service evidence
+## Deliver scenarios and close acceptance
 
-| Item | Current evidence | Required next action / owner |
-|---|---|---|
-| Listing text | `app/app.json` brief/description names Azure Blob, Azure File Share, SharePoint, uploads and offloading | Offer owner: approve Attachments-specific name, summary, description, categories and supported languages; match only proven shipping features |
-| Logo | `app/assets/Logo250x250.png` exists in the source | Offer owner: approve rights, branding and current Partner Center dimensions/variants; source existence is not listing approval |
-| Screenshots | Manifest `screenshots: []` | #80 / worker-8 supplies candidate screenshots; offer owner approves English/Icelandic captions, rights and listing assets. Use synthetic data and remove identifiers |
-| Product/help | `https://docs.bifrost.origo.is/en-us/attachments/`; context help uses `https://docs.bifrost.origo.is/{0}/help/attachments/` (same contract as Foundation). On 2026-10-13 every Attachments route answered 404 because `apps.ts` in businesscentralal/bifrost lists published apps only (Foundation, Language Models) | #70 / documentation owners: confirm exact shipped page help routes, redirects and accessibility; internal-review coordinates externally published changes |
-| Legal | EULA `https://docs.bifrost.origo.is/en-us/licensing/eula/`; privacy `https://docs.bifrost.origo.is/en-us/licensing/privacy/` (both HTTP 200 on 2026-10-13, the same URLs Foundation ships) | Gunnar / legal owner: confirm these shared policies explicitly cover Attachments and external file handling. A manifest URL is not legal acceptance |
-| Support | Publisher website `https://www.origo.is/`; no separate support contact evidenced here | Gunnar / offer owner: approved support URL/contact, response process and customer-facing dependency guidance |
-| Provider prerequisites | BC External File Storage connector apps and registered File Accounts; Attachments stores account references | Gunnar / provider owner: validator-accessible dedicated Azure Blob, Azure File Share and SharePoint fixtures, constrained rights, quotas and availability window. Provide secrets separately using an approved secure channel |
-| Foundation activation/API | Foundation's setup, licensing and public message transport are required | #79/#80: actual non-SUPER role names, license/activation steps and secure authenticated transport instructions from the tested candidate |
+- [ ] Reginn completes preparation now; after #80 passing candidate QA, generates independently executable `AppSource-UserScenarios.md` and freezes tested payloads/UI expectations. Each feature and installation/permission/error/uninstall category gets Setup/Steps/Expected Results/Cleanup.
+- [ ] Execute [validator smoke](validator-smoke-script.md) on validator-owned sandbox with self-created fixtures, exact app/dependency provenance and independent readback; retain actual executed/passed/failed/skipped counts. Dry-run remains0executed until performed.
+- [ ] Developer-owned fixture cleanup verified after each scenario, including failure paths. Record development container name/id; retain same container for amendments until Tester postdeploy UAT and issue closure, then verify owned deletion. Do not request UAT data cleanup.
+- [ ] Any new candidate compiles product and test0errors/0warnings before compiled verification-only publication. Read back branch/fullSHA/immutable commit using `verify-github-candidate.cjs`. Publication is not PR readiness.
+- [ ] Before PR creation/review push/undraft: full configured suite0failed/0skipped, UI, applicable self-seeded MCP and cleanup at that exact tip. Disclose inherited failures/suppressions; do not create exclusions or weaken checks.
+- [ ] Claude current-head independent verification on its assigned bc28-w1, no open amendments; Grok Reviewer current-fullSHA clearance; eligible non-author approval; meaningful green required checks. Use canonical guarded green-pr-handoff when genuinely ready. No retired internal-review gate.
+- [ ] Architect alone merges with merge commit and controls same-SHA deployment; Bifröst Tester alone performs postdeploy UAT. Preserve delivery tracking after auto-close/merge until actual acceptance and owned-container closure.
+- [ ] Secretary genuine START/STOP and ACK retained; posting/process exit is not acknowledgement or delivery.
+- [ ] Offer/listing/legal/support/registration/dependency evidence accepted by named owners; genuine ID mapping supplied only after separately authorized creation. Gunnar approval before every publish. Nothing here submits or publishes the offer.
 
-The test app's in-memory Mock connector is internal automated-test infrastructure. Do not advertise it as a production demo mode or substitute it for advertised provider validation. Never put passwords, tokens, customer documents or connection strings in these files, screenshots, evidence or issue comments.
-
-## Close technical and human gates
-
-- [x] #74 compilation repair integrated on `main`; CI run 38410916716 Default and Test compiled with `failOn: warning` and 263 of 263 tests passed (see the evidence table above).
-- [ ] #78 compiled-package/compiler gates and infrastructure integration reviewed by ori-haraldurb; no workflow patch is applied by this documentation task.
-- [ ] #69/#82 contracts and refusals match shipped behavior; #75 linked-file safety and #76 lifecycle takeover are proven; #77 public surface audit completed.
-- [ ] #70 help and #71/#72 translations complete; #79 setup/usage and denied-user tests run with genuine non-SUPER identities.
-- [ ] #80 internal QA passed on one immutable signed candidate, with package/dependency/compiler identity, unit pass count, all local `Test-*.ps1` results, MCP/UI and fourteen-market/provider/lifecycle evidence.
-- [ ] Owned disposable COSMO environments deleted and deletion verified; provider fixtures cleaned without deleting customer or unrelated records.
-- [ ] Worker-6 generates formal scenarios after that QA and explicit QA hold release, then dry-runs them on an owned sandbox and binds each result to the candidate.
-- [ ] Gateway Layer 1 and Layer 2, internal-review decisions, current-tip green CI and independent review recorded. No self-review counted as independent review.
-- [ ] Separately authorized new Attachments offer creation completed by Gunnar / offer owner and its genuine product ID supplied and internally reviewed; all listing/legal/support/dependency assets accepted by named owners. Keep `deliverToAppSource` unconfigured until these prerequisites are met.
-- [ ] Human release/submission authorization obtained separately. This issue does not authorize creating an offer, submitting it or publishing it.
-
-Foundation is the comparison for evidence discipline: compiler/compiled-artifact gates, immutable inputs and complete release evidence. Its product ID, credentials and approval evidence do not belong to Attachments.
-
-[Microsoft technical validation](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-checklist-submission) covers package signing, non-SUPER permissions, lifecycle and per-country dependency resolution. Check the [Business Central offer setup guidance](https://learn.microsoft.com/en-us/partner-center/marketplace-offers/dynamics-365-business-central-offer-setup) at release time; checklist completion does not submit the offer.
-
-## Record the approved working-material location
-
-| Decision | Current disposition |
-|---|---|
-| Internal request `attachments81-worker6-submission-location-20261006` | Resolved 2026-10-06: approved with conditions. `app/docs/appsource` is the bounded #81 submission workspace; draft PR88 is permitted while incomplete. |
-| Scope | Maintain these working inventories, plan, checklist and assets now. Published help stays with its existing owners. Before final delivery, confirm documentation tooling does not publish/convert this submission directory. |
-| Gates | No gateway pass or QA/publication release was granted. Formal `AppSource-UserScenarios.md` and the smoke dry-run require immutable #80 passing QA and the existing explicit QA hold release. |
-
-## Track current inputs and repair owners
-
-| Evidence | Checked working state / next owner |
-|---|---|
-| Foundation 523 | Source `336b91d9fff11b71ae5cd75dee08186d4218bf07`; run `37544940349` attempt 2; artifact `11459147009`; package SHA256 `5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f`; zero friends. Exact bytes/manifest/API provenance checked, Windows signature trust remains #78 / infrastructure input. Not PR88 runtime proof. |
-| Logo | 250 × 250 PNG; SHA256 `0f9185810ff29e9c77c7258d7b7bd3a51f5fcaa2bed0bcbf4288fd673fc0cc60`. Gunnar / appointed offer owner must accept rights, branding and listing requirements. |
-| Missing candidate inputs | App/test package, actual compiler/cop/Microsoft symbol hashes and deployed version unverified. #74 / worker-3 and #78 / worker-6 capture real build inputs; #80 / worker-8 accepts immutable QA evidence. |
-| Missing release inputs | Gunnar / appointed legal, support and offer owners: legal coverage, support contact, listing acceptance, registered affix and both ranges. #80 / worker-8 and provider owner: genuine fixture access, market coverage, screenshots and cleanup. Source declarations are insufficient. |
-
-| Readiness issue | Implementer / approval artifact | Remaining evidence |
-|---|---|---|
-| [#69](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/69) | worker-2 product PR92; worker-8 analyzer PR93; [PR92](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/92), [PR93](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/93) | Contract reconciliation; retain physical-file fences |
-| [#70](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/70) | worker-1; no mapped PR in this snapshot | External help-link proof; no external edits by worker-6 |
-| [#71](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/71) | worker-7; no mapped PR in this snapshot | Compiled translation synchronization |
-| [#72](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/72) | worker-3; [PR89](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/89) | Language repair; current compiler/guard proof required |
-| [#74](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/74) | worker-3; [PR84](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/84) | Sole canonical product/test compile repair; PR87 worker-8 donor-only held |
-| [#75](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/75) | worker-9; [PR90](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/90) | Linked-file safety |
-| [#76](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/76) | worker-10; [PR85](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/85) | Lifecycle retry proof |
-| [#77](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/77) | worker-4 + Gunnar; [PR86](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86) | Publication/baseline/consumer/range/affix evidence |
-| [#78](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/78) | worker-6; [PR94](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/94) | Input/compiler/package gates; PR91 separate pipeline owner / ori-haraldurb |
-| [#79](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/79) | worker-5; [PR95](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/95) | Genuine restricted identities/activation/provider access |
-| [#80](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80) | worker-8; no mapped PR in this snapshot | Immutable candidate QA, all markets/providers; explicit holds retained |
-| [#81](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/81) | worker-6; [PR88](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/88) | Working material only; formal scenarios and dry-run held |
-| [#82](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/82) | worker-9; no mapped PR in this snapshot | Validated Data Exchange refusals; physical writer owns behavior |
-
-Mappings are working custody, not proof of current green, integration or accepted evidence. #83 coordinates delivery. PR87 stays donor-only held; PR91 stays with the pipeline owner. Optional #21/#23–#26 and personal #20 are excluded.
+The internal working location is approved; external help stays with its owners. Foundation is an evidence-discipline reference, never a source of Attachments identity, credentials or release approval. Optional parked roadmap #21/#23–#26 and historical personal cleanup #20 remain outside this scope.
