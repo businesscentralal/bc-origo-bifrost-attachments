@@ -1,0 +1,630 @@
+{
+  "candidateSha": "8dc7af8a2f93454fc7cf2430c8cf033d1e62335a",
+  "branch": "fix/122-storage-refusals-worker3",
+  "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/fix/122-storage-refusals-worker3",
+  "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/8dc7af8a2f93454fc7cf2430c8cf033d1e62335a",
+  "recordedAt": "2026-10-16T08:32:52.484599+00:00",
+  "scope": "122 original AC1-3 only; File.Delete proposal excluded",
+  "sourceTreeClean": true,
+  "sourceHashes": [
+    {
+      "path": "app/AppSourceCop.json",
+      "sha256": "3693ee0c9ff2b18b8528d8b9bc2ecb80610346762766e2d9c209e0742885f2e8"
+    },
+    {
+      "path": "app/Translations/Bifrost Attachments.is-IS.xlf",
+      "sha256": "64935c13a45d6451ba5eb9595b7157fb32ad27a0f277b899b2e4d07776622239"
+    },
+    {
+      "path": "app/app.json",
+      "sha256": "d54b732c356263bbbc3690541722f627607e001bd85ee93d982e30c06ce98d39"
+    },
+    {
+      "path": "app/docs/appsource/source-inventory.json",
+      "sha256": "7beb966dadb737df7971b01f92fe13fb92ae03f84a740479b86be528727eaa44"
+    },
+    {
+      "path": "app/src/Attachments/StorageAttachKeySubscr.Codeunit.al",
+      "sha256": "9f4ebfa7cfbc9473b9560027811023d90d95b8ddc3329e328d110ba803e676b9"
+    },
+    {
+      "path": "app/src/Attachments/StorageAttachmentLink.Table.al",
+      "sha256": "180f0c589cee4b4ff814b655e7174bce3cdd57f2df135570bc8a01077be29973"
+    },
+    {
+      "path": "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+      "sha256": "cc2edb806c0671fe5f3ed08256aade86f7279da7a93388b9ed017caeafaa45b1"
+    },
+    {
+      "path": "app/src/Attachments/StorageAttachmentSubscr.Codeunit.al",
+      "sha256": "8017ed3578db9352759778a91117e3deb4d0304fca3d2d03328025cda863e4ce"
+    },
+    {
+      "path": "app/src/Attachments/StorageAttachmentTarget.Enum.al",
+      "sha256": "84f27d1684433e418f02262d92b70b988109af24d832af93f490e319f0fa6686"
+    },
+    {
+      "path": "app/src/Attachments/StorageDocAttach.TableExt.al",
+      "sha256": "6ef7bdf57b838d8a07b6d13182648783c18203886e519e5a37eaebb450eded77"
+    },
+    {
+      "path": "app/src/Attachments/StorageIncDocAttach.TableExt.al",
+      "sha256": "83dda0fcd50bccdefc01016ad720d6a72b6dbeb885ef6e2067249309dd5bc27f"
+    },
+    {
+      "path": "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
+      "sha256": "5148ac6437ba79c2286607a84a185580c8c44537e090e3bc7e548ce8e3d8d8af"
+    },
+    {
+      "path": "app/src/Install/StorageTakeover.Codeunit.al",
+      "sha256": "15e00e1ba3a2eadf38ca3aa1801b72bf16917afcad655d4df7dd40fee5a5d3ce"
+    },
+    {
+      "path": "app/src/Install/StorageTakeoverState.Codeunit.al",
+      "sha256": "c178794a5ab7b24e1a60d1ff3db1a30a6edc85de1793d6db56994fe2bd7397cc"
+    },
+    {
+      "path": "app/src/Lifecycle/StorageInstall.Codeunit.al",
+      "sha256": "a5f8ad920581432a2f0be3dfbab5cfa168cee33913c1fb75539c591582e217d2"
+    },
+    {
+      "path": "app/src/Lifecycle/StorageLinkUpgrade.Codeunit.al",
+      "sha256": "f375032de37967f2339a4342e10dfdde86aa2ecc0e49eb7aad5ec517b08a6b61"
+    },
+    {
+      "path": "app/src/Lifecycle/StorageOverviewSubscr.Codeunit.al",
+      "sha256": "6abe403b06b3bc8b4e92a95a30cc57cc8e1b3bf8edc2f92f6b59bb6ae7268ba3"
+    },
+    {
+      "path": "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
+      "sha256": "5535c59d9a7a2568be19c2d6384318f63d7a943d82ca21fda254df3b8c859f49"
+    },
+    {
+      "path": "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
+      "sha256": "5eac45b1f64b01a70f0492f2e013f1ea8bb6041da8f97f0299444df1da00ba46"
+    },
+    {
+      "path": "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
+      "sha256": "cd55ddb9cf58d05e3802d4861110214befcc5809e9650b9b1df88ead38de4bb7"
+    },
+    {
+      "path": "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+      "sha256": "ee106c2a189292e256c941e3ff07ed2829c65013459e896416d7b74fe02af74f"
+    },
+    {
+      "path": "app/src/MessageTypes/Attachments/StorageAttachRecordImpl.Codeunit.al",
+      "sha256": "23b206096096a7919e3c85b3bbd554f017f5dc96728d79a82e96a6aabc4977be"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchDefDelMsgType.EnumExt.al",
+      "sha256": "97c8f8c4591fcc6a8b42d26d87a6e5e22387f6d9ab43cd3fb87ebfbdee31948a"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
+      "sha256": "bd01923a45b96731072ab130ddb8b523731c85df8acbd35db1ecb71e459b62ef"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchDefExpEnumExt.EnumExt.al",
+      "sha256": "91b486f8a831cef2d4b69d51d44f9fc074e781f15e5b56e9db61af4cd0095287"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al",
+      "sha256": "ff28e3de29b8c5db1b251c623e6d22ce65092bad76ef532d9788dd5dbe08f918"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+      "sha256": "95b150448827799be40e1fb42a2153474b12681926b8fb4f2a8e9d1954014e50"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
+      "sha256": "3786187a890f05362be6278aeda3ccf85bfc5d8fd706bf85378ca827a057197a"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
+      "sha256": "7be87434f3d8487f249bf537788683de096bbfba75bdeb9b27013ea45fcf3fda"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
+      "sha256": "effe9714b064c1bbcb9b09227ef23f64189469a27ae643052aab7b4a18395ff0"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchExportMsgType.EnumExt.al",
+      "sha256": "21482e7b9dec094eb72868c8ac625e2d1a4c2c0abb27d4fa4d8329c1aabc84dd"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
+      "sha256": "30be570cae1dbd07b74b4f6f33eeccd2151d414871ab96ab67cdcf87c6034ef9"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al",
+      "sha256": "32e64612183d6fa782f93174e45fba3d0a72122eb3e28ce15c13dfe300c98c4f"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchImportMsgType.EnumExt.al",
+      "sha256": "dbed665926ba43a4b3e936d56f4b5d23a23c456584d8d4dd2d20b49af4f31e80"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
+      "sha256": "7f58bef506faa8fe45417fee84404a883e160d89160ddd9e4bf3a176010a48f3"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchMsgType.EnumExt.al",
+      "sha256": "12395e6cae649a5f2d839de5842b3f691156a5ee405aaae677101a65989cb286"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
+      "sha256": "44ed9af9b6eb04d6c9e96c61fc4cbcd37f03ab396e9e77c7e98f239a26bf1cfc"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchTypeSetEnumExt.EnumExt.al",
+      "sha256": "fd903b40d4a8b1f47ebab7d7382573cee371bf5f298f81806054f3142582fba7"
+    },
+    {
+      "path": "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
+      "sha256": "aa93ce20a0e03ec094c1858241398f18ff62c540228a5c4adedce8c19a4e2dff"
+    },
+    {
+      "path": "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
+      "sha256": "f57cf5d9d56cc873ddbe518827b8ca21a23987a29481235448005f1332eee12e"
+    },
+    {
+      "path": "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
+      "sha256": "afb5fdcfe3614f2c982d5c07e4a7a9f867b536c6a78d973814ffa34275fd52c2"
+    },
+    {
+      "path": "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
+      "sha256": "00477f1736db270d20b333e9283b02a1e1fab036fb05e61c36775022b8c1324b"
+    },
+    {
+      "path": "app/src/MessageTypes/Directories/StorageDirListImpl.Codeunit.al",
+      "sha256": "0e560d6b083f57ae174efe1b4a44c235a82b5e43e9f8a8ae41c87f64af5d9b98"
+    },
+    {
+      "path": "app/src/MessageTypes/Files/StorageFileCopyImpl.Codeunit.al",
+      "sha256": "c4dddd422efe5c204cda2d2c9c5107a525f47279b15e5e5becfb224a6a796593"
+    },
+    {
+      "path": "app/src/MessageTypes/Files/StorageFileCreateImpl.Codeunit.al",
+      "sha256": "aab8293dddb33e3e38f15198c864a99427f9e16d4d892c978dff2b301d488ce8"
+    },
+    {
+      "path": "app/src/MessageTypes/Files/StorageFileDeleteImpl.Codeunit.al",
+      "sha256": "ce1a7dd807cd3ea97b055087cba4fe1881f74bf2d625d3e8f98c76a66b08af41"
+    },
+    {
+      "path": "app/src/MessageTypes/Files/StorageFileExistsImpl.Codeunit.al",
+      "sha256": "fd091773aae2de2318f2670aa3b772ee066dd82014d0a1bae346cb2f2950dd3d"
+    },
+    {
+      "path": "app/src/MessageTypes/Files/StorageFileGetImpl.Codeunit.al",
+      "sha256": "641b9380240679c10e1e6d803924b8c78b2b44936180241deecfbf834286d364"
+    },
+    {
+      "path": "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al",
+      "sha256": "c991adb78a5c09f0d0fc73be524639307c4113eae4089236be00c23218b39950"
+    },
+    {
+      "path": "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al",
+      "sha256": "fb32f5fd60cf02671ed3cd2199377981c99d544bb4b3f2e16949f9450b148835"
+    },
+    {
+      "path": "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
+      "sha256": "7e9de8ff7f0e0795ff7d892b3f0f0c6b425f5b1f89a9910d79de5d64efa4adea"
+    },
+    {
+      "path": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
+      "sha256": "f10082e92e73f6140aaa015153372ecfba27eced7d257a5c3d0e76b4dd08ed14"
+    },
+    {
+      "path": "app/src/MessageTypes/StorageMsgType.EnumExt.al",
+      "sha256": "25cec1866094f0de021c74eb678d565846a34593e384f58ef944c4aa9e4aa284"
+    },
+    {
+      "path": "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
+      "sha256": "665b31588b0ff0be3b99f645e87f5a237d673549712b8b22be57d74380e11325"
+    },
+    {
+      "path": "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
+      "sha256": "2045a76bfac60c8ca6a7b8703a5331cc22f4373c817ea7cda34a2a9bc8be6aeb"
+    },
+    {
+      "path": "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+      "sha256": "f2c9e93d59332bbe614bb6728f25d598063c852247316f69001e8b48a854700e"
+    },
+    {
+      "path": "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
+      "sha256": "4722a222d237355263b59526f1b629086210481da7b4d559248bee5c797c633a"
+    },
+    {
+      "path": "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
+      "sha256": "ca378361e261368e8d2a034182e8ec8e51a213aaa2d8e38d9dd673d0bce82b8a"
+    },
+    {
+      "path": "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
+      "sha256": "993b1d49212037060aa0f122b52b67dbc17243d8c0228f52ea6a57e50a86e5d8"
+    },
+    {
+      "path": "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
+      "sha256": "bf143f1cd2e7354c81b32571128b15724f3c78c7a84becfad84931de5f610f46"
+    },
+    {
+      "path": "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+      "sha256": "77aeb15b52677f6810118c0046a81f50538e6e3616feeb4c118dbb137142a04e"
+    },
+    {
+      "path": "app/src/Permissions/StorageFull.PermissionSetExt.al",
+      "sha256": "95ee9c2378dc777d05821354602529182d9f0157e257cfee763961b762886041"
+    },
+    {
+      "path": "app/src/Setup/AttachmentsRegistration.Codeunit.al",
+      "sha256": "32a74a0c8f4c4710338e0ccb173e49a3eb2c550bb24bf3a6bfbd1d93695ffa9a"
+    },
+    {
+      "path": "app/src/Setup/AttachmentsSetup.Page.al",
+      "sha256": "ac926250be915e104cd8631fba63c3d23d4dafc53087672da756919d227cad92"
+    },
+    {
+      "path": "app/src/Setup/SetupExt.PageExt.al",
+      "sha256": "b24bdb1bdf4fb3450d68167a95d26e135531c6c9bac6a0303266fb173bfb0129"
+    },
+    {
+      "path": "app/src/Setup/StorageAccountLookup.Page.al",
+      "sha256": "bb4315b200c11c2bc2ae2d07fc47cb3e26ddc912e938d29dc49c6b9e1311dfde"
+    },
+    {
+      "path": "app/src/Setup/StorageCard.Page.al",
+      "sha256": "b5bdd3e28bb21b30a060f94a423661f09ee1517e7c5978695c81b96f7f7686d9"
+    },
+    {
+      "path": "app/src/Setup/StorageConnPart.Page.al",
+      "sha256": "143d3cb1406d0164359da173b9b746e32ab8555c9c76db9a101793aecaaad424"
+    },
+    {
+      "path": "app/src/Setup/StorageSetup.Page.al",
+      "sha256": "b5b5269fe07b9080456b3a185efbd9dfd9ed9d8718d444ee9da47185119b0586"
+    },
+    {
+      "path": "app/src/Setup/StorageSetup.Table.al",
+      "sha256": "8dcdd9f4eedebef604a55c8e31ad881e52e1a680f4eba587ae614044b718adf1"
+    },
+    {
+      "path": "app/src/Setup/StorageSetupWizard.Page.al",
+      "sha256": "5e2ba40b8b1d1be7690680b4c79f3fa5c10f9789bb66bc2ade62c84541cab88b"
+    },
+    {
+      "path": "app/src/Storage/StorageConnector.Interface.al",
+      "sha256": "aa44e6ca127088a06518595928c55768596ec0c21515b8d4b356acfece73a6f7"
+    },
+    {
+      "path": "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+      "sha256": "32e973f5c1df29c6fd4db4975b893b0f8ffbb428d6a6bf0f80022eadc64123f5"
+    },
+    {
+      "path": "app/src/Storage/StorageRequestMgt.Codeunit.al",
+      "sha256": "c91beb3827200441f26264d1636da5c5c85448f6c17e8b7743e9910d6153645c"
+    },
+    {
+      "path": "app/src/Storage/StorageRequestReader.Codeunit.al",
+      "sha256": "92f2203cd693844a458c0c25a29187bb8a63a313939fecbad4798432533b1bb4"
+    },
+    {
+      "path": "app/src/Storage/StorageType.Enum.al",
+      "sha256": "1e1a1cea4dde6fa58dfdde61df4de0dc3032ff14d2f678573d74da4634bb0770"
+    },
+    {
+      "path": "app/src/Upload/StorageDataRestriction.Codeunit.al",
+      "sha256": "4d4aa7d2feb3fc53b8631bbe69bb24da263ef870c9a41777d43f0251cf8a32b7"
+    },
+    {
+      "path": "app/src/Upload/StorageRetenPolicy.Codeunit.al",
+      "sha256": "3d3e6b292a7a63334eadab66eea6b42fced42e9e376362dcf8134458e32b60cd"
+    },
+    {
+      "path": "app/src/Upload/StorageUploadChunk.Table.al",
+      "sha256": "de2ae2cea418cb4e89f0f7787b860356e8d1f36ba7f3af2e60c03f41a6c44a6b"
+    },
+    {
+      "path": "app/src/Upload/StorageUploadMgt.Codeunit.al",
+      "sha256": "fc040893d586a0b805fc2c0f8ba6a909821f9ec337fa3e86dc89b687d9e7b694"
+    },
+    {
+      "path": "app/src/Upload/StorageUploadPurge.Codeunit.al",
+      "sha256": "86ee869b7263cc1362250cd396b6897479433cfbe5427aca13d59e92d2930c04"
+    },
+    {
+      "path": "app/src/Upload/StorageUploadSession.Table.al",
+      "sha256": "05d41adfefb21c4e4977daff72bc188b7bfa8d192e4f771287ea6ab27ffa1884"
+    },
+    {
+      "path": "app/src/Upload/StorageUploadStatus.Enum.al",
+      "sha256": "971097c74afe2e040c1ca8b6d19e2ca16b2f6b52d97612488c80320b0d6af832"
+    },
+    {
+      "path": "test/AppSourceCop.json",
+      "sha256": "668ce55c72609672e1c943a22caf76f5a2bf2142137c0ec559e7ded0562517b8"
+    },
+    {
+      "path": "test/app.json",
+      "sha256": "cee146ac0e34e33a37b7926640f58aa024aa6ed339704ec5590d6e4c919ba78f"
+    },
+    {
+      "path": "test/src/Permissions/LangSetupRead.PermissionSet.al",
+      "sha256": "3109c44dd3594ccdcd8ff6dc5b8266ccf6e6b2f99456f8c79eb10df93d536985"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Column.PermissionSet.al",
+      "sha256": "d51b1768d101f85a2b08b82130b70bda3cf9852963cac615d7025a581c135c0f"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Def.PermissionSet.al",
+      "sha256": "4990e98886611f9db5d00aa012a602c472cd68d195bababa712240ea8c0e434f"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Entry.PermissionSet.al",
+      "sha256": "357f1f010bed66d0558a77ec51a925e432e85398d6fd6de20f03e9011c13472e"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Field.PermissionSet.al",
+      "sha256": "1815c5c292f7b1ddfe3bd512999702c752a10b9aec5aff22a9162a2c78ed5e36"
+    },
+    {
+      "path": "test/src/Permissions/Storage79FldMap.PermissionSet.al",
+      "sha256": "eaff4b4e01117efe6c050b58daa837c264de5f4d723304d73b9127abab3893d5"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Line.PermissionSet.al",
+      "sha256": "56546b34aa9b0da691f0c70faf70ac90fbe79af31205cb7fb31cbdcc5f50e867"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Link.PermissionSet.al",
+      "sha256": "134b491b270df0321e281f77fccbd9445d86c15c0bada81d9551fb20872c7f01"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Map.PermissionSet.al",
+      "sha256": "36c312c5ea3647398d00e4a99c3a1cb0ea59870de602b6ea5dbf4e29eef383e8"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Setup.PermissionSet.al",
+      "sha256": "c6b79013e6e4135b4204ac1c7cae87114714b5275647a9ddcee97300cef7e82f"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Source.PermissionSet.al",
+      "sha256": "36325c511eab2199d431b610d88ec5194e88eee2cc6e68a25d531f6f18eed127"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Target.PermissionSet.al",
+      "sha256": "b40d990a0c3fa338462f85acd5da92550918b352f2014e7cbf1271a706ef4e2a"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Test.PermissionSet.al",
+      "sha256": "f6fd8f608c19e7843d7607a98df122a7c8cc56080401ab6577d63992f37f09f2"
+    },
+    {
+      "path": "test/src/Permissions/Storage79Type.PermissionSet.al",
+      "sha256": "e93c2b73c967197d5e00237414bd5ffc354c91082ec2107379a36e85bc5e62a7"
+    },
+    {
+      "path": "test/src/StorageMockImpl.Codeunit.al",
+      "sha256": "5ec0d16828bc3bb813fd363696e6147f4c8a4c0e02ddb964d3b683d076721566"
+    },
+    {
+      "path": "test/src/StorageMockState.Codeunit.al",
+      "sha256": "f8454cf81a3a9442537ab712b514347e2a59c35efa19514886b084ca16f72f9d"
+    },
+    {
+      "path": "test/src/StorageTestInstall.Codeunit.al",
+      "sha256": "3a72bdf8261731920e852d227ca8ab33d9a6ae0f82ca55da154dbca9bf7369ec"
+    },
+    {
+      "path": "test/src/StorageTypeTest.EnumExt.al",
+      "sha256": "2476a20bca399542e16d35dece078d9fe83ecf22efb07b770d75b0295acba217"
+    },
+    {
+      "path": "test/test/AttachmentsBuildTestsori.Codeunit.al",
+      "sha256": "8c4e6e925e7774d049a43fc1bcc110b13c6d3fc0a5e4d961c1e99df1c7c9b49d"
+    },
+    {
+      "path": "test/test/DataExchDiscoveryTests.Codeunit.al",
+      "sha256": "ca67720f2271493a793bb075a11c0085789fa5177d03ea2b835bb8d55fb243f7"
+    },
+    {
+      "path": "test/test/DataExchRefusal82Testsori.Codeunit.al",
+      "sha256": "0477dde96088bfa1cc99ca7fc230115e4fd45603f382a3e517fe74215f6a50a1"
+    },
+    {
+      "path": "test/test/Storage79PermTests.Codeunit.al",
+      "sha256": "21d501d074369521c787e1e5090d0270fdb747825289d7b04f9fae309efe43f8"
+    },
+    {
+      "path": "test/test/StorageAppRegistryTests.Codeunit.al",
+      "sha256": "168998fab9d4ead88a32ab5278569e0d055504c73619141a954927a161af80f3"
+    },
+    {
+      "path": "test/test/StorageAttachRecordTests.Codeunit.al",
+      "sha256": "d49110ee008788e38fb89359924bebe2cc5cff5c8cf1008ac3693b38e226803f"
+    },
+    {
+      "path": "test/test/StorageAttachmentFieldTests.Codeunit.al",
+      "sha256": "710fac018372e870458e6179f0f0853df946b3c64111fb11530198b6330904e7"
+    },
+    {
+      "path": "test/test/StorageConnectorTests.Codeunit.al",
+      "sha256": "6049eb5b7dcbfc6fc366dcfaf71f2902ce5528c765d871a5d6d53939dabf0c58"
+    },
+    {
+      "path": "test/test/StorageContractBatch1Tests.Codeunit.al",
+      "sha256": "babef735e106276c971025430ae4f8604412163c5202e71ff3e358fbf0956bfe"
+    },
+    {
+      "path": "test/test/StorageContractBatch2Tests.Codeunit.al",
+      "sha256": "ab4fbc2237ca083571b611b1a802e051da2ecfb3527b8a04d75b1179c81b0200"
+    },
+    {
+      "path": "test/test/StorageErrorResponseTests.Codeunit.al",
+      "sha256": "fcbbd36510dfbf52833599b689da8ef9a219bc1efae18a3c255a3f4f5639895e"
+    },
+    {
+      "path": "test/test/StorageIntegrity75Testsori.Codeunit.al",
+      "sha256": "91bc71f86e5b37df6b3aea2887322bb036290ca17eaa4d47049a4b8ae4bc89dc"
+    },
+    {
+      "path": "test/test/StorageLinkGuardTests.Codeunit.al",
+      "sha256": "bac0cf7f767d0ce6951328c5017fb5aaa159b7b8378026b6c46af6ac519cdd42"
+    },
+    {
+      "path": "test/test/StorageMsgConformanceTests.Codeunit.al",
+      "sha256": "1d75558d8a83e9116fd7252d0c97f7f91df091afaaa9ecfbc8cd1ae6cb1605d3"
+    },
+    {
+      "path": "test/test/StorageNativeFieldsTests.Codeunit.al",
+      "sha256": "2d2166e138792d32cf7d3950921028e40088079a68f18f8d92965ad3c36da695"
+    },
+    {
+      "path": "test/test/StorageRefusal122Tests.Codeunit.al",
+      "sha256": "fa94b48314cbb481a63269a98b056cc374ef9bd66d84c0eb759bd2ae76dba620"
+    },
+    {
+      "path": "test/test/StorageSetupPageTests.Codeunit.al",
+      "sha256": "9f5ce28dc41197e791f3a29c72cd117f951e9b2a6262222d4d6e94792074720b"
+    },
+    {
+      "path": "test/test/StorageTakeoverProbeTests.Codeunit.al",
+      "sha256": "5f4a8d429f625b48dd1ca9425dcd1d99d2eb1818e87c4a0507298353b8d51de3"
+    },
+    {
+      "path": "test/test/StorageTakeoverTests.Codeunit.al",
+      "sha256": "5db520b3f0f7689041a08812440ac3b6d09d92325fbad29bc0597823cec4ae78"
+    },
+    {
+      "path": "test/test/StorageUploadTests.Codeunit.al",
+      "sha256": "b108a0d9b358664df9c99e48f87b8b08f3c45a97f7dabba204f6d01e1f9f1ee2"
+    }
+  ],
+  "compile": {
+    "at": "2026-10-16T08:29:21.345745+00:00",
+    "compiler": "/workspace/runtime/al181/extension/bin/alc.dll",
+    "compilerSha256": "ef19d8da1bf12c42140e84de31c7129a1698cb379cb52df11f00870f6ac7b9b4",
+    "sourceHead": "8dc7af8a2f93454fc7cf2430c8cf033d1e62335a",
+    "workingDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "foundationProvenance": "Retained Foundation556 Test product from original immutable artifact; see dependency-provenance.json",
+    "foundationVersion": "28.0.4.556",
+    "apps": {
+      "app": {
+        "exit": 0,
+        "errors": 0,
+        "warnings": 0,
+        "artifactSha256": "cb9de45877be4d35fe681c739ae7aa0946f511619fc477ca2a9fa4b1148c5e09"
+      },
+      "testApp": {
+        "exit": 0,
+        "errors": 0,
+        "warnings": 0,
+        "artifactSha256": "20ec444038e1eccaa30a6fc578f0184efd39aa9e3adf87c667c9b2bee585ee0b"
+      }
+    }
+  },
+  "runtime": {
+    "fullSuite": {
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "status": "NOT RUN: COSMO unreachable; not a full-suite pass"
+    },
+    "newTests": {
+      "authored": 9,
+      "executed": 0
+    },
+    "ui": {
+      "executed": 0,
+      "languagesRequired": [
+        1033,
+        1039
+      ],
+      "status": "NOT RUN"
+    },
+    "mcp": {
+      "touchedMessageTypes": [
+        "DataExchange.Import.Run",
+        "Storage.Directory.Delete"
+      ],
+      "executed": 0,
+      "passed": 0,
+      "status": "UNVERIFIED",
+      "fixturesCreated": [],
+      "cleanup": "No fixture created; owned-container creation outcome unknown, no ID returned"
+    }
+  },
+  "sourceGuards": [
+    {
+      "name": "NoClientCallstack",
+      "exit": 0,
+      "lastOutput": "No call stack is returned or documented to callers.\n"
+    },
+    {
+      "name": "ValidatedTableView",
+      "exit": 0,
+      "lastOutput": "Every applied tableView is validated first.\n"
+    },
+    {
+      "name": "NoObsolete",
+      "exit": 0,
+      "lastOutput": "No obsolete declaration and no AL0432/AL0667 pragma in the app, apart from the allow-listed VAT Amount Line pragmas.\n"
+    },
+    {
+      "name": "PermissionCoverage",
+      "exit": 0,
+      "lastOutput": "Every page, query, report and xmlport is granted by an assignable permission set.\n"
+    },
+    {
+      "name": "ContractParameterKeys",
+      "exit": 0,
+      "lastOutput": "Every contract parameter is a key the code reads, and every key the code reads is declared (0 allow-listed).\n"
+    },
+    {
+      "name": "MixedLanguageLabels",
+      "exit": 0,
+      "lastOutput": "No procedure answers a Locked English sentence.\n"
+    },
+    {
+      "name": "IcelandicKeywordCounts",
+      "exit": 0,
+      "lastOutput": "Every Icelandic keyword list has at least as many entries as the English one (34 in the source, 34 in the xlf).\n"
+    },
+    {
+      "name": "UniqueObjectIds",
+      "exit": 0,
+      "lastOutput": "Unique object IDs: no object or enum value collisions.\n"
+    },
+    {
+      "name": "IcelandicXlfInSync",
+      "exit": 0,
+      "lastOutput": "The committed is-IS.xlf is what tools/Update-IcelandicXlf.ps1 generates from the build.\n"
+    }
+  ],
+  "apiSurface": {
+    "staticOnly": true,
+    "objectsChecked": 79,
+    "errors": []
+  },
+  "acceptance": [
+    {
+      "id": "AC01",
+      "implemented": "Documentation alternative: syntax-only caller references; not resolved, read or persisted. Existing header-only handler unchanged.",
+      "verified": "Both apps compiled; contract/source guards pass. Native/MCP runtime pending."
+    },
+    {
+      "id": "AC02",
+      "implemented": "Files and subdirectories preflight; localized PreconditionFailed with parameter, expected and nextStep; linked-attachment guard first; documented contract.",
+      "verified": "Compiled. Native/provider/UI/MCP runtime pending."
+    },
+    {
+      "id": "AC03",
+      "implemented": "9 tests in96228, bilingual source labels and generated is-IS XLF; no new warning suppressions or skipped tests.",
+      "verified": "Product/test compilation0errors0warnings with all three analyzers;9guards and79-object inventory pass; native execution pending."
+    }
+  ],
+  "prReady": false,
+  "claudeVerified": false,
+  "grokCleared": false
+}
