@@ -4,8 +4,9 @@ using Microsoft.Sales.Customer;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.ExternalFileStorage;
+using System.Security.AccessControl;
 
-/// <summary>Issue 124 AC02: a non-SUPER user can resolve a connector account address, and a missing connector table does not block resolution.</summary>
+/// <summary>Issue 124: account read is a direct user grant, and a missing connector table does not block resolution.</summary>
 codeunit 96236 "Storage 124 Addr Tests ori"
 {
     Subtype = Test;
@@ -14,39 +15,40 @@ codeunit 96236 "Storage 124 Addr Tests ori"
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
 
-    /// <summary>Blob account 4560 resolves under the restricted set from a row this test inserts.</summary>
+    /// <summary>Without read on 4560 or 4570, address resolution returns only PermissionDenied.</summary>
     [Test]
-    procedure Scenario_AC02_RestrictedUser_ResolvesBlobAddress()
+    procedure NoReadOnAccountTable_ReturnsPermissionDenied()
     begin
-        // Story #124, AC02 | Time: none | Risk: the account read must work without direct table permission.
-        AssertRestrictedResolve(4560, 'c9ce86fe-cb70-4b79-be03-d21856b1a4ca', true);
+        // Story #124 | Time: none | Risk: a missing account grant must be a single PermissionDenied.
+        AssertNoAccountRead(4560);
+        AssertNoAccountRead(4570);
     end;
 
-    /// <summary>File Share account 4570 resolves under the restricted set from a row this test inserts.</summary>
+    /// <summary>Read granted on 4560 or 4570 through the user's own permission set resolves the address.</summary>
     [Test]
-    procedure Scenario_AC02_RestrictedUser_ResolvesFileShareAddress()
+    procedure GrantedReadViaOwnPermissionSet_Resolves()
     begin
-        // Story #124, AC02 | Time: none | Risk: the account read must work without direct table permission.
-        AssertRestrictedResolve(4570, '79447b11-8301-4d02-a546-2261eb811296', false);
+        // Story #124 | Time: none | Risk: direct read must come from the user's permission set, not a connector dependency.
+        AssertGrantedAccountRead(4560, true);
+        AssertGrantedAccountRead(4570, false);
     end;
 
     /// <summary>A tenant without table 4560 or 4570 still resolves the address and collects no error.</summary>
     [Test]
-    procedure Scenario_AC02_AbsentAccountTable_DoesNotBlock()
+    procedure AbsentAccountTable_DoesNotBlock()
     begin
         // Story #124 | Time: none | Risk: storage setup must not fail when the connector app is not installed.
         AssertAbsentConnector(4560);
         AssertAbsentConnector(4570);
     end;
 
-    local procedure AssertRestrictedResolve(TableId: Integer; ModuleId: Guid; ExpectedCaseSensitive: Boolean)
+    local procedure AssertNoAccountRead(TableId: Integer)
     var
         StorageSetup: Record "Storage Setup ori";
         TempArgument: Record "Message Argument ori" temporary;
         Customer: Record Customer;
         Provider: Codeunit "Storage Ext File Impl ori";
         LowerPermissions: Codeunit "Library - Lower Permissions";
-        AccountModule: ModuleInfo;
         AccountId: Guid;
         HostName: Text;
         RootName: Text;
@@ -57,27 +59,11 @@ codeunit 96236 "Storage 124 Addr Tests ori"
         Resolved: Boolean;
         StorageCode: Code[20];
     begin
-        // [GIVEN] A connector account and setup row created from scratch under the runner's own grants.
-        LowerPermissions.StopLoggingNAVPermissions();
-        if Provider.AccountTableIsAbsent(TableId) then begin
-            // The absent-table test owns a tenant that does not have this connector app.
-            LowerPermissions.StartLoggingNAVPermissions();
-            LowerPermissions.SetExactPermissionSet('Storage124 Read ori');
-            LibraryAssert.IsTrue(LowerPermissions.HasChangedPermissions(), 'Permission enforcement must be active.');
+        if not PrepareConnector(TableId, StorageSetup, AccountId, HostName, RootName, StorageCode) then
             exit;
-        end;
-        LibraryAssert.IsTrue(NavApp.GetModuleInfo(ModuleId, AccountModule), 'The connector app for table ' + Format(TableId, 0, 9) + ' must be installed.');
-        LibraryAssert.IsTrue("Ext. File Storage Connector".Ordinals().Contains(TableId), 'The connector enum must include table ' + Format(TableId, 0, 9) + '.');
-        StorageCode := NewCode();
-        AccountId := CreateGuid();
-        HostName := NewAzureName();
-        RootName := NewAzureName();
-        DeleteOwnedRows(TableId, StorageCode);
-        InsertAccount(TableId, AccountId, HostName, RootName);
-        InsertSetup(StorageSetup, StorageCode, TableId, AccountId);
         Commit();
 
-        // [WHEN] A permission set with no account-table read resolves the address.
+        // [WHEN] The actor has no read on the account table.
         LowerPermissions.StartLoggingNAVPermissions();
         LowerPermissions.SetExactPermissionSet('Storage124 Read ori');
         LibraryAssert.IsTrue(LowerPermissions.HasChangedPermissions(), 'Permission enforcement must be active.');
@@ -91,8 +77,52 @@ codeunit 96236 "Storage 124 Addr Tests ori"
         LowerPermissions.StopLoggingNAVPermissions();
         DeleteOwnedRows(TableId, StorageCode);
 
-        // [THEN] The physical address and scope come from the row this test inserted.
-        LibraryAssert.IsTrue(Resolved, 'The account read must resolve the address the test inserted. ' + FailureText);
+        // [THEN] The only refusal is PermissionDenied.
+        LibraryAssert.IsFalse(Resolved, 'A user without account read must not resolve the address. ' + FailureText);
+        AssertSingleErrorCode(TempArgument, 'PermissionDenied', FailureText);
+    end;
+
+    local procedure AssertGrantedAccountRead(TableId: Integer; ExpectedCaseSensitive: Boolean)
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Customer: Record Customer;
+        Provider: Codeunit "Storage Ext File Impl ori";
+        LowerPermissions: Codeunit "Library - Lower Permissions";
+        AccountId: Guid;
+        HostName: Text;
+        RootName: Text;
+        Scope: Text;
+        Address: Text;
+        FailureText: Text;
+        CaseSensitive: Boolean;
+        Resolved: Boolean;
+        StorageCode: Code[20];
+    begin
+        if not PrepareConnector(TableId, StorageSetup, AccountId, HostName, RootName, StorageCode) then
+            exit;
+        // The restrictive mock replaces user assignments, so the same role is added again for the act.
+        GrantAccountRead(TableId);
+        Commit();
+
+        // [WHEN] The actor's own permission set grants read on this table number.
+        LowerPermissions.StartLoggingNAVPermissions();
+        LowerPermissions.SetExactPermissionSet('Storage124 Read ori');
+        LowerPermissions.AddPermissionSet(AccountRoleId(TableId));
+        LibraryAssert.IsTrue(LowerPermissions.HasChangedPermissions(), 'Permission enforcement must be active.');
+        LibraryAssert.IsFalse(Customer.WritePermission(), 'The actor must not be SUPER.');
+        LibraryAssert.IsTrue(TryDirectAccountRead(TableId), 'The user permission set must grant direct read on table ' + Format(TableId, 0, 9) + '.');
+        if not TryResolveAddress(Provider, TempArgument, StorageSetup, Scope, Address, CaseSensitive, Resolved) then
+            FailureText := GetLastErrorText()
+        else
+            if not Resolved then
+                FailureText := CollectedErrors(TempArgument);
+        LowerPermissions.StopLoggingNAVPermissions();
+        DeleteOwnedRows(TableId, StorageCode);
+        RevokeAccountRead(TableId);
+
+        // [THEN] The address and scope come from the row this test inserted.
+        LibraryAssert.IsTrue(Resolved, 'Direct read must resolve the account address. ' + FailureText);
         LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'Resolution must not collect an error.');
         LibraryAssert.AreEqual('x124base/dir/file.txt', Address, 'The address must keep the base path and relative path.');
         LibraryAssert.AreEqual(Format(TableId, 0, 9) + ':' + HostName + '/' + RootName, Scope, 'The scope must use the inserted account and root.');
@@ -150,6 +180,157 @@ codeunit 96236 "Storage 124 Addr Tests ori"
             LibraryAssert.AreEqual(ExpectedScope, Scope, 'Scope must stay generic when the account table is not present.');
         end else
             LibraryAssert.IsTrue(MissingTableAbsent, 'A table that is not installed must be reported absent.');
+    end;
+
+    local procedure PrepareConnector(TableId: Integer; var StorageSetup: Record "Storage Setup ori"; var AccountId: Guid; var HostName: Text; var RootName: Text; var StorageCode: Code[20]): Boolean
+    var
+        Provider: Codeunit "Storage Ext File Impl ori";
+        LowerPermissions: Codeunit "Library - Lower Permissions";
+    begin
+        // Not applicable when this tenant does not have the connector table.
+        LowerPermissions.StopLoggingNAVPermissions();
+        RevokeAccountRead(TableId);
+        if Provider.AccountTableIsAbsent(TableId) then begin
+            LowerPermissions.StartLoggingNAVPermissions();
+            LowerPermissions.SetExactPermissionSet('Storage124 Read ori');
+            LibraryAssert.IsTrue(LowerPermissions.HasChangedPermissions(), 'Permission enforcement must be active.');
+            exit(false);
+        end;
+
+        StorageCode := NewCode();
+        AccountId := CreateGuid();
+        HostName := NewAzureName();
+        RootName := NewAzureName();
+        DeleteOwnedRows(TableId, StorageCode);
+        InsertAccount(TableId, AccountId, HostName, RootName);
+        InsertSetup(StorageSetup, StorageCode, TableId, AccountId);
+        exit(true);
+    end;
+
+    local procedure GrantAccountRead(TableId: Integer)
+    var
+        TenantPermissionSet: Record "Tenant Permission Set";
+        TenantPermission: Record "Tenant Permission";
+        AccessControl: Record "Access Control";
+        NullGuid: Guid;
+        RoleId: Code[20];
+    begin
+        RoleId := AccountRoleId(TableId);
+        RevokeAccountRead(TableId);
+
+        TenantPermissionSet.Init();
+        TenantPermissionSet."App ID" := NullGuid;
+        TenantPermissionSet."Role ID" := RoleId;
+        TenantPermissionSet.Name := CopyStr('X124 read ' + Format(TableId, 0, 9), 1, MaxStrLen(TenantPermissionSet.Name));
+        TenantPermissionSet.Assignable := true;
+        TenantPermissionSet.Insert(true);
+
+        TenantPermission.Init();
+        TenantPermission."App ID" := NullGuid;
+        TenantPermission."Role ID" := RoleId;
+        TenantPermission."Object Type" := TenantPermission."Object Type"::"Table Data";
+        TenantPermission."Object ID" := TableId;
+        TenantPermission.Type := TenantPermission.Type::Include;
+        TenantPermission."Read Permission" := TenantPermission."Read Permission"::Yes;
+        TenantPermission."Insert Permission" := TenantPermission."Insert Permission"::" ";
+        TenantPermission."Modify Permission" := TenantPermission."Modify Permission"::" ";
+        TenantPermission."Delete Permission" := TenantPermission."Delete Permission"::" ";
+        TenantPermission."Execute Permission" := TenantPermission."Execute Permission"::" ";
+        TenantPermission.Insert(true);
+
+        AccessControl.Init();
+        AccessControl."User Security ID" := UserSecurityId();
+        AccessControl."Role ID" := RoleId;
+        AccessControl."Company Name" := CopyStr(CompanyName(), 1, MaxStrLen(AccessControl."Company Name"));
+        AccessControl.Scope := AccessControl.Scope::Tenant;
+        AccessControl."App ID" := NullGuid;
+        AccessControl.Insert(true);
+
+        // Permissions Mock resolves roles from the legacy permission-set table. The read itself is the tenant row above.
+        EnsureLegacyRoleVisible(RoleId, TenantPermissionSet.Name);
+    end;
+
+    local procedure RevokeAccountRead(TableId: Integer)
+    var
+        TenantPermissionSet: Record "Tenant Permission Set";
+        TenantPermission: Record "Tenant Permission";
+        AccessControl: Record "Access Control";
+        NullGuid: Guid;
+        RoleId: Code[20];
+    begin
+        RoleId := AccountRoleId(TableId);
+        AccessControl.SetRange("User Security ID", UserSecurityId());
+        AccessControl.SetRange("Role ID", RoleId);
+        AccessControl.SetRange(Scope, AccessControl.Scope::Tenant);
+        AccessControl.SetRange("App ID", NullGuid);
+        if not AccessControl.IsEmpty() then
+            AccessControl.DeleteAll(true);
+
+        TenantPermission.SetRange("App ID", NullGuid);
+        TenantPermission.SetRange("Role ID", RoleId);
+        if not TenantPermission.IsEmpty() then
+            TenantPermission.DeleteAll(true);
+
+        if TenantPermissionSet.Get(NullGuid, RoleId) then
+            TenantPermissionSet.Delete(true);
+        DeleteLegacyRole(RoleId);
+    end;
+
+    local procedure EnsureLegacyRoleVisible(RoleId: Code[20]; RoleName: Text[30])
+    var
+        PermissionSet: RecordRef;
+        RoleField: FieldRef;
+    begin
+        // Table 2000000004 "Permission Set". A tenant role is not listed there until this row exists.
+        PermissionSet.Open(2000000004);
+        RoleField := PermissionSet.Field(1);
+        RoleField.SetRange(RoleId);
+        if PermissionSet.FindFirst() then begin
+            PermissionSet.Close();
+            exit;
+        end;
+        PermissionSet.Init();
+        PermissionSet.Field(1).Value := RoleId;
+        PermissionSet.Field(2).Value := RoleName;
+        PermissionSet.Insert(false);
+        PermissionSet.Close();
+    end;
+
+    local procedure DeleteLegacyRole(RoleId: Code[20])
+    var
+        PermissionSet: RecordRef;
+        RoleField: FieldRef;
+    begin
+        PermissionSet.Open(2000000004);
+        RoleField := PermissionSet.Field(1);
+        RoleField.SetRange(RoleId);
+        if PermissionSet.FindFirst() then
+            PermissionSet.Delete(false);
+        PermissionSet.Close();
+    end;
+
+    local procedure AccountRoleId(TableId: Integer): Code[20]
+    begin
+        exit(CopyStr('X124-' + Format(TableId, 0, 9), 1, 20));
+    end;
+
+    local procedure AssertSingleErrorCode(var TempArgument: Record "Message Argument ori" temporary; ExpectedCode: Text; FailureText: Text)
+    var
+        Errors: JsonArray;
+        ErrorToken: JsonToken;
+    begin
+        Errors := TempArgument.GetCollectedErrorsJson();
+        LibraryAssert.AreEqual(1, Errors.Count(), 'The refusal must be the only error. ' + FailureText);
+        Errors.Get(0, ErrorToken);
+        LibraryAssert.AreEqual(ExpectedCode, JsonText(ErrorToken.AsObject(), 'code'), 'The refusal code must be ' + ExpectedCode + '.');
+    end;
+
+    local procedure JsonText(ValueObject: JsonObject; PropertyName: Text): Text
+    var
+        Token: JsonToken;
+    begin
+        LibraryAssert.IsTrue(ValueObject.Get(PropertyName, Token), 'Expected error property: ' + PropertyName);
+        exit(Token.AsValue().AsText());
     end;
 
     [TryFunction]

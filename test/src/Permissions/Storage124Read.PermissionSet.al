@@ -3,7 +3,7 @@ namespace Origo.Bifrost.Attachments.Test;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 
-/// <summary>Restricted actor for issue 124. No read on the external account tables.</summary>
+/// <summary>Base actor for issue 124. Account-table read is not included; a test grants it at runtime by table number.</summary>
 permissionset 96236 "Storage124 Read ori"
 {
     Assignable = true;

@@ -10,7 +10,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-16) - external account read without a connector dependency (#124)
 
-- `Storage Ext File Impl ori` (10035661) reads table 4560 `Ext. Blob Storage Account` and table 4570 `Ext. File Share Account` by number inside a TryFunction. `RecordRef.ReadPermission` returned `PermissionDenied` for SUPER on storageCode TEST, and Attachments does not depend on the Azure Blob or Azure File Share connector apps. A tenant without those tables is not blocked. A genuine read failure is `PermissionDenied`. `Storage 124 Addr Tests ori` (96236) with permission set `Storage124 Read ori` (96236) resolves a Blob address and a File Share address as a non-SUPER user from rows the test creates, and a tenant without those tables resolves without an error.
+- `Storage Ext File Impl ori` (10035661) no longer uses `RecordRef.ReadPermission` as a gate on table 4560 `Ext. Blob Storage Account` and table 4570 `Ext. File Share Account`. That check returned `PermissionDenied` for SUPER on storageCode TEST. The account is opened by number and read inside a TryFunction. Attachments does not depend on the Azure Blob or Azure File Share connector apps. A tenant without those tables is not blocked. A genuine read failure is `PermissionDenied`. An administrator grants read on tables 4560 and 4570 through the user's own permission set. `Storage 124 Addr Tests ori` (96236) checks that a user without that read receives only `PermissionDenied`, that a runtime grant by table number resolves the address, and that a missing table does not block resolution.
 
 ### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
 
