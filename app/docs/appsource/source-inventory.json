@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "acc609a3f4bb75bb8b04bebdd05a2693ea56104c",
+  "sourceSha": "1880429111a22d76059f102064c5b6a52754f7b5",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -17,6 +17,30 @@
         "name": "Bifrost Foundation",
         "publisher": "Origo",
         "version": "28.0.1.0"
+      },
+      {
+        "id": "c9ce86fe-cb70-4b79-be03-d21856b1a4ca",
+        "name": "External File Storage - Azure Blob Service Connector",
+        "publisher": "Microsoft",
+        "version": "28.0.0.0"
+      },
+      {
+        "id": "79447b11-8301-4d02-a546-2261eb811296",
+        "name": "External File Storage - Azure File Service Connector",
+        "publisher": "Microsoft",
+        "version": "28.0.0.0"
+      },
+      {
+        "id": "34bfcef7-f8ed-449f-94be-74024cadba3b",
+        "name": "External File Storage - SharePoint Connector",
+        "publisher": "Microsoft",
+        "version": "28.0.0.0"
+      },
+      {
+        "id": "e0df20ef-75a2-4fae-8e3a-88140ab29507",
+        "name": "External File Storage - SFTP Connector",
+        "publisher": "Microsoft",
+        "version": "28.0.0.0"
       }
     ],
     "idRanges": [
@@ -233,7 +257,7 @@
     }
   ],
   "files": {
-    "app/app.json": "d54b732c356263bbbc3690541722f627607e001bd85ee93d982e30c06ce98d39",
+    "app/app.json": "b63f29cb6af747d40c47f97ccabad0828a4b999e55d10652ee9a38f685cedc3e",
     "app/AppSourceCop.json": "3693ee0c9ff2b18b8528d8b9bc2ecb80610346762766e2d9c209e0742885f2e8",
     ".AL-Go/settings.json": "ce3b6e64e45c91a7fe33835b2bc2e5b4cbc103403100f9136c162c5739c91a08",
     "test/app.json": "cee146ac0e34e33a37b7926640f58aa024aa6ed339704ec5590d6e4c919ba78f",
@@ -254,9 +278,9 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-16T20:14:49.610625+00:00",
-  "inventoryPreparedFromDocumentationHead": "acc609a3f4bb75bb8b04bebdd05a2693ea56104c",
-  "productSourceBaselineUnchanged": true,
+  "refreshedAt": "2026-10-16T22:20:05.712456+00:00",
+  "inventoryPreparedFromDocumentationHead": "1880429111a22d76059f102064c5b6a52754f7b5",
+  "productSourceBaselineUnchanged": false,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",
@@ -323,9 +347,9 @@
     "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al": "4722a222d237355263b59526f1b629086210481da7b4d559248bee5c797c633a",
     "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al": "ca378361e261368e8d2a034182e8ec8e51a213aaa2d8e38d9dd673d0bce82b8a",
     "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al": "993b1d49212037060aa0f122b52b67dbc17243d8c0228f52ea6a57e50a86e5d8",
-    "app/src/Permissions/BIFROSTAttach.PermissionSet.al": "bf143f1cd2e7354c81b32571128b15724f3c78c7a84becfad84931de5f610f46",
+    "app/src/Permissions/BIFROSTAttach.PermissionSet.al": "1e6c5381d908fdd15fcd0b982961c6b33f3521e0d9110cc9703508d505359bf8",
     "app/src/Permissions/BIFROSTDataExch.PermissionSet.al": "77aeb15b52677f6810118c0046a81f50538e6e3616feeb4c118dbb137142a04e",
-    "app/src/Permissions/StorageFull.PermissionSetExt.al": "95ee9c2378dc777d05821354602529182d9f0157e257cfee763961b762886041",
+    "app/src/Permissions/StorageFull.PermissionSetExt.al": "38c32af02684f8024663969e697dea2fdafa5021c572112c4db7547fffd84c7a",
     "app/src/Setup/AttachmentsRegistration.Codeunit.al": "32a74a0c8f4c4710338e0ccb173e49a3eb2c550bb24bf3a6bfbd1d93695ffa9a",
     "app/src/Setup/AttachmentsSetup.Page.al": "ac926250be915e104cd8631fba63c3d23d4dafc53087672da756919d227cad92",
     "app/src/Setup/SetupExt.PageExt.al": "b24bdb1bdf4fb3450d68167a95d26e135531c6c9bac6a0303266fb173bfb0129",
@@ -336,7 +360,7 @@
     "app/src/Setup/StorageSetup.Table.al": "8dcdd9f4eedebef604a55c8e31ad881e52e1a680f4eba587ae614044b718adf1",
     "app/src/Setup/StorageSetupWizard.Page.al": "5e2ba40b8b1d1be7690680b4c79f3fa5c10f9789bb66bc2ade62c84541cab88b",
     "app/src/Storage/StorageConnector.Interface.al": "aa44e6ca127088a06518595928c55768596ec0c21515b8d4b356acfece73a6f7",
-    "app/src/Storage/StorageExtFileImpl.Codeunit.al": "ab69d607b0ee90a80e2e7a18d6cf943923291be7a2642d8e52b92c532c9c5fb3",
+    "app/src/Storage/StorageExtFileImpl.Codeunit.al": "355fbc41432fc54e8c4a60c113c338fd7eefc51f155f4779e6536ebc501f3f41",
     "app/src/Storage/StorageRequestMgt.Codeunit.al": "f5707b252238ff32f8e01b5d816ae7d3306c183b6823659bff4a42fc09126a48",
     "app/src/Storage/StorageRequestReader.Codeunit.al": "92f2203cd693844a458c0c25a29187bb8a63a313939fecbad4798432533b1bb4",
     "app/src/Storage/StorageType.Enum.al": "1e1a1cea4dde6fa58dfdde61df4de0dc3032ff14d2f678573d74da4634bb0770",
@@ -350,6 +374,7 @@
   },
   "testSourceFiles": {
     "test/src/Permissions/LangSetupRead.PermissionSet.al": "3109c44dd3594ccdcd8ff6dc5b8266ccf6e6b2f99456f8c79eb10df93d536985",
+    "test/src/Permissions/Storage124Read.PermissionSet.al": "afe277cfc8c437baf2bc757cb98a0faf1634b2921abdc6b3baaa6639da0dd34a",
     "test/src/Permissions/Storage79Column.PermissionSet.al": "d51b1768d101f85a2b08b82130b70bda3cf9852963cac615d7025a581c135c0f",
     "test/src/Permissions/Storage79Def.PermissionSet.al": "4990e98886611f9db5d00aa012a602c472cd68d195bababa712240ea8c0e434f",
     "test/src/Permissions/Storage79Entry.PermissionSet.al": "357f1f010bed66d0558a77ec51a925e432e85398d6fd6de20f03e9011c13472e",
@@ -370,6 +395,7 @@
     "test/test/AttachmentsBuildTestsori.Codeunit.al": "8c4e6e925e7774d049a43fc1bcc110b13c6d3fc0a5e4d961c1e99df1c7c9b49d",
     "test/test/DataExchDiscoveryTests.Codeunit.al": "ca67720f2271493a793bb075a11c0085789fa5177d03ea2b835bb8d55fb243f7",
     "test/test/DataExchRefusal82Testsori.Codeunit.al": "0477dde96088bfa1cc99ca7fc230115e4fd45603f382a3e517fe74215f6a50a1",
+    "test/test/Storage124AddrTests.Codeunit.al": "16a8c1f9223e545fb78bd32dfcec83a0de3c30e79371d36ebeaca5133999940d",
     "test/test/Storage79PermTests.Codeunit.al": "21d501d074369521c787e1e5090d0270fdb747825289d7b04f9fae309efe43f8",
     "test/test/StorageAppRegistryTests.Codeunit.al": "168998fab9d4ead88a32ab5278569e0d055504c73619141a954927a161af80f3",
     "test/test/StorageAttachRecordTests.Codeunit.al": "d49110ee008788e38fb89359924bebe2cc5cff5c8cf1008ac3693b38e226803f",
