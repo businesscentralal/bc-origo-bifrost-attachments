@@ -1444,10 +1444,16 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ImportDefinitionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2751879078" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The file path relative to the storage connection base path.</source>
-          <target>Skráarslóð miðað við grunnslóð geymslutengingar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skráarslóð miðað við grunnslóð geymslutengingar.</note>
+          <source>Caller reference only: checked for path syntax, not validated for file existence and not stored on the entry header. No file is read.</source>
+          <target>Aðeins tilvísun kallanda: snið slóðar er athugað en ekki hvort skráin sé til og slóðin er ekki vistuð í færsluhausnum. Engin skrá er lesin.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Aðeins tilvísun kallanda: snið slóðar er athugað en ekki hvort skráin sé til og slóðin er ekki vistuð í færsluhausnum. Engin skrá er lesin.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ImportPathLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 2070719994" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Caller reference only: checked for syntax, not validated against configured storage connections and not stored on the entry header.</source>
+          <target>Aðeins tilvísun kallanda: snið er athugað en ekki hvort geymslutenging sé skilgreind og tilvísunin er ekki vistuð í færsluhausnum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Aðeins tilvísun kallanda: snið er athugað en ekki hvort geymslutenging sé skilgreind og tilvísunin er ekki vistuð í færsluhausnum.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ImportStorageLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3476905374" size-unit="char" translate="yes" xml:space="preserve">
           <source>Description for a new IncomingDocument; ignored for DocumentAttachment.</source>
@@ -1971,6 +1977,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Veldu annað skráarheiti eða aðra möppu fyrir áfangastaðinn.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType DifferentPathsNextStepLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 223275718 - NamedType 1545897752" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Directory "%1" is not empty.</source>
+          <target>Mappan "%1" er ekki tóm.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = directory path||is-IS=Mappan "%1" er ekki tóm.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType DirectoryNotEmptyErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 2011335988" size-unit="char" translate="yes" xml:space="preserve">
           <source>The storage connection "%1" is disabled.</source>
           <target>Geymslutengingin "%1" er óvirk.</target>
@@ -1982,6 +1994,18 @@
           <target>Virkjaðu tenginguna á uppsetningarsíðu Bifröst viðhengja eða notaðu annan storageCode.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Virkjaðu tenginguna á uppsetningarsíðu Bifröst viðhengja eða notaðu annan storageCode.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType DisabledCodeNextStepLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - NamedType 788891124" size-unit="char" translate="yes" xml:space="preserve">
+          <source>an empty directory</source>
+          <target>tóm mappa</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=tóm mappa</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType EmptyDirectoryExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - NamedType 3351711685" size-unit="char" translate="yes" xml:space="preserve">
+          <source>List the files and subdirectories, remove those entries, then retry.</source>
+          <target>Sýndu skrár og undirmöppur, fjarlægðu þær og reyndu svo aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sýndu skrár og undirmöppur, fjarlægðu þær og reyndu svo aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType EmptyDirectoryNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 2236668011" size-unit="char" translate="yes" xml:space="preserve">
           <source>an enabled storage connection</source>

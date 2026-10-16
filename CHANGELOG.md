@@ -8,6 +8,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
+
+- `Storage Contract Parts ori` (70013500) describes `DataExchange.Import.Run` references precisely: `storageCode` and `path` receive syntax checks, but no storage/file lookup occurs, neither reference is stored on the entry header, and no file content is read. This selects issue #122 AC01's documentation alternative and preserves the existing header-only behavior.
+- `Storage Request Mgt ori` (10035662) checks files and subdirectories before deleting a directory. A non-empty directory returns localized `PreconditionFailed` details identifying `path`, the empty-directory precondition and a recovery step; its contract documents that refusal. Linked-attachment checks remain first. `Storage Refusal122 Tests ori` (96228) covers unknown import references in LCIDs 1033/1039, contract wording, files, child directories, base paths and empty-directory success. Test execution evidence is recorded separately.
+- `Storage Refusal122 Tests ori` (96228) restores the test runner's original permissions before creating each owned fixture and inserts the temporary message argument before reading its response Blob, retaining restrictive actor checks. Failed import assertions include the bounded response for the self-created request so an earlier dispatch refusal is diagnosable.
+
 ### Fixed (2026-10-14) - safe publisher telemetry (#121)
 
 - `Storage Attachment Mgt ori` (10035635) logs a fixed native-field assignment failure code and the set/clear operation instead of raw error text. `BFA-EXTSTOR-01` and the attachment system ID remain stable.
