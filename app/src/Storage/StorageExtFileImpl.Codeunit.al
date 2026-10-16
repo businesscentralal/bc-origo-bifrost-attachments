@@ -16,6 +16,11 @@ using System.Utilities;
 codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
 {
     Access = Internal;
+    // Indirect read applies while this codeunit runs. RecordRef.ReadPermission does not observe it.
+    // SharePoint account 4580 and SFTP account 4621 are not read here.
+    Permissions =
+        tabledata 4560 = R,
+        tabledata 4570 = R;
 
     var
         BlobSegmentModeLbl: Label 'Blob segment mode', Comment = 'is-IS=hlutastilling Blob';

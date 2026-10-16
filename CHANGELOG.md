@@ -8,9 +8,9 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-### Fixed (2026-10-16) - external account read without a connector dependency (#124)
+### Fixed (2026-10-16) - indirect read of external account tables (#124)
 
-- `Storage Ext File Impl ori` (10035661) no longer uses `RecordRef.ReadPermission` as a gate on table 4560 `Ext. Blob Storage Account` and table 4570 `Ext. File Share Account`. That check returned `PermissionDenied` for SUPER on storageCode TEST. The account is opened by number and read inside a TryFunction. Attachments does not depend on the Azure Blob or Azure File Share connector apps. A tenant without those tables is not blocked. A genuine read failure is `PermissionDenied`. An administrator grants read on tables 4560 and 4570 through the user's own permission set. `Storage 124 Addr Tests ori` (96236) checks that a user without that read receives only `PermissionDenied`, that a runtime grant by table number resolves the address, and that a missing table does not block resolution.
+- `Storage Ext File Impl ori` (10035661) grants indirect read on table 4560 `Ext. Blob Storage Account` and table 4570 `Ext. File Share Account`. `RecordRef.ReadPermission` does not observe that grant and returned `PermissionDenied` for SUPER on storageCode TEST, so the account is opened by number and read inside a TryFunction. A genuine read failure is `PermissionDenied`. SharePoint account table 4580 and SFTP account table 4621 are not read. The app depends on the Microsoft External File Storage connectors from BC 28.5.54151.55751: Azure Blob Service Connector (`c9ce86fe-cb70-4b79-be03-d21856b1a4ca`), Azure File Service Connector (`79447b11-8301-4d02-a546-2261eb811296`), SharePoint Connector (`34bfcef7-f8ed-449f-94be-74024cadba3b`) and SFTP Connector (`e0df20ef-75a2-4fae-8e3a-88140ab29507`). `Storage 124 Addr Tests ori` (96236) with permission set `Storage124 Read ori` (96236) resolves a Blob address and a File Share address as a non-SUPER user who has no direct read on those tables.
 
 ### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
 

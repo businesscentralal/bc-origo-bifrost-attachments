@@ -21,6 +21,30 @@
       "name": "Bifrost Foundation",
       "publisher": "Origo",
       "version": "28.0.1.0"
+    },
+    {
+      "id": "c9ce86fe-cb70-4b79-be03-d21856b1a4ca",
+      "name": "External File Storage - Azure Blob Service Connector",
+      "publisher": "Microsoft",
+      "version": "28.5.54151.55751"
+    },
+    {
+      "id": "79447b11-8301-4d02-a546-2261eb811296",
+      "name": "External File Storage - Azure File Service Connector",
+      "publisher": "Microsoft",
+      "version": "28.5.54151.55751"
+    },
+    {
+      "id": "34bfcef7-f8ed-449f-94be-74024cadba3b",
+      "name": "External File Storage - SharePoint Connector",
+      "publisher": "Microsoft",
+      "version": "28.5.54151.55751"
+    },
+    {
+      "id": "e0df20ef-75a2-4fae-8e3a-88140ab29507",
+      "name": "External File Storage - SFTP Connector",
+      "publisher": "Microsoft",
+      "version": "28.5.54151.55751"
     }
   ],
   "idRanges": [
