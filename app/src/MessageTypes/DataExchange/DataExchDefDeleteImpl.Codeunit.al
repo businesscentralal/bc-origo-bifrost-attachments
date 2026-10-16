@@ -148,7 +148,7 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     /// <summary>Explains operation restrictions.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Does not delete a definition that a Data Exchange Type or Bank Export/Import Setup still uses.', Comment = 'is-IS=Eyðir ekki skilgreiningu sem tegund gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn.';
+        NotesLbl: Label 'Does not delete a definition that a Data Exchange Type or Bank Export/Import Setup still uses.', Comment = 'is-IS=Eyðir ekki skilgreiningu sem gerð gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn.';
     begin
         Notes := NotesLbl;
         exit(true);
@@ -189,9 +189,9 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
         NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
         UsedErr: Label 'Data Exchange definition %1 is referenced and cannot be deleted.', Comment = '%1 = definition code||is-IS=Vísað er í skilgreiningu gagnaskipta %1 og ekki er hægt að eyða henni.';
         DefinitionExpectedLbl: Label 'an existing Data Exchange definition', Comment = 'is-IS=fyrirliggjandi skilgreining gagnaskipta';
-        UnreferencedExpectedLbl: Label 'a definition not used by a Data Exchange Type or Bank Export/Import Setup', Comment = 'is-IS=skilgreining sem er ekki notuð í tegund gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings';
+        UnreferencedExpectedLbl: Label 'a definition not used by a Data Exchange Type or Bank Export/Import Setup', Comment = 'is-IS=skilgreining sem er ekki notuð í gerð gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings';
         SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and use the exact definition code.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningarinnar.';
-        RemoveReferenceLbl: Label 'Review the Data Exchange Types and Bank Export/Import Setup that use this definition. Change those references before retrying deletion.', Comment = 'is-IS=Farðu yfir tegundir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.';
+        RemoveReferenceLbl: Label 'Review the Data Exchange Types and Bank Export/Import Setup that use this definition. Change those references before retrying deletion.', Comment = 'is-IS=Farðu yfir gerðir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.';
     begin
         RequestJson := Argument.GetRequestJson();
         Reader.ReadMutationCode(Argument, RequestJson, 'code', DefCode);

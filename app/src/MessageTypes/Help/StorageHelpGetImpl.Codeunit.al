@@ -23,21 +23,21 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
 
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Returns a Markdown overview of the storage connector and all its message types. No request body is required.', Comment = 'is-IS=Skilar Markdown-yfirliti yfir geymslutengilinn og allar boðgerðir hans. Enginn meginmálshluti beiðni er nauðsynlegur.';
+        DescriptionLbl: Label 'Returns a Markdown overview of the storage connector and all its message types. No request body is required.', Comment = 'is-IS=Skilar Markdown-yfirliti yfir geymslutengilinn og allar skilaboðategundir hans. Enginn meginmálshluti beiðni er nauðsynlegur.';
     begin
         exit(DescriptionLbl);
     end;
 
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'storage help, storage message types, how to use storage, storage API overview, storage documentation', Comment = 'is-IS=geymslu hjálp, geymsluboðgerðir, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl';
+        KeywordsLbl: Label 'storage help, storage message types, how to use storage, storage API overview, storage documentation', Comment = 'is-IS=geymsluhjálp, skilaboðategundir geymslu, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl';
     begin
         exit(KeywordsLbl);
     end;
 
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Returns the storage connector guide and message type map; use a specific storage type to perform an operation.', Comment = 'is-IS=Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir boðgerðir; notaðu tiltekna geymsluboðgerð til að framkvæma aðgerð.';
+        SelectionDescriptionLbl: Label 'Returns the storage connector guide and message type map; use a specific storage type to perform an operation.', Comment = 'is-IS=Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir skilaboðategundir; notaðu tiltekna skilaboðategund geymslu til að framkvæma aðgerð.';
     begin
         exit(SelectionDescriptionLbl);
     end;

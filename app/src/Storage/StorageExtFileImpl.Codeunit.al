@@ -34,7 +34,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         FileNameExpectedLbl: Label 'unambiguous Azure File Share names', Comment = 'is-IS=ótvíræð heiti í Azure File Share';
         ProviderPathNextStepLbl: Label 'Shorten the path or choose file names supported by the selected provider.', Comment = 'is-IS=Styttu slóðina eða veldu skráarheiti sem valin þjónusta styður.';
         InvalidPathErr: Label 'The storage path is invalid. Nothing was changed.', Comment = 'is-IS=Geymsluslóðin er ógild. Engu var breytt.';
-        NoAccountErr: Label 'Storage connection ''%1'' has no file account selected.', Comment = '%1 = storage code';
+        NoAccountErr: Label 'Storage connection ''%1'' has no file account selected.', Comment = '%1 = storage code||is-IS=Geymslutengingin „%1“ hefur engan skráareikning valinn.';
 
     /// <summary>Lists the configured base-path root through the External File Storage facade; initialization or provider failures propagate.</summary>
     /// <param name="StorageSetup">Configured connector, file account and base path used to initialize the facade.</param>

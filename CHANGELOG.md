@@ -8,6 +8,13 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-16) - Icelandic glossary and grammar (#72)
+
+- Align Icelandic source comments with the BC/Foundation glossary: Skjal í innleið, Gerð gagnaskipta, skilaboðategund, bútur and staðfesta. Keep Bifröst undeclined, correct the reported accusative/import grammar and credentials terminology, and add the missing NoAccountErr translation. English text, wire keys, executable statements and object identities are unchanged.
+- Regenerate the is-IS XLF and update the existing exact Icelandic discovery assertion in Attachments Build Tests ori (96274). Native/UI/MCP execution evidence remains separate; no language-runtime pass is inferred from source changes. Also correct the reported file-account/storage spelling, compound help word, linked-move wording and upload-session gender. Offload terminology (T10) remains for native-language review; no advisory closure is inferred.
+- Affected shipping object IDs: 10035635, 10035636, 10035637, 10035638, 10035640, 10035645, 10035648, 10035649, 10035650, 10035655, 10035656, 10035657, 10035658, 10035659, 10035660, 10035661, 10035662, 10035665, 10035669, 10035677, 10035679, 10035682, 70013500, 70013522, 70013523, 70013524, 70013525, 70013531, 70013543.
+
+
 ### Fixed (2026-10-14) - native refusal diagnostics and published help evidence (#70, #79, #82)
 
 - `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.

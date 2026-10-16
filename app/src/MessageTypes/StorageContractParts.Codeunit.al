@@ -22,10 +22,10 @@ codeunit 70013500 "Storage Contract Parts ori"
         UploadTableNameLbl: Label 'Accepted table name instead of tableId for DocumentAttachment.', Comment = 'is-IS=Heiti töflu sem má nota í stað tableId fyrir DocumentAttachment.';
         IncomingDescriptionLbl: Label 'Description for a new IncomingDocument; ignored for DocumentAttachment.', Comment = 'is-IS=Lýsing fyrir nýtt IncomingDocument; hunsað fyrir DocumentAttachment.';
         UploadRecordIdLbl: Label 'For DocumentAttachment, identify the host by recordSystemId or no; required for tables without no addressing.', Comment = 'is-IS=Fyrir DocumentAttachment skal auðkenna hýsil með recordSystemId eða no; nauðsynlegt fyrir töflur án no-vistfangs.';
-        TypeCodeLbl: Label 'The Data Exchange Type code, at most 20 characters.', Comment = 'is-IS=Kóði gagnaskiptagerðar, að hámarki 20 stafir.';
+        TypeCodeLbl: Label 'The Data Exchange Type code, at most 20 characters.', Comment = 'is-IS=Kóði gerðar gagnaskipta, að hámarki 20 stafir.';
         ImportDefinitionLbl: Label 'The existing import definition code, at most 20 characters.', Comment = 'is-IS=Kóði fyrirliggjandi innflutningsskilgreiningar, að hámarki 20 stafir.';
         ExportDefinitionLbl: Label 'The existing export definition code, at most 20 characters.', Comment = 'is-IS=Kóði fyrirliggjandi útflutningsskilgreiningar, að hámarki 20 stafir.';
-        TypeDescriptionLbl: Label 'Optional description within the Data Exchange Type Description field length.', Comment = 'is-IS=Valfrjáls lýsing innan lengdar lýsingarreits gagnaskiptagerðar.';
+        TypeDescriptionLbl: Label 'Optional description within the Data Exchange Type Description field length.', Comment = 'is-IS=Valfrjáls lýsing innan lengdar lýsingarreits gerðar gagnaskipta.';
         ImportPathLbl: Label 'The file path relative to the storage connection base path.', Comment = 'is-IS=Skráarslóð miðað við grunnslóð geymslutengingar.';
         ExportFileNameLbl: Label 'The output file name within the Data Exch. File Name field length.', Comment = 'is-IS=Heiti úttaksskrár innan lengdar skráarheitisreits gagnaskipta.';
         DefinitionCodeLbl: Label 'The complete Data Exchange definition code, at most 20 characters.', Comment = 'is-IS=Allur kóði gagnaskiptaskilgreiningar, að hámarki 20 stafir.';
@@ -38,7 +38,7 @@ codeunit 70013500 "Storage Contract Parts ori"
         DefinitionTypeLbl: Label 'The definition type name.', Comment = 'is-IS=Gerðarheiti skilgreiningar.';
         CreatedEntryLbl: Label 'The created Data Exchange entry number.', Comment = 'is-IS=Númer gagnaskiptafærslunnar sem var stofnuð.';
         MatchingCountLbl: Label 'Number of matching rows.', Comment = 'is-IS=Fjöldi samsvarandi færslna.';
-        MatchingTypesLbl: Label 'The Data Exchange Types and their linked definitions.', Comment = 'is-IS=Gagnaskiptagerðir og tengdar skilgreiningar þeirra.';
+        MatchingTypesLbl: Label 'The Data Exchange Types and their linked definitions.', Comment = 'is-IS=Gerðir gagnaskipta og tengdar skilgreiningar þeirra.';
         MissingInputLbl: Label 'A required request parameter is missing.', Comment = 'is-IS=Nauðsynlega færibreytu vantar í beiðnina.';
         SupplyInputLbl: Label 'Provide the named parameter and retry.', Comment = 'is-IS=Gefðu upp tilgreinda færibreytu og reyndu aftur.';
         InvalidFormatLbl: Label 'A parameter has the wrong JSON type or format.', Comment = 'is-IS=Færibreyta hefur ranga JSON-gerð eða snið.';
