@@ -1450,7 +1450,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             // Persist only after the field-assignment TryFunction has returned successfully.
             RecRef.Modify(true)
         else
-            LogNativeFieldMirrorFailure(RecSystemId, GetLastErrorText());
+            LogNativeFieldMirrorFailure(RecSystemId, true);
     end;
 
     /// <summary>
@@ -1472,7 +1472,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             // Persist only after the field-assignment TryFunction has returned successfully.
             RecRef.Modify(true)
         else
-            LogNativeFieldMirrorFailure(RecSystemId, GetLastErrorText());
+            LogNativeFieldMirrorFailure(RecSystemId, false);
     end;
 
     local procedure TryGetDocAttachExtStorFields(var RecRef: RecordRef; var StoredExternallyFld: FieldRef; var ExternalUploadDateFld: FieldRef; var ExternalFilePathFld: FieldRef; var StoredInternallyFld: FieldRef): Boolean
@@ -1510,8 +1510,22 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         StoredInternallyFld.Value := not Offloaded;
     end;
 
-    local procedure LogNativeFieldMirrorFailure(RecSystemId: Guid; ErrorText: Text)
+    local procedure LogNativeFieldMirrorFailure(RecSystemId: Guid; Offloaded: Boolean)
+    var
+        Dimensions: Dictionary of [Text, Text];
     begin
-        Session.LogMessage('BFA-EXTSTOR-01', 'Native external-storage field mirror failed.', Verbosity::Warning, DataClassification::SystemMetadata, TelemetryScope::ExtensionPublisher, 'systemId', Format(RecSystemId, 0, 4), 'error', ErrorText);
+        Dimensions := NativeFieldMirrorFailureDimensions(RecSystemId, Offloaded);
+        Session.LogMessage('BFA-EXTSTOR-01', 'Native external-storage field mirror failed.', Verbosity::Warning, DataClassification::SystemMetadata, TelemetryScope::ExtensionPublisher, Dimensions);
+    end;
+
+    /// <summary>Builds publisher telemetry from safe identifiers and fixed categories only.</summary>
+    internal procedure NativeFieldMirrorFailureDimensions(RecSystemId: Guid; Offloaded: Boolean) Dimensions: Dictionary of [Text, Text]
+    begin
+        Dimensions.Add('systemId', Format(RecSystemId, 0, 4));
+        Dimensions.Add('errorCode', 'NativeFieldAssignmentFailed');
+        if Offloaded then
+            Dimensions.Add('operation', 'SetNativeExternalStorageFields')
+        else
+            Dimensions.Add('operation', 'ClearNativeExternalStorageFields');
     end;
 }

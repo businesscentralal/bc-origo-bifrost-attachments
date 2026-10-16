@@ -17,6 +17,19 @@ Business Central release versioning (`major.minor.build.revision`).
 - Tests: `DataExch Phase2 Tests ori` (96237). AC04 also calls `Incoming Document Attachment.GetContent` after `CreateLinked` with and without `process`, requires the local blob to be empty, and requires the served bytes to match the stored file. AC06 remains Tester sandbox verification after merge/UAT.
 - `api-surface-objects.json` and `API-SURFACE.md` include codeunit 70013532 and the current hashes of the changed shipping files. The procedure CSV line-number snapshot was not rebuilt.
 
+### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
+
+- `Storage Contract Parts ori` (70013500) describes `DataExchange.Import.Run` references precisely: `storageCode` and `path` receive syntax checks, but no storage/file lookup occurs, neither reference is stored on the entry header, and no file content is read. This selects issue #122 AC01's documentation alternative and preserves the existing header-only behavior.
+- `Storage Request Mgt ori` (10035662) checks files and subdirectories before deleting a directory. A non-empty directory returns localized `PreconditionFailed` details identifying `path`, the empty-directory precondition and a recovery step; its contract documents that refusal. Linked-attachment checks remain first. `Storage Refusal122 Tests ori` (96228) covers unknown import references in LCIDs 1033/1039, contract wording, files, child directories, base paths and empty-directory success. Test execution evidence is recorded separately.
+- `Storage Refusal122 Tests ori` (96228) restores the test runner's original permissions before creating each owned fixture and inserts the temporary message argument before reading its response Blob, retaining restrictive actor checks. Failed import assertions include the bounded response for the self-created request so an earlier dispatch refusal is diagnosable.
+
+### Fixed (2026-10-14) - safe publisher telemetry (#121)
+
+- `Storage Attachment Mgt ori` (10035635) logs a fixed native-field assignment failure code and the set/clear operation instead of raw error text. `BFA-EXTSTOR-01` and the attachment system ID remain stable.
+- `Storage Takeover ori` (10035676) removes the company name and free-text error dimension from `ORI-BIF-0002`. It retains the table ID and lifecycle phase and adds fixed read/write permission-denial codes and the takeover operation. Caller behavior and the session-local skip diagnostic remain unchanged.
+- `Storage Telemetry121 Tests ori` (96227) checks the bounded metadata fields, offload/restore operation distinction and read/write denial categories. No public message contract or user-facing label changes.
+
+
 ### Fixed (2026-10-14) - native refusal diagnostics and published help evidence (#70, #79, #82)
 
 - `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.

@@ -1,5 +1,5 @@
 {
-  "hashSourceSha": "wip/codex/attachments-23-phase2-incoming-dataexch uncommitted #23 tree 2026-10-16",
+  "hashSourceSha": "working-tree-merge-of-9bd1be6-and-b66d1f2",
   "sourceSha": "fca2943658e9843d3cfcce80ff6093657e8bd51e",
   "appId": "672df32a-a0c5-4a22-b591-0efa38023e95",
   "appVersion": "28.0.0.4",
@@ -87,7 +87,7 @@
       "id": 10035635,
       "name": "Storage Attachment Mgt ori",
       "file": "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
-      "sha256": "fc443b0e93183d70233d2779c68c2b5baf36575c379992c30b3510f9dd1fb4e1",
+      "sha256": "27268fa4fc693e3dd08a571565a46f2a4c353779340b4ff8807930893c7f59b6",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -106,9 +106,10 @@
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/test/StorageIntegrity75Testsori.Codeunit.al",
-        "test/test/StorageNativeFieldsTests.Codeunit.al"
+        "test/test/StorageNativeFieldsTests.Codeunit.al",
+        "test/test/StorageTelemetry121Tests.Codeunit.al"
       ],
-      "nonLocalProcedureCount": 17,
+      "nonLocalProcedureCount": 18,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -230,7 +231,7 @@
       "id": 10035676,
       "name": "Storage Takeover ori",
       "file": "app/src/Install/StorageTakeover.Codeunit.al",
-      "sha256": "15e00e1ba3a2eadf38ca3aa1801b72bf16917afcad655d4df7dd40fee5a5d3ce",
+      "sha256": "22f3490cdf9b8bb3ac7f2f8eafd3a1b18ab28701f271150d6ce9fa60478b5bdd",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -244,9 +245,10 @@
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/test/StorageTakeoverProbeTests.Codeunit.al",
-        "test/test/StorageTakeoverTests.Codeunit.al"
+        "test/test/StorageTakeoverTests.Codeunit.al",
+        "test/test/StorageTelemetry121Tests.Codeunit.al"
       ],
-      "nonLocalProcedureCount": 4,
+      "nonLocalProcedureCount": 5,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -1144,7 +1146,7 @@
       "id": 70013500,
       "name": "Storage Contract Parts ori",
       "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
-      "sha256": "604dbe6b2f852e57da16228d9049b6d53d821301c01ba9678ae65face38f2eff",
+      "sha256": "2ddc81335fbeff07eb340b7db1f58074d4014c24b2d3f34ca85de61ab716267e",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1810,7 +1812,7 @@
       "id": 10035662,
       "name": "Storage Request Mgt ori",
       "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
-      "sha256": "f73db8bfe5f76669293e5bc36d7fef49a2d89bfc2837e20c9479b96c98163087",
+      "sha256": "f5707b252238ff32f8e01b5d816ae7d3306c183b6823659bff4a42fc09126a48",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
