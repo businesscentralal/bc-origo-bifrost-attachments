@@ -2,6 +2,7 @@ namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
 using System.ExternalFileStorage;
+using System.Reflection;
 using System.Utilities;
 
 /// <summary>
@@ -15,16 +16,10 @@ using System.Utilities;
 codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
 {
     Access = Internal;
-    // AL0720 rejects InherentPermissions on these tables: they belong to the connector apps.
-    // Indirect read applies while this codeunit runs. RecordRef.ReadPermission does not observe it.
-    Permissions =
-        tabledata "Ext. Blob Storage Account" = R,
-        tabledata "Ext. File Share Account" = R;
 
     var
         BlobSegmentModeLbl: Label 'Blob segment mode', Comment = 'is-IS=hlutastilling Blob';
         SharePointRootLbl: Label 'SharePoint decoded library root and comparison', Comment = 'is-IS=afkóðuð safnrót SharePoint og samanburður';
-        ConnectorSchemaLbl: Label 'connector package schema', Comment = 'is-IS=skema tengipakka';
         AccountSchemaLbl: Label 'account field schema', Comment = 'is-IS=skema reikningsreita';
         AccountMetadataLbl: Label 'registered account metadata', Comment = 'is-IS=lýsigögn skráðs reiknings';
         AzureIdentityLbl: Label 'Azure account and resource identity', Comment = 'is-IS=auðkenni Azure-reiknings og tilfangs';
@@ -321,11 +316,11 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
                 // No guessed provider limits or case folding for partner connectors.
                 exit(true);
         end;
-        if not KnownAccountModule(ConnectorId) then begin
-            AddUnverifiedOperation(Argument, 'storageCode', ConnectorSchemaLbl);
-            exit(false);
-        end;
+        // The connector apps are optional. A tenant without the table is not a permission failure.
+        if not KnownAccountModule(ConnectorId) or AccountTableIsAbsent(ConnectorId) then
+            exit(true);
         if not TryReadPublicAccount(ConnectorId, StorageSetup."File Account Id", AccountTableName, RootFieldName, HostName, RootName) then begin
+            // TryFunction rolls var values back, so the caught text is the only failure classification.
             ReadFailure := GetLastErrorText();
             if (ReadFailure = AccountSchemaLbl) or (ReadFailure = AccountMetadataLbl) then
                 AddUnverifiedOperation(Argument, 'storageCode', ReadFailure)
@@ -345,6 +340,26 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         exit(true);
     end;
 
+    /// <summary>True when the table is not in this tenant. A metadata read the caller cannot perform is not treated as absence.</summary>
+    internal procedure AccountTableIsAbsent(TableId: Integer): Boolean
+    var
+        Exists: Boolean;
+    begin
+        // Table Metadata is the platform catalog. RecordRef.Open cannot tell a missing table from a permission error.
+        if not TryReadTablePresence(TableId, Exists) then
+            exit(false);
+        exit(not Exists);
+    end;
+
+    /// <summary>Reads whether the table id is installed. Failure leaves presence unknown so the caller still attempts the account read.</summary>
+    [TryFunction]
+    local procedure TryReadTablePresence(TableId: Integer; var Exists: Boolean)
+    var
+        TableMetadata: Record "Table Metadata";
+    begin
+        Exists := TableMetadata.Get(TableId);
+    end;
+
     /// <summary>Reads the three public identity fields. A platform permission error stays caught so the caller can return PermissionDenied.</summary>
     [TryFunction]
     local procedure TryReadPublicAccount(ConnectorId: Integer; AccountId: Guid; AccountTableName: Text; RootFieldName: Text; var HostName: Text; var RootName: Text)
@@ -353,6 +368,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         AccountIdField: FieldRef;
     begin
         // 4560 is Ext. Blob Storage Account. 4570 is Ext. File Share Account.
+        // RecordRef.ReadPermission ignores entitlements and returned PermissionDenied before this read.
         Account.Open(ConnectorId);
         Account.ReadIsolation := IsolationLevel::RepeatableRead;
         if (Account.Name <> AccountTableName) or not IsMetadataField(Account, 1, 'Id', FieldType::Guid) or

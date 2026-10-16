@@ -5,7 +5,7 @@ using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.ExternalFileStorage;
 
-/// <summary>Issue 124 AC02: a non-SUPER user can resolve a connector account address the test creates.</summary>
+/// <summary>Issue 124 AC02: a non-SUPER user can resolve a connector account address, and a missing connector table does not block resolution.</summary>
 codeunit 96236 "Storage 124 Addr Tests ori"
 {
     Subtype = Test;
@@ -18,7 +18,7 @@ codeunit 96236 "Storage 124 Addr Tests ori"
     [Test]
     procedure Scenario_AC02_RestrictedUser_ResolvesBlobAddress()
     begin
-        // Story #124, AC02 | Time: none | Risk: RecordRef.ReadPermission ignores indirect read.
+        // Story #124, AC02 | Time: none | Risk: the account read must work without direct table permission.
         AssertRestrictedResolve(4560, 'c9ce86fe-cb70-4b79-be03-d21856b1a4ca', true);
     end;
 
@@ -26,8 +26,17 @@ codeunit 96236 "Storage 124 Addr Tests ori"
     [Test]
     procedure Scenario_AC02_RestrictedUser_ResolvesFileShareAddress()
     begin
-        // Story #124, AC02 | Time: none | Risk: RecordRef.ReadPermission ignores indirect read.
+        // Story #124, AC02 | Time: none | Risk: the account read must work without direct table permission.
         AssertRestrictedResolve(4570, '79447b11-8301-4d02-a546-2261eb811296', false);
+    end;
+
+    /// <summary>A tenant without table 4560 or 4570 still resolves the address and collects no error.</summary>
+    [Test]
+    procedure Scenario_AC02_AbsentAccountTable_DoesNotBlock()
+    begin
+        // Story #124 | Time: none | Risk: storage setup must not fail when the connector app is not installed.
+        AssertAbsentConnector(4560);
+        AssertAbsentConnector(4570);
     end;
 
     local procedure AssertRestrictedResolve(TableId: Integer; ModuleId: Guid; ExpectedCaseSensitive: Boolean)
@@ -50,6 +59,13 @@ codeunit 96236 "Storage 124 Addr Tests ori"
     begin
         // [GIVEN] A connector account and setup row created from scratch under the runner's own grants.
         LowerPermissions.StopLoggingNAVPermissions();
+        if Provider.AccountTableIsAbsent(TableId) then begin
+            // The absent-table test owns a tenant that does not have this connector app.
+            LowerPermissions.StartLoggingNAVPermissions();
+            LowerPermissions.SetExactPermissionSet('Storage124 Read ori');
+            LibraryAssert.IsTrue(LowerPermissions.HasChangedPermissions(), 'Permission enforcement must be active.');
+            exit;
+        end;
         LibraryAssert.IsTrue(NavApp.GetModuleInfo(ModuleId, AccountModule), 'The connector app for table ' + Format(TableId, 0, 9) + ' must be installed.');
         LibraryAssert.IsTrue("Ext. File Storage Connector".Ordinals().Contains(TableId), 'The connector enum must include table ' + Format(TableId, 0, 9) + '.');
         StorageCode := NewCode();
@@ -76,11 +92,64 @@ codeunit 96236 "Storage 124 Addr Tests ori"
         DeleteOwnedRows(TableId, StorageCode);
 
         // [THEN] The physical address and scope come from the row this test inserted.
-        LibraryAssert.IsTrue(Resolved, 'Indirect read must resolve the account address. ' + FailureText);
+        LibraryAssert.IsTrue(Resolved, 'The account read must resolve the address the test inserted. ' + FailureText);
         LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'Resolution must not collect an error.');
         LibraryAssert.AreEqual('x124base/dir/file.txt', Address, 'The address must keep the base path and relative path.');
         LibraryAssert.AreEqual(Format(TableId, 0, 9) + ':' + HostName + '/' + RootName, Scope, 'The scope must use the inserted account and root.');
         LibraryAssert.AreEqual(ExpectedCaseSensitive, CaseSensitive, 'Case sensitivity must follow the connector.');
+    end;
+
+    local procedure AssertAbsentConnector(TableId: Integer)
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Provider: Codeunit "Storage Ext File Impl ori";
+        LowerPermissions: Codeunit "Library - Lower Permissions";
+        AccountId: Guid;
+        Scope: Text;
+        Address: Text;
+        FailureText: Text;
+        ExpectedScope: Text;
+        StorageCode: Code[20];
+        CaseSensitive: Boolean;
+        Resolved: Boolean;
+        TableAbsent: Boolean;
+        MissingTableAbsent: Boolean;
+    begin
+        // [GIVEN] The runner can see whether the connector table is installed.
+        LowerPermissions.StopLoggingNAVPermissions();
+        TableAbsent := Provider.AccountTableIsAbsent(TableId);
+        MissingTableAbsent := Provider.AccountTableIsAbsent(962360);
+        AccountId := CreateGuid();
+        StorageCode := NewCode();
+        if TableAbsent then begin
+            InsertSetupByNumber(StorageCode, TableId, AccountId);
+            StorageSetup.Get(StorageCode);
+            Commit();
+        end;
+
+        // [WHEN] The restricted set resolves an address for a connector whose table is not installed.
+        LowerPermissions.StartLoggingNAVPermissions();
+        LowerPermissions.SetExactPermissionSet('Storage124 Read ori');
+        LibraryAssert.IsTrue(LowerPermissions.HasChangedPermissions(), 'Permission enforcement must be active.');
+        if TableAbsent then
+            if not TryResolveAddress(Provider, TempArgument, StorageSetup, Scope, Address, CaseSensitive, Resolved) then
+                FailureText := GetLastErrorText()
+            else
+                if not Resolved then
+                    FailureText := CollectedErrors(TempArgument);
+        LowerPermissions.StopLoggingNAVPermissions();
+
+        // [THEN] Absence is graceful. A tenant that has the connector table still proves a missing id is absent.
+        if TableAbsent then begin
+            DeleteSetup(StorageCode);
+            ExpectedScope := Format(StorageSetup."Storage Type".AsInteger(), 0, 9) + ':' + Format(TableId, 0, 9) + ':' + Format(AccountId, 0, 4);
+            LibraryAssert.IsTrue(Resolved, 'A missing connector table must still resolve the address. ' + FailureText);
+            LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'A missing connector table must not collect an error.');
+            LibraryAssert.AreEqual('x124base/dir/file.txt', Address, 'The address must keep the base path and relative path.');
+            LibraryAssert.AreEqual(ExpectedScope, Scope, 'Scope must stay generic when the account table is not present.');
+        end else
+            LibraryAssert.IsTrue(MissingTableAbsent, 'A table that is not installed must be reported absent.');
     end;
 
     [TryFunction]
@@ -111,6 +180,23 @@ codeunit 96236 "Storage 124 Addr Tests ori"
         StorageSetup.Insert(false);
     end;
 
+    local procedure InsertSetupByNumber(StorageCode: Code[20]; TableId: Integer; AccountId: Guid)
+    var
+        StorageSetup: RecordRef;
+    begin
+        // Field 4 is the connector enum. The ordinal is stored by number so this compiles without the connector app.
+        StorageSetup.Open(Database::"Storage Setup ori");
+        StorageSetup.Init();
+        StorageSetup.Field(1).Value := StorageCode;
+        StorageSetup.Field(3).Value := "Storage Type ori"::"External File Storage".AsInteger();
+        StorageSetup.Field(4).Value := TableId;
+        StorageSetup.Field(5).Value := AccountId;
+        StorageSetup.Field(7).Value := 'x124base';
+        StorageSetup.Field(8).Value := true;
+        StorageSetup.Insert(false);
+        StorageSetup.Close();
+    end;
+
     local procedure InsertAccount(TableId: Integer; AccountId: Guid; HostName: Text; RootName: Text)
     var
         Account: RecordRef;
@@ -127,15 +213,21 @@ codeunit 96236 "Storage 124 Addr Tests ori"
 
     local procedure DeleteOwnedRows(TableId: Integer; StorageCode: Code[20])
     var
-        StorageSetup: Record "Storage Setup ori";
         Account: RecordRef;
     begin
-        if StorageSetup.Get(StorageCode) then
-            StorageSetup.Delete(false);
+        DeleteSetup(StorageCode);
         Account.Open(TableId);
         Account.Field(2).SetFilter('X124 *');
         Account.DeleteAll(false);
         Account.Close();
+    end;
+
+    local procedure DeleteSetup(StorageCode: Code[20])
+    var
+        StorageSetup: Record "Storage Setup ori";
+    begin
+        if StorageSetup.Get(StorageCode) then
+            StorageSetup.Delete(false);
     end;
 
     [TryFunction]

@@ -1713,12 +1713,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=hlutastilling Blob</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Ext File Impl ori - NamedType BlobSegmentModeLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 932189238 - NamedType 2190257260" size-unit="char" translate="yes" xml:space="preserve">
-          <source>connector package schema</source>
-          <target>skema tengipakka</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=skema tengipakka</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Ext File Impl ori - NamedType ConnectorSchemaLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 932189238 - NamedType 3256376113" size-unit="char" translate="yes" xml:space="preserve">
           <source>at most 250 directory components</source>
           <target>í mesta lagi 250 möppuhlutar</target>
