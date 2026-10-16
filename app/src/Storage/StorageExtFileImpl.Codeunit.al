@@ -2,7 +2,6 @@ namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
 using System.ExternalFileStorage;
-using System.Reflection;
 using System.Utilities;
 
 /// <summary>
@@ -16,8 +15,9 @@ using System.Utilities;
 codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
 {
     Access = Internal;
-    // Indirect read applies while this codeunit runs. RecordRef.ReadPermission does not observe it.
-    // SharePoint account 4580 and SFTP account 4621 are not read here.
+    // Gunnar, 16 Oct 2026: app.json depends on all four Microsoft SaaS External File Storage connectors, so these tables always exist.
+    // Azure Blob 4560 and Azure File 4570 are read here for address resolution. This Permissions grant is that indirect read; RecordRef.ReadPermission does not observe it.
+    // SharePoint and SFTP are dependencies so storage setup always has every Microsoft connector. Their account tables are not read here.
     Permissions =
         tabledata 4560 = R,
         tabledata 4570 = R;
@@ -321,9 +321,6 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
                 // No guessed provider limits or case folding for partner connectors.
                 exit(true);
         end;
-        // The connector apps are optional. A tenant without the table is not a permission failure.
-        if not KnownAccountModule(ConnectorId) or AccountTableIsAbsent(ConnectorId) then
-            exit(true);
         if not TryReadPublicAccount(ConnectorId, StorageSetup."File Account Id", AccountTableName, RootFieldName, HostName, RootName) then begin
             // TryFunction rolls var values back, so the caught text is the only failure classification.
             ReadFailure := GetLastErrorText();
@@ -343,26 +340,6 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
             exit(false);
         end;
         exit(true);
-    end;
-
-    /// <summary>True when the table is not in this tenant. A metadata read the caller cannot perform is not treated as absence.</summary>
-    internal procedure AccountTableIsAbsent(TableId: Integer): Boolean
-    var
-        Exists: Boolean;
-    begin
-        // Table Metadata is the platform catalog. RecordRef.Open cannot tell a missing table from a permission error.
-        if not TryReadTablePresence(TableId, Exists) then
-            exit(false);
-        exit(not Exists);
-    end;
-
-    /// <summary>Reads whether the table id is installed. Failure leaves presence unknown so the caller still attempts the account read.</summary>
-    [TryFunction]
-    local procedure TryReadTablePresence(TableId: Integer; var Exists: Boolean)
-    var
-        TableMetadata: Record "Table Metadata";
-    begin
-        Exists := TableMetadata.Get(TableId);
     end;
 
     /// <summary>Reads the three public identity fields. A platform permission error stays caught so the caller can return PermissionDenied.</summary>
@@ -393,22 +370,6 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         HostName := Account.Field(3).Value;
         RootName := Account.Field(4).Value;
         Account.Close();
-    end;
-
-    local procedure KnownAccountModule(ConnectorId: Integer): Boolean
-    var
-        AccountModule: ModuleInfo;
-        ModuleId: Guid;
-    begin
-        case ConnectorId of
-            4560:
-                ModuleId := 'c9ce86fe-cb70-4b79-be03-d21856b1a4ca';
-            4570:
-                ModuleId := '79447b11-8301-4d02-a546-2261eb811296';
-        end;
-        // Any installed build is accepted: the caller verifies the account table, field numbers,
-        // names and types before reading, so a changed schema is refused there, not by version.
-        exit(NavApp.GetModuleInfo(ModuleId, AccountModule));
     end;
 
     local procedure IsMetadataField(Account: RecordRef; FieldNumber: Integer; FieldName: Text; ExpectedType: FieldType): Boolean
