@@ -1,0 +1,41 @@
+{
+  "sha": "56899d593f65a05d305c5b11b224d803e30b8a28",
+  "results": [
+    {
+      "guard": "ContractParameterKeys",
+      "exit": 0
+    },
+    {
+      "guard": "MixedLanguageLabels",
+      "exit": 0
+    },
+    {
+      "guard": "NoClientCallstack",
+      "exit": 0
+    },
+    {
+      "guard": "NoObsolete",
+      "exit": 0
+    },
+    {
+      "guard": "PermissionCoverage",
+      "exit": 0
+    },
+    {
+      "guard": "ValidatedTableView",
+      "exit": 0
+    },
+    {
+      "guard": "IcelandicKeywordCounts",
+      "exit": 0
+    },
+    {
+      "guard": "IcelandicXlfInSync",
+      "exit": 0
+    },
+    {
+      "guard": "UniqueObjectIds",
+      "exit": 0
+    }
+  ]
+}

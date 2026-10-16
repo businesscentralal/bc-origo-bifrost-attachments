@@ -1,0 +1,11 @@
+{
+  "candidateSha": "56899d593f65a05d305c5b11b224d803e30b8a28",
+  "containerId": "f001336c42b3",
+  "locale": "is-IS",
+  "lcid": 1039,
+  "passed": true,
+  "scenario": "Created own uniquely named connection with no account; invoked real Test Connection action; asserted exact localized missing-account refusal",
+  "fixtureCode": "X72IS154182171",
+  "expected": "Veldu skráareikning áður en tengingin er prófuð.",
+  "at": "2026-10-16T12:36:29.888Z"
+}

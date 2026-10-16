@@ -1,0 +1,28 @@
+{
+  "containerId": "f001336c42b3",
+  "fixtures": [
+    {
+      "code": "X72EN154080580",
+      "kind": "Storage Setup ori UI fixture",
+      "locale": "en-US",
+      "writeIntentAt": "2026-10-16T12:34:40.580Z",
+      "created": true,
+      "observedAt": "2026-10-16T12:34:46.726Z"
+    },
+    {
+      "code": "X72IS154182171",
+      "kind": "Storage Setup ori UI fixture",
+      "locale": "is-IS",
+      "writeIntentAt": "2026-10-16T12:36:22.176Z",
+      "created": true,
+      "observedAt": "2026-10-16T12:36:29.576Z"
+    }
+  ],
+  "cleanup": {
+    "mode": "entire-owned-runtime-deleted",
+    "deleteStatus": 204,
+    "readbackStatus": 404,
+    "verifiedAt": "2026-10-16T12:45:55.931Z",
+    "individualRowAbsenceQueried": false
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "candidateSha": "56899d593f65a05d305c5b11b224d803e30b8a28",
+  "containerId": "f001336c42b3",
+  "locale": "en-US",
+  "lcid": 1033,
+  "passed": true,
+  "fixtureCode": "X72EN154080580",
+  "existingOwnFixtureReadBack": true,
+  "newWrites": 0,
+  "scenario": "Reopened own persisted missing-account connection; real Test Connection returned exact English refusal; capture selector repaired without recreating fixture",
+  "expected": "Select a file account before testing the connection.",
+  "at": "2026-10-16T12:35:53.044Z"
+}

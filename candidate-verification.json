@@ -1,14 +1,14 @@
 {
-  "candidateSha": "ff0170791e8fcaf54b9b9cde4c74627b9487eaca",
+  "candidateSha": "56899d593f65a05d305c5b11b224d803e30b8a28",
   "candidate": {
     "repo": "businesscentralal/bc-origo-bifrost-attachments",
     "branch": "fix/72-icelandic-glossary-worker3",
-    "sha": "ff0170791e8fcaf54b9b9cde4c74627b9487eaca",
+    "sha": "56899d593f65a05d305c5b11b224d803e30b8a28",
     "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/fix/72-icelandic-glossary-worker3",
-    "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/ff0170791e8fcaf54b9b9cde4c74627b9487eaca",
-    "remoteVerifiedAt": "2026-10-16T09:23:27.297Z"
+    "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/56899d593f65a05d305c5b11b224d803e30b8a28",
+    "remoteVerifiedAt": "2026-10-16T12:42:54.829Z"
   },
-  "recordedAt": "2026-10-16T09:23:29.446065+00:00",
+  "recordedAt": "2026-10-16T12:46:36.218099+00:00",
   "sourceHashes": [
     {
       "path": "app/AppSourceCop.json",
@@ -484,7 +484,7 @@
     },
     {
       "path": "test/test/StorageSetupPageTests.Codeunit.al",
-      "sha256": "9f5ce28dc41197e791f3a29c72cd117f951e9b2a6262222d4d6e94792074720b"
+      "sha256": "c1a36da4664f94afe9c07b4b4daf7ccd9134da3441ecf160934e106865d8bf42"
     },
     {
       "path": "test/test/StorageTakeoverProbeTests.Codeunit.al",
@@ -505,13 +505,13 @@
     "translationCommentChanges": 72,
     "nonCommentShippingChanges": 0,
     "englishSourceWireKeysExecutableStatementsUnchanged": true,
-    "runtimeExecuted": 0
+    "runtimeExecuted": 268
   },
   "compile": {
-    "at": "2026-10-16T09:20:28.576098+00:00",
+    "at": "2026-10-16T12:27:42.173664+00:00",
     "compiler": "/workspace/runtime/al181/extension/bin/alc.dll",
     "compilerSha256": "ef19d8da1bf12c42140e84de31c7129a1698cb379cb52df11f00870f6ac7b9b4",
-    "sourceHead": "ff0170791e8fcaf54b9b9cde4c74627b9487eaca",
+    "sourceHead": "56899d593f65a05d305c5b11b224d803e30b8a28",
     "workingDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "foundationProvenance": "Retained Foundation556 Test product from original immutable artifact; see dependency-provenance.json",
     "foundationVersion": "28.0.4.556",
@@ -520,154 +520,155 @@
         "exit": 0,
         "errors": 0,
         "warnings": 0,
-        "artifactSha256": "388248c9520a89d5a10a1ce3bf64e01ad370a6076357c4a10d5c0688f1a209bd"
+        "artifactSha256": "2dec5cbe1db6d3cb1f34b3cc99df6f12e67df67f07d7f8add5b1fa6a390512fb"
       },
       "testApp": {
         "exit": 0,
         "errors": 0,
         "warnings": 0,
-        "artifactSha256": "6fc3a91f81d315054654b99d75adef0aa8d61bb49a01712619b7429a9725a967"
+        "artifactSha256": "1753c19e64b9ba2fca4fe3a1db4873c606127fd0da10e85edef4dbbf0978a4f8"
       }
     }
   },
-  "analyzersAppliedToBothApps": [
-    "CodeCop",
-    "UICop",
-    "AppSourceCop"
-  ],
-  "guards": [
-    {
-      "name": "NoClientCallstack",
-      "exit": 0,
-      "lastOutput": "No call stack is returned or documented to callers.\n"
-    },
-    {
-      "name": "ValidatedTableView",
-      "exit": 0,
-      "lastOutput": "Every applied tableView is validated first.\n"
-    },
-    {
-      "name": "NoObsolete",
-      "exit": 0,
-      "lastOutput": "No obsolete declaration and no AL0432/AL0667 pragma in the app, apart from the allow-listed VAT Amount Line pragmas.\n"
-    },
-    {
-      "name": "PermissionCoverage",
-      "exit": 0,
-      "lastOutput": "Every page, query, report and xmlport is granted by an assignable permission set.\n"
-    },
-    {
-      "name": "ContractParameterKeys",
-      "exit": 0,
-      "lastOutput": "Every contract parameter is a key the code reads, and every key the code reads is declared (0 allow-listed).\n"
-    },
-    {
-      "name": "MixedLanguageLabels",
-      "exit": 0,
-      "lastOutput": "No procedure answers a Locked English sentence.\n"
-    },
-    {
-      "name": "IcelandicKeywordCounts",
-      "exit": 0,
-      "lastOutput": "Every Icelandic keyword list has at least as many entries as the English one (34 in the source, 34 in the xlf).\n"
-    },
-    {
-      "name": "UniqueObjectIds",
-      "exit": 0,
-      "lastOutput": "Unique object IDs: no object or enum value collisions.\n"
-    },
-    {
-      "name": "IcelandicXlfInSync",
-      "exit": 0,
-      "lastOutput": "The committed is-IS.xlf is what tools/Update-IcelandicXlf.ps1 generates from the build.\n"
-    }
-  ],
-  "apiSurface": {
-    "staticOnly": true,
-    "objectsChecked": 79,
-    "errors": []
-  },
-  "runtime": {
-    "fullNative": {
-      "executed": 0,
-      "passed": 0,
-      "failed": 0,
-      "skipped": 0,
-      "status": "NOT RUN; zero is not a suite pass"
-    },
-    "ui": {
-      "executed": 0,
-      "lcids": [
-        1033,
-        1039
-      ],
-      "status": "NOT RUN"
-    },
-    "mcp": {
-      "conservativeSharedReaderAndMetadataScope": true,
-      "types": [
-        "DataExchange.Definition.Delete",
-        "DataExchange.Definition.Export",
-        "DataExchange.Definition.Get",
-        "DataExchange.Definition.List",
-        "DataExchange.Entry.Get",
-        "DataExchange.Entry.List",
-        "DataExchange.Export.Run",
-        "DataExchange.Import.Run",
-        "DataExchange.Type.List",
-        "DataExchange.Type.Set",
-        "Help.DataExchange.Get",
-        "Help.Storage.Get",
-        "Storage.Account.List",
-        "Storage.Attachment.CreateForRecord",
-        "Storage.Attachment.CreateLinked",
-        "Storage.Attachment.Offload",
-        "Storage.Attachment.Restore",
-        "Storage.Directory.Create",
-        "Storage.Directory.Delete",
-        "Storage.Directory.Exists",
-        "Storage.Directory.List",
-        "Storage.File.Copy",
-        "Storage.File.Create",
-        "Storage.File.Delete",
-        "Storage.File.Exists",
-        "Storage.File.Get",
-        "Storage.File.List",
-        "Storage.File.Move",
-        "Storage.Upload.Abort",
-        "Storage.Upload.Append",
-        "Storage.Upload.Begin",
-        "Storage.Upload.Commit",
-        "Storage.Upload.CommitToRecord",
-        "Storage.Upload.Status"
-      ],
-      "count": 34,
-      "executed": 0,
-      "passed": 0,
-      "status": "UNVERIFIED; owned environment blocked by explicit Architect reconciliation and worker HTTPS path"
-    },
-    "fixturesCreated": [],
-    "resourceCreates": 0,
-    "resourceIds": [],
-    "cleanup": "No resources or fixtures created in this batch; no deletion/404 claimed"
-  },
-  "holds": [
-    "Architect1792140237 explicit resource reconciliation BEFORE ANY CREATE; successful tool list is not clearance",
-    "Worker-local COSMO HTTPS443 UND_ERR_CONNECT_TIMEOUT while configured COSMO tool can list200; root runtime diagnosis pending"
-  ],
-  "acceptance": {
-    "implemented": [
-      "T1-T9 glossary/grammar/spelling",
-      "Concrete T11 compound, linked-move and session-gender corrections",
-      "Missing NoAccountErr is-IS comment",
-      "Generated XLF491targets all fromcomments; existing exact1039discovery assertion updated"
-    ],
-    "pending": [
-      "Native-language review of offload terminologyT10; no advisory closure claimed",
-      "Actual exact-tip full suite/UI/MCP and owned cleanup",
-      "PR, independent current-head Claude verification, Grok clearance, approval and Architect delivery"
+  "guards": {
+    "sha": "56899d593f65a05d305c5b11b224d803e30b8a28",
+    "results": [
+      {
+        "guard": "ContractParameterKeys",
+        "exit": 0
+      },
+      {
+        "guard": "MixedLanguageLabels",
+        "exit": 0
+      },
+      {
+        "guard": "NoClientCallstack",
+        "exit": 0
+      },
+      {
+        "guard": "NoObsolete",
+        "exit": 0
+      },
+      {
+        "guard": "PermissionCoverage",
+        "exit": 0
+      },
+      {
+        "guard": "ValidatedTableView",
+        "exit": 0
+      },
+      {
+        "guard": "IcelandicKeywordCounts",
+        "exit": 0
+      },
+      {
+        "guard": "IcelandicXlfInSync",
+        "exit": 0
+      },
+      {
+        "guard": "UniqueObjectIds",
+        "exit": 0
+      }
     ]
   },
+  "native": {
+    "fullSuite": true,
+    "suite": "DEFAULT",
+    "total": 268,
+    "passed": 268,
+    "failed": 0,
+    "skipped": 0,
+    "afterStandardOwnedHttpConfiguration": true
+  },
+  "ui": {
+    "executed": 2,
+    "passed": 2,
+    "failed": 0,
+    "languages": [
+      1033,
+      1039
+    ],
+    "scenarios": "Real Test Connection action using separate uniquely named own accountless connections; exact localized missing-account refusals"
+  },
+  "mcp": {
+    "touchedMessageTypes": [
+      "DataExchange.Definition.Delete",
+      "DataExchange.Definition.Export",
+      "DataExchange.Definition.Get",
+      "DataExchange.Definition.List",
+      "DataExchange.Entry.Get",
+      "DataExchange.Entry.List",
+      "DataExchange.Export.Run",
+      "DataExchange.Import.Run",
+      "DataExchange.Type.List",
+      "DataExchange.Type.Set",
+      "Help.DataExchange.Get",
+      "Help.Storage.Get",
+      "Storage.Account.List",
+      "Storage.Attachment.CreateForRecord",
+      "Storage.Attachment.CreateLinked",
+      "Storage.Attachment.Offload",
+      "Storage.Attachment.Restore",
+      "Storage.Directory.Create",
+      "Storage.Directory.Delete",
+      "Storage.Directory.Exists",
+      "Storage.Directory.List",
+      "Storage.File.Copy",
+      "Storage.File.Create",
+      "Storage.File.Delete",
+      "Storage.File.Exists",
+      "Storage.File.Get",
+      "Storage.File.List",
+      "Storage.File.Move",
+      "Storage.Upload.Abort",
+      "Storage.Upload.Append",
+      "Storage.Upload.Begin",
+      "Storage.Upload.Commit",
+      "Storage.Upload.CommitToRecord",
+      "Storage.Upload.Status"
+    ],
+    "executed": 0,
+    "passed": 0,
+    "status": "UNVERIFIED",
+    "dependency": "API EULA_REQUIRED before dispatch; no EULA/trial/licence writes or repeated blocked probes; native/mocks do not prove licensed feature MCP"
+  },
+  "holds": [
+    "Supported licensed self-seeded MCP for touched types; no approved72deferral",
+    "Native-language T10 advisory review; no broad issue/AppSource closure"
+  ],
   "prReady": false,
-  "deliveryComplete": false
+  "deliveryComplete": false,
+  "ownedResourceId": "f001336c42b3",
+  "cleanup": {
+    "startedAt": "2026-10-16T12:45:55.416Z",
+    "containerId": "f001336c42b3",
+    "owner": "worker-3",
+    "deleteRequests": 1,
+    "fixtureCleanup": "Owned UI rows X72EN154080580 and X72IS154182171 plus all own native company data removed with entire owned ephemeral container; no provider/MCP fixtures were created",
+    "reads": [
+      {
+        "at": "2026-10-16T12:45:55.918Z",
+        "statusCode": 404,
+        "ok": false
+      }
+    ],
+    "before": {
+      "statusCode": 200,
+      "id": "f001336c42b3",
+      "displayName": "codex-worker3-attachments122-1792136811",
+      "status": {
+        "state": "Running",
+        "statusMessage": "Running",
+        "imageBuilding": false,
+        "imageBuildError": false
+      }
+    },
+    "delete": {
+      "statusCode": 204,
+      "ok": true,
+      "at": "2026-10-16T12:45:55.816Z"
+    },
+    "verifiedAbsent": true,
+    "finishedAt": "2026-10-16T12:45:55.931Z"
+  }
 }

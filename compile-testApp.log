@@ -1,10 +1,10 @@
 Microsoft (R) AL Compiler version 18.0.43.1464
 Copyright (C) Microsoft Corporation. All rights reserved
 
-Compilation started for project 'Bifrost Attachments - Tests' containing '37' files at '09:20:41.371'.
+Compilation started for project 'Bifrost Attachments - Tests' containing '37' files at '12:27:54.282'.
 
 attachments72-glossary-worker3/test/test/Storage79PermTests.Codeunit.al(903,9): info AA0210: The table Document Attachment does not contain a key with the field File Name.
 attachments72-glossary-worker3/test/test/Storage79PermTests.Codeunit.al(877,9): info AA0210: The table Document Attachment does not contain a key with the field File Name.
 
-Compilation ended at '09:20:50.106'.
+Compilation ended at '12:28:04.308'.
 
