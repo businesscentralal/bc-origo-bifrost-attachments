@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "6f2ed1b2fd1e03079027ab9633769acbe3736065",
+  "sourceSha": "acc609a3f4bb75bb8b04bebdd05a2693ea56104c",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -244,46 +244,28 @@
     "existingOffer": false,
     "existingOfferProductId": null,
     "decisionSource": "Gunnar direct Codex desktop clarification, 2026-10-06",
-    "configurationGate": "Keep deliverToAppSource unconfigured until the genuine Attachments offer is created and its ID supplied and internally reviewed.",
+    "configurationGate": "Keep deliverToAppSource unconfigured until separately authorized genuine Attachments offer creation and confirmed app/offer ID mapping.",
     "releasePrerequisiteOwner": "Gunnar / offer owner",
     "offerCreationAuthorized": false,
     "submissionAuthorized": false,
     "publicationAuthorized": false,
-    "historicalValidationBaseline": "Not established by the no-offer decision; verify independently."
+    "historicalValidationBaseline": "Not established by the no-offer decision; verify independently.",
+    "existingOfferObservationDate": "2026-10-06; dated operator decision, not a fresh Partner Center lookup"
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-16T14:13:09.646941+00:00",
-  "inventoryPreparedFromDocumentationHead": "6f2ed1b2fd1e03079027ab9633769acbe3736065",
-  "productSourceBaselineUnchanged": false,
+  "refreshedAt": "2026-10-16T20:14:49.610625+00:00",
+  "inventoryPreparedFromDocumentationHead": "acc609a3f4bb75bb8b04bebdd05a2693ea56104c",
+  "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",
     "resolvedAt": "2026-10-06T21:47:12.545043+00:00",
-    "scope": "app/docs/appsource internal pre-QA working materials and draft PR88 only; external help ownership unchanged",
+    "scope": "app/docs/appsource working submission material; external help ownership unchanged; preparation explicitly reaffirmed by Architect1792179827",
     "gatewayPassGranted": false,
-    "qaHoldReleased": false
-  },
-  "approvedFoundationInput": {
-    "sourceSha": "336b91d9fff11b71ae5cd75dee08186d4218bf07",
-    "run": 37544940349,
-    "attempt": 2,
-    "artifact": 11459147009,
-    "packageSha256": "5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f",
-    "archiveSha256": "abb1a99fa84b3953cc6fe04f321fca3d6c330a118406b484a85371912bb9e47f",
-    "friendCount": 0,
-    "signatureTrustVerified": false,
-    "name": "Bifrost Foundation",
-    "publisher": "Origo",
-    "id": "7505e808-6e52-4b96-a328-82573391297a",
-    "version": "28.0.2.523",
-    "packageName": "Origo_Bifrost Foundation_28.0.2.523.app",
-    "buildCompilerVersion": "18.0.43.2697",
-    "independentlyVerifiedBytesManifestAndAPI": true,
-    "installedOrTestedOnPR88": false,
-    "minimumDependencyUnchanged": "28.0.1.0",
-    "historical517518AreNotCurrentInput": true,
-    "signatureTrustLimitation": "Approved signed input bytes matched; Windows NAVX SIP/trust verification not executed here."
+    "qaHoldReleased": false,
+    "supersedingAuthority": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749",
+    "qaOrdering": "Only formal scenarios and dry-run follow #80 passing QA; checklist/scenario-plan/markets proceed now. No internal-review gate."
   },
   "productSourceFiles": {
     "app/src/Attachments/StorageAttachKeySubscr.Codeunit.al": "9f4ebfa7cfbc9473b9560027811023d90d95b8ddc3329e328d110ba803e676b9",
@@ -440,7 +422,48 @@
     "validatorDryRunsExecuted": 0,
     "status": "blocked; no candidate assembled or runtime run by this task"
   },
-  "readinessOwners": [
+  "historicalFoundationInputs": [
+    {
+      "sourceSha": "336b91d9fff11b71ae5cd75dee08186d4218bf07",
+      "run": 37544940349,
+      "attempt": 2,
+      "artifact": 11459147009,
+      "packageSha256": "5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f",
+      "archiveSha256": "abb1a99fa84b3953cc6fe04f321fca3d6c330a118406b484a85371912bb9e47f",
+      "friendCount": 0,
+      "signatureTrustVerified": false,
+      "name": "Bifrost Foundation",
+      "publisher": "Origo",
+      "id": "7505e808-6e52-4b96-a328-82573391297a",
+      "version": "28.0.2.523",
+      "packageName": "Origo_Bifrost Foundation_28.0.2.523.app",
+      "buildCompilerVersion": "18.0.43.2697",
+      "independentlyVerifiedBytesManifestAndAPI": true,
+      "installedOrTestedOnPR88": false,
+      "minimumDependencyUnchanged": "28.0.1.0",
+      "historical517518AreNotCurrentInput": true,
+      "signatureTrustLimitation": "Approved signed input bytes matched; Windows NAVX SIP/trust verification not executed here.",
+      "status": "historical-20261007-only-not-final-candidate"
+    }
+  ],
+  "approvedFoundationInput": null,
+  "integratedCandidate": {
+    "authorityUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749",
+    "sha": null,
+    "qaPassed": false,
+    "excludedCandidateSha": "b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005",
+    "requiredIntegration": [
+      "#72",
+      "#122 repair dffe555",
+      "PR127",
+      "PR128",
+      "PR129 unless Architect conditional exclusion applies"
+    ],
+    "requiredBuildEvidence": "main Default+Test green, meaningful executed tests, signed no-friend Default Apps artifact",
+    "preparationAuthorizedNow": true,
+    "formalScenariosAndDryRun": "after passing #80 QA on accepted SHA"
+  },
+  "historicalReadinessOwners": [
     {
       "issue": 69,
       "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/69",
@@ -545,5 +568,44 @@
       "prUrl": null,
       "remainingEvidence": "Validated mutation refusals; worker-9 physical writer, #69 metadata donor only; no mapped PR in observed snapshot"
     }
-  ]
+  ],
+  "readinessOwners": [
+    {
+      "issue": 78,
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/78",
+      "owner": "worker-6 / ori-haraldurb; separate retained scope",
+      "remainingEvidence": "Windows package trust and actual runtime Foundation variant/hash"
+    },
+    {
+      "issue": 79,
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/79",
+      "owner": "worker-5 / designated identity and provider owners",
+      "remainingEvidence": "Genuine restricted identities, connector rights and fixtures"
+    },
+    {
+      "issue": 80,
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80",
+      "owner": "worker-8 / Architect integrated-candidate routing",
+      "remainingEvidence": "14 markets,36 provider cases,10 lifecycle cases and UI/MCP1033/1039 on signed candidate"
+    },
+    {
+      "issue": 81,
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/81",
+      "owner": "worker-6",
+      "remainingEvidence": "Preparation now; formal scenarios and owned dry-run after #80 QA"
+    },
+    {
+      "issue": 77,
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/77",
+      "owner": "worker-4 / Gunnar-designated registration and publisher owners",
+      "remainingEvidence": "Authoritative affix/both-ranges/baseline evidence; PR128 audit merged"
+    }
+  ],
+  "containerPolicy": {
+    "authority": "1792155806.391819",
+    "recordNameAndId": true,
+    "amendSameContainer": true,
+    "deleteAfter": "Tester postdeploy UAT pass AND issue closure; verify owned404",
+    "dataCleanup": "Developer/validator fixtures cleaned and verified per scenario; no UAT data cleanup"
+  }
 }
