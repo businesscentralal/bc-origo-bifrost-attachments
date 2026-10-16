@@ -26,7 +26,8 @@ codeunit 70013500 "Storage Contract Parts ori"
         ImportDefinitionLbl: Label 'The existing import definition code, at most 20 characters.', Comment = 'is-IS=Kóði fyrirliggjandi innflutningsskilgreiningar, að hámarki 20 stafir.';
         ExportDefinitionLbl: Label 'The existing export definition code, at most 20 characters.', Comment = 'is-IS=Kóði fyrirliggjandi útflutningsskilgreiningar, að hámarki 20 stafir.';
         TypeDescriptionLbl: Label 'Optional description within the Data Exchange Type Description field length.', Comment = 'is-IS=Valfrjáls lýsing innan lengdar lýsingarreits gagnaskiptagerðar.';
-        ImportPathLbl: Label 'The file path relative to the storage connection base path.', Comment = 'is-IS=Skráarslóð miðað við grunnslóð geymslutengingar.';
+        ImportStorageLbl: Label 'Caller reference only: checked for syntax, not validated against configured storage connections and not stored on the entry header.', Comment = 'is-IS=Aðeins tilvísun kallanda: snið er athugað en ekki hvort geymslutenging sé skilgreind og tilvísunin er ekki vistuð í færsluhausnum.';
+        ImportPathLbl: Label 'Caller reference only: checked for path syntax, not validated for file existence and not stored on the entry header. No file is read.', Comment = 'is-IS=Aðeins tilvísun kallanda: snið slóðar er athugað en ekki hvort skráin sé til og slóðin er ekki vistuð í færsluhausnum. Engin skrá er lesin.';
         ExportFileNameLbl: Label 'The output file name within the Data Exch. File Name field length.', Comment = 'is-IS=Heiti úttaksskrár innan lengdar skráarheitisreits gagnaskipta.';
         DefinitionCodeLbl: Label 'The complete Data Exchange definition code, at most 20 characters.', Comment = 'is-IS=Allur kóði gagnaskiptaskilgreiningar, að hámarki 20 stafir.';
         UploadResponseStorageLbl: Label 'The session storage connection code; empty for a record-only upload.', Comment = 'is-IS=Geymslutengingarkóði lotunnar; tómt fyrir upphleðslu eingöngu í færslu.';
@@ -102,7 +103,7 @@ codeunit 70013500 "Storage Contract Parts ori"
         if MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List'] then
             exit;
 
-        if not (MessageType in ['Storage.Attachment.Restore', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.Status', 'DataExchange.Definition.Get', 'DataExchange.Entry.Get', 'DataExchange.Definition.List', 'DataExchange.Entry.List', 'DataExchange.Type.Set', 'DataExchange.Definition.Delete', 'DataExchange.Definition.Export', 'DataExchange.Export.Run', 'Storage.Upload.Begin', 'Storage.Upload.CommitToRecord']) then
+        if not (MessageType in ['Storage.Attachment.Restore', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.Status', 'DataExchange.Definition.Get', 'DataExchange.Entry.Get', 'DataExchange.Definition.List', 'DataExchange.Entry.List', 'DataExchange.Type.Set', 'DataExchange.Definition.Delete', 'DataExchange.Definition.Export', 'DataExchange.Import.Run', 'DataExchange.Export.Run', 'Storage.Upload.Begin', 'Storage.Upload.CommitToRecord']) then
             Parameters.Add(ContractMgt.Parameter('storageCode', 'string', true, 'The configured storage connection code. Resolve it with Storage.Account.List.'));
         case MessageType of
             'Storage.File.List', 'Storage.Directory.List':
@@ -211,6 +212,7 @@ codeunit 70013500 "Storage Contract Parts ori"
             'DataExchange.Import.Run':
                 begin
                     Parameters.Add(ContractMgt.Parameter('dataExchDefCode', 'string', true, ImportDefinitionLbl));
+                    Parameters.Add(ContractMgt.Parameter('storageCode', 'string', true, ImportStorageLbl));
                     Parameters.Add(ContractMgt.Parameter('path', 'string', true, ImportPathLbl));
                 end;
             'DataExchange.Export.Run':
@@ -413,6 +415,8 @@ codeunit 70013500 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameterFormat, 'The contentBase64 value is not valid base64.', 'Send valid base64 content.'));
         if MessageType in ['Storage.File.Delete', 'Storage.Directory.Delete'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'A linked Business Central attachment prevents the delete.', 'Restore or remove the attachment first.'));
+        if MessageType = 'Storage.Directory.Delete' then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The directory is not empty.', 'List its files and subdirectories, remove their contents, then retry.'));
         if MessageType in ['Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The upload session is missing, closed or incomplete.', 'Begin a new session or complete the missing chunks.'));
         if MessageType in ['DataExchange.Definition.Get'] then

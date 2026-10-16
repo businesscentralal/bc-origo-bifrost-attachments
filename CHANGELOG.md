@@ -8,6 +8,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
+
+- `Storage Contract Parts ori` (70013500) describes `DataExchange.Import.Run` references precisely: `storageCode` and `path` receive syntax checks, but no storage/file lookup occurs, neither reference is stored on the entry header, and no file content is read. This selects issue #122 AC01's documentation alternative and preserves the existing header-only behavior.
+- `Storage Request Mgt ori` (10035662) checks files and subdirectories before deleting a directory. A non-empty directory returns localized `PreconditionFailed` details identifying `path`, the empty-directory precondition and a recovery step; its contract documents that refusal. Linked-attachment checks remain first. `Storage Refusal122 Tests ori` (96228) covers unknown import references in LCIDs 1033/1039, contract wording, files, child directories, base paths and empty-directory success. Test execution evidence is recorded separately.
+
 ### Fixed (2026-10-14) - native refusal diagnostics and published help evidence (#70, #79, #82)
 
 - `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.
