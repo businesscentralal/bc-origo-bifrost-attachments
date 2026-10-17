@@ -28,6 +28,9 @@ codeunit 10035662 "Storage Request Mgt ori"
         EnabledExpectedLbl: Label 'an enabled storage connection', Comment = 'is-IS=virk geymslutenging';
         LinkedFileDeleteErr: Label 'File "%1" backs a Business Central attachment and cannot be deleted directly from storage.', Comment = '%1 = storage path, is-IS=Skráin "%1" geymir viðhengi í Business Central og ekki er hægt að eyða henni beint úr geymslunni.';
         LinkedDirectoryDeleteErr: Label 'Directory "%1" contains files that back Business Central attachments and cannot be deleted directly from storage.', Comment = '%1 = directory path, is-IS=Mappan "%1" inniheldur skrár sem geyma viðhengi í Business Central og ekki er hægt að eyða henni beint úr geymslunni.';
+        DirectoryNotEmptyErr: Label 'Directory "%1" is not empty.', Comment = '%1 = directory path||is-IS=Mappan "%1" er ekki tóm.';
+        EmptyDirectoryExpectedLbl: Label 'an empty directory', Comment = 'is-IS=tóm mappa';
+        EmptyDirectoryNextStepLbl: Label 'List the files and subdirectories, remove those entries, then retry.', Comment = 'is-IS=Sýndu skrár og undirmöppur, fjarlægðu þær og reyndu svo aftur.';
         LinkedDeleteNextStepLbl: Label 'Restore the attachment with Storage.Attachment.Restore, or delete the attachment in Business Central, then delete the file.', Comment = 'is-IS=Endurheimtu viðhengið með Storage.Attachment.Restore eða eyddu viðhenginu í Business Central og eyddu svo skránni.';
         LinkedFileWriteErr: Label 'File "%1" backs a Business Central attachment and cannot be overwritten by a raw storage operation.', Comment = '%1 = storage path, is-IS=Skráin "%1" geymir viðhengi í Business Central og ekki má yfirskrifa hana með beinni geymsluaðgerð.';
         LinkedWriteNextStepLbl: Label 'Use Storage.Attachment operations to change the attachment, or choose a destination that is not linked to an attachment.', Comment = 'is-IS=Notaðu Storage.Attachment-aðgerðir til að breyta viðhenginu eða veldu áfangastað sem er ekki tengdur viðhengi.';
@@ -310,6 +313,7 @@ codeunit 10035662 "Storage Request Mgt ori"
     procedure ExecuteDeleteDirectory(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text)
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
+        DirectoryIsEmpty: Boolean;
     begin
         if not CheckOperationPath(Argument, StorageSetup, 'path', Path, true) then
             exit;
@@ -317,6 +321,14 @@ codeunit 10035662 "Storage Request Mgt ori"
             exit;
         if AttachmentMgt.IsStorageDirectoryLinked(StorageSetup."Code", Path) then begin
             Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(LinkedDirectoryDeleteErr, Path), 'path', Path, UnlinkedExpectedLbl, LinkedDeleteNextStepLbl);
+            exit;
+        end;
+        if not TryDirectoryIsEmpty(StorageSetup, Connector, Path, DirectoryIsEmpty) then begin
+            Argument.RespondWithLastError();
+            exit;
+        end;
+        if not DirectoryIsEmpty then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(DirectoryNotEmptyErr, Path), 'path', Path, EmptyDirectoryExpectedLbl, EmptyDirectoryNextStepLbl);
             exit;
         end;
         if TryDeleteDirectory(StorageSetup, Connector, Path) then
@@ -528,6 +540,21 @@ codeunit 10035662 "Storage Request Mgt ori"
     local procedure TryCreateDirectory(StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text)
     begin
         Connector.CreateDirectory(StorageSetup, Path);
+    end;
+
+    [TryFunction]
+    local procedure TryDirectoryIsEmpty(StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; var DirectoryIsEmpty: Boolean)
+    var
+        TempFileAccountContent: Record "File Account Content" temporary;
+    begin
+        DirectoryIsEmpty := false;
+        Connector.ListEntries(StorageSetup, Path, Enum::"Ext. File Storage File Type"::File, TempFileAccountContent);
+        if not TempFileAccountContent.IsEmpty() then
+            exit;
+        TempFileAccountContent.Reset();
+        TempFileAccountContent.DeleteAll();
+        Connector.ListEntries(StorageSetup, Path, Enum::"Ext. File Storage File Type"::Directory, TempFileAccountContent);
+        DirectoryIsEmpty := TempFileAccountContent.IsEmpty();
     end;
 
     [TryFunction]

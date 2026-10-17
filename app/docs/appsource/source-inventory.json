@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "c656965b3ad1291b75854e5b40edecf8038d21f8",
+  "sourceSha": "acc609a3f4bb75bb8b04bebdd05a2693ea56104c",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -244,57 +244,39 @@
     "existingOffer": false,
     "existingOfferProductId": null,
     "decisionSource": "Gunnar direct Codex desktop clarification, 2026-10-06",
-    "configurationGate": "Keep deliverToAppSource unconfigured until the genuine Attachments offer is created and its ID supplied and internally reviewed.",
+    "configurationGate": "Keep deliverToAppSource unconfigured until separately authorized genuine Attachments offer creation and confirmed app/offer ID mapping.",
     "releasePrerequisiteOwner": "Gunnar / offer owner",
     "offerCreationAuthorized": false,
     "submissionAuthorized": false,
     "publicationAuthorized": false,
-    "historicalValidationBaseline": "Not established by the no-offer decision; verify independently."
+    "historicalValidationBaseline": "Not established by the no-offer decision; verify independently.",
+    "existingOfferObservationDate": "2026-10-06; dated operator decision, not a fresh Partner Center lookup"
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-13T21:34:25.425174+00:00",
-  "inventoryPreparedFromDocumentationHead": "c656965b3ad1291b75854e5b40edecf8038d21f8",
-  "productSourceBaselineUnchanged": false,
+  "refreshedAt": "2026-10-16T20:14:49.610625+00:00",
+  "inventoryPreparedFromDocumentationHead": "acc609a3f4bb75bb8b04bebdd05a2693ea56104c",
+  "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",
     "resolvedAt": "2026-10-06T21:47:12.545043+00:00",
-    "scope": "app/docs/appsource internal pre-QA working materials and draft PR88 only; external help ownership unchanged",
+    "scope": "app/docs/appsource working submission material; external help ownership unchanged; preparation explicitly reaffirmed by Architect1792179827",
     "gatewayPassGranted": false,
-    "qaHoldReleased": false
-  },
-  "approvedFoundationInput": {
-    "sourceSha": "336b91d9fff11b71ae5cd75dee08186d4218bf07",
-    "run": 37544940349,
-    "attempt": 2,
-    "artifact": 11459147009,
-    "packageSha256": "5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f",
-    "archiveSha256": "abb1a99fa84b3953cc6fe04f321fca3d6c330a118406b484a85371912bb9e47f",
-    "friendCount": 0,
-    "signatureTrustVerified": false,
-    "name": "Bifrost Foundation",
-    "publisher": "Origo",
-    "id": "7505e808-6e52-4b96-a328-82573391297a",
-    "version": "28.0.2.523",
-    "packageName": "Origo_Bifrost Foundation_28.0.2.523.app",
-    "buildCompilerVersion": "18.0.43.2697",
-    "independentlyVerifiedBytesManifestAndAPI": true,
-    "installedOrTestedOnPR88": false,
-    "minimumDependencyUnchanged": "28.0.1.0",
-    "historical517518AreNotCurrentInput": true,
-    "signatureTrustLimitation": "Approved signed input bytes matched; Windows NAVX SIP/trust verification not executed here."
+    "qaHoldReleased": false,
+    "supersedingAuthority": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749",
+    "qaOrdering": "Only formal scenarios and dry-run follow #80 passing QA; checklist/scenario-plan/markets proceed now. No internal-review gate."
   },
   "productSourceFiles": {
     "app/src/Attachments/StorageAttachKeySubscr.Codeunit.al": "9f4ebfa7cfbc9473b9560027811023d90d95b8ddc3329e328d110ba803e676b9",
     "app/src/Attachments/StorageAttachmentLink.Table.al": "180f0c589cee4b4ff814b655e7174bce3cdd57f2df135570bc8a01077be29973",
-    "app/src/Attachments/StorageAttachmentMgt.Codeunit.al": "cc2edb806c0671fe5f3ed08256aade86f7279da7a93388b9ed017caeafaa45b1",
+    "app/src/Attachments/StorageAttachmentMgt.Codeunit.al": "919ed32ba10aa6da2d36b48f9ed58bad15b865b13bc51fe6ff24b88e190ec74e",
     "app/src/Attachments/StorageAttachmentSubscr.Codeunit.al": "8017ed3578db9352759778a91117e3deb4d0304fca3d2d03328025cda863e4ce",
     "app/src/Attachments/StorageAttachmentTarget.Enum.al": "84f27d1684433e418f02262d92b70b988109af24d832af93f490e319f0fa6686",
     "app/src/Attachments/StorageDocAttach.TableExt.al": "6ef7bdf57b838d8a07b6d13182648783c18203886e519e5a37eaebb450eded77",
     "app/src/Attachments/StorageIncDocAttach.TableExt.al": "83dda0fcd50bccdefc01016ad720d6a72b6dbeb885ef6e2067249309dd5bc27f",
     "app/src/DataExchange/DataExchangeQuery.Codeunit.al": "5148ac6437ba79c2286607a84a185580c8c44537e090e3bc7e548ce8e3d8d8af",
-    "app/src/Install/StorageTakeover.Codeunit.al": "15e00e1ba3a2eadf38ca3aa1801b72bf16917afcad655d4df7dd40fee5a5d3ce",
+    "app/src/Install/StorageTakeover.Codeunit.al": "22f3490cdf9b8bb3ac7f2f8eafd3a1b18ab28701f271150d6ce9fa60478b5bdd",
     "app/src/Install/StorageTakeoverState.Codeunit.al": "c178794a5ab7b24e1a60d1ff3db1a30a6edc85de1793d6db56994fe2bd7397cc",
     "app/src/Lifecycle/StorageInstall.Codeunit.al": "a5f8ad920581432a2f0be3dfbab5cfa168cee33913c1fb75539c591582e217d2",
     "app/src/Lifecycle/StorageLinkUpgrade.Codeunit.al": "f375032de37967f2339a4342e10dfdde86aa2ecc0e49eb7aad5ec517b08a6b61",
@@ -333,7 +315,7 @@
     "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al": "c991adb78a5c09f0d0fc73be524639307c4113eae4089236be00c23218b39950",
     "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al": "fb32f5fd60cf02671ed3cd2199377981c99d544bb4b3f2e16949f9450b148835",
     "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al": "7e9de8ff7f0e0795ff7d892b3f0f0c6b425f5b1f89a9910d79de5d64efa4adea",
-    "app/src/MessageTypes/StorageContractParts.Codeunit.al": "a82b0c4153de77816d91ba818b46b2278f2b9e7e8ac4ef1808e7f08dd1a14200",
+    "app/src/MessageTypes/StorageContractParts.Codeunit.al": "1bf6c37a9e460a52e6f676eceab41ed5987be113ee7d22701afc718d85ac5c80",
     "app/src/MessageTypes/StorageMsgType.EnumExt.al": "25cec1866094f0de021c74eb678d565846a34593e384f58ef944c4aa9e4aa284",
     "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al": "665b31588b0ff0be3b99f645e87f5a237d673549712b8b22be57d74380e11325",
     "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al": "2045a76bfac60c8ca6a7b8703a5331cc22f4373c817ea7cda34a2a9bc8be6aeb",
@@ -355,7 +337,7 @@
     "app/src/Setup/StorageSetupWizard.Page.al": "5e2ba40b8b1d1be7690680b4c79f3fa5c10f9789bb66bc2ade62c84541cab88b",
     "app/src/Storage/StorageConnector.Interface.al": "aa44e6ca127088a06518595928c55768596ec0c21515b8d4b356acfece73a6f7",
     "app/src/Storage/StorageExtFileImpl.Codeunit.al": "32e973f5c1df29c6fd4db4975b893b0f8ffbb428d6a6bf0f80022eadc64123f5",
-    "app/src/Storage/StorageRequestMgt.Codeunit.al": "f73db8bfe5f76669293e5bc36d7fef49a2d89bfc2837e20c9479b96c98163087",
+    "app/src/Storage/StorageRequestMgt.Codeunit.al": "f5707b252238ff32f8e01b5d816ae7d3306c183b6823659bff4a42fc09126a48",
     "app/src/Storage/StorageRequestReader.Codeunit.al": "92f2203cd693844a458c0c25a29187bb8a63a313939fecbad4798432533b1bb4",
     "app/src/Storage/StorageType.Enum.al": "1e1a1cea4dde6fa58dfdde61df4de0dc3032ff14d2f678573d74da4634bb0770",
     "app/src/Upload/StorageDataRestriction.Codeunit.al": "4d4aa7d2feb3fc53b8631bbe69bb24da263ef870c9a41777d43f0251cf8a32b7",
@@ -387,8 +369,8 @@
     "test/src/StorageTypeTest.EnumExt.al": "2476a20bca399542e16d35dece078d9fe83ecf22efb07b770d75b0295acba217",
     "test/test/AttachmentsBuildTestsori.Codeunit.al": "8c4e6e925e7774d049a43fc1bcc110b13c6d3fc0a5e4d961c1e99df1c7c9b49d",
     "test/test/DataExchDiscoveryTests.Codeunit.al": "ca67720f2271493a793bb075a11c0085789fa5177d03ea2b835bb8d55fb243f7",
-    "test/test/DataExchRefusal82Testsori.Codeunit.al": "4ad94b37c99e6bd2c1ca8d5341a6b9f126ce71a7b68b8e71ca2d85ef56cbcc38",
-    "test/test/Storage79PermTests.Codeunit.al": "564fd584bed49a71377b5f7e0c037f6b201065af0a22b315b0dcbdfb6638cbbf",
+    "test/test/DataExchRefusal82Testsori.Codeunit.al": "0477dde96088bfa1cc99ca7fc230115e4fd45603f382a3e517fe74215f6a50a1",
+    "test/test/Storage79PermTests.Codeunit.al": "21d501d074369521c787e1e5090d0270fdb747825289d7b04f9fae309efe43f8",
     "test/test/StorageAppRegistryTests.Codeunit.al": "168998fab9d4ead88a32ab5278569e0d055504c73619141a954927a161af80f3",
     "test/test/StorageAttachRecordTests.Codeunit.al": "d49110ee008788e38fb89359924bebe2cc5cff5c8cf1008ac3693b38e226803f",
     "test/test/StorageAttachmentFieldTests.Codeunit.al": "710fac018372e870458e6179f0f0853df946b3c64111fb11530198b6330904e7",
@@ -400,9 +382,11 @@
     "test/test/StorageLinkGuardTests.Codeunit.al": "bac0cf7f767d0ce6951328c5017fb5aaa159b7b8378026b6c46af6ac519cdd42",
     "test/test/StorageMsgConformanceTests.Codeunit.al": "1d75558d8a83e9116fd7252d0c97f7f91df091afaaa9ecfbc8cd1ae6cb1605d3",
     "test/test/StorageNativeFieldsTests.Codeunit.al": "2d2166e138792d32cf7d3950921028e40088079a68f18f8d92965ad3c36da695",
+    "test/test/StorageRefusal122Tests.Codeunit.al": "8d135abc5f766bc9a247bd64c70a8067b9c8d7f194d1cd1229abeaa914322517",
     "test/test/StorageSetupPageTests.Codeunit.al": "9f5ce28dc41197e791f3a29c72cd117f951e9b2a6262222d4d6e94792074720b",
     "test/test/StorageTakeoverProbeTests.Codeunit.al": "5f4a8d429f625b48dd1ca9425dcd1d99d2eb1818e87c4a0507298353b8d51de3",
     "test/test/StorageTakeoverTests.Codeunit.al": "5db520b3f0f7689041a08812440ac3b6d09d92325fbad29bc0597823cec4ae78",
+    "test/test/StorageTelemetry121Tests.Codeunit.al": "b5ef8fee63a7ab6d8b9e606d684060f185223f2362a4712cf2c126e704fe6235",
     "test/test/StorageUploadTests.Codeunit.al": "b108a0d9b358664df9c99e48f87b8b08f3c45a97f7dabba204f6d01e1f9f1ee2"
   },
   "listingAssets": {
@@ -438,7 +422,48 @@
     "validatorDryRunsExecuted": 0,
     "status": "blocked; no candidate assembled or runtime run by this task"
   },
-  "readinessOwners": [
+  "historicalFoundationInputs": [
+    {
+      "sourceSha": "336b91d9fff11b71ae5cd75dee08186d4218bf07",
+      "run": 37544940349,
+      "attempt": 2,
+      "artifact": 11459147009,
+      "packageSha256": "5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f",
+      "archiveSha256": "abb1a99fa84b3953cc6fe04f321fca3d6c330a118406b484a85371912bb9e47f",
+      "friendCount": 0,
+      "signatureTrustVerified": false,
+      "name": "Bifrost Foundation",
+      "publisher": "Origo",
+      "id": "7505e808-6e52-4b96-a328-82573391297a",
+      "version": "28.0.2.523",
+      "packageName": "Origo_Bifrost Foundation_28.0.2.523.app",
+      "buildCompilerVersion": "18.0.43.2697",
+      "independentlyVerifiedBytesManifestAndAPI": true,
+      "installedOrTestedOnPR88": false,
+      "minimumDependencyUnchanged": "28.0.1.0",
+      "historical517518AreNotCurrentInput": true,
+      "signatureTrustLimitation": "Approved signed input bytes matched; Windows NAVX SIP/trust verification not executed here.",
+      "status": "historical-20261007-only-not-final-candidate"
+    }
+  ],
+  "approvedFoundationInput": null,
+  "integratedCandidate": {
+    "authorityUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749",
+    "sha": null,
+    "qaPassed": false,
+    "excludedCandidateSha": "b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005",
+    "requiredIntegration": [
+      "#72",
+      "#122 repair dffe555",
+      "PR127",
+      "PR128",
+      "PR129 unless Architect conditional exclusion applies"
+    ],
+    "requiredBuildEvidence": "main Default+Test green, meaningful executed tests, signed no-friend Default Apps artifact",
+    "preparationAuthorizedNow": true,
+    "formalScenariosAndDryRun": "after passing #80 QA on accepted SHA"
+  },
+  "historicalReadinessOwners": [
     {
       "issue": 69,
       "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/69",
@@ -543,5 +568,44 @@
       "prUrl": null,
       "remainingEvidence": "Validated mutation refusals; worker-9 physical writer, #69 metadata donor only; no mapped PR in observed snapshot"
     }
-  ]
+  ],
+  "readinessOwners": [
+    {
+      "issue": 78,
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/78",
+      "owner": "worker-6 / ori-haraldurb; separate retained scope",
+      "remainingEvidence": "Windows package trust and actual runtime Foundation variant/hash"
+    },
+    {
+      "issue": 79,
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/79",
+      "owner": "worker-5 / designated identity and provider owners",
+      "remainingEvidence": "Genuine restricted identities, connector rights and fixtures"
+    },
+    {
+      "issue": 80,
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80",
+      "owner": "worker-8 / Architect integrated-candidate routing",
+      "remainingEvidence": "14 markets,36 provider cases,10 lifecycle cases and UI/MCP1033/1039 on signed candidate"
+    },
+    {
+      "issue": 81,
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/81",
+      "owner": "worker-6",
+      "remainingEvidence": "Preparation now; formal scenarios and owned dry-run after #80 QA"
+    },
+    {
+      "issue": 77,
+      "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/77",
+      "owner": "worker-4 / Gunnar-designated registration and publisher owners",
+      "remainingEvidence": "Authoritative affix/both-ranges/baseline evidence; PR128 audit merged"
+    }
+  ],
+  "containerPolicy": {
+    "authority": "1792155806.391819",
+    "recordNameAndId": true,
+    "amendSameContainer": true,
+    "deleteAfter": "Tester postdeploy UAT pass AND issue closure; verify owned404",
+    "dataCleanup": "Developer/validator fixtures cleaned and verified per scenario; no UAT data cleanup"
+  }
 }

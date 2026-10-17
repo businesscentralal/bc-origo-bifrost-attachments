@@ -15,11 +15,19 @@ using System.Utilities;
 codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
 {
     Access = Internal;
+    // Gunnar, 16 Oct 2026: app.json depends on all four Microsoft SaaS External File Storage connectors, so these tables always exist.
+    // Azure Blob 4560 and Azure File 4570 are read here for address resolution.
+    // BIFROST Attach ori grants indirect read (r) on those tables. Storage Full ori cannot: a permission set extension may not grant another application's tables. This property only raises an indirect permission the user already has; a user with no permission gets nothing. RecordRef.ReadPermission does not observe it.
+    // SharePoint (4580) and SFTP (4621): address resolution never opens those account tables.
+    // SharePoint returns an unverified operation after a path-length check, and SFTP goes through the generic connector path.
+    // They need no read grant and no restricted-user test. The dependency only guarantees the connectors are installed.
+    Permissions =
+        tabledata 4560 = R,
+        tabledata 4570 = R;
 
     var
         BlobSegmentModeLbl: Label 'Blob segment mode', Comment = 'is-IS=hlutastilling Blob';
         SharePointRootLbl: Label 'SharePoint decoded library root and comparison', Comment = 'is-IS=afkóðuð safnrót SharePoint og samanburður';
-        ConnectorSchemaLbl: Label 'connector package schema', Comment = 'is-IS=skema tengipakka';
         AccountSchemaLbl: Label 'account field schema', Comment = 'is-IS=skema reikningsreita';
         AccountMetadataLbl: Label 'registered account metadata', Comment = 'is-IS=lýsigögn skráðs reiknings';
         AzureIdentityLbl: Label 'Azure account and resource identity', Comment = 'is-IS=auðkenni Azure-reiknings og tilfangs';
@@ -273,7 +281,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
             4570:
                 CheckFileSharePath(Argument, ParameterName, Address, IsDirectory);
             4580:
-                // Caller must supply the complete decoded server-relative path, including library root.
+                // Path-length check only. Address resolution never opens the SharePoint account table.
                 Reader.CheckAddressLength(Argument, ParameterName, Address, 400);
         end;
     end;
@@ -282,12 +290,11 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
     internal procedure ResolvePhysicalAddress(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Path: Text; var Scope: Text; var Address: Text; var CaseSensitive: Boolean): Boolean
     var
         RequestMgt: Codeunit "Storage Request Mgt ori";
-        Account: RecordRef;
-        AccountId: FieldRef;
         HostName: Text;
         RootName: Text;
         AccountTableName: Text;
         RootFieldName: Text;
+        ReadFailure: Text;
         ConnectorId: Integer;
     begin
         Address := RequestMgt.CombinedPath(StorageSetup."Base Path", Path);
@@ -310,43 +317,23 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
                 end;
             4580:
                 begin
+                    // Unverified operation. Do not open the SharePoint account table. No read grant and no restricted-user test.
                     AddUnverifiedOperation(Argument, 'storageCode', SharePointRootLbl);
                     exit(false);
                 end;
             else
-                // No guessed provider limits or case folding for partner connectors.
+                // Generic connector path, including SFTP (4621). Do not open the account table.
                 exit(true);
         end;
-        if not KnownAccountModule(ConnectorId) then begin
-            AddUnverifiedOperation(Argument, 'storageCode', ConnectorSchemaLbl);
+        if not TryReadPublicAccount(ConnectorId, StorageSetup."File Account Id", AccountTableName, RootFieldName, HostName, RootName) then begin
+            // TryFunction rolls var values back, so the caught text is the only failure classification.
+            ReadFailure := GetLastErrorText();
+            if (ReadFailure = AccountSchemaLbl) or (ReadFailure = AccountMetadataLbl) then
+                AddUnverifiedOperation(Argument, 'storageCode', ReadFailure)
+            else
+                Argument.AddError("Bifrost Error Code ori"::PermissionDenied, MetadataPermissionErr, 'storageCode', StorageSetup.Code, MetadataExpectedLbl, MetadataNextStepLbl);
             exit(false);
         end;
-        Account.Open(ConnectorId);
-        Account.ReadIsolation := IsolationLevel::RepeatableRead;
-        if not Account.ReadPermission() then begin
-            Account.Close();
-            Argument.AddError("Bifrost Error Code ori"::PermissionDenied, MetadataPermissionErr, 'storageCode', StorageSetup.Code, MetadataExpectedLbl, MetadataNextStepLbl);
-            exit(false);
-        end;
-        if (Account.Name <> AccountTableName) or not IsMetadataField(Account, 1, 'Id', FieldType::Guid) or
-           not IsMetadataField(Account, 3, 'Storage Account Name', FieldType::Text) or not IsMetadataField(Account, 4, RootFieldName, FieldType::Text)
-        then begin
-            Account.Close();
-            AddUnverifiedOperation(Argument, 'storageCode', AccountSchemaLbl);
-            exit(false);
-        end;
-        // Only the three verified public fields are loaded; no secret fields or getters.
-        Account.SetLoadFields(1, 3, 4);
-        AccountId := Account.Field(1);
-        AccountId.SetRange(StorageSetup."File Account Id");
-        if not Account.FindFirst() then begin
-            Account.Close();
-            AddUnverifiedOperation(Argument, 'storageCode', AccountMetadataLbl);
-            exit(false);
-        end;
-        HostName := Account.Field(3).Value;
-        RootName := Account.Field(4).Value;
-        Account.Close();
         if not IsAzureResourceName(HostName, false) or not IsAzureResourceName(RootName, true) then begin
             AddUnverifiedOperation(Argument, 'storageCode', AzureIdentityLbl);
             exit(false);
@@ -359,20 +346,34 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         exit(true);
     end;
 
-    local procedure KnownAccountModule(ConnectorId: Integer): Boolean
+    /// <summary>Reads the three public identity fields. A platform permission error stays caught so the caller can return PermissionDenied.</summary>
+    [TryFunction]
+    local procedure TryReadPublicAccount(ConnectorId: Integer; AccountId: Guid; AccountTableName: Text; RootFieldName: Text; var HostName: Text; var RootName: Text)
     var
-        AccountModule: ModuleInfo;
-        ModuleId: Guid;
+        Account: RecordRef;
+        AccountIdField: FieldRef;
     begin
-        case ConnectorId of
-            4560:
-                ModuleId := 'c9ce86fe-cb70-4b79-be03-d21856b1a4ca';
-            4570:
-                ModuleId := '79447b11-8301-4d02-a546-2261eb811296';
+        // 4560 is Ext. Blob Storage Account. 4570 is Ext. File Share Account.
+        // RecordRef.ReadPermission ignores entitlements and returned PermissionDenied before this read.
+        Account.Open(ConnectorId);
+        Account.ReadIsolation := IsolationLevel::RepeatableRead;
+        if (Account.Name <> AccountTableName) or not IsMetadataField(Account, 1, 'Id', FieldType::Guid) or
+           not IsMetadataField(Account, 3, 'Storage Account Name', FieldType::Text) or not IsMetadataField(Account, 4, RootFieldName, FieldType::Text)
+        then begin
+            Account.Close();
+            Error(AccountSchemaLbl);
         end;
-        // Any installed build is accepted: the caller verifies the account table, field numbers,
-        // names and types before reading, so a changed schema is refused there, not by version.
-        exit(NavApp.GetModuleInfo(ModuleId, AccountModule));
+        // Only the three verified public fields are loaded; no secret fields or getters.
+        Account.SetLoadFields(1, 3, 4);
+        AccountIdField := Account.Field(1);
+        AccountIdField.SetRange(AccountId);
+        if not Account.FindFirst() then begin
+            Account.Close();
+            Error(AccountMetadataLbl);
+        end;
+        HostName := Account.Field(3).Value;
+        RootName := Account.Field(4).Value;
+        Account.Close();
     end;
 
     local procedure IsMetadataField(Account: RecordRef; FieldNumber: Integer; FieldName: Text; ExpectedType: FieldType): Boolean
