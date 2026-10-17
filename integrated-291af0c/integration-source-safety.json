@@ -1,0 +1,678 @@
+{
+  "mainSha": "42e8a6e7872e964ef306e286cc2ef19e37f3e376",
+  "shippingFilesChanged": 32,
+  "shippingChangedLines": 72,
+  "shippingNonCommentChanges": [],
+  "xlfTargets": 494,
+  "xlfDiffFromMain": [
+    {
+      "id": "Table 4034440960 - Field 203998113 - Property 1295455071",
+      "source": "Specifies the incoming document entry number, when the target is an incoming document attachment.",
+      "old": [
+        "Specifies the incoming document entry number, when the target is an incoming document attachment.",
+        "Tilgreinir færslunúmer innkomandi skjals þegar markmiðið er viðhengi innkomandi skjals."
+      ],
+      "new": "Tilgreinir færslunúmer skjals í innleið þegar markmiðið er viðhengi skjals í innleið."
+    },
+    {
+      "id": "Table 4034440960 - Field 203998113 - Property 2879900210",
+      "source": "Incoming Document Entry No.",
+      "old": [
+        "Incoming Document Entry No.",
+        "Færslunúmer innkomandi skjals"
+      ],
+      "new": "Færslunúmer skjals í innleið"
+    },
+    {
+      "id": "Table 4034440960 - Field 4067054847 - Property 1295455071",
+      "source": "Specifies the incoming document attachment line number, when the target is an incoming document attachment.",
+      "old": [
+        "Specifies the incoming document attachment line number, when the target is an incoming document attachment.",
+        "Tilgreinir línunúmer viðhengis innkomandi skjals þegar markmiðið er viðhengi innkomandi skjals."
+      ],
+      "new": "Tilgreinir línunúmer viðhengis skjals í innleið þegar markmiðið er viðhengi skjals í innleið."
+    },
+    {
+      "id": "Table 4034440960 - Field 4067054847 - Property 2879900210",
+      "source": "Incoming Document Line No.",
+      "old": [
+        "Incoming Document Line No.",
+        "Línunúmer innkomandi skjals"
+      ],
+      "new": "Línunúmer skjals í innleið"
+    },
+    {
+      "id": "Table 3959677966 - NamedType 4100786335",
+      "source": "Select a file account before testing the connection.",
+      "old": [
+        "Select a file account before testing the connection.",
+        "Veldu skráarreikning áður en tengingin er prófuð."
+      ],
+      "new": "Veldu skráareikning áður en tengingin er prófuð."
+    },
+    {
+      "id": "Table 1181423367 - Property 2879900210",
+      "source": "Bifrost Storage Upload Chunk",
+      "old": [
+        "Bifrost Storage Upload Chunk",
+        "Upphleðslubiti Bifröst geymslu"
+      ],
+      "new": "Upphleðslubútur Bifröst geymslu"
+    },
+    {
+      "id": "Table 1181423367 - Field 2166181827 - Property 1295455071",
+      "source": "Specifies the decoded bytes of this chunk.",
+      "old": [
+        "Specifies the decoded bytes of this chunk.",
+        "Tilgreinir afkóðuð bæti þessa bita."
+      ],
+      "new": "Tilgreinir afkóðuð bæti þessa búts."
+    },
+    {
+      "id": "Table 1181423367 - Field 3014885516 - Property 1295455071",
+      "source": "Specifies the position of this chunk in the assembled file; chunks are concatenated in ascending sequence order.",
+      "old": [
+        "Specifies the position of this chunk in the assembled file; chunks are concatenated in ascending sequence order.",
+        "Tilgreinir staðsetningu þessa bita í samsettu skránni; bitar eru tengdir saman í hækkandi raðnúmeri."
+      ],
+      "new": "Tilgreinir staðsetningu þessa búts í samsettu skránni; bútar eru tengdir saman í hækkandi raðnúmeri."
+    },
+    {
+      "id": "Table 1181423367 - Field 3964473375 - Property 1295455071",
+      "source": "Specifies the number of bytes held by this chunk.",
+      "old": [
+        "Specifies the number of bytes held by this chunk.",
+        "Tilgreinir fjölda bæta sem þessi biti geymir."
+      ],
+      "new": "Tilgreinir fjölda bæta sem þessi bútur geymir."
+    },
+    {
+      "id": "Table 1181423367 - Field 2553504562 - Property 1295455071",
+      "source": "Specifies the upload session this chunk belongs to.",
+      "old": [
+        "Specifies the upload session this chunk belongs to.",
+        "Tilgreinir upphleðslulotuna sem þessi biti tilheyrir."
+      ],
+      "new": "Tilgreinir upphleðslulotuna sem þessi bútur tilheyrir."
+    },
+    {
+      "id": "Table 3456378380 - Field 3960290652 - Property 1295455071",
+      "source": "Specifies how many chunks have been appended to the session.",
+      "old": [
+        "Specifies how many chunks have been appended to the session.",
+        "Tilgreinir hversu margir bitar hafa verið viðbættir lotunni."
+      ],
+      "new": "Tilgreinir hversu margir bútar hafa verið viðbættir lotunni."
+    },
+    {
+      "id": "Table 3456378380 - Field 3960290652 - Property 2879900210",
+      "source": "Chunk Count",
+      "old": [
+        "Chunk Count",
+        "Fjöldi bita"
+      ],
+      "new": "Fjöldi búta"
+    },
+    {
+      "id": "Table 3456378380 - Field 3022950110 - Property 1295455071",
+      "source": "Specifies the total number of bytes received across all appended chunks.",
+      "old": [
+        "Specifies the total number of bytes received across all appended chunks.",
+        "Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta bita."
+      ],
+      "new": "Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta búta."
+    },
+    {
+      "id": "Table 3456378380 - Field 513339096 - Property 1295455071",
+      "source": "Specifies whether the session is open for further chunks, has been committed to storage, or was aborted.",
+      "old": [
+        "Specifies whether the session is open for further chunks, has been committed to storage, or was aborted.",
+        "Tilgreinir hvort lotan er opin fyrir frekari bita, hefur verið staðfest í geymslu, eða var hætt við."
+      ],
+      "new": "Tilgreinir hvort lotan er opin fyrir frekari búta, hefur verið staðfest í geymslu, eða var hætt við."
+    },
+    {
+      "id": "Codeunit 2881381544 - Method 4081640032 - NamedType 2535652492",
+      "source": "a definition not used by a Data Exchange Type or Bank Export/Import Setup",
+      "old": [
+        "a definition not used by a Data Exchange Type or Bank Export/Import Setup",
+        "skilgreining sem er ekki notuð í tegund gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings"
+      ],
+      "new": "skilgreining sem er ekki notuð í gerð gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings"
+    },
+    {
+      "id": "Codeunit 2881381544 - Method 4081640032 - NamedType 2323042833",
+      "source": "Review the Data Exchange Types and Bank Export/Import Setup that use this definition. Change those references before retrying deletion.",
+      "old": [
+        "Review the Data Exchange Types and Bank Export/Import Setup that use this definition. Change those references before retrying deletion.",
+        "Farðu yfir tegundir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur."
+      ],
+      "new": "Farðu yfir gerðir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur."
+    },
+    {
+      "id": "Codeunit 2881381544 - Method 3650283039 - NamedType 2344026547",
+      "source": "Does not delete a definition that a Data Exchange Type or Bank Export/Import Setup still uses.",
+      "old": [
+        "Does not delete a definition that a Data Exchange Type or Bank Export/Import Setup still uses.",
+        "Eyðir ekki skilgreiningu sem tegund gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn."
+      ],
+      "new": "Eyðir ekki skilgreiningu sem gerð gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn."
+    },
+    {
+      "id": "Codeunit 146493229 - Method 79446908 - NamedType 3491368912",
+      "source": "Returns one Data Exchange definition with line definitions, columns and mappings; pass a code from the list type.",
+      "old": [
+        "Returns one Data Exchange definition with line definitions, columns and mappings; pass a code from the list type.",
+        "Skilar einni skilgreiningu gagnaskipta með línuskilgreiningum, dálkum og vörpun; gefðu upp kóða úr listaboðgerðinni."
+      ],
+      "new": "Skilar einni skilgreiningu gagnaskipta með línuskilgreiningum, dálkum og vörpun; gefðu upp kóða úr skilaboðategundinni fyrir lista."
+    },
+    {
+      "id": "Codeunit 2730585033 - Method 79446908 - NamedType 3491368912",
+      "source": "Lists available Data Exchange definitions and their filters; use the get type for full mappings.",
+      "old": [
+        "Lists available Data Exchange definitions and their filters; use the get type for full mappings.",
+        "Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu sækiboðgerðina til að sjá alla vörpun."
+      ],
+      "new": "Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu skilaboðategundina fyrir lestur til að sjá alla vörpun."
+    },
+    {
+      "id": "Codeunit 2017599976 - Method 1027590672 - NamedType 1290244428",
+      "source": "list data exchange entries, processed imports, imported files",
+      "old": [
+        "list data exchange entries, processed imports, imported files",
+        "lista færslur gagnaskipta, unnar innflutningar, innfluttar skrár"
+      ],
+      "new": "lista færslur gagnaskipta, unnir innflutningar, innfluttar skrár"
+    },
+    {
+      "id": "Codeunit 2017599976 - Method 79446908 - NamedType 3491368912",
+      "source": "Lists processed Data Exchange entries with filters and paging; use entry get to read fields.",
+      "old": [
+        "Lists processed Data Exchange entries with filters and paging; use entry get to read fields.",
+        "Listar afgreiddar gagnaskiptafærslur með síum og síðuskiptingu; notaðu færslusækiboðgerðina til að lesa reiti."
+      ],
+      "new": "Listar afgreiddar gagnaskiptafærslur með síum og síðuskiptingu; notaðu skilaboðategundina fyrir lestur færslu til að lesa reiti."
+    },
+    {
+      "id": "Codeunit 2801241356 - Method 1027590672 - NamedType 1290244428",
+      "source": "list data exchange types, incoming document types, exchange type codes",
+      "old": [
+        "list data exchange types, incoming document types, exchange type codes",
+        "lista tegundir gagnaskipta, tegundir innkomandi skjala, tegundakóðar gagnaskipta"
+      ],
+      "new": "lista gerðir gagnaskipta, gerðir skjala í innleið, kóðar gerða gagnaskipta"
+    },
+    {
+      "id": "Codeunit 2801241356 - Method 79446908 - NamedType 3491368912",
+      "source": "Lists Data Exchange Types and their definition codes; use definition get to inspect the referenced format.",
+      "old": [
+        "Lists Data Exchange Types and their definition codes; use definition get to inspect the referenced format.",
+        "Listar gerðir gagnaskipta og skilgreiningarkóða þeirra; notaðu skilgreiningarsækiboðgerðina til að skoða sniðið sem vísað er í."
+      ],
+      "new": "Listar gerðir gagnaskipta og skilgreiningarkóða þeirra; notaðu skilaboðategundina fyrir lestur skilgreiningar til að skoða sniðið sem vísað er í."
+    },
+    {
+      "id": "Codeunit 1998889092 - Method 1027590672 - NamedType 1290244428",
+      "source": "data exchange type, incoming document type, set definition",
+      "old": [
+        "data exchange type, incoming document type, set definition",
+        "gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu"
+      ],
+      "new": "gerð gagnaskipta, gerð skjals í innleið, stilla skilgreiningu"
+    },
+    {
+      "id": "Codeunit 555252258 - Method 4077369804 - NamedType 3569966352",
+      "source": "Attaches a file already in storage to a new or existing incoming document, served transparently from storage.",
+      "old": [
+        "Attaches a file already in storage to a new or existing incoming document, served transparently from storage.",
+        "Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal; skráin er aðgengileg beint úr geymslu."
+      ],
+      "new": "Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi skjal í innleið; skráin er aðgengileg beint úr geymslu."
+    },
+    {
+      "id": "Codeunit 555252258 - Method 1027590672 - NamedType 1290244428",
+      "source": "link stored file to incoming document, incoming document from storage, register a stored invoice, create incoming document from cloud file, attach blob to incoming document, scanned bill already in storage",
+      "old": [
+        "link stored file to incoming document, incoming document from storage, register a stored invoice, create incoming document from cloud file, attach blob to incoming document, scanned bill already in storage",
+        "tengja geymda skrá við innkomið skjal, innkomið skjal úr geymslu, skrá geymdan reikning, stofna innkomið skjal úr skýjaskrá, hengja skrá úr geymslu við innkomið skjal, skannaður reikningur í geymslu"
+      ],
+      "new": "tengja geymda skrá við skjal í innleið, skjal í innleið úr geymslu, skrá geymdan reikning, stofna skjal í innleið úr skýjaskrá, hengja skrá úr geymslu við skjal í innleið, skannaður reikningur í geymslu"
+    },
+    {
+      "id": "Codeunit 555252258 - Method 79446908 - NamedType 3491368912",
+      "source": "Attaches a file that already sits in storage to a new or existing incoming document without copying it into the database.",
+      "old": [
+        "Attaches a file that already sits in storage to a new or existing incoming document without copying it into the database.",
+        "Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal án þess að afrita hana í gagnagrunninn."
+      ],
+      "new": "Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi skjal í innleið án þess að afrita hana í gagnagrunninn."
+    },
+    {
+      "id": "Codeunit 2218127053 - NamedType 162992574",
+      "source": "The Data Exchange Types and their linked definitions.",
+      "old": [
+        "The Data Exchange Types and their linked definitions.",
+        "Gagnaskiptagerðir og tengdar skilgreiningar þeirra."
+      ],
+      "new": "Gerðir gagnaskipta og tengdar skilgreiningar þeirra."
+    },
+    {
+      "id": "Codeunit 2218127053 - NamedType 1992131761",
+      "source": "The Data Exchange Type code, at most 20 characters.",
+      "old": [
+        "The Data Exchange Type code, at most 20 characters.",
+        "Kóði gagnaskiptagerðar, að hámarki 20 stafir."
+      ],
+      "new": "Kóði gerðar gagnaskipta, að hámarki 20 stafir."
+    },
+    {
+      "id": "Codeunit 2218127053 - NamedType 1843374440",
+      "source": "Optional description within the Data Exchange Type Description field length.",
+      "old": [
+        "Optional description within the Data Exchange Type Description field length.",
+        "Valfrjáls lýsing innan lengdar lýsingarreits gagnaskiptagerðar."
+      ],
+      "new": "Valfrjáls lýsing innan lengdar lýsingarreits gerðar gagnaskipta."
+    },
+    {
+      "id": "Codeunit 1458629253 - Method 79446908 - NamedType 3491368912",
+      "source": "Deletes a folder from a storage connection; to remove a single file use the file delete type instead.",
+      "old": [
+        "Deletes a folder from a storage connection; to remove a single file use the file delete type instead.",
+        "Eyðir möppu úr geymslutengingu; notaðu boðgerðina fyrir eyðingu skráa til að eyða einni skrá."
+      ],
+      "new": "Eyðir möppu úr geymslutengingu; notaðu skilaboðategundina fyrir eyðingu skráa til að eyða einni skrá."
+    },
+    {
+      "id": "Codeunit 932189238 - NamedType 4100786335",
+      "source": "Storage connection '%1' has no file account selected.",
+      "old": [
+        "Storage connection '%1' has no file account selected.",
+        "Enginn skráareikningur hefur verið valinn fyrir geymslutenginguna '%1'."
+      ],
+      "new": "Geymslutengingin „%1“ hefur engan skráareikning valinn."
+    },
+    {
+      "id": "Codeunit 1157400010 - Method 79446908 - NamedType 3491368912",
+      "source": "Copies a file to another path within the same storage connection and keeps the original; use the move type to relocate it instead.",
+      "old": [
+        "Copies a file to another path within the same storage connection and keeps the original; use the move type to relocate it instead.",
+        "Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu boðgerðina fyrir færslu skráa til að færa hana."
+      ],
+      "new": "Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu skilaboðategundina fyrir færslu skráa til að færa hana."
+    },
+    {
+      "id": "Codeunit 3778398321 - Method 79446908 - NamedType 3491368912",
+      "source": "Uploads a whole file of up to 240 MiB to a storage path in one call; use the chunked upload types for larger files or files sent in parts.",
+      "old": [
+        "Uploads a whole file of up to 240 MiB to a storage path in one call; use the chunked upload types for larger files or files sent in parts.",
+        "Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu boðgerðir fyrir hlutaupphleðslu fyrir stærri skrár eða skrár sendar í hlutum."
+      ],
+      "new": "Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu skilaboðategundir fyrir bútaupphleðslu fyrir stærri skrár eða skrár sendar í bútum."
+    },
+    {
+      "id": "Codeunit 2990831086 - Method 79446908 - NamedType 3491368912",
+      "source": "Deletes a single file from a storage connection; to remove a whole folder use the directory delete type instead.",
+      "old": [
+        "Deletes a single file from a storage connection; to remove a whole folder use the directory delete type instead.",
+        "Eyðir einni skrá úr geymslutengingu; notaðu boðgerðina fyrir eyðingu mappa til að eyða heilli möppu."
+      ],
+      "new": "Eyðir einni skrá úr geymslutengingu; notaðu skilaboðategundina fyrir eyðingu mappa til að eyða heilli möppu."
+    },
+    {
+      "id": "Codeunit 149655982 - Method 4077369804 - NamedType 3569966352",
+      "source": "Returns a Markdown overview of the storage connector and all its message types. No request body is required.",
+      "old": [
+        "Returns a Markdown overview of the storage connector and all its message types. No request body is required.",
+        "Skilar Markdown-yfirliti yfir geymslutengilinn og allar boðgerðir hans. Enginn meginmálshluti beiðni er nauðsynlegur."
+      ],
+      "new": "Skilar Markdown-yfirliti yfir geymslutengilinn og allar skilaboðategundir hans. Enginn meginmálshluti beiðni er nauðsynlegur."
+    },
+    {
+      "id": "Codeunit 149655982 - Method 1027590672 - NamedType 1290244428",
+      "source": "storage help, storage message types, how to use storage, storage API overview, storage documentation",
+      "old": [
+        "storage help, storage message types, how to use storage, storage API overview, storage documentation",
+        "geymslu hjálp, geymsluboðgerðir, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl"
+      ],
+      "new": "geymsluhjálp, skilaboðategundir geymslu, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl"
+    },
+    {
+      "id": "Codeunit 149655982 - Method 79446908 - NamedType 3491368912",
+      "source": "Returns the storage connector guide and message type map; use a specific storage type to perform an operation.",
+      "old": [
+        "Returns the storage connector guide and message type map; use a specific storage type to perform an operation.",
+        "Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir boðgerðir; notaðu tiltekna geymsluboðgerð til að framkvæma aðgerð."
+      ],
+      "new": "Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir skilaboðategundir; notaðu tiltekna skilaboðategund geymslu til að framkvæma aðgerð."
+    },
+    {
+      "id": "Codeunit 223275718 - NamedType 2651508684",
+      "source": "linked move recovery after remote acknowledgement loss",
+      "old": [
+        "linked move recovery after remote acknowledgement loss",
+        "endurheimt tengdrar færslu eftir tap á staðfestingu frá fjargeymslu"
+      ],
+      "new": "endurheimt tengdrar tilfærslu eftir tap á staðfestingu frá fjargeymslu"
+    },
+    {
+      "id": "Codeunit 617437907 - NamedType 1379219779",
+      "source": "Required parameter \"%1\" is missing.",
+      "old": [
+        "Required parameter \"%1\" is missing.",
+        "Nauðsynleg færibreyta \"%1\" vantar."
+      ],
+      "new": "Nauðsynlega færibreytu \"%1\" vantar."
+    },
+    {
+      "id": "Codeunit 617437907 - NamedType 2384151112",
+      "source": "Send the file in parts with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.",
+      "old": [
+        "Send the file in parts with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.",
+        "Sendu skrána í hlutum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit."
+      ],
+      "new": "Sendu skrána í bútum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit."
+    },
+    {
+      "id": "Codeunit 3751091016 - Method 4077369804 - NamedType 3569966352",
+      "source": "Discards an open upload session and all its chunks without writing to storage.",
+      "old": [
+        "Discards an open upload session and all its chunks without writing to storage.",
+        "Fleygir opinni upphleðslulotu og öllum hlutum hennar án þess að skrifa í geymslu."
+      ],
+      "new": "Fleygir opinni upphleðslulotu og öllum bútum hennar án þess að skrifa í geymslu."
+    },
+    {
+      "id": "Codeunit 3751091016 - Method 79446908 - NamedType 3491368912",
+      "source": "Discards an open upload session and its chunks without writing anything to storage or to any record.",
+      "old": [
+        "Discards an open upload session and its chunks without writing anything to storage or to any record.",
+        "Fleygir opinni upphleðslulotu og hlutum hennar án þess að skrifa í geymslu eða á neina færslu."
+      ],
+      "new": "Fleygir opinni upphleðslulotu og bútum hennar án þess að skrifa í geymslu eða á neina færslu."
+    },
+    {
+      "id": "Codeunit 3730781788 - Method 4077369804 - NamedType 3569966352",
+      "source": "Appends one base64 chunk of up to 240 MiB to an open upload session.",
+      "old": [
+        "Appends one base64 chunk of up to 240 MiB to an open upload session.",
+        "Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu."
+      ],
+      "new": "Bætir einum base64-búti allt að 240 MiB við opna upphleðslulotu."
+    },
+    {
+      "id": "Codeunit 3730781788 - Method 1027590672 - NamedType 1290244428",
+      "source": "send next chunk, append chunk, upload next part, add part to upload, continue upload, send file piece",
+      "old": [
+        "send next chunk, append chunk, upload next part, add part to upload, continue upload, send file piece",
+        "senda næsta bút, bæta við bút, hlaða upp næsta hluta, bæta hluta við upphleðslu, halda upphleðslu áfram, senda hluta skrár"
+      ],
+      "new": "senda næsta bút, bæta við búti, hlaða upp næsta bút, bæta búti við upphleðslu, halda upphleðslu áfram, senda bút skrár"
+    },
+    {
+      "id": "Codeunit 3730781788 - Method 79446908 - NamedType 3491368912",
+      "source": "Adds one base64 chunk of up to 240 MiB to an open upload session; call it once per part in sequence before committing.",
+      "old": [
+        "Adds one base64 chunk of up to 240 MiB to an open upload session; call it once per part in sequence before committing.",
+        "Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern hluta í réttri röð áður en upphleðslu er lokið."
+      ],
+      "new": "Bætir einum base64-búti allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern bút í réttri röð áður en upphleðsla er staðfest."
+    },
+    {
+      "id": "Codeunit 2844342355 - Method 4077369804 - NamedType 3569966352",
+      "source": "Opens a chunked upload session for a file larger than one call can carry, sent as chunks of up to 240 MiB each.",
+      "old": [
+        "Opens a chunked upload session for a file larger than one call can carry, sent as chunks of up to 240 MiB each.",
+        "Opnar upphleðslulotu fyrir skrá sem rúmast ekki í einu kalli; hún er send í hlutum sem eru allt að 240 MiB hver."
+      ],
+      "new": "Opnar upphleðslulotu fyrir skrá sem rúmast ekki í einu kalli; hún er send í bútum sem eru allt að 240 MiB hver."
+    },
+    {
+      "id": "Codeunit 2844342355 - Method 1027590672 - NamedType 1290244428",
+      "source": "start a large upload, upload a big file, chunked upload, upload in parts, stream a file, resumable upload, start upload session, file too large for one call",
+      "old": [
+        "start a large upload, upload a big file, chunked upload, upload in parts, stream a file, resumable upload, start upload session, file too large for one call",
+        "hefja stóra upphleðslu, hlaða upp stórri skrá, upphleðsla í hlutum, hlaða upp í bútum, streyma skrá, upphleðsla sem má halda áfram, hefja upphleðslulotu, skrá of stór fyrir eitt kall"
+      ],
+      "new": "hefja stóra upphleðslu, hlaða upp stórri skrá, upphleðsla í bútum, hlaða upp í bútum, streyma skrá, upphleðsla sem má halda áfram, hefja upphleðslulotu, skrá of stór fyrir eitt kall"
+    },
+    {
+      "id": "Codeunit 2844342355 - Method 79446908 - NamedType 3491368912",
+      "source": "Opens a chunked upload session for files over 240 MiB or streamed in parts; use the single-call file create for anything that fits in one request.",
+      "old": [
+        "Opens a chunked upload session for files over 240 MiB or streamed in parts; use the single-call file create for anything that fits in one request.",
+        "Opnar upphleðslulotu fyrir skrár yfir 240 MiB eða skrár sendar í hlutum; notaðu skráarstofnun í einu kalli fyrir skrár sem rúmast í einni beiðni."
+      ],
+      "new": "Opnar upphleðslulotu fyrir skrár yfir 240 MiB eða skrár sendar í bútum; notaðu skráarstofnun í einu kalli fyrir skrár sem rúmast í einni beiðni."
+    },
+    {
+      "id": "Codeunit 3184599297 - Method 4077369804 - NamedType 3569966352",
+      "source": "Assembles an upload session's chunks and writes the file to the storage connection.",
+      "old": [
+        "Assembles an upload session's chunks and writes the file to the storage connection.",
+        "Sameinar hluta upphleðslulotu og skrifar skrána í geymslutenginguna."
+      ],
+      "new": "Sameinar búta upphleðslulotu og skrifar skrána í geymslutenginguna."
+    },
+    {
+      "id": "Codeunit 3184599297 - Method 1027590672 - NamedType 1290244428",
+      "source": "finish upload to storage, complete the upload, save uploaded file to cloud, commit upload, assemble the chunks, finalise upload, finalize upload",
+      "old": [
+        "finish upload to storage, complete the upload, save uploaded file to cloud, commit upload, assemble the chunks, finalise upload, finalize upload",
+        "ljúka upphleðslu í geymslu, klára upphleðslu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, ljúka upphleðslu, staðfesta upphleðsluna"
+      ],
+      "new": "staðfesta upphleðslu í geymslu, staðfesta upphleðslulotu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, staðfesta upphleðslu skráar, staðfesta upphleðsluna"
+    },
+    {
+      "id": "Codeunit 3184599297 - Method 79446908 - NamedType 3491368912",
+      "source": "Assembles the chunks of an upload session and writes the file to its storage connection; it does not attach the file to any record.",
+      "old": [
+        "Assembles the chunks of an upload session and writes the file to its storage connection; it does not attach the file to any record.",
+        "Sameinar hluta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu."
+      ],
+      "new": "Sameinar búta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu."
+    },
+    {
+      "id": "Codeunit 1571456077 - Method 4077369804 - NamedType 3569966352",
+      "source": "Assembles uploaded chunks and attaches the file directly to a record without external storage.",
+      "old": [
+        "Assembles uploaded chunks and attaches the file directly to a record without external storage.",
+        "Sameinar upphlaðna hluta og tengir skrána beint við færslu án ytri geymslu."
+      ],
+      "new": "Sameinar upphlaðna búta og tengir skrána beint við færslu án ytri geymslu."
+    },
+    {
+      "id": "Codeunit 1571456077 - Method 1027590672 - NamedType 1290244428",
+      "source": "attach large file to record, attach big pdf to vendor, finish upload as attachment, large incoming document, upload big scan to incoming document, attach uploaded file without storage, save upload as document attachment",
+      "old": [
+        "attach large file to record, attach big pdf to vendor, finish upload as attachment, large incoming document, upload big scan to incoming document, attach uploaded file without storage, save upload as document attachment",
+        "hengja stóra skrá við færslu, hengja stóra pdf við lánardrottin, ljúka upphleðslu sem viðhengi, stórt innkomið skjal, hlaða stórri skönnun í innkomið skjal, hengja upphlaðna skrá við án geymslu, vista upphleðslu sem viðhengi"
+      ],
+      "new": "hengja stóra skrá við færslu, hengja stóra pdf við lánardrottin, staðfesta upphleðslu sem viðhengi, stórt skjal í innleið, hlaða stórri skönnun í skjal í innleið, hengja upphlaðna skrá við án geymslu, vista upphleðslu sem viðhengi"
+    },
+    {
+      "id": "Codeunit 1571456077 - Method 79446908 - NamedType 3491368912",
+      "source": "Assembles an upload session and attaches the file to a Business Central record or incoming document in the database, with no storage connection.",
+      "old": [
+        "Assembles an upload session and attaches the file to a Business Central record or incoming document in the database, with no storage connection.",
+        "Sameinar upphleðslulotu og tengir skrána við Business Central færslu eða innkomuskjal í gagnagrunninum, án geymslutengingar."
+      ],
+      "new": "Sameinar upphleðslulotu og tengir skrána við Business Central færslu eða skjal í innleið í gagnagrunninum, án geymslutengingar."
+    },
+    {
+      "id": "Codeunit 987128476 - NamedType 2564735900",
+      "source": "The upload session is missing one or more chunks: it holds %1 chunks, numbered %2 to %3.",
+      "old": [
+        "The upload session is missing one or more chunks: it holds %1 chunks, numbered %2 to %3.",
+        "Það vantar einn eða fleiri hluta í upphleðslulotuna: hún hefur %1 hluta, númeraða %2 til %3."
+      ],
+      "new": "Það vantar einn eða fleiri búta í upphleðslulotuna: hún hefur %1 búta, númeraða %2 til %3."
+    },
+    {
+      "id": "Codeunit 987128476 - NamedType 2828345014",
+      "source": "Call Storage.Upload.Status, append the missing sequence numbers, then commit again.",
+      "old": [
+        "Call Storage.Upload.Status, append the missing sequence numbers, then commit again.",
+        "Kallaðu á Storage.Upload.Status, bættu við þeim raðnúmerum sem vantar og ljúktu svo aftur."
+      ],
+      "new": "Kallaðu á Storage.Upload.Status, bættu við þeim raðnúmerum sem vantar og staðfestu svo aftur."
+    },
+    {
+      "id": "Codeunit 987128476 - NamedType 1594875504",
+      "source": "The upload session has no chunks to commit.",
+      "old": [
+        "The upload session has no chunks to commit.",
+        "Upphleðslulotan hefur enga hluta til að ljúka."
+      ],
+      "new": "Upphleðslulotan hefur enga búta til að staðfesta."
+    },
+    {
+      "id": "Codeunit 987128476 - NamedType 1425329136",
+      "source": "The upload session is %1, not open; it has already been committed or aborted.",
+      "old": [
+        "The upload session is %1, not open; it has already been committed or aborted.",
+        "Upphleðslulotan er %1, ekki opin; henni hefur þegar verið lokið eða hún verið hætt."
+      ],
+      "new": "Upphleðslulotan er %1, ekki opin; hún hefur þegar verið staðfest eða hætt við hana."
+    },
+    {
+      "id": "Codeunit 987128476 - NamedType 386110962",
+      "source": "Append the missing chunks, or re-send a chunk whose content was wrong, then commit again.",
+      "old": [
+        "Append the missing chunks, or re-send a chunk whose content was wrong, then commit again.",
+        "Bættu við hlutunum sem vantar eða sendu aftur hluta með röngu innihaldi og ljúktu svo aftur."
+      ],
+      "new": "Bættu við bútunum sem vantar eða sendu aftur bút með röngu innihaldi og staðfestu svo aftur."
+    },
+    {
+      "id": "Codeunit 1175196741 - NamedType 563474316",
+      "source": "Purged %1 upload session(s) and %2 chunk(s).",
+      "old": [
+        "Purged %1 upload session(s) and %2 chunk(s).",
+        "Hreinsaði %1 upphleðslulotu/-lotur og %2 bita."
+      ],
+      "new": "Hreinsaði %1 upphleðslulotu/-lotur og %2 búta."
+    },
+    {
+      "id": "Codeunit 1103596966 - Method 79446908 - NamedType 3491368912",
+      "source": "Reports the bytes and chunk count received by an upload session without changing it, to confirm progress before committing.",
+      "old": [
+        "Reports the bytes and chunk count received by an upload session without changing it, to confirm progress before committing.",
+        "Skilar fjölda bæta og hluta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðslu er lokið."
+      ],
+      "new": "Skilar fjölda bæta og búta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðsla er staðfest."
+    },
+    {
+      "id": "Page 1933601227 - Action 3123095784 - Property 1295455071",
+      "source": "View and manage the registered file storage accounts.",
+      "old": [
+        "View and manage the registered file storage accounts.",
+        "Skoða og stjórna skráðum skráargeymslureikningum."
+      ],
+      "new": "Skoða og stjórna skráðum skráageymslureikningum."
+    },
+    {
+      "id": "Page 1933601227 - Action 2633900544 - Property 1295455071",
+      "source": "Run the guided setup to add a new file storage account (Azure Blob, Azure File Share, SharePoint, etc.).",
+      "old": [
+        "Run the guided setup to add a new file storage account (Azure Blob, Azure File Share, SharePoint, etc.).",
+        "Keyra leiðsagnarforritið til að bæta við nýjum skráargeymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.)."
+      ],
+      "new": "Keyra leiðsagnarforritið til að bæta við nýjum skráageymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.)."
+    },
+    {
+      "id": "Page 1933601227 - Action 336799701 - Property 1295455071",
+      "source": "Deletes abandoned upload sessions and their chunks. Sessions that were never committed or aborted leave data behind; this action removes it.",
+      "old": [
+        "Deletes abandoned upload sessions and their chunks. Sessions that were never committed or aborted leave data behind; this action removes it.",
+        "Eyðir yfirgefnum upphleðslulotum og bitum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau."
+      ],
+      "new": "Eyðir yfirgefnum upphleðslulotum og bútum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau."
+    },
+    {
+      "id": "Page 1933601227 - Action 672734192 - Property 1295455071",
+      "source": "Opens the Bifrost setup wizard, which enables HTTP client requests for all Bifrost apps and walks through the credentials of every app.",
+      "old": [
+        "Opens the Bifrost setup wizard, which enables HTTP client requests for all Bifrost apps and walks through the credentials of every app.",
+        "Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir auðkenni hvers forrits."
+      ],
+      "new": "Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir aðgangsupplýsingar hvers forrits."
+    },
+    {
+      "id": "Page 1933601227 - Action 809289658 - Property 1295455071",
+      "source": "View and manage storage connections used to route Bifrost file requests to file accounts.",
+      "old": [
+        "View and manage storage connections used to route Bifrost file requests to file accounts.",
+        "Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga."
+      ],
+      "new": "Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifröst á skráageymslureikninga."
+    },
+    {
+      "id": "Page 3144968819 - Control 2080860199 - Property 1968111052",
+      "source": "This wizard helps you set up external storage for Bifrost. The extension exposes Azure Blob, Azure File Share and SharePoint connectors as Bifrost message types, giving read/write access to cloud storage from Business Central.",
+      "old": [
+        "This wizard helps you set up external storage for Bifrost. The extension exposes Azure Blob, Azure File Share and SharePoint connectors as Bifrost message types, giving read/write access to cloud storage from Business Central.",
+        "Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðagerðir Bifrastar og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central."
+      ],
+      "new": "Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðategundir Bifröst og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central."
+    },
+    {
+      "id": "Page 3144968819 - Control 1646251390 - Property 1968111052",
+      "source": "You need a configured file storage account (Azure Blob, Azure File Share, or SharePoint) and outbound HTTP must be enabled for this extension.",
+      "old": [
+        "You need a configured file storage account (Azure Blob, Azure File Share, or SharePoint) and outbound HTTP must be enabled for this extension.",
+        "Þú þarft uppsettan skráargeymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót."
+      ],
+      "new": "Þú þarft uppsettan skráageymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót."
+    },
+    {
+      "id": "Page 3144968819 - Control 1952643920 - Property 1968111052",
+      "source": "HTTP client requests are enabled. You can now configure storage connections from the Bifrost Storage Setup page. Use the Storage Setup Wizard action on the Bifrost Setup page to add file accounts.",
+      "old": [
+        "HTTP client requests are enabled. You can now configure storage connections from the Bifrost Storage Setup page. Use the Storage Setup Wizard action on the Bifrost Setup page to add file accounts.",
+        "HTTP-biðlarabeiðnir eru virkar. Þú getur nú stillt geymslutengingar á uppsetningarsíðu Bifröst geymslu. Notaðu aðgerðina Leiðsagnarforrit geymsluuppsetningar á uppsetningarsíðu Bifrastar til að bæta við skráargeymslureikningum."
+      ],
+      "new": "HTTP-biðlarabeiðnir eru virkar. Þú getur nú stillt geymslutengingar á uppsetningarsíðu Bifröst geymslu. Notaðu aðgerðina Leiðsagnarforrit geymsluuppsetningar á uppsetningarsíðu Bifröst til að bæta við skráageymslureikningum."
+    },
+    {
+      "id": "Enum 4072661087 - EnumValue 2748447179 - Property 2879900210",
+      "source": "Incoming Document",
+      "old": [
+        "Incoming Document",
+        "Innkomandi skjal"
+      ],
+      "new": "Skjal í innleið"
+    },
+    {
+      "id": "Enum 3753360862 - EnumValue 4259830144 - Property 2879900210",
+      "source": "Open",
+      "old": [
+        "Open",
+        "Opið"
+      ],
+      "new": "Opin"
+    }
+  ],
+  "historicalCandidateTargetsChangedOrRemoved": [
+    {
+      "id": "Codeunit 2218127053 - NamedType 2751879078",
+      "old": [
+        "The file path relative to the storage connection base path.",
+        "Skráarslóð miðað við grunnslóð geymslutengingar."
+      ],
+      "new": [
+        "Caller reference only: checked for path syntax, not validated for file existence and not stored on the entry header. No file is read.",
+        "Aðeins tilvísun kallanda: snið slóðar er athugað en ekki hvort skráin sé til og slóðin er ekki vistuð í færsluhausnum. Engin skrá er lesin."
+      ]
+    },
+    {
+      "id": "Codeunit 932189238 - NamedType 2190257260",
+      "old": [
+        "connector package schema",
+        "skema tengipakka"
+      ],
+      "new": null
+    }
+  ]
+}

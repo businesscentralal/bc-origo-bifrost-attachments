@@ -1,0 +1,46 @@
+{
+  "sourceHeadBeforeMergeCommit": "56899d593f65a05d305c5b11b224d803e30b8a28",
+  "mergeMain": "42e8a6e7872e964ef306e286cc2ef19e37f3e376",
+  "recordedAt": "2026-10-17T19:33:52.193771+00:00",
+  "results": [
+    {
+      "guard": "ContractParameterKeys",
+      "exit": 0
+    },
+    {
+      "guard": "MixedLanguageLabels",
+      "exit": 0
+    },
+    {
+      "guard": "NoClientCallstack",
+      "exit": 0
+    },
+    {
+      "guard": "NoObsolete",
+      "exit": 0
+    },
+    {
+      "guard": "PermissionCoverage",
+      "exit": 0
+    },
+    {
+      "guard": "ValidatedTableView",
+      "exit": 0
+    },
+    {
+      "guard": "IcelandicKeywordCounts",
+      "exit": 0
+    },
+    {
+      "guard": "IcelandicXlfInSync",
+      "exit": 0
+    },
+    {
+      "guard": "UniqueObjectIds",
+      "exit": 0
+    }
+  ],
+  "sha": "291af0c645ea0dc65c5a376767031dc56400d3af",
+  "treeSha": "e0353b8702dc94f8eb2ed4fbe508d61efa9e4a73",
+  "scope": "Guards executed on resolved merge working tree; identical tree committed as candidate. No source changes after guard execution; final committed-tip compile regenerated same translations."
+}

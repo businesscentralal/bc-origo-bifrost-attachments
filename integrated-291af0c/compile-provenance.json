@@ -1,0 +1,23 @@
+{
+  "at": "2026-10-17T19:34:12.399866+00:00",
+  "compiler": "/workspace/runtime/al181/extension/bin/alc.dll",
+  "compilerSha256": "ef19d8da1bf12c42140e84de31c7129a1698cb379cb52df11f00870f6ac7b9b4",
+  "sourceHead": "291af0c645ea0dc65c5a376767031dc56400d3af",
+  "workingDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "foundationProvenance": "Retained Foundation556 Test product from original immutable artifact; see dependency-provenance.json",
+  "foundationVersion": "28.0.4.556",
+  "apps": {
+    "app": {
+      "exit": 0,
+      "errors": 0,
+      "warnings": 0,
+      "artifactSha256": "23ee21e064e3aa52d9b77d1b48a75379e853bea68bae2c22cce300301a779daf"
+    },
+    "testApp": {
+      "exit": 0,
+      "errors": 0,
+      "warnings": 0,
+      "artifactSha256": "28139bb452d1902b4fb56fb55339e102e290b47d572d258187ea1eca9be9e7d5"
+    }
+  }
+}
