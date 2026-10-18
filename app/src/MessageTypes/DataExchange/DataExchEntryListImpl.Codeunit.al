@@ -35,7 +35,7 @@ codeunit 70013525 "DataExch Entry List Impl ori" implements "Msg Interface ori",
     /// <summary>Provides the Keywords discovery or contract chapter.</summary>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'list data exchange entries, processed imports, imported files', Comment = 'is-IS=lista færslur gagnaskipta, unnar innflutningar, innfluttar skrár';
+        KeywordsLbl: Label 'list data exchange entries, processed imports, imported files', Comment = 'is-IS=lista færslur gagnaskipta, unnir innflutningar, innfluttar skrár';
     begin
         exit(KeywordsLbl);
     end;
@@ -43,7 +43,7 @@ codeunit 70013525 "DataExch Entry List Impl ori" implements "Msg Interface ori",
     /// <summary>Provides the SelectionDescription discovery or contract chapter.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Lists processed Data Exchange entries with filters and paging; use entry get to read fields.', Comment = 'is-IS=Listar afgreiddar gagnaskiptafærslur með síum og síðuskiptingu; notaðu færslusækiboðgerðina til að lesa reiti.';
+        SelectionDescriptionLbl: Label 'Lists processed Data Exchange entries with filters and paging; use entry get to read fields.', Comment = 'is-IS=Listar afgreiddar gagnaskiptafærslur með síum og síðuskiptingu; notaðu skilaboðategundina fyrir lestur færslu til að lesa reiti.';
     begin
         exit(SelectionDescriptionLbl);
     end;

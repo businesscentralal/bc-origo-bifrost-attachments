@@ -100,7 +100,7 @@ codeunit 96274 "Attachments Build Tests ori"
         LibraryAssert.AreEqual('útflutningur gagnaskipta, útflutningur greiðslna, flytja út skrá', Actual.Get(5), 'Exact Icelandic discovery text 5.');
         LibraryAssert.AreEqual('Skráir útflutningsfærslu fyrir aðra skilgreiningu en Generic Import; hún keyrir ekki útflutninginn og skrifar ekki í geymslu.', Actual.Get(6), 'Exact Icelandic discovery text 6.');
         LibraryAssert.AreEqual('Stofnar eða uppfærir gerð gagnaskipta og krefst innflutningsskilgreiningar.', Actual.Get(7), 'Exact Icelandic discovery text 7.');
-        LibraryAssert.AreEqual('gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu', Actual.Get(8), 'Exact Icelandic discovery text 8.');
+        LibraryAssert.AreEqual('gerð gagnaskipta, gerð skjals í innleið, stilla skilgreiningu', Actual.Get(8), 'Exact Icelandic discovery text 8.');
         LibraryAssert.AreEqual('Tengir gerð gagnaskipta við innflutningsskilgreiningu.', Actual.Get(9), 'Exact Icelandic discovery text 9.');
     end;
 

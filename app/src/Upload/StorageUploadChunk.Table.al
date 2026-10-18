@@ -18,7 +18,7 @@ using System.Utilities;
 table 10035637 "Storage Upload Chunk ori"
 {
     Extensible = false;
-    Caption = 'Bifrost Storage Upload Chunk', Comment = 'is-IS=Upphleðslubiti Bifröst geymslu';
+    Caption = 'Bifrost Storage Upload Chunk', Comment = 'is-IS=Upphleðslubútur Bifröst geymslu';
     DataClassification = CustomerContent;
     Access = Internal;
     InherentEntitlements = X;
@@ -29,22 +29,22 @@ table 10035637 "Storage Upload Chunk ori"
         field(1; "Upload Id"; Guid)
         {
             Caption = 'Upload Id', Comment = 'is-IS=Upphleðslukenni';
-            ToolTip = 'Specifies the upload session this chunk belongs to.', Comment = 'is-IS=Tilgreinir upphleðslulotuna sem þessi biti tilheyrir.';
+            ToolTip = 'Specifies the upload session this chunk belongs to.', Comment = 'is-IS=Tilgreinir upphleðslulotuna sem þessi bútur tilheyrir.';
         }
         field(2; "Sequence No."; Integer)
         {
             Caption = 'Sequence No.', Comment = 'is-IS=Raðnúmer';
-            ToolTip = 'Specifies the position of this chunk in the assembled file; chunks are concatenated in ascending sequence order.', Comment = 'is-IS=Tilgreinir staðsetningu þessa bita í samsettu skránni; bitar eru tengdir saman í hækkandi raðnúmeri.';
+            ToolTip = 'Specifies the position of this chunk in the assembled file; chunks are concatenated in ascending sequence order.', Comment = 'is-IS=Tilgreinir staðsetningu þessa búts í samsettu skránni; bútar eru tengdir saman í hækkandi raðnúmeri.';
         }
         field(3; Content; Blob)
         {
             Caption = 'Content', Comment = 'is-IS=Innihald';
-            ToolTip = 'Specifies the decoded bytes of this chunk.', Comment = 'is-IS=Tilgreinir afkóðuð bæti þessa bita.';
+            ToolTip = 'Specifies the decoded bytes of this chunk.', Comment = 'is-IS=Tilgreinir afkóðuð bæti þessa búts.';
         }
         field(4; Size; Integer)
         {
             Caption = 'Size', Comment = 'is-IS=Stærð';
-            ToolTip = 'Specifies the number of bytes held by this chunk.', Comment = 'is-IS=Tilgreinir fjölda bæta sem þessi biti geymir.';
+            ToolTip = 'Specifies the number of bytes held by this chunk.', Comment = 'is-IS=Tilgreinir fjölda bæta sem þessi bútur geymir.';
         }
     }
 

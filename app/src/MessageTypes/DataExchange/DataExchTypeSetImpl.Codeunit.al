@@ -39,7 +39,7 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
     /// <summary>Returns the discovery terms for this message type.</summary>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'data exchange type, incoming document type, set definition', Comment = 'is-IS=gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu';
+        KeywordsLbl: Label 'data exchange type, incoming document type, set definition', Comment = 'is-IS=gerð gagnaskipta, gerð skjals í innleið, stilla skilgreiningu';
     begin
         exit(KeywordsLbl);
     end;

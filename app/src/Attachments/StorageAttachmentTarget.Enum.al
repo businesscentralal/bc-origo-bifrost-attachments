@@ -19,6 +19,6 @@ enum 10035635 "Storage Attachment Target ori"
     /// <summary>The <c>Incoming Document Attachment</c> table (BLOB content).</summary>
     value(1; IncomingDocument)
     {
-        Caption = 'Incoming Document', Comment = 'is-IS=Innkomandi skjal';
+        Caption = 'Incoming Document', Comment = 'is-IS=Skjal í innleið';
     }
 }

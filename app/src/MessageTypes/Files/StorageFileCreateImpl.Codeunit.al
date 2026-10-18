@@ -46,7 +46,7 @@ codeunit 10035649 "Storage File Create Impl ori" implements "Msg Interface ori",
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Uploads a whole file of up to 240 MiB to a storage path in one call; use the chunked upload types for larger files or files sent in parts.', Comment = 'is-IS=Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu boðgerðir fyrir hlutaupphleðslu fyrir stærri skrár eða skrár sendar í hlutum.';
+        SelectionDescriptionLbl: Label 'Uploads a whole file of up to 240 MiB to a storage path in one call; use the chunked upload types for larger files or files sent in parts.', Comment = 'is-IS=Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu skilaboðategundir fyrir bútaupphleðslu fyrir stærri skrár eða skrár sendar í bútum.';
     begin
         exit(SelectionDescriptionLbl);
     end;
