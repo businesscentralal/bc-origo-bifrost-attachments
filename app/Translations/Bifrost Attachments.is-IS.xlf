@@ -2967,6 +2967,24 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Bifröst gagnaskipti</note>
           <note from="Xliff Generator" annotates="general" priority="3">PermissionSet BIFROST DataExch ori - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Codeunit 10035645 - NamedType 3272514133" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The connection root cannot be deleted with Storage.Directory.Delete.</source>
+          <target>Rót geymslutengingar má ekki eyða með Storage.Directory.Delete.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Rót geymslutengingar má ekki eyða með Storage.Directory.Delete.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Dir Delete Impl ori - NamedType RootPathDeleteErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 10035645 - NamedType 3336988764" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a directory below the connection root</source>
+          <target>mappa sem liggur undir rót geymslutengingar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=mappa sem liggur undir rót geymslutengingar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Dir Delete Impl ori - NamedType NonRootDirectoryExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 10035645 - NamedType 2643545098" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Name the folder to delete, for example the folder shown by Storage.Directory.List.</source>
+          <target>Nefndu möppuna sem á að eyða, til dæmis möppu sem Storage.Directory.List sýnir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Nefndu möppuna sem á að eyða, til dæmis möppu sem Storage.Directory.List sýnir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Dir Delete Impl ori - NamedType RootPathDeleteNextStepLbl</note>
+        </trans-unit>
       </group>
     </body>
   </file>

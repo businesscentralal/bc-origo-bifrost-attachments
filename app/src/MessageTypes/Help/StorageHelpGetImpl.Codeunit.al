@@ -191,6 +191,8 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         Guide.AppendLine();
         Guide.AppendLine('A refused call answers `status = Error` with `code`, `parameter`, `received`, `expected` and `nextStep` for every problem found, so all problems can be fixed in one retry.');
         Guide.AppendLine();
+        Guide.AppendLine('`Storage.Directory.Delete` refuses the connection root path with `InvalidParameter` before the connector is called; name a folder below the root to delete.');
+        Guide.AppendLine();
         Guide.AppendLine('## Permissions');
         Guide.AppendLine();
         Guide.AppendLine('Assign the `BIFROST Attach ori` permission set. The Data Exchange message types are described by `Help.DataExchange.Get` and need `BIFROST DataExch ori`.');

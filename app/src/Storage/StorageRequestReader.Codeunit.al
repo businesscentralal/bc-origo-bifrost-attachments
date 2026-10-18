@@ -503,7 +503,10 @@ codeunit 10035682 "Storage Request Reader ori"
         Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(InvalidParameterFormatErr, ParameterName, Received, TypeName, Expected), ParameterName, Received, Expected, NextStep);
     end;
 
-    local procedure TokenText(Token: JsonToken) Result: Text
+    /// <summary>Formats a token as received on the wire: string values as their text, everything else as its JSON form.</summary>
+    /// <param name="Token">The token to format.</param>
+    /// <returns>The raw received spelling.</returns>
+    internal procedure TokenText(Token: JsonToken) Result: Text
     begin
         if Token.IsValue() then
             exit(Token.AsValue().AsText());
