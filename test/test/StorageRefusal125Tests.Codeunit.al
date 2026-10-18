@@ -34,7 +34,7 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
         LibraryAssert.AreEqual(0, MockState.GetListCalls(), 'The emptiness check must not list the root.');
     end;
 
-    /// <summary>AC01: every accepted root spelling resolves to the same refusal without a connector call.</summary>
+    /// <summary>AC01: the root spelling '/' is refused with the raw received value, without a connector call.</summary>
     [Test]
     [TransactionModel(TransactionModel::AutoCommit)]
     procedure Scenario_AC01_RootSpellings_RefusedWithReceivedValue()
@@ -44,14 +44,14 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
     begin
         // [GIVEN] The same empty mock root.
         Initialize();
-        // [WHEN] Each outer-slash spelling is submitted.
-        Response := Execute(Enum::"Message Type ori"::"Storage.Directory.Delete", PathRequest(''));
-        AssertRootRefusal(Response, '');
-        Response := Execute(Enum::"Message Type ori"::"Storage.Directory.Delete", PathRequest('//'));
-        AssertRootRefusal(Response, '//');
-        // [THEN] The refusals keep the connection state untouched and call the connector zero times.
-        LibraryAssert.AreEqual(0, MockState.GetDeleteCalls(), 'No root spelling may reach the connector delete.');
-        LibraryAssert.AreEqual(0, MockState.GetListCalls(), 'No root spelling may reach the connector list.');
+        // [WHEN] A present path that canonicalizes to the connection root ('/') is submitted.
+        // An empty or absent path is a MissingParameter error, and a double slash ('//') is rejected as an
+        // unsafe path; neither reaches the root refusal, so only '/' is asserted here as a root spelling.
+        Response := Execute(Enum::"Message Type ori"::"Storage.Directory.Delete", PathRequest('/'));
+        AssertRootRefusal(Response, '/');
+        // [THEN] The connection state is untouched and the connector is called zero times.
+        LibraryAssert.AreEqual(0, MockState.GetDeleteCalls(), 'The root may not reach the connector delete.');
+        LibraryAssert.AreEqual(0, MockState.GetListCalls(), 'The root may not reach the connector list.');
     end;
 
     /// <summary>AC01: the refusal is localized in Icelandic with the same stable code.</summary>

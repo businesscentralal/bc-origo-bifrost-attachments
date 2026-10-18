@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-18) - Storage.Directory.Delete root-refusal test contract (#125)
+
+- `Storage Refusal 125 Tests ori` (96238) corrects the root-spelling test to the real contract: only a present path that canonicalizes to the connection root (`/`) reaches the root refusal. An empty or absent path is a `MissingParameter` error and a double slash (`//`) is rejected as an unsafe path, so neither is asserted as a root-refusal spelling. This removes a failing assertion introduced with the original implementation. The AC01 raw-received-value echo (`/` for input `/`) remains the acceptance target and still depends on the guard-provable raw read, which is a named Architect-dispositioned design item (see PR #136).
+
 ### Changed (2026-10-16) - stored storage descriptions (#126)
 
 - `Storage Contract Parts ori` (70013500) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
