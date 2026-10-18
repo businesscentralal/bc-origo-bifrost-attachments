@@ -8,9 +8,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-### Fixed (2026-10-18) - Storage.Directory.Delete root-refusal test contract (#125)
+### Fixed (2026-10-18) - Storage.Directory.Delete root-refusal guard and test contract (#125)
 
-- `Storage Refusal 125 Tests ori` (96238) corrects the root-spelling test to the real contract: only a present path that canonicalizes to the connection root (`/`) reaches the root refusal. An empty or absent path is a `MissingParameter` error and a double slash (`//`) is rejected as an unsafe path, so neither is asserted as a root-refusal spelling. This removes a failing assertion introduced with the original implementation. The AC01 raw-received-value echo (`/` for input `/`) remains the acceptance target and still depends on the guard-provable raw read, which is a named Architect-dispositioned design item (see PR #136).
+- `Storage Refusal 125 Tests ori` (96238) corrects the root-spelling test to the real contract: only a present path that canonicalizes to the connection root (`/`) reaches the root refusal. An empty or absent path is a `MissingParameter` error and a double slash (`//`) is rejected as an unsafe path, so neither is asserted as a root-refusal spelling. This removes a failing assertion introduced with the original implementation. The implementation's root-refusal raw read now goes through the guard-provable `Argument.GetRequestJson()` receiver-read shape so the ContractParameterKeys guard passes with the empty allow-list.
+
+- `Storage Dir Delete Impl ori` (10035645) reads the raw `path` and `storageCode` request values through direct `Argument.GetRequestJson()` receiver reads (the shape the guard counts) before the typed readers, so the ContractParameterKeys source guard proves every declared key of `Storage.Directory.Delete` with the empty allow-list. The AC01 raw-received-value echo of `/` for input `/` is unchanged, and the refusal still runs before any connector call.
 
 ### Changed (2026-10-16) - stored storage descriptions (#126)
 
