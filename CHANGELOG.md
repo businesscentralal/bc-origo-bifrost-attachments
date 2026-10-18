@@ -10,7 +10,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-18) - connection root refusal for Storage.Directory.Delete (#125)
 
-- `Storage Dir Delete Impl ori` (10035645) refuses a `Storage.Directory.Delete` request whose `path` resolves to the connection root with `InvalidParameter` before any connector call: `parameter` is `path`, `received` holds the raw sent value, and `expected`/`nextStep` are localized in lcid 1033 and 1039. The refusal fires after setup and path validation and before the provider mutation preflight, so an empty root can no longer reach the connector.
+- `Storage Dir Delete Impl ori` (10035645) refuses a `Storage.Directory.Delete` request whose `path` resolves to the connection root with `InvalidParameter` before any connector call: `parameter` is `path`, `received` holds the raw sent value, and `expected`/`nextStep` are localized in lcid 1033 and 1039. The refusal fires after setup and path validation and before the provider mutation preflight, so an empty root can no longer reach the connector. The raw received value comes from `Storage Request Reader ori` (10035682) `TokenText`, which the SourceGuards `ContractParameterKeys` analysis counts as a proven request read.
 - `Help.Storage.Get` lists the root-path refusal in its errors chapter with the `InvalidParameter` code.
 - `Storage Mock State` (96201) and `Storage Mock Impl` (96200) count connector `DeleteDirectory` and `ListEntries` calls; `Storage Refusal 125 Tests ori` (96238) covers `/`, `''` and `//` against an empty root, asserts the raw received value, the localized 1039 details and zero connector calls, and checks the help errors chapter. Test execution evidence is recorded separately.
 
