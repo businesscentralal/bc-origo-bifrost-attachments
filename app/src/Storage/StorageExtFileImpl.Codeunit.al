@@ -42,7 +42,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         FileNameExpectedLbl: Label 'unambiguous Azure File Share names', Comment = 'is-IS=ótvíræð heiti í Azure File Share';
         ProviderPathNextStepLbl: Label 'Shorten the path or choose file names supported by the selected provider.', Comment = 'is-IS=Styttu slóðina eða veldu skráarheiti sem valin þjónusta styður.';
         InvalidPathErr: Label 'The storage path is invalid. Nothing was changed.', Comment = 'is-IS=Geymsluslóðin er ógild. Engu var breytt.';
-        NoAccountErr: Label 'Storage connection ''%1'' has no file account selected.', Comment = '%1 = storage code';
+        NoAccountErr: Label 'Storage connection ''%1'' has no file account selected.', Comment = '%1 = storage code||is-IS=Geymslutengingin „%1“ hefur engan skráareikning valinn.';
 
     /// <summary>Lists the configured base-path root through the External File Storage facade; initialization or provider failures propagate.</summary>
     /// <param name="StorageSetup">Configured connector, file account and base path used to initialize the facade.</param>
@@ -249,18 +249,28 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         exit(ExternalFileStorage.CombinePath(BasePath, Path));
     end;
 
-    /// <summary>Checks known provider budgets before a mutation; unknown capabilities remain explicit delivery gates.</summary>
+    /// <summary>Checks provider path budgets without requiring direct access to connector account tables.</summary>
     internal procedure CheckMutationPath(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; ParameterName: Text; Path: Text; IsDirectory: Boolean): Boolean
     var
-        Scope: Text;
+        RequestMgt: Codeunit "Storage Request Mgt ori";
         Address: Text;
-        CaseSensitive: Boolean;
+        ConnectorId: Integer;
     begin
         if StorageSetup."Storage Type" <> StorageSetup."Storage Type"::"External File Storage" then
             exit(true);
-        if not ResolvePhysicalAddress(Argument, StorageSetup, Path, Scope, Address, CaseSensitive) then
+        // Path budgets use only the base-prefixed path. Account metadata is needed
+        // separately for linked-attachment alias identity, not for every mutation.
+        Address := RequestMgt.CombinedPath(StorageSetup."Base Path", Path);
+        ConnectorId := StorageSetup.Connector.AsInteger();
+        if ConnectorId = 4580 then begin
+            AddUnverifiedOperation(Argument, 'storageCode', SharePointRootLbl);
             exit(false);
-        CheckProviderBudget(Argument, StorageSetup.Connector.AsInteger(), ParameterName, Address, IsDirectory);
+        end;
+        if (ConnectorId = 4570) and ContainsNonAscii(Address) then begin
+            AddUnverifiedOperation(Argument, 'path', FileShareComparisonLbl);
+            exit(false);
+        end;
+        CheckProviderBudget(Argument, ConnectorId, ParameterName, Address, IsDirectory);
         exit(not Argument.HasCollectedErrors());
     end;
 

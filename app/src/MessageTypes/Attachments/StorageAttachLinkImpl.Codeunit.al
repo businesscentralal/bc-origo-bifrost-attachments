@@ -17,10 +17,11 @@ codeunit 10035640 "Storage Attach Link Impl ori" implements "Msg Interface ori",
     /// <returns>True when the caller can read both storage setup and attachment links.</returns>
     procedure IsEnabled(): Boolean
     var
+        IncomingDocument: Record "Incoming Document";
         StorageSetup: Record "Storage Setup ori";
         AttachmentLink: Record "Storage Attachment Link ori";
     begin
-        exit(StorageSetup.ReadPermission() and AttachmentLink.ReadPermission());
+        exit(StorageSetup.ReadPermission() and AttachmentLink.ReadPermission() and IncomingDocument.WritePermission());
     end;
 
     /// <summary>Identifies the table used by the message filter contract.</summary>
@@ -34,7 +35,7 @@ codeunit 10035640 "Storage Attach Link Impl ori" implements "Msg Interface ori",
     /// <returns>The description label in the current language.</returns>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Attaches a file already in storage to a new or existing incoming document, served transparently from storage.', Comment = 'is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal; skráin er aðgengileg beint úr geymslu.';
+        DescriptionLbl: Label 'Attaches a file already in storage to a new or existing incoming document, served transparently from storage.', Comment = 'is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi skjal í innleið; skráin er aðgengileg beint úr geymslu.';
     begin
         exit(DescriptionLbl);
     end;
@@ -46,7 +47,7 @@ codeunit 10035640 "Storage Attach Link Impl ori" implements "Msg Interface ori",
     /// <returns>Comma-separated keywords in the current language.</returns>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'link stored file to incoming document, incoming document from storage, register a stored invoice, create incoming document from cloud file, attach blob to incoming document, scanned bill already in storage', Comment = 'is-IS=tengja geymda skrá við innkomið skjal, innkomið skjal úr geymslu, skrá geymdan reikning, stofna innkomið skjal úr skýjaskrá, hengja skrá úr geymslu við innkomið skjal, skannaður reikningur í geymslu';
+        KeywordsLbl: Label 'link stored file to incoming document, incoming document from storage, register a stored invoice, create incoming document from cloud file, attach blob to incoming document, scanned bill already in storage', Comment = 'is-IS=tengja geymda skrá við skjal í innleið, skjal í innleið úr geymslu, skrá geymdan reikning, stofna skjal í innleið úr skýjaskrá, hengja skrá úr geymslu við skjal í innleið, skannaður reikningur í geymslu';
     begin
         exit(KeywordsLbl);
     end;
@@ -55,7 +56,7 @@ codeunit 10035640 "Storage Attach Link Impl ori" implements "Msg Interface ori",
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Attaches a file that already sits in storage to a new or existing incoming document without copying it into the database.', Comment = 'is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal án þess að afrita hana í gagnagrunninn.';
+        SelectionDescriptionLbl: Label 'Attaches a file that already sits in storage to a new or existing incoming document without copying it into the database.', Comment = 'is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi skjal í innleið án þess að afrita hana í gagnagrunninn.';
     begin
         exit(SelectionDescriptionLbl);
     end;

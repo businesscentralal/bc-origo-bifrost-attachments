@@ -31,7 +31,7 @@ codeunit 10035657 "Storage Upload Append Impl ori" implements "Msg Interface ori
     /// <returns>The description label in the current language.</returns>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Appends one base64 chunk of up to 240 MiB to an open upload session.', Comment = 'is-IS=Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu.';
+        DescriptionLbl: Label 'Appends one base64 chunk of up to 240 MiB to an open upload session.', Comment = 'is-IS=Bætir einum base64-búti allt að 240 MiB við opna upphleðslulotu.';
     begin
         exit(DescriptionLbl);
     end;
@@ -43,7 +43,7 @@ codeunit 10035657 "Storage Upload Append Impl ori" implements "Msg Interface ori
     /// <returns>Comma-separated keywords in the current language.</returns>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'send next chunk, append chunk, upload next part, add part to upload, continue upload, send file piece', Comment = 'is-IS=senda næsta bút, bæta við bút, hlaða upp næsta hluta, bæta hluta við upphleðslu, halda upphleðslu áfram, senda hluta skrár';
+        KeywordsLbl: Label 'send next chunk, append chunk, upload next part, add part to upload, continue upload, send file piece', Comment = 'is-IS=senda næsta bút, bæta við búti, hlaða upp næsta bút, bæta búti við upphleðslu, halda upphleðslu áfram, senda bút skrár';
     begin
         exit(KeywordsLbl);
     end;
@@ -52,7 +52,7 @@ codeunit 10035657 "Storage Upload Append Impl ori" implements "Msg Interface ori
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Adds one base64 chunk of up to 240 MiB to an open upload session; call it once per part in sequence before committing.', Comment = 'is-IS=Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern hluta í réttri röð áður en upphleðslu er lokið.';
+        SelectionDescriptionLbl: Label 'Adds one base64 chunk of up to 240 MiB to an open upload session; call it once per part in sequence before committing.', Comment = 'is-IS=Bætir einum base64-búti allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern bút í réttri röð áður en upphleðsla er staðfest.';
     begin
         exit(SelectionDescriptionLbl);
     end;

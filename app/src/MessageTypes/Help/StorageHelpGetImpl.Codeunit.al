@@ -23,21 +23,21 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
 
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Returns a Markdown overview of the storage connector and all its message types. No request body is required.', Comment = 'is-IS=Skilar Markdown-yfirliti yfir geymslutengilinn og allar boðgerðir hans. Enginn meginmálshluti beiðni er nauðsynlegur.';
+        DescriptionLbl: Label 'Returns a Markdown overview of the storage connector and all its message types. No request body is required.', Comment = 'is-IS=Skilar Markdown-yfirliti yfir geymslutengilinn og allar skilaboðategundir hans. Enginn meginmálshluti beiðni er nauðsynlegur.';
     begin
         exit(DescriptionLbl);
     end;
 
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'storage help, storage message types, how to use storage, storage API overview, storage documentation', Comment = 'is-IS=geymslu hjálp, geymsluboðgerðir, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl';
+        KeywordsLbl: Label 'storage help, storage message types, how to use storage, storage API overview, storage documentation', Comment = 'is-IS=geymsluhjálp, skilaboðategundir geymslu, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl';
     begin
         exit(KeywordsLbl);
     end;
 
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Returns the storage connector guide and message type map; use a specific storage type to perform an operation.', Comment = 'is-IS=Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir boðgerðir; notaðu tiltekna geymsluboðgerð til að framkvæma aðgerð.';
+        SelectionDescriptionLbl: Label 'Returns the storage connector guide and message type map; use a specific storage type to perform an operation.', Comment = 'is-IS=Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir skilaboðategundir; notaðu tiltekna skilaboðategund geymslu til að framkvæma aðgerð.';
     begin
         exit(SelectionDescriptionLbl);
     end;
@@ -170,18 +170,20 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         Guide.AppendLine('| Directories | `Storage.Directory.Delete` | Deletes a folder that holds no linked file. |');
         Guide.AppendLine('| Attachments | `Storage.Attachment.Offload` | Moves the content of a document attachment to storage and links it. |');
         Guide.AppendLine('| Attachments | `Storage.Attachment.Restore` | Writes linked content back into the attachment and deletes the stored file. |');
-        Guide.AppendLine('| Attachments | `Storage.Attachment.CreateLinked` | Creates an attachment on a record that points at an existing stored file. |');
+        Guide.AppendLine('| Attachments | `Storage.Attachment.CreateLinked` | Attaches a stored file to a new or existing incoming document. Optional `dataExchangeType`, `process` and `vendorNo`. |');
         Guide.AppendLine('| Attachments | `Storage.Attachment.CreateForRecord` | Creates an attachment on a record from base64 content. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.Begin` | Opens a chunked upload session. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.Append` | Adds the next chunk to an open session. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.Status` | Returns the state of a session. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.Commit` | Assembles the chunks and writes the file to storage. |');
-        Guide.AppendLine('| Uploads | `Storage.Upload.CommitToRecord` | Assembles the chunks and attaches the file to a record. |');
+        Guide.AppendLine('| Uploads | `Storage.Upload.CommitToRecord` | Assembles the chunks and attaches the file to a record or incoming document. IncomingDocument accepts `dataExchangeType`, `process` and `vendorNo`. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.Abort` | Discards an open session and its chunks. |');
         Guide.AppendLine();
         Guide.AppendLine('## Chunked uploads');
         Guide.AppendLine();
         Guide.AppendLine('Use an upload session when a file is larger than one request can carry: `Storage.Upload.Begin`, then `Storage.Upload.Append` once per chunk in order, then `Storage.Upload.Commit` or `Storage.Upload.CommitToRecord`. `Storage.Upload.Begin` returns `chunkSizeHint` and `maxChunkBytes`. Files are written under the `bifrost-uploads/` root unless the request names a folder. A session belongs to the user who opened it.');
+        Guide.AppendLine();
+        Guide.AppendLine('To feed an incoming document: `Storage.Upload.Begin` → `Storage.Upload.Append` → `Storage.Upload.CommitToRecord` with `target` IncomingDocument and optional `dataExchangeType`, `process` and `vendorNo`. Wire the type first with `DataExchange.Type.Set`. Processing errors stay on the incoming document as `processErrors`; the commit still returns Success. A file already in storage uses `Storage.Attachment.CreateLinked` with the same parameters.');
         Guide.AppendLine();
         Guide.AppendLine('## Linked files');
         Guide.AppendLine();
@@ -190,6 +192,8 @@ codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         Guide.AppendLine('## Errors');
         Guide.AppendLine();
         Guide.AppendLine('A refused call answers `status = Error` with `code`, `parameter`, `received`, `expected` and `nextStep` for every problem found, so all problems can be fixed in one retry.');
+        Guide.AppendLine();
+        Guide.AppendLine('`Storage.Directory.Delete` refuses the connection root path with `InvalidParameter` before the connector is called; name a folder below the root to delete.');
         Guide.AppendLine();
         Guide.AppendLine('## Permissions');
         Guide.AppendLine();

@@ -28,6 +28,12 @@ comparison is `0fb78c0be538bd77c482c70eddbbef451f697cc9`; the available standard
 snapshot is `ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f`, recorded as synchronized on
 2026-10-03, not freshly synchronized by this audit.
 
+2026-10-16 #23 working tree: codeunit 70013532 `DataExch Inc Doc Proc ori` is in the
+inventory, and the 11 changed shipping files have current hashes. Procedure CSV line
+numbers stay the prior audit snapshot. This is not a compile or runtime certificate.
+
+This change adds audit records only. No object, procedure, interface member, enum value,
+wire name, access, extensibility, identity or allocation is changed.
 This reconciliation changes audit text and inventory metadata only. The access reductions already merged in PR118
 are described below; this documentation change adds no further access reduction.
 
@@ -40,6 +46,9 @@ are described below; this documentation change adds no further access reduction.
 | Matrix below | All shipping objects, including the already-internal helpers and interface-bound implementations. |
 | `python3 tools/Test-ApiSurfaceMatrix.py` | Static guard checks namespace/kind/ID/path, file hashes, document decisions and Setup table/page provider attribution. It does not resolve lexical consumers or compile AL. |
 
+Counts: 80 objects in `api-surface-objects.json` (70013532 added; the previous prose
+count of 81 did not match that file's 79 rows). Procedure CSV remains the prior
+audit snapshot of 806 non-local procedures/interface members, 16
 Counts: 79 objects, 774 non-local procedures/interface members, 11
 effectively public procedures/interface members. A public procedure on an Internal object
 is recorded as effectively Internal. Object references are lexical references to the quoted
@@ -131,6 +140,7 @@ does not make an event subscriber unused.
 | enumextension 70013519 [DataExch Export MsgType ori](app/src/MessageTypes/DataExchange/DataExchExportMsgType.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
 | codeunit 70013534 [DataExch Export Run Impl ori](app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 70013521 [DataExch Help Get Impl ori](app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
+| codeunit 70013532 [DataExch Inc Doc Proc ori](app/src/MessageTypes/DataExchange/DataExchIncDocProc.Codeunit.al) | Internal | not declared / not applicable | 4 app / 0 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enumextension 70013511 [DataExch Import MsgType ori](app/src/MessageTypes/DataExchange/DataExchImportMsgType.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
 | codeunit 70013540 [DataExch Import Run Impl ori](app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 1 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enumextension 70013510 [DataExch Msg Type ori](app/src/MessageTypes/DataExchange/DataExchMsgType.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |

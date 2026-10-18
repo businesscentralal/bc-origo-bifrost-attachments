@@ -146,7 +146,7 @@ codeunit 70013521 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
         Guide.AppendLine('## Pipeline');
         Guide.AppendLine();
         Guide.AppendLine('1. **Discover** the definitions: `DataExchange.Definition.List` (optional `type` and `direction` filters), then `DataExchange.Definition.Get` for the lines, columns and mappings of one definition.');
-        Guide.AppendLine('2. **Wire** an import definition to incoming documents: `DataExchange.Type.List` shows the Data Exchange Types, `DataExchange.Type.Set` creates or updates one for a Generic Import definition.');
+        Guide.AppendLine('2. **Wire** an import definition to incoming documents: `DataExchange.Type.List` shows the Data Exchange Types, `DataExchange.Type.Set` creates or updates one for a Generic Import definition. Then `Storage.Upload.CommitToRecord` or `Storage.Attachment.CreateLinked` with `dataExchangeType` and optional `process`.');
         Guide.AppendLine('3. **Register** an entry: `DataExchange.Import.Run` (Generic Import or Payroll Import definition) or `DataExchange.Export.Run` (any definition that is not Generic Import). Both create a Data Exch. header only; they do not read or write a file.');
         Guide.AppendLine('4. **Inspect** entries: `DataExchange.Entry.List` (filter on `dataExchDefCode`, `dateFrom`, `dateTo`; page with `skip`/`take`), then `DataExchange.Entry.Get` for one entry and its fields (`includeFileContent` up to 1 MB).');
         Guide.AppendLine();

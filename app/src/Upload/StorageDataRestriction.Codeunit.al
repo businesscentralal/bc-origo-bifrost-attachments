@@ -1,5 +1,6 @@
 namespace Origo.Bifrost.Attachments;
 
+using Microsoft.EServices.EDocument;
 using Microsoft.Foundation.Attachment;
 using Origo.Bifrost;
 using System.IO;
@@ -25,6 +26,11 @@ using System.IO;
 /// <c>Storage Attachment Link ori</c> is write-restricted the same way. Reads stay allowed
 /// for audits. Legitimate rows are written by the attachment message types named in the
 /// write hint.
+///
+/// <c>Data Exchange Type</c> rows are write-restricted and point at <c>DataExchange.Type.Set</c>.
+/// <c>Incoming Document."Data Exchange Type"</c> is field-restricted and points at
+/// <c>Storage.Upload.CommitToRecord / DataExchange.Type.Set</c>. The rest of Incoming Document
+/// stays writable through the generic data types.
 /// </summary>
 codeunit 10035663 "Storage Data Restriction ori"
 {
@@ -33,6 +39,8 @@ codeunit 10035663 "Storage Data Restriction ori"
     var
         DataExchWriteHintTxt: Label 'DataExchange.Import.Run / Storage.Upload.CommitToDataExchange', Locked = true;
         LinkWriteHintTxt: Label 'Storage.Attachment.Offload / Storage.Attachment.CreateLinked / Storage.Attachment.CreateForRecord', Locked = true;
+        TypeSetHintTxt: Label 'DataExchange.Type.Set', Locked = true;
+        IncomingTypeFieldHintTxt: Label 'Storage.Upload.CommitToRecord / DataExchange.Type.Set', Locked = true;
 
     [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnAfterIsTableReadRestrictedForDataRecords', '', false, false)]
     local procedure RestrictUploadTablesFromRead(TableNo: Integer; var IsRestricted: Boolean)
@@ -42,10 +50,14 @@ codeunit 10035663 "Storage Data Restriction ori"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnAfterIsTableWriteRestrictedForDataRecords', '', false, false)]
-    local procedure RestrictUploadTablesFromWrite(TableNo: Integer; var IsRestricted: Boolean)
+    local procedure RestrictUploadTablesFromWrite(TableNo: Integer; Force: Boolean; var IsRestricted: Boolean)
     begin
+        // Foundation 28.0.3.530 passes Force. A permission-granted force does not reopen these tables.
         if IsProtectedTable(TableNo) then
-            IsRestricted := true;
+            IsRestricted := true
+        else
+            if Force then
+                exit;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnGetDedicatedMessageTypeHintForWrite', '', false, false)]
@@ -62,17 +74,35 @@ codeunit 10035663 "Storage Data Restriction ori"
             Hint := LinkWriteHintTxt;
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnGetDedicatedMessageTypeHintForWrite', '', false, false)]
+    local procedure HintDataExchangeTypeWrite(TableNo: Integer; var Hint: Text)
+    begin
+        if IsDataExchangeTypeTable(TableNo) then
+            Hint := TypeSetHintTxt;
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnGetDedicatedMessageTypeHintForField', '', false, false)]
+    local procedure HintIncomingDocumentDataExchangeTypeField(TableNo: Integer; FieldNo: Integer; var Hint: Text)
+    begin
+        if (TableNo = Database::"Incoming Document") and (FieldNo = IncomingDocumentDataExchangeTypeFieldNo()) then
+            Hint := IncomingTypeFieldHintTxt;
+    end;
 
     [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnAfterIsFieldWriteRestrictedForDataRecords', '', false, false)]
-    local procedure RestrictNativeExternalStorFieldsFromWrite(TableNo: Integer; FieldNo: Integer; var IsRestricted: Boolean)
+    local procedure RestrictNativeExternalStorFieldsFromWrite(TableNo: Integer; FieldNo: Integer; Force: Boolean; var IsRestricted: Boolean)
     begin
+        // Foundation 28.0.3.530 passes Force. A permission-granted force does not reopen these fields.
         if (TableNo = Database::"Document Attachment") and (FieldNo in [8750, 8751, 8752, 8753]) then
+            IsRestricted := true;
+        if (TableNo = Database::"Incoming Document") and (FieldNo = IncomingDocumentDataExchangeTypeFieldNo()) then
+            IsRestricted := true;
+        if Force and IsRestricted then
             IsRestricted := true;
     end;
 
     local procedure IsProtectedTable(TableNo: Integer): Boolean
     begin
-        exit(IsUploadTable(TableNo) or IsStorageSetupTable(TableNo) or IsDataExchTable(TableNo) or IsAttachmentLinkTable(TableNo));
+        exit(IsUploadTable(TableNo) or IsStorageSetupTable(TableNo) or IsDataExchTable(TableNo) or IsAttachmentLinkTable(TableNo) or IsDataExchangeTypeTable(TableNo));
     end;
 
     local procedure IsUploadTable(TableNo: Integer): Boolean
@@ -93,5 +123,17 @@ codeunit 10035663 "Storage Data Restriction ori"
     local procedure IsAttachmentLinkTable(TableNo: Integer): Boolean
     begin
         exit(TableNo = Database::"Storage Attachment Link ori");
+    end;
+
+    local procedure IsDataExchangeTypeTable(TableNo: Integer): Boolean
+    begin
+        exit(TableNo = Database::"Data Exchange Type");
+    end;
+
+    local procedure IncomingDocumentDataExchangeTypeFieldNo(): Integer
+    var
+        IncomingDocument: Record "Incoming Document";
+    begin
+        exit(IncomingDocument.FieldNo("Data Exchange Type"));
     end;
 }

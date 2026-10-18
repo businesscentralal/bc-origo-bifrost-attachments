@@ -22,10 +22,10 @@ codeunit 70013500 "Storage Contract Parts ori"
         UploadTableNameLbl: Label 'Accepted table name instead of tableId for DocumentAttachment.', Comment = 'is-IS=Heiti töflu sem má nota í stað tableId fyrir DocumentAttachment.';
         IncomingDescriptionLbl: Label 'Description for a new IncomingDocument; ignored for DocumentAttachment.', Comment = 'is-IS=Lýsing fyrir nýtt IncomingDocument; hunsað fyrir DocumentAttachment.';
         UploadRecordIdLbl: Label 'For DocumentAttachment, identify the host by recordSystemId or no; required for tables without no addressing.', Comment = 'is-IS=Fyrir DocumentAttachment skal auðkenna hýsil með recordSystemId eða no; nauðsynlegt fyrir töflur án no-vistfangs.';
-        TypeCodeLbl: Label 'The Data Exchange Type code, at most 20 characters.', Comment = 'is-IS=Kóði gagnaskiptagerðar, að hámarki 20 stafir.';
+        TypeCodeLbl: Label 'The Data Exchange Type code, at most 20 characters.', Comment = 'is-IS=Kóði gerðar gagnaskipta, að hámarki 20 stafir.';
         ImportDefinitionLbl: Label 'The existing import definition code, at most 20 characters.', Comment = 'is-IS=Kóði fyrirliggjandi innflutningsskilgreiningar, að hámarki 20 stafir.';
         ExportDefinitionLbl: Label 'The existing export definition code, at most 20 characters.', Comment = 'is-IS=Kóði fyrirliggjandi útflutningsskilgreiningar, að hámarki 20 stafir.';
-        TypeDescriptionLbl: Label 'Optional description within the Data Exchange Type Description field length.', Comment = 'is-IS=Valfrjáls lýsing innan lengdar lýsingarreits gagnaskiptagerðar.';
+        TypeDescriptionLbl: Label 'Optional description within the Data Exchange Type Description field length.', Comment = 'is-IS=Valfrjáls lýsing innan lengdar lýsingarreits gerðar gagnaskipta.';
         ImportStorageLbl: Label 'Caller reference only: checked for syntax, not validated against configured storage connections and not stored on the entry header.', Comment = 'is-IS=Aðeins tilvísun kallanda: snið er athugað en ekki hvort geymslutenging sé skilgreind og tilvísunin er ekki vistuð í færsluhausnum.';
         ImportPathLbl: Label 'Caller reference only: checked for path syntax, not validated for file existence and not stored on the entry header. No file is read.', Comment = 'is-IS=Aðeins tilvísun kallanda: snið slóðar er athugað en ekki hvort skráin sé til og slóðin er ekki vistuð í færsluhausnum. Engin skrá er lesin.';
         ExportFileNameLbl: Label 'The output file name within the Data Exch. File Name field length.', Comment = 'is-IS=Heiti úttaksskrár innan lengdar skráarheitisreits gagnaskipta.';
@@ -39,7 +39,7 @@ codeunit 70013500 "Storage Contract Parts ori"
         DefinitionTypeLbl: Label 'The definition type name.', Comment = 'is-IS=Gerðarheiti skilgreiningar.';
         CreatedEntryLbl: Label 'The created Data Exchange entry number.', Comment = 'is-IS=Númer gagnaskiptafærslunnar sem var stofnuð.';
         MatchingCountLbl: Label 'Number of matching rows.', Comment = 'is-IS=Fjöldi samsvarandi færslna.';
-        MatchingTypesLbl: Label 'The Data Exchange Types and their linked definitions.', Comment = 'is-IS=Gagnaskiptagerðir og tengdar skilgreiningar þeirra.';
+        MatchingTypesLbl: Label 'The Data Exchange Types and their linked definitions.', Comment = 'is-IS=Gerðir gagnaskipta og tengdar skilgreiningar þeirra.';
         MissingInputLbl: Label 'A required request parameter is missing.', Comment = 'is-IS=Nauðsynlega færibreytu vantar í beiðnina.';
         SupplyInputLbl: Label 'Provide the named parameter and retry.', Comment = 'is-IS=Gefðu upp tilgreinda færibreytu og reyndu aftur.';
         InvalidFormatLbl: Label 'A parameter has the wrong JSON type or format.', Comment = 'is-IS=Færibreyta hefur ranga JSON-gerð eða snið.';
@@ -53,6 +53,13 @@ codeunit 70013500 "Storage Contract Parts ori"
         OmitInlineLbl: Label 'Omit includeFileContent or send false and retrieve the file through storage.', Comment = 'is-IS=Slepptu includeFileContent eða sendu false og sæktu skrána í gegnum geymslu.';
         DataExchangeChangesLbl: Label 'Writes Data Exchange definition, type or entry records within the operation transaction. Import.Run and Export.Run currently stage an entry header only.', Comment = 'is-IS=Skrifar skilgreiningar, gerðir eða færslur gagnaskipta innan færslubókunar aðgerðarinnar. Import.Run og Export.Run undirbúa nú aðeins færsluhaus.';
         DataExchangePreconditionsLbl: Label 'The caller holds BIFROST DataExch ori; supplied definitions and entries must exist and support the operation. No storage connection is used.', Comment = 'is-IS=Kallandi hefur BIFROST DataExch ori; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Engin geymslutenging er notuð.';
+        DataExchangeTypeParamLbl: Label 'Optional Data Exchange Type code for IncomingDocument. The type must already exist.', Comment = 'is-IS=Valfrjáls kóði gagnaskiptagerðar fyrir IncomingDocument. Gerðin verður að vera til.';
+        ProcessParamLbl: Label 'When true, run CreateDocumentWithDataExchange after the incoming document is created. Default false. The upload still succeeds when processing reports errors.', Comment = 'is-IS=Þegar true er CreateDocumentWithDataExchange keyrt eftir að innkomuskjalið er stofnað. Sjálfgefið false. Upphleðslan heppnast samt þó vinnslan skili villum.';
+        VendorNoParamLbl: Label 'Optional vendor number for a new incoming document.', Comment = 'is-IS=Valfrjálst lánardrottinsnúmer fyrir nýtt innkomuskjal.';
+        DataExchangeTypeResponseLbl: Label 'The Data Exchange Type applied to the incoming document.', Comment = 'is-IS=Gagnaskiptagerðin sem var sett á innkomuskjalið.';
+        ProcessedResponseLbl: Label 'True when CreateDocumentWithDataExchange created a document.', Comment = 'is-IS=Satt þegar CreateDocumentWithDataExchange stofnaði skjal.';
+        CreatedDocumentResponseLbl: Label 'The created document type, number and systemId when processing succeeded.', Comment = 'is-IS=Gerð, númer og systemId stofnaðs skjals þegar vinnsla tókst.';
+        ProcessErrorsResponseLbl: Label 'Base-app processing messages when process is true. Status stays Success.', Comment = 'is-IS=Vinnsluskilaboð grunnforrits þegar process er true. Staða er áfram Success.';
 
 
     /// <summary>Builds the envelope shared by storage requests.</summary>
@@ -137,6 +144,9 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Parameters.Add(ContractMgt.Parameter('fileName', 'string', true, 'The attachment file name.'));
                     Parameters.Add(ContractMgt.Parameter('incomingDocumentEntryNo', 'integer', false, 'An existing incoming document entry number.'));
                     Parameters.Add(ContractMgt.Parameter('description', 'string', false, 'Description for a new incoming document.'));
+                    Parameters.Add(ContractMgt.Parameter('dataExchangeType', 'string', false, DataExchangeTypeParamLbl));
+                    Parameters.Add(ContractMgt.Parameter('process', 'boolean', false, ProcessParamLbl));
+                    Parameters.Add(ContractMgt.Parameter('vendorNo', 'string', false, VendorNoParamLbl));
                 end;
             'Storage.Attachment.CreateForRecord':
                 begin
@@ -179,6 +189,9 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Parameters.Add(ContractMgt.Parameter('no', 'string', false, 'The host record primary key.'));
                     Parameters.Add(ContractMgt.Parameter('incomingDocumentEntryNo', 'integer', false, 'An existing incoming document entry number.'));
                     Parameters.Add(ContractMgt.Parameter('fileName', 'string', false, 'An optional replacement file name.'));
+                    Parameters.Add(ContractMgt.Parameter('dataExchangeType', 'string', false, DataExchangeTypeParamLbl));
+                    Parameters.Add(ContractMgt.Parameter('process', 'boolean', false, ProcessParamLbl));
+                    Parameters.Add(ContractMgt.Parameter('vendorNo', 'string', false, VendorNoParamLbl));
                 end;
             'DataExchange.Definition.List':
                 begin
@@ -300,6 +313,12 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('systemId', 'string', 'The new attachment SystemId.'));
                     Fields.Add(ContractMgt.ResponseField('fileName', 'string', 'The final attachment file name.'));
                     Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The file size in bytes.'));
+                    if MessageType in ['Storage.Attachment.CreateLinked', 'Storage.Upload.CommitToRecord'] then begin
+                        Fields.Add(ContractMgt.ResponseField('dataExchangeType', 'string', DataExchangeTypeResponseLbl));
+                        Fields.Add(ContractMgt.ResponseField('processed', 'boolean', ProcessedResponseLbl));
+                        Fields.Add(ContractMgt.ResponseField('createdDocument', 'object', CreatedDocumentResponseLbl));
+                        Fields.Add(ContractMgt.ResponseField('processErrors', 'array', ProcessErrorsResponseLbl));
+                    end;
                 end;
             'Storage.Upload.Begin':
                 begin
@@ -543,6 +562,7 @@ codeunit 70013500 "Storage Contract Parts ori"
                 begin
                     Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Commit', 'Use the path of a committed upload.'));
                     Related.Add(ContractMgt.RelatedEntry('Storage.Attachment.Restore', 'Bring the linked file into the database.'));
+                    Related.Add(ContractMgt.RelatedEntry('DataExchange.Type.Set', 'Wire a Data Exchange Type before process.'));
                 end;
             'Storage.Attachment.CreateForRecord':
                 begin
@@ -573,7 +593,10 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Commit', 'Commit when complete.'));
                 end;
             'Storage.Upload.CommitToRecord':
-                Related.Add(ContractMgt.RelatedEntry('Storage.Attachment.Offload', 'Move the created attachment to storage later.'));
+                begin
+                    Related.Add(ContractMgt.RelatedEntry('Storage.Attachment.Offload', 'Move the created attachment to storage later.'));
+                    Related.Add(ContractMgt.RelatedEntry('DataExchange.Type.Set', 'Wire a Data Exchange Type before process.'));
+                end;
             'DataExchange.Definition.List':
                 begin
                     Related.Add(ContractMgt.RelatedEntry('DataExchange.Definition.Get', 'Read one definition in full.'));

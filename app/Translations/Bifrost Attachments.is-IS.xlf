@@ -35,26 +35,26 @@
         </trans-unit>
         <trans-unit id="Table 4034440960 - Field 203998113 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the incoming document entry number, when the target is an incoming document attachment.</source>
-          <target>Tilgreinir færslunúmer innkomandi skjals þegar markmiðið er viðhengi innkomandi skjals.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir færslunúmer innkomandi skjals þegar markmiðið er viðhengi innkomandi skjals.</note>
+          <target>Tilgreinir færslunúmer skjals í innleið þegar markmiðið er viðhengi skjals í innleið.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir færslunúmer skjals í innleið þegar markmiðið er viðhengi skjals í innleið.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Attachment Link ori - Field Inc. Doc. Entry No. - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 4034440960 - Field 203998113 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Incoming Document Entry No.</source>
-          <target>Færslunúmer innkomandi skjals</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færslunúmer innkomandi skjals</note>
+          <target>Færslunúmer skjals í innleið</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Færslunúmer skjals í innleið</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Attachment Link ori - Field Inc. Doc. Entry No. - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 4034440960 - Field 4067054847 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the incoming document attachment line number, when the target is an incoming document attachment.</source>
-          <target>Tilgreinir línunúmer viðhengis innkomandi skjals þegar markmiðið er viðhengi innkomandi skjals.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir línunúmer viðhengis innkomandi skjals þegar markmiðið er viðhengi innkomandi skjals.</note>
+          <target>Tilgreinir línunúmer viðhengis skjals í innleið þegar markmiðið er viðhengi skjals í innleið.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir línunúmer viðhengis skjals í innleið þegar markmiðið er viðhengi skjals í innleið.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Attachment Link ori - Field Inc. Doc. Line No. - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 4034440960 - Field 4067054847 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Incoming Document Line No.</source>
-          <target>Línunúmer innkomandi skjals</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Línunúmer innkomandi skjals</note>
+          <target>Línunúmer skjals í innleið</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Línunúmer skjals í innleið</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Attachment Link ori - Field Inc. Doc. Line No. - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 4034440960 - Field 2833623687 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
@@ -137,8 +137,8 @@
         </trans-unit>
         <trans-unit id="Table 3959677966 - NamedType 4100786335" size-unit="char" translate="yes" xml:space="preserve">
           <source>Select a file account before testing the connection.</source>
-          <target>Veldu skráarreikning áður en tengingin er prófuð.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Veldu skráarreikning áður en tengingin er prófuð.</note>
+          <target>Veldu skráareikning áður en tengingin er prófuð.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Veldu skráareikning áður en tengingin er prófuð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Setup ori - NamedType NoAccountErr</note>
         </trans-unit>
         <trans-unit id="Table 3959677966 - Method 4263468516 - NamedType 1388767349" size-unit="char" translate="yes" xml:space="preserve">
@@ -245,14 +245,14 @@
         </trans-unit>
         <trans-unit id="Table 1181423367 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bifrost Storage Upload Chunk</source>
-          <target>Upphleðslubiti Bifröst geymslu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Upphleðslubiti Bifröst geymslu</note>
+          <target>Upphleðslubútur Bifröst geymslu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Upphleðslubútur Bifröst geymslu</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Chunk ori - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 1181423367 - Field 2166181827 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the decoded bytes of this chunk.</source>
-          <target>Tilgreinir afkóðuð bæti þessa bita.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir afkóðuð bæti þessa bita.</note>
+          <target>Tilgreinir afkóðuð bæti þessa búts.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir afkóðuð bæti þessa búts.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Chunk ori - Field Content - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1181423367 - Field 2166181827 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -263,8 +263,8 @@
         </trans-unit>
         <trans-unit id="Table 1181423367 - Field 3014885516 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the position of this chunk in the assembled file; chunks are concatenated in ascending sequence order.</source>
-          <target>Tilgreinir staðsetningu þessa bita í samsettu skránni; bitar eru tengdir saman í hækkandi raðnúmeri.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir staðsetningu þessa bita í samsettu skránni; bitar eru tengdir saman í hækkandi raðnúmeri.</note>
+          <target>Tilgreinir staðsetningu þessa búts í samsettu skránni; bútar eru tengdir saman í hækkandi raðnúmeri.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir staðsetningu þessa búts í samsettu skránni; bútar eru tengdir saman í hækkandi raðnúmeri.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Chunk ori - Field Sequence No. - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1181423367 - Field 3014885516 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -275,8 +275,8 @@
         </trans-unit>
         <trans-unit id="Table 1181423367 - Field 3964473375 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the number of bytes held by this chunk.</source>
-          <target>Tilgreinir fjölda bæta sem þessi biti geymir.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir fjölda bæta sem þessi biti geymir.</note>
+          <target>Tilgreinir fjölda bæta sem þessi bútur geymir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir fjölda bæta sem þessi bútur geymir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Chunk ori - Field Size - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1181423367 - Field 3964473375 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -287,8 +287,8 @@
         </trans-unit>
         <trans-unit id="Table 1181423367 - Field 2553504562 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the upload session this chunk belongs to.</source>
-          <target>Tilgreinir upphleðslulotuna sem þessi biti tilheyrir.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir upphleðslulotuna sem þessi biti tilheyrir.</note>
+          <target>Tilgreinir upphleðslulotuna sem þessi bútur tilheyrir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir upphleðslulotuna sem þessi bútur tilheyrir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Chunk ori - Field Upload Id - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1181423367 - Field 2553504562 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -305,14 +305,14 @@
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 3960290652 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies how many chunks have been appended to the session.</source>
-          <target>Tilgreinir hversu margir bitar hafa verið viðbættir lotunni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir hversu margir bitar hafa verið viðbættir lotunni.</note>
+          <target>Tilgreinir hversu margir bútar hafa verið viðbættir lotunni.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir hversu margir bútar hafa verið viðbættir lotunni.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Session ori - Field Chunk Count - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 3960290652 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Chunk Count</source>
-          <target>Fjöldi bita</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Fjöldi bita</note>
+          <target>Fjöldi búta</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Fjöldi búta</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Session ori - Field Chunk Count - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 2101253275 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
@@ -341,8 +341,8 @@
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 3022950110 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the total number of bytes received across all appended chunks.</source>
-          <target>Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta bita.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta bita.</note>
+          <target>Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta búta.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta búta.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Session ori - Field Received Size - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 3022950110 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -353,8 +353,8 @@
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 513339096 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies whether the session is open for further chunks, has been committed to storage, or was aborted.</source>
-          <target>Tilgreinir hvort lotan er opin fyrir frekari bita, hefur verið staðfest í geymslu, eða var hætt við.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir hvort lotan er opin fyrir frekari bita, hefur verið staðfest í geymslu, eða var hætt við.</note>
+          <target>Tilgreinir hvort lotan er opin fyrir frekari búta, hefur verið staðfest í geymslu, eða var hætt við.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir hvort lotan er opin fyrir frekari búta, hefur verið staðfest í geymslu, eða var hætt við.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Session ori - Field Status - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 513339096 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -647,8 +647,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 2535652492" size-unit="char" translate="yes" xml:space="preserve">
           <source>a definition not used by a Data Exchange Type or Bank Export/Import Setup</source>
-          <target>skilgreining sem er ekki notuð í tegund gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=skilgreining sem er ekki notuð í tegund gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings</note>
+          <target>skilgreining sem er ekki notuð í gerð gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=skilgreining sem er ekki notuð í gerð gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType UnreferencedExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 1372064105" size-unit="char" translate="yes" xml:space="preserve">
@@ -659,8 +659,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 2323042833" size-unit="char" translate="yes" xml:space="preserve">
           <source>Review the Data Exchange Types and Bank Export/Import Setup that use this definition. Change those references before retrying deletion.</source>
-          <target>Farðu yfir tegundir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Farðu yfir tegundir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.</note>
+          <target>Farðu yfir gerðir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Farðu yfir gerðir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType RemoveReferenceLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2881381544 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -677,8 +677,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2881381544 - Method 3650283039 - NamedType 2344026547" size-unit="char" translate="yes" xml:space="preserve">
           <source>Does not delete a definition that a Data Exchange Type or Bank Export/Import Setup still uses.</source>
-          <target>Eyðir ekki skilgreiningu sem tegund gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir ekki skilgreiningu sem tegund gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn.</note>
+          <target>Eyðir ekki skilgreiningu sem gerð gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir ekki skilgreiningu sem gerð gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method GetNotes - NamedType NotesLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2881381544 - Method 2340569551 - NamedType 3593894611" size-unit="char" translate="yes" xml:space="preserve">
@@ -725,8 +725,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 146493229 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Returns one Data Exchange definition with line definitions, columns and mappings; pass a code from the list type.</source>
-          <target>Skilar einni skilgreiningu gagnaskipta með línuskilgreiningum, dálkum og vörpun; gefðu upp kóða úr listaboðgerðinni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skilar einni skilgreiningu gagnaskipta með línuskilgreiningum, dálkum og vörpun; gefðu upp kóða úr listaboðgerðinni.</note>
+          <target>Skilar einni skilgreiningu gagnaskipta með línuskilgreiningum, dálkum og vörpun; gefðu upp kóða úr skilaboðategundinni fyrir lista.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skilar einni skilgreiningu gagnaskipta með línuskilgreiningum, dálkum og vörpun; gefðu upp kóða úr skilaboðategundinni fyrir lista.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Get Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2730585033 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -743,8 +743,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2730585033 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lists available Data Exchange definitions and their filters; use the get type for full mappings.</source>
-          <target>Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu sækiboðgerðina til að sjá alla vörpun.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu sækiboðgerðina til að sjá alla vörpun.</note>
+          <target>Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu skilaboðategundina fyrir lestur til að sjá alla vörpun.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu skilaboðategundina fyrir lestur til að sjá alla vörpun.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def List Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 625919956 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -773,14 +773,14 @@
         </trans-unit>
         <trans-unit id="Codeunit 2017599976 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>list data exchange entries, processed imports, imported files</source>
-          <target>lista færslur gagnaskipta, unnar innflutningar, innfluttar skrár</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=lista færslur gagnaskipta, unnar innflutningar, innfluttar skrár</note>
+          <target>lista færslur gagnaskipta, unnir innflutningar, innfluttar skrár</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=lista færslur gagnaskipta, unnir innflutningar, innfluttar skrár</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry List Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2017599976 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lists processed Data Exchange entries with filters and paging; use entry get to read fields.</source>
-          <target>Listar afgreiddar gagnaskiptafærslur með síum og síðuskiptingu; notaðu færslusækiboðgerðina til að lesa reiti.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listar afgreiddar gagnaskiptafærslur með síum og síðuskiptingu; notaðu færslusækiboðgerðina til að lesa reiti.</note>
+          <target>Listar afgreiddar gagnaskiptafærslur með síum og síðuskiptingu; notaðu skilaboðategundina fyrir lestur færslu til að lesa reiti.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Listar afgreiddar gagnaskiptafærslur með síum og síðuskiptingu; notaðu skilaboðategundina fyrir lestur færslu til að lesa reiti.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry List Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3322002649 - Method 3379558365 - NamedType 3351274" size-unit="char" translate="yes" xml:space="preserve">
@@ -891,6 +891,24 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningar fyrir Generic Import eða Payroll Import.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Run Impl ori - Method ImportHeader - NamedType SelectDefinitionLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 1004477244 - Method 2058993062 - NamedType 1151971474" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Incoming document %1 was not found.</source>
+          <target>Innkomuskjal %1 fannst ekki.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = entry number||is-IS=Innkomuskjal %1 fannst ekki.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Inc Doc Proc ori - Method ProcessIncomingDocument - NamedType MissingDocumentErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1004477244 - Method 2058993062 - NamedType 3663062277" size-unit="char" translate="yes" xml:space="preserve">
+          <source>an existing incoming document entry number</source>
+          <target>númer fyrirliggjandi innkomuskjals</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=númer fyrirliggjandi innkomuskjals</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Inc Doc Proc ori - Method ProcessIncomingDocument - NamedType ExpectedDocumentLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1004477244 - Method 2058993062 - NamedType 1607748007" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Create the incoming document first, then process it.</source>
+          <target>Stofnaðu innkomuskjalið fyrst og vinnðu það síðan.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Stofnaðu innkomuskjalið fyrst og vinnðu það síðan.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Inc Doc Proc ori - Method ProcessIncomingDocument - NamedType SelectDocumentLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2801241356 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lists Data Exchange Types and the definition type each one resolves to.</source>
           <target>Listar gerðir gagnaskipta og gerð skilgreiningar sem hver þeirra vísar í.</target>
@@ -899,14 +917,14 @@
         </trans-unit>
         <trans-unit id="Codeunit 2801241356 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>list data exchange types, incoming document types, exchange type codes</source>
-          <target>lista tegundir gagnaskipta, tegundir innkomandi skjala, tegundakóðar gagnaskipta</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=lista tegundir gagnaskipta, tegundir innkomandi skjala, tegundakóðar gagnaskipta</note>
+          <target>lista gerðir gagnaskipta, gerðir skjala í innleið, kóðar gerða gagnaskipta</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=lista gerðir gagnaskipta, gerðir skjala í innleið, kóðar gerða gagnaskipta</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type List Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2801241356 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lists Data Exchange Types and their definition codes; use definition get to inspect the referenced format.</source>
-          <target>Listar gerðir gagnaskipta og skilgreiningarkóða þeirra; notaðu skilgreiningarsækiboðgerðina til að skoða sniðið sem vísað er í.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Listar gerðir gagnaskipta og skilgreiningarkóða þeirra; notaðu skilgreiningarsækiboðgerðina til að skoða sniðið sem vísað er í.</note>
+          <target>Listar gerðir gagnaskipta og skilgreiningarkóða þeirra; notaðu skilaboðategundina fyrir lestur skilgreiningar til að skoða sniðið sem vísað er í.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Listar gerðir gagnaskipta og skilgreiningarkóða þeirra; notaðu skilaboðategundina fyrir lestur skilgreiningar til að skoða sniðið sem vísað er í.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type List Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1998889092 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -917,8 +935,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 1998889092 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>data exchange type, incoming document type, set definition</source>
-          <target>gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=gerð gagnaskipta, gerð innkomuskjals, stilla skilgreiningu</note>
+          <target>gerð gagnaskipta, gerð skjals í innleið, stilla skilgreiningu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=gerð gagnaskipta, gerð skjals í innleið, stilla skilgreiningu</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Set Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1998889092 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
@@ -1007,20 +1025,20 @@
         </trans-unit>
         <trans-unit id="Codeunit 555252258 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Attaches a file already in storage to a new or existing incoming document, served transparently from storage.</source>
-          <target>Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal; skráin er aðgengileg beint úr geymslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal; skráin er aðgengileg beint úr geymslu.</note>
+          <target>Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi skjal í innleið; skráin er aðgengileg beint úr geymslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi skjal í innleið; skráin er aðgengileg beint úr geymslu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attach Link Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 555252258 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>link stored file to incoming document, incoming document from storage, register a stored invoice, create incoming document from cloud file, attach blob to incoming document, scanned bill already in storage</source>
-          <target>tengja geymda skrá við innkomið skjal, innkomið skjal úr geymslu, skrá geymdan reikning, stofna innkomið skjal úr skýjaskrá, hengja skrá úr geymslu við innkomið skjal, skannaður reikningur í geymslu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=tengja geymda skrá við innkomið skjal, innkomið skjal úr geymslu, skrá geymdan reikning, stofna innkomið skjal úr skýjaskrá, hengja skrá úr geymslu við innkomið skjal, skannaður reikningur í geymslu</note>
+          <target>tengja geymda skrá við skjal í innleið, skjal í innleið úr geymslu, skrá geymdan reikning, stofna skjal í innleið úr skýjaskrá, hengja skrá úr geymslu við skjal í innleið, skannaður reikningur í geymslu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=tengja geymda skrá við skjal í innleið, skjal í innleið úr geymslu, skrá geymdan reikning, stofna skjal í innleið úr skýjaskrá, hengja skrá úr geymslu við skjal í innleið, skannaður reikningur í geymslu</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attach Link Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 555252258 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Attaches a file that already sits in storage to a new or existing incoming document without copying it into the database.</source>
-          <target>Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal án þess að afrita hana í gagnagrunninn.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi innkomuskjal án þess að afrita hana í gagnagrunninn.</note>
+          <target>Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi skjal í innleið án þess að afrita hana í gagnagrunninn.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tengir skrá sem þegar er í geymslu við nýtt eða fyrirliggjandi skjal í innleið án þess að afrita hana í gagnagrunninn.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attach Link Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 680066517 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -1095,6 +1113,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=contentBase64 eða content, ekki bæði</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType BothInlineContentExpectedLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 4149883341" size-unit="char" translate="yes" xml:space="preserve">
+          <source>at most 20 characters</source>
+          <target>að hámarki 20 stafir</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=að hámarki 20 stafir</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType Code20ExpectedLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 2440645009" size-unit="char" translate="yes" xml:space="preserve">
           <source>Table %1 has a composite primary key, so it cannot be addressed with "no".</source>
           <target>Tafla %1 hefur samsettan aðallykil og því er ekki hægt að vísa í hana með "no".</target>
@@ -1112,6 +1136,18 @@
           <target>nákvæmlega eitt af contentBase64 (eða samheitinu content), storageCode með path, sourceTarget með sourceSystemId</target>
           <note from="Developer" annotates="general" priority="2">is-IS=nákvæmlega eitt af contentBase64 (eða samheitinu content), storageCode með path, sourceTarget með sourceSystemId</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType ContentSourceExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 4147945881" size-unit="char" translate="yes" xml:space="preserve">
+          <source>an existing Data Exchange Type code</source>
+          <target>kóði fyrirliggjandi gagnaskiptagerðar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=kóði fyrirliggjandi gagnaskiptagerðar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType DataExchangeTypeExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 352425844" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Parameter "dataExchangeType" exceeds the maximum length of 20 characters.</source>
+          <target>Færibreytan "dataExchangeType" er lengri en leyfilegt hámark, 20 stafir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Færibreytan "dataExchangeType" er lengri en leyfilegt hámark, 20 stafir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType DataExchangeTypeTooLongErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 2011335988" size-unit="char" translate="yes" xml:space="preserve">
           <source>The storage connection "%1" is disabled.</source>
@@ -1275,6 +1311,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Sendu recordSystemId eða no til að segja hvaða færslu viðhengið tilheyrir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType RecordRequiredErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 2369911747" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Call DataExchange.Type.List or DataExchange.Type.Set, then send the exact code.</source>
+          <target>Kallaðu á DataExchange.Type.List eða DataExchange.Type.Set og sendu síðan nákvæman kóða.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á DataExchange.Type.List eða DataExchange.Type.Set og sendu síðan nákvæman kóða.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType SelectDataExchangeTypeLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 1372998242" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Send the complete code within 20 characters; values are never truncated.</source>
+          <target>Sendu allan kóðann innan 20 stafa; gildi eru aldrei stytt.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu allan kóðann innan 20 stafa; gildi eru aldrei stytt.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType ShortenCodeLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 3359088070" size-unit="char" translate="yes" xml:space="preserve">
           <source>tableId or tableName</source>
           <target>tableId eða tableName</target>
@@ -1304,6 +1352,12 @@
           <target>Engin geymslutenging er skilgreind fyrir storageCode "%1".</target>
           <note from="Developer" annotates="general" priority="2">%1 = storage code, is-IS=Engin geymslutenging er skilgreind fyrir storageCode "%1".</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType UnknownCodeErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 1426384842" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Data Exchange Type %1 was not found.</source>
+          <target>Gagnaskiptagerð %1 fannst ekki.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = type code||is-IS=Gagnaskiptagerð %1 fannst ekki.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType UnknownDataExchangeTypeErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 2155353685" size-unit="char" translate="yes" xml:space="preserve">
           <source>Table %1 does not exist.</source>
@@ -1341,6 +1395,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Sendu recordSystemId í staðinn.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType UseRecordSystemIdLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 3204537786" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Parameter "vendorNo" exceeds the maximum length of 20 characters.</source>
+          <target>Færibreytan "vendorNo" er lengri en leyfilegt hámark, 20 stafir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Færibreytan "vendorNo" er lengri en leyfilegt hámark, 20 stafir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType VendorNoTooLongErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - Method 496511085 - NamedType 1067445849" size-unit="char" translate="yes" xml:space="preserve">
           <source>The destination path exceeds the attachment link capacity.</source>
           <target>Áfangaslóðin er lengri en viðhengjatengingin leyfir.</target>
@@ -1371,6 +1431,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Leiðréttu allar tilgreindar færibreytur samkvæmt expected og nextStep og reyndu aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CorrectInputLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 444920706" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The created document type, number and systemId when processing succeeded.</source>
+          <target>Gerð, númer og systemId stofnaðs skjals þegar vinnsla tókst.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Gerð, númer og systemId stofnaðs skjals þegar vinnsla tókst.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CreatedDocumentResponseLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2655661050" size-unit="char" translate="yes" xml:space="preserve">
           <source>The created Data Exchange entry number.</source>
           <target>Númer gagnaskiptafærslunnar sem var stofnuð.</target>
@@ -1400,6 +1466,18 @@
           <target>Kallandi hefur BIFROST DataExch ori; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Engin geymslutenging er notuð.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Kallandi hefur BIFROST DataExch ori; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Engin geymslutenging er notuð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangePreconditionsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 3264825122" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Optional Data Exchange Type code for IncomingDocument. The type must already exist.</source>
+          <target>Valfrjáls kóði gagnaskiptagerðar fyrir IncomingDocument. Gerðin verður að vera til.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls kóði gagnaskiptagerðar fyrir IncomingDocument. Gerðin verður að vera til.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangeTypeParamLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 1610349590" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Data Exchange Type applied to the incoming document.</source>
+          <target>Gagnaskiptagerðin sem var sett á innkomuskjalið.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Gagnaskiptagerðin sem var sett á innkomuskjalið.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangeTypeResponseLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1754493333" size-unit="char" translate="yes" xml:space="preserve">
           <source>The declared file size in bytes.</source>
@@ -1487,8 +1565,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 162992574" size-unit="char" translate="yes" xml:space="preserve">
           <source>The Data Exchange Types and their linked definitions.</source>
-          <target>Gagnaskiptagerðir og tengdar skilgreiningar þeirra.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Gagnaskiptagerðir og tengdar skilgreiningar þeirra.</note>
+          <target>Gerðir gagnaskipta og tengdar skilgreiningar þeirra.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Gerðir gagnaskipta og tengdar skilgreiningar þeirra.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType MatchingTypesLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3727814468" size-unit="char" translate="yes" xml:space="preserve">
@@ -1527,6 +1605,24 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Virk síðustærð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType PagingTakeLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 3813134445" size-unit="char" translate="yes" xml:space="preserve">
+          <source>True when CreateDocumentWithDataExchange created a document.</source>
+          <target>Satt þegar CreateDocumentWithDataExchange stofnaði skjal.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Satt þegar CreateDocumentWithDataExchange stofnaði skjal.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessedResponseLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 3514665411" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Base-app processing messages when process is true. Status stays Success.</source>
+          <target>Vinnsluskilaboð grunnforrits þegar process er true. Staða er áfram Success.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Vinnsluskilaboð grunnforrits þegar process er true. Staða er áfram Success.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessErrorsResponseLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 191241554" size-unit="char" translate="yes" xml:space="preserve">
+          <source>When true, run CreateDocumentWithDataExchange after the incoming document is created. Default false. The upload still succeeds when processing reports errors.</source>
+          <target>Þegar true er CreateDocumentWithDataExchange keyrt eftir að innkomuskjalið er stofnað. Sjálfgefið false. Upphleðslan heppnast samt þó vinnslan skili villum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Þegar true er CreateDocumentWithDataExchange keyrt eftir að innkomuskjalið er stofnað. Sjálfgefið false. Upphleðslan heppnast samt þó vinnslan skili villum.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessParamLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2539551719" size-unit="char" translate="yes" xml:space="preserve">
           <source>Rows or fields to skip; a nonnegative integer.</source>
           <target>Færslur eða reitir sem á að sleppa; heiltala sem er ekki neikvæð.</target>
@@ -1559,14 +1655,14 @@
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1992131761" size-unit="char" translate="yes" xml:space="preserve">
           <source>The Data Exchange Type code, at most 20 characters.</source>
-          <target>Kóði gagnaskiptagerðar, að hámarki 20 stafir.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Kóði gagnaskiptagerðar, að hámarki 20 stafir.</note>
+          <target>Kóði gerðar gagnaskipta, að hámarki 20 stafir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Kóði gerðar gagnaskipta, að hámarki 20 stafir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TypeCodeLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1843374440" size-unit="char" translate="yes" xml:space="preserve">
           <source>Optional description within the Data Exchange Type Description field length.</source>
-          <target>Valfrjáls lýsing innan lengdar lýsingarreits gagnaskiptagerðar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls lýsing innan lengdar lýsingarreits gagnaskiptagerðar.</note>
+          <target>Valfrjáls lýsing innan lengdar lýsingarreits gerðar gagnaskipta.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls lýsing innan lengdar lýsingarreits gerðar gagnaskipta.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType TypeDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 255923548" size-unit="char" translate="yes" xml:space="preserve">
@@ -1617,6 +1713,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Heiti töflu sem má nota í stað tableId fyrir DocumentAttachment.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType UploadTableNameLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 29685804" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Optional vendor number for a new incoming document.</source>
+          <target>Valfrjálst lánardrottinsnúmer fyrir nýtt innkomuskjal.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjálst lánardrottinsnúmer fyrir nýtt innkomuskjal.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType VendorNoParamLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 225158890 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Creates a directory in the configured storage connection.</source>
           <target>Býr til möppu í uppsettri geymslutengingu.</target>
@@ -1649,8 +1751,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 1458629253 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Deletes a folder from a storage connection; to remove a single file use the file delete type instead.</source>
-          <target>Eyðir möppu úr geymslutengingu; notaðu boðgerðina fyrir eyðingu skráa til að eyða einni skrá.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir möppu úr geymslutengingu; notaðu boðgerðina fyrir eyðingu skráa til að eyða einni skrá.</note>
+          <target>Eyðir möppu úr geymslutengingu; notaðu skilaboðategundina fyrir eyðingu skráa til að eyða einni skrá.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir möppu úr geymslutengingu; notaðu skilaboðategundina fyrir eyðingu skráa til að eyða einni skrá.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Dir Delete Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2212815102 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -1757,8 +1859,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 932189238 - NamedType 4100786335" size-unit="char" translate="yes" xml:space="preserve">
           <source>Storage connection '%1' has no file account selected.</source>
-          <target>Enginn skráareikningur hefur verið valinn fyrir geymslutenginguna '%1'.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = storage code</note>
+          <target>Geymslutengingin „%1“ hefur engan skráareikning valinn.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = storage code||is-IS=Geymslutengingin „%1“ hefur engan skráareikning valinn.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Ext File Impl ori - NamedType NoAccountErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 932189238 - NamedType 1332341970" size-unit="char" translate="yes" xml:space="preserve">
@@ -1805,8 +1907,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 1157400010 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Copies a file to another path within the same storage connection and keeps the original; use the move type to relocate it instead.</source>
-          <target>Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu boðgerðina fyrir færslu skráa til að færa hana.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu boðgerðina fyrir færslu skráa til að færa hana.</note>
+          <target>Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu skilaboðategundina fyrir færslu skráa til að færa hana.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu skilaboðategundina fyrir færslu skráa til að færa hana.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File Copy Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3778398321 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -1823,8 +1925,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 3778398321 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Uploads a whole file of up to 240 MiB to a storage path in one call; use the chunked upload types for larger files or files sent in parts.</source>
-          <target>Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu boðgerðir fyrir hlutaupphleðslu fyrir stærri skrár eða skrár sendar í hlutum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu boðgerðir fyrir hlutaupphleðslu fyrir stærri skrár eða skrár sendar í hlutum.</note>
+          <target>Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu skilaboðategundir fyrir bútaupphleðslu fyrir stærri skrár eða skrár sendar í bútum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu skilaboðategundir fyrir bútaupphleðslu fyrir stærri skrár eða skrár sendar í bútum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File Create Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2990831086 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -1841,8 +1943,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2990831086 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Deletes a single file from a storage connection; to remove a whole folder use the directory delete type instead.</source>
-          <target>Eyðir einni skrá úr geymslutengingu; notaðu boðgerðina fyrir eyðingu mappa til að eyða heilli möppu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir einni skrá úr geymslutengingu; notaðu boðgerðina fyrir eyðingu mappa til að eyða heilli möppu.</note>
+          <target>Eyðir einni skrá úr geymslutengingu; notaðu skilaboðategundina fyrir eyðingu mappa til að eyða heilli möppu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir einni skrá úr geymslutengingu; notaðu skilaboðategundina fyrir eyðingu mappa til að eyða heilli möppu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File Delete Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 708526773 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -1919,14 +2021,14 @@
         </trans-unit>
         <trans-unit id="Codeunit 149655982 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Returns a Markdown overview of the storage connector and all its message types. No request body is required.</source>
-          <target>Skilar Markdown-yfirliti yfir geymslutengilinn og allar boðgerðir hans. Enginn meginmálshluti beiðni er nauðsynlegur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skilar Markdown-yfirliti yfir geymslutengilinn og allar boðgerðir hans. Enginn meginmálshluti beiðni er nauðsynlegur.</note>
+          <target>Skilar Markdown-yfirliti yfir geymslutengilinn og allar skilaboðategundir hans. Enginn meginmálshluti beiðni er nauðsynlegur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skilar Markdown-yfirliti yfir geymslutengilinn og allar skilaboðategundir hans. Enginn meginmálshluti beiðni er nauðsynlegur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Help Get Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 149655982 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>storage help, storage message types, how to use storage, storage API overview, storage documentation</source>
-          <target>geymslu hjálp, geymsluboðgerðir, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=geymslu hjálp, geymsluboðgerðir, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl</note>
+          <target>geymsluhjálp, skilaboðategundir geymslu, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=geymsluhjálp, skilaboðategundir geymslu, hvernig á að nota geymslu, yfirlit yfir geymslu API, geymsluskjöl</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Help Get Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 149655982 - Method 2340569551 - NamedType 3593894611" size-unit="char" translate="yes" xml:space="preserve">
@@ -1937,8 +2039,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 149655982 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Returns the storage connector guide and message type map; use a specific storage type to perform an operation.</source>
-          <target>Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir boðgerðir; notaðu tiltekna geymsluboðgerð til að framkvæma aðgerð.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir boðgerðir; notaðu tiltekna geymsluboðgerð til að framkvæma aðgerð.</note>
+          <target>Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir skilaboðategundir; notaðu tiltekna skilaboðategund geymslu til að framkvæma aðgerð.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skilar leiðbeiningum um geymslutengilinn og yfirliti yfir skilaboðategundir; notaðu tiltekna skilaboðategund geymslu til að framkvæma aðgerð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Help Get Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 934377432 - NamedType 1724580414" size-unit="char" translate="yes" xml:space="preserve">
@@ -2051,8 +2153,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 2651508684" size-unit="char" translate="yes" xml:space="preserve">
           <source>linked move recovery after remote acknowledgement loss</source>
-          <target>endurheimt tengdrar færslu eftir tap á staðfestingu frá fjargeymslu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=endurheimt tengdrar færslu eftir tap á staðfestingu frá fjargeymslu</note>
+          <target>endurheimt tengdrar tilfærslu eftir tap á staðfestingu frá fjargeymslu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=endurheimt tengdrar tilfærslu eftir tap á staðfestingu frá fjargeymslu</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType MoveRecoveryLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 3170130204" size-unit="char" translate="yes" xml:space="preserve">
@@ -2084,6 +2186,18 @@
           <target>base64-innihald</target>
           <note from="Developer" annotates="general" priority="2">is-IS=base64-innihald</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType Base64ExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 3030677188" size-unit="char" translate="yes" xml:space="preserve">
+          <source>true or false</source>
+          <target>true eða false</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=true eða false</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType BooleanExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 3160132730" size-unit="char" translate="yes" xml:space="preserve">
+          <source>boolean</source>
+          <target>Boole-gildi</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Boole-gildi</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType BooleanTypeLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 309773940" size-unit="char" translate="yes" xml:space="preserve">
           <source>at most %1 bytes (240 MiB)</source>
@@ -2195,8 +2309,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 1379219779" size-unit="char" translate="yes" xml:space="preserve">
           <source>Required parameter "%1" is missing.</source>
-          <target>Nauðsynleg færibreyta "%1" vantar.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = parameter name, is-IS=Nauðsynleg færibreyta "%1" vantar.</note>
+          <target>Nauðsynlega færibreytu "%1" vantar.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = parameter name, is-IS=Nauðsynlega færibreytu "%1" vantar.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType RequiredParameterMissingErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 401842067" size-unit="char" translate="yes" xml:space="preserve">
@@ -2204,6 +2318,12 @@
           <target>Kóðaðu bæti skrárinnar sem venjulegt base64 og sendu þau aftur.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Kóðaðu bæti skrárinnar sem venjulegt base64 og sendu þau aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType SendBase64Lbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 1610609707" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Send the value as true or false.</source>
+          <target>Sendu gildið sem true eða false.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu gildið sem true eða false.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType SendBooleanFormatLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 150722078" size-unit="char" translate="yes" xml:space="preserve">
           <source>Send the value as a GUID, as returned by the call that created it.</source>
@@ -2231,8 +2351,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 2384151112" size-unit="char" translate="yes" xml:space="preserve">
           <source>Send the file in parts with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.</source>
-          <target>Sendu skrána í hlutum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sendu skrána í hlutum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.</note>
+          <target>Sendu skrána í bútum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu skrána í bútum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType SplitIntoChunksLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 3375169987" size-unit="char" translate="yes" xml:space="preserve">
@@ -2363,8 +2483,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 3751091016 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Discards an open upload session and all its chunks without writing to storage.</source>
-          <target>Fleygir opinni upphleðslulotu og öllum hlutum hennar án þess að skrifa í geymslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Fleygir opinni upphleðslulotu og öllum hlutum hennar án þess að skrifa í geymslu.</note>
+          <target>Fleygir opinni upphleðslulotu og öllum bútum hennar án þess að skrifa í geymslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Fleygir opinni upphleðslulotu og öllum bútum hennar án þess að skrifa í geymslu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Abort Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3751091016 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
@@ -2375,92 +2495,92 @@
         </trans-unit>
         <trans-unit id="Codeunit 3751091016 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Discards an open upload session and its chunks without writing anything to storage or to any record.</source>
-          <target>Fleygir opinni upphleðslulotu og hlutum hennar án þess að skrifa í geymslu eða á neina færslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Fleygir opinni upphleðslulotu og hlutum hennar án þess að skrifa í geymslu eða á neina færslu.</note>
+          <target>Fleygir opinni upphleðslulotu og bútum hennar án þess að skrifa í geymslu eða á neina færslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Fleygir opinni upphleðslulotu og bútum hennar án þess að skrifa í geymslu eða á neina færslu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Abort Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3730781788 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Appends one base64 chunk of up to 240 MiB to an open upload session.</source>
-          <target>Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu.</note>
+          <target>Bætir einum base64-búti allt að 240 MiB við opna upphleðslulotu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Bætir einum base64-búti allt að 240 MiB við opna upphleðslulotu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Append Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3730781788 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>send next chunk, append chunk, upload next part, add part to upload, continue upload, send file piece</source>
-          <target>senda næsta bút, bæta við bút, hlaða upp næsta hluta, bæta hluta við upphleðslu, halda upphleðslu áfram, senda hluta skrár</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=senda næsta bút, bæta við bút, hlaða upp næsta hluta, bæta hluta við upphleðslu, halda upphleðslu áfram, senda hluta skrár</note>
+          <target>senda næsta bút, bæta við búti, hlaða upp næsta bút, bæta búti við upphleðslu, halda upphleðslu áfram, senda bút skrár</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=senda næsta bút, bæta við búti, hlaða upp næsta bút, bæta búti við upphleðslu, halda upphleðslu áfram, senda bút skrár</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Append Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3730781788 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Adds one base64 chunk of up to 240 MiB to an open upload session; call it once per part in sequence before committing.</source>
-          <target>Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern hluta í réttri röð áður en upphleðslu er lokið.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Bætir einum base64-hluta allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern hluta í réttri röð áður en upphleðslu er lokið.</note>
+          <target>Bætir einum base64-búti allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern bút í réttri röð áður en upphleðsla er staðfest.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Bætir einum base64-búti allt að 240 MiB við opna upphleðslulotu; kallaðu einu sinni fyrir hvern bút í réttri röð áður en upphleðsla er staðfest.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Append Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2844342355 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Opens a chunked upload session for a file larger than one call can carry, sent as chunks of up to 240 MiB each.</source>
-          <target>Opnar upphleðslulotu fyrir skrá sem rúmast ekki í einu kalli; hún er send í hlutum sem eru allt að 240 MiB hver.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Opnar upphleðslulotu fyrir skrá sem rúmast ekki í einu kalli; hún er send í hlutum sem eru allt að 240 MiB hver.</note>
+          <target>Opnar upphleðslulotu fyrir skrá sem rúmast ekki í einu kalli; hún er send í bútum sem eru allt að 240 MiB hver.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Opnar upphleðslulotu fyrir skrá sem rúmast ekki í einu kalli; hún er send í bútum sem eru allt að 240 MiB hver.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Begin Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2844342355 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>start a large upload, upload a big file, chunked upload, upload in parts, stream a file, resumable upload, start upload session, file too large for one call</source>
-          <target>hefja stóra upphleðslu, hlaða upp stórri skrá, upphleðsla í hlutum, hlaða upp í bútum, streyma skrá, upphleðsla sem má halda áfram, hefja upphleðslulotu, skrá of stór fyrir eitt kall</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=hefja stóra upphleðslu, hlaða upp stórri skrá, upphleðsla í hlutum, hlaða upp í bútum, streyma skrá, upphleðsla sem má halda áfram, hefja upphleðslulotu, skrá of stór fyrir eitt kall</note>
+          <target>hefja stóra upphleðslu, hlaða upp stórri skrá, upphleðsla í bútum, hlaða upp í bútum, streyma skrá, upphleðsla sem má halda áfram, hefja upphleðslulotu, skrá of stór fyrir eitt kall</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=hefja stóra upphleðslu, hlaða upp stórri skrá, upphleðsla í bútum, hlaða upp í bútum, streyma skrá, upphleðsla sem má halda áfram, hefja upphleðslulotu, skrá of stór fyrir eitt kall</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Begin Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2844342355 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Opens a chunked upload session for files over 240 MiB or streamed in parts; use the single-call file create for anything that fits in one request.</source>
-          <target>Opnar upphleðslulotu fyrir skrár yfir 240 MiB eða skrár sendar í hlutum; notaðu skráarstofnun í einu kalli fyrir skrár sem rúmast í einni beiðni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Opnar upphleðslulotu fyrir skrár yfir 240 MiB eða skrár sendar í hlutum; notaðu skráarstofnun í einu kalli fyrir skrár sem rúmast í einni beiðni.</note>
+          <target>Opnar upphleðslulotu fyrir skrár yfir 240 MiB eða skrár sendar í bútum; notaðu skráarstofnun í einu kalli fyrir skrár sem rúmast í einni beiðni.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Opnar upphleðslulotu fyrir skrár yfir 240 MiB eða skrár sendar í bútum; notaðu skráarstofnun í einu kalli fyrir skrár sem rúmast í einni beiðni.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Begin Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3184599297 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Assembles an upload session's chunks and writes the file to the storage connection.</source>
-          <target>Sameinar hluta upphleðslulotu og skrifar skrána í geymslutenginguna.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar hluta upphleðslulotu og skrifar skrána í geymslutenginguna.</note>
+          <target>Sameinar búta upphleðslulotu og skrifar skrána í geymslutenginguna.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar búta upphleðslulotu og skrifar skrána í geymslutenginguna.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Commit Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3184599297 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>finish upload to storage, complete the upload, save uploaded file to cloud, commit upload, assemble the chunks, finalise upload, finalize upload</source>
-          <target>ljúka upphleðslu í geymslu, klára upphleðslu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, ljúka upphleðslu, staðfesta upphleðsluna</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=ljúka upphleðslu í geymslu, klára upphleðslu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, ljúka upphleðslu, staðfesta upphleðsluna</note>
+          <target>staðfesta upphleðslu í geymslu, staðfesta upphleðslulotu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, staðfesta upphleðslu skráar, staðfesta upphleðsluna</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=staðfesta upphleðslu í geymslu, staðfesta upphleðslulotu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, staðfesta upphleðslu skráar, staðfesta upphleðsluna</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Commit Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3184599297 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Assembles the chunks of an upload session and writes the file to its storage connection; it does not attach the file to any record.</source>
-          <target>Sameinar hluta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar hluta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu.</note>
+          <target>Sameinar búta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar búta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Commit Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1571456077 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Assembles uploaded chunks and attaches the file directly to a record without external storage.</source>
-          <target>Sameinar upphlaðna hluta og tengir skrána beint við færslu án ytri geymslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar upphlaðna hluta og tengir skrána beint við færslu án ytri geymslu.</note>
+          <target>Sameinar upphlaðna búta og tengir skrána beint við færslu án ytri geymslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar upphlaðna búta og tengir skrána beint við færslu án ytri geymslu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Commit Rec ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1571456077 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>attach large file to record, attach big pdf to vendor, finish upload as attachment, large incoming document, upload big scan to incoming document, attach uploaded file without storage, save upload as document attachment</source>
-          <target>hengja stóra skrá við færslu, hengja stóra pdf við lánardrottin, ljúka upphleðslu sem viðhengi, stórt innkomið skjal, hlaða stórri skönnun í innkomið skjal, hengja upphlaðna skrá við án geymslu, vista upphleðslu sem viðhengi</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=hengja stóra skrá við færslu, hengja stóra pdf við lánardrottin, ljúka upphleðslu sem viðhengi, stórt innkomið skjal, hlaða stórri skönnun í innkomið skjal, hengja upphlaðna skrá við án geymslu, vista upphleðslu sem viðhengi</note>
+          <target>hengja stóra skrá við færslu, hengja stóra pdf við lánardrottin, staðfesta upphleðslu sem viðhengi, stórt skjal í innleið, hlaða stórri skönnun í skjal í innleið, hengja upphlaðna skrá við án geymslu, vista upphleðslu sem viðhengi</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=hengja stóra skrá við færslu, hengja stóra pdf við lánardrottin, staðfesta upphleðslu sem viðhengi, stórt skjal í innleið, hlaða stórri skönnun í skjal í innleið, hengja upphlaðna skrá við án geymslu, vista upphleðslu sem viðhengi</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Commit Rec ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1571456077 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Assembles an upload session and attaches the file to a Business Central record or incoming document in the database, with no storage connection.</source>
-          <target>Sameinar upphleðslulotu og tengir skrána við Business Central færslu eða innkomuskjal í gagnagrunninum, án geymslutengingar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar upphleðslulotu og tengir skrána við Business Central færslu eða innkomuskjal í gagnagrunninum, án geymslutengingar.</note>
+          <target>Sameinar upphleðslulotu og tengir skrána við Business Central færslu eða skjal í innleið í gagnagrunninum, án geymslutengingar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar upphleðslulotu og tengir skrána við Business Central færslu eða skjal í innleið í gagnagrunninum, án geymslutengingar.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Commit Rec ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 987128476 - NamedType 2564735900" size-unit="char" translate="yes" xml:space="preserve">
           <source>The upload session is missing one or more chunks: it holds %1 chunks, numbered %2 to %3.</source>
-          <target>Það vantar einn eða fleiri hluta í upphleðslulotuna: hún hefur %1 hluta, númeraða %2 til %3.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = chunk count, %2 = first sequence, %3 = last sequence, is-IS=Það vantar einn eða fleiri hluta í upphleðslulotuna: hún hefur %1 hluta, númeraða %2 til %3.</note>
+          <target>Það vantar einn eða fleiri búta í upphleðslulotuna: hún hefur %1 búta, númeraða %2 til %3.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = chunk count, %2 = first sequence, %3 = last sequence, is-IS=Það vantar einn eða fleiri búta í upphleðslulotuna: hún hefur %1 búta, númeraða %2 til %3.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - NamedType ChunkGapErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 987128476 - NamedType 2828345014" size-unit="char" translate="yes" xml:space="preserve">
           <source>Call Storage.Upload.Status, append the missing sequence numbers, then commit again.</source>
-          <target>Kallaðu á Storage.Upload.Status, bættu við þeim raðnúmerum sem vantar og ljúktu svo aftur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á Storage.Upload.Status, bættu við þeim raðnúmerum sem vantar og ljúktu svo aftur.</note>
+          <target>Kallaðu á Storage.Upload.Status, bættu við þeim raðnúmerum sem vantar og staðfestu svo aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á Storage.Upload.Status, bættu við þeim raðnúmerum sem vantar og staðfestu svo aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - NamedType ChunkGapNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 987128476 - NamedType 2265265004" size-unit="char" translate="yes" xml:space="preserve">
@@ -2471,8 +2591,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 987128476 - NamedType 1594875504" size-unit="char" translate="yes" xml:space="preserve">
           <source>The upload session has no chunks to commit.</source>
-          <target>Upphleðslulotan hefur enga hluta til að ljúka.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Upphleðslulotan hefur enga hluta til að ljúka.</note>
+          <target>Upphleðslulotan hefur enga búta til að staðfesta.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Upphleðslulotan hefur enga búta til að staðfesta.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - NamedType NoChunksErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 987128476 - NamedType 3370027850" size-unit="char" translate="yes" xml:space="preserve">
@@ -2495,8 +2615,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 987128476 - NamedType 1425329136" size-unit="char" translate="yes" xml:space="preserve">
           <source>The upload session is %1, not open; it has already been committed or aborted.</source>
-          <target>Upphleðslulotan er %1, ekki opin; henni hefur þegar verið lokið eða hún verið hætt.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = session status, is-IS=Upphleðslulotan er %1, ekki opin; henni hefur þegar verið lokið eða hún verið hætt.</note>
+          <target>Upphleðslulotan er %1, ekki opin; hún hefur þegar verið staðfest eða hætt við hana.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = session status, is-IS=Upphleðslulotan er %1, ekki opin; hún hefur þegar verið staðfest eða hætt við hana.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - NamedType NotOpenErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 987128476 - NamedType 3843676362" size-unit="char" translate="yes" xml:space="preserve">
@@ -2519,8 +2639,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 987128476 - NamedType 386110962" size-unit="char" translate="yes" xml:space="preserve">
           <source>Append the missing chunks, or re-send a chunk whose content was wrong, then commit again.</source>
-          <target>Bættu við hlutunum sem vantar eða sendu aftur hluta með röngu innihaldi og ljúktu svo aftur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Bættu við hlutunum sem vantar eða sendu aftur hluta með röngu innihaldi og ljúktu svo aftur.</note>
+          <target>Bættu við bútunum sem vantar eða sendu aftur bút með röngu innihaldi og staðfestu svo aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Bættu við bútunum sem vantar eða sendu aftur bút með röngu innihaldi og staðfestu svo aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - NamedType SizeMismatchNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 987128476 - NamedType 1210662799" size-unit="char" translate="yes" xml:space="preserve">
@@ -2549,8 +2669,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 1175196741 - NamedType 563474316" size-unit="char" translate="yes" xml:space="preserve">
           <source>Purged %1 upload session(s) and %2 chunk(s).</source>
-          <target>Hreinsaði %1 upphleðslulotu/-lotur og %2 bita.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = session count, %2 = chunk count||is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 bita.</note>
+          <target>Hreinsaði %1 upphleðslulotu/-lotur og %2 búta.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = session count, %2 = chunk count||is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 búta.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Purge ori - NamedType PurgedMsg</note>
         </trans-unit>
         <trans-unit id="Codeunit 1103596966 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -2567,8 +2687,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 1103596966 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Reports the bytes and chunk count received by an upload session without changing it, to confirm progress before committing.</source>
-          <target>Skilar fjölda bæta og hluta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðslu er lokið.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skilar fjölda bæta og hluta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðslu er lokið.</note>
+          <target>Skilar fjölda bæta og búta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðsla er staðfest.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skilar fjölda bæta og búta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðsla er staðfest.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Status Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Page 1933601227 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2591,8 +2711,8 @@
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 3123095784 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>View and manage the registered file storage accounts.</source>
-          <target>Skoða og stjórna skráðum skráargeymslureikningum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skoða og stjórna skráðum skráargeymslureikningum.</note>
+          <target>Skoða og stjórna skráðum skráageymslureikningum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skoða og stjórna skráðum skráageymslureikningum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action FileAccounts - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 3123095784 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2603,8 +2723,8 @@
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 2633900544 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Run the guided setup to add a new file storage account (Azure Blob, Azure File Share, SharePoint, etc.).</source>
-          <target>Keyra leiðsagnarforritið til að bæta við nýjum skráargeymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Keyra leiðsagnarforritið til að bæta við nýjum skráargeymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).</note>
+          <target>Keyra leiðsagnarforritið til að bæta við nýjum skráageymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Keyra leiðsagnarforritið til að bæta við nýjum skráageymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action FileAccountWizard - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 2633900544 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2615,8 +2735,8 @@
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 336799701 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Deletes abandoned upload sessions and their chunks. Sessions that were never committed or aborted leave data behind; this action removes it.</source>
-          <target>Eyðir yfirgefnum upphleðslulotum og bitum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir yfirgefnum upphleðslulotum og bitum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.</note>
+          <target>Eyðir yfirgefnum upphleðslulotum og bútum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir yfirgefnum upphleðslulotum og bútum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action PurgeUploadSessions - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 336799701 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2627,8 +2747,8 @@
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 672734192 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Opens the Bifrost setup wizard, which enables HTTP client requests for all Bifrost apps and walks through the credentials of every app.</source>
-          <target>Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir auðkenni hvers forrits.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir auðkenni hvers forrits.</note>
+          <target>Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir aðgangsupplýsingar hvers forrits.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir aðgangsupplýsingar hvers forrits.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action SetupWizard - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 672734192 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2639,8 +2759,8 @@
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 809289658 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>View and manage storage connections used to route Bifrost file requests to file accounts.</source>
-          <target>Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga.</note>
+          <target>Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifröst á skráageymslureikninga.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifröst á skráageymslureikninga.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Attachments Setup ori - Action StorageSetup - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1933601227 - Action 809289658 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2765,8 +2885,8 @@
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 2080860199 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
           <source>This wizard helps you set up external storage for Bifrost. The extension exposes Azure Blob, Azure File Share and SharePoint connectors as Bifrost message types, giving read/write access to cloud storage from Business Central.</source>
-          <target>Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðagerðir Bifrastar og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðagerðir Bifrastar og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central.</note>
+          <target>Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðategundir Bifröst og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðategundir Bifröst og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Control WelcomeHeader - Property InstructionalText</note>
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 2080860199 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2777,8 +2897,8 @@
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 1646251390 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
           <source>You need a configured file storage account (Azure Blob, Azure File Share, or SharePoint) and outbound HTTP must be enabled for this extension.</source>
-          <target>Þú þarft uppsettan skráargeymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Þú þarft uppsettan skráargeymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.</note>
+          <target>Þú þarft uppsettan skráageymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Þú þarft uppsettan skráageymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Control WelcomeNote - Property InstructionalText</note>
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 1646251390 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2819,8 +2939,8 @@
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 1952643920 - Property 1968111052" size-unit="char" translate="yes" xml:space="preserve">
           <source>HTTP client requests are enabled. You can now configure storage connections from the Bifrost Storage Setup page. Use the Storage Setup Wizard action on the Bifrost Setup page to add file accounts.</source>
-          <target>HTTP-biðlarabeiðnir eru virkar. Þú getur nú stillt geymslutengingar á uppsetningarsíðu Bifröst geymslu. Notaðu aðgerðina Leiðsagnarforrit geymsluuppsetningar á uppsetningarsíðu Bifrastar til að bæta við skráargeymslureikningum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=HTTP-biðlarabeiðnir eru virkar. Þú getur nú stillt geymslutengingar á uppsetningarsíðu Bifröst geymslu. Notaðu aðgerðina Leiðsagnarforrit geymsluuppsetningar á uppsetningarsíðu Bifrastar til að bæta við skráargeymslureikningum.</note>
+          <target>HTTP-biðlarabeiðnir eru virkar. Þú getur nú stillt geymslutengingar á uppsetningarsíðu Bifröst geymslu. Notaðu aðgerðina Leiðsagnarforrit geymsluuppsetningar á uppsetningarsíðu Bifröst til að bæta við skráageymslureikningum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=HTTP-biðlarabeiðnir eru virkar. Þú getur nú stillt geymslutengingar á uppsetningarsíðu Bifröst geymslu. Notaðu aðgerðina Leiðsagnarforrit geymsluuppsetningar á uppsetningarsíðu Bifröst til að bæta við skráageymslureikningum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Control FinishHeader - Property InstructionalText</note>
         </trans-unit>
         <trans-unit id="Page 3144968819 - Control 1952643920 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2915,8 +3035,8 @@
         </trans-unit>
         <trans-unit id="Enum 4072661087 - EnumValue 2748447179 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Incoming Document</source>
-          <target>Innkomandi skjal</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Innkomandi skjal</note>
+          <target>Skjal í innleið</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skjal í innleið</note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Storage Attachment Target ori - EnumValue IncomingDocument - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 726434471 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2951,8 +3071,8 @@
         </trans-unit>
         <trans-unit id="Enum 3753360862 - EnumValue 4259830144 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Open</source>
-          <target>Opið</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Opið</note>
+          <target>Opin</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Opin</note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Storage Upload Status ori - EnumValue Open - Property Caption</note>
         </trans-unit>
         <trans-unit id="PermissionSet 3226296164 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -2966,6 +3086,24 @@
           <target>Bifröst gagnaskipti</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Bifröst gagnaskipti</note>
           <note from="Xliff Generator" annotates="general" priority="3">PermissionSet BIFROST DataExch ori - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 10035645 - NamedType 3272514133" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The connection root cannot be deleted with Storage.Directory.Delete.</source>
+          <target>Rót geymslutengingar má ekki eyða með Storage.Directory.Delete.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Rót geymslutengingar má ekki eyða með Storage.Directory.Delete.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Dir Delete Impl ori - NamedType RootPathDeleteErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 10035645 - NamedType 3336988764" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a directory below the connection root</source>
+          <target>mappa sem liggur undir rót geymslutengingar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=mappa sem liggur undir rót geymslutengingar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Dir Delete Impl ori - NamedType NonRootDirectoryExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 10035645 - NamedType 2643545098" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Name the folder to delete, for example the folder shown by Storage.Directory.List.</source>
+          <target>Nefndu möppuna sem á að eyða, til dæmis möppu sem Storage.Directory.List sýnir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Nefndu möppuna sem á að eyða, til dæmis möppu sem Storage.Directory.List sýnir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Dir Delete Impl ori - NamedType RootPathDeleteNextStepLbl</note>
         </trans-unit>
       </group>
     </body>

@@ -27,6 +27,7 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
         Paths: List of [Text];
         EntryPath: Text;
     begin
+        MockState.AddListCall();
         Path := ResolvePath(StorageSetup, Path);
         TempFileAccountContent.Reset();
         TempFileAccountContent.DeleteAll();
@@ -125,6 +126,7 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
     var
         MockState: Codeunit "Storage Mock State";
     begin
+        MockState.AddDeleteCall();
         Path := ResolvePath(StorageSetup, Path);
         if not MockState.HasDirectory(Path) then
             Error(DirNotFoundErr, Path);
