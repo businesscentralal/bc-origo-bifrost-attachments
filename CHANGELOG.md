@@ -8,6 +8,24 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-16) - stored storage descriptions (#126)
+
+- `Storage Contract Parts ori` (70013500) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
+
+### Changed (2026-10-16) - public help language and translated descriptions (#126)
+
+- `Storage Contract Parts ori` (70013500) keeps its existing English public chapters; the proposed chapter localization is removed per Gunnar’s D7 option B and Claude’s scoped request 1792194099. Public help follows Gunnar's D7 option B: English-only at both 1033 and 1039. `Storage Msg Conformance Tests` (96211) checks identical non-empty public contracts for all 34 types at 1033 → 1039 → 1033 and verifies that help restores the caller's language. App-supplied Storage response/discovery descriptions remain bilingual; stored descriptions remain verbatim. The direct envelope and public aggregation checks enforce English help; three-part-name coverage remains.
+
+
+
+# Changelog
+
+All notable changes to Bifrost Attachments are documented here.
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
+Business Central release versioning (`major.minor.build.revision`).
+
+## [Unreleased]
+
 ### Added (2026-10-16) - Data Exchange Phase 2 incoming documents (#23)
 
 - `Storage.Upload.CommitToRecord` (IncomingDocument) and `Storage.Attachment.CreateLinked` accept optional `dataExchangeType`, `process` and `vendorNo`. An unknown type is refused before any write and leaves the upload session Open (AC01, AC03, AC04).
