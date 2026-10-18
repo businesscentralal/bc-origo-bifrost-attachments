@@ -1777,7 +1777,7 @@
       "id": 10035661,
       "name": "Storage Ext File Impl ori",
       "file": "app/src/Storage/StorageExtFileImpl.Codeunit.al",
-      "sha256": "13a39274528fc98db0536522dbf9da5a577dc6c2c7997d7d4a90a56434163f2e",
+      "sha256": "355fbc41432fc54e8c4a60c113c338fd7eefc51f155f4779e6536ebc501f3f41",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",

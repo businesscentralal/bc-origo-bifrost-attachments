@@ -8,6 +8,35 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-16) - provider path preflight (#122)
+
+- `Storage Ext File Impl ori` (10035661) checks mutation path budgets using the configured base path without reading connector account tables. Provider facades still validate accounts; physical identity resolution and linked-attachment alias protection remain unchanged. Existing SharePoint and File Share Unicode refusals remain in place.
+- `Storage Refusal122 Tests ori` (96228) covers account-independent path preflight, complete Blob path bounds and unchanged provider capability refusals. Real-provider UAT is tracked separately from these native regressions.
+
+
+### Fixed (2026-10-16) - indirect read of external account tables (#124)
+
+- `BIFROST Attach ori` (10035666) grants indirect read (`r`) on table 4560 `Ext. Blob Storage Account` and table 4570 `Ext. File Share Account`. `Storage Ext File Impl ori` (10035661) keeps its Permissions property, which only raises an indirect permission the user already has, so a user with no permission on those tables gets nothing. `RecordRef.ReadPermission` does not observe that property and returned `PermissionDenied` for SUPER on storageCode TEST, so the account is opened by number and read inside a TryFunction. A genuine read failure is `PermissionDenied`. `Storage Full ori` (10035635) cannot carry the grant: a permission set extension may not grant another application's tables (AA0050/AS0110) or include `BIFROST Attach ori` once it does (AA0052/AS0112). The connector tables are always present: there is no absent-table path. Per Gunnar's 16 Oct 2026 ruling the app depends on every Microsoft SaaS External File Storage connector so Attachments storage setup can always offer them: Azure Blob Service Connector (`c9ce86fe-cb70-4b79-be03-d21856b1a4ca`) and Azure File Service Connector (`79447b11-8301-4d02-a546-2261eb811296`) are read for address resolution; SharePoint Connector (`34bfcef7-f8ed-449f-94be-74024cadba3b`) and SFTP Connector (`e0df20ef-75a2-4fae-8e3a-88140ab29507`) are declared for that reason and their account tables are not read. `Storage 124 Addr Tests ori` (96236) uses permission set `Storage124 Read ori` (96236), which includes `BIFROST Attach ori` and has no direct read on those tables, and resolves a Blob address and a File Share address as a non-SUPER user. The minimum version of those four dependencies is 28.0.0.0.
+
+### Fixed (2026-10-16) - explicit import references and non-empty directory refusals (#122)
+
+- `Storage Contract Parts ori` (70013500) describes `DataExchange.Import.Run` references precisely: `storageCode` and `path` receive syntax checks, but no storage/file lookup occurs, neither reference is stored on the entry header, and no file content is read. This selects issue #122 AC01's documentation alternative and preserves the existing header-only behavior.
+- `Storage Request Mgt ori` (10035662) checks files and subdirectories before deleting a directory. A non-empty directory returns localized `PreconditionFailed` details identifying `path`, the empty-directory precondition and a recovery step; its contract documents that refusal. Linked-attachment checks remain first. `Storage Refusal122 Tests ori` (96228) covers unknown import references in LCIDs 1033/1039, contract wording, files, child directories, base paths and empty-directory success. Test execution evidence is recorded separately.
+- `Storage Refusal122 Tests ori` (96228) restores the test runner's original permissions before creating each owned fixture and inserts the temporary message argument before reading its response Blob, retaining restrictive actor checks. Failed import assertions include the bounded response for the self-created request so an earlier dispatch refusal is diagnosable.
+
+### Fixed (2026-10-14) - safe publisher telemetry (#121)
+
+- `Storage Attachment Mgt ori` (10035635) logs a fixed native-field assignment failure code and the set/clear operation instead of raw error text. `BFA-EXTSTOR-01` and the attachment system ID remain stable.
+- `Storage Takeover ori` (10035676) removes the company name and free-text error dimension from `ORI-BIF-0002`. It retains the table ID and lifecycle phase and adds fixed read/write permission-denial codes and the takeover operation. Caller behavior and the session-local skip diagnostic remain unchanged.
+- `Storage Telemetry121 Tests ori` (96227) checks the bounded metadata fields, offload/restore operation distinction and read/write denial categories. No public message contract or user-facing label changes.
+
+
+### Fixed (2026-10-14) - native refusal diagnostics and published help evidence (#70, #79, #82)
+
+- `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.
+- Attachments help pages are published through businesscentralal/bifrost PR100. At docs main `af179cc00f2842a15d8ea9bace890ae51031c171`, the unmodified `Test-HelpLinks.ps1` checks 7 pages with 0 problems in both locale trees; the 10 EN/IS help and landing URLs return HTTP 200. These are help checks, separate from native/UI/MCP acceptance.
+## [Unreleased]
+
 ### Fixed (2026-10-18) - connection root refusal for Storage.Directory.Delete (#125)
 
 - `Storage Dir Delete Impl ori` (10035645) refuses a `Storage.Directory.Delete` request whose `path` resolves to the connection root with `InvalidParameter` before any connector call: `parameter` is `path`, `received` holds the raw sent value, and `expected`/`nextStep` are localized in lcid 1033 and 1039. The refusal fires after setup and path validation and before the provider mutation preflight, so an empty root can no longer reach the connector. The raw received value comes from `Storage Request Reader ori` (10035682) `TokenText`, which the SourceGuards `ContractParameterKeys` analysis counts as a proven request read.
