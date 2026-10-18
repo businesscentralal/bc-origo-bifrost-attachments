@@ -48,13 +48,13 @@ table 10035635 "Storage Attachment Link ori"
         }
         field(7; "Inc. Doc. Entry No."; Integer)
         {
-            Caption = 'Incoming Document Entry No.', Comment = 'is-IS=Færslunúmer innkomandi skjals';
-            ToolTip = 'Specifies the incoming document entry number, when the target is an incoming document attachment.', Comment = 'is-IS=Tilgreinir færslunúmer innkomandi skjals þegar markmiðið er viðhengi innkomandi skjals.';
+            Caption = 'Incoming Document Entry No.', Comment = 'is-IS=Færslunúmer skjals í innleið';
+            ToolTip = 'Specifies the incoming document entry number, when the target is an incoming document attachment.', Comment = 'is-IS=Tilgreinir færslunúmer skjals í innleið þegar markmiðið er viðhengi skjals í innleið.';
         }
         field(8; "Inc. Doc. Line No."; Integer)
         {
-            Caption = 'Incoming Document Line No.', Comment = 'is-IS=Línunúmer innkomandi skjals';
-            ToolTip = 'Specifies the incoming document attachment line number, when the target is an incoming document attachment.', Comment = 'is-IS=Tilgreinir línunúmer viðhengis innkomandi skjals þegar markmiðið er viðhengi innkomandi skjals.';
+            Caption = 'Incoming Document Line No.', Comment = 'is-IS=Línunúmer skjals í innleið';
+            ToolTip = 'Specifies the incoming document attachment line number, when the target is an incoming document attachment.', Comment = 'is-IS=Tilgreinir línunúmer viðhengis skjals í innleið þegar markmiðið er viðhengi skjals í innleið.';
         }
         field(9; "Offloaded At"; DateTime)
         {
