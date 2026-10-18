@@ -133,7 +133,7 @@ codeunit 10035649 "Storage File Create Impl ori" implements "Msg Interface ori",
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
-        exit(Enum::"Msg Direction ori"::Outbound);
+        exit(Enum::"Msg Direction ori"::Inbound);
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
