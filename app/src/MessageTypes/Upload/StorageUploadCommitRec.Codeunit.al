@@ -32,7 +32,7 @@ codeunit 10035669 "Storage Upload Commit Rec ori" implements "Msg Interface ori"
     /// <returns>The description label in the current language.</returns>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Assembles uploaded chunks and attaches the file directly to a record without external storage.', Comment = 'is-IS=Sameinar upphlaðna hluta og tengir skrána beint við færslu án ytri geymslu.';
+        DescriptionLbl: Label 'Assembles uploaded chunks and attaches the file directly to a record without external storage.', Comment = 'is-IS=Sameinar upphlaðna búta og tengir skrána beint við færslu án ytri geymslu.';
     begin
         exit(DescriptionLbl);
     end;
@@ -44,7 +44,7 @@ codeunit 10035669 "Storage Upload Commit Rec ori" implements "Msg Interface ori"
     /// <returns>Comma-separated keywords in the current language.</returns>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'attach large file to record, attach big pdf to vendor, finish upload as attachment, large incoming document, upload big scan to incoming document, attach uploaded file without storage, save upload as document attachment', Comment = 'is-IS=hengja stóra skrá við færslu, hengja stóra pdf við lánardrottin, ljúka upphleðslu sem viðhengi, stórt innkomið skjal, hlaða stórri skönnun í innkomið skjal, hengja upphlaðna skrá við án geymslu, vista upphleðslu sem viðhengi';
+        KeywordsLbl: Label 'attach large file to record, attach big pdf to vendor, finish upload as attachment, large incoming document, upload big scan to incoming document, attach uploaded file without storage, save upload as document attachment', Comment = 'is-IS=hengja stóra skrá við færslu, hengja stóra pdf við lánardrottin, staðfesta upphleðslu sem viðhengi, stórt skjal í innleið, hlaða stórri skönnun í skjal í innleið, hengja upphlaðna skrá við án geymslu, vista upphleðslu sem viðhengi';
     begin
         exit(KeywordsLbl);
     end;
@@ -53,7 +53,7 @@ codeunit 10035669 "Storage Upload Commit Rec ori" implements "Msg Interface ori"
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Assembles an upload session and attaches the file to a Business Central record or incoming document in the database, with no storage connection.', Comment = 'is-IS=Sameinar upphleðslulotu og tengir skrána við Business Central færslu eða innkomuskjal í gagnagrunninum, án geymslutengingar.';
+        SelectionDescriptionLbl: Label 'Assembles an upload session and attaches the file to a Business Central record or incoming document in the database, with no storage connection.', Comment = 'is-IS=Sameinar upphleðslulotu og tengir skrána við Business Central færslu eða skjal í innleið í gagnagrunninum, án geymslutengingar.';
     begin
         exit(SelectionDescriptionLbl);
     end;

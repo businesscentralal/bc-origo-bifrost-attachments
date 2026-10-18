@@ -27,12 +27,12 @@ page 10035638 "Storage Setup Wizard ori"
                 {
                     Caption = 'Welcome to Bifrost Attachments', Comment = 'is-IS=Velkomin í Bifröst viðhengi';
                     ShowCaption = true;
-                    InstructionalText = 'This wizard helps you set up external storage for Bifrost. The extension exposes Azure Blob, Azure File Share and SharePoint connectors as Bifrost message types, giving read/write access to cloud storage from Business Central.', Comment = 'is-IS=Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðagerðir Bifrastar og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central.';
+                    InstructionalText = 'This wizard helps you set up external storage for Bifrost. The extension exposes Azure Blob, Azure File Share and SharePoint connectors as Bifrost message types, giving read/write access to cloud storage from Business Central.', Comment = 'is-IS=Þessi leiðsögn hjálpar þér að setja upp ytri geymslu fyrir Bifröst. Viðbótin býður upp á Azure Blob, Azure File Share og SharePoint tengla sem skilaboðategundir Bifröst og veitir þannig les- og skrifaðgang að skýjageymslu úr Business Central.';
                 }
                 group(WelcomeNote)
                 {
                     Caption = 'Note', Comment = 'is-IS=Athugasemd';
-                    InstructionalText = 'You need a configured file storage account (Azure Blob, Azure File Share, or SharePoint) and outbound HTTP must be enabled for this extension.', Comment = 'is-IS=Þú þarft uppsettan skráargeymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.';
+                    InstructionalText = 'You need a configured file storage account (Azure Blob, Azure File Share, or SharePoint) and outbound HTTP must be enabled for this extension.', Comment = 'is-IS=Þú þarft uppsettan skráageymslureikning (Azure Blob, Azure File Share eða SharePoint) og HTTP-biðlarabeiðnir þurfa að vera virkar fyrir þessa viðbót.';
                 }
             }
             group(Step2Http)
@@ -61,7 +61,7 @@ page 10035638 "Storage Setup Wizard ori"
                 group(FinishHeader)
                 {
                     Caption = 'Setup Complete', Comment = 'is-IS=Uppsetningu lokið';
-                    InstructionalText = 'HTTP client requests are enabled. You can now configure storage connections from the Bifrost Storage Setup page. Use the Storage Setup Wizard action on the Bifrost Setup page to add file accounts.', Comment = 'is-IS=HTTP-biðlarabeiðnir eru virkar. Þú getur nú stillt geymslutengingar á uppsetningarsíðu Bifröst geymslu. Notaðu aðgerðina Leiðsagnarforrit geymsluuppsetningar á uppsetningarsíðu Bifrastar til að bæta við skráargeymslureikningum.';
+                    InstructionalText = 'HTTP client requests are enabled. You can now configure storage connections from the Bifrost Storage Setup page. Use the Storage Setup Wizard action on the Bifrost Setup page to add file accounts.', Comment = 'is-IS=HTTP-biðlarabeiðnir eru virkar. Þú getur nú stillt geymslutengingar á uppsetningarsíðu Bifröst geymslu. Notaðu aðgerðina Leiðsagnarforrit geymsluuppsetningar á uppsetningarsíðu Bifröst til að bæta við skráageymslureikningum.';
                 }
             }
         }

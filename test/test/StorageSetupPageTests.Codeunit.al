@@ -153,7 +153,7 @@ codeunit 96207 "Storage Setup Page Tests"
         Initialize();
         InsertStorageConnection();
         AssertMissingAccountAction(1033, 'Select a file account before testing the connection.');
-        AssertMissingAccountAction(1039, 'Veldu skráarreikning áður en tengingin er prófuð.');
+        AssertMissingAccountAction(1039, 'Veldu skráareikning áður en tengingin er prófuð.');
     end;
 
     /// <summary>Checks the reachable-connection message through the page action in both locales.</summary>

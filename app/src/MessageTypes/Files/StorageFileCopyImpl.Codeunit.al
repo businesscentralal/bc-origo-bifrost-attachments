@@ -45,7 +45,7 @@ codeunit 10035648 "Storage File Copy Impl ori" implements "Msg Interface ori", "
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Copies a file to another path within the same storage connection and keeps the original; use the move type to relocate it instead.', Comment = 'is-IS=Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu boðgerðina fyrir færslu skráa til að færa hana.';
+        SelectionDescriptionLbl: Label 'Copies a file to another path within the same storage connection and keeps the original; use the move type to relocate it instead.', Comment = 'is-IS=Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu skilaboðategundina fyrir færslu skráa til að færa hana.';
     begin
         exit(SelectionDescriptionLbl);
     end;

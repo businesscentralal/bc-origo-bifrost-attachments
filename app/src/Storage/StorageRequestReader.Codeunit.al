@@ -19,7 +19,7 @@ codeunit 10035682 "Storage Request Reader ori"
     Access = Internal;
 
     var
-        RequiredParameterMissingErr: Label 'Required parameter "%1" is missing.', Comment = '%1 = parameter name, is-IS=Nauðsynleg færibreyta "%1" vantar.';
+        RequiredParameterMissingErr: Label 'Required parameter "%1" is missing.', Comment = '%1 = parameter name, is-IS=Nauðsynlega færibreytu "%1" vantar.';
         InvalidParameterFormatErr: Label 'Parameter "%1" has value "%2", which is not a valid %3. Expected %4.', Comment = '%1 = parameter, %2 = received value, %3 = type, %4 = expected format, is-IS=Færibreyta "%1" hefur gildið "%2", sem er ekki í gildu sniði (%3). Væntanlegt er %4.';
         NotAValueErr: Label 'Parameter "%1" must be a single value, not a JSON object or array.', Comment = '%1 = parameter, is-IS=Færibreyta "%1" verður að vera eitt gildi, ekki JSON-hlutur eða fylki.';
         UnsafePathErr: Label 'Parameter "%1" has an unsafe or ambiguous path "%2". Use slash-separated names without relative segments, empty inner segments, control characters or backslashes.', Comment = '%1 = parameter, %2 = rejected path, is-IS=Færibreytan "%1" hefur óörugga eða tvíræða slóð "%2". Notaðu heiti aðskilin með skástrikum án afstæðra hluta, tómra innri hluta, stýristafa eða bakskástrika.';
@@ -45,7 +45,7 @@ codeunit 10035682 "Storage Request Reader ori"
         SendGuidFormatLbl: Label 'Send the value as a GUID, as returned by the call that created it.', Comment = 'is-IS=Sendu gildið sem GUID, eins og kallið sem stofnaði það skilaði því.';
         SendRelativePathLbl: Label 'Send a path inside the connection, e.g. invoices/2026/INV-001.pdf.', Comment = 'is-IS=Sendu slóð innan tengingarinnar, t.d. invoices/2026/INV-001.pdf.';
         SendBase64Lbl: Label 'Encode the file bytes as standard base64 and send them again.', Comment = 'is-IS=Kóðaðu bæti skrárinnar sem venjulegt base64 og sendu þau aftur.';
-        SplitIntoChunksLbl: Label 'Send the file in parts with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.', Comment = 'is-IS=Sendu skrána í hlutum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.';
+        SplitIntoChunksLbl: Label 'Send the file in parts with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.', Comment = 'is-IS=Sendu skrána í bútum með Storage.Upload.Begin, Storage.Upload.Append og Storage.Upload.Commit.';
         MissingValueLbl: Label '(missing)', Comment = 'is-IS=(vantar)';
         RequiredParameterExpectedLbl: Label 'a value for "%1"', Comment = '%1 = parameter name, is-IS=gildi fyrir "%1"';
         ProvideParameterLbl: Label 'Provide "%1" and send the request again.', Comment = '%1 = parameter name, is-IS=Gefðu upp "%1" og sendu beiðnina aftur.';
@@ -503,7 +503,10 @@ codeunit 10035682 "Storage Request Reader ori"
         Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(InvalidParameterFormatErr, ParameterName, Received, TypeName, Expected), ParameterName, Received, Expected, NextStep);
     end;
 
-    local procedure TokenText(Token: JsonToken) Result: Text
+    /// <summary>Formats a token as received on the wire: string values as their text, everything else as its JSON form.</summary>
+    /// <param name="Token">The token to format.</param>
+    /// <returns>The raw received spelling.</returns>
+    internal procedure TokenText(Token: JsonToken) Result: Text
     begin
         if Token.IsValue() then
             exit(Token.AsValue().AsText());

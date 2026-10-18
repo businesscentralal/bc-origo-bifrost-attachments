@@ -113,5 +113,5 @@ table 10035636 "Storage Setup ori"
     end;
 
     var
-        NoAccountErr: Label 'Select a file account before testing the connection.', Comment = 'is-IS=Veldu skráarreikning áður en tengingin er prófuð.';
+        NoAccountErr: Label 'Select a file account before testing the connection.', Comment = 'is-IS=Veldu skráareikning áður en tengingin er prófuð.';
 }

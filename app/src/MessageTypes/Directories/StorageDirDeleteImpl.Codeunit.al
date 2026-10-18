@@ -45,7 +45,7 @@ codeunit 10035645 "Storage Dir Delete Impl ori" implements "Msg Interface ori", 
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Deletes a folder from a storage connection; to remove a single file use the file delete type instead.', Comment = 'is-IS=Eyðir möppu úr geymslutengingu; notaðu boðgerðina fyrir eyðingu skráa til að eyða einni skrá.';
+        SelectionDescriptionLbl: Label 'Deletes a folder from a storage connection; to remove a single file use the file delete type instead.', Comment = 'is-IS=Eyðir möppu úr geymslutengingu; notaðu skilaboðategundina fyrir eyðingu skráa til að eyða einni skrá.';
     begin
         exit(SelectionDescriptionLbl);
     end;
@@ -143,6 +143,11 @@ codeunit 10035645 "Storage Dir Delete Impl ori" implements "Msg Interface ori", 
         Connector: Interface "Storage Connector ori";
         RequestJson: JsonObject;
         Path: Text;
+        Received: Text;
+        RawToken: JsonToken;
+        RootPathDeleteErr: Label 'The connection root cannot be deleted with Storage.Directory.Delete.', Comment = 'is-IS=Rót geymslutengingar má ekki eyða með Storage.Directory.Delete.';
+        NonRootDirectoryExpectedLbl: Label 'a directory below the connection root', Comment = 'is-IS=mappa sem liggur undir rót geymslutengingar';
+        RootPathDeleteNextStepLbl: Label 'Name the folder to delete, for example the folder shown by Storage.Directory.List.', Comment = 'is-IS=Nefndu möppuna sem á að eyða, til dæmis möppu sem Storage.Directory.List sýnir.';
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
@@ -151,6 +156,13 @@ codeunit 10035645 "Storage Dir Delete Impl ori" implements "Msg Interface ori", 
         Reader.ReadPath(Argument, RequestJson, 'path', true, Path);
         if Reader.RespondIfErrors(Argument) then
             exit;
+        if Path = '' then begin
+            Received := Path;
+            if RequestJson.Get('path', RawToken) then
+                Received := Reader.TokenText(RawToken);
+            Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameter, RootPathDeleteErr, 'path', Received, NonRootDirectoryExpectedLbl, RootPathDeleteNextStepLbl);
+            exit;
+        end;
         RequestMgt.ExecuteDeleteDirectory(Argument, StorageSetup, Connector, Path);
     end;
 }
