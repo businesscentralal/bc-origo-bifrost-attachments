@@ -43,7 +43,7 @@ codeunit 70013522 "DataExch Def List Impl ori" implements "Msg Interface ori", "
     /// <summary>Provides the SelectionDescription discovery or contract chapter.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Lists available Data Exchange definitions and their filters; use the get type for full mappings.', Comment = 'is-IS=Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu sækiboðgerðina til að sjá alla vörpun.';
+        SelectionDescriptionLbl: Label 'Lists available Data Exchange definitions and their filters; use the get type for full mappings.', Comment = 'is-IS=Listar tiltækar skilgreiningar gagnaskipta og síur þeirra; notaðu skilaboðategundina fyrir lestur til að sjá alla vörpun.';
     begin
         exit(SelectionDescriptionLbl);
     end;

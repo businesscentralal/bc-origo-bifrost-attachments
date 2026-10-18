@@ -48,7 +48,7 @@ page 10035677 "Attachments Setup ori"
             {
                 ApplicationArea = All;
                 Caption = 'Storage Setup Wizard', Comment = 'is-IS=Leiðsagnarforrit geymsluuppsetningar';
-                ToolTip = 'Run the guided setup to add a new file storage account (Azure Blob, Azure File Share, SharePoint, etc.).', Comment = 'is-IS=Keyra leiðsagnarforritið til að bæta við nýjum skráargeymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).';
+                ToolTip = 'Run the guided setup to add a new file storage account (Azure Blob, Azure File Share, SharePoint, etc.).', Comment = 'is-IS=Keyra leiðsagnarforritið til að bæta við nýjum skráageymslureikningi (Azure Blob, Azure File Share, SharePoint, o.fl.).';
                 Image = Setup;
                 RunObject = page "File Account Wizard";
             }
@@ -56,7 +56,7 @@ page 10035677 "Attachments Setup ori"
             {
                 ApplicationArea = All;
                 Caption = 'Storage Setup', Comment = 'is-IS=Uppsetning geymslu';
-                ToolTip = 'View and manage the registered file storage accounts.', Comment = 'is-IS=Skoða og stjórna skráðum skráargeymslureikningum.';
+                ToolTip = 'View and manage the registered file storage accounts.', Comment = 'is-IS=Skoða og stjórna skráðum skráageymslureikningum.';
                 Image = Accounts;
                 RunObject = page "File Accounts";
             }
@@ -64,7 +64,7 @@ page 10035677 "Attachments Setup ori"
             {
                 ApplicationArea = All;
                 Caption = 'Bifrost Storage Setup', Comment = 'is-IS=Uppsetning Bifröst geymslu';
-                ToolTip = 'View and manage storage connections used to route Bifrost file requests to file accounts.', Comment = 'is-IS=Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifrastar á skráargeymslureikninga.';
+                ToolTip = 'View and manage storage connections used to route Bifrost file requests to file accounts.', Comment = 'is-IS=Skoða og stjórna geymslutengingum sem eru notaðar til að beina skráarbeiðnum Bifröst á skráageymslureikninga.';
                 Image = Attach;
                 RunObject = page "Storage Setup ori";
             }
@@ -72,7 +72,7 @@ page 10035677 "Attachments Setup ori"
             {
                 ApplicationArea = All;
                 Caption = 'Purge Upload Sessions', Comment = 'is-IS=Hreinsa upphleðslulotur';
-                ToolTip = 'Deletes abandoned upload sessions and their chunks. Sessions that were never committed or aborted leave data behind; this action removes it.', Comment = 'is-IS=Eyðir yfirgefnum upphleðslulotum og bitum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.';
+                ToolTip = 'Deletes abandoned upload sessions and their chunks. Sessions that were never committed or aborted leave data behind; this action removes it.', Comment = 'is-IS=Eyðir yfirgefnum upphleðslulotum og bútum þeirra. Lotur sem aldrei voru staðfestar eða hætt við skilja eftir gögn; þessi aðgerð fjarlægir þau.';
                 Image = ClearLog;
 
                 trigger OnAction()
@@ -86,7 +86,7 @@ page 10035677 "Attachments Setup ori"
             {
                 ApplicationArea = All;
                 Caption = 'Setup Wizard', Comment = 'is-IS=Uppsetningarleiðsögn';
-                ToolTip = 'Opens the Bifrost setup wizard, which enables HTTP client requests for all Bifrost apps and walks through the credentials of every app.', Comment = 'is-IS=Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir auðkenni hvers forrits.';
+                ToolTip = 'Opens the Bifrost setup wizard, which enables HTTP client requests for all Bifrost apps and walks through the credentials of every app.', Comment = 'is-IS=Opnar uppsetningarleiðsögn Bifröst, sem virkjar HTTP biðlarabeiðnir fyrir öll Bifröst forrit og fer yfir aðgangsupplýsingar hvers forrits.';
                 Image = Setup;
                 RunObject = page "Setup Wizard ori";
             }

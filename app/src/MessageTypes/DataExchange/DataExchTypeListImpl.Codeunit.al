@@ -35,7 +35,7 @@ codeunit 70013524 "DataExch Type List Impl ori" implements "Msg Interface ori", 
     /// <summary>Provides the Keywords discovery or contract chapter.</summary>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'list data exchange types, incoming document types, exchange type codes', Comment = 'is-IS=lista tegundir gagnaskipta, tegundir innkomandi skjala, tegundakóðar gagnaskipta';
+        KeywordsLbl: Label 'list data exchange types, incoming document types, exchange type codes', Comment = 'is-IS=lista gerðir gagnaskipta, gerðir skjala í innleið, kóðar gerða gagnaskipta';
     begin
         exit(KeywordsLbl);
     end;
@@ -43,7 +43,7 @@ codeunit 70013524 "DataExch Type List Impl ori" implements "Msg Interface ori", 
     /// <summary>Provides the SelectionDescription discovery or contract chapter.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Lists Data Exchange Types and their definition codes; use definition get to inspect the referenced format.', Comment = 'is-IS=Listar gerðir gagnaskipta og skilgreiningarkóða þeirra; notaðu skilgreiningarsækiboðgerðina til að skoða sniðið sem vísað er í.';
+        SelectionDescriptionLbl: Label 'Lists Data Exchange Types and their definition codes; use definition get to inspect the referenced format.', Comment = 'is-IS=Listar gerðir gagnaskipta og skilgreiningarkóða þeirra; notaðu skilaboðategundina fyrir lestur skilgreiningar til að skoða sniðið sem vísað er í.';
     begin
         exit(SelectionDescriptionLbl);
     end;

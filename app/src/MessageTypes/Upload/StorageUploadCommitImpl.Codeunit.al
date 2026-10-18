@@ -31,7 +31,7 @@ codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori
     /// <returns>The description label in the current language.</returns>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Assembles an upload session''s chunks and writes the file to the storage connection.', Comment = 'is-IS=Sameinar hluta upphleðslulotu og skrifar skrána í geymslutenginguna.';
+        DescriptionLbl: Label 'Assembles an upload session''s chunks and writes the file to the storage connection.', Comment = 'is-IS=Sameinar búta upphleðslulotu og skrifar skrána í geymslutenginguna.';
     begin
         exit(DescriptionLbl);
     end;
@@ -43,7 +43,7 @@ codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori
     /// <returns>Comma-separated keywords in the current language.</returns>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'finish upload to storage, complete the upload, save uploaded file to cloud, commit upload, assemble the chunks, finalise upload, finalize upload', Comment = 'is-IS=ljúka upphleðslu í geymslu, klára upphleðslu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, ljúka upphleðslu, staðfesta upphleðsluna';
+        KeywordsLbl: Label 'finish upload to storage, complete the upload, save uploaded file to cloud, commit upload, assemble the chunks, finalise upload, finalize upload', Comment = 'is-IS=staðfesta upphleðslu í geymslu, staðfesta upphleðslulotu, vista upphlaðna skrá í skýið, staðfesta upphleðslu, setja saman búta, staðfesta upphleðslu skráar, staðfesta upphleðsluna';
     begin
         exit(KeywordsLbl);
     end;
@@ -52,7 +52,7 @@ codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Assembles the chunks of an upload session and writes the file to its storage connection; it does not attach the file to any record.', Comment = 'is-IS=Sameinar hluta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu.';
+        SelectionDescriptionLbl: Label 'Assembles the chunks of an upload session and writes the file to its storage connection; it does not attach the file to any record.', Comment = 'is-IS=Sameinar búta upphleðslulotu og skrifar skrána í geymslutengingu hennar; tengir skrána ekki við neina færslu.';
     begin
         exit(SelectionDescriptionLbl);
     end;

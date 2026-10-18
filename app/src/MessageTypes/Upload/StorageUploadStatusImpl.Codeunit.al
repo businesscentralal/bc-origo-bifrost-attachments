@@ -52,7 +52,7 @@ codeunit 10035660 "Storage Upload Status Impl ori" implements "Msg Interface ori
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Reports the bytes and chunk count received by an upload session without changing it, to confirm progress before committing.', Comment = 'is-IS=Skilar fjölda bæta og hluta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðslu er lokið.';
+        SelectionDescriptionLbl: Label 'Reports the bytes and chunk count received by an upload session without changing it, to confirm progress before committing.', Comment = 'is-IS=Skilar fjölda bæta og búta sem upphleðslulota hefur móttekið án þess að breyta henni, til að staðfesta framvindu áður en upphleðsla er staðfest.';
     begin
         exit(SelectionDescriptionLbl);
     end;
