@@ -1,5 +1,6 @@
 namespace Origo.Bifrost.Attachments;
 
+using Microsoft.EServices.EDocument;
 using Microsoft.Foundation.Attachment;
 using Origo.Bifrost;
 
@@ -17,8 +18,9 @@ codeunit 10035669 "Storage Upload Commit Rec ori" implements "Msg Interface ori"
     procedure IsEnabled(): Boolean
     var
         DocumentAttachment: Record "Document Attachment";
+        IncomingDocument: Record "Incoming Document";
     begin
-        exit(DocumentAttachment.WritePermission());
+        exit(DocumentAttachment.WritePermission() or IncomingDocument.WritePermission());
     end;
 
     /// <summary>Identifies the table used by the message filter contract.</summary>

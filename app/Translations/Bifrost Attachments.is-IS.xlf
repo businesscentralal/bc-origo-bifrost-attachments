@@ -891,6 +891,24 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningar fyrir Generic Import eða Payroll Import.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Run Impl ori - Method ImportHeader - NamedType SelectDefinitionLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 1004477244 - Method 2058993062 - NamedType 1151971474" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Incoming document %1 was not found.</source>
+          <target>Innkomuskjal %1 fannst ekki.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = entry number||is-IS=Innkomuskjal %1 fannst ekki.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Inc Doc Proc ori - Method ProcessIncomingDocument - NamedType MissingDocumentErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1004477244 - Method 2058993062 - NamedType 3663062277" size-unit="char" translate="yes" xml:space="preserve">
+          <source>an existing incoming document entry number</source>
+          <target>númer fyrirliggjandi innkomuskjals</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=númer fyrirliggjandi innkomuskjals</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Inc Doc Proc ori - Method ProcessIncomingDocument - NamedType ExpectedDocumentLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1004477244 - Method 2058993062 - NamedType 1607748007" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Create the incoming document first, then process it.</source>
+          <target>Stofnaðu innkomuskjalið fyrst og vinnðu það síðan.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Stofnaðu innkomuskjalið fyrst og vinnðu það síðan.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Inc Doc Proc ori - Method ProcessIncomingDocument - NamedType SelectDocumentLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2801241356 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lists Data Exchange Types and the definition type each one resolves to.</source>
           <target>Listar gerðir gagnaskipta og gerð skilgreiningar sem hver þeirra vísar í.</target>
@@ -1095,6 +1113,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=contentBase64 eða content, ekki bæði</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType BothInlineContentExpectedLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 4149883341" size-unit="char" translate="yes" xml:space="preserve">
+          <source>at most 20 characters</source>
+          <target>að hámarki 20 stafir</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=að hámarki 20 stafir</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType Code20ExpectedLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 2440645009" size-unit="char" translate="yes" xml:space="preserve">
           <source>Table %1 has a composite primary key, so it cannot be addressed with "no".</source>
           <target>Tafla %1 hefur samsettan aðallykil og því er ekki hægt að vísa í hana með "no".</target>
@@ -1112,6 +1136,18 @@
           <target>nákvæmlega eitt af contentBase64 (eða samheitinu content), storageCode með path, sourceTarget með sourceSystemId</target>
           <note from="Developer" annotates="general" priority="2">is-IS=nákvæmlega eitt af contentBase64 (eða samheitinu content), storageCode með path, sourceTarget með sourceSystemId</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType ContentSourceExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 4147945881" size-unit="char" translate="yes" xml:space="preserve">
+          <source>an existing Data Exchange Type code</source>
+          <target>kóði fyrirliggjandi gagnaskiptagerðar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=kóði fyrirliggjandi gagnaskiptagerðar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType DataExchangeTypeExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 352425844" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Parameter "dataExchangeType" exceeds the maximum length of 20 characters.</source>
+          <target>Færibreytan "dataExchangeType" er lengri en leyfilegt hámark, 20 stafir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Færibreytan "dataExchangeType" er lengri en leyfilegt hámark, 20 stafir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType DataExchangeTypeTooLongErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 2011335988" size-unit="char" translate="yes" xml:space="preserve">
           <source>The storage connection "%1" is disabled.</source>
@@ -1275,6 +1311,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Sendu recordSystemId eða no til að segja hvaða færslu viðhengið tilheyrir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType RecordRequiredErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 2369911747" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Call DataExchange.Type.List or DataExchange.Type.Set, then send the exact code.</source>
+          <target>Kallaðu á DataExchange.Type.List eða DataExchange.Type.Set og sendu síðan nákvæman kóða.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á DataExchange.Type.List eða DataExchange.Type.Set og sendu síðan nákvæman kóða.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType SelectDataExchangeTypeLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 1372998242" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Send the complete code within 20 characters; values are never truncated.</source>
+          <target>Sendu allan kóðann innan 20 stafa; gildi eru aldrei stytt.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu allan kóðann innan 20 stafa; gildi eru aldrei stytt.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType ShortenCodeLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 3359088070" size-unit="char" translate="yes" xml:space="preserve">
           <source>tableId or tableName</source>
           <target>tableId eða tableName</target>
@@ -1304,6 +1352,12 @@
           <target>Engin geymslutenging er skilgreind fyrir storageCode "%1".</target>
           <note from="Developer" annotates="general" priority="2">%1 = storage code, is-IS=Engin geymslutenging er skilgreind fyrir storageCode "%1".</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType UnknownCodeErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 1426384842" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Data Exchange Type %1 was not found.</source>
+          <target>Gagnaskiptagerð %1 fannst ekki.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = type code||is-IS=Gagnaskiptagerð %1 fannst ekki.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType UnknownDataExchangeTypeErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 2155353685" size-unit="char" translate="yes" xml:space="preserve">
           <source>Table %1 does not exist.</source>
@@ -1341,6 +1395,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Sendu recordSystemId í staðinn.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType UseRecordSystemIdLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 3204537786" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Parameter "vendorNo" exceeds the maximum length of 20 characters.</source>
+          <target>Færibreytan "vendorNo" er lengri en leyfilegt hámark, 20 stafir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Færibreytan "vendorNo" er lengri en leyfilegt hámark, 20 stafir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType VendorNoTooLongErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - Method 496511085 - NamedType 1067445849" size-unit="char" translate="yes" xml:space="preserve">
           <source>The destination path exceeds the attachment link capacity.</source>
           <target>Áfangaslóðin er lengri en viðhengjatengingin leyfir.</target>
@@ -1371,6 +1431,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Leiðréttu allar tilgreindar færibreytur samkvæmt expected og nextStep og reyndu aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CorrectInputLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 444920706" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The created document type, number and systemId when processing succeeded.</source>
+          <target>Gerð, númer og systemId stofnaðs skjals þegar vinnsla tókst.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Gerð, númer og systemId stofnaðs skjals þegar vinnsla tókst.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType CreatedDocumentResponseLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2655661050" size-unit="char" translate="yes" xml:space="preserve">
           <source>The created Data Exchange entry number.</source>
           <target>Númer gagnaskiptafærslunnar sem var stofnuð.</target>
@@ -1400,6 +1466,18 @@
           <target>Kallandi hefur BIFROST DataExch ori; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Engin geymslutenging er notuð.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Kallandi hefur BIFROST DataExch ori; uppgefnar skilgreiningar og færslur verða að vera til og styðja aðgerðina. Engin geymslutenging er notuð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangePreconditionsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 3264825122" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Optional Data Exchange Type code for IncomingDocument. The type must already exist.</source>
+          <target>Valfrjáls kóði gagnaskiptagerðar fyrir IncomingDocument. Gerðin verður að vera til.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls kóði gagnaskiptagerðar fyrir IncomingDocument. Gerðin verður að vera til.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangeTypeParamLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 1610349590" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Data Exchange Type applied to the incoming document.</source>
+          <target>Gagnaskiptagerðin sem var sett á innkomuskjalið.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Gagnaskiptagerðin sem var sett á innkomuskjalið.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangeTypeResponseLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1754493333" size-unit="char" translate="yes" xml:space="preserve">
           <source>The declared file size in bytes.</source>
@@ -1527,6 +1605,24 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Virk síðustærð.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType PagingTakeLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 3813134445" size-unit="char" translate="yes" xml:space="preserve">
+          <source>True when CreateDocumentWithDataExchange created a document.</source>
+          <target>Satt þegar CreateDocumentWithDataExchange stofnaði skjal.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Satt þegar CreateDocumentWithDataExchange stofnaði skjal.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessedResponseLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 3514665411" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Base-app processing messages when process is true. Status stays Success.</source>
+          <target>Vinnsluskilaboð grunnforrits þegar process er true. Staða er áfram Success.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Vinnsluskilaboð grunnforrits þegar process er true. Staða er áfram Success.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessErrorsResponseLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 191241554" size-unit="char" translate="yes" xml:space="preserve">
+          <source>When true, run CreateDocumentWithDataExchange after the incoming document is created. Default false. The upload still succeeds when processing reports errors.</source>
+          <target>Þegar true er CreateDocumentWithDataExchange keyrt eftir að innkomuskjalið er stofnað. Sjálfgefið false. Upphleðslan heppnast samt þó vinnslan skili villum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Þegar true er CreateDocumentWithDataExchange keyrt eftir að innkomuskjalið er stofnað. Sjálfgefið false. Upphleðslan heppnast samt þó vinnslan skili villum.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessParamLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2539551719" size-unit="char" translate="yes" xml:space="preserve">
           <source>Rows or fields to skip; a nonnegative integer.</source>
           <target>Færslur eða reitir sem á að sleppa; heiltala sem er ekki neikvæð.</target>
@@ -1616,6 +1712,12 @@
           <target>Heiti töflu sem má nota í stað tableId fyrir DocumentAttachment.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Heiti töflu sem má nota í stað tableId fyrir DocumentAttachment.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType UploadTableNameLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 29685804" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Optional vendor number for a new incoming document.</source>
+          <target>Valfrjálst lánardrottinsnúmer fyrir nýtt innkomuskjal.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjálst lánardrottinsnúmer fyrir nýtt innkomuskjal.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType VendorNoParamLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 225158890 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Creates a directory in the configured storage connection.</source>
@@ -2085,6 +2187,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=base64-innihald</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType Base64ExpectedLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 3030677188" size-unit="char" translate="yes" xml:space="preserve">
+          <source>true or false</source>
+          <target>true eða false</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=true eða false</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType BooleanExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 3160132730" size-unit="char" translate="yes" xml:space="preserve">
+          <source>boolean</source>
+          <target>Boole-gildi</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Boole-gildi</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType BooleanTypeLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 309773940" size-unit="char" translate="yes" xml:space="preserve">
           <source>at most %1 bytes (240 MiB)</source>
           <target>í mesta lagi %1 bæti (240 MiB)</target>
@@ -2204,6 +2318,12 @@
           <target>Kóðaðu bæti skrárinnar sem venjulegt base64 og sendu þau aftur.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Kóðaðu bæti skrárinnar sem venjulegt base64 og sendu þau aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType SendBase64Lbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 617437907 - NamedType 1610609707" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Send the value as true or false.</source>
+          <target>Sendu gildið sem true eða false.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu gildið sem true eða false.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - NamedType SendBooleanFormatLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 150722078" size-unit="char" translate="yes" xml:space="preserve">
           <source>Send the value as a GUID, as returned by the call that created it.</source>

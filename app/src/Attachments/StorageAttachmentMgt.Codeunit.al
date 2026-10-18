@@ -4,6 +4,7 @@ using Microsoft.EServices.EDocument;
 using Microsoft.Foundation.Attachment;
 using Origo.Bifrost;
 using System.DataAdministration;
+using System.IO;
 using System.Reflection;
 using System.Utilities;
 
@@ -82,6 +83,13 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         NoAttachmentKeyErr: Label 'Business Central does not know which field identifies a record in table %1, so an attachment cannot be keyed to it.', Comment = '%1 = table id, is-IS=Business Central veit ekki hvaða reitur auðkennir færslu í töflu %1 og því er ekki hægt að tengja viðhengi við hana.';
         AttachmentGoneErr: Label 'The attachment was removed while it was being processed.', Comment = 'is-IS=Viðhenginu var eytt á meðan verið var að vinna með það.';
         NoAttachmentKeyNextStepLbl: Label 'Attach the file to a record of a table that supports attachments, or have a developer subscribe to Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey for this table.', Comment = 'is-IS=Hengdu skrána við færslu í töflu sem styður viðhengi eða láttu forritara gerast áskrifanda að Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey fyrir þessa töflu.';
+        UnknownDataExchangeTypeErr: Label 'Data Exchange Type %1 was not found.', Comment = '%1 = type code||is-IS=Gagnaskiptagerð %1 fannst ekki.';
+        DataExchangeTypeExpectedLbl: Label 'an existing Data Exchange Type code', Comment = 'is-IS=kóði fyrirliggjandi gagnaskiptagerðar';
+        SelectDataExchangeTypeLbl: Label 'Call DataExchange.Type.List or DataExchange.Type.Set, then send the exact code.', Comment = 'is-IS=Kallaðu á DataExchange.Type.List eða DataExchange.Type.Set og sendu síðan nákvæman kóða.';
+        DataExchangeTypeTooLongErr: Label 'Parameter "dataExchangeType" exceeds the maximum length of 20 characters.', Comment = 'is-IS=Færibreytan "dataExchangeType" er lengri en leyfilegt hámark, 20 stafir.';
+        VendorNoTooLongErr: Label 'Parameter "vendorNo" exceeds the maximum length of 20 characters.', Comment = 'is-IS=Færibreytan "vendorNo" er lengri en leyfilegt hámark, 20 stafir.';
+        Code20ExpectedLbl: Label 'at most 20 characters', Comment = 'is-IS=að hámarki 20 stafir';
+        ShortenCodeLbl: Label 'Send the complete code within 20 characters; values are never truncated.', Comment = 'is-IS=Sendu allan kóðann innan 20 stafa; gildi eru aldrei stytt.';
 
     /// <summary>Offloads an attachment's content to storage and clears it from the database.</summary>
     /// <param name="Argument">The message argument carrying <c>target</c>, <c>systemId</c>, <c>storageCode</c> and optional <c>folderPath</c>; receives the error response.</param>
@@ -258,6 +266,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         Description: Text;
         Extension: Text;
         EntryNo: Integer;
+        DataExchangeTypeCode: Code[20];
+        VendorNo: Code[20];
+        Process: Boolean;
     begin
         RequestJson := Argument.GetRequestJson();
         RequestMgt.ReadSetup(Argument, RequestJson, StorageSetup, Connector);
@@ -267,7 +278,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         CheckAttachmentFileName(Argument, FileName);
         Reader.ReadText(Argument, RequestJson, 'description', false, Description);
         Reader.ReadNonNegativeInteger(Argument, RequestJson, 'incomingDocumentEntryNo', false, EntryNo);
+        ReadDataExchangeRequest(Argument, RequestJson, DataExchangeTypeCode, Process, VendorNo);
         if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Incoming Document", true) then
             exit(false);
 
         if EntryNo <> 0 then
@@ -291,6 +305,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             EntryNo := IncomingDocument.CreateIncomingDocument(CopyStr(Description, 1, 100), '');
             IncomingDocument.Get(EntryNo);
         end;
+        ApplyDataExchangeToIncomingDocument(IncomingDocument, DataExchangeTypeCode, VendorNo);
 
         Extension := FileExtensionOf(FileName);
         TempBlob.CreateInStream(ContentInStream);
@@ -320,6 +335,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         ResultData.Add('path', StoragePath);
         ResultData.Add('fileName', FileName);
         ResultData.Add('contentLength', Link."Content Size");
+        AddDataExchangeResult(Argument, IncomingDocument, DataExchangeTypeCode, Process, ResultData);
         exit(true);
     end;
 
@@ -479,6 +495,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         Description: Text;
         Extension: Text;
         EntryNo: Integer;
+        DataExchangeTypeCode: Code[20];
+        VendorNo: Code[20];
+        Process: Boolean;
     begin
         RequestJson := Argument.GetRequestJson();
         Reader.ReadText(Argument, RequestJson, 'fileName', SessionFileName = '', FileName);
@@ -487,7 +506,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         CheckAttachmentFileName(Argument, FileName);
         Reader.ReadText(Argument, RequestJson, 'description', false, Description);
         Reader.ReadNonNegativeInteger(Argument, RequestJson, 'incomingDocumentEntryNo', false, EntryNo);
+        ReadDataExchangeRequest(Argument, RequestJson, DataExchangeTypeCode, Process, VendorNo);
         if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Incoming Document", true) then
             exit(false);
 
         if EntryNo <> 0 then
@@ -501,6 +523,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             EntryNo := IncomingDocument.CreateIncomingDocument(CopyStr(Description, 1, 100), '');
             IncomingDocument.Get(EntryNo);
         end;
+        ApplyDataExchangeToIncomingDocument(IncomingDocument, DataExchangeTypeCode, VendorNo);
 
         Extension := FileExtensionOf(FileName);
         TempBlob.CreateInStream(ContentInStream);
@@ -513,7 +536,121 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         ResultData.Add('fileName', FileName);
         ResultData.Add('contentLength', TempBlob.Length());
         ResultData.Add('offloaded', false);
+        AddDataExchangeResult(Argument, IncomingDocument, DataExchangeTypeCode, Process, ResultData);
         exit(true);
+    end;
+
+    local procedure ReadDataExchangeRequest(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; var DataExchangeTypeCode: Code[20]; var Process: Boolean; var VendorNo: Code[20])
+    var
+        DataExchangeType: Record "Data Exchange Type";
+        Reader: Codeunit "Storage Request Reader ori";
+        TypeText: Text;
+        VendorText: Text;
+    begin
+        Clear(DataExchangeTypeCode);
+        Process := false;
+        Clear(VendorNo);
+        Reader.ReadText(Argument, RequestJson, 'dataExchangeType', false, TypeText);
+        Reader.ReadBoolean(Argument, RequestJson, 'process', false, Process);
+        Reader.ReadText(Argument, RequestJson, 'vendorNo', false, VendorText);
+        if StrLen(TypeText) > MaxStrLen(DataExchangeTypeCode) then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, DataExchangeTypeTooLongErr, 'dataExchangeType', TypeText, Code20ExpectedLbl, ShortenCodeLbl)
+        else
+            if TypeText <> '' then begin
+                DataExchangeTypeCode := CopyStr(TypeText, 1, MaxStrLen(DataExchangeTypeCode));
+                DataExchangeType.SetLoadFields(Code);
+                DataExchangeType.ReadIsolation := IsolationLevel::ReadCommitted;
+                if not DataExchangeType.Get(DataExchangeTypeCode) then
+                    Argument.AddError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(UnknownDataExchangeTypeErr, TypeText), 'dataExchangeType', TypeText, DataExchangeTypeExpectedLbl, SelectDataExchangeTypeLbl);
+            end;
+        if StrLen(VendorText) > MaxStrLen(VendorNo) then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, VendorNoTooLongErr, 'vendorNo', VendorText, Code20ExpectedLbl, ShortenCodeLbl)
+        else
+            VendorNo := CopyStr(VendorText, 1, MaxStrLen(VendorNo));
+    end;
+
+    local procedure ApplyDataExchangeToIncomingDocument(var IncomingDocument: Record "Incoming Document"; DataExchangeTypeCode: Code[20]; VendorNo: Code[20])
+    var
+        NeedModify: Boolean;
+    begin
+        if DataExchangeTypeCode <> '' then begin
+            IncomingDocument."Data Exchange Type" := DataExchangeTypeCode;
+            NeedModify := true;
+        end;
+        if VendorNo <> '' then begin
+            IncomingDocument."Vendor No." := VendorNo;
+            NeedModify := true;
+        end;
+        if NeedModify then
+            IncomingDocument.Modify(true);
+    end;
+
+    local procedure AddDataExchangeResult(var Argument: Record "Message Argument ori"; IncomingDocument: Record "Incoming Document"; DataExchangeTypeCode: Code[20]; Process: Boolean; var ResultData: JsonObject)
+    var
+        ProcessErrors: JsonArray;
+        CreatedDocument: JsonObject;
+        SavedRequest: JsonObject;
+        ProcessRequest: JsonObject;
+        LastError: Text;
+        Processed: Boolean;
+        EntryNo: Integer;
+    begin
+        if DataExchangeTypeCode <> '' then
+            ResultData.Add('dataExchangeType', DataExchangeTypeCode);
+        EntryNo := IncomingDocument."Entry No.";
+        if Process then begin
+            Commit();
+            SavedRequest := Argument.GetRequestJson();
+            ProcessRequest.Add('incomingDocumentEntryNo', EntryNo);
+            Argument.SetRequestJson(ProcessRequest);
+            if not Codeunit.Run(Codeunit::"DataExch Inc Doc Proc ori", Argument) then
+                LastError := GetLastErrorText();
+            Argument.SetRequestJson(SavedRequest);
+            if IncomingDocument.Get(EntryNo) then begin
+                CollectProcessErrors(IncomingDocument, LastError, ProcessErrors);
+                if IncomingDocument."Document No." <> '' then begin
+                    Processed := true;
+                    CreatedDocument.Add('type', IncomingDocumentTypeName(IncomingDocument));
+                    CreatedDocument.Add('no', IncomingDocument."Document No.");
+                    CreatedDocument.Add('systemId', Format(IncomingDocument.SystemId, 0, 4));
+                    ResultData.Add('createdDocument', CreatedDocument);
+                end;
+            end else
+                if LastError <> '' then
+                    ProcessErrors.Add(LastError);
+            ResultData.Add('processErrors', ProcessErrors);
+        end;
+        ResultData.Add('processed', Processed);
+    end;
+
+    local procedure CollectProcessErrors(var IncomingDocument: Record "Incoming Document"; LastError: Text; var ProcessErrors: JsonArray)
+    var
+        TempErrorMessage: Record "Error Message" temporary;
+    begin
+        IncomingDocument.SaveErrorMessages(TempErrorMessage);
+        if TempErrorMessage.FindSet() then
+            repeat
+                if TempErrorMessage."Message" <> '' then
+                    ProcessErrors.Add(TempErrorMessage."Message");
+            until TempErrorMessage.Next() = 0;
+        if (ProcessErrors.Count() = 0) and (LastError <> '') then
+            ProcessErrors.Add(LastError);
+    end;
+
+    local procedure IncomingDocumentTypeName(IncomingDocument: Record "Incoming Document"): Text
+    var
+        DocType: Enum "Incoming Related Document Type";
+        Ordinals: List of [Integer];
+        Names: List of [Text];
+        Index: Integer;
+    begin
+        DocType := IncomingDocument."Document Type";
+        Ordinals := DocType.Ordinals();
+        Names := DocType.Names();
+        Index := Ordinals.IndexOf(DocType.AsInteger());
+        if Index = 0 then
+            exit('');
+        exit(Names.Get(Index));
     end;
 
     /// <summary>

@@ -35,6 +35,9 @@ codeunit 10035682 "Storage Request Reader ori"
         TextExpectedLbl: Label 'a JSON string', Comment = 'is-IS=JSON-strengur';
         IntegerTypeLbl: Label 'integer', Comment = 'is-IS=heiltala';
         IntegerExpectedLbl: Label 'an integer, e.g. 3', Comment = 'is-IS=heiltala, t.d. 3';
+        BooleanTypeLbl: Label 'boolean', Comment = 'is-IS=Boole-gildi';
+        BooleanExpectedLbl: Label 'true or false', Comment = 'is-IS=true eða false';
+        SendBooleanFormatLbl: Label 'Send the value as true or false.', Comment = 'is-IS=Sendu gildið sem true eða false.';
         NonNegativeExpectedLbl: Label '0 or more', Comment = 'is-IS=0 eða meira';
         GuidTypeLbl: Label 'GUID', Comment = 'is-IS=GUID';
         GuidExpectedLbl: Label 'a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301', Comment = 'is-IS=GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301';
@@ -150,6 +153,36 @@ codeunit 10035682 "Storage Request Reader ori"
                 exit(true);
             end;
         AddFormatError(Argument, ParameterName, RawText, IntegerTypeLbl, IntegerExpectedLbl, SendIntegerFormatLbl);
+        exit(false);
+    end;
+
+    /// <summary>Reads a JSON boolean. Absent, JSON null and an empty string count as not given.</summary>
+    /// <param name="Argument">The message argument that collects the problems.</param>
+    /// <param name="RequestJson">The request JSON.</param>
+    /// <param name="ParameterName">The JSON property to read.</param>
+    /// <param name="Required">Whether the value must be given.</param>
+    /// <param name="Value">In: the default. Out: the value read.</param>
+    /// <returns>True when the value is usable.</returns>
+    procedure ReadBoolean(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Boolean): Boolean
+    var
+        Token: JsonToken;
+        Parsed: Boolean;
+        RawText: Text;
+    begin
+        if not RequestJson.Get(ParameterName, Token) then
+            exit(AcceptAbsent(Argument, ParameterName, Required));
+        if Token.IsValue() then
+            if Token.AsValue().IsNull() then
+                exit(AcceptAbsent(Argument, ParameterName, Required));
+        RawText := TokenText(Token);
+        if RawText = '' then
+            exit(AcceptAbsent(Argument, ParameterName, Required));
+        if Token.IsValue() then
+            if TryReadBooleanValue(Token, Parsed) then begin
+                Value := Parsed;
+                exit(true);
+            end;
+        AddFormatError(Argument, ParameterName, RawText, BooleanTypeLbl, BooleanExpectedLbl, SendBooleanFormatLbl);
         exit(false);
     end;
 
@@ -527,6 +560,12 @@ codeunit 10035682 "Storage Request Reader ori"
             if not (Value[Index] in ['0' .. '9']) then
                 exit(false);
         exit(true);
+    end;
+
+    [TryFunction]
+    local procedure TryReadBooleanValue(Token: JsonToken; var Parsed: Boolean)
+    begin
+        Parsed := Token.AsValue().AsBoolean();
     end;
 
     [TryFunction]

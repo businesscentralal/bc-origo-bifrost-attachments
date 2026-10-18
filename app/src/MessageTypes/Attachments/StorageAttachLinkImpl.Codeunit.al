@@ -17,10 +17,11 @@ codeunit 10035640 "Storage Attach Link Impl ori" implements "Msg Interface ori",
     /// <returns>True when the caller can read both storage setup and attachment links.</returns>
     procedure IsEnabled(): Boolean
     var
+        IncomingDocument: Record "Incoming Document";
         StorageSetup: Record "Storage Setup ori";
         AttachmentLink: Record "Storage Attachment Link ori";
     begin
-        exit(StorageSetup.ReadPermission() and AttachmentLink.ReadPermission());
+        exit(StorageSetup.ReadPermission() and AttachmentLink.ReadPermission() and IncomingDocument.WritePermission());
     end;
 
     /// <summary>Identifies the table used by the message filter contract.</summary>
