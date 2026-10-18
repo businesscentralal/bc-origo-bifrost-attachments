@@ -158,8 +158,8 @@ codeunit 10035645 "Storage Dir Delete Impl ori" implements "Msg Interface ori", 
             exit;
         if Path = '' then begin
             Received := Path;
-            if RequestJson.TryGet('path', PathToken) then
-                PathToken.WriteTo(Received);
+            if RequestJson.Contains('path') then
+                RequestJson.Get('path', PathToken).WriteTo(Received);
             Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameter, RootPathDeleteErr, 'path', Received, NonRootDirectoryExpectedLbl, RootPathDeleteNextStepLbl);
             exit;
         end;
