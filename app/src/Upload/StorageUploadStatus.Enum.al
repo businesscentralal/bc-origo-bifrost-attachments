@@ -15,7 +15,7 @@ enum 10035637 "Storage Upload Status ori"
     /// <summary>The session accepts further chunks and has not been committed.</summary>
     value(0; Open)
     {
-        Caption = 'Open', Comment = 'is-IS=Opið';
+        Caption = 'Open', Comment = 'is-IS=Opin';
     }
     /// <summary>The session's chunks have been assembled and written to storage.</summary>
     value(1; Committed)

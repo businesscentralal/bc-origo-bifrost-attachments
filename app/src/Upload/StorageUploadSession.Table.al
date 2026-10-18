@@ -54,17 +54,17 @@ table 10035638 "Storage Upload Session ori"
         field(6; "Received Size"; Integer)
         {
             Caption = 'Received Size', Comment = 'is-IS=Móttekin stærð';
-            ToolTip = 'Specifies the total number of bytes received across all appended chunks.', Comment = 'is-IS=Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta bita.';
+            ToolTip = 'Specifies the total number of bytes received across all appended chunks.', Comment = 'is-IS=Tilgreinir heildarfjölda móttekinna bæta yfir alla viðbætta búta.';
         }
         field(7; "Chunk Count"; Integer)
         {
-            Caption = 'Chunk Count', Comment = 'is-IS=Fjöldi bita';
-            ToolTip = 'Specifies how many chunks have been appended to the session.', Comment = 'is-IS=Tilgreinir hversu margir bitar hafa verið viðbættir lotunni.';
+            Caption = 'Chunk Count', Comment = 'is-IS=Fjöldi búta';
+            ToolTip = 'Specifies how many chunks have been appended to the session.', Comment = 'is-IS=Tilgreinir hversu margir bútar hafa verið viðbættir lotunni.';
         }
         field(8; Status; Enum "Storage Upload Status ori")
         {
             Caption = 'Status', Comment = 'is-IS=Staða';
-            ToolTip = 'Specifies whether the session is open for further chunks, has been committed to storage, or was aborted.', Comment = 'is-IS=Tilgreinir hvort lotan er opin fyrir frekari bita, hefur verið staðfest í geymslu, eða var hætt við.';
+            ToolTip = 'Specifies whether the session is open for further chunks, has been committed to storage, or was aborted.', Comment = 'is-IS=Tilgreinir hvort lotan er opin fyrir frekari búta, hefur verið staðfest í geymslu, eða var hætt við.';
         }
     }
 

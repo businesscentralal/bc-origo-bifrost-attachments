@@ -815,19 +815,31 @@ codeunit 96204 "Storage Connector Tests"
         MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
         MsgInterface := MessageType;
 
-        // Attachment offload/restore write to the database, so they are inbound; everything else is outbound.
-        if Ordinal >= Enum::"Message Type ori"::"Storage.Attachment.Offload".AsInteger() then
-            LibraryAssert.AreEqual(
-                Enum::"Msg Direction ori"::Inbound,
-                MsgInterface.GetMessageDirection(),
-                StrSubstNo(WrongDirectionErr, MessageType))
-        else
-            LibraryAssert.AreEqual(
-                Enum::"Msg Direction ori"::Outbound,
-                MsgInterface.GetMessageDirection(),
-                StrSubstNo(WrongDirectionErr, MessageType));
-        LibraryAssert.AreNotEqual('', MsgInterface.GetDescription(), StrSubstNo(NoDescriptionErr, MessageType));
+        // Write and irreversible effects are inbound. Read effects stay outbound. Issue #130.
         LibraryAssert.IsTrue(ContractMgt.GetContract(MessageType, Contract), StrSubstNo(NoContractErr, MessageType));
+        LibraryAssert.AreEqual(
+            ExpectedDirection(Contract),
+            MsgInterface.GetMessageDirection(),
+            StrSubstNo(WrongDirectionErr, MessageType));
+        LibraryAssert.AreNotEqual('', MsgInterface.GetDescription(), StrSubstNo(NoDescriptionErr, MessageType));
+    end;
+
+    local procedure ExpectedDirection(Contract: JsonObject): Enum "Msg Direction ori"
+    var
+        Effect: JsonObject;
+        EffectToken: JsonToken;
+        EffectName: Text;
+        UnknownEffectErr: Label 'Contract effect %1 is not read, write or irreversible.', Comment = '%1 = effect';
+    begin
+        Contract.Get('effect', EffectToken);
+        Effect := EffectToken.AsObject();
+        Effect.Get('effect', EffectToken);
+        EffectName := EffectToken.AsValue().AsText();
+        if not (EffectName in ['read', 'write', 'irreversible']) then
+            Error(UnknownEffectErr, EffectName);
+        if EffectName = 'read' then
+            exit(Enum::"Msg Direction ori"::Outbound);
+        exit(Enum::"Msg Direction ori"::Inbound);
     end;
 
     local procedure VerifyTypeHelpExplainsUsage(Ordinal: Integer)

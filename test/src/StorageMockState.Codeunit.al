@@ -17,6 +17,8 @@ codeunit 96201 "Storage Mock State"
         RejectNextWrite: Boolean;
         RejectAfterCopy: Boolean;
         WriteCalls: Integer;
+        DeleteCalls: Integer;
+        ListCalls: Integer;
 
     /// <summary>Clears all mock files and directories.</summary>
     procedure Reset()
@@ -26,6 +28,32 @@ codeunit 96201 "Storage Mock State"
         RejectNextWrite := false;
         RejectAfterCopy := false;
         WriteCalls := 0;
+        DeleteCalls := 0;
+        ListCalls := 0;
+    end;
+
+    /// <summary>Counts every DeleteDirectory call that reaches the connector.</summary>
+    procedure AddDeleteCall()
+    begin
+        DeleteCalls += 1;
+    end;
+
+    /// <summary>Returns the DeleteDirectory calls that reached the connector.</summary>
+    procedure GetDeleteCalls(): Integer
+    begin
+        exit(DeleteCalls);
+    end;
+
+    /// <summary>Counts every ListEntries call that reaches the connector.</summary>
+    procedure AddListCall()
+    begin
+        ListCalls += 1;
+    end;
+
+    /// <summary>Returns the ListEntries calls that reached the connector.</summary>
+    procedure GetListCalls(): Integer
+    begin
+        exit(ListCalls);
     end;
 
     /// <summary>Injects one deterministic failure before the next connector write.</summary>

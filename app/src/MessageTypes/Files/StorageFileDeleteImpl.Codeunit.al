@@ -45,7 +45,7 @@ codeunit 10035650 "Storage File Delete Impl ori" implements "Msg Interface ori",
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Deletes a single file from a storage connection; to remove a whole folder use the directory delete type instead.', Comment = 'is-IS=Eyðir einni skrá úr geymslutengingu; notaðu boðgerðina fyrir eyðingu mappa til að eyða heilli möppu.';
+        SelectionDescriptionLbl: Label 'Deletes a single file from a storage connection; to remove a whole folder use the directory delete type instead.', Comment = 'is-IS=Eyðir einni skrá úr geymslutengingu; notaðu skilaboðategundina fyrir eyðingu mappa til að eyða heilli möppu.';
     begin
         exit(SelectionDescriptionLbl);
     end;
@@ -132,7 +132,7 @@ codeunit 10035650 "Storage File Delete Impl ori" implements "Msg Interface ori",
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"
     begin
-        exit(Enum::"Msg Direction ori"::Outbound);
+        exit(Enum::"Msg Direction ori"::Inbound);
     end;
 
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")

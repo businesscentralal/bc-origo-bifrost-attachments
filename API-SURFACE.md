@@ -3,25 +3,30 @@
 | Release gate | Decision at audited main |
 |---|---|
 | Marketplace publication / previous baseline | **BLOCKED**: Gunnar confirms no current Attachments offer; historical publication/validation and baseline evidence remain unavailable. |
-| Access reduction | **DONE 2026-10-13**: no Attachments offer exists (Gunnar, #83), so there is no published baseline or foreign consumer. The two state enums and the Storage Setup / Storage Account Lookup helper procedures are now Internal; the unbound Definition.Import and Entry.Delete codeunits were removed. |
+| Access reduction | **IMPLEMENTED in [PR118](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/118)**: the two state enums and five Storage Setup / Storage Account Lookup helper procedures are Internal; the unbound Definition.Import and Entry.Delete codeunits were removed. No current offer is evidenced, but that alone does not establish historical publication or absence of foreign consumers. Baseline/consumer acceptance remains open under AC01/AC03. |
 | Provider contract | **KEEP**: Storage Connector ori, Storage Type ori and table Storage Setup ori (10035636) remain public. Storage Type stays extensible. |
 | State enums | **DONE**: Storage Attachment Target ori (10035635) and Storage Upload Status ori (10035637) are Access = Internal. |
 | Registered ranges and affix | **BLOCKED**: Gunnar / Partner Center allocation owner must supply authoritative evidence for both ranges and `ori`. |
-| Full AppSourceCop / product and test compile / runtime | **INCOMPLETE**: PR84 and audit PR86 have merged; exact current-source compile/analyzer/runtime and QA evidence still required. Merge is not verification. |
+| Full AppSourceCop / product and test compile / runtime | **CI VERIFIED at main `b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005`**: paired [CI38918381017](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/38918381017) succeeded; its downloaded TestResults contains 280 executed / 280 passed / 0 failed / 0 skipped. This is existing-main evidence, not execution at a later audit-only head, baseline comparison, UI/MCP proof or AppSource certification. |
 | Independent review | Pending; this audit is an author inventory, not independent certification. |
 
-Source: Attachments source snapshot `fca2943658e9843d3cfcce80ff6093657e8bd51e`, app `28.0.0.4`, test app
-`28.0.0.6`. Compare Foundation `0fb78c0be538bd77c482c70eddbbef451f697cc9` and standards
-`52ba4754cfd614e4a7c50af87b30149b18b313e3`. These are source versions, not deployed versions.
+Current source checked: Attachments main `b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005`,
+source app `28.0.0.4`, source test app `28.0.0.6`; CI builds both as `28.0.0.87`.
+The JSON inventory retains its recorded audit `sourceSha`
+`fca2943658e9843d3cfcce80ff6093657e8bd51e` and separate `hashSourceSha`
+`b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005`. The guard independently matches all
+79 recorded object identities and file hashes to the current source; the CSV matches all
+774 current non-local signatures, their effective access and declaration lines. Local
+consumer lists were refreshed at the same source SHA; `consumerSourceSha` and
+`procedureLocationsSourceSha` identify those snapshots. These statements do not
+refresh the historical external-consumer search or establish deployment identity.
+
 The original audit at main `b42ad90eaee2803205408a1cac8b0d9752b91c0e` remains
 attributable to [PR86](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86)
-and commit `ef39ae86b5729038877b2427e9a892487ce09728`; the inventory above is
-a refresh of current product source, not a rewrite of that historical snapshot.
-
-File hashes were refreshed against main `079378953494ce569db7d1139543955dc6843c73`.
-Only the 13 stale file hashes changed; object identities, decisions, consumer counts and
-the procedure inventory retain the audit snapshot above. `hashSourceSha` records the
-file-hash snapshot separately from the original `sourceSha`.
+and commit `ef39ae86b5729038877b2427e9a892487ce09728`. The historical Foundation
+comparison is `0fb78c0be538bd77c482c70eddbbef451f697cc9`; the available standards
+snapshot is `ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f`, recorded as synchronized on
+2026-10-03, not freshly synchronized by this audit.
 
 2026-10-16 #23 working tree: codeunit 70013532 `DataExch Inc Doc Proc ori` is in the
 inventory, and the 11 changed shipping files have current hashes. Procedure CSV line
@@ -29,6 +34,8 @@ numbers stay the prior audit snapshot. This is not a compile or runtime certific
 
 This change adds audit records only. No object, procedure, interface member, enum value,
 wire name, access, extensibility, identity or allocation is changed.
+This reconciliation changes audit text and inventory metadata only. The access reductions already merged in PR118
+are described below; this documentation change adds no further access reduction.
 
 ## Check the complete source inventory
 
@@ -42,6 +49,7 @@ wire name, access, extensibility, identity or allocation is changed.
 Counts: 80 objects in `api-surface-objects.json` (70013532 added; the previous prose
 count of 81 did not match that file's 79 rows). Procedure CSV remains the prior
 audit snapshot of 806 non-local procedures/interface members, 16
+Counts: 79 objects, 774 non-local procedures/interface members, 11
 effectively public procedures/interface members. A public procedure on an Internal object
 is recorded as effectively Internal. Object references are lexical references to the quoted
 AL object name after removing line comments. Same-named table/page counts overlap;
@@ -61,7 +69,7 @@ validate accessibility and binding compatibility.
 | Table Storage Setup ori (10035636) | Every provider member accepts this record; production and mock providers read its settings. | Keep public and sealed; its record type is part of the provider signature. |
 | Foundation message bindings | Shipping enum extensions bind Msg Interface ori / Msg Contract ori / Msg Discovery ori to Internal implementations. | Keep bindings and every existing wire name/ordinal; internal implementations are already intentional. |
 | Friend test access | `app/app.json` names only Attachments Tests; `.AL-Go/PipelineInitialize.ps1` removes it and AS0081 outside Test mode. | Preserve the seam; #78 owns compiled-package friend validation. |
-| State enums 10035635 / 10035637 | Attachment management/link state and upload session/status use them; tests access the Internal implementation via the existing friend grant. | Candidate Internal only after first-publish/baseline verification; currently unchanged and sealed. |
+| State enums 10035635 / 10035637 | Attachment management/link state and upload session/status use them; tests access the Internal implementation via the existing friend grant. | Internal and sealed in current source after PR118; historical baseline and foreign-consumer acceptance remain unverified. |
 | Existing UI pages / native fields / permissions | Setup registration, TestPage tests, native attachment integration and permission extensions. | Preserve working entry points and fields; keep already sealed pages/tables sealed. |
 
 The provider interface accepts unbounded `Text` paths. Its setup record carries `Code[20]`,
@@ -71,11 +79,12 @@ parameters. Do not widen fields or change `var` parameter lengths on a published
 without compatibility analysis. No effectively public procedure currently takes fixed-length
 `Code` or `Text`; fixed-length parameters on Internal helpers are listed in the CSV.
 
-The other five public procedures belong to page Storage Account Lookup ori (10035635)
-and table Storage Setup ori (10035636), as qualified in the signature table below.
-Their demonstrated callers are local UI/setup code and tests, rather than provider interface
-requirements. Preserve their signatures and public object access while publication and
-consumer evidence is incomplete. Page Storage Setup ori (10035637) declares no non-local
+The five former public helper procedures belong to page Storage Account Lookup ori
+(10035635) and table Storage Setup ori (10035636). They are now declared Internal,
+leaving the 11 provider interface members as the effectively public procedure surface.
+The objects themselves remain public, and the Setup table remains the provider Record
+contract. Historical publication/consumer evidence is still required to accept the already
+merged access reductions. Page Storage Setup ori (10035637) declares no non-local
 procedures; it is a UI entry point, not the Setup Record used in provider parameters.
 
 No shipping object declares an IntegrationEvent, BusinessEvent or InternalEvent publisher.
@@ -109,7 +118,7 @@ does not make an event subscriber unused.
 | enum 10035635 [Storage Attachment Target ori](app/src/Attachments/StorageAttachmentTarget.Enum.al) | Internal | false | 1 app / 0 test files | KEEP Internal: no published baseline or consumer (no Attachments offer, #83); state enum used only inside the app |
 | tableextension 10035636 [Storage Doc. Attach. ori](app/src/Attachments/StorageDocAttach.TableExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
 | tableextension 10035635 [Storage Inc. Doc. Attach. ori](app/src/Attachments/StorageIncDocAttach.TableExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
-| codeunit 70013520 [Data Exchange Query ori](app/src/DataExchange/DataExchangeQuery.Codeunit.al) | Internal | not declared / not applicable | 7 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
+| codeunit 70013520 [Data Exchange Query ori](app/src/DataExchange/DataExchangeQuery.Codeunit.al) | Internal | not declared / not applicable | 8 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035676 [Storage Takeover ori](app/src/Install/StorageTakeover.Codeunit.al) | Internal | not declared / not applicable | 4 app / 4 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035681 [Storage Takeover State ori](app/src/Install/StorageTakeoverState.Codeunit.al) | Internal | not declared / not applicable | 3 app / 3 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035637 [Storage Install ori](app/src/Lifecycle/StorageInstall.Codeunit.al) | Internal | not declared / not applicable | 2 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
@@ -121,7 +130,7 @@ does not make an event subscriber unused.
 | codeunit 10035640 [Storage Attach Link Impl ori](app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035667 [Storage Attach Record Impl ori](app/src/MessageTypes/Attachments/StorageAttachRecordImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enumextension 70013514 [DataExch DefDel MsgType ori](app/src/MessageTypes/DataExchange/DataExchDefDelMsgType.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
-| codeunit 70013543 [DataExch Def Delete Impl ori](app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 0 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
+| codeunit 70013543 [DataExch Def Delete Impl ori](app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 1 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enumextension 70013521 [DataExch Def Exp EnumExt ori](app/src/MessageTypes/DataExchange/DataExchDefExpEnumExt.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
 | codeunit 70013536 [DataExch Def Export Impl ori](app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 1 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 70013523 [DataExch Def Get Impl ori](app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
@@ -129,15 +138,15 @@ does not make an event subscriber unused.
 | codeunit 70013526 [DataExch Entry Get Impl ori](app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 70013525 [DataExch Entry List Impl ori](app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enumextension 70013519 [DataExch Export MsgType ori](app/src/MessageTypes/DataExchange/DataExchExportMsgType.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
-| codeunit 70013534 [DataExch Export Run Impl ori](app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 1 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
+| codeunit 70013534 [DataExch Export Run Impl ori](app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 70013521 [DataExch Help Get Impl ori](app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 70013532 [DataExch Inc Doc Proc ori](app/src/MessageTypes/DataExchange/DataExchIncDocProc.Codeunit.al) | Internal | not declared / not applicable | 4 app / 0 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enumextension 70013511 [DataExch Import MsgType ori](app/src/MessageTypes/DataExchange/DataExchImportMsgType.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
-| codeunit 70013540 [DataExch Import Run Impl ori](app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 0 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
+| codeunit 70013540 [DataExch Import Run Impl ori](app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 1 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enumextension 70013510 [DataExch Msg Type ori](app/src/MessageTypes/DataExchange/DataExchMsgType.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
 | codeunit 70013524 [DataExch Type List Impl ori](app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 8 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enumextension 70013516 [DataExch Type Set EnumExt ori](app/src/MessageTypes/DataExchange/DataExchTypeSetEnumExt.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
-| codeunit 70013531 [DataExch Type Set Impl ori](app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 1 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
+| codeunit 70013531 [DataExch Type Set Impl ori](app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al) | Internal | not declared / not applicable | 1 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035644 [Storage Dir Create Impl ori](app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035645 [Storage Dir Delete Impl ori](app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035646 [Storage Dir Exists Impl ori](app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
@@ -150,7 +159,7 @@ does not make an event subscriber unused.
 | codeunit 10035653 [Storage File List Impl ori](app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035654 [Storage File Move Impl ori](app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035655 [Storage Help Get Impl ori](app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
-| codeunit 70013500 [Storage Contract Parts ori](app/src/MessageTypes/StorageContractParts.Codeunit.al) | Internal | not declared / not applicable | 35 app / 0 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
+| codeunit 70013500 [Storage Contract Parts ori](app/src/MessageTypes/StorageContractParts.Codeunit.al) | Internal | not declared / not applicable | 35 app / 1 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enumextension 10035635 [Storage Msg Type ori](app/src/MessageTypes/StorageMsgType.EnumExt.al) | Public (default) | not declared / not applicable | 0 app / 0 test files | KEEP: wire bindings, fields, setup integration or permission contract |
 | codeunit 10035656 [Storage Upload Abort Impl ori](app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035657 [Storage Upload Append Impl ori](app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al) | Internal | not declared / not applicable | 3 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
@@ -167,13 +176,13 @@ does not make an event subscriber unused.
 | page 10035635 [Storage Account Lookup ori](app/src/Setup/StorageAccountLookup.Page.al) | Public (default) | false | 3 app / 2 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
 | page 10035636 [Storage Card ori](app/src/Setup/StorageCard.Page.al) | Public (default) | false | 4 app / 4 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
 | page 10035678 [Storage Conn. Part ori](app/src/Setup/StorageConnPart.Page.al) | Public (default) | false | 3 app / 2 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
-| page 10035637 [Storage Setup ori](app/src/Setup/StorageSetup.Page.al) | Public (default) | false | 34 app / 13 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
-| table 10035636 [Storage Setup ori](app/src/Setup/StorageSetup.Table.al) | Public (default) | false | 34 app / 13 test files | KEEP Public: provider contract |
+| page 10035637 [Storage Setup ori](app/src/Setup/StorageSetup.Page.al) | Public (default) | false | 34 app / 14 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
+| table 10035636 [Storage Setup ori](app/src/Setup/StorageSetup.Table.al) | Public (default) | false | 34 app / 14 test files | KEEP Public: provider contract |
 | page 10035638 [Storage Setup Wizard ori](app/src/Setup/StorageSetupWizard.Page.al) | Public (default) | false | 3 app / 2 test files | KEEP UI entry point; HOLD any member access reduction pending baseline |
-| interface — [Storage Connector ori](app/src/Storage/StorageConnector.Interface.al) | Public (default) | not declared / not applicable | 17 app / 2 test files | KEEP Public: provider contract |
+| interface — [Storage Connector ori](app/src/Storage/StorageConnector.Interface.al) | Public (default) | not declared / not applicable | 17 app / 3 test files | KEEP Public: provider contract |
 | codeunit 10035661 [Storage Ext File Impl ori](app/src/Storage/StorageExtFileImpl.Codeunit.al) | Internal | not declared / not applicable | 5 app / 3 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
-| codeunit 10035662 [Storage Request Mgt ori](app/src/Storage/StorageRequestMgt.Codeunit.al) | Internal | not declared / not applicable | 30 app / 3 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
-| codeunit 10035682 [Storage Request Reader ori](app/src/Storage/StorageRequestReader.Codeunit.al) | Internal | not declared / not applicable | 22 app / 3 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
+| codeunit 10035662 [Storage Request Mgt ori](app/src/Storage/StorageRequestMgt.Codeunit.al) | Internal | not declared / not applicable | 31 app / 5 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
+| codeunit 10035682 [Storage Request Reader ori](app/src/Storage/StorageRequestReader.Codeunit.al) | Internal | not declared / not applicable | 25 app / 4 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | enum 10035636 [Storage Type ori](app/src/Storage/StorageType.Enum.al) | Public (default) | true | 1 app / 1 test files | KEEP Public: provider contract |
 | codeunit 10035663 [Storage Data Restriction ori](app/src/Upload/StorageDataRestriction.Codeunit.al) | Internal | not declared / not applicable | 2 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
 | codeunit 10035664 [Storage Reten. Policy ori](app/src/Upload/StorageRetenPolicy.Codeunit.al) | Internal | not declared / not applicable | 2 app / 2 test files | KEEP Internal; preserve friend tests and Foundation interface bindings |
@@ -189,10 +198,10 @@ does not make an event subscriber unused.
 |---|---|
 | Attachments app and test at audited main | Bounded lexical matches are recorded per object in the JSON; table/page subtype attribution requires typed evidence. The mock provider, setup tests and message conformance tests are demonstrated seams. |
 | Foundation at comparison SHA | No quoted shipping Attachments object references found. |
-| Current feature/reference main snapshots | No quoted shipping Attachments object references, Attachments namespace references, app-ID dependencies or Bifrost Attachments manifest dependencies found in the scanned AL/manifests. |
+| Historical feature/reference snapshots from the original audit | No quoted shipping Attachments object references, Attachments namespace references, app-ID dependencies or Bifrost Attachments manifest dependencies found in the scanned AL/manifests. |
 | Tenant PTEs, third-party providers and Marketplace consumers | Not available. Absence cannot be inferred from the repository scan. |
 
-The feature/reference corpus covers Timesheets, Subscription Billing, Language Models,
+The original audit feature/reference corpus covers Timesheets, Subscription Billing, Language Models,
 Orchestrator, Inventory, Warehouse, Service Management, Manufacturing, the public reference
 app, Iceland, Iceland Treasury and Iceland DocEx. Exact snapshot SHAs and full search outputs
 are retained in worker-4 task evidence. This is a bounded search of those sources, not proof
@@ -214,21 +223,34 @@ finding that an allocation is missing. No ID, publisher or AppId is reassigned b
 The published legacy Origo Cloud Events Storage app has a different AppId and allocation;
 its publication does not establish this app's publication state.
 
-## Resume the held checks
+## Current acceptance and next actions
 
-1. Gunnar approved this postmerge audit follow-up on `feature/77-api-surface-refresh-worker4`. Internal-review evaluates the refreshed matrix; draft visibility does not complete verification.
-2. Obtain authoritative first-publish/baseline, foreign-consumer and both-range/affix evidence.
-   Preserve published obligations if a baseline exists. Run AppSourceCop against that exact
-   baseline package; an automatic “initial” phase inferred from absent configuration is not proof.
-3. After the publication/consumer gate clears, implement only justified per-object reductions.
-   Preserve Storage Type extensibility, all 11 provider members, the Setup record, Foundation
-   bindings, native fields, wire values and the existing Test-mode seam.
-4. Canonical [PR84](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/84) merged at `fc0bcff734fbf9f52bebbd98e7a852c7549ee514`. After independently verifying approved Foundation and compiler inputs, compile
-   product and tests with full AppSourceCop and zero errors/warnings; record compiler/package
-   identities. Run provider/message conformance regressions on an owned disposable COSMO
-   environment, MCP and UI checks as applicable, and verify environment deletion.
-5. Re-run all guards and gateway Layer 1 then Layer 2 at the final SHA. #78 owns analyzer/
-   compiled-package enforcement. Keep release checklist #83 open until evidence is complete.
+| Criterion | Current disposition | Remaining acceptance |
+|---|---|---|
+| AC01: reviewed matrix and first-publish evidence | Current inventory contains 79 objects, 774 non-local procedures and 11 public interface members. The guard checks source identities/hashes and qualified Setup table/page attribution. Historical external consumer searches remain bounded to their recorded snapshots. | Independent review of this reconciliation; Gunnar / designated evidence owner supplies historical publication/baseline and tenant/provider consumer disposition. |
+| AC02: compatible extension points and compile | Storage Type remains public/extensible, all 11 provider signatures remain, the Setup Record and Foundation bindings/test seam remain. Existing main CI38918381017 is green with 280/280 tests. | Candidate-specific compile/analyzer/full-suite/UI evidence remains separate; baseline compatibility comparison requires the actual authoritative baseline when one exists. |
+| AC03: safe access reductions or specific hold | PR118 already internalized the two state enums and five helper procedures. This audit records their source state and does not repeat those changes. | Gunnar / product owner confirms the historical baseline and foreign-consumer disposition. No further reduction is justified by absence of a current offer alone. |
+| AC04: both ranges and affix registration | Source declarations are retained unchanged in the release checklist. | Gunnar / allocation and publisher registration owners provide authoritative registration evidence for 10035635–10035684, 70013500–70013549 and ori/Origo. |
+
+The retained developer owns this bounded audit reconciliation. Ordinary technical work has
+no internal-review gate. Claude Code independently verifies a published candidate; Grok PR
+Reviewer owns current-tip clearance; Architect owns merge and deployment; Bifröst Tester
+owns post-deployment UAT. None of these roles supplies missing human publication/allocation
+evidence by inference. No offer creation or AppSource publication is authorized here.
+
+Before any new review push or PR, retain exact-candidate product/test compilation with zero
+errors/warnings, the meaningful full suite with zero failures/skips, owned Web Client checks
+and self-seeded MCP for any touched message types (or a scoped no-touched-type reason).
+Compiled verification-only publication is separate from PR readiness. Preserve the actual
+owned development container until Tester post-deployment UAT passes and the issue closes,
+then verify owned cleanup; do not delete UAT test data or foreign resources.
+
+## Historical repair evidence
+
+The following failed-run and diagnostic-input notes describe the original audit. They are
+not current blockers: PR84, PR86, PR99, PR101, PR105, PR117 and PR118 have merged; the
+current main run cited above succeeds. Their historical source and verification records
+remain attributable to their original commits.
 
 PR86 at `0e45a9c5771463fa4a08359a8c71e7598513c65f` failed Default, Test and
 Pull Request Status Check in [run 37518573084](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/37518573084).
@@ -253,8 +275,9 @@ The resolved publication-registration-plan permits this bounded audit correction
 Source preparation does not release publication, runtime, QA, infrastructure or physical-writer
 holds. No product/test compilation, deployed app, baseline comparison, runtime pass count or
 Marketplace certification is claimed here; no COSMO environment was created for the audit.
-All technical decisions stay in internal-review. No Slack handoff, offer creation, publication
-or merge is authorized by this checklist.
+Those historical internal-review/no-Slack restrictions are superseded by the current
+operating agreement. No offer creation, AppSource publication or developer merge is
+authorized by this checklist.
 
 ## Postmerge refresh checkpoint
 

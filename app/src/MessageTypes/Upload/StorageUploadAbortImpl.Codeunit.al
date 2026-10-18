@@ -30,7 +30,7 @@ codeunit 10035656 "Storage Upload Abort Impl ori" implements "Msg Interface ori"
     /// <returns>The description label in the current language.</returns>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Discards an open upload session and all its chunks without writing to storage.', Comment = 'is-IS=Fleygir opinni upphleðslulotu og öllum hlutum hennar án þess að skrifa í geymslu.';
+        DescriptionLbl: Label 'Discards an open upload session and all its chunks without writing to storage.', Comment = 'is-IS=Fleygir opinni upphleðslulotu og öllum bútum hennar án þess að skrifa í geymslu.';
     begin
         exit(DescriptionLbl);
     end;
@@ -51,7 +51,7 @@ codeunit 10035656 "Storage Upload Abort Impl ori" implements "Msg Interface ori"
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Discards an open upload session and its chunks without writing anything to storage or to any record.', Comment = 'is-IS=Fleygir opinni upphleðslulotu og hlutum hennar án þess að skrifa í geymslu eða á neina færslu.';
+        SelectionDescriptionLbl: Label 'Discards an open upload session and its chunks without writing anything to storage or to any record.', Comment = 'is-IS=Fleygir opinni upphleðslulotu og bútum hennar án þess að skrifa í geymslu eða á neina færslu.';
     begin
         exit(SelectionDescriptionLbl);
     end;
