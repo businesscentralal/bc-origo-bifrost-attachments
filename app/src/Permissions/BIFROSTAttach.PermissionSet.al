@@ -1,6 +1,7 @@
 namespace Origo.Bifrost.Attachments;
 
 using Microsoft.EServices.EDocument;
+using System.ExternalFileStorage;
 
 /// <summary>
 /// Everything a user needs to work with the storage connector: the four tables, the setup and
@@ -18,6 +19,9 @@ permissionset 10035666 "BIFROST Attach ori"
     Caption = 'Bifrost Storage', Comment = 'is-IS=Bifröst geymsla';
 
     Permissions =
+        // Indirect read only; the storage connector codeunit raises this for address resolution.
+        tabledata "Ext. Blob Storage Account" = r,
+        tabledata "Ext. File Share Account" = r,
         tabledata "Incoming Document" = RM,
         tabledata "Incoming Document Attachment" = RIMD,
         tabledata "Storage Attachment Link ori" = RIMD,
