@@ -40,7 +40,7 @@ codeunit 70013506 "Storage Upload Commit DX ori" implements "Msg Interface ori",
     /// <returns>Comma-separated keywords in the current language.</returns>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'import large file into data exchange, upload csv to data exchange, finish upload as data exchange import, parse uploaded file, chunked import', Comment = 'is-IS=flytja stóra skrá inn í gagnaskipti, hlaða csv-skrá upp í gagnaskipti, ljúka upphleðslu sem innflutningi gagnaskipta, þátta upphlaðna skrá, innflutningur í bútum';
+        KeywordsLbl: Label 'import large file into data exchange, upload csv to data exchange, finish upload as data exchange import, parse uploaded file, chunked import', Comment = 'is-IS=flytja stóra skrá inn í gagnaskipti, hlaða csv-skrá upp í gagnaskipti, staðfesta upphleðslu sem innflutning gagnaskipta, þátta upphlaðna skrá, innflutningur í bútum';
     begin
         exit(KeywordsLbl);
     end;
