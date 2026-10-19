@@ -81,8 +81,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         NoAttachmentKeyErr: Label 'Business Central does not know which field identifies a record in table %1, so an attachment cannot be keyed to it.', Comment = '%1 = table id, is-IS=Business Central veit ekki hvaða reitur auðkennir færslu í töflu %1 og því er ekki hægt að tengja viðhengi við hana.';
         AttachmentGoneErr: Label 'The attachment was removed while it was being processed.', Comment = 'is-IS=Viðhenginu var eytt á meðan verið var að vinna með það.';
         NoAttachmentKeyNextStepLbl: Label 'Attach the file to a record of a table that supports attachments, or have a developer subscribe to Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey for this table.', Comment = 'is-IS=Hengdu skrána við færslu í töflu sem styður viðhengi eða láttu forritara gerast áskrifanda að Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey fyrir þessa töflu.';
-        UnknownDataExchangeTypeErr: Label 'Data Exchange Type %1 was not found.', Comment = '%1 = type code||is-IS=Gagnaskiptagerð %1 fannst ekki.';
-        DataExchangeTypeExpectedLbl: Label 'an existing Data Exchange Type code', Comment = 'is-IS=kóði fyrirliggjandi gagnaskiptagerðar';
+        UnknownDataExchangeTypeErr: Label 'Data Exchange Type %1 was not found.', Comment = '%1 = type code||is-IS=Gerð gagnaskipta %1 fannst ekki.';
+        DataExchangeTypeExpectedLbl: Label 'an existing Data Exchange Type code', Comment = 'is-IS=kóði fyrirliggjandi gerðar gagnaskipta';
         SelectDataExchangeTypeLbl: Label 'Call DataExchange.Type.List or DataExchange.Type.Set, then send the exact code.', Comment = 'is-IS=Kallaðu á DataExchange.Type.List eða DataExchange.Type.Set og sendu síðan nákvæman kóða.';
         DataExchangeTypeTooLongErr: Label 'Parameter "dataExchangeType" exceeds the maximum length of 20 characters.', Comment = 'is-IS=Færibreytan "dataExchangeType" er lengri en leyfilegt hámark, 20 stafir.';
         VendorNoTooLongErr: Label 'Parameter "vendorNo" exceeds the maximum length of 20 characters.', Comment = 'is-IS=Færibreytan "vendorNo" er lengri en leyfilegt hámark, 20 stafir.';

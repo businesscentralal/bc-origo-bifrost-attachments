@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "f8a26023e6160995f7ec3ef1af33401ad8c2824a",
+  "sourceSha": "a8d881c704004d7735f8680649dfac13c4714eb3",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -279,9 +279,9 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-19T16:58:35.619229+00:00",
-  "inventoryPreparedFromDocumentationHead": "f8a26023e6160995f7ec3ef1af33401ad8c2824a",
-  "productSourceBaselineUnchanged": true,
+  "refreshedAt": "2026-10-19T17:14:25.623137+00:00",
+  "inventoryPreparedFromDocumentationHead": "a8d881c704004d7735f8680649dfac13c4714eb3",
+  "productSourceBaselineUnchanged": false,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",
@@ -295,7 +295,7 @@
   "productSourceFiles": {
     "app/src/Attachments/StorageAttachKeySubscr.Codeunit.al": "9f4ebfa7cfbc9473b9560027811023d90d95b8ddc3329e328d110ba803e676b9",
     "app/src/Attachments/StorageAttachmentLink.Table.al": "da7e508d33d89573e3ee60d99dafb347b718f540b2a48467a894ff0985113087",
-    "app/src/Attachments/StorageAttachmentMgt.Codeunit.al": "4c27d00693d0925065f7c8c9ca0eb0630b6f040cf8075d2496f0f740ee1c2723",
+    "app/src/Attachments/StorageAttachmentMgt.Codeunit.al": "4e72279ddc6aa2fd50b9994143d9ec68841e2445aaf88f966d2db82f0869b78c",
     "app/src/Attachments/StorageAttachmentSubscr.Codeunit.al": "8017ed3578db9352759778a91117e3deb4d0304fca3d2d03328025cda863e4ce",
     "app/src/Attachments/StorageAttachmentTarget.Enum.al": "df0926186a2ade36bfe7c10aff16fc56379cda60b8b33e2e9b846420a8f316ce",
     "app/src/Attachments/StorageDocAttach.TableExt.al": "6ef7bdf57b838d8a07b6d13182648783c18203886e519e5a37eaebb450eded77",
