@@ -3,7 +3,6 @@ namespace Origo.Bifrost.Attachments.Test;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
-using System.ExternalFileStorage;
 
 /// <summary>Issue 122: explicit header-only import references and safe directory refusals.</summary>
 codeunit 96228 "Storage Refusal122 Tests ori"
@@ -175,76 +174,83 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         LibraryAssert.IsTrue(MockState.HasFile('X122/Xfile.txt'), 'Localized refusal must preserve content.');
     end;
 
-    /// <summary>Mutation path preflight does not require a direct read of the provider account.</summary>
+    /// <summary>Pure path validation does not look up an opaque registered account.</summary>
     [Test]
-    procedure Scenario_AC02_ProviderPath_DoesNotReadAccount()
+    procedure Scenario_AC02_Path_DoesNotReadAccount()
     var
         StorageSetup: Record "Storage Setup ori";
         TempArgument: Record "Message Argument ori" temporary;
-        Provider: Codeunit "Storage Ext File Impl ori";
+        Reader: Codeunit "Storage Request Reader ori";
+        Path: Text;
     begin
-        // [GIVEN] An unregistered account: account validation belongs to the facade,
-        // while this pure preflight checks only the complete provider path.
-        InitializeProviderSetup(StorageSetup, 4560);
-        StorageSetup."Base Path" := 'Xbase';
-        // [WHEN] A normal Blob path is validated before directory deletion.
-        LibraryAssert.IsTrue(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', 'X122', true), 'Path preflight must not require direct account-table read permission.');
-        // [THEN] No permission or missing-account error was collected by path validation.
-        LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'Account access must remain in the provider facade or physical alias resolution.');
-    end;
-
-    /// <summary>The complete base-prefixed Blob budget is still enforced before provider IO.</summary>
-    [Test]
-    procedure Scenario_AC02_ProviderPath_RejectsOverlongBase()
-    var
-        StorageSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori" temporary;
-        Provider: Codeunit "Storage Ext File Impl ori";
-        ErrorsText: Text;
-    begin
-        // [GIVEN] Individually valid components whose combined Blob name exceeds1024.
-        InitializeProviderSetup(StorageSetup, 4560);
-        StorageSetup."Base Path" := PadStr('X', 250, 'a');
-        // [WHEN] The mutation path is checked without accessing an account.
-        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', PadStr('X', 800, 'b'), true), 'Validate the complete base-prefixed name.');
-        TempArgument.GetCollectedErrorsJson().WriteTo(ErrorsText);
-        // [THEN] The path budget, not permission or metadata access, causes refusal.
-        LibraryAssert.IsTrue(ErrorsText.Contains('InvalidParameter'), 'Keep a typed path-boundary refusal.');
-        LibraryAssert.IsFalse(ErrorsText.Contains('PermissionDenied'), 'Do not replace path validation with account access.');
-    end;
-
-    /// <summary>File Share Unicode ambiguity and unverified SharePoint mutations stay refused.</summary>
-    [Test]
-    procedure Scenario_AC02_ProviderPath_KeepsCapabilityRefusals()
-    var
-        StorageSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori" temporary;
-        Provider: Codeunit "Storage Ext File Impl ori";
-        ErrorsText: Text;
-    begin
-        // [GIVEN] File Share with a non-ASCII base path.
-        InitializeProviderSetup(StorageSetup, 4570);
-        StorageSetup."Base Path" := 'Xmöppur';
-        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', 'X122', true), 'Keep the File Share Unicode comparison gate.');
-        TempArgument.GetCollectedErrorsJson().WriteTo(ErrorsText);
-        LibraryAssert.IsTrue(ErrorsText.Contains('File Share Unicode comparison'), 'Do not relax the existing comparison constraint.');
-        // [WHEN] A SharePoint mutation is checked.
-        Clear(TempArgument);
-        InitializeProviderSetup(StorageSetup, 4580);
-        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', 'X122', true), 'Keep the existing unverified SharePoint operation refusal.');
-        TempArgument.GetCollectedErrorsJson().WriteTo(ErrorsText);
-        // [THEN] Removing an unused metadata read does not authorize SharePoint writes.
-        LibraryAssert.IsTrue(ErrorsText.Contains('SharePoint decoded library root and comparison'), 'Preserve the SharePoint capability boundary.');
-    end;
-
-    local procedure InitializeProviderSetup(var StorageSetup: Record "Storage Setup ori"; ConnectorId: Integer)
-    begin
-        Clear(StorageSetup);
-        StorageSetup.Code := NewCode();
-        StorageSetup.Enabled := true;
+        // [GIVEN] A connection with an account identifier that has never been registered.
         StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
-        StorageSetup.Connector := "Ext. File Storage Connector".FromInteger(ConnectorId);
         StorageSetup."File Account Id" := CreateGuid();
+        StorageSetup."Base Path" := 'Xbase';
+        Path := 'X122/Xfile.txt';
+        // [WHEN] The reader validates only the request address.
+        LibraryAssert.IsTrue(Reader.CheckStoragePath(TempArgument, StorageSetup, 'path', Path, false), 'Syntax validation must not access an account.');
+        // [THEN] No account permission or registration error replaces valid syntax.
+        LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'A pure path check must not collect account errors.');
+        LibraryAssert.AreEqual('X122/Xfile.txt', Path, 'The relative path must retain its spelling.');
+    end;
+
+    /// <summary>The combined address respects the app storage field capacity exactly.</summary>
+    [Test]
+    procedure Scenario_AC02_Path_RejectsOverlongBase()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Reader: Codeunit "Storage Request Reader ori";
+        Path: Text;
+        Errors: JsonArray;
+        ErrorToken: JsonToken;
+    begin
+        // [GIVEN] A 250-character base path plus one separating slash.
+        StorageSetup."Base Path" := PadStr('X', 250, 'a');
+        Path := PadStr('X', 1797, 'b');
+        // [WHEN] The complete address is exactly the 2048-character field capacity.
+        LibraryAssert.IsTrue(Reader.CheckStoragePath(TempArgument, StorageSetup, 'path', Path, false), 'Exactly 2048 combined characters must fit.');
+        LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'The exact boundary must collect no errors.');
+        Path += 'b';
+        // [THEN] The next character fails without truncating or reading any account.
+        LibraryAssert.IsFalse(Reader.CheckStoragePath(TempArgument, StorageSetup, 'path', Path, false), '2049 combined characters must fail.');
+        LibraryAssert.AreEqual(1798, StrLen(Path), 'Validation must not truncate the request.');
+        Errors := TempArgument.GetCollectedErrorsJson();
+        LibraryAssert.AreEqual(1, Errors.Count(), 'Return one address-capacity error.');
+        Errors.Get(0, ErrorToken);
+        LibraryAssert.AreEqual('InvalidParameter', TextProperty(ErrorToken.AsObject(), 'code'), 'Use the stable syntax error code.');
+        LibraryAssert.AreEqual('path', TextProperty(ErrorToken.AsObject(), 'parameter'), 'Identify the caller path.');
+        LibraryAssert.AreEqual('2049', TextProperty(ErrorToken.AsObject(), 'received'), 'Report the complete combined length.');
+    end;
+
+    /// <summary>Generic validation preserves Unicode and literal names while blocking traversal.</summary>
+    [Test]
+    procedure Scenario_AC02_Path_PreservesNamesBlocksTraversal()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Reader: Codeunit "Storage Request Reader ori";
+        Path: Text;
+        Errors: JsonArray;
+        ErrorToken: JsonToken;
+    begin
+        // [GIVEN] Unicode directory names and a literal percent sequence in a filename.
+        StorageSetup."Base Path" := 'Xmöppur';
+        Path := 'Xgögn/XReport%20Copy.txt';
+        // [WHEN] The app checks its generic relative-path contract.
+        LibraryAssert.IsTrue(Reader.CheckStoragePath(TempArgument, StorageSetup, 'path', Path, false), 'Generic syntax must accept Unicode and literal names.');
+        LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'Provider assumptions must not reject valid generic syntax.');
+        LibraryAssert.AreEqual('Xgögn/XReport%20Copy.txt', Path, 'Do not decode, lowercase or rewrite a literal name.');
+        Path := 'Xgögn/../Xoutside.txt';
+        // [THEN] A traversal component is refused with a structured path error.
+        LibraryAssert.IsFalse(Reader.CheckStoragePath(TempArgument, StorageSetup, 'path', Path, false), 'Traversal must remain blocked.');
+        Errors := TempArgument.GetCollectedErrorsJson();
+        LibraryAssert.AreEqual(1, Errors.Count(), 'Return one traversal error.');
+        Errors.Get(0, ErrorToken);
+        LibraryAssert.AreEqual('InvalidParameter', TextProperty(ErrorToken.AsObject(), 'code'), 'Preserve the stable path refusal.');
+        LibraryAssert.AreEqual('path', TextProperty(ErrorToken.AsObject(), 'parameter'), 'Identify the unsafe caller path.');
+        LibraryAssert.AreNotEqual('', TextProperty(ErrorToken.AsObject(), 'nextStep'), 'Retain a recovery step.');
     end;
 
     local procedure Initialize(var StorageSetup: Record "Storage Setup ori")

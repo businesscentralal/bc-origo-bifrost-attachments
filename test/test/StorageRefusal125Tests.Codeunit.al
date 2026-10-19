@@ -68,7 +68,7 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
         PreviousLanguage := GlobalLanguage();
         GlobalLanguage(1039);
         // [WHEN] The root is deleted.
-        Response := Execute(Enum::"Message Type ori"::"Storage.Directory.Delete", PathRequest('/'));
+        Response := Execute(Enum::"Message Type ori"::"Storage.Directory.Delete", PathRequest('/'), 1039);
         GlobalLanguage(PreviousLanguage);
         // [THEN] The stable code and the translated details identify the refusal.
         LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'The root must be refused.');
@@ -119,7 +119,12 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
         RequestJson.Add('path', Path);
     end;
 
-    local procedure Execute(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) Response: JsonObject
+    local procedure Execute(MessageType: Enum "Message Type ori"; RequestJson: JsonObject): JsonObject
+    begin
+        exit(Execute(MessageType, RequestJson, 1033));
+    end;
+
+    local procedure Execute(MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -128,10 +133,14 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
         ResponseContentType: Text[100];
         RequestText: Text;
         ResponseText: Text;
+        TaskId: Guid;
+        MessageId: Guid;
+        ResponseTime: Duration;
     begin
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
+        // Execute uses the configured default language; this public overload sets the processing language explicitly.
+        Dispatcher.EnqueueAndProcess(MessageType, MessageVersion, '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseContentType, ResponseTime);
         ResponseContent.GetSubText(ResponseText, 1);
         Response.ReadFrom(ResponseText);
     end;

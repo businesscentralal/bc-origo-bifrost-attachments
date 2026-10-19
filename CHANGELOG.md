@@ -8,6 +8,14 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-19) - Use registered connector interfaces
+
+- Removed connector-ID dispatch, provider account-table inspection, metadata grants and dependencies on specific connector apps. Registered connectors own backend path rules, credentials and provider errors.
+- Attachment protection now matches setups using the same registered account and canonical logical path. Reuse a registration for shared attachment locations; separate account registrations are separate scopes.
+- Copy and move refuse destinations that the connector reports as existing, preventing alias self-transfers without guessing provider rules. Linked moves use an explicit source-preservation capability.
+- Replaced provider-internal tests with registered-interface delegation, account isolation, generic path and failure/readback tests; added an abstraction source guard with mutation fixtures.
+
+
 ### Fixed (2026-10-19) - Data Exchange minimum-role refusals (#79)
 
 - `DataExchange.Definition.Delete` checks caller definition read/mutation and reference-table reads before querying or deleting, returning structured `PermissionDenied` for missing grants. Existing deletion/reference behavior and standard BC prerequisites remain unchanged.
@@ -15,7 +23,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-19) - SharePoint storage write preflight (#120)
 
-- Replaced the unconditional SharePoint write refusal with public-account schema validation, decoded site/library path budgets and shared physical alias identity. Moved attachment links retain their account-relative destination; indirect metadata reads are granted through BIFROST Attach ori. Documented the declared connector minimum instead of an exact build pin.
+- Replaced the unconditional SharePoint write refusal with public-account schema validation, decoded site/library path budgets and shared physical alias identity. Moved attachment links retain their account-relative destination; indirect metadata reads are granted through BIFROST Attach ori. Documented the declared connector minimum instead of an exact build pin. SharePoint case and encoded aliases of the same file are refused before copy/move, protecting unlinked source content.
 - Added focused alias, restricted-identity, encoded-traversal and exact 400/401-character regressions. Actual provider write/readback, exact-candidate CI and UAT acceptance remain pending.
 
 ### Fixed (2026-10-19) - root-refusal localization and restricted provider reads (#125, #122)

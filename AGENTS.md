@@ -135,6 +135,14 @@ offloaded records filterable.
 
 ## Key Design Rules
 
+- External storage behavior must use the registered connector interface. Never branch on
+  connector IDs or provider enum values, inspect connector-owned account tables, or add
+  dependencies on specific connector apps. Provider limits and credentials belong to the
+  connector. Attachment protection spans setups using the same registered account and
+  canonical logical path; separate account registrations are separate scopes. Reuse a
+  registration for shared attachment storage. Run `tools/Test-ConnectorAbstraction.ps1`
+  and its self-tests after changing this boundary.
+
 - **Never** copy shared contract content into an implementation codeunit — build it once in
   `Storage Contract Parts ori`.
 - **Never** rename or renumber a message type value. The keys are the public wire contract and

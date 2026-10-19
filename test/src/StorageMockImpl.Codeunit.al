@@ -10,7 +10,7 @@ using System.Utilities;
 /// by <c>Bifrost Storage Mock State</c>, it exercises the full message-type pipeline without a
 /// live storage account. Resolves outer slash variants and the base path like the production adapter.
 /// </summary>
-codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
+codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori", "Storage Linked Move ori"
 {
     var
         FileNotFoundErr: Label 'Mock file ''%1'' was not found.', Comment = '%1 = path';
@@ -98,6 +98,13 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori"
         if not MockState.HasFile(SourcePath) then
             Error(FileNotFoundErr, SourcePath);
         MockState.PutFile(TargetPath, MockState.GetFileContent(SourcePath));
+    end;
+
+    /// <summary>Reports whether every failed move preserves the source with a known outcome.</summary>
+    /// <returns>True because injected failures preserve the source; an extra target copy may remain for explicit cleanup.</returns>
+    procedure SupportsLinkedMove(): Boolean
+    begin
+        exit(true);
     end;
 
     procedure MoveFile(StorageSetup: Record "Storage Setup ori"; SourcePath: Text; TargetPath: Text)

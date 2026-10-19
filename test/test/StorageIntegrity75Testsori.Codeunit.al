@@ -18,142 +18,114 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
         MockCodeTok: Label 'X75', Locked = true;
 
-    /// <summary>Different account rows and encoded library spellings resolve to the same protected address.</summary>
+    /// <summary>Two setups using one registered account protect the same linked file across base paths.</summary>
     [Test]
-    procedure Scenario_AC01_SharePointAliases_ResolveSameAddress()
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure SameAccount_SetupAliasProtectsLinkedFile()
     var
-        FirstSetup: Record "Storage Setup ori";
-        SecondSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori" temporary;
-        Provider: Codeunit "Storage Ext File Impl ori";
-        RequestMgt: Codeunit "Storage Request Mgt ori";
-        FirstScope: Text;
-        SecondScope: Text;
-        FirstAddress: Text;
-        SecondAddress: Text;
-        CaseSensitive: Boolean;
+        SelectedSetup: Record "Storage Setup ori";
+        AliasSetup: Record "Storage Setup ori";
+        AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
+        AccountId: Guid;
     begin
-        // Story #120, AC01 | Time: none | Risk: account-id scopes missed aliases to a linked file.
-        SharePointSetup(FirstSetup, 'Shared%20Documents', 'https://x120.sharepoint.com/sites/Team');
-        SharePointSetup(SecondSetup, 'Shared Documents', 'https://X120.sharepoint.com/sites/Team/');
-        LibraryAssert.IsTrue(Provider.ResolvePhysicalAddress(TempArgument, FirstSetup, 'dir/File.txt', FirstScope, FirstAddress, CaseSensitive), 'Encoded library must resolve.');
-        LibraryAssert.IsTrue(Provider.ResolvePhysicalAddress(TempArgument, SecondSetup, 'DIR/file.txt', SecondScope, SecondAddress, CaseSensitive), 'Decoded library must resolve.');
-        LibraryAssert.AreEqual(FirstScope, SecondScope, 'Account aliases must share a scope.');
-        LibraryAssert.IsFalse(CaseSensitive, 'SharePoint file names compare without case.');
-        LibraryAssert.IsTrue(RequestMgt.PathsEqual(FirstAddress, SecondAddress, CaseSensitive), 'Encoded library and case aliases identify the same file.');
-        LibraryAssert.AreEqual('sites/Team/Shared Documents/x120base/dir/File.txt', FirstAddress, 'Address must include site, library and setup base.');
-        LibraryAssert.IsTrue(Provider.CheckMutationPath(TempArgument, FirstSetup, 'path', 'dir/File.txt', false), 'A verified ordinary SharePoint write must pass preflight.');
-        LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'Verified metadata must not collect the old unconditional refusal.');
+        Initialize();
+        CreateLinked('Xdir/Xfile.txt');
+        AccountId := CreateGuid();
+        RegisterLogicalSetup(SelectedSetup, MockCodeTok, AccountId, '');
+        RegisterLogicalSetup(AliasSetup, 'X75ALIAS', AccountId, 'Xdir');
+        LibraryAssert.IsTrue(AttachmentMgt.IsStorageFileLinked(AliasSetup.Code, '/Xfile.txt/'), 'The same registered account and complete logical path must protect the link.');
+        LibraryAssert.IsTrue(AttachmentMgt.IsStorageDirectoryLinked(AliasSetup.Code, '/'), 'The alias directory contains the linked file.');
+        LibraryAssert.IsFalse(AttachmentMgt.IsStorageFileLinked(AliasSetup.Code, 'other.txt'), 'Another logical path is not the linked file.');
     end;
 
-    /// <summary>The SharePoint limit includes account site/library roots that are absent from the request path.</summary>
+    /// <summary>Separate account registrations are outside the supported attachment identity boundary.</summary>
     [Test]
-    procedure Scenario_AC01_SharePointBudget_IncludesAccountRoot()
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure DifferentAccounts_DoNotShareLinkIdentity()
     var
-        StorageSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori" temporary;
-        Provider: Codeunit "Storage Ext File Impl ori";
+        SelectedSetup: Record "Storage Setup ori";
+        OtherSetup: Record "Storage Setup ori";
+        AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
     begin
-        // Story #120, AC01 | Time: none | Risk: validating the request alone admits an overlength physical path.
-        SharePointSetup(StorageSetup, PadStr('library', 180, 'a'), 'https://x120.sharepoint.com/sites/Team');
-        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', PadStr('file', 220, 'b'), false), 'The complete decoded address exceeds 400 characters.');
-        LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'The provider budget must produce a structured refusal.');
+        Initialize();
+        CreateLinked('Xdir/Xfile.txt');
+        RegisterLogicalSetup(SelectedSetup, MockCodeTok, CreateGuid(), '');
+        RegisterLogicalSetup(OtherSetup, 'X75ALIAS', CreateGuid(), '');
+        LibraryAssert.IsFalse(AttachmentMgt.IsStorageFileLinked(OtherSetup.Code, 'Xdir/Xfile.txt'), 'A separate registered account must not inherit link identity from another account.');
+        LibraryAssert.IsTrue(AttachmentMgt.IsStorageFileLinked(SelectedSetup.Code, 'Xdir/Xfile.txt'), 'The owning registered account remains protected.');
     end;
 
-    /// <summary>The decoded full path budget includes the slash actually sent by the connector.</summary>
+    /// <summary>Logical path spelling stays opaque; connector-specific case and URL rules are not inferred.</summary>
     [Test]
-    procedure Scenario_AC01_SharePointBudget_400And401()
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure SameAccount_PreservesOpaquePathSpelling()
     var
-        StorageSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori" temporary;
-        Provider: Codeunit "Storage Ext File Impl ori";
-        PrefixLength: Integer;
+        SelectedSetup: Record "Storage Setup ori";
+        AliasSetup: Record "Storage Setup ori";
+        AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
+        AccountId: Guid;
     begin
-        // Story #120, AC01 | Time: none | Risk: stripping the leading slash admitted one extra character.
-        SharePointSetup(StorageSetup, 'Shared Documents', 'https://x120.sharepoint.com/sites/Team');
-        PrefixLength := StrLen('/sites/Team/Shared Documents/x120base/');
-        LibraryAssert.IsTrue(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', PadStr('x', 400 - PrefixLength, 'a'), false), 'Exactly 400 decoded characters must pass.');
-        Clear(TempArgument);
-        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', PadStr('x', 401 - PrefixLength, 'a'), false), '401 decoded characters must be refused before provider access.');
+        Initialize();
+        CreateLinked('Xdir/Xfile.txt');
+        AccountId := CreateGuid();
+        RegisterLogicalSetup(SelectedSetup, MockCodeTok, AccountId, '');
+        RegisterLogicalSetup(AliasSetup, 'X75ALIAS', AccountId, '');
+        LibraryAssert.IsFalse(AttachmentMgt.IsStorageFileLinked(AliasSetup.Code, 'Xdir/XFILE.txt'), 'The app must not invent provider case rules.');
+        LibraryAssert.IsFalse(AttachmentMgt.IsStorageFileLinked(AliasSetup.Code, 'Xdir/%58file.txt'), 'The app must not URL-decode opaque file names for link identity.');
+        LibraryAssert.IsTrue(AttachmentMgt.IsStorageFileLinked(AliasSetup.Code, 'Xdir/Xfile.txt'), 'The exact logical path remains protected.');
     end;
 
-    /// <summary>Encoded traversal and unsupported comparison identities stay blocked before provider access.</summary>
+    /// <summary>Moved links retain paths relative to each setup on the same registered account.</summary>
     [Test]
-    procedure Scenario_AC01_SharePointEncodedTraversal_Refused()
-    var
-        StorageSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori" temporary;
-        Provider: Codeunit "Storage Ext File Impl ori";
-    begin
-        // Story #120, AC01 | Time: none | Risk: decoding a library root can introduce traversal segments.
-        SharePointSetup(StorageSetup, 'Shared Documents/%2e%2e/private', 'https://x120.sharepoint.com/sites/Team');
-        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', 'file.txt', false), 'Decoded traversal must not reach the provider.');
-        LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'Unverified address identity must produce a structured refusal.');
-    end;
-
-    local procedure SharePointSetup(var StorageSetup: Record "Storage Setup ori"; LibraryRoot: Text; SiteUrl: Text)
-    var
-        Account: Record "Ext. SharePoint Account";
-    begin
-        Account.Init();
-        Account.Id := CreateGuid();
-        Account.Name := 'X120 isolated account';
-        Account."SharePoint Url" := CopyStr(SiteUrl, 1, MaxStrLen(Account."SharePoint Url"));
-        Account."Base Relative Folder Path" := CopyStr(LibraryRoot, 1, MaxStrLen(Account."Base Relative Folder Path"));
-        Account.Insert(false);
-        StorageSetup.Init();
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
-        StorageSetup.Connector := "Ext. File Storage Connector".FromInteger(4580);
-        StorageSetup."File Account Id" := Account.Id;
-        StorageSetup."Base Path" := 'x120base';
-    end;
-
-    /// <summary>A SharePoint move retains each link's own account root and refuses destinations outside it.</summary>
-    [Test]
-    procedure Scenario_AC01_SharePointMove_KeepsAliasRelativePath()
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure SameAccount_MovedLinkKeepsRelativeBase()
     var
         SelectedSetup: Record "Storage Setup ori";
         AliasSetup: Record "Storage Setup ori";
         Link: Record "Storage Attachment Link ori";
         TempArgument: Record "Message Argument ori" temporary;
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
-        Provider: Codeunit "Storage Ext File Impl ori";
-        SelectedAddress: Text;
-        AliasAddress: Text;
-        Scope: Text;
-        CaseSensitive: Boolean;
+        AccountId: Guid;
         AttachmentId: Guid;
     begin
-        // Story #120, AC01 | Time: none | Risk: different account roots cannot reuse the selected relative path.
         Initialize();
-        AttachmentId := CreateLinked('Xfile.txt');
-        SharePointSetup(SelectedSetup, 'Shared Documents', 'https://x120.sharepoint.com/sites/Team');
-        SelectedSetup.Code := MockCodeTok;
-        SelectedSetup.Modify(false);
-        SharePointSetup(AliasSetup, 'Shared%20Documents/x120base/dir', 'https://x120.sharepoint.com/sites/Team');
-        AliasSetup.Code := 'X120ALIAS';
-        AliasSetup."Base Path" := '';
-        AliasSetup.Insert(false);
+        AttachmentId := CreateLinked('Xdir/Xfile.txt');
+        AccountId := CreateGuid();
+        RegisterLogicalSetup(SelectedSetup, MockCodeTok, AccountId, '');
+        RegisterLogicalSetup(AliasSetup, 'X75ALIAS', AccountId, 'Xdir');
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
         Link."Storage Code" := AliasSetup.Code;
-        Link."Storage Path" := 'File.txt';
+        Link."Storage Path" := 'Xfile.txt';
         Link.Modify(false);
-
-        AttachmentMgt.CheckMovedPath(TempArgument, SelectedSetup.Code, 'dir/File.txt', 'outside.txt');
-        LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'A destination outside the alias root must be refused before a remote move.');
+        AttachmentMgt.CheckMovedPath(TempArgument, SelectedSetup.Code, 'Xdir/Xfile.txt', 'outside.txt');
+        LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'A destination outside the linked setup base must be refused.');
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
-        LibraryAssert.AreEqual('File.txt', Link."Storage Path", 'Refusal preserves the original link.');
-        Clear(TempArgument);
-        AttachmentMgt.CheckMovedPath(TempArgument, SelectedSetup.Code, 'dir/%46ile.txt', 'dir/archive/New%20File.txt');
-        LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'A destination inside both roots passes.');
-        AttachmentMgt.UpdateMovedStorageFile(SelectedSetup.Code, 'dir/%46ile.txt', 'dir/archive/New%20File.txt');
+        LibraryAssert.AreEqual('Xfile.txt', Link."Storage Path", 'Refusal preserves link metadata.');
+        asserterror AttachmentMgt.UpdateMovedStorageFile(SelectedSetup.Code, 'Xdir/Xfile.txt', 'outside.txt');
+        LibraryAssert.AreNotEqual('', GetLastErrorText(), 'A direct AL caller must not bypass the linked base-path boundary.');
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
-        LibraryAssert.AreEqual(AliasSetup.Code, Link."Storage Code", 'Move retains the alias storage code.');
-        LibraryAssert.AreEqual('archive/New File.txt', Link."Storage Path", 'Move records the decoded destination relative to the alias account root.');
-        LibraryAssert.IsTrue(Provider.ResolvePhysicalAddress(TempArgument, SelectedSetup, 'dir/archive/New%20File.txt', Scope, SelectedAddress, CaseSensitive), 'Selected destination must resolve.');
-        LibraryAssert.IsTrue(Provider.ResolvePhysicalAddress(TempArgument, AliasSetup, Link."Storage Path", Scope, AliasAddress, CaseSensitive), 'Stored alias destination must resolve.');
-        LibraryAssert.AreEqual(SelectedAddress, AliasAddress, 'The updated link reads back to the same decoded physical destination.');
+        LibraryAssert.AreEqual('Xfile.txt', Link."Storage Path", 'Direct-call refusal preserves link metadata.');
+        AttachmentMgt.UpdateMovedStorageFile(SelectedSetup.Code, 'Xdir/Xfile.txt', 'Xdir/archive/New%20File.txt');
+        Link.Get(Database::"Incoming Document Attachment", AttachmentId);
+        LibraryAssert.AreEqual(AliasSetup.Code, Link."Storage Code", 'Retain the link setup.');
+        LibraryAssert.AreEqual('archive/New%20File.txt', Link."Storage Path", 'Retain the opaque destination relative to the link setup base.');
     end;
+
+    local procedure RegisterLogicalSetup(var StorageSetup: Record "Storage Setup ori"; StorageCode: Code[20]; AccountId: Guid; BasePath: Text[250])
+    begin
+        if not StorageSetup.Get(StorageCode) then begin
+            StorageSetup.Init();
+            StorageSetup.Code := StorageCode;
+            StorageSetup.Insert(false);
+        end;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
+        StorageSetup.Connector := Enum::"Ext. File Storage Connector"::"Interface Test ori";
+        StorageSetup."File Account Id" := AccountId;
+        StorageSetup."Base Path" := BasePath;
+        StorageSetup.Enabled := true;
+        StorageSetup.Modify(false);
+    end;
+
 
     /// <summary>Outer slash spelling cannot bypass linked file or parent-directory deletion guards.</summary>
     [Test]
@@ -657,83 +629,6 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         AssertLinkedContent(AttachmentId, 'Xdir/XÁ*.txt');
         AssertRefusal(Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest('/Xdir/XÁ*.txt/', 'bad')), 'PreconditionFailed');
         AssertLinkedContent(AttachmentId, 'Xdir/XÁ*.txt');
-    end;
-
-    /// <summary>Provider budget validation distinguishes the complete Blob name and File Share components.</summary>
-    [Test]
-    procedure Scenario_AC03_ProviderBudgets_RejectExactOverlimits()
-    var
-        TempArgument: Record "Message Argument ori" temporary;
-        Provider: Codeunit "Storage Ext File Impl ori";
-        PathLength: Integer;
-        DirectoryPath: Text;
-    begin
-        // Story #75, AC03 | Time: none | Risk: pure budgets do not prove account root mapping or access.
-        for PathLength := 1023 to 1025 do begin
-            Clear(TempArgument);
-            Provider.CheckProviderBudget(TempArgument, 4560, 'path', PadStr('X', PathLength, 'a'), false);
-            LibraryAssert.AreEqual(PathLength > 1024, TempArgument.HasCollectedErrors(), 'Blob complete-name boundary must be exact.');
-        end;
-        for PathLength := 399 to 401 do begin
-            Clear(TempArgument);
-            Provider.CheckProviderBudget(TempArgument, 4580, 'path', PadStr('X', PathLength, 'a'), false);
-            LibraryAssert.AreEqual(PathLength > 400, TempArgument.HasCollectedErrors(), 'SharePoint complete decoded path boundary must be exact.');
-        end;
-        for PathLength := 254 to 256 do begin
-            Clear(TempArgument);
-            Provider.CheckProviderBudget(TempArgument, 4570, 'path', PadStr('X', PathLength, 'a'), false);
-            LibraryAssert.AreEqual(PathLength > 255, TempArgument.HasCollectedErrors(), 'File Share component boundary must be exact.');
-        end;
-        for PathLength := 2047 to 2049 do begin
-            Clear(TempArgument);
-            Provider.CheckProviderBudget(TempArgument, 4570, 'path', LongPath(PathLength), false);
-            LibraryAssert.AreEqual(PathLength > 2048, TempArgument.HasCollectedErrors(), 'File Share complete pathname boundary must be exact.');
-        end;
-        DirectoryPath := 'X';
-        for PathLength := 2 to 251 do begin
-            DirectoryPath += '/X';
-            if PathLength >= 249 then begin
-                Clear(TempArgument);
-                Provider.CheckProviderBudget(TempArgument, 4570, 'path', DirectoryPath, true);
-                LibraryAssert.AreEqual(PathLength > 250, TempArgument.HasCollectedErrors(), 'A directory path has no final file component exemption.');
-            end;
-        end;
-        Clear(TempArgument);
-        Provider.CheckProviderBudget(TempArgument, 4570, 'path', 'Xdir/Xfile.', false);
-        LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'Trailing-dot aliases require prewrite refusal.');
-    end;
-
-    /// <summary>An installed Blob connector of any build passes the package gate and is judged by its account schema.</summary>
-    [Test]
-    procedure Scenario_AC04_AnyBlobConnectorBuild_ReachesAccountCheck()
-    var
-        StorageSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori" temporary;
-        Provider: Codeunit "Storage Ext File Impl ori";
-        Errors: JsonArray;
-        ErrorToken: JsonToken;
-        Scope: Text;
-        Address: Text;
-        CaseSensitive: Boolean;
-    begin
-        // Story #75, AC04 | Time: none | Risk: an exact connector version pin refused every write on other BC builds.
-        if not "Ext. File Storage Connector".Ordinals().Contains(4560) then
-            exit; // The Blob connector app is not installed in this environment.
-        if StorageSetup.Get('X75BLOB') then
-            StorageSetup.Delete();
-        StorageSetup.Init();
-        StorageSetup.Code := 'X75BLOB';
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
-        StorageSetup.Connector := "Ext. File Storage Connector".FromInteger(4560);
-        StorageSetup."File Account Id" := CreateGuid();
-        StorageSetup.Insert();
-
-        LibraryAssert.IsFalse(Provider.ResolvePhysicalAddress(TempArgument, StorageSetup, 'X75/file.txt', Scope, Address, CaseSensitive), 'An unregistered account must not resolve.');
-
-        Errors := TempArgument.GetCollectedErrorsJson();
-        LibraryAssert.AreEqual(1, Errors.Count(), 'Exactly one refusal is expected.');
-        Errors.Get(0, ErrorToken);
-        LibraryAssert.AreEqual('registered account metadata', ReadText(ErrorToken.AsObject(), 'received'), 'The installed connector build must pass the package gate and fail only on the missing account.');
     end;
 
     /// <summary>A copy-stage failure rolls back links while retaining source readability and exposing the duplicate.</summary>
