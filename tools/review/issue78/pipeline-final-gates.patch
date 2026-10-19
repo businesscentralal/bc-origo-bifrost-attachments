@@ -1,0 +1,74 @@
+--- a/.github/workflows/_BuildALGoProject.yaml
++++ b/.github/workflows/_BuildALGoProject.yaml
+@@ -250,6 +250,14 @@
+           baselineWorkflowSHA: ${{ inputs.baselineWorkflowSHA }}
+           previousAppsPath: ${{ steps.DownloadPreviousRelease.outputs.PreviousAppsPath }}
+ 
++      - name: Validate final AppSource pipeline evidence
++        id: appSourcePipeline
++        if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
++        shell: pwsh
++        env:
++          BuildMode: ${{ inputs.buildMode }}
++        run: ./tools/Assert-AppSourceBuild.ps1 -Stage Pipeline -Root '${{ github.workspace }}'
++
+       - name: Record container identity
+         id: containerIdentity
+         if: inputs.sharedContainer && steps.DetermineBuildProject.outputs.BuildIt == 'True'
+@@ -267,6 +275,14 @@
+           azureCredentialsJson: '${{ fromJson(steps.ReadSecrets.outputs.Secrets).AZURE_CREDENTIALS }}'
+           pathToFiles: '${{ inputs.project }}/.buildartifacts/Apps/*.app'
+ 
++      - name: Verify signed Default NAVX package
++        id: appSourceSigned
++        if: steps.DetermineBuildProject.outputs.BuildIt == 'True' && inputs.buildMode == 'Default' && inputs.signArtifacts
++        shell: pwsh
++        env:
++          BuildMode: ${{ inputs.buildMode }}
++        run: ./tools/Assert-AppSourceBuild.ps1 -Stage Signed -Root '${{ github.workspace }}'
++
+       - name: Calculate Artifact names
+         id: calculateArtifactsNames
+         uses: microsoft/AL-Go-Actions/CalculateArtifactNames@v9.2
+@@ -281,11 +297,25 @@
+         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+         env:
+           ACTIONS_RUNNER_DISABLE_NODE_MAGLEV: 1
+-        if: inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/Apps/*',inputs.project)) != '')
++        if: steps.appSourcePipeline.outcome == 'success' && (inputs.buildMode != 'Default' || !inputs.signArtifacts || steps.appSourceSigned.outcome == 'success') && inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/Apps/*',inputs.project)) != '')
+         with:
+           name: ${{ steps.calculateArtifactsNames.outputs.AppsArtifactsName }}
+           path: '${{ inputs.project }}/.buildartifacts/Apps/'
+-          if-no-files-found: ignore
++          if-no-files-found: error
++          retention-days: ${{ inputs.artifactsRetentionDays }}
++
++      - name: Publish artifacts - final AppSource receipts
++        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
++        env:
++          ACTIONS_RUNNER_DISABLE_NODE_MAGLEV: 1
++        if: (success() || failure()) && inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/AppSourceGate/**/finalize.json',inputs.project)) != '')
++        with:
++          name: ${{ steps.calculateArtifactsNames.outputs.BuildOutputArtifactsName }}-AppSourceFinalReceipts
++          path: |
++            ${{ inputs.project }}/.buildartifacts/AppSourceGate/**/finalize.json
++            ${{ inputs.project }}/.buildartifacts/AppSourceGate/**/pipeline.json
++            ${{ inputs.project }}/.buildartifacts/AppSourceGate/**/signed.json
++          if-no-files-found: error
+           retention-days: ${{ inputs.artifactsRetentionDays }}
+ 
+       - name: Publish artifacts - dependencies
+@@ -303,11 +333,11 @@
+         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+         env:
+           ACTIONS_RUNNER_DISABLE_NODE_MAGLEV: 1
+-        if: inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/TestApps/*',inputs.project)) != '')
++        if: steps.appSourcePipeline.outcome == 'success' && (inputs.buildMode != 'Default' || !inputs.signArtifacts || steps.appSourceSigned.outcome == 'success') && inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/TestApps/*',inputs.project)) != '')
+         with:
+           name: ${{ steps.calculateArtifactsNames.outputs.TestAppsArtifactsName }}
+           path: '${{ inputs.project }}/.buildartifacts/TestApps/'
+-          if-no-files-found: ignore
++          if-no-files-found: error
+           retention-days: ${{ inputs.artifactsRetentionDays }}
+ 
+       - name: Publish artifacts - rejected AppSource input receipts
