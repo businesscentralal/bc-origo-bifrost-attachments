@@ -213,14 +213,19 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         LibraryAssert.IsFalse(ErrorsText.Contains('PermissionDenied'), 'Do not replace path validation with account access.');
     end;
 
-    /// <summary>File Share Unicode ambiguity and unverified SharePoint mutations stay refused.</summary>
+    /// <summary>File Share Unicode ambiguity and missing SharePoint account metadata stay refused.</summary>
     [Test]
     procedure Scenario_AC02_ProviderPath_KeepsCapabilityRefusals()
     var
         StorageSetup: Record "Storage Setup ori";
         TempArgument: Record "Message Argument ori" temporary;
+        LowerPermissions: Codeunit "Library - Lower Permissions";
         Provider: Codeunit "Storage Ext File Impl ori";
+        Errors: JsonArray;
+        ErrorToken: JsonToken;
         ErrorsText: Text;
+        PathAccepted: Boolean;
+        PermissionsChanged: Boolean;
     begin
         // [GIVEN] File Share with a non-ASCII base path.
         InitializeProviderSetup(StorageSetup, 4570);
@@ -228,13 +233,24 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', 'X122', true), 'Keep the File Share Unicode comparison gate.');
         TempArgument.GetCollectedErrorsJson().WriteTo(ErrorsText);
         LibraryAssert.IsTrue(ErrorsText.Contains('File Share Unicode comparison'), 'Do not relax the existing comparison constraint.');
-        // [WHEN] A SharePoint mutation is checked.
+        // [WHEN] A SharePoint mutation names an unregistered account (#120).
         Clear(TempArgument);
         InitializeProviderSetup(StorageSetup, 4580);
-        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', 'X122', true), 'Keep the existing unverified SharePoint operation refusal.');
-        TempArgument.GetCollectedErrorsJson().WriteTo(ErrorsText);
-        // [THEN] Removing an unused metadata read does not authorize SharePoint writes.
-        LibraryAssert.IsTrue(ErrorsText.Contains('SharePoint decoded library root and comparison'), 'Preserve the SharePoint capability boundary.');
+        LowerPermissions.StartLoggingNAVPermissions();
+        LowerPermissions.SetExactPermissionSet('Storage124 Read ori');
+        PermissionsChanged := LowerPermissions.HasChangedPermissions();
+        PathAccepted := Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', 'X122', true);
+        LowerPermissions.StopLoggingNAVPermissions();
+        LibraryAssert.IsTrue(PermissionsChanged, 'The account lookup must use the explicit restricted reader role.');
+        LibraryAssert.IsFalse(PathAccepted, 'An unregistered SharePoint account must not authorize a write.');
+        Errors := TempArgument.GetCollectedErrorsJson();
+        // [THEN] The verified-write implementation still requires real public account metadata.
+        LibraryAssert.AreEqual(1, Errors.Count(), 'Return exactly one missing-account refusal.');
+        Errors.Get(0, ErrorToken);
+        LibraryAssert.AreEqual('PreconditionFailed', TextProperty(ErrorToken.AsObject(), 'code'), 'Retain the structured capability refusal.');
+        LibraryAssert.AreEqual('storageCode', TextProperty(ErrorToken.AsObject(), 'parameter'), 'Identify the account connection.');
+        LibraryAssert.AreEqual('registered account metadata', TextProperty(ErrorToken.AsObject(), 'received'), 'Refuse specifically for missing metadata, not a blanket SharePoint write ban.');
+        LibraryAssert.AreNotEqual('', TextProperty(ErrorToken.AsObject(), 'nextStep'), 'The missing-account refusal must retain a recovery step.');
     end;
 
     local procedure InitializeProviderSetup(var StorageSetup: Record "Storage Setup ori"; ConnectorId: Integer)
