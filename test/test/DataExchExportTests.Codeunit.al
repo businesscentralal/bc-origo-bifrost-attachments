@@ -101,6 +101,7 @@ codeunit 96243 "DataExch Export Tests ori"
     end;
 
     [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
     procedure AC03_InlineOverOneMegabyte_RollsBack()
     var
         DataExchDef: Record "Data Exch. Def";
@@ -119,6 +120,8 @@ codeunit 96243 "DataExch Export Tests ori"
         Request.Add('tableId', Database::Customer);
         Request.Add('tableView', StrSubstNo(OneCustomerViewTok, CustomerNos.Get(1)));
         Request.Add('inline', true);
+        // asserterror rolls back the open transaction; commit the fixture so only the export is undone.
+        Commit();
 
         asserterror Fixture.Dispatch("Message Type ori"::"DataExchange.Export.Run", Request);
 
@@ -237,6 +240,7 @@ codeunit 96243 "DataExch Export Tests ori"
     end;
 
     [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
     procedure StorageWriteFailure_RollsBackEntry()
     var
         MockState: Codeunit "Storage Mock State";
@@ -254,6 +258,7 @@ codeunit 96243 "DataExch Export Tests ori"
         Request.Add('storageCode', Fixture.StorageCode());
         Request.Add('path', 'out/fail.csv');
         MockState.FailNextWrite();
+        Commit();
 
         asserterror Fixture.Dispatch("Message Type ori"::"DataExchange.Export.Run", Request);
 

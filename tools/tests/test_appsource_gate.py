@@ -84,8 +84,8 @@ class Parameters(unittest.TestCase):
         foundation_probing = settings["appDependencyProbingPaths"]
         self.assertEqual(1, len(foundation_probing))
         self.assertEqual("https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core", foundation_probing[0]["repo"])
-        self.assertEqual("latestBuild", foundation_probing[0]["release_status"])
-        self.assertEqual("1.0.3.530", foundation_probing[0]["version"])
+        self.assertEqual("release", foundation_probing[0]["release_status"])
+        self.assertEqual("28.0.3", foundation_probing[0]["version"])
         for key in ("enableCodeCop", "enableUICop", "enableCodeAnalyzersOnTestApps"):
             self.assertIs(True, settings[key])
         self.assertEqual("warning", settings["failOn"])

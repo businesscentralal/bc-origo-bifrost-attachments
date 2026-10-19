@@ -8,6 +8,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-19) - Data Exchange CI test failures (#150 follow-up)
+
+- `Help.Storage.Get` names `Storage.Upload.CommitToDataExchange` in its upload table and upload flow.
+- `BIFROST DataExch ori` grants execute on the base-app XMLports the Data Exchange types run (Data Exch. Import - CSV, Export Generic CSV, Export Generic Fixed Width, Imp / Exp Data Exch Def & Map), so a holder can import, export and install definitions; the restrictive #82 tests now add the product role.
+- Tests follow the #24 contract: an unknown `storageCode` on `DataExchange.Import.Run` answers `RecordNotFound` without an entry (96228, 1033 and 1039), and the 20/2048 bounds test asserts that only the storage connection is refused, not a length (96226). Tests that use `asserterror` commit their fixtures first, so the rollback undoes only the call under test (the malformed upload keeps its session open).
+
 ### Added (2026-10-19) - Data Exchange import, processing, export and definition management (#24, #25, #26)
 
 - **Generic import (#24).** `DataExchange.Import.Run` now imports the file: from `storageCode` + `path` (the stored file is only read) or from `contentBase64` (at most 1 MB, otherwise `LimitExceeded` pointing to storage), with optional `fileName` and `process`. It inserts the Data Exch. entry with the file content, runs the definition reader and answers `entryNo`, `dataExchDefCode`, `fileName`, `lineCount`, `fieldCount`, `processed` and, with `process: true`, `processResult`. The flat response and status `Accepted` are kept. A file the reader refuses answers an error and leaves no entry or field. Bank Statement Import definitions are refused with a pointer to `Finance.BankReconciliation.Create`; export definitions stay refused. A definition without a reader answers `PreconditionFailed`.
