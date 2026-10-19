@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-19) - Icelandic glossary regressions from the Data Exchange types (#72)
+
+- Icelandic texts added by PR #135/#150 follow the #72 glossary again: Incoming Document is *skjal í innleið* (was *innkomuskjal*, 17 texts), Data Exchange Type is *gerð gagnaskipta* (was *gagnaskiptagerð*), the `Help.DataExchange.Get` description calls the types *skilaboðategundir gagnaskipta*, and the `Storage.Upload.CommitToDataExchange` keyword uses *staðfesta upphleðslu* for commit (was *ljúka upphleðslu*). One imperative was corrected (*vinndu*). English texts, wire keys and code are unchanged; the is-IS XLF is regenerated.
+
 ### Fixed (2026-10-19) - Data Exchange CI test failures (#150 follow-up)
 
 - `Help.Storage.Get` names `Storage.Upload.CommitToDataExchange` in its upload table and upload flow.

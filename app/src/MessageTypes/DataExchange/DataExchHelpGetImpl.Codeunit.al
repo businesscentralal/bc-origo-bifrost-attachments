@@ -22,7 +22,7 @@ codeunit 70013521 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
 
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Returns a Markdown overview of the Data Exchange types: pipeline, decision table, chaining and permissions.', Comment = 'is-IS=Skilar Markdown-yfirliti yfir gagnaskiptagerðirnar: ferli, ákvörðunartöflu, keðjun og heimildir.';
+        DescriptionLbl: Label 'Returns a Markdown overview of the Data Exchange types: pipeline, decision table, chaining and permissions.', Comment = 'is-IS=Skilar Markdown-yfirliti yfir skilaboðategundir gagnaskipta: ferli, ákvörðunartöflu, keðjun og heimildir.';
     begin
         exit(DescriptionLbl);
     end;
