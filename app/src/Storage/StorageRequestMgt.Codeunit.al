@@ -439,12 +439,26 @@ codeunit 10035662 "Storage Request Mgt ori"
     local procedure CheckTransferPaths(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; var SourcePath: Text; var TargetPath: Text): Boolean
     var
         Reader: Codeunit "Storage Request Reader ori";
+        Provider: Codeunit "Storage Ext File Impl ori";
+        SourceIdentity: Text;
+        TargetIdentity: Text;
+        Scope: Text;
+        CaseSensitive: Boolean;
     begin
         Reader.CheckStoragePath(Argument, StorageSetup, 'sourcePath', SourcePath, false);
         Reader.CheckStoragePath(Argument, StorageSetup, 'targetPath', TargetPath, false);
         if Reader.RespondIfErrors(Argument) then
             exit(false);
-        if PathsEqual(SourcePath, TargetPath, not ((StorageSetup."Storage Type" = StorageSetup."Storage Type"::"External File Storage") and (StorageSetup.Connector.AsInteger() = 4570))) then begin
+        SourceIdentity := SourcePath;
+        TargetIdentity := TargetPath;
+        CaseSensitive := not ((StorageSetup."Storage Type" = StorageSetup."Storage Type"::"External File Storage") and (StorageSetup.Connector.AsInteger() = 4570));
+        if (StorageSetup."Storage Type" = StorageSetup."Storage Type"::"External File Storage") and (StorageSetup.Connector.AsInteger() = 4580) then begin
+            Provider.ResolvePhysicalAddress(Argument, StorageSetup, SourcePath, Scope, SourceIdentity, CaseSensitive);
+            Provider.ResolvePhysicalAddress(Argument, StorageSetup, TargetPath, Scope, TargetIdentity, CaseSensitive);
+            if Reader.RespondIfErrors(Argument) then
+                exit(false);
+        end;
+        if PathsEqual(SourceIdentity, TargetIdentity, CaseSensitive) then begin
             Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameter, DifferentPathsErr, 'targetPath', TargetPath, '', DifferentPathsNextStepLbl);
             exit(false);
         end;

@@ -93,23 +93,29 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
 
     local procedure SharePointSetup(var StorageSetup: Record "Storage Setup ori"; LibraryRoot: Text; SiteUrl: Text)
     var
-        Account: Record "Ext. SharePoint Account";
+        Account: RecordRef;
+        AccountId: Guid;
     begin
+        // Match the existing account fixture's RecordRef boundary: the test app does not declare connector symbols.
+        AccountId := CreateGuid();
+        Account.Open(4580);
         Account.Init();
-        Account.Id := CreateGuid();
-        Account.Name := 'X120 isolated account';
-        Account."SharePoint Url" := CopyStr(SiteUrl, 1, MaxStrLen(Account."SharePoint Url"));
-        Account."Base Relative Folder Path" := CopyStr(LibraryRoot, 1, MaxStrLen(Account."Base Relative Folder Path"));
+        Account.Field(1).Value := AccountId;
+        Account.Field(2).Value := 'X120 isolated account';
+        Account.Field(4).Value := SiteUrl;
+        Account.Field(5).Value := LibraryRoot;
         Account.Insert(false);
+        Account.Close();
         StorageSetup.Init();
         StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
         StorageSetup.Connector := "Ext. File Storage Connector".FromInteger(4580);
-        StorageSetup."File Account Id" := Account.Id;
+        StorageSetup."File Account Id" := AccountId;
         StorageSetup."Base Path" := 'x120base';
     end;
 
     /// <summary>A SharePoint move retains each link's own account root and refuses destinations outside it.</summary>
     [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
     procedure Scenario_AC01_SharePointMove_KeepsAliasRelativePath()
     var
         SelectedSetup: Record "Storage Setup ori";
@@ -153,6 +159,47 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.IsTrue(Provider.ResolvePhysicalAddress(TempArgument, SelectedSetup, 'dir/archive/New%20File.txt', Scope, SelectedAddress, CaseSensitive), 'Selected destination must resolve.');
         LibraryAssert.IsTrue(Provider.ResolvePhysicalAddress(TempArgument, AliasSetup, Link."Storage Path", Scope, AliasAddress, CaseSensitive), 'Stored alias destination must resolve.');
         LibraryAssert.AreEqual(SelectedAddress, AliasAddress, 'The updated link reads back to the same decoded physical destination.');
+    end;
+
+    /// <summary>Case and encoded self-transfers are refused by the public executor before connector writes.</summary>
+    [Test]
+    procedure Scenario_AC01_SharePointSelfTransfer_PreservesUnlinkedSource()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        MockState: Codeunit "Storage Mock State";
+    begin
+        // Story #75 + #120 interaction | Time: none | Risk: connector copy-then-delete can delete a self-moved file.
+        MockState.Reset();
+        MockState.PutFile('File.txt', 'b3JpZ2luYWw=');
+        SharePointSetup(StorageSetup, 'Shared Documents', 'https://x120.sharepoint.com/sites/Team');
+        StorageSetup."Base Path" := '';
+        AssertSharePointSelfTransfer(StorageSetup, 'FILE.TXT', true);
+        AssertSharePointSelfTransfer(StorageSetup, '%46ile.txt', true);
+        AssertSharePointSelfTransfer(StorageSetup, 'FILE.TXT', false);
+        AssertSharePointSelfTransfer(StorageSetup, '%46ile.txt', false);
+        LibraryAssert.AreEqual(0, MockState.GetWriteCalls(), 'Neither move nor copy may reach the injected connector.');
+        LibraryAssert.AreEqual('b3JpZ2luYWw=', MockState.GetFileContent('File.txt'), 'The unlinked source bytes remain intact.');
+    end;
+
+    local procedure AssertSharePointSelfTransfer(StorageSetup: Record "Storage Setup ori"; TargetPath: Text; IsMove: Boolean)
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+        Connector: Interface "Storage Connector ori";
+    begin
+        // Direct executor invocation injects an instrumented connector while retaining real SharePoint setup/preflight.
+        TempArgument.Init();
+        if IsMove then
+            TempArgument."Type" := TempArgument."Type"::"Storage.File.Move"
+        else
+            TempArgument."Type" := TempArgument."Type"::"Storage.File.Copy";
+        TempArgument.Insert(true);
+        Connector := Enum::"Storage Type ori"::Mock;
+        if IsMove then
+            RequestMgt.ExecuteMoveFile(TempArgument, StorageSetup, Connector, 'File.txt', TargetPath)
+        else
+            RequestMgt.ExecuteCopyFile(TempArgument, StorageSetup, Connector, 'File.txt', TargetPath);
+        AssertRefusal(TempArgument.GetResponseJson(), 'InvalidParameter');
     end;
 
     /// <summary>Outer slash spelling cannot bypass linked file or parent-directory deletion guards.</summary>
