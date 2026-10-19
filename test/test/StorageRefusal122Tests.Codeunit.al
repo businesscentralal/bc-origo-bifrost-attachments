@@ -145,6 +145,31 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         LibraryAssert.IsTrue(ErrorsText.Contains('subdirectories'), 'Explain how to resolve the precondition.');
     end;
 
+    /// <summary>Every type that takes a storageCode documents the unknown and disabled connection refusals (#122, #125).</summary>
+    [Test]
+    procedure Scenario_Contract_ListsStorageCodeAndRootRefusals()
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
+        ErrorsText: Text;
+        MessageType: Text;
+        MessageTypes: List of [Text];
+    begin
+        // [GIVEN] The shipped contracts of the types that resolve a storage connection.
+        MessageTypes.AddRange('Storage.File.Get', 'Storage.Directory.Delete', 'Storage.Attachment.Offload', 'Storage.Upload.Begin');
+        foreach MessageType in MessageTypes do begin
+            // [WHEN] Their errors chapter is described.
+            ContractParts.GetErrors(MessageType).WriteTo(ErrorsText);
+            // [THEN] The unknown code and the disabled connection are listed with their codes.
+            LibraryAssert.IsTrue(ErrorsText.Contains('RecordNotFound'), MessageType + ': unknown storageCode.');
+            LibraryAssert.IsTrue(ErrorsText.Contains('The storage connection is disabled.'), MessageType + ': disabled connection.');
+        end;
+        // [THEN] Only Directory.Delete lists the root refusal; Account.List lists no storageCode errors.
+        ContractParts.GetErrors('Storage.Directory.Delete').WriteTo(ErrorsText);
+        LibraryAssert.IsTrue(ErrorsText.Contains('The path names the connection root.'), 'Directory.Delete: root refusal.');
+        ContractParts.GetErrors('Storage.Account.List').WriteTo(ErrorsText);
+        LibraryAssert.IsFalse(ErrorsText.Contains('RecordNotFound'), 'Account.List takes no storageCode.');
+    end;
+
     /// <summary>The non-empty refusal is localized without exposing native connector text.</summary>
     [Test]
     procedure Scenario_AC02_NonEmptyDirectory_Localizes1039()
