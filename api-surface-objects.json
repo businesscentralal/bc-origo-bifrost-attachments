@@ -88,7 +88,7 @@
       "id": 10035635,
       "name": "Storage Attachment Mgt ori",
       "file": "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
-      "sha256": "4c27d00693d0925065f7c8c9ca0eb0630b6f040cf8075d2496f0f740ee1c2723",
+      "sha256": "4e72279ddc6aa2fd50b9994143d9ec68841e2445aaf88f966d2db82f0869b78c",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",

@@ -8,6 +8,15 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-19) - Storage writes are never refused for the storage setup (#120)
+
+- Offload, linking and alias moves on Document Attachment no longer refuse with *The installed
+  attachment fields could not be verified* when Microsoft's External File Storage fields 8750-8753
+  have unexpected names or types. Those fields are only mirrored: the write goes ahead and the
+  mirror is skipped and logged, as it already was when the fields are missing. The mirror now also
+  checks field names and types before assigning. The exact connector-version pin was removed
+  earlier by PR #118; no provider, connector version or schema check refuses a write any more.
+
 ### Fixed (2026-10-19) - Data Exchange CI test failures (#150 follow-up)
 
 - `Help.Storage.Get` names `Storage.Upload.CommitToDataExchange` in its upload table and upload flow.
