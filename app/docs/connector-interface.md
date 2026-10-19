@@ -55,4 +55,3 @@ connector-ID dispatch, provider account introspection and specific connector dep
 The test app registers an arbitrary connector through Microsoft's interface to verify
 delegation, account isolation, error propagation and transfer refusal without installing
 a particular provider.
-
