@@ -32,8 +32,8 @@ The separate controlled523 Foundation fixture is main
 `5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f`.
 The controlled fixture retains these exact bytes. Current actual precompile inventory
 requires the internally approved exact candidate530 below, with zero product self-app inputs. Test must use the exact just-built product. Changing the approved
-input requires a reviewed tooling change; the app dependency floor remains
-**28.0.1.0**. Symbol inventories are independent of the donated manifest guard.
+input requires a reviewed tooling change; the app dependency floor is
+**28.0.3.530**, the approved candidate. Symbol inventories are independent of the donated manifest guard.
 
 Run/attempt/job, checkout SHA, compiled-source SHA, build mode, script hashes,
 package/content digests and source hashes are retained in sanitized JSON under
