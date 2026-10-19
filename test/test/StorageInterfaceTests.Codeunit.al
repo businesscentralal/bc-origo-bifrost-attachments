@@ -150,7 +150,9 @@ codeunit 96236 "Storage Interface Tests ori"
         LibraryAssert.AreNotEqual('', GetLastErrorText(), 'The invalid path must be refused.');
         // Consume the deliberately raised collection before another independent
         // connector failure is answered through Foundation's shared handover.
+        TempArgument.Init();
         TempArgument.Type := TempArgument.Type::"Storage.File.Create";
+        TempArgument.Insert(true);
         TempArgument.RespondWithLastError();
         Response := TempArgument.GetResponseJson();
         LibraryAssert.AreEqual('InvalidParameter', ReadText(Response, 'code'), 'Traversal must retain its structured path refusal.');

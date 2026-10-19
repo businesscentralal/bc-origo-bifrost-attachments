@@ -805,6 +805,9 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
     begin
         // Consume the same raised-error handover a message caller would answer, so a
         // later independent test cannot inherit this deliberately caught refusal.
+        TempArgument.Init();
+        TempArgument.Type := TempArgument.Type::"Storage.File.Move";
+        TempArgument.Insert(true);
         TempArgument.RespondWithLastError();
         AssertRefusal(TempArgument.GetResponseJson(), ExpectedCode);
     end;
