@@ -7,7 +7,7 @@
 | Provider contract | **KEEP**: Storage Connector ori, Storage Type ori and table Storage Setup ori (10035636) remain public. Storage Type stays extensible. The separate optional Storage Linked Move ori capability is public after PR144; existing connectors remain valid. |
 | State enums | **DONE**: Storage Attachment Target ori (10035635) and Storage Upload Status ori (10035637) are Access = Internal. |
 | Registered ranges and affix | **BLOCKED**: Gunnar / Partner Center allocation owner must supply authoritative evidence for both ranges and `ori`. |
-| Historical AppSourceCop / product and test compile / runtime | **CI VERIFIED at main `b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005`**: paired [CI38918381017](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/38918381017) succeeded; its downloaded TestResults contains 280 executed / 280 passed / 0 failed / 0 skipped. This is existing-main evidence, not execution at a later audit-only head, baseline comparison, UI/MCP proof or AppSource certification. |
+| AppSourceCop / product and test compile / runtime | **CI VERIFIED at main `304a1c24985a00fb86b5caef10ca46ffe04096b6`**: [CI39276099802](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39276099802) succeeded (Default, Test and Deploy to Bifrost); Test executed 354 tests with 0 failed / 0 skipped. The Default package is 28.0.0.109 with empty `InternalsVisibleTo` and one dependency, Bifrost Foundation minimum 28.0.3.530. This is existing-main evidence, not baseline comparison, UI/MCP proof or AppSource certification. The earlier receipt at `b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005` ([CI38918381017](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/38918381017), 280 executed / 280 passed) is historical. |
 | Independent review | Pending; this audit is an author inventory, not independent certification. |
 
 Current source checked: Attachments main `f4d524d9bdcfe408701e222ef463b2928f395910`,
@@ -22,11 +22,11 @@ This additive interface is separate from `Storage Connector ori`; existing conne
 The capability reports source preservation on failure and an unambiguous outcome; it does not
 promise destination cleanup or filesystem rollback. This audit changes no AL or contract.
 
-Current main [CI39240173451](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39240173451)
-failed its native Test job. Reginn (worker-6) retains the assigned repair; this audit neither
-changes those tests nor transfers historical passes to current source. Candidate compile,
-full-suite, UI and independent verification remain separate pending checks. Historical CI
-results below stay attributable to their named commits.
+Current main [CI39276099802](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39276099802)
+at `304a1c2` is green: Default, Test (354 executed, 0 failed, 0 skipped) and Deploy to Bifrost.
+The earlier failure in CI39240173451 is resolved on main; this audit neither changes those tests
+nor transfers passes to other commits. UI, MCP and independent verification of the candidate remain
+separate pending checks. Historical CI results below stay attributable to their named commits.
 
 The original audit at main `b42ad90eaee2803205408a1cac8b0d9752b91c0e` remains
 attributable to [PR86](https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86)
@@ -245,7 +245,7 @@ its publication does not establish this app's publication state.
 | Criterion | Current disposition | Remaining acceptance |
 |---|---|---|
 | AC01: reviewed matrix and first-publish evidence | Current inventory contains 94 objects, 904 non-local procedures and 12 public interface members. The guard checks source identities/hashes and qualified Setup table/page attribution. Historical external consumer searches remain bounded to their recorded snapshots. | Independent review of this reconciliation; Gunnar / designated evidence owner supplies historical publication/baseline and tenant/provider consumer disposition. |
-| AC02: compatible extension points and compile | Storage Type remains public/extensible, all 11 provider signatures remain, the optional linked-move interface and Setup Record/Foundation bindings/test seam are recorded. Current main CI39240173451 failed; its repair remains worker-6-owned. | Candidate-specific compile/analyzer/full-suite/UI evidence remains separate; baseline compatibility comparison requires the actual authoritative baseline when one exists. |
+| AC02: compatible extension points and compile | Storage Type remains public/extensible, all 11 provider signatures remain, the optional linked-move interface and Setup Record/Foundation bindings/test seam are recorded. Current main CI39276099802 at `304a1c2` is green (354 tests, 0 failed, 0 skipped). | Candidate-specific compile/analyzer/full-suite/UI evidence remains separate; baseline compatibility comparison requires the actual authoritative baseline when one exists. |
 | AC03: safe access reductions or specific hold | PR118 already internalized the two state enums and five helper procedures. This audit records their source state and does not repeat those changes. | Gunnar / product owner confirms the historical baseline and foreign-consumer disposition. No further reduction is justified by absence of a current offer alone; the additive PR144 capability is recorded without claiming historical-baseline compatibility. |
 | AC04: both ranges and affix registration | Source declarations are retained unchanged in the release checklist. | Gunnar / allocation and publisher registration owners provide authoritative registration evidence for 10035635–10035684, 70013500–70013549 and ori/Origo. |
 
@@ -286,7 +286,7 @@ diagnostic compilation. Current shipping acceptance requires the actual BC29 run
 compiler/analyzers and Foundation `28.0.3.530` source/package/hash/signature/friend
 provenance under #78, with matching test libraries. The controlled 523 input and older
 517/518 inputs are not current runner acceptance evidence. The declared
-Foundation floor remains `28.0.1.0`.
+Foundation minimum is now `28.0.3.530` in `app/app.json` and `test/app.json`.
 
 The resolved publication-registration-plan permits this bounded audit correction only.
 Source preparation does not release publication, runtime, QA, infrastructure or physical-writer
