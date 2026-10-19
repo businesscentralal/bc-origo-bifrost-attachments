@@ -1,6 +1,8 @@
 namespace Origo.Bifrost.Attachments;
 
 using Microsoft.Bank.Setup;
+using Microsoft.Finance.Currency;
+using Microsoft.Finance.GeneralLedger.Setup;
 using Origo.Bifrost;
 using System.IO;
 
@@ -148,7 +150,7 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     /// <summary>Explains operation restrictions.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Does not delete a definition that a Data Exchange Type or Bank Export/Import Setup still uses.', Comment = 'is-IS=Eyðir ekki skilgreiningu sem gerð gagnaskipta eða uppsetning bankaútflutnings eða bankainnflutnings notar enn.';
+        NotesLbl: Label 'Does not delete a definition that a Data Exchange Type, a Bank Export/Import Setup (which bank accounts use as payment export, statement import or positive pay format), the payroll import format of the General Ledger Setup or a currency exchange rate service still uses.', Comment = 'is-IS=Eyðir ekki skilgreiningu sem gerð gagnaskipta, uppsetning bankaútflutnings eða bankainnflutnings (sem bankareikningar nota sem snið fyrir greiðsluútflutning, innflutning yfirlita eða jákvæða greiðslustaðfestingu), snið launainnflutnings í fjárhagsgrunni eða gengisþjónusta notar enn.';
     begin
         Notes := NotesLbl;
         exit(true);
@@ -189,9 +191,9 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
         NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
         UsedErr: Label 'Data Exchange definition %1 is referenced and cannot be deleted.', Comment = '%1 = definition code||is-IS=Vísað er í skilgreiningu gagnaskipta %1 og ekki er hægt að eyða henni.';
         DefinitionExpectedLbl: Label 'an existing Data Exchange definition', Comment = 'is-IS=fyrirliggjandi skilgreining gagnaskipta';
-        UnreferencedExpectedLbl: Label 'a definition not used by a Data Exchange Type or Bank Export/Import Setup', Comment = 'is-IS=skilgreining sem er ekki notuð í gerð gagnaskipta eða uppsetningu bankaútflutnings eða bankainnflutnings';
+        UnreferencedExpectedLbl: Label 'a definition not used by a Data Exchange Type, a Bank Export/Import Setup (and so a bank account), the payroll import format of the General Ledger Setup or a currency exchange rate service', Comment = 'is-IS=skilgreining sem er ekki notuð í gerð gagnaskipta, uppsetningu bankaútflutnings eða bankainnflutnings (og þar með bankareikningi), sniði launainnflutnings í fjárhagsgrunni eða gengisþjónustu';
         SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and use the exact definition code.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningarinnar.';
-        RemoveReferenceLbl: Label 'Review the Data Exchange Types and Bank Export/Import Setup that use this definition. Change those references before retrying deletion.', Comment = 'is-IS=Farðu yfir gerðir gagnaskipta og uppsetningu bankaútflutnings eða bankainnflutnings sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.';
+        RemoveReferenceLbl: Label 'Review the Data Exchange Types, Bank Export/Import Setup, General Ledger Setup and currency exchange rate services that use this definition. Change those references before retrying deletion.', Comment = 'is-IS=Farðu yfir gerðir gagnaskipta, uppsetningu bankaútflutnings eða bankainnflutnings, fjárhagsgrunn og gengisþjónustur sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.';
     begin
         RequestJson := Argument.GetRequestJson();
         Reader.ReadMutationCode(Argument, RequestJson, 'code', DefCode);
@@ -216,7 +218,7 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
         DataExchType.SetRange("Data Exch. Def. Code", DefCode);
         BankExportImportSetup.ReadIsolation := IsolationLevel::ReadCommitted;
         BankExportImportSetup.SetRange("Data Exch. Def. Code", DefCode);
-        if not DataExchType.IsEmpty() or not BankExportImportSetup.IsEmpty() then
+        if not DataExchType.IsEmpty() or not BankExportImportSetup.IsEmpty() or UsedBySetup(DefCode) then
             Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(UsedErr, DefCode), 'code', DefCode, UnreferencedExpectedLbl, RemoveReferenceLbl);
         if Reader.RespondIfErrors(Argument) then
             exit;
@@ -225,5 +227,26 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
         ResponseJson.Add('code', DefCode);
         Argument.SetResponseJson(ResponseJson);
         Argument."Content Type" := Argument.GetContentTypeJson();
+    end;
+    // Bank accounts reach a definition through Bank Export/Import Setup, checked above. These setups
+    // name a definition directly; a caller who cannot read one of them cannot change it either.
+    local procedure UsedBySetup(DefCode: Code[20]): Boolean
+    var
+        GeneralLedgerSetup: Record "General Ledger Setup";
+        CurrExchRateUpdateSetup: Record "Curr. Exch. Rate Update Setup";
+    begin
+        if GeneralLedgerSetup.ReadPermission() then begin
+            GeneralLedgerSetup.ReadIsolation := IsolationLevel::ReadCommitted;
+            GeneralLedgerSetup.SetRange("Payroll Trans. Import Format", DefCode);
+            if not GeneralLedgerSetup.IsEmpty() then
+                exit(true);
+        end;
+        if CurrExchRateUpdateSetup.ReadPermission() then begin
+            CurrExchRateUpdateSetup.ReadIsolation := IsolationLevel::ReadCommitted;
+            CurrExchRateUpdateSetup.SetRange("Data Exch. Def Code", DefCode);
+            if not CurrExchRateUpdateSetup.IsEmpty() then
+                exit(true);
+        end;
+        exit(false);
     end;
 }

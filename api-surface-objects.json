@@ -196,10 +196,174 @@
     },
     {
       "kind": "codeunit",
+      "id": 70013505,
+      "name": "DataExch Def Transfer ori",
+      "file": "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+      "sha256": "f170abac6514024086aa6ae1c296e189d4a76405d426c3dad9ce94c6dec30d00",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefInstallImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 2,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "table",
+      "id": 70013500,
+      "name": "DataExch Entry Link ori",
+      "file": "app/src/DataExchange/DataExchEntryLink.Table.al",
+      "sha256": "704843f87b2f22c10c37998efc58e8c38d642053887e44643a7e00ef56391610",
+      "access": "Internal",
+      "extensible": "false",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchImportMgt.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryProcImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Upload/StorageDataRestriction.Codeunit.al",
+        "app/src/Upload/StorageRetenPolicy.Codeunit.al"
+      ],
+      "testConsumers": [
+        "test/test/DataExchDefXferTests.Codeunit.al",
+        "test/test/DataExchImportTests.Codeunit.al"
+      ],
+      "nonLocalProcedureCount": 0,
+      "fields": [
+        "1; \"Entry No.\"; Integer",
+        "2; \"Upload Id\"; Guid",
+        "3; \"Message Type\"; Text[50]",
+        "4; \"Storage Code\"; Code[20]",
+        "5; Path; Text[2048]",
+        "6; Processed; Boolean"
+      ],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
+      "id": 70013503,
+      "name": "DataExch Export Mgt ori",
+      "file": "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+      "sha256": "14742c9eb1c8f3ab38b11d4bc518e1ec92ca3daeb1657c51b6d11da8f8976fd8",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchPayExportImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 7,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
+      "id": 70013501,
+      "name": "DataExch Import Mgt ori",
+      "file": "app/src/DataExchange/DataExchImportMgt.Codeunit.al",
+      "sha256": "4eb5abd960df3eaaf62e1fc2e56f5c4e3c28b719b91505e314082e98f72e45b1",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchProcessWorker.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryProcImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al",
+        "app/src/Upload/StorageUploadMgt.Codeunit.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 16,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
+      "id": 70013504,
+      "name": "DataExch Pay Capture ori",
+      "file": "app/src/DataExchange/DataExchPayCapture.Codeunit.al",
+      "sha256": "1cc1a1629d2e6699c353ce50061c7dced65426ef5fbebb77904534a75a5935a0",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 1,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
+      "id": 70013502,
+      "name": "DataExch Process Worker ori",
+      "file": "app/src/DataExchange/DataExchProcessWorker.Codeunit.al",
+      "sha256": "9d266becbe5e4200fb5570422177ad572282599c20a1a5299f462136d34fd917",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/DataExchange/DataExchImportMgt.Codeunit.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 1,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
+      "id": 70013511,
+      "name": "DataExch View Filter ori",
+      "file": "app/src/DataExchange/DataExchViewFilter.Codeunit.al",
+      "sha256": "f8c6dd3d200b58c9496bb5a0de4d1313abc2ad533f19cbe32f2bd1a73a219f55",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 4,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
       "id": 70013520,
       "name": "Data Exchange Query ori",
       "file": "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
-      "sha256": "5148ac6437ba79c2286607a84a185580c8c44537e090e3bc7e548ce8e3d8d8af",
+      "sha256": "328d7167878d9e3be8a6b1877a8a5c79c684fd607bed1902d65e2f1f724a277b",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -486,12 +650,14 @@
       "id": 70013543,
       "name": "DataExch Def Delete Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
-      "sha256": "de1e74e89ce1262f16e0965fdeeb686f2b0be20387c25d54ee6d4e13de1d2fff",
+      "sha256": "ce3528f5fb0ab2cadcd64023a367c83f3d83ae5beb9f0389a531cfa6ed5a4caf",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
-        "app/src/MessageTypes/DataExchange/DataExchDefDelMsgType.EnumExt.al"
+        "app/src/MessageTypes/DataExchange/DataExchDefDelMsgType.EnumExt.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
       "testConsumers": [
         "test/src/Permissions/LangSetupRead.PermissionSet.al"
@@ -570,6 +736,26 @@
     },
     {
       "kind": "codeunit",
+      "id": 70013509,
+      "name": "DataExch Def Install Impl ori",
+      "file": "app/src/MessageTypes/DataExchange/DataExchDefInstallImpl.Codeunit.al",
+      "sha256": "38f911b1d9e926ad5a7012ff2a2c0c4952b3a86cf2dffa548737b046b6d4d46b",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/MessageTypes/DataExchange/DataExchPipelineMsgType.EnumExt.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 19,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
       "id": 70013522,
       "name": "DataExch Def List Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
@@ -592,6 +778,26 @@
         "test/src/Permissions/Storage79Map.PermissionSet.al",
         "test/src/Permissions/Storage79Type.PermissionSet.al"
       ],
+      "nonLocalProcedureCount": 19,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
+      "id": 70013508,
+      "name": "DataExch Entry Delete Impl ori",
+      "file": "app/src/MessageTypes/DataExchange/DataExchEntryDeleteImpl.Codeunit.al",
+      "sha256": "e10704d50f2bb863af79f5edee02d7f0dee2705d98b1ecfedf4c245a9698fb56",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/MessageTypes/DataExchange/DataExchPipelineMsgType.EnumExt.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "testConsumers": [],
       "nonLocalProcedureCount": 19,
       "fields": [],
       "enumValues": [],
@@ -656,6 +862,26 @@
       "namespace": "Origo.Bifrost.Attachments"
     },
     {
+      "kind": "codeunit",
+      "id": 70013507,
+      "name": "DataExch Entry Proc Impl ori",
+      "file": "app/src/MessageTypes/DataExchange/DataExchEntryProcImpl.Codeunit.al",
+      "sha256": "f4927a56430854087229f96da64907199bbcfc0d8c3ebafc88447f6da238fab5",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/MessageTypes/DataExchange/DataExchPipelineMsgType.EnumExt.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 19,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
       "kind": "enumextension",
       "id": 70013519,
       "name": "DataExch Export MsgType ori",
@@ -678,12 +904,14 @@
       "id": 70013534,
       "name": "DataExch Export Run Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
-      "sha256": "2758fe53bcb30db15aafda761d15cafc7a328d8979fbcdafd9cfb7e954ce53ae",
+      "sha256": "87c8a4578821406a9102675d4a180b8a8d377c98dce38fc4acbdbfe54d0a8aee",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
-        "app/src/MessageTypes/DataExchange/DataExchExportMsgType.EnumExt.al"
+        "app/src/MessageTypes/DataExchange/DataExchExportMsgType.EnumExt.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
       "testConsumers": [
         "test/src/Permissions/LangSetupRead.PermissionSet.al",
@@ -699,7 +927,7 @@
       "id": 70013521,
       "name": "DataExch Help Get Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al",
-      "sha256": "a9d03c17b4970fb7cd4769224c4787ad14ebc8441d50178ce642a20a9fc3f600",
+      "sha256": "68f2f5483405935754a2c69f700481b69a8d1daf062a0f21d19c99ddee3c5817",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -746,12 +974,14 @@
       "id": 70013540,
       "name": "DataExch Import Run Impl ori",
       "file": "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
-      "sha256": "27baf4797d1b9b49d8b43e00428c44515d60d99faca7e1637eea52511562022f",
+      "sha256": "64a18d4ee9b538d25af4711818b9c1d46b96ffb657d29ca9e4b4e765474f3293",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
-        "app/src/MessageTypes/DataExchange/DataExchImportMsgType.EnumExt.al"
+        "app/src/MessageTypes/DataExchange/DataExchImportMsgType.EnumExt.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
       "testConsumers": [
         "test/src/Permissions/LangSetupRead.PermissionSet.al"
@@ -802,6 +1032,48 @@
         "70013513; \"DataExchange.Type.List\"",
         "70013514; \"DataExchange.Entry.List\"",
         "70013515; \"DataExchange.Entry.Get\""
+      ],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
+      "id": 70013510,
+      "name": "DataExch Pay Export Impl ori",
+      "file": "app/src/MessageTypes/DataExchange/DataExchPayExportImpl.Codeunit.al",
+      "sha256": "7e1ac259e0bf66ab768835546758e7b880947655e11d9f7fd0725419857a15ff",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/MessageTypes/DataExchange/DataExchPipelineMsgType.EnumExt.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 19,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "enumextension",
+      "id": 70013512,
+      "name": "DataExch Pipeline MsgType ori",
+      "file": "app/src/MessageTypes/DataExchange/DataExchPipelineMsgType.EnumExt.al",
+      "sha256": "3edae03afda749b68481ae521bb86ab9bd758e67caa5acaa701d77ae8c734609",
+      "access": "Public (default)",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP: wire bindings, fields, setup integration or permission contract",
+      "appConsumers": [],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 0,
+      "fields": [],
+      "enumValues": [
+        "70013517; \"Storage.Upload.CommitToDataExchange\"",
+        "70013518; \"DataExchange.Entry.Process\"",
+        "70013520; \"DataExchange.Entry.Delete\"",
+        "70013524; \"DataExchange.Definition.Import\"",
+        "70013525; \"DataExchange.PaymentExport.Run\""
       ],
       "namespace": "Origo.Bifrost.Attachments"
     },
@@ -1155,7 +1427,7 @@
       "id": 70013500,
       "name": "Storage Contract Parts ori",
       "file": "app/src/MessageTypes/StorageContractParts.Codeunit.al",
-      "sha256": "03f1c4c579fb5d0546542c40819ad5857eb4e32c35679a00ad71737e5751f402",
+      "sha256": "94c383788dd0926a6c4d32ae44f15b81cec4deeb43ebfef026e9348adc1c1a3b",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1168,12 +1440,16 @@
         "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefInstallImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchEntryListImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryProcImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchPayExportImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
@@ -1191,6 +1467,7 @@
         "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitDX.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
@@ -1315,6 +1592,26 @@
     },
     {
       "kind": "codeunit",
+      "id": 70013506,
+      "name": "Storage Upload Commit DX ori",
+      "file": "app/src/MessageTypes/Upload/StorageUploadCommitDX.Codeunit.al",
+      "sha256": "feeeee5cb6ca04d778135ae02512cda38c662df8b08118fdaa69bff8bafcf7fb",
+      "access": "Internal",
+      "extensible": "not declared / not applicable",
+      "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
+      "appConsumers": [
+        "app/src/MessageTypes/DataExchange/DataExchPipelineMsgType.EnumExt.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
+      ],
+      "testConsumers": [],
+      "nonLocalProcedureCount": 19,
+      "fields": [],
+      "enumValues": [],
+      "namespace": "Origo.Bifrost.Attachments"
+    },
+    {
+      "kind": "codeunit",
       "id": 10035659,
       "name": "Storage Upload Commit Impl ori",
       "file": "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
@@ -1405,7 +1702,7 @@
       "id": 70013548,
       "name": "BIFROST DataExch ori",
       "file": "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
-      "sha256": "7556e2aad3d6b353b64b5d47419700faa00af21440dcda8f9442e3d7e728f9cc",
+      "sha256": "167efd6a75a227ecf7cd3e76e165fa0e6a741e6c913aa2cd36af781a4077baf2",
       "access": "Public",
       "extensible": "not declared / not applicable",
       "decision": "KEEP: wire bindings, fields, setup integration or permission contract",
@@ -1421,7 +1718,7 @@
       "id": 10035635,
       "name": "Storage Full ori",
       "file": "app/src/Permissions/StorageFull.PermissionSetExt.al",
-      "sha256": "0a3a3bd448bd4540e38a61c52a0edf9d9c8ffacbe5dfa6b15dee480f0444fe73",
+      "sha256": "976c365e9bd58f0ac6b2c3b8b2c05eb4ef0b2b76bd749d60cd96662bd4ca1b20",
       "access": "Public (default)",
       "extensible": "not declared / not applicable",
       "decision": "KEEP: wire bindings, fields, setup integration or permission contract",
@@ -1857,19 +2154,24 @@
       "id": 10035662,
       "name": "Storage Request Mgt ori",
       "file": "app/src/Storage/StorageRequestMgt.Codeunit.al",
-      "sha256": "c7f98fcb4c904c7bb834286774043738ebc41e5b97c2f3b92c86e3212d76723a",
+      "sha256": "b8c6bdf564b120954162806322da10c0efd0a9042d82f7fcf35e965f1864e2d1",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
         "app/src/Attachments/StorageAttachmentSubscr.Codeunit.al",
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
         "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttachRecordImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryDeleteImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryProcImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
@@ -1885,6 +2187,7 @@
         "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitDX.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
@@ -1902,7 +2205,7 @@
         "test/test/StorageInterfaceTests.Codeunit.al",
         "test/test/StorageRefusal122Tests.Codeunit.al"
       ],
-      "nonLocalProcedureCount": 20,
+      "nonLocalProcedureCount": 23,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -1984,7 +2287,7 @@
       "id": 10035663,
       "name": "Storage Data Restriction ori",
       "file": "app/src/Upload/StorageDataRestriction.Codeunit.al",
-      "sha256": "2a86777e02945ea4144c32effacc94c03b86bad53318ab7e60cb73bae43401b0",
+      "sha256": "cda0ea8c4511f95449904e661e25ff773f1f995bbe9bce44761a0cb351ad720e",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -2006,7 +2309,7 @@
       "id": 10035664,
       "name": "Storage Reten. Policy ori",
       "file": "app/src/Upload/StorageRetenPolicy.Codeunit.al",
-      "sha256": "3d3e6b292a7a63334eadab66eea6b42fced42e9e376362dcf8134458e32b60cd",
+      "sha256": "ad9e852b36a37dd3d3226cba70fc07b6c7504df5f3dcd41b077f4492ccb96c87",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -2063,14 +2366,16 @@
       "id": 10035665,
       "name": "Storage Upload Mgt ori",
       "file": "app/src/Upload/StorageUploadMgt.Codeunit.al",
-      "sha256": "83db7130968d431cbc9b231bedf3a00ea1261bdcfda92390719e244bf11a499a",
+      "sha256": "cd6daea50b095e152b8aeabae4cbb9f0c6273cd8ec1408efa2e9375a6952008b",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadBeginImpl.Codeunit.al",
+        "app/src/MessageTypes/Upload/StorageUploadCommitDX.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadCommitImpl.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadCommitRec.Codeunit.al",
         "app/src/MessageTypes/Upload/StorageUploadStatusImpl.Codeunit.al",
@@ -2081,7 +2386,7 @@
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al"
       ],
-      "nonLocalProcedureCount": 7,
+      "nonLocalProcedureCount": 9,
       "fields": [],
       "enumValues": [],
       "namespace": "Origo.Bifrost.Attachments"
@@ -2180,7 +2485,7 @@
     "scope": "app/src and test at consumerSourceSha; lexical quoted-name matches outside line comments; historical external-app searches remain separate",
     "method": "Quoted name lexical matches after removing line comments; strings and block comments may match; no foreign-consumer absence assertion"
   },
-  "refreshedAt": "2026-10-19T11:22:09.898109+00:00",
+  "refreshedAt": "2026-10-19T13:38:44.038804+00:00",
   "originalSnapshot": {
     "sourceSha": "b42ad90eaee2803205408a1cac8b0d9752b91c0e",
     "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86",

@@ -19,9 +19,14 @@ using System.IO;
 /// account id and base-path changes only happen through the setup UX/logic, not ad-hoc
 /// generic writes.
 ///
-/// <c>Data Exch.</c> is write-restricted as well. The dedicated import writers arrive in a
-/// later phase; the hint already names them so generic <c>Data.Records.Set</c> cannot insert
-/// audit rows ahead of that.
+/// <c>Data Exch.</c> and <c>Data Exch. Field</c> are write-restricted as well: entries and their
+/// parsed fields are written by <c>DataExchange.Import.Run</c> and
+/// <c>Storage.Upload.CommitToDataExchange</c>, which the write hint names.
+///
+/// The definition tables (<c>Data Exch. Def</c>, line, column, mapping and field mapping) are
+/// write-restricted and point at <c>DataExchange.Definition.Import</c> and
+/// <c>DataExchange.Definition.Delete</c>. <c>DataExch Entry Link ori</c> is written only by the Data
+/// Exchange types and points at <c>DataExchange.Entry.Delete</c>.
 ///
 /// <c>Storage Attachment Link ori</c> is write-restricted the same way. Reads stay allowed
 /// for audits. Legitimate rows are written by the attachment message types named in the
@@ -41,6 +46,8 @@ codeunit 10035663 "Storage Data Restriction ori"
         LinkWriteHintTxt: Label 'Storage.Attachment.Offload / Storage.Attachment.CreateLinked / Storage.Attachment.CreateForRecord', Locked = true;
         TypeSetHintTxt: Label 'DataExchange.Type.Set', Locked = true;
         IncomingTypeFieldHintTxt: Label 'Storage.Upload.CommitToRecord / DataExchange.Type.Set', Locked = true;
+        DefinitionWriteHintTxt: Label 'DataExchange.Definition.Import / DataExchange.Definition.Delete', Locked = true;
+        EntryLinkWriteHintTxt: Label 'DataExchange.Entry.Delete', Locked = true;
 
     [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnAfterIsTableReadRestrictedForDataRecords', '', false, false)]
     local procedure RestrictUploadTablesFromRead(TableNo: Integer; var IsRestricted: Boolean)
@@ -65,6 +72,15 @@ codeunit 10035663 "Storage Data Restriction ori"
     begin
         if IsDataExchTable(TableNo) then
             Hint := DataExchWriteHintTxt;
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnGetDedicatedMessageTypeHintForWrite', '', false, false)]
+    local procedure HintDefinitionWrite(TableNo: Integer; var Hint: Text)
+    begin
+        if IsDefinitionTable(TableNo) then
+            Hint := DefinitionWriteHintTxt;
+        if TableNo = Database::"DataExch Entry Link ori" then
+            Hint := EntryLinkWriteHintTxt;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnGetDedicatedMessageTypeHintForWrite', '', false, false)]
@@ -102,7 +118,8 @@ codeunit 10035663 "Storage Data Restriction ori"
 
     local procedure IsProtectedTable(TableNo: Integer): Boolean
     begin
-        exit(IsUploadTable(TableNo) or IsStorageSetupTable(TableNo) or IsDataExchTable(TableNo) or IsAttachmentLinkTable(TableNo) or IsDataExchangeTypeTable(TableNo));
+        exit(IsUploadTable(TableNo) or IsStorageSetupTable(TableNo) or IsDataExchTable(TableNo) or IsAttachmentLinkTable(TableNo) or IsDataExchangeTypeTable(TableNo) or
+            IsDefinitionTable(TableNo) or (TableNo = Database::"DataExch Entry Link ori"));
     end;
 
     local procedure IsUploadTable(TableNo: Integer): Boolean
@@ -117,7 +134,12 @@ codeunit 10035663 "Storage Data Restriction ori"
 
     local procedure IsDataExchTable(TableNo: Integer): Boolean
     begin
-        exit(TableNo = Database::"Data Exch.");
+        exit(TableNo in [Database::"Data Exch.", Database::"Data Exch. Field"]);
+    end;
+
+    local procedure IsDefinitionTable(TableNo: Integer): Boolean
+    begin
+        exit(TableNo in [Database::"Data Exch. Def", Database::"Data Exch. Line Def", Database::"Data Exch. Column Def", Database::"Data Exch. Mapping", Database::"Data Exch. Field Mapping"]);
     end;
 
     local procedure IsAttachmentLinkTable(TableNo: Integer): Boolean

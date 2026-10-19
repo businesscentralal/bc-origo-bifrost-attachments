@@ -529,6 +529,42 @@ codeunit 10035662 "Storage Request Mgt ori"
         end;
     end;
 
+    /// <summary>Reads a file through the connector. A connector failure returns false and keeps the error for RespondWithLastError.</summary>
+    /// <param name="StorageSetup">The resolved storage setup row.</param>
+    /// <param name="Connector">The resolved connector implementation.</param>
+    /// <param name="Path">The file path, already checked with CheckStoragePath.</param>
+    /// <param name="TempBlob">Returns the file content.</param>
+    [TryFunction]
+    internal procedure TryReadStorageFile(StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; var TempBlob: Codeunit "Temp Blob")
+    begin
+        Connector.GetFile(StorageSetup, Path, TempBlob);
+    end;
+
+    /// <summary>Writes a file through the connector. A connector failure returns false and keeps the error.</summary>
+    /// <param name="StorageSetup">The resolved storage setup row.</param>
+    /// <param name="Connector">The resolved connector implementation.</param>
+    /// <param name="Path">The file path, already checked with CheckStoragePath and CheckUnlinkedDestination.</param>
+    /// <param name="TempBlob">The file content.</param>
+    [TryFunction]
+    internal procedure TryWriteStorageFile(StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; var TempBlob: Codeunit "Temp Blob")
+    begin
+        Connector.CreateFile(StorageSetup, Path, TempBlob);
+    end;
+
+    /// <summary>Returns the last segment of a storage path.</summary>
+    /// <param name="Path">The path.</param>
+    /// <returns>The file name part of the path.</returns>
+    internal procedure LeafName(Path: Text): Text
+    var
+        Segments: List of [Text];
+    begin
+        Path := CanonicalPath(Path);
+        if Path = '' then
+            exit('');
+        Segments := Path.Split('/');
+        exit(Segments.Get(Segments.Count()));
+    end;
+
     [TryFunction]
     local procedure TryList(StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; EntryType: Enum "Ext. File Storage File Type"; var TempFileAccountContent: Record "File Account Content" temporary)
     begin

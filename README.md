@@ -12,7 +12,7 @@
 
 Bifrost Attachments is the storage module of the Bifröst platform. It exposes the Business Central
 External File Storage facade (Azure Blob Storage, Azure File Share, SharePoint) as 23 Bifröst
-message types, so any external caller can read and write cloud storage, upload large files in
+message types plus the Data Exchange types, so any external caller can read and write cloud storage, upload large files in
 chunks and offload attachments through the same Queue → Task → Data pattern used by the rest of
 Bifröst. It is the successor of *Origo Cloud Events Storage*.
 
@@ -30,10 +30,17 @@ Data Exchange read requests do not need a storage connection. For example,
 0–1000, and omitted or zero uses 100. Invalid values are reported together with
 `code`, `parameter`, `received`, `expected` and an actionable `nextStep`.
 
-`DataExchange.Export.Run` creates a named Data Exchange header; it does not generate or upload a file.
-`DataExchange.Type.Set` binds a Generic Import definition to a type. Both operations reject
-malformed or overlong inputs before writing, and preserve the caller transaction on execution failure.
-Omitting `description` in Type.Set preserves its existing value; an empty string clears it.
+The Data Exchange types run the Business Central Data Exchange Framework without the user interface:
+`DataExchange.Definition.Import` installs a definition from the standard definition XML and
+`DataExchange.Definition.Export` writes it back; `DataExchange.Import.Run` (a stored file or inline
+content up to 1 MB) and `Storage.Upload.CommitToDataExchange` (a chunked upload) create a Data Exch.
+entry and parse its fields; `DataExchange.Entry.Process` applies the mappings to the business tables;
+`DataExchange.Export.Run` exports records with a Generic Export definition and
+`DataExchange.PaymentExport.Run` exports a payment journal batch, both to storage or inline (up to
+1 MB). `DataExchange.Type.Set` binds a Generic Import definition to a type for incoming documents.
+Every operation rejects malformed or overlong inputs before writing; a reader, mapping or storage
+failure after a write rolls the call back. Omitting `description` in Type.Set preserves its existing
+value; an empty string clears it.
 
 For uploads destined for a record, omit `storageCode` in `Storage.Upload.Begin` and finish with
 `Storage.Upload.CommitToRecord`. A storage destination requires a connection.
@@ -62,6 +69,11 @@ For uploads destined for a record, omit `storageCode` in `Storage.Upload.Begin` 
 6. **Link and create.** `Storage.Attachment.CreateLinked` registers an existing storage file as an
    attachment; `Storage.Attachment.CreateForRecord` creates an attachment on a record directly from
    supplied content.
+7. **Exchange data.** Install a definition with `DataExchange.Definition.Import`, import a file with
+   `DataExchange.Import.Run` or `Storage.Upload.CommitToDataExchange`, inspect the parsed fields with
+   `DataExchange.Entry.Get`, write them with `DataExchange.Entry.Process` (or send `process: true`),
+   and export records with `DataExchange.Export.Run` or a payment journal with
+   `DataExchange.PaymentExport.Run`. `Help.DataExchange.Get` describes the whole pipeline.
 
 ---
 
@@ -297,6 +309,34 @@ object carries the mandatory ` ori` affix.
 | 10035680 | `Attachments Registration ori` | Registers this app with Foundation's `App Registry ori` so the shared Bifröst Setup page can list it and raise its setup notification. |
 | 70013500 | `Storage Contract Parts ori` | Builds the contract chapters (`Msg Contract ori`) shared by the storage and Data Exchange message types. |
 
+### Data Exchange objects
+
+| Type | ID | Name | Purpose |
+| --- | --- | --- | --- |
+| table | 70013500 | `DataExch Entry Link ori` | Marks a Data Exch. entry created by a Bifröst type (upload, storage path, processed); its retention policy (30 days by default) deletes the entry with the marker. |
+| codeunit | 70013501 | `DataExch Import Mgt ori` | Import engine: definition checks, entry insert, reader, mappings and the processing result. |
+| codeunit | 70013502 | `DataExch Process Worker ori` | Isolated run of the mappings for `process: true`. |
+| codeunit | 70013503 | `DataExch Export Mgt ori` | Generic export, payment export and the storage/inline delivery. |
+| codeunit | 70013504 | `DataExch Pay Capture ori` | Captures the payment file the base-app export would download. |
+| codeunit | 70013505 | `DataExch Def Transfer ori` | Definition XML install and dump (XMLport `Imp / Exp Data Exch Def & Map`). |
+| codeunit | 70013506 | `Storage Upload Commit DX ori` | `Storage.Upload.CommitToDataExchange` |
+| codeunit | 70013507 | `DataExch Entry Proc Impl ori` | `DataExchange.Entry.Process` |
+| codeunit | 70013508 | `DataExch Entry Delete Impl ori` | `DataExchange.Entry.Delete` |
+| codeunit | 70013509 | `DataExch Def Install Impl ori` | `DataExchange.Definition.Import` |
+| codeunit | 70013510 | `DataExch Pay Export Impl ori` | `DataExchange.PaymentExport.Run` |
+| codeunit | 70013511 | `DataExch View Filter ori` | Validates and applies the `tableView` of an export through Foundation. |
+| codeunit | 70013520 | `Data Exchange Query ori` | Read queries behind the discovery types and `DataExchange.Definition.Export`. |
+| codeunit | 70013521 | `DataExch Help Get Impl ori` | `Help.DataExchange.Get` |
+| codeunit | 70013522–70013526 | `DataExch Def List/Get, Type List, Entry List/Get Impl ori` | The discovery types. |
+| codeunit | 70013531 | `DataExch Type Set Impl ori` | `DataExchange.Type.Set` |
+| codeunit | 70013532 | `DataExch Inc Doc Proc ori` | Isolated incoming-document processing (#23). |
+| codeunit | 70013534 | `DataExch Export Run Impl ori` | `DataExchange.Export.Run` |
+| codeunit | 70013536 | `DataExch Def Export Impl ori` | `DataExchange.Definition.Export` |
+| codeunit | 70013540 | `DataExch Import Run Impl ori` | `DataExchange.Import.Run` |
+| codeunit | 70013543 | `DataExch Def Delete Impl ori` | `DataExchange.Definition.Delete` |
+| enumextension | 70013510, 70013511, 70013512, 70013514, 70013516, 70013519, 70013521 | `DataExch ... MsgType ori` | The 16 Data Exchange message types on `Message Type ori` (values 70013510–70013525). |
+| permissionset | 70013548 | `BIFROST DataExch ori` | Data Exchange reads and the type codeunits; table writes stay with the standard BC permissions. |
+
 ### Permission sets
 
 | Type | ID | Name | Purpose |
@@ -308,11 +348,13 @@ object carries the mandatory ` ori` affix.
 
 ### Data Exchange request validation
 
-`DataExchange.Import.Run` requires `dataExchDefCode`, `storageCode` and `path`. The two codes must be nonempty JSON strings of at most 20 characters, already in Business Central uppercase form without surrounding spaces. The path must be a nonempty string of at most 2048 characters with no `.` or `..` segments. This bound does not certify a storage provider's path capacity. Import creates a Data Exchange header and returns `Accepted`, `entryNo` and `dataExchDefCode`; it does not resolve a storage account or import file content.
+`DataExchange.Import.Run` requires `dataExchDefCode` and one source: `storageCode` with `path` (without `contentBase64` both are required, as before) or `contentBase64` of at most 1 MB. The codes must be nonempty JSON strings of at most 20 characters, already in Business Central uppercase form without surrounding spaces. The path must be a nonempty string of at most 2048 characters with no `.` or `..` segments. The stored file is read and stays unchanged. Import inserts the Data Exch. entry with the file, runs the definition reader and returns `Accepted`, `entryNo`, `dataExchDefCode`, `fileName`, `lineCount`, `fieldCount` and `processed` (plus `processResult` with `process: true`). Bank Statement Import definitions point to `Finance.BankReconciliation.Create`; export definitions are refused.
 
-`DataExchange.Definition.Delete` applies the same strict code rule to `code` and refuses a definition referenced by a Data Exchange Type or Bank Export/Import Setup. Successful deletion still runs the standard delete triggers.
+`DataExchange.Export.Run` accepts Generic Export definitions only (import definitions are refused, payment definitions point to `DataExchange.PaymentExport.Run`), `tableId`/`tableName` must be the mapping table, and the `tableView` is validated by Foundation like `Data.Records.Get`.
 
-Input problems are collected before any write with Foundation error codes and `parameter`, `received`, `expected` and `nextStep`. Multiple problems use `errors[]`. Database execution failures propagate through Foundation in the caller transaction; an `OmitCommit` chain must roll back as a unit. The draft implementation still requires canonical build integration, localization and runtime rollback verification.
+`DataExchange.Definition.Delete` applies the same strict code rule to `code` and refuses a definition referenced by a Data Exchange Type, a Bank Export/Import Setup (and so a bank account), the payroll import format of the General Ledger Setup or a currency exchange rate service. Successful deletion still runs the standard delete triggers. `DataExchange.Definition.Import` refuses an existing code unless `overwrite` is true.
+
+Input problems are collected before any write with Foundation error codes and `parameter`, `received`, `expected` and `nextStep`. Multiple problems use `errors[]`. Database execution failures propagate through Foundation in the caller transaction; an `OmitCommit` chain must roll back as a unit. Only `process: true` commits, after the import and before the mappings run, so a processing error keeps the imported entry. `DataExchange.PaymentExport.Run` runs the base-app payment export, which commits its own steps.
 
 ## Dependencies
 

@@ -30,4 +30,25 @@ codeunit 10035664 "Storage Reten. Policy ori"
         RetenPolAllowedTables.AddAllowedTable(
             Database::"Storage Upload Session ori", UploadSession.FieldNo(SystemCreatedAt), TableFilters);
     end;
+
+    // Data Exch. belongs to the base application, which alone may register it with a filter, so the
+    // retention policy is registered on the Bifröst marker table: deleting a marker row deletes its
+    // entry and the parsed fields (DataExch Entry Link ori.OnDelete). The default is 30 days (D5).
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Reten. Pol. Allowed Tables", 'OnRefreshAllowedTables', '', false, false)]
+    local procedure AddDataExchEntryLinkToAllowedTables()
+    var
+        EntryLink: Record "DataExch Entry Link ori";
+        RetenPolAllowedTables: Codeunit "Reten. Pol. Allowed Tables";
+        RecRef: RecordRef;
+        RetentionPeriod: Enum "Retention Period Enum";
+        TableFilters: JsonArray;
+    begin
+        if RetenPolAllowedTables.IsAllowedTable(Database::"DataExch Entry Link ori") then
+            exit;
+        RecRef.GetTable(EntryLink);
+        RetenPolAllowedTables.AddTableFilterToJsonArray(
+            TableFilters, RetentionPeriod::"1 Month", EntryLink.FieldNo(SystemCreatedAt), true, false, RecRef);
+        RetenPolAllowedTables.AddAllowedTable(
+            Database::"DataExch Entry Link ori", EntryLink.FieldNo(SystemCreatedAt), TableFilters);
+    end;
 }

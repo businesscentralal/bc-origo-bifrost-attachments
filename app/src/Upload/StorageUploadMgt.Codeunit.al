@@ -1,6 +1,7 @@
 namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
+using System.IO;
 using System.Utilities;
 
 /// <summary>
@@ -235,6 +236,129 @@ codeunit 10035665 "Storage Upload Mgt ori"
         if not Created then
             exit(false);
 
+        Session.Status := Session.Status::Committed;
+        Session."Received Size" := TempBlob.Length();
+        Session.Modify(true);
+        DeleteChunks(UploadId);
+        exit(true);
+    end;
+
+    /// <summary>
+    /// Assembles an open session's chunks into a new Data Exch. entry and parses it with an import
+    /// definition. With <c>keepFileInStorage</c> the file is also written to the session's storage path,
+    /// as the last step; a failed write rolls back the entry and the session change. With <c>process</c>
+    /// the import is committed and the mappings run in an isolated codeunit, see
+    /// <see cref="Codeunit.DataExchImportMgt.ProcessIsolated"/>.
+    /// </summary>
+    /// <param name="Argument">The message argument carrying <c>uploadId</c>, <c>dataExchDefCode</c>, <c>process</c> and <c>keepFileInStorage</c>; receives the error response.</param>
+    /// <param name="ResultData">Out: the success payload describing the new entry.</param>
+    /// <returns>True when the entry was created; false when an error response was written.</returns>
+    procedure CommitToDataExchange(var Argument: Record "Message Argument ori"; var ResultData: JsonObject): Boolean
+    var
+        DataExch: Record "Data Exch.";
+        Session: Record "Storage Upload Session ori";
+        StorageSetup: Record "Storage Setup ori";
+        ImportMgt: Codeunit "DataExch Import Mgt ori";
+        TempBlob: Codeunit "Temp Blob";
+        Reader: Codeunit "Storage Request Reader ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+        Connector: Interface "Storage Connector ori";
+        RequestJson: JsonObject;
+        ProcessResult: JsonObject;
+        UploadId: Guid;
+        DefCode: Code[20];
+        Process: Boolean;
+        KeepFile: Boolean;
+        Path: Text;
+        StorageWriteFailedErr: Label 'The file could not be written to storage, so the import was rolled back: %1', Comment = '%1 = connector error||is-IS=Ekki tókst að skrifa skrána í geymslu og því var innflutningurinn afturkallaður: %1';
+        StorageWriteNextStepLbl: Label 'Check the storage connection and retry with the same uploadId, or omit keepFileInStorage.', Comment = 'is-IS=Athugaðu geymslutenginguna og reyndu aftur með sama uploadId, eða slepptu keepFileInStorage.';
+    begin
+        RequestJson := Argument.GetRequestJson();
+        Reader.ReadGuid(Argument, RequestJson, 'uploadId', true, UploadId);
+        Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefCode);
+        Reader.ReadBoolean(Argument, RequestJson, 'process', false, Process);
+        Reader.ReadBoolean(Argument, RequestJson, 'keepFileInStorage', false, KeepFile);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        ImportMgt.CheckImportDefinition(Argument, DefCode, 'dataExchDefCode');
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if not FindOpenSession(Argument, UploadId, Session) then
+            exit(false);
+        if not CheckReadyToCommit(Argument, Session) then
+            exit(false);
+        if KeepFile then begin
+            if Session."Storage Code" = '' then begin
+                Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, NoStorageCodeErr, 'keepFileInStorage', 'true', '', NoStorageCodeNextStepLbl);
+                exit(false);
+            end;
+            if not RequestMgt.ResolveSetup(Argument, Session."Storage Code", '', StorageSetup, Connector) then begin
+                Reader.RespondIfErrors(Argument);
+                exit(false);
+            end;
+            Path := Session."Target Path";
+            Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
+            if Reader.RespondIfErrors(Argument) then
+                exit(false);
+            if not RequestMgt.CheckUnlinkedDestination(Argument, StorageSetup.Code, Path, 'path') then
+                exit(false);
+        end;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch.", true) then
+            exit(false);
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Field", true) then
+            exit(false);
+        ImportMgt.CheckReader(Argument, DefCode, 'dataExchDefCode');
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+
+        AssembleChunks(UploadId, TempBlob);
+        // A reader error is raised and rolls back the entry, its fields and the session change.
+        ImportMgt.ImportFile(DefCode, Session."File Name", TempBlob, UploadId, 'Storage.Upload.CommitToDataExchange', StorageSetup.Code, Path, DataExch);
+        Session.Status := Session.Status::Committed;
+        Session."Received Size" := TempBlob.Length();
+        if KeepFile then
+            Session."Target Path" := CopyStr(Path, 1, MaxStrLen(Session."Target Path"));
+        Session.Modify(true);
+        DeleteChunks(UploadId);
+        if KeepFile then
+            if not RequestMgt.TryWriteStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
+                Argument.AddError("Bifrost Error Code ori"::BusinessCentralError, StrSubstNo(StorageWriteFailedErr, GetLastErrorText()), 'keepFileInStorage', 'true', '', StorageWriteNextStepLbl);
+                Argument.RaiseCollectedErrors("Bifrost Error Code ori"::BusinessCentralError, StrSubstNo(StorageWriteFailedErr, GetLastErrorText()));
+            end;
+
+        ResultData.Add('uploadId', Format(UploadId, 0, 4));
+        ImportMgt.AddImportResult(DataExch, ResultData);
+        if KeepFile then begin
+            ResultData.Add('storageCode', StorageSetup.Code);
+            ResultData.Add('path', Path);
+        end;
+        if Process then begin
+            ResultData.Add('processed', ImportMgt.ProcessIsolated(DataExch."Entry No.", ProcessResult));
+            ResultData.Add('processResult', ProcessResult);
+        end else
+            ResultData.Add('processed', false);
+        exit(true);
+    end;
+
+    /// <summary>
+    /// Assembles an open, complete session into a blob and marks the session committed, for a
+    /// message type that consumes the upload itself (for example a definition install).
+    /// </summary>
+    /// <param name="Argument">The message argument; receives the error response.</param>
+    /// <param name="UploadId">The upload session id.</param>
+    /// <param name="TempBlob">Returns the assembled content.</param>
+    /// <param name="FileName">Returns the session file name.</param>
+    /// <returns>True when the session was consumed; false when an error response was written.</returns>
+    internal procedure ConsumeUpload(var Argument: Record "Message Argument ori"; UploadId: Guid; var TempBlob: Codeunit "Temp Blob"; var FileName: Text): Boolean
+    var
+        Session: Record "Storage Upload Session ori";
+    begin
+        if not FindOpenSession(Argument, UploadId, Session) then
+            exit(false);
+        if not CheckReadyToCommit(Argument, Session) then
+            exit(false);
+        AssembleChunks(UploadId, TempBlob);
+        FileName := Session."File Name";
         Session.Status := Session.Status::Committed;
         Session."Received Size" := TempBlob.Length();
         Session.Modify(true);

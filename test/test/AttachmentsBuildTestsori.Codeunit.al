@@ -1,5 +1,6 @@
 namespace Origo.Bifrost.Attachments.Test;
 
+using Microsoft.Sales.Customer;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
@@ -13,6 +14,7 @@ codeunit 96274 "Attachments Build Tests ori"
 
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
+        ExportRunSelectionTok: Label 'Runs a Generic Export definition over a table view or a list of record SystemIds and delivers the file; payment files use DataExchange.PaymentExport.Run.', Locked = true;
 
     /// <summary>Verifies exact English discovery text from three shipped production implementations without licence or provider fixtures.</summary>
     [Test]
@@ -51,9 +53,9 @@ codeunit 96274 "Attachments Build Tests ori"
         LibraryAssert.AreEqual('Returns the header of a Data Exchange definition: code, name and type.', Actual.Get(1), 'Exact English discovery text 1.');
         LibraryAssert.AreEqual('export data exchange definition, dump definition', Actual.Get(2), 'Exact English discovery text 2.');
         LibraryAssert.AreEqual('Returns only the code, name and type of one definition; DataExchange.Definition.Get also returns its lines and mappings.', Actual.Get(3), 'Exact English discovery text 3.');
-        LibraryAssert.AreEqual('Creates a Data Exch. entry for an export definition and a target file name, without producing the file.', Actual.Get(4), 'Exact English discovery text 4.');
-        LibraryAssert.AreEqual('data exchange export, payment export, export file', Actual.Get(5), 'Exact English discovery text 5.');
-        LibraryAssert.AreEqual('Registers an export entry for a definition other than Generic Import; it does not run the export or write to storage.', Actual.Get(6), 'Exact English discovery text 6.');
+        LibraryAssert.AreEqual('Exports records with a Generic Export definition and writes the file to storage or returns it inline.', Actual.Get(4), 'Exact English discovery text 4.');
+        LibraryAssert.AreEqual('data exchange export, export records to file, export csv, generic export, export to storage', Actual.Get(5), 'Exact English discovery text 5.');
+        LibraryAssert.AreEqual(ExportRunSelectionTok, Actual.Get(6), 'Exact English discovery text 6.');
         LibraryAssert.AreEqual('Creates or updates a Data Exchange Type and requires an import definition.', Actual.Get(7), 'Exact English discovery text 7.');
         LibraryAssert.AreEqual('data exchange type, incoming document type, set definition', Actual.Get(8), 'Exact English discovery text 8.');
         LibraryAssert.AreEqual('Wires a Data Exchange Type to an import definition.', Actual.Get(9), 'Exact English discovery text 9.');
@@ -96,9 +98,10 @@ codeunit 96274 "Attachments Build Tests ori"
         LibraryAssert.AreEqual('Skilar haus skilgreiningar gagnaskipta: kóða, heiti og gerð.', Actual.Get(1), 'Exact Icelandic discovery text 1.');
         LibraryAssert.AreEqual('flytja út skilgreiningu gagnaskipta, afrita skilgreiningu', Actual.Get(2), 'Exact Icelandic discovery text 2.');
         LibraryAssert.AreEqual('Skilar aðeins kóða, heiti og gerð einnar skilgreiningar; DataExchange.Definition.Get skilar einnig línum hennar og vörpunum.', Actual.Get(3), 'Exact Icelandic discovery text 3.');
-        LibraryAssert.AreEqual('Býr til gagnaskiptafærslu fyrir útflutningsskilgreiningu og heiti markskrár án þess að búa skrána til.', Actual.Get(4), 'Exact Icelandic discovery text 4.');
-        LibraryAssert.AreEqual('útflutningur gagnaskipta, útflutningur greiðslna, flytja út skrá', Actual.Get(5), 'Exact Icelandic discovery text 5.');
-        LibraryAssert.AreEqual('Skráir útflutningsfærslu fyrir aðra skilgreiningu en almennan innflutning (Generic Import); hún keyrir ekki útflutninginn og skrifar ekki í geymslu.', Actual.Get(6), 'Exact Icelandic discovery text 6.');
+        LibraryAssert.AreEqual('Flytur út færslur með skilgreiningu fyrir almennan útflutning og skrifar skrána í geymslu eða skilar henni innfellt.', Actual.Get(4), 'Exact Icelandic discovery text 4.');
+        LibraryAssert.AreEqual('útflutningur gagnaskipta, flytja færslur út í skrá, flytja út csv, almennur útflutningur, flytja út í geymslu', Actual.Get(5), 'Exact Icelandic discovery text 5.');
+        // The selection description is a Locked label (CLAUDE.md, Foundation #144), so it stays English.
+        LibraryAssert.AreEqual(ExportRunSelectionTok, Actual.Get(6), 'Exact Icelandic discovery text 6.');
         LibraryAssert.AreEqual('Stofnar eða uppfærir gerð gagnaskipta og krefst innflutningsskilgreiningar.', Actual.Get(7), 'Exact Icelandic discovery text 7.');
         LibraryAssert.AreEqual('gerð gagnaskipta, gerð skjals í innleið, stilla skilgreiningu', Actual.Get(8), 'Exact Icelandic discovery text 8.');
         LibraryAssert.AreEqual('Tengir gerð gagnaskipta við innflutningsskilgreiningu.', Actual.Get(9), 'Exact Icelandic discovery text 9.');
@@ -285,24 +288,32 @@ codeunit 96274 "Attachments Build Tests ori"
         LibraryAssert.AreEqual(BeforeCount, Definition.Count(), 'No definition may be changed.');
     end;
 
-    /// <summary>The renamed Export.Run extension still dispatches and persists the existing entry header.</summary>
+    /// <summary>The renamed Export.Run extension still dispatches and persists the export entry with its file name.</summary>
     [Test]
     procedure Scenario_AC03_ExportRun_ExportHeaderIsPersisted()
     var
         Definition: Record "Data Exch. Def";
         Entry: Record "Data Exch.";
+        Customer: Record Customer;
+        Fixture: Codeunit "DataExch Fixture ori";
+        CustomerNos: List of [Code[20]];
         Request: JsonObject;
         Response: JsonObject;
         Token: JsonToken;
     begin
         // [SCENARIO] Issue74 AC03 | Time: no date dependency | Risk: name-only extension repair.
-        // [GIVEN] A real export definition. This tests existing entry creation, not file export completion.
-        SeedDefinition(Definition, Definition.Type::"Payment Export");
+        // [GIVEN] A real Generic Export definition and one customer (#25: Export.Run exports Generic Export only).
+        Definition.Get(Fixture.CreateExportDefinition());
+        CustomerNos := Fixture.CreateCustomers(1, 'XBUILD74');
+        Customer.Get(CustomerNos.Get(1));
         Request.Add('dataExchDefCode', Definition.Code);
         Request.Add('fileName', 'XBUILD74-export.txt');
+        Request.Add('tableId', Database::Customer);
+        Request.Add('tableView', 'WHERE(No.=FILTER(' + Customer."No." + '))');
+        Request.Add('inline', true);
         // [WHEN] Foundation dispatches the registered Export.Run message.
         Response := Execute(Enum::"Message Type ori"::"DataExchange.Export.Run", Request);
-        // [THEN] The response agrees with the newly persisted entry header.
+        // [THEN] The response agrees with the newly persisted entry.
         LibraryAssert.AreEqual('Success', ReadText(Response, 'status'), 'Export.Run status');
         LibraryAssert.IsTrue(Response.Get('entryNo', Token), 'Export response must name the persisted entry.');
         LibraryAssert.IsTrue(Entry.Get(Token.AsValue().AsInteger()), 'Export entry must exist.');
@@ -333,7 +344,7 @@ codeunit 96274 "Attachments Build Tests ori"
         LibraryAssert.AreEqual(BeforeCount, Entry.Count(), 'Refused export must not insert.');
     end;
 
-    /// <summary>Export.Run retains the missing-file refusal without creating an entry.</summary>
+    /// <summary>Export.Run refuses a request without records or delivery without creating an entry.</summary>
     [Test]
     procedure Scenario_AC03_ExportRun_MissingFileNameDoesNotWrite()
     var
@@ -344,14 +355,14 @@ codeunit 96274 "Attachments Build Tests ori"
         BeforeCount: Integer;
     begin
         // [SCENARIO] Issue74 AC03 | Time: no date dependency | Risk: required parameter.
-        // [GIVEN] A real export definition and no fileName parameter.
-        SeedDefinition(Definition, Definition.Type::"Payment Export");
+        // [GIVEN] A real Generic Export definition and neither records nor a delivery (fileName is optional since #25).
+        SeedDefinition(Definition, Definition.Type::"Generic Export");
         BeforeCount := Entry.Count();
         Request.Add('dataExchDefCode', Definition.Code);
         // [WHEN] Foundation dispatches the registered Export.Run message.
         Response := Execute(Enum::"Message Type ori"::"DataExchange.Export.Run", Request);
         // [THEN] The error leaves the entry table unchanged.
-        LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'Missing file name must fail.');
+        LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'A request without records and delivery must fail.');
         LibraryAssert.AreEqual(BeforeCount, Entry.Count(), 'Incomplete export must not insert.');
     end;
 
