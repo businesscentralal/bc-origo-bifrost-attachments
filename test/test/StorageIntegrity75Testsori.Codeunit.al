@@ -115,6 +115,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
 
     /// <summary>A SharePoint move retains each link's own account root and refuses destinations outside it.</summary>
     [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
     procedure Scenario_AC01_SharePointMove_KeepsAliasRelativePath()
     var
         SelectedSetup: Record "Storage Setup ori";
@@ -193,7 +194,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         else
             TempArgument."Type" := TempArgument."Type"::"Storage.File.Copy";
         TempArgument.Insert(true);
-        Connector := Codeunit::"Storage Mock Impl";
+        Connector := Enum::"Storage Type ori"::Mock;
         if IsMove then
             RequestMgt.ExecuteMoveFile(TempArgument, StorageSetup, Connector, 'File.txt', TargetPath)
         else
