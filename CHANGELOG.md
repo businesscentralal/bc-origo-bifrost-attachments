@@ -655,9 +655,15 @@ Business Central release versioning (`major.minor.build.revision`).
 - Attachments help pages are published through businesscentralal/bifrost PR100. At docs main `af179cc00f2842a15d8ea9bace890ae51031c171`, the unmodified `Test-HelpLinks.ps1` checks 7 pages with 0 problems in both locale trees; the 10 EN/IS help and landing URLs return HTTP 200. These are help checks, separate from native/UI/MCP acceptance.
 ## [Unreleased]
 
+### Fixed (2026-10-19) - root-refusal localization and restricted provider reads (#125, #122)
+
+- Root deletion retains its `InvalidParameter` refusal and raw received path before any connector call. The refusal labels now use compiler-generated translation identifiers so Icelandic callers receive the existing translated explanation, expected value and next step. The contract parameter guard can prove the typed request reads without an allow-list.
+- Restored indirect read grants for the Azure Blob and Azure File Share account tables in `BIFROST Attach ori`, accidentally removed during the earlier merge. Restricted callers can resolve physical provider scopes through the existing elevated codeunit without direct access to account data.
+- Updated the two protected-content regression scenarios to expect the root refusal's `InvalidParameter` code; both still verify that attachment bytes and links survive the refused delete.
+
 ### Fixed (2026-10-18) - connection root refusal for Storage.Directory.Delete (#125)
 
-- `Storage Dir Delete Impl ori` (10035645) refuses a `Storage.Directory.Delete` request whose `path` resolves to the connection root with `InvalidParameter` before any connector call: `parameter` is `path`, `received` holds the raw sent value, and `expected`/`nextStep` are localized in lcid 1033 and 1039. The refusal fires after setup and path validation and before the provider mutation preflight, so an empty root can no longer reach the connector. The raw received value comes from `Storage Request Reader ori` (10035682) `TokenText`, which the SourceGuards `ContractParameterKeys` analysis counts as a proven request read.
+- `Storage Dir Delete Impl ori` (10035645) uses the shared typed readers for both declared keys. The root refusal reads its raw received path from the original request through `Storage Request Reader ori.ReadText`; its unchanged labels are declared at codeunit scope, keeping the execution procedure's request acquisition provable by the contract parameter guard.
 - `Help.Storage.Get` lists the root-path refusal in its errors chapter with the `InvalidParameter` code.
 - `Storage Mock State` (96201) and `Storage Mock Impl` (96200) count connector `DeleteDirectory` and `ListEntries` calls; `Storage Refusal 125 Tests ori` (96238) covers `/`, `''` and `//` against an empty root, asserts the raw received value, the localized 1039 details and zero connector calls, and checks the help errors chapter. Test execution evidence is recorded separately.
 ### Fixed (2026-10-16) - Icelandic glossary and grammar (#72)
