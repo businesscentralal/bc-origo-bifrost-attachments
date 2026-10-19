@@ -93,18 +93,23 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
 
     local procedure SharePointSetup(var StorageSetup: Record "Storage Setup ori"; LibraryRoot: Text; SiteUrl: Text)
     var
-        Account: Record "Ext. SharePoint Account";
+        Account: RecordRef;
+        AccountId: Guid;
     begin
+        // Match the existing account fixture's RecordRef boundary: the test app does not declare connector symbols.
+        AccountId := CreateGuid();
+        Account.Open(4580);
         Account.Init();
-        Account.Id := CreateGuid();
-        Account.Name := 'X120 isolated account';
-        Account."SharePoint Url" := CopyStr(SiteUrl, 1, MaxStrLen(Account."SharePoint Url"));
-        Account."Base Relative Folder Path" := CopyStr(LibraryRoot, 1, MaxStrLen(Account."Base Relative Folder Path"));
+        Account.Field(1).Value := AccountId;
+        Account.Field(2).Value := 'X120 isolated account';
+        Account.Field(4).Value := SiteUrl;
+        Account.Field(5).Value := LibraryRoot;
         Account.Insert(false);
+        Account.Close();
         StorageSetup.Init();
         StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
         StorageSetup.Connector := "Ext. File Storage Connector".FromInteger(4580);
-        StorageSetup."File Account Id" := Account.Id;
+        StorageSetup."File Account Id" := AccountId;
         StorageSetup."Base Path" := 'x120base';
     end;
 
