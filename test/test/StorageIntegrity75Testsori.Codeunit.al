@@ -150,7 +150,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         AssertRefusal(Response, 'PreconditionFailed');
         RequestJson := PathRequest('/');
         Response := Execute(Enum::"Message Type ori"::"Storage.Directory.Delete", RequestJson);
-        AssertRefusal(Response, 'PreconditionFailed');
+        AssertRefusal(Response, 'InvalidParameter');
         // [THEN] The original attachment still serves the original bytes and its link is unchanged.
         AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
     end;
@@ -524,7 +524,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [WHEN] Root deletion addresses the configured base.
         Response := Execute(Enum::"Message Type ori"::"Storage.Directory.Delete", PathRequest('/'));
         // [THEN] The linked file and its canonical relative address survive.
-        AssertRefusal(Response, 'PreconditionFailed');
+        AssertRefusal(Response, 'InvalidParameter');
         AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
     end;
 

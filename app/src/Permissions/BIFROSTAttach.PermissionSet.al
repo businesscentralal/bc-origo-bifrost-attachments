@@ -8,7 +8,7 @@ using System.ExternalFileStorage;
 /// card pages, the connectors and the message type implementations. This set is complete on its
 /// own - a user who holds it, plus Foundation's own sets for the message API, can configure a
 /// storage account, upload and download files and offload attachments without also being granted
-/// "BIFROST Full ori". It grants indirect read of "Ext. Blob Storage Account" and
+/// "BIFROST Full ori". It grants indirect read of "Ext. Blob Storage Account",
 /// "Ext. File Share Account" and "Ext. SharePoint Account". "Storage Full ori" cannot carry those grants, so address
 /// resolution needs this set even when the user already holds the Foundation Full role.
 /// </summary>
@@ -19,6 +19,9 @@ permissionset 10035666 "BIFROST Attach ori"
     Caption = 'Bifrost Storage', Comment = 'is-IS=Bifröst geymsla';
 
     Permissions =
+        // Indirect read only; the storage connector codeunit raises this for address resolution.
+        tabledata "Ext. Blob Storage Account" = r,
+        tabledata "Ext. File Share Account" = r,
         tabledata "Ext. SharePoint Account" = r,
         tabledata "Incoming Document" = RM,
         tabledata "Incoming Document Attachment" = RIMD,
