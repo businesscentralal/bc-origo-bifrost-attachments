@@ -29,7 +29,7 @@ table 10035638 "Storage Upload Session ori"
         field(1; "Upload Id"; Guid)
         {
             Caption = 'Upload Id', Comment = 'is-IS=Upphleðslukenni';
-            ToolTip = 'Specifies the identifier returned when the upload session is created; it is passed back on every append, commit, abort and status call.', Comment = 'is-IS=Tilgreinir kennið sem skilað er þegar upphleðslulotan er stofnuð; það er sent með í hverri viðbótar-, staðfestingar-, hættu- og stöðubeiðni.';
+            ToolTip = 'Specifies the identifier returned when the upload session is created; it is passed back on every append, commit, abort and status call.', Comment = 'is-IS=Tilgreinir kennið sem skilað er þegar upphleðslulotan er stofnuð; það er sent með í hverri viðbótar-, staðfestingar-, afturköllunar- og stöðubeiðni.';
         }
         field(2; "Storage Code"; Code[20])
         {

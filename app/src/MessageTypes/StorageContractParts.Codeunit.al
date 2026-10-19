@@ -21,7 +21,7 @@ codeunit 70013500 "Storage Contract Parts ori"
         UploadTableIdLbl: Label 'The host record table id; use tableId or tableName for DocumentAttachment. Not used for IncomingDocument.', Comment = 'is-IS=Töfluauðkenni hýsilfærslu; notaðu tableId eða tableName fyrir DocumentAttachment. Ekki notað fyrir IncomingDocument.';
         UploadTableNameLbl: Label 'Accepted table name instead of tableId for DocumentAttachment.', Comment = 'is-IS=Heiti töflu sem má nota í stað tableId fyrir DocumentAttachment.';
         IncomingDescriptionLbl: Label 'Description for a new IncomingDocument; ignored for DocumentAttachment.', Comment = 'is-IS=Lýsing fyrir nýtt IncomingDocument; hunsað fyrir DocumentAttachment.';
-        UploadRecordIdLbl: Label 'For DocumentAttachment, identify the host by recordSystemId or no; required for tables without no addressing.', Comment = 'is-IS=Fyrir DocumentAttachment skal auðkenna hýsil með recordSystemId eða no; nauðsynlegt fyrir töflur án no-vistfangs.';
+        UploadRecordIdLbl: Label 'For DocumentAttachment, identify the host by recordSystemId or no; required for tables without no addressing.', Comment = 'is-IS=Fyrir DocumentAttachment skal auðkenna hýsil með recordSystemId eða no; nauðsynlegt fyrir töflur sem ekki eru auðkenndar með no.';
         TypeCodeLbl: Label 'The Data Exchange Type code, at most 20 characters.', Comment = 'is-IS=Kóði gerðar gagnaskipta, að hámarki 20 stafir.';
         ImportDefinitionLbl: Label 'The existing import definition code, at most 20 characters.', Comment = 'is-IS=Kóði fyrirliggjandi innflutningsskilgreiningar, að hámarki 20 stafir.';
         ExportDefinitionLbl: Label 'The existing export definition code, at most 20 characters.', Comment = 'is-IS=Kóði fyrirliggjandi útflutningsskilgreiningar, að hámarki 20 stafir.';
@@ -430,6 +430,12 @@ codeunit 70013500 "Storage Contract Parts ori"
             if MessageType = 'DataExchange.Entry.Get' then
                 Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::LimitExceeded, InlineLimitLbl, OmitInlineLbl));
         end;
+        if UsesStorageCode(MessageType) then begin
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The storageCode does not name a storage connection.', 'Use Storage.Account.List to find the storageCode.'));
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The storage connection is disabled.', 'Enable it on the Bifrost Storage Connection card, or use another storageCode.'));
+        end;
+        if MessageType = 'Storage.Directory.Delete' then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameter, 'The path names the connection root.', 'Name a directory below the root to delete.'));
         if MessageType in ['Storage.File.Create', 'Storage.Upload.Append'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameterFormat, 'The contentBase64 value is not valid base64.', 'Send valid base64 content.'));
         if MessageType in ['Storage.File.Delete', 'Storage.Directory.Delete'] then
@@ -450,6 +456,13 @@ codeunit 70013500 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, DataExchangeFailureLbl, DataExchangeFailureFixLbl))
         else
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, 'The storage connector rejects or cannot complete the operation.', 'Check the path, connection and connector error details.'));
+    end;
+
+    local procedure UsesStorageCode(MessageType: Text): Boolean
+    begin
+        exit(MessageType in ['Storage.File.List', 'Storage.File.Get', 'Storage.File.Exists', 'Storage.File.Create', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.File.Delete',
+            'Storage.Directory.List', 'Storage.Directory.Exists', 'Storage.Directory.Create', 'Storage.Directory.Delete',
+            'Storage.Attachment.Offload', 'Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Begin']);
     end;
 
     /// <summary>Builds the operation effect for one message type.</summary>

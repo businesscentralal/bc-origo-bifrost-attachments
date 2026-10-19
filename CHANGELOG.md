@@ -8,6 +8,15 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-19) - AppSource preparation
+
+- **Version floors** match what is compiled and tested: Bifrost Foundation **28.0.6.599** (the 28.0.6 release; the app compiles against it with AppSourceCop clean) and Business Central application **28.3.0.0** in `app/app.json` and `test/app.json`. `tools/check_build_inputs.py` enforces the new Foundation floor.
+- **Contracts** (#122, #125): every `Storage.*` type that takes `storageCode` lists `RecordNotFound` (unknown connection) and `PreconditionFailed` (disabled connection) in its errors chapter; `Storage.Directory.Delete` also lists the connection-root `InvalidParameter`. Test `Scenario_Contract_ListsStorageCodeAndRootRefusals` (96228).
+- **No connector minimum** (#120): `Help.Storage.Get` and the README state that any connector registered with External File Storage works, with no minimum connector version or build.
+- **Icelandic** (#72): Data Exchange definition types read as Icelandic terms with the English value the caller sends (*almennur innflutningur (Generic Import)*, *launainnflutningur (Payroll Import)*, *innflutningur bankayfirlita (Bank Statement Import)*); fixed *afturköllunar-*, the *Bifröst útvistað* field name and the *no*-addressing phrase. The offload term *útvista* stays.
+- **API surface** (#77): the inventory (`api-surface-objects.json`, `api-surface-procedures.csv`, `API-SURFACE.md`) is reconciled with current main; `tools/Test-ApiSurfaceMatrix.py` reports 0 errors over 81 objects.
+- **AppSource listing** (#81): the Partner Center listing text, logo, screenshots and product sheet are under `app/docs/appsource/listing/`, with the help link pointing at the app's documentation page and the 28.3 requirement.
+
 ### Changed (2026-10-19) - Use registered connector interfaces
 
 - Removed connector-ID dispatch, provider account-table inspection, metadata grants and dependencies on specific connector apps. Registered connectors own backend path rules, credentials and provider errors.

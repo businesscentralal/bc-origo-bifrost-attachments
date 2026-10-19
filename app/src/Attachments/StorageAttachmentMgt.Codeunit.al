@@ -47,7 +47,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         AlreadyOffloadedErr: Label 'The attachment is already offloaded.', Comment = 'is-IS=Viðhengið hefur þegar verið útvistað.';
         AlreadyOffloadedNextStepLbl: Label 'Restore it with Storage.Attachment.Restore before offloading it again.', Comment = 'is-IS=Endurheimtu það með Storage.Attachment.Restore áður en þú útvistar því aftur.';
         NotOffloadedErr: Label 'The attachment is not offloaded, so there is nothing to restore.', Comment = 'is-IS=Viðhenginu hefur ekki verið útvistað og því er ekkert að endurheimta.';
-        NotOffloadedNextStepLbl: Label 'Read the Offloaded ori field of the attachment to find the offloaded ones.', Comment = 'is-IS=Lestu reitinn Offloaded ori á viðhenginu til að finna þau sem hefur verið útvistað.';
+        NotOffloadedNextStepLbl: Label 'Read the Offloaded ori field of the attachment to find the offloaded ones.', Comment = 'is-IS=Lestu reitinn Bifröst útvistað á viðhenginu til að finna þau sem hefur verið útvistað.';
         OffloadedExpectedLbl: Label 'an offloaded attachment', Comment = 'is-IS=útvistað viðhengi';
         NotOffloadedExpectedLbl: Label 'an attachment that is not offloaded', Comment = 'is-IS=viðhengi sem hefur ekki verið útvistað';
         NoStorageFileErr: Label 'No file was found in storage at "%1".', Comment = '%1 = storage path, is-IS=Engin skrá fannst í geymslunni á "%1".';

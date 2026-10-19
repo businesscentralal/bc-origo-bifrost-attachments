@@ -389,8 +389,8 @@
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 2553504562 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the identifier returned when the upload session is created; it is passed back on every append, commit, abort and status call.</source>
-          <target>Tilgreinir kennið sem skilað er þegar upphleðslulotan er stofnuð; það er sent með í hverri viðbótar-, staðfestingar-, hættu- og stöðubeiðni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir kennið sem skilað er þegar upphleðslulotan er stofnuð; það er sent með í hverri viðbótar-, staðfestingar-, hættu- og stöðubeiðni.</note>
+          <target>Tilgreinir kennið sem skilað er þegar upphleðslulotan er stofnuð; það er sent með í hverri viðbótar-, staðfestingar-, afturköllunar- og stöðubeiðni.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir kennið sem skilað er þegar upphleðslulotan er stofnuð; það er sent með í hverri viðbótar-, staðfestingar-, afturköllunar- og stöðubeiðni.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Upload Session ori - Field Upload Id - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 3456378380 - Field 2553504562 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -797,8 +797,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 3322002649 - Method 3379558365 - NamedType 4120398360" size-unit="char" translate="yes" xml:space="preserve">
           <source>an existing definition other than Generic Import</source>
-          <target>fyrirliggjandi skilgreining af annarri tegund en Generic Import</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=fyrirliggjandi skilgreining af annarri tegund en Generic Import</note>
+          <target>fyrirliggjandi skilgreining af annarri tegund en almennur innflutningur (Generic Import)</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=fyrirliggjandi skilgreining af annarri tegund en almennur innflutningur (Generic Import)</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Run Impl ori - Method ExportHeader - NamedType ExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3322002649 - Method 3379558365 - NamedType 1372064105" size-unit="char" translate="yes" xml:space="preserve">
@@ -821,8 +821,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 3322002649 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
           <source>Registers an export entry for a definition other than Generic Import; it does not run the export or write to storage.</source>
-          <target>Skráir útflutningsfærslu fyrir aðra skilgreiningu en Generic Import; hún keyrir ekki útflutninginn og skrifar ekki í geymslu.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skráir útflutningsfærslu fyrir aðra skilgreiningu en Generic Import; hún keyrir ekki útflutninginn og skrifar ekki í geymslu.</note>
+          <target>Skráir útflutningsfærslu fyrir aðra skilgreiningu en almennan innflutning (Generic Import); hún keyrir ekki útflutninginn og skrifar ekki í geymslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skráir útflutningsfærslu fyrir aðra skilgreiningu en almennan innflutning (Generic Import); hún keyrir ekki útflutninginn og skrifar ekki í geymslu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Run Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2737179671 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -863,8 +863,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 882503026 - Method 79446908 - NamedType 895773054" size-unit="char" translate="yes" xml:space="preserve">
           <source>Creates a header for a Generic Import or Payroll Import definition. Refuses Bank Statement Import and export definitions.</source>
-          <target>Býr til haus fyrir skilgreiningu fyrir Generic Import eða Payroll Import. Hafnar Bank Statement Import og útflutningsskilgreiningum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Býr til haus fyrir skilgreiningu fyrir Generic Import eða Payroll Import. Hafnar Bank Statement Import og útflutningsskilgreiningum.</note>
+          <target>Býr til haus fyrir skilgreiningu fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import). Hafnar innflutningi bankayfirlita (Bank Statement Import) og útflutningsskilgreiningum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Býr til haus fyrir skilgreiningu fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import). Hafnar innflutningi bankayfirlita (Bank Statement Import) og útflutningsskilgreiningum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Run Impl ori - Method GetSelectionDescription - NamedType SelectionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 882503026 - Method 3213430638 - NamedType 3351274" size-unit="char" translate="yes" xml:space="preserve">
@@ -875,20 +875,20 @@
         </trans-unit>
         <trans-unit id="Codeunit 882503026 - Method 3213430638 - NamedType 856751175" size-unit="char" translate="yes" xml:space="preserve">
           <source>DataExchange.Import.Run accepts Generic Import and Payroll Import only.</source>
-          <target>DataExchange.Import.Run tekur aðeins við Generic Import og Payroll Import.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=DataExchange.Import.Run tekur aðeins við Generic Import og Payroll Import.</note>
+          <target>DataExchange.Import.Run tekur aðeins við almennum innflutningi (Generic Import) og launainnflutningi (Payroll Import).</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=DataExchange.Import.Run tekur aðeins við almennum innflutningi (Generic Import) og launainnflutningi (Payroll Import).</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Run Impl ori - Method ImportHeader - NamedType TypeErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 882503026 - Method 3213430638 - NamedType 1310873299" size-unit="char" translate="yes" xml:space="preserve">
           <source>an existing Generic Import or Payroll Import definition</source>
-          <target>fyrirliggjandi skilgreining fyrir Generic Import eða Payroll Import</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=fyrirliggjandi skilgreining fyrir Generic Import eða Payroll Import</note>
+          <target>fyrirliggjandi skilgreining fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import)</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=fyrirliggjandi skilgreining fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import)</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Run Impl ori - Method ImportHeader - NamedType DefinitionExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 882503026 - Method 3213430638 - NamedType 1372064105" size-unit="char" translate="yes" xml:space="preserve">
           <source>Call DataExchange.Definition.List and use the exact code of a Generic Import or Payroll Import definition.</source>
-          <target>Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningar fyrir Generic Import eða Payroll Import.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningar fyrir Generic Import eða Payroll Import.</note>
+          <target>Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningar fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import).</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningar fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import).</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Run Impl ori - Method ImportHeader - NamedType SelectDefinitionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1004477244 - Method 2058993062 - NamedType 1151971474" size-unit="char" translate="yes" xml:space="preserve">
@@ -959,8 +959,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 1998889092 - Method 441392062 - NamedType 4120398360" size-unit="char" translate="yes" xml:space="preserve">
           <source>an existing Generic Import definition</source>
-          <target>fyrirliggjandi Generic Import-skilgreining</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=fyrirliggjandi Generic Import-skilgreining</note>
+          <target>fyrirliggjandi skilgreining fyrir almennan innflutning (Generic Import)</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=fyrirliggjandi skilgreining fyrir almennan innflutning (Generic Import)</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Set Impl ori - Method SetType - NamedType ExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1998889092 - Method 441392062 - NamedType 1372064105" size-unit="char" translate="yes" xml:space="preserve">
@@ -1247,8 +1247,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 2572161670" size-unit="char" translate="yes" xml:space="preserve">
           <source>Read the Offloaded ori field of the attachment to find the offloaded ones.</source>
-          <target>Lestu reitinn Offloaded ori á viðhenginu til að finna þau sem hefur verið útvistað.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Lestu reitinn Offloaded ori á viðhenginu til að finna þau sem hefur verið útvistað.</note>
+          <target>Lestu reitinn Bifröst útvistað á viðhenginu til að finna þau sem hefur verið útvistað.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Lestu reitinn Bifröst útvistað á viðhenginu til að finna þau sem hefur verið útvistað.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NotOffloadedNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 3840356520" size-unit="char" translate="yes" xml:space="preserve">
@@ -1697,8 +1697,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 4045375051" size-unit="char" translate="yes" xml:space="preserve">
           <source>For DocumentAttachment, identify the host by recordSystemId or no; required for tables without no addressing.</source>
-          <target>Fyrir DocumentAttachment skal auðkenna hýsil með recordSystemId eða no; nauðsynlegt fyrir töflur án no-vistfangs.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Fyrir DocumentAttachment skal auðkenna hýsil með recordSystemId eða no; nauðsynlegt fyrir töflur án no-vistfangs.</note>
+          <target>Fyrir DocumentAttachment skal auðkenna hýsil með recordSystemId eða no; nauðsynlegt fyrir töflur sem ekki eru auðkenndar með no.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Fyrir DocumentAttachment skal auðkenna hýsil með recordSystemId eða no; nauðsynlegt fyrir töflur sem ekki eru auðkenndar með no.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType UploadRecordIdLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 4134963357" size-unit="char" translate="yes" xml:space="preserve">

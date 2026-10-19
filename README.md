@@ -71,6 +71,8 @@ For uploads destined for a record, omit `storageCode` in `Storage.Upload.Begin` 
   the standard Document Attachment and Incoming Document pages behave exactly as before.
 - **No credentials in this app.** Only a File Account id is stored; the connector app owns the
   secret, so there is one place to rotate and one place to audit.
+- **Any registered connector.** Storage goes through Business Central's External File Storage
+  interface; no minimum connector version or build is required.
 - **Large files without timeouts.** Chunked uploads split a file into sessions and chunks, so a
   multi-hundred-megabyte upload never depends on a single request completing.
 - **One contract for every caller.** The same 23 message types serve the BC client, the Bifröst MCP
@@ -316,7 +318,7 @@ Input problems are collected before any write with Foundation error codes and `p
 
 | App | ID | Purpose |
 | --- | --- | --- |
-| Bifrost Foundation | `7505e808-6e52-4b96-a328-82573391297a` | Origo 28.0.1.0 or later — the message-type kernel (`Message Type ori`, `Msg Interface ori`, `Message Argument ori`, the Queue → Task → Data API route). |
+| Bifrost Foundation | `7505e808-6e52-4b96-a328-82573391297a` | Origo 28.0.6.599 or later — the message-type kernel (`Message Type ori`, `Msg Interface ori`, `Message Argument ori`, the Queue → Task → Data API route). |
 
 The test app additionally depends on Bifrost Attachments itself and on Microsoft's
 Tests-TestLibraries, Application Test Library, Library Assert, Test Runner, Any and

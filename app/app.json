@@ -6,7 +6,7 @@
   "brief": "Bifrost Attachments - external storage connectors",
   "description": "Bifrost Attachments: Azure Blob, Azure File Share and SharePoint storage message types on top of Bifrost Foundation. Gives Business Central and any external caller direct read/write access to cloud storage, chunked uploads and attachment offloading.",
   "platform": "28.0.0.0",
-  "application": "28.0.0.0",
+  "application": "28.3.0.0",
   "runtime": "17.0",
   "logo": "assets/Logo250x250.png",
   "url": "https://www.origo.is/",
@@ -20,7 +20,7 @@
       "id": "7505e808-6e52-4b96-a328-82573391297a",
       "name": "Bifrost Foundation",
       "publisher": "Origo",
-      "version": "28.0.1.0"
+      "version": "28.0.6.599"
     }
   ],
   "idRanges": [

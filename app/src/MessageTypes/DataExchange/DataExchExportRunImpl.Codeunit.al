@@ -47,7 +47,7 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     /// <summary>Describes when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Registers an export entry for a definition other than Generic Import; it does not run the export or write to storage.', Comment = 'is-IS=Skráir útflutningsfærslu fyrir aðra skilgreiningu en Generic Import; hún keyrir ekki útflutninginn og skrifar ekki í geymslu.';
+        SelectionDescriptionLbl: Label 'Registers an export entry for a definition other than Generic Import; it does not run the export or write to storage.', Comment = 'is-IS=Skráir útflutningsfærslu fyrir aðra skilgreiningu en almennan innflutning (Generic Import); hún keyrir ekki útflutninginn og skrifar ekki í geymslu.';
     begin
         exit(SelectionDescriptionLbl);
     end;
@@ -183,7 +183,7 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
         FileName: Text;
         NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
         InvalidKindErr: Label 'The definition kind is not accepted by this operation.', Comment = 'is-IS=Þessi aðgerð tekur ekki við tegund skilgreiningarinnar.';
-        ExpectedLbl: Label 'an existing definition other than Generic Import', Comment = 'is-IS=fyrirliggjandi skilgreining af annarri tegund en Generic Import';
+        ExpectedLbl: Label 'an existing definition other than Generic Import', Comment = 'is-IS=fyrirliggjandi skilgreining af annarri tegund en almennur innflutningur (Generic Import)';
         SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and select a definition of an accepted kind using its exact code.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og veldu skilgreiningu af leyfðri tegund með nákvæmum kóða hennar.';
     begin
         RequestJson := Argument.GetRequestJson();

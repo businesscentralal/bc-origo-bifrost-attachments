@@ -184,7 +184,7 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         Description: Text;
         NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
         InvalidKindErr: Label 'The definition kind is not accepted by this operation.', Comment = 'is-IS=Þessi aðgerð tekur ekki við tegund skilgreiningarinnar.';
-        ExpectedLbl: Label 'an existing Generic Import definition', Comment = 'is-IS=fyrirliggjandi Generic Import-skilgreining';
+        ExpectedLbl: Label 'an existing Generic Import definition', Comment = 'is-IS=fyrirliggjandi skilgreining fyrir almennan innflutning (Generic Import)';
         SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and select a definition of an accepted kind using its exact code.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og veldu skilgreiningu af leyfðri tegund með nákvæmum kóða hennar.';
     begin
         RequestJson := Argument.GetRequestJson();

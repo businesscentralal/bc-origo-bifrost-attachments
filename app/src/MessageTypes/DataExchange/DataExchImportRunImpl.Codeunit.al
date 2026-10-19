@@ -47,7 +47,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Explains when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionLbl: Label 'Creates a header for a Generic Import or Payroll Import definition. Refuses Bank Statement Import and export definitions.', Comment = 'is-IS=Býr til haus fyrir skilgreiningu fyrir Generic Import eða Payroll Import. Hafnar Bank Statement Import og útflutningsskilgreiningum.';
+        SelectionLbl: Label 'Creates a header for a Generic Import or Payroll Import definition. Refuses Bank Statement Import and export definitions.', Comment = 'is-IS=Býr til haus fyrir skilgreiningu fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import). Hafnar innflutningi bankayfirlita (Bank Statement Import) og útflutningsskilgreiningum.';
     begin
         exit(SelectionLbl);
     end;
@@ -187,9 +187,9 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
         StorageCode: Code[20];
         Path: Text;
         NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
-        TypeErr: Label 'DataExchange.Import.Run accepts Generic Import and Payroll Import only.', Comment = 'is-IS=DataExchange.Import.Run tekur aðeins við Generic Import og Payroll Import.';
-        DefinitionExpectedLbl: Label 'an existing Generic Import or Payroll Import definition', Comment = 'is-IS=fyrirliggjandi skilgreining fyrir Generic Import eða Payroll Import';
-        SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and use the exact code of a Generic Import or Payroll Import definition.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningar fyrir Generic Import eða Payroll Import.';
+        TypeErr: Label 'DataExchange.Import.Run accepts Generic Import and Payroll Import only.', Comment = 'is-IS=DataExchange.Import.Run tekur aðeins við almennum innflutningi (Generic Import) og launainnflutningi (Payroll Import).';
+        DefinitionExpectedLbl: Label 'an existing Generic Import or Payroll Import definition', Comment = 'is-IS=fyrirliggjandi skilgreining fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import)';
+        SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and use the exact code of a Generic Import or Payroll Import definition.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningar fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import).';
     begin
         RequestJson := Argument.GetRequestJson();
         Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefCode);
