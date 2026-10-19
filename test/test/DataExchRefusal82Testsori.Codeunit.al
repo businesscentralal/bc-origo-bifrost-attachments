@@ -4,6 +4,7 @@ using Microsoft.Bank.Setup;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
+using System.Text;
 using System.TestLibraries.Utilities;
 
 /// <summary>Story 82: real dispatched refusal, state readback and caller-transaction regressions.</summary>
@@ -22,50 +23,50 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
 
     /// <summary>A valid request retains Accepted and creates only the header.</summary>
     [Test]
-    procedure Scenario_AC03_GenericImport_CreatesOnlyHeader()
+    procedure Scenario_AC03_GenericImport_ImportsInlineFile()
     var
         DataExch: Record "Data Exch.";
         DefinitionCode: Code[20];
         Response: JsonObject;
     begin
         // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A permitted definition and a deliberately unconfigured storage code.
+        // [GIVEN] A permitted definition with a reader (#24: Import.Run imports the file).
         DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
-        // [WHEN] The registered import message is dispatched.
-        Response := DispatchImport(DefinitionCode, 'XUNCONFIGURED', 'invoices/X82.csv');
-        // [THEN] The header exists, without any imported file content or storage resolution.
+        // [WHEN] The registered import message is dispatched with inline content.
+        Response := DispatchImportInline(DefinitionCode, 'X82,Row');
+        // [THEN] The entry keeps the file content and its parsed fields; the status stays Accepted.
         AssertText(Response, 'status', 'Accepted');
         AssertText(Response, 'dataExchDefCode', DefinitionCode);
         DataExch.Get(IntegerProperty(Response, 'entryNo'));
-        LibraryAssert.AreEqual(DefinitionCode, DataExch."Data Exch. Def Code", 'Wrong definition on the created header.');
-        LibraryAssert.AreEqual('', DataExch."File Name", 'Import must remain header-only.');
+        LibraryAssert.AreEqual(DefinitionCode, DataExch."Data Exch. Def Code", 'Wrong definition on the created entry.');
+        LibraryAssert.AreEqual('X82.csv', DataExch."File Name", 'The entry keeps the file name.');
         DataExch.CalcFields("File Content");
-        LibraryAssert.IsFalse(DataExch."File Content".HasValue(), 'Import must not read provider content.');
-        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Exactly one header must be created.');
+        LibraryAssert.IsTrue(DataExch."File Content".HasValue(), 'The entry keeps the file content.');
+        LibraryAssert.AreEqual(2, IntegerProperty(Response, 'fieldCount'), 'The reader parsed both columns.');
+        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Exactly one entry must be created.');
     end;
 
     /// <summary>A valid request retains Accepted and creates only the header.</summary>
     [Test]
-    procedure Scenario_AC03_PayrollImport_CreatesOnlyHeader()
+    procedure Scenario_AC03_PayrollImport_ImportsInlineFile()
     var
         DataExch: Record "Data Exch.";
         DefinitionCode: Code[20];
         Response: JsonObject;
     begin
         // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A permitted definition and a deliberately unconfigured storage code.
+        // [GIVEN] A permitted definition with a reader (#24: Import.Run imports the file).
         DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Payroll Import");
-        // [WHEN] The registered import message is dispatched.
-        Response := DispatchImport(DefinitionCode, 'XUNCONFIGURED', 'invoices/X82.csv');
-        // [THEN] The header exists, without any imported file content or storage resolution.
+        // [WHEN] The registered import message is dispatched with inline content.
+        Response := DispatchImportInline(DefinitionCode, 'X82,Row');
+        // [THEN] The entry keeps the file content; the status stays Accepted.
         AssertText(Response, 'status', 'Accepted');
         AssertText(Response, 'dataExchDefCode', DefinitionCode);
         DataExch.Get(IntegerProperty(Response, 'entryNo'));
-        LibraryAssert.AreEqual(DefinitionCode, DataExch."Data Exch. Def Code", 'Wrong definition on the created header.');
-        LibraryAssert.AreEqual('', DataExch."File Name", 'Import must remain header-only.');
+        LibraryAssert.AreEqual(DefinitionCode, DataExch."Data Exch. Def Code", 'Wrong definition on the created entry.');
         DataExch.CalcFields("File Content");
-        LibraryAssert.IsFalse(DataExch."File Content".HasValue(), 'Import must not read provider content.');
-        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Exactly one header must be created.');
+        LibraryAssert.IsTrue(DataExch."File Content".HasValue(), 'The entry keeps the file content.');
+        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Exactly one entry must be created.');
     end;
 
     /// <summary>Missing fields all have complete error details.</summary>
@@ -279,7 +280,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'X12345678901234567890');
     end;
 
-    /// <summary>Exact Code20 and path2048 limits preserve successful behavior.</summary>
+    /// <summary>Exact Code20 and path2048 limits are accepted; only the unconfigured storage connection is refused.</summary>
     [Test]
     procedure Scenario_AC02_Code20AndPath2048_AcceptsExactBounds()
     var
@@ -295,10 +296,10 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         DataExchDef.Insert(true);
         // [WHEN] Both identifiers and the path are at their exact raw limits.
         Response := DispatchImport(BoundaryCode, BoundaryCode, PadStr('X', 2048, 'A'));
-        // [THEN] The unchanged code is returned and one header was created.
-        AssertText(Response, 'status', 'Accepted');
-        AssertText(Response, 'dataExchDefCode', BoundaryCode);
-        LibraryAssert.AreEqual(1, EntryCount(BoundaryCode), 'Boundary request must create its header.');
+        // [THEN] Neither the code nor the path is refused; the storage code names no connection (#24 reads the file).
+        AssertRefusal(Response, 'RecordNotFound', 'storageCode', BoundaryCode);
+        LibraryAssert.AreEqual(1, ErrorCount(Response), 'Only the unconfigured storage connection is refused.');
+        LibraryAssert.AreEqual(0, EntryCount(BoundaryCode), 'A refused import creates no entry.');
     end;
 
     /// <summary>An overlong path refuses without truncating it.</summary>
@@ -524,7 +525,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Faults.ConfigureFailure(DefinitionCode, true, false);
         BindSubscription(Faults);
         // [WHEN] The operation mutates and the standard event subscriber raises.
-        asserterror FailOnReturnedResponse(DispatchImport(DefinitionCode, 'XSTORAGE', 'X82.csv'));
+        asserterror FailOnReturnedResponse(DispatchImportInline(DefinitionCode, 'X82,Row'));
         LibraryAssert.ExpectedError('X82 postwrite failure');
         UnbindSubscription(Faults);
         // [THEN] The mutation rolled back, including trigger-deleted children.
@@ -601,9 +602,10 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [GIVEN] An already canonical Unicode definition.
         DataExchDef.Code := 'XÞÓR';
         DataExchDef.Type := DataExchDef.Type::"Generic Import";
+        DataExchDef."Reading/Writing XMLport" := Xmlport::"Data Exch. Import - CSV";
         DataExchDef.Insert(true);
         // [WHEN] The unchanged key reaches the registered handler.
-        Response := DispatchImport('XÞÓR', 'XSTORAGE', 'X82.csv');
+        Response := DispatchImportInline('XÞÓR', 'X82,Row');
         // [THEN] It succeeds and persists the same key.
         AssertText(Response, 'status', 'Accepted');
         AssertText(Response, 'dataExchDefCode', 'XÞÓR');
@@ -628,38 +630,18 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Whitespace must not write.');
     end;
 
-    /// <summary>Export retains its shipped header-only behavior and exact file name.</summary>
+    /// <summary>Export.Run refuses a Payroll Import definition since it exports with Generic Export definitions only (#25).</summary>
     [Test]
-    procedure Scenario_AC03_Export_CreatesOnlyNamedHeader()
-    var
-        DataExch: Record "Data Exch.";
-        DefinitionCode: Code[20];
-        Response: JsonObject;
-    begin
-        // Story #82, AC03 | Time: none | Risk: real Foundation dispatch.
-        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Export");
-        Response := DispatchExport(DefinitionCode, 'X82.csv');
-        AssertText(Response, 'status', 'Success');
-        DataExch.Get(IntegerProperty(Response, 'entryNo'));
-        LibraryAssert.AreEqual(DefinitionCode, DataExch."Data Exch. Def Code", 'Header definition mismatch.');
-        LibraryAssert.AreEqual('X82.csv', DataExch."File Name", 'Header file name mismatch.');
-        DataExch.CalcFields("File Content");
-        LibraryAssert.IsFalse(DataExch."File Content".HasValue(), 'Export must remain header-only.');
-        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Export must create exactly one header.');
-    end;
-
-    /// <summary>The shipped export predicate continues accepting Payroll Import.</summary>
-    [Test]
-    procedure Scenario_AC03_ExportPayroll_PreservesShippedPredicate()
+    procedure Scenario_AC03_ExportPayroll_IsRefused()
     var
         DefinitionCode: Code[20];
         Response: JsonObject;
     begin
-        // Story #82, AC03 | Time: none | Risk: predicate compatibility.
+        // Story #82, AC03 | Time: none | Risk: #25 replaced the header-only predicate with the import refusal.
         DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Payroll Import");
         Response := DispatchExport(DefinitionCode, 'X82.csv');
-        AssertText(Response, 'status', 'Success');
-        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Payroll predicate must remain unchanged.');
+        AssertRefusal(Response, 'InvalidParameter', 'dataExchDefCode', DefinitionCode);
+        LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'A refused export creates no entry.');
     end;
 
     /// <summary>Export collects both invalid raw inputs before writing.</summary>
@@ -749,12 +731,12 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Export");
         FileName := PadStr('', MaxStrLen(DataExch."File Name"), 'X');
         Response := DispatchExport(DefinitionCode, FileName);
-        AssertText(Response, 'status', 'Success');
-        DataExch.Get(IntegerProperty(Response, 'entryNo'));
-        LibraryAssert.AreEqual(FileName, DataExch."File Name", 'Exact limit must remain unchanged.');
+        // The exact limit is not refused; the request still lacks records and a delivery (#25).
+        AssertText(Response, 'status', 'Error');
+        LibraryAssert.IsFalse(HasError(Response, 'fileName'), 'The exact file name limit must be accepted.');
         Response := DispatchExport(DefinitionCode, FileName + 'X');
         AssertRefusal(Response, 'InvalidParameterFormat', 'fileName', '');
-        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Overlong input must not create another header.');
+        LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'Refused input must not create an entry.');
     end;
 
     /// <summary>Type creation and update persist the requested binding and optional description semantics.</summary>
@@ -836,29 +818,6 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Response := DispatchTypeSet(DefinitionCode, DefinitionCode, false, '');
         AssertRefusal(Response, 'InvalidParameter', 'dataExchDefCode', DefinitionCode);
         LibraryAssert.IsFalse(DataExchangeType.Get(DefinitionCode), 'Wrong-kind refusal must not create a row.');
-    end;
-
-    /// <summary>Export's post-insert failure cannot leave a new header.</summary>
-    [Test]
-    [TransactionModel(TransactionModel::AutoCommit)]
-    procedure Scenario_AC04_ExportAfterInsertFailure_RollsBack()
-    var
-        DataExchDef: Record "Data Exch. Def";
-        Faults: Codeunit "DataExch Refusal82 Tests ori";
-        DefinitionCode: Code[20];
-    begin
-        // Story #82, AC04 | Time: none | Risk: real postwrite table trigger, committed fixture.
-        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Export");
-        Commit();
-        Faults.ConfigureFailure(DefinitionCode, true, false);
-        BindSubscription(Faults);
-        asserterror FailOnReturnedResponse(DispatchExport(DefinitionCode, 'X82.csv'));
-        LibraryAssert.ExpectedError('X82 postwrite failure');
-        UnbindSubscription(Faults);
-        LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'Failed export must roll back header.');
-        DataExchDef.Get(DefinitionCode);
-        DataExchDef.Delete(true);
-        Commit();
     end;
 
     /// <summary>Type.Set's post-modify failure rolls back its inserted row.</summary>
@@ -993,7 +952,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     var
         Response: JsonObject;
     begin
-        Response := DispatchImport(DefinitionCode, 'XSTORAGE', 'X82.csv');
+        Response := DispatchImportInline(DefinitionCode, 'X82,Row');
         AssertText(Response, 'status', 'Accepted');
         LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'First call must actually write before the later failure.');
         FailOnReturnedResponse(DispatchDelete(DefinitionCode));
@@ -1005,6 +964,8 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     begin
         DataExchDef.Code := CopyStr('X' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(DataExchDef.Code));
         DataExchDef.Type := DefinitionType;
+        // A reader, so an import reads the inline file (#24).
+        DataExchDef."Reading/Writing XMLport" := Xmlport::"Data Exch. Import - CSV";
         DataExchDef.Insert(true);
         exit(DataExchDef.Code);
     end;
@@ -1029,6 +990,34 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Request.Add('path', Path);
         Request.WriteTo(Payload);
         exit(Dispatch("Message Type ori"::"DataExchange.Import.Run", Payload));
+    end;
+
+    local procedure DispatchImportInline(DefinitionCode: Text; Content: Text): JsonObject
+    var
+        Base64Convert: Codeunit "Base64 Convert";
+        Request: JsonObject;
+        Payload: Text;
+    begin
+        Request.Add('dataExchDefCode', DefinitionCode);
+        Request.Add('contentBase64', Base64Convert.ToBase64(Content));
+        Request.Add('fileName', 'X82.csv');
+        Request.WriteTo(Payload);
+        exit(Dispatch("Message Type ori"::"DataExchange.Import.Run", Payload));
+    end;
+
+    local procedure HasError(Response: JsonObject; ParameterName: Text): Boolean
+    var
+        ErrorsToken: JsonToken;
+        ErrorToken: JsonToken;
+        ParameterToken: JsonToken;
+    begin
+        if not Response.Get('errors', ErrorsToken) then
+            exit(Response.Get('parameter', ParameterToken) and (ParameterToken.AsValue().AsText() = ParameterName));
+        foreach ErrorToken in ErrorsToken.AsArray() do
+            if ErrorToken.AsObject().Get('parameter', ParameterToken) then
+                if ParameterToken.AsValue().AsText() = ParameterName then
+                    exit(true);
+        exit(false);
     end;
 
     local procedure DispatchDelete(DefinitionCode: Text): JsonObject

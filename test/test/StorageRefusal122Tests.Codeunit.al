@@ -27,7 +27,7 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         AssertHeaderOnlyImport(1039);
     end;
 
-    /// <summary>The import contract distinguishes unvalidated references from resolved storage.</summary>
+    /// <summary>The import contract names its two sources and promises the stored file stays unchanged (#24).</summary>
     [Test]
     procedure Scenario_AC01_Contract_ExplainsUnvalidatedReferences()
     var
@@ -35,14 +35,14 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         Parameters: JsonArray;
         ParametersText: Text;
     begin
-        // [GIVEN] The shipped header-only import operation.
+        // [GIVEN] The import operation, which reads the file since #24.
         // [WHEN] Its public parameters are described.
         Parameters := ContractParts.GetParameters('DataExchange.Import.Run');
         Parameters.WriteTo(ParametersText);
-        // [THEN] Neither a configured connection nor an existing file is promised.
-        LibraryAssert.IsTrue(ParametersText.Contains('not validated against configured storage connections'), 'Explain that unknown storage codes are accepted.');
-        LibraryAssert.IsTrue(ParametersText.Contains('not validated for file existence'), 'Explain that unknown file paths are accepted.');
-        LibraryAssert.IsTrue(ParametersText.Contains('not stored on the entry header'), 'Do not claim references are persisted when only a header is created.');
+        // [THEN] Both sources are explained and the stored file is promised to stay unchanged.
+        LibraryAssert.IsTrue(ParametersText.Contains('Required with path unless contentBase64 is sent'), 'Explain the storage source.');
+        LibraryAssert.IsTrue(ParametersText.Contains('stays unchanged'), 'Promise the stored file is only read.');
+        LibraryAssert.IsTrue(ParametersText.Contains('at most 1 MB'), 'Explain the inline limit.');
     end;
 
     /// <summary>A file prevents deleting its parent, with a typed refusal and unchanged content.</summary>

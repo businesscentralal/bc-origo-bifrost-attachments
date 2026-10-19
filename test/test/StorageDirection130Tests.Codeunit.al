@@ -114,11 +114,13 @@ codeunit 96229 "Storage Direction130 Tests ori"
             if not (EffectName in ['read', 'write', 'irreversible']) then
                 Problems += TypeName + ' unknown effect ' + EffectName + '; ';
         end;
-        if StorageWrites <> 15 then
+        // #24 added Storage.Upload.CommitToDataExchange.
+        if StorageWrites <> 16 then
             Problems += 'storage write count ' + Format(StorageWrites) + '; ';
         if NamedWrites <> 6 then
             Problems += 'named storage write count ' + Format(NamedWrites) + '; ';
-        if (not StorageWritesOnly) and (Checked <> 34) then
+        // #24, #25 and #26 added five types.
+        if (not StorageWritesOnly) and (Checked <> 39) then
             Problems += 'attachments type count ' + Format(Checked) + '; ';
     end;
 
