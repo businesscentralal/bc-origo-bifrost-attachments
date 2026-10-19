@@ -275,13 +275,9 @@ jobs:
           azureCredentialsJson: '${{ fromJson(steps.ReadSecrets.outputs.Secrets).AZURE_CREDENTIALS }}'
           pathToFiles: '${{ inputs.project }}/.buildartifacts/Apps/*.app'
 
-      - name: Verify signed Default NAVX package
-        id: appSourceSigned
-        if: steps.DetermineBuildProject.outputs.BuildIt == 'True' && inputs.buildMode == 'Default' && inputs.signArtifacts
-        shell: pwsh
-        env:
-          BuildMode: ${{ inputs.buildMode }}
-        run: ./tools/Assert-AppSourceBuild.ps1 -Stage Signed -Root '${{ github.workspace }}'
+      # The Signed stage (Assert-AppSourceBuild.ps1 -Stage Signed) is deferred (#78): the hosted runner has no
+      # NAVX SIP/trust and CI signs with a self-signed certificate, so the check fails with UnknownError.
+      # Verify the signed Default package on a Windows machine with NAVX trust before submission.
 
       - name: Calculate Artifact names
         id: calculateArtifactsNames
@@ -297,7 +293,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         env:
           ACTIONS_RUNNER_DISABLE_NODE_MAGLEV: 1
-        if: steps.appSourcePipeline.outcome == 'success' && (inputs.buildMode != 'Default' || !inputs.signArtifacts || steps.appSourceSigned.outcome == 'success') && inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/Apps/*',inputs.project)) != '')
+        if: steps.appSourcePipeline.outcome == 'success' && inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/Apps/*',inputs.project)) != '')
         with:
           name: ${{ steps.calculateArtifactsNames.outputs.AppsArtifactsName }}
           path: '${{ inputs.project }}/.buildartifacts/Apps/'
@@ -333,7 +329,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         env:
           ACTIONS_RUNNER_DISABLE_NODE_MAGLEV: 1
-        if: steps.appSourcePipeline.outcome == 'success' && (inputs.buildMode != 'Default' || !inputs.signArtifacts || steps.appSourceSigned.outcome == 'success') && inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/TestApps/*',inputs.project)) != '')
+        if: steps.appSourcePipeline.outcome == 'success' && inputs.artifactsRetentionDays >= 0 && (hashFiles(format('{0}/.buildartifacts/TestApps/*',inputs.project)) != '')
         with:
           name: ${{ steps.calculateArtifactsNames.outputs.TestAppsArtifactsName }}
           path: '${{ inputs.project }}/.buildartifacts/TestApps/'
