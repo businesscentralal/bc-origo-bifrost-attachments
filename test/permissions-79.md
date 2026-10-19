@@ -17,7 +17,9 @@
 | Data Exchange discovery | Actual `BIFROST DataExch ori` plus Foundation baseline | Seeded Definition.Get/List, Type.List, Entry.Get/List; entry blob and full graph readback | Passed (96218, bc28-w1, 13.10.2026); only six registered discovery surfaces |
 | Each discovery read omitted | Derived DataExch fixture replaces advertised role; exactly one of eight table reads omitted | Verify all eight effective read preconditions, dispatch seeded graph, persisted graph/blob readback | Eight regressions passed (96218, bc28-w1, 13.10.2026) |
 | Registered Type.Set/Import.Run/Export.Run refusal | Actual DataExch + Attach + Foundation API roles; all discovery reads granted, every Data Exchange mutation absent | Valid import/export definitions and complete requests; type/graph/blob/entry-count and mock source/target readback | Three regressions passed (96218, bc28-w1, 13.10.2026); #82 retains product ownership |
-| Definition.Export and unreferenced Definition.Delete | Exact declared baseline roles, including any required Bank Export/Import Setup read | Additional allocation/prerequisite disposition and actual dispatch | Remaining coverage gap through internal-review; no unrelated earlier denial may count |
+| Definition.Export | Actual DataExch plus Foundation API baseline; omitted-definition-read actor | Dispatch seeded header, verify exact code/name, then refuse the missing read and preserve the graph | Source scenarios added in 96218; current-tip native execution pending |
+| Read-only Definition.Delete | Actual DataExch plus Foundation API baseline, definition read granted and mutation absent | Refuse with PermissionDenied identifying Data Exch. Def before reference queries; fresh graph/blob readback | Source scenario and pre-write permission checks added; current-tip native execution pending |
+| Authorized unreferenced Definition.Delete | Exact standard BC mutation rights and Bank Export/Import Setup read | Successful real dispatch plus child-row cleanup and no referenced-definition deletion | Genuine minimum-role execution remains pending; read-only refusal does not certify authorized deletion |
 | Two actual SaaS identities | Separate operator-approved online sandbox sessions A/B, same company/license and real protected connector access | A begins/appends; B cannot see/status/append/abort/commit/CommitToRecord; A retains control; source/target/provider readback | Genuine access blocker; no audit-field or LowerPermissions impersonation |
 | Provider read/write denials | Exact licensed connector package/roles and isolated X-prefixed backend root | Real success and denied operations with remote source/target readback | Genuine access blocker; no synthetic provider certification |
 | Legacy takeover denial, #76 | Immutable supported legacy package; actual denied source read/Access Control write; real install/upgrade execution context | Worker-10 owns lifecycle/schema tests 96209/96210 and fixture manifest | Coordination requested through internal-review; legacy access hold remains |
@@ -32,6 +34,14 @@
 6. Record genuine two-identity/provider/lifecycle results separately after operator access release. AL role simulations cannot satisfy those acceptance rows.
 
 ## Inspect the exact permission union
+
+`BIFROST DataExch ori` supplies eight read grants and no table mutation grants. Use it with the Foundation API baseline for discovery, including `DataExchange.Definition.Export`. Type.Set, Import.Run, Export.Run and Definition.Delete also need the appropriate standard BC mutation grants. Definition.Delete checks Data Exch. Def read/mutation and Data Exchange Type/Bank Export/Import Setup read before any reference query or deletion. This source check grants no additional access.
+
+The shared mutation precheck uses `RecordRef.WritePermission`, preserving the existing storage reader semantics. The new read-only regression proves refusal when mutation is absent. Separate effective identities with insert/modify-only and delete-only rights still need runtime verification; this change does not claim a distinct delete-right preflight or replace the platform's final Delete permission check.
+
+The Attachments extension of `BIFROST Full ori` grants this app's own storage objects, but cannot supply external connector account grants. Blob4560/FileShare4570 address resolution also requires `BIFROST Attach ori`, which supplies indirect read raised only inside the storage provider codeunit. The PR137 repair restores those grants accidentally lost during merge47fc0eb. SharePoint support and its separate4580 least-privilege grant are owned by the #120 follow-up; this matrix does not certify that candidate.
+
+Foundation source inspected at `f975756233b81684a765c0e950b0912cb9f718ef`: `BIFROST API ori` includes LOGIN and wildcard table/codeunit execute only, not wildcard tabledata. Neither its source nor `BIFROST Full ori` grants Blob4560/FileShare4570 account data. These are source facts; installed-package effective permissions still need same-candidate identity verification.
 
 | Test set ID | Name | Purpose |
 |---|---|---|

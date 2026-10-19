@@ -486,6 +486,10 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Get", RequestJson);
         AssertSuccess(ResponseJson);
         LibraryAssert.AreEqual(DefinitionCode, ReadText(ReadData(ResponseJson), 'code'), 'The seeded definition was actually reached.');
+        ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Export", RequestJson);
+        AssertSuccess(ResponseJson);
+        LibraryAssert.AreEqual(DefinitionCode, ReadText(ResponseJson, 'code'), 'Header export reaches the same seeded definition.');
+        LibraryAssert.AreEqual('X79 seeded definition', ReadText(ResponseJson, 'name'), 'Header export returns the persisted name.');
         Clear(RequestJson);
         AssertSuccess(Dispatch(MessageType::"DataExchange.Definition.List", RequestJson));
         AssertSuccess(Dispatch(MessageType::"DataExchange.Type.List", RequestJson));
@@ -528,6 +532,52 @@ codeunit 96218 "Storage 79 Perm Tests ori"
     begin
         // Story79 AC02 | Time: independent of WorkDate | Risk: actual export type; no input-error substitute.
         AssertDataExchangeWriteDenial(MessageType::"DataExchange.Export.Run", true);
+    end;
+
+    [Test]
+    /// <summary>Definition export refuses a missing header read without modifying the seeded graph.</summary>
+    procedure Scenario_AC02_ExportMissingRead_PreservesGraph()
+    var
+        EntryNo: Integer;
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Story79 AC02 | Time: none | Risk: the query codeunit must not mask an omitted caller grant.
+        Initialize();
+        EntryNo := SeedDataExchange();
+        LowerActor('Storage79 Def ori');
+        AssertDiscoveryReads(Database::"Data Exch. Def");
+        RequestJson.Add('code', DefinitionCode);
+        ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Export", RequestJson);
+        Observe();
+        AssertDataExchangeUnchanged(EntryNo);
+        AssertStructuredError(ResponseJson, 'PermissionDenied');
+        LibraryAssert.AreEqual(Format(Database::"Data Exch. Def", 0, 9), ReadText(ResponseJson, 'received'), 'The denial must identify the omitted definition read.');
+    end;
+
+    [Test]
+    /// <summary>Definition deletion refuses the read-only role before reference reads and preserves every graph row.</summary>
+    procedure Scenario_AC02_ReadOnlyDefinitionDelete_PreservesGraph()
+    var
+        DataExchDef: Record "Data Exch. Def";
+        EntryNo: Integer;
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Story79 AC02 | Time: none | Risk: a bank-table or trigger exception must not replace the mutation denial.
+        Initialize();
+        EntryNo := SeedDataExchange();
+        LowerActor('BIFROST DataExch ori');
+        AssertDiscoveryReads(0);
+        LibraryAssert.IsFalse(DataExchDef.WritePermission(), 'The actor must lack definition mutation.');
+        RequestJson.Add('code', DefinitionCode);
+        ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Delete", RequestJson);
+        Observe();
+        AssertDataExchangeUnchanged(EntryNo);
+        AssertStructuredError(ResponseJson, 'PermissionDenied');
+        LibraryAssert.AreEqual(Format(Database::"Data Exch. Def", 0, 9), ReadText(ResponseJson, 'received'), 'The denial must reach the missing definition mutation before reference checks.');
     end;
 
     // Each omission exercises the real seeded query graph, not an IsEnabled helper.
