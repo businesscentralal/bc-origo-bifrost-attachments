@@ -13,6 +13,11 @@ Business Central release versioning (`major.minor.build.revision`).
 - `DataExchange.Definition.Delete` checks caller definition read/mutation and reference-table reads before querying or deleting, returning structured `PermissionDenied` for missing grants. Existing deletion/reference behavior and standard BC prerequisites remain unchanged.
 - `Help.DataExchange.Get` now states that `BIFROST DataExch ori` grants discovery reads, while mutation operations need additional standard BC permissions. Restrictive tests cover Definition.Export success/missing-read and read-only Definition.Delete with persisted graph readback; genuine-identity and provider acceptance remain pending.
 
+### Fixed (2026-10-19) - SharePoint storage write preflight (#120)
+
+- Replaced the unconditional SharePoint write refusal with public-account schema validation, decoded site/library path budgets and shared physical alias identity. Moved attachment links retain their account-relative destination; indirect metadata reads are granted through BIFROST Attach ori. Documented the declared connector minimum instead of an exact build pin.
+- Added focused alias, restricted-identity, encoded-traversal and exact 400/401-character regressions. Actual provider write/readback, exact-candidate CI and UAT acceptance remain pending.
+
 ### Fixed (2026-10-19) - root-refusal localization and restricted provider reads (#125, #122)
 
 - Root deletion retains its `InvalidParameter` refusal and raw received path before any connector call. The refusal labels now use compiler-generated translation identifiers so Icelandic callers receive the existing translated explanation, expected value and next step. The contract parameter guard can prove the typed request reads without an allow-list.

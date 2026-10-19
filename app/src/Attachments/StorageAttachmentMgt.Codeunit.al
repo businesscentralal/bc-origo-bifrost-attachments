@@ -1212,7 +1212,12 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     var
         SelectedSetup: Record "Storage Setup ori";
         LinkSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestMgt: Codeunit "Storage Request Mgt ori";
+        Provider: Codeunit "Storage Ext File Impl ori";
+        TargetScope: Text;
+        LinkScope: Text;
+        LinkCaseSensitive: Boolean;
         FullTarget: Text;
         LinkBase: Text;
         CaseSensitive: Boolean;
@@ -1221,6 +1226,17 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         LinkSetup.Get(Link."Storage Code");
         FullTarget := RequestMgt.CombinedPath(SelectedSetup."Base Path", TargetPath);
         LinkBase := RequestMgt.CanonicalPath(LinkSetup."Base Path");
+        if (LinkSetup."Storage Type" = LinkSetup."Storage Type"::"External File Storage") and (LinkSetup.Connector.AsInteger() = 4580) then begin
+            Provider.ResolvePhysicalAddress(TempArgument, SelectedSetup, TargetPath, TargetScope, FullTarget, CaseSensitive);
+            Provider.ResolvePhysicalAddress(TempArgument, LinkSetup, '', LinkScope, LinkBase, LinkCaseSensitive);
+            if TempArgument.HasCollectedErrors() then
+                TempArgument.RaiseCollectedErrors("Bifrost Error Code ori"::PreconditionFailed, AliasIdentityErr);
+            if not RequestMgt.PathsEqual(TargetScope, LinkScope, true) then
+                exit('');
+            if RequestMgt.PathsEqual(CopyStr(FullTarget, 1, StrLen(LinkBase) + 1), LinkBase + '/', false) then
+                exit(CopyStr(FullTarget, StrLen(LinkBase) + 2));
+            exit('');
+        end;
         if LinkBase = '' then
             exit(FullTarget);
         CaseSensitive := not ((LinkSetup."Storage Type" = LinkSetup."Storage Type"::"External File Storage") and (LinkSetup.Connector.AsInteger() = 4570));
