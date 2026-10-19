@@ -197,6 +197,7 @@ codeunit 96242 "DataExch Import Tests ori"
     end;
 
     [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
     procedure AC05_MalformedFile_LeavesNoHalfParsedEntry()
     var
         DataExchField: Record "Data Exch. Field";
@@ -207,6 +208,8 @@ codeunit 96242 "DataExch Import Tests ori"
         Fixture.InitializeStorage();
         DefCode := Fixture.CreateImportDefinition(1);
         FieldsBefore := DataExchField.Count();
+        // asserterror rolls back the open transaction; commit the fixture so only the import is undone.
+        Commit();
 
         asserterror ImportInline(DefCode, 'code,name,amount', false);
 
@@ -215,6 +218,7 @@ codeunit 96242 "DataExch Import Tests ori"
     end;
 
     [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
     procedure AC05_MalformedUpload_KeepsSessionOpen()
     var
         Session: Record "Storage Upload Session ori";
@@ -226,6 +230,8 @@ codeunit 96242 "DataExch Import Tests ori"
         Fixture.InitializeStorage();
         DefCode := Fixture.CreateImportDefinition(1);
         UploadId := BeginAndAppend('bad.csv', 'code,name,amount');
+        // asserterror rolls back the open transaction; commit the session so only the commit attempt is undone.
+        Commit();
 
         asserterror CommitToDataExchange(UploadId, DefCode, false, false);
 

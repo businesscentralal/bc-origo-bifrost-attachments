@@ -297,8 +297,11 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] Both identifiers and the path are at their exact raw limits.
         Response := DispatchImport(BoundaryCode, BoundaryCode, PadStr('X', 2048, 'A'));
         // [THEN] Neither the code nor the path is refused; the storage code names no connection (#24 reads the file).
-        AssertRefusal(Response, 'RecordNotFound', 'storageCode', BoundaryCode);
-        LibraryAssert.AreEqual(1, ErrorCount(Response), 'Only the unconfigured storage connection is refused.');
+        AssertText(Response, 'status', 'Error');
+        AssertText(Response, 'code', 'RecordNotFound');
+        AssertText(Response, 'parameter', 'storageCode');
+        AssertText(Response, 'received', BoundaryCode);
+        LibraryAssert.AreEqual(1, ErrorCount(Response), 'Only the unconfigured storage connection is refused, not a length.');
         LibraryAssert.AreEqual(0, EntryCount(BoundaryCode), 'A refused import creates no entry.');
     end;
 
@@ -1077,6 +1080,8 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         LowerPermissions.StartLoggingNAVPermissions();
         LowerPermissions.SetExactPermissionSet('Lang Setup Read ori');
         LowerPermissions.AddPermissionSet('BIFROST API ori');
+        // The product role grants the Data Exchange reader XMLports an import runs.
+        LowerPermissions.AddPermissionSet('BIFROST DataExch ori');
     end;
 
     local procedure StopDispatcherLanguageRead()

@@ -4,7 +4,7 @@ using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
 
-/// <summary>Issue 122: explicit header-only import references and safe directory refusals.</summary>
+/// <summary>Issue 122: import storage references (refused when unknown since #24) and safe directory refusals.</summary>
 codeunit 96228 "Storage Refusal122 Tests ori"
 {
     Subtype = Test;
@@ -13,18 +13,18 @@ codeunit 96228 "Storage Refusal122 Tests ori"
     var
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
 
-    /// <summary>AC01 selects the documented header-only alternative without inventing storage effects.</summary>
+    /// <summary>AC01: since #24 Import.Run reads the stored file, so an unknown storageCode is refused and no entry is created.</summary>
     [Test]
-    procedure Scenario_AC01_UnknownReferences_CreateOnlyHeader1033()
+    procedure Scenario_AC01_UnknownReferences_RefusedWithoutEntry1033()
     begin
-        AssertHeaderOnlyImport(1033);
+        AssertUnknownStorageRefused(1033, 'storage connection');
     end;
 
-    /// <summary>The documented reference-only behavior also holds on the localized queue path.</summary>
+    /// <summary>The unknown-storage refusal is localized on the queue path.</summary>
     [Test]
-    procedure Scenario_AC01_UnknownReferences_CreateOnlyHeader1039()
+    procedure Scenario_AC01_UnknownReferences_RefusedWithoutEntry1039()
     begin
-        AssertHeaderOnlyImport(1039);
+        AssertUnknownStorageRefused(1039, 'geymslutenging');
     end;
 
     /// <summary>The import contract names its two sources and promises the stored file stays unchanged (#24).</summary>
@@ -293,7 +293,7 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         StorageSetup.Insert();
     end;
 
-    local procedure AssertHeaderOnlyImport(LanguageId: Integer)
+    local procedure AssertUnknownStorageRefused(LanguageId: Integer; ExpectedWording: Text)
     var
         Definition: Record "Data Exch. Def";
         DataExch: Record "Data Exch.";
@@ -311,7 +311,6 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         Payload: Text;
         ResponseText: Text;
         UnknownStorageCode: Code[20];
-        EntryToken: JsonToken;
     begin
         // [GIVEN] A self-created definition and a storage code that does not exist.
         LowerPermissions.StopLoggingNAVPermissions();
@@ -335,16 +334,15 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         LowerPermissions.StopLoggingNAVPermissions();
         ResponseContent.GetSubText(ResponseText, 1);
         LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'The registered handler must return JSON.');
-        // [THEN] The documented alternative accepts the references but only creates a header.
-        LibraryAssert.AreEqual('Accepted', TextProperty(Response, 'status'), 'The documented reference-only request must be accepted. Self-created request response: ' + CopyStr(ResponseText, 1, 1000));
-        LibraryAssert.IsTrue(Response.Get('entryNo', EntryToken), 'Return the actual created header.');
-        DataExch.Get(EntryToken.AsValue().AsInteger());
-        LibraryAssert.AreEqual(Definition.Code, DataExch."Data Exch. Def Code", 'The header must use the supplied definition.');
-        LibraryAssert.AreEqual('', DataExch."File Name", 'Do not persist the caller path as a file name.');
-        DataExch.CalcFields("File Content");
-        LibraryAssert.IsFalse(DataExch."File Content".HasValue(), 'Do not read a provider file.');
+        // [THEN] The unknown connection is refused with a structured, localized error and no entry exists (#24 reads the file).
+        LibraryAssert.AreEqual('Error', TextProperty(Response, 'status'), 'An unknown storageCode must be refused: ' + CopyStr(ResponseText, 1, 1000));
+        LibraryAssert.AreEqual('RecordNotFound', TextProperty(Response, 'code'), 'Unknown connection code.');
+        LibraryAssert.AreEqual('storageCode', TextProperty(Response, 'parameter'), 'The refusal names storageCode.');
+        LibraryAssert.AreEqual(UnknownStorageCode, TextProperty(Response, 'received'), 'The refusal echoes the code.');
+        LibraryAssert.IsTrue(TextProperty(Response, 'error').Contains(ExpectedWording), 'The refusal is in the requested language: ' + TextProperty(Response, 'error'));
+        LibraryAssert.AreNotEqual('', TextProperty(Response, 'nextStep'), 'The refusal names a next step.');
         DataExch.SetRange("Data Exch. Def Code", Definition.Code);
-        LibraryAssert.AreEqual(1, DataExch.Count(), 'Only one header must be created.');
+        LibraryAssert.AreEqual(0, DataExch.Count(), 'A refused import creates no entry.');
     end;
 
     local procedure DeleteDirectory(StorageSetup: Record "Storage Setup ori"; Path: Text): JsonObject

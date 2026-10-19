@@ -7,7 +7,9 @@ using System.IO;
 /// (<c>DataExchange.Type.Set</c>, import, process, export, definition install and delete).
 /// Table write on <c>Data Exchange Type</c> stays off this set so it remains the #79
 /// read-only discovery role; the write types still hard-fail without table write at Execute.
-/// The definition XML also reads field groupings and transformation rules.
+/// The definition XML also reads field groupings and transformation rules. Execute on the base-app
+/// reader and writer XMLports lets a holder import CSV files, export generic files and install or dump
+/// definitions; the tables those XMLports write still need the standard permissions.
 /// Holders do not need <c>BIFROST Attach ori</c>. A permission set extension cannot
 /// grant or include these tables.
 /// </summary>
@@ -52,5 +54,9 @@ permissionset 70013548 "BIFROST DataExch ori"
         codeunit "DataExch Type List Impl ori" = X,
         codeunit "DataExch Type Set Impl ori" = X,
         codeunit "DataExch View Filter ori" = X,
-        codeunit "Storage Upload Commit DX ori" = X;
+        codeunit "Storage Upload Commit DX ori" = X,
+        xmlport "Data Exch. Import - CSV" = X,
+        xmlport "Export Generic CSV" = X,
+        xmlport "Export Generic Fixed Width" = X,
+        xmlport "Imp / Exp Data Exch Def & Map" = X;
 }

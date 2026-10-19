@@ -1404,7 +1404,7 @@
       "id": 10035655,
       "name": "Storage Help Get Impl ori",
       "file": "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al",
-      "sha256": "9f4113d3488de4070b672c485966993121640f0d9556d2f17395c312d060e8d8",
+      "sha256": "8dee935f6fc99f3498e4698b35087231b10b2eee69b481f0a89cd088bc181dfb",
       "access": "Internal",
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
@@ -1702,7 +1702,7 @@
       "id": 70013548,
       "name": "BIFROST DataExch ori",
       "file": "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
-      "sha256": "167efd6a75a227ecf7cd3e76e165fa0e6a741e6c913aa2cd36af781a4077baf2",
+      "sha256": "6448613e8cb75a8ff8908b8933b612cd1ea4a7b972e48985c60401d7bd200da5",
       "access": "Public",
       "extensible": "not declared / not applicable",
       "decision": "KEEP: wire bindings, fields, setup integration or permission contract",
@@ -2485,7 +2485,7 @@
     "scope": "app/src and test at consumerSourceSha; lexical quoted-name matches outside line comments; historical external-app searches remain separate",
     "method": "Quoted name lexical matches after removing line comments; strings and block comments may match; no foreign-consumer absence assertion"
   },
-  "refreshedAt": "2026-10-19T13:38:44.038804+00:00",
+  "refreshedAt": "2026-10-19T14:49:42.179960+00:00",
   "originalSnapshot": {
     "sourceSha": "b42ad90eaee2803205408a1cac8b0d9752b91c0e",
     "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86",
