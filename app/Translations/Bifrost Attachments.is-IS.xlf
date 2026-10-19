@@ -1059,12 +1059,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Tengir skrá allt að 240 MiB við hvaða Business Central færslu sem er sem skjalaviðhengi, úr base64, úr geymslu eða úr öðru viðhengi.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attach Record Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 4170002622 - NamedType 2962017999" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The physical address of an attachment link could not be verified.</source>
-          <target>Ekki tókst að staðfesta raunverulega slóð viðhengjatengingar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Ekki tókst að staðfesta raunverulega slóð viðhengjatengingar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType AliasIdentityErr</note>
-        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 1563292574" size-unit="char" translate="yes" xml:space="preserve">
           <source>The destination cannot be represented by every linked storage connection. Nothing was changed.</source>
           <target>Ekki er hægt að tákna áfangastaðinn með öllum tengdum geymslutengingum. Engu var breytt.</target>

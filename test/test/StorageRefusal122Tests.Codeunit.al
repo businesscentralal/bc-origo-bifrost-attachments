@@ -3,7 +3,6 @@ namespace Origo.Bifrost.Attachments.Test;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
-using System.ExternalFileStorage;
 
 /// <summary>Issue 122: explicit header-only import references and safe directory refusals.</summary>
 codeunit 96228 "Storage Refusal122 Tests ori"
