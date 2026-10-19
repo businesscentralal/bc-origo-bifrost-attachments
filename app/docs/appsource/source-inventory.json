@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "cd3bf4ff45ce08dc3c13e83b92141d948d279089",
+  "sourceSha": "4e5c0e18939ddad3f0fee3af60b8b88bf05f0cd0",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -254,8 +254,8 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-19T12:48:26.577437+00:00",
-  "inventoryPreparedFromDocumentationHead": "cd3bf4ff45ce08dc3c13e83b92141d948d279089",
+  "refreshedAt": "2026-10-19T13:10:00.682515+00:00",
+  "inventoryPreparedFromDocumentationHead": "4e5c0e18939ddad3f0fee3af60b8b88bf05f0cd0",
   "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
@@ -372,7 +372,7 @@
     "test/src/StoragePlatformTest.EnumExt.al": "8f48cb302faaeab24989397f39029f749b4055e83b8bb9e07df9952c984c9dd5",
     "test/src/StorageTestInstall.Codeunit.al": "3a72bdf8261731920e852d227ca8ab33d9a6ae0f82ca55da154dbca9bf7369ec",
     "test/src/StorageTypeTest.EnumExt.al": "2476a20bca399542e16d35dece078d9fe83ecf22efb07b770d75b0295acba217",
-    "test/test/AttachmentsBuildTestsori.Codeunit.al": "0905eac3039b81800696a521ee515029f03c85bd9223054f0cc43aabacdd5df1",
+    "test/test/AttachmentsBuildTestsori.Codeunit.al": "4c6e4d91e1f28fa50aeff73cf3415c88935dbeaa6d3b3961001fabab2a682856",
     "test/test/DataExchDiscoveryTests.Codeunit.al": "ca67720f2271493a793bb075a11c0085789fa5177d03ea2b835bb8d55fb243f7",
     "test/test/DataExchPhase2Testsori.Codeunit.al": "81e163eb071a301646df51eec11ba884a34e84449c905b4dd880f51583463918",
     "test/test/DataExchRefusal82Testsori.Codeunit.al": "0477dde96088bfa1cc99ca7fc230115e4fd45603f382a3e517fe74215f6a50a1",
