@@ -39,9 +39,9 @@
 
 The shared mutation precheck uses `RecordRef.WritePermission`, preserving the existing storage reader semantics. The new read-only regression proves refusal when mutation is absent. Separate effective identities with insert/modify-only and delete-only rights still need runtime verification; this change does not claim a distinct delete-right preflight or replace the platform's final Delete permission check.
 
-The Attachments extension of `BIFROST Full ori` grants this app's own storage objects, but cannot supply external connector account grants. Blob4560/FileShare4570 address resolution also requires `BIFROST Attach ori`, which supplies indirect read raised only inside the storage provider codeunit. The PR137 repair restores those grants accidentally lost during merge47fc0eb. SharePoint support and its separate4580 least-privilege grant are owned by the #120 follow-up; this matrix does not certify that candidate.
+Attachments grants its own storage objects and delegates account access through the registered platform connector. It no longer reads connector-owned account tables or supplies their indirect metadata grants. The generic interface tests use a separate registered test connector with no account tables; real provider roles remain owned by the selected connector and require genuine-identity verification.
 
-Foundation source inspected at `f975756233b81684a765c0e950b0912cb9f718ef`: `BIFROST API ori` includes LOGIN and wildcard table/codeunit execute only, not wildcard tabledata. Neither its source nor `BIFROST Full ori` grants Blob4560/FileShare4570 account data. These are source facts; installed-package effective permissions still need same-candidate identity verification.
+Foundation source inspected at `f975756233b81684a765c0e950b0912cb9f718ef`: `BIFROST API ori` includes LOGIN and wildcard table/codeunit execute only, not wildcard tabledata. The interface refactor does not add wildcard data grants. Installed-package effective permissions still need same-candidate identity verification.
 
 | Test set ID | Name | Purpose |
 |---|---|---|

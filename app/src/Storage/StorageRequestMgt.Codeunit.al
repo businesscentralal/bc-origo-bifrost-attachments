@@ -17,6 +17,11 @@ codeunit 10035662 "Storage Request Mgt ori"
     Access = Internal;
 
     var
+        TransferDestinationExistsErr: Label 'The transfer destination already exists. Nothing was changed.', Comment = 'is-IS=Áfangastaður tilfærslunnar er þegar til. Engu var breytt.';
+        NewTransferTargetLbl: Label 'a destination that does not already exist', Comment = 'is-IS=áfangastaður sem er ekki þegar til';
+        NewTransferTargetNextStepLbl: Label 'Choose a new target path and retry the transfer.', Comment = 'is-IS=Veldu nýja áfangaslóð og reyndu tilfærsluna aftur.';
+        MoveRecoveryErr: Label 'This connector cannot guarantee a safe linked attachment move. Nothing was changed.', Comment = 'is-IS=Þetta tengi getur ekki tryggt örugga tilfærslu tengds viðhengis. Engu var breytt.';
+        MoveRecoveryNextStepLbl: Label 'Restore the attachment before moving the file, or choose a connector that guarantees source preservation and a known failure outcome.', Comment = 'is-IS=Endurheimtu viðhengið áður en skráin er færð eða veldu tengi sem tryggir varðveislu upprunaskrár og þekkta niðurstöðu við bilun.';
         MoveRecoveryLbl: Label 'linked move recovery after remote acknowledgement loss', Comment = 'is-IS=endurheimt tengdrar tilfærslu eftir tap á staðfestingu frá fjargeymslu';
         LinkPermissionsExpectedLbl: Label 'read and write permission on every linked attachment', Comment = 'is-IS=les- og skrifheimild á öllum tengdum viðhengjum';
         LinkPermissionsNextStepLbl: Label 'Ask the administrator to grant attachment access before retrying.', Comment = 'is-IS=Biddu kerfisstjóra um að veita aðgang að viðhengjum áður en þú reynir aftur.';
@@ -109,11 +114,10 @@ codeunit 10035662 "Storage Request Mgt ori"
     var
         StorageSetup: Record "Storage Setup ori";
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
-        Provider: Codeunit "Storage Ext File Impl ori";
         Reader: Codeunit "Storage Request Reader ori";
     begin
         StorageSetup.Get(StorageCode);
-        Provider.CheckMutationPath(Argument, StorageSetup, ParameterName, Path, false);
+        Reader.CheckStoragePath(Argument, StorageSetup, ParameterName, Path, false);
         if Reader.RespondIfErrors(Argument) then
             exit(false);
         if not AttachmentMgt.IsStorageFileLinked(StorageCode, Path) then
@@ -276,8 +280,6 @@ codeunit 10035662 "Storage Request Mgt ori"
     begin
         if not CheckOperationPath(Argument, StorageSetup, 'path', Path, false) then
             exit;
-        if not CheckProviderMutation(Argument, StorageSetup, 'path', Path, false) then
-            exit;
         if AttachmentMgt.IsStorageFileLinked(StorageSetup."Code", Path) then begin
             Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(LinkedFileDeleteErr, Path), 'path', Path, UnlinkedExpectedLbl, LinkedDeleteNextStepLbl);
             exit;
@@ -297,8 +299,6 @@ codeunit 10035662 "Storage Request Mgt ori"
     begin
         if not CheckOperationPath(Argument, StorageSetup, 'path', Path, true) then
             exit;
-        if not CheckProviderMutation(Argument, StorageSetup, 'path', Path, true) then
-            exit;
         if TryCreateDirectory(StorageSetup, Connector, Path) then
             RespondPath(Argument, Path)
         else
@@ -316,8 +316,6 @@ codeunit 10035662 "Storage Request Mgt ori"
         DirectoryIsEmpty: Boolean;
     begin
         if not CheckOperationPath(Argument, StorageSetup, 'path', Path, true) then
-            exit;
-        if not CheckProviderMutation(Argument, StorageSetup, 'path', Path, true) then
             exit;
         if AttachmentMgt.IsStorageDirectoryLinked(StorageSetup."Code", Path) then begin
             Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(LinkedDirectoryDeleteErr, Path), 'path', Path, UnlinkedExpectedLbl, LinkedDeleteNextStepLbl);
@@ -347,6 +345,8 @@ codeunit 10035662 "Storage Request Mgt ori"
     begin
         if not CheckTransferPaths(Argument, StorageSetup, SourcePath, TargetPath) then
             exit;
+        if not CheckTransferDestination(Argument, StorageSetup, Connector, TargetPath) then
+            exit;
         if not CheckUnlinkedDestination(Argument, StorageSetup.Code, TargetPath, 'targetPath') then
             exit;
         if TryCopyFile(StorageSetup, Connector, SourcePath, TargetPath) then
@@ -365,12 +365,11 @@ codeunit 10035662 "Storage Request Mgt ori"
     var
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
         Reader: Codeunit "Storage Request Reader ori";
-        Provider: Codeunit "Storage Ext File Impl ori";
         BlockReason: Text;
     begin
         if not CheckTransferPaths(Argument, StorageSetup, SourcePath, TargetPath) then
             exit;
-        if not CheckProviderMutation(Argument, StorageSetup, 'sourcePath', SourcePath, false) then
+        if not CheckTransferDestination(Argument, StorageSetup, Connector, TargetPath) then
             exit;
         if not CheckUnlinkedDestination(Argument, StorageSetup.Code, TargetPath, 'targetPath') then
             exit;
@@ -382,9 +381,9 @@ codeunit 10035662 "Storage Request Mgt ori"
         if Reader.RespondIfErrors(Argument) then
             exit;
         if AttachmentMgt.IsStorageFileLinked(StorageSetup.Code, SourcePath) and
-           (StorageSetup."Storage Type" = StorageSetup."Storage Type"::"External File Storage")
+           not SupportsLinkedMove(Connector)
         then begin
-            Provider.AddUnverifiedOperation(Argument, 'sourcePath', MoveRecoveryLbl);
+            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, MoveRecoveryErr, 'sourcePath', SourcePath, MoveRecoveryLbl, MoveRecoveryNextStepLbl);
             Reader.RespondIfErrors(Argument);
             exit;
         end;
@@ -419,15 +418,6 @@ codeunit 10035662 "Storage Request Mgt ori"
         RunExists(Argument, StorageSetup, Connector, Enum::"Ext. File Storage File Type"::Directory, Path);
     end;
 
-    local procedure CheckProviderMutation(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; ParameterName: Text; Path: Text; IsDirectory: Boolean): Boolean
-    var
-        Provider: Codeunit "Storage Ext File Impl ori";
-        Reader: Codeunit "Storage Request Reader ori";
-    begin
-        Provider.CheckMutationPath(Argument, StorageSetup, ParameterName, Path, IsDirectory);
-        exit(not Reader.RespondIfErrors(Argument));
-    end;
-
     local procedure CheckOperationPath(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; ParameterName: Text; var Path: Text; AllowRoot: Boolean): Boolean
     var
         Reader: Codeunit "Storage Request Reader ori";
@@ -439,27 +429,40 @@ codeunit 10035662 "Storage Request Mgt ori"
     local procedure CheckTransferPaths(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; var SourcePath: Text; var TargetPath: Text): Boolean
     var
         Reader: Codeunit "Storage Request Reader ori";
-        Provider: Codeunit "Storage Ext File Impl ori";
-        SourceIdentity: Text;
-        TargetIdentity: Text;
-        Scope: Text;
-        CaseSensitive: Boolean;
     begin
         Reader.CheckStoragePath(Argument, StorageSetup, 'sourcePath', SourcePath, false);
         Reader.CheckStoragePath(Argument, StorageSetup, 'targetPath', TargetPath, false);
         if Reader.RespondIfErrors(Argument) then
             exit(false);
-        SourceIdentity := SourcePath;
-        TargetIdentity := TargetPath;
-        CaseSensitive := not ((StorageSetup."Storage Type" = StorageSetup."Storage Type"::"External File Storage") and (StorageSetup.Connector.AsInteger() = 4570));
-        if (StorageSetup."Storage Type" = StorageSetup."Storage Type"::"External File Storage") and (StorageSetup.Connector.AsInteger() = 4580) then begin
-            Provider.ResolvePhysicalAddress(Argument, StorageSetup, SourcePath, Scope, SourceIdentity, CaseSensitive);
-            Provider.ResolvePhysicalAddress(Argument, StorageSetup, TargetPath, Scope, TargetIdentity, CaseSensitive);
-            if Reader.RespondIfErrors(Argument) then
-                exit(false);
-        end;
-        if PathsEqual(SourceIdentity, TargetIdentity, CaseSensitive) then begin
+        if PathsEqual(SourcePath, TargetPath, true) then begin
             Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameter, DifferentPathsErr, 'targetPath', TargetPath, '', DifferentPathsNextStepLbl);
+            exit(false);
+        end;
+        exit(true);
+    end;
+
+    local procedure SupportsLinkedMove(Connector: Interface "Storage Connector ori"): Boolean
+    var
+        LinkedMove: Interface "Storage Linked Move ori";
+    begin
+        if not (Connector is "Storage Linked Move ori") then
+            exit(false);
+        LinkedMove := Connector as "Storage Linked Move ori";
+        exit(LinkedMove.SupportsLinkedMove());
+    end;
+
+    local procedure CheckTransferDestination(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; TargetPath: Text): Boolean
+    var
+        Exists: Boolean;
+    begin
+        // The connector decides whether the target spelling already denotes a file,
+        // including any case or encoded aliases understood by that connector.
+        if not TryExists(StorageSetup, Connector, Enum::"Ext. File Storage File Type"::File, TargetPath, Exists) then begin
+            Argument.RespondWithLastError();
+            exit(false);
+        end;
+        if Exists then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, TransferDestinationExistsErr, 'targetPath', TargetPath, NewTransferTargetLbl, NewTransferTargetNextStepLbl);
             exit(false);
         end;
         exit(true);

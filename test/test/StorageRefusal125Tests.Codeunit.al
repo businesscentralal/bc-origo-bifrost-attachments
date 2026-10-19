@@ -119,7 +119,7 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
         RequestJson.Add('path', Path);
     end;
 
-    local procedure Execute(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) Response: JsonObject
+    local procedure Execute(MessageType: Enum "Message Type ori"; RequestJson: JsonObject): JsonObject
     begin
         exit(Execute(MessageType, RequestJson, 1033));
     end;

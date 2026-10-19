@@ -4,13 +4,9 @@ using Origo.Bifrost;
 
 /// <summary>
 /// Adds the storage connector to Foundation's "BIFROST Full ori" role, so a Bifröst
-/// administrator gets it without a second assignment. The storage grants match the
-/// assignable "BIFROST Attach ori" set, except the connector account tables. Data
-/// Exchange table access stays on the assignable "BIFROST DataExch ori" set. A
-/// permission set extension cannot grant another application's tables (AA0050/AS0110)
-/// or include "BIFROST Attach ori" once that set grants them (AA0052/AS0112). The
-/// indirect read of "Ext. Blob Storage Account" and "Ext. File Share Account" is
-/// therefore only on "BIFROST Attach ori".
+/// administrator receives this app's storage objects through that role. Data Exchange
+/// table access stays on the assignable "BIFROST DataExch ori" set. The selected
+/// connector supplies its own account and operation permissions.
 /// </summary>
 permissionsetextension 10035635 "Storage Full ori" extends "BIFROST Full ori"
 {

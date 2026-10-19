@@ -27,6 +27,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     Access = Internal;
 
     var
+        NativeSchemaErr: Label 'The installed attachment fields could not be verified. Nothing was changed.', Comment = 'is-IS=Ekki tókst að staðfesta uppsetta viðhengjareiti. Engu var breytt.';
+        NativeSchemaExpectedLbl: Label 'supported native attachment fields', Comment = 'is-IS=studdir innbyggðir viðhengjareitir';
+        NativeSchemaNextStepLbl: Label 'Ask the administrator to verify the installed attachment application version.', Comment = 'is-IS=Biddu kerfisstjóra um að staðfesta útgáfu uppsetts viðhengjaforrits.';
         NativeSchemaLbl: Label 'installed native attachment field schema', Comment = 'is-IS=skema uppsettra innbyggðra viðhengjareita';
         BasePathTok: Label 'bifrost-attachments', Locked = true;
         IncDocPathWithYearTok: Label '%1/incoming-documents/%2/%3/%4', Comment = '%1 = base path, %2 = year, %3 = entry no., %4 = file name', Locked = true;
@@ -57,7 +60,6 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         AliasMoveErr: Label 'The destination cannot be represented by every linked storage connection. Nothing was changed.', Comment = 'is-IS=Ekki er hægt að tákna áfangastaðinn með öllum tengdum geymslutengingum. Engu var breytt.';
         AliasRootExpectedLbl: Label 'a destination inside every linked connection base path', Comment = 'is-IS=áfangastaður innan grunnslóðar allra tengdra geymslutenginga';
         AliasMoveNextStepLbl: Label 'Choose a destination inside all linked roots, or restore the attachments before moving the file.', Comment = 'is-IS=Veldu áfangastað innan allra tengdra rótarslóða eða endurheimtu viðhengin áður en skráin er færð.';
-        AliasIdentityErr: Label 'The physical address of an attachment link could not be verified.', Comment = 'is-IS=Ekki tókst að staðfesta raunverulega slóð viðhengjatengingar.';
         LinkPermissionErr: Label 'You do not have permission to update Bifröst storage attachment links.', Comment = 'is-IS=Þú hefur ekki heimild til að uppfæra viðhengjatengingar Bifröst geymslu.';
         TargetPermissionErr: Label 'You do not have permission to update the linked Business Central table %1.', Comment = '%1 = table id, is-IS=Þú hefur ekki heimild til að uppfæra tengdu Business Central töfluna %1.';
         ReadPermissionErr: Label 'You do not have permission to read table %1.', Comment = '%1 = table id, is-IS=Þú hefur ekki heimild til að lesa töflu %1.';
@@ -1019,6 +1021,10 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         LinkTargetPath: Text;
         MovePathTooLongErr: Label 'The destination path exceeds the attachment link capacity.', Comment = 'is-IS=Áfangaslóðin er lengri en viðhengjatengingin leyfir.';
     begin
+        // Validate every affected link before a direct AL caller can change the first row.
+        CheckMovedPath(TempArgument, StorageCode, SourcePath, TargetPath);
+        if TempArgument.HasCollectedErrors() then
+            TempArgument.RaiseCollectedErrors("Bifrost Error Code ori"::PreconditionFailed, AliasMoveErr);
         Link.ReadIsolation := IsolationLevel::UpdLock;
         if not FindLinkedStorageFile(StorageCode, SourcePath, Link) then
             exit;
@@ -1082,7 +1088,6 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     local procedure CheckNativePathLength(var Argument: Record "Message Argument ori"; TableId: Integer; StorageCode: Code[20]; Path: Text; ParameterName: Text)
     var
         Reader: Codeunit "Storage Request Reader ori";
-        Provider: Codeunit "Storage Ext File Impl ori";
         RecRef: RecordRef;
         ExternalFilePathFld: FieldRef;
         NativeModule: ModuleInfo;
@@ -1100,7 +1105,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
            not NativeFieldMatches(RecRef, 8753, 'Stored Internally', FieldType::Boolean)
         then begin
             RecRef.Close();
-            Provider.AddUnverifiedOperation(Argument, ParameterName, NativeSchemaLbl);
+            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, NativeSchemaErr, ParameterName, NativeSchemaLbl, NativeSchemaExpectedLbl, NativeSchemaNextStepLbl);
             exit;
         end;
         if not RecRef.ReadPermission() or not RecRef.WritePermission() then
@@ -1179,70 +1184,51 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     var
         SelectedSetup: Record "Storage Setup ori";
         LinkSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori" temporary;
-        Provider: Codeunit "Storage Ext File Impl ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
-        SelectedScope: Text;
-        LinkScope: Text;
         SelectedAddress: Text;
         LinkAddress: Text;
-        CaseSensitive: Boolean;
-        LinkCaseSensitive: Boolean;
     begin
         SelectedSetup.Get(StorageCode);
         LinkSetup.Get(Link."Storage Code");
-        if (SelectedSetup."Storage Type" <> LinkSetup."Storage Type") or (SelectedSetup.Connector <> LinkSetup.Connector) then
+        if not SameRegisteredAccount(SelectedSetup, LinkSetup) then
             exit(false);
-        Provider.ResolvePhysicalAddress(TempArgument, SelectedSetup, Path, SelectedScope, SelectedAddress, CaseSensitive);
-        Provider.ResolvePhysicalAddress(TempArgument, LinkSetup, Link."Storage Path", LinkScope, LinkAddress, LinkCaseSensitive);
-        if TempArgument.HasCollectedErrors() then
-            TempArgument.RaiseCollectedErrors("Bifrost Error Code ori"::PreconditionFailed, AliasIdentityErr);
-        if not RequestMgt.PathsEqual(SelectedScope, LinkScope, true) then
-            exit(false);
-        if RequestMgt.PathsEqual(SelectedAddress, LinkAddress, CaseSensitive) then
+        SelectedAddress := RequestMgt.CombinedPath(SelectedSetup."Base Path", Path);
+        LinkAddress := RequestMgt.CombinedPath(LinkSetup."Base Path", Link."Storage Path");
+        if RequestMgt.PathsEqual(SelectedAddress, LinkAddress, true) then
             exit(true);
         if not IncludeDescendants then
             exit(false);
         if SelectedAddress = '' then
             exit(LinkAddress <> '');
-        exit(RequestMgt.PathsEqual(CopyStr(LinkAddress, 1, StrLen(SelectedAddress) + 1), SelectedAddress + '/', CaseSensitive));
+        exit(RequestMgt.PathsEqual(CopyStr(LinkAddress, 1, StrLen(SelectedAddress) + 1), SelectedAddress + '/', true));
     end;
 
     local procedure RelativeMovedPath(Link: Record "Storage Attachment Link ori"; StorageCode: Code[20]; TargetPath: Text): Text
     var
         SelectedSetup: Record "Storage Setup ori";
         LinkSetup: Record "Storage Setup ori";
-        TempArgument: Record "Message Argument ori" temporary;
         RequestMgt: Codeunit "Storage Request Mgt ori";
-        Provider: Codeunit "Storage Ext File Impl ori";
-        TargetScope: Text;
-        LinkScope: Text;
-        LinkCaseSensitive: Boolean;
         FullTarget: Text;
         LinkBase: Text;
-        CaseSensitive: Boolean;
     begin
         SelectedSetup.Get(StorageCode);
         LinkSetup.Get(Link."Storage Code");
+        if not SameRegisteredAccount(SelectedSetup, LinkSetup) then
+            exit('');
         FullTarget := RequestMgt.CombinedPath(SelectedSetup."Base Path", TargetPath);
         LinkBase := RequestMgt.CanonicalPath(LinkSetup."Base Path");
-        if (LinkSetup."Storage Type" = LinkSetup."Storage Type"::"External File Storage") and (LinkSetup.Connector.AsInteger() = 4580) then begin
-            Provider.ResolvePhysicalAddress(TempArgument, SelectedSetup, TargetPath, TargetScope, FullTarget, CaseSensitive);
-            Provider.ResolvePhysicalAddress(TempArgument, LinkSetup, '', LinkScope, LinkBase, LinkCaseSensitive);
-            if TempArgument.HasCollectedErrors() then
-                TempArgument.RaiseCollectedErrors("Bifrost Error Code ori"::PreconditionFailed, AliasIdentityErr);
-            if not RequestMgt.PathsEqual(TargetScope, LinkScope, true) then
-                exit('');
-            if RequestMgt.PathsEqual(CopyStr(FullTarget, 1, StrLen(LinkBase) + 1), LinkBase + '/', false) then
-                exit(CopyStr(FullTarget, StrLen(LinkBase) + 2));
-            exit('');
-        end;
         if LinkBase = '' then
             exit(FullTarget);
-        CaseSensitive := not ((LinkSetup."Storage Type" = LinkSetup."Storage Type"::"External File Storage") and (LinkSetup.Connector.AsInteger() = 4570));
-        if RequestMgt.PathsEqual(CopyStr(FullTarget, 1, StrLen(LinkBase) + 1), LinkBase + '/', CaseSensitive) then
+        if RequestMgt.PathsEqual(CopyStr(FullTarget, 1, StrLen(LinkBase) + 1), LinkBase + '/', true) then
             exit(CopyStr(FullTarget, StrLen(LinkBase) + 2));
         exit('');
+    end;
+
+    local procedure SameRegisteredAccount(FirstSetup: Record "Storage Setup ori"; SecondSetup: Record "Storage Setup ori"): Boolean
+    begin
+        exit((FirstSetup."Storage Type" = SecondSetup."Storage Type") and
+             (FirstSetup.Connector = SecondSetup.Connector) and
+             (FirstSetup."File Account Id" = SecondSetup."File Account Id"));
     end;
 
     local procedure LinkUpdateBlockReason(var Link: Record "Storage Attachment Link ori"): Text
