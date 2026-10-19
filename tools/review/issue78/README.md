@@ -1,3 +1,7 @@
+> **Applied 19.10.2026** to `.github/workflows/_BuildALGoProject.yaml` on Gunnar's approval (owner decision, AppSource preparation).
+> `verify_proposal.py` accepted the applied workflow and rejected 15 mutations; `Test-BifrostPipeline.ps1` passes.
+> The Windows NAVX signed/tampered check remains a manual step under #78.
+
 # Issue 78: final workflow gates, pending infrastructure-owner review
 
 This is a concrete **unapplied** workflow change. No `.github` file is modified.
