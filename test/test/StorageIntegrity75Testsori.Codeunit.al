@@ -155,6 +155,47 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.AreEqual(SelectedAddress, AliasAddress, 'The updated link reads back to the same decoded physical destination.');
     end;
 
+    /// <summary>Case and encoded self-transfers are refused by the public executor before connector writes.</summary>
+    [Test]
+    procedure Scenario_AC01_SharePointSelfTransfer_PreservesUnlinkedSource()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        MockState: Codeunit "Storage Mock State";
+    begin
+        // Story #75 + #120 interaction | Time: none | Risk: connector copy-then-delete can delete a self-moved file.
+        MockState.Reset();
+        MockState.PutFile('File.txt', 'b3JpZ2luYWw=');
+        SharePointSetup(StorageSetup, 'Shared Documents', 'https://x120.sharepoint.com/sites/Team');
+        StorageSetup."Base Path" := '';
+        AssertSharePointSelfTransfer(StorageSetup, 'FILE.TXT', true);
+        AssertSharePointSelfTransfer(StorageSetup, '%46ile.txt', true);
+        AssertSharePointSelfTransfer(StorageSetup, 'FILE.TXT', false);
+        AssertSharePointSelfTransfer(StorageSetup, '%46ile.txt', false);
+        LibraryAssert.AreEqual(0, MockState.GetWriteCalls(), 'Neither move nor copy may reach the injected connector.');
+        LibraryAssert.AreEqual('b3JpZ2luYWw=', MockState.GetFileContent('File.txt'), 'The unlinked source bytes remain intact.');
+    end;
+
+    local procedure AssertSharePointSelfTransfer(StorageSetup: Record "Storage Setup ori"; TargetPath: Text; IsMove: Boolean)
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+        Connector: Interface "Storage Connector ori";
+    begin
+        // Direct executor invocation injects an instrumented connector while retaining real SharePoint setup/preflight.
+        TempArgument.Init();
+        if IsMove then
+            TempArgument."Type" := TempArgument."Type"::"Storage.File.Move"
+        else
+            TempArgument."Type" := TempArgument."Type"::"Storage.File.Copy";
+        TempArgument.Insert(true);
+        Connector := Codeunit::"Storage Mock Impl";
+        if IsMove then
+            RequestMgt.ExecuteMoveFile(TempArgument, StorageSetup, Connector, 'File.txt', TargetPath)
+        else
+            RequestMgt.ExecuteCopyFile(TempArgument, StorageSetup, Connector, 'File.txt', TargetPath);
+        AssertRefusal(TempArgument.GetResponseJson(), 'InvalidParameter');
+    end;
+
     /// <summary>Outer slash spelling cannot bypass linked file or parent-directory deletion guards.</summary>
     [Test]
     [TransactionModel(TransactionModel::AutoCommit)]
