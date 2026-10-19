@@ -26,9 +26,9 @@ codeunit 70013532 "DataExch Inc Doc Proc ori"
         Reader: Codeunit "Storage Request Reader ori";
         RequestJson: JsonObject;
         EntryNo: Integer;
-        MissingDocumentErr: Label 'Incoming document %1 was not found.', Comment = '%1 = entry number||is-IS=Innkomuskjal %1 fannst ekki.';
-        ExpectedDocumentLbl: Label 'an existing incoming document entry number', Comment = 'is-IS=númer fyrirliggjandi innkomuskjals';
-        SelectDocumentLbl: Label 'Create the incoming document first, then process it.', Comment = 'is-IS=Stofnaðu innkomuskjalið fyrst og vinnðu það síðan.';
+        MissingDocumentErr: Label 'Incoming document %1 was not found.', Comment = '%1 = entry number||is-IS=Skjal í innleið %1 fannst ekki.';
+        ExpectedDocumentLbl: Label 'an existing incoming document entry number', Comment = 'is-IS=númer fyrirliggjandi skjals í innleið';
+        SelectDocumentLbl: Label 'Create the incoming document first, then process it.', Comment = 'is-IS=Stofnaðu skjalið í innleið fyrst og vinndu það síðan.';
     begin
         RequestJson := Argument.GetRequestJson();
         Reader.ReadInteger(Argument, RequestJson, 'incomingDocumentEntryNo', true, EntryNo);

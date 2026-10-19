@@ -9,7 +9,7 @@ locale: en-US
 
 **Fourteen source-declared countries, zero countries certified by this document.** Codes match `app/AppSourceCop.json` and [partner-center-markets.csv](partner-center-markets.csv). Locales1033/1039 are language checks, not a substitute for market coverage. W1 or one provider run cannot certify the other countries.
 
-The final source SHA, signed Attachments version/hash and complete Foundation/Microsoft connector dependency identities remain pending Architect's integrated candidate and #80 QA. Build87 is excluded by decision1792179827. Do not populate this matrix with historical or foreign fixture passes.
+The current candidate is main `304a1c2` (CI/CD run 39276099802, package 28.0.0.109, one dependency: Bifrost Foundation 28.0.3.530). Its signed hash, installed Foundation runtime hash and the connector apps installed per country remain pending Architect's confirmation and #80 QA. Build87 is excluded by decision1792179827. Do not populate this matrix with historical or foreign fixture passes.
 
 | Code | Country | Candidate/build/dependency evidence | Provider/lifecycle/UI/MCP result | Owner / status |
 |---|---|---|---|---|
@@ -31,8 +31,8 @@ The final source SHA, signed Attachments version/hash and complete Foundation/Mi
 ## Complete every country row after candidate selection
 
 1. Record country/localization, BC release/full build and exact signed candidate source/version/hash. Attach the actual run/artifact receipts, not a list of declared countries.
-2. Record every final dependency's AppId, publisher, name, minimum and installed version, package hash and resolution/availability evidence in that country. PR127's proposed28.5 connector requirements need explicit compatibility evidence; manifest BC28 alone is insufficient. #78 reconciles actual Foundation runtime hash/trust.
-3. Link the applicable #80 provider cases, lifecycle cases and UI/MCP1033/1039 observations by case ID, exact SHA, self-created fixture owner and real executed/passed/failed/skipped counts. Explain any country-specific applicability; never infer all-provider coverage from a mock or from adding an SFTP dependency.
+2. Record every final dependency's AppId, publisher, name, minimum and installed version, package hash and resolution/availability evidence in that country. The package declares no connector dependency (PR118, PR144), so record the Microsoft connector apps actually installed in that country and confirm BC 28.3 or later (the application floor). #78 reconciles actual Foundation runtime hash/trust.
+3. Link the applicable #80 provider cases, lifecycle cases and UI/MCP1033/1039 observations by case ID, exact SHA, self-created fixture owner and real executed/passed/failed/skipped counts. Explain any country-specific applicability; never infer all-provider coverage from a mock or from one provider's connector.
 4. Record supported activation and genuine non-SUPER setup/usage/denied-identity prerequisites from #79. Dedicated Blob/File Share/SharePoint allocations and restricted identities remain external owner inputs routed by Architect; no licence/backend writes.
 5. Attach developer/validator fixture cleanup evidence. Record retained development container name/id and its final deletion trigger (Tester postdeploy UAT pass and issue closure); UAT data needs no cleanup.
 6. Gunnar/designated offer owner supplies separately authorized listing/market comparison evidence. A source code, BC localization success and Marketplace dependency availability are distinct facts. Offer creation/submission/publication is outside #81 authority.

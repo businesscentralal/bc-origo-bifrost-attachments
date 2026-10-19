@@ -821,8 +821,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 1351389712 - Method 3650283039 - NamedType 2344026547" size-unit="char" translate="yes" xml:space="preserve">
           <source>An existing code is refused unless overwrite is true; overwrite deletes the existing definition with its lines and mappings first. Every code in the file is checked before anything is installed. Wire an import definition to incoming documents with DataExchange.Type.Set.</source>
-          <target>Kóða sem er til er hafnað nema overwrite sé true; overwrite eyðir fyrst skilgreiningunni sem er til með línum hennar og vörpunum. Allir kóðar skrárinnar eru athugaðir áður en nokkuð er sett upp. Tengdu innflutningsskilgreiningu við innkomuskjöl með DataExchange.Type.Set.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Kóða sem er til er hafnað nema overwrite sé true; overwrite eyðir fyrst skilgreiningunni sem er til með línum hennar og vörpunum. Allir kóðar skrárinnar eru athugaðir áður en nokkuð er sett upp. Tengdu innflutningsskilgreiningu við innkomuskjöl með DataExchange.Type.Set.</note>
+          <target>Kóða sem er til er hafnað nema overwrite sé true; overwrite eyðir fyrst skilgreiningunni sem er til með línum hennar og vörpunum. Allir kóðar skrárinnar eru athugaðir áður en nokkuð er sett upp. Tengdu innflutningsskilgreiningu við skjöl í innleið með DataExchange.Type.Set.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Kóða sem er til er hafnað nema overwrite sé true; overwrite eyðir fyrst skilgreiningunni sem er til með línum hennar og vörpunum. Allir kóðar skrárinnar eru athugaðir áður en nokkuð er sett upp. Tengdu innflutningsskilgreiningu við skjöl í innleið með DataExchange.Type.Set.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Install Impl ori - Method GetNotes - NamedType NotesLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1351389712 - Method 2340569551 - NamedType 3593894611" size-unit="char" translate="yes" xml:space="preserve">
@@ -965,26 +965,26 @@
         </trans-unit>
         <trans-unit id="Codeunit 518419689 - Method 697954495 - NamedType 1670342221" size-unit="char" translate="yes" xml:space="preserve">
           <source>Data Exch. entry %1 is used by incoming document %2 and cannot be deleted.</source>
-          <target>Innkomuskjal %2 notar gagnaskiptafærslu %1 og ekki er hægt að eyða henni.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = entry number, %2 = incoming document entry number||is-IS=Innkomuskjal %2 notar gagnaskiptafærslu %1 og ekki er hægt að eyða henni.</note>
+          <target>Skjal í innleið %2 notar gagnaskiptafærslu %1 og ekki er hægt að eyða henni.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = entry number, %2 = incoming document entry number||is-IS=Skjal í innleið %2 notar gagnaskiptafærslu %1 og ekki er hægt að eyða henni.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Delete Impl ori - Method DeleteEntry - NamedType IncomingErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 518419689 - Method 697954495 - NamedType 3927012966" size-unit="char" translate="yes" xml:space="preserve">
           <source>an entry that no incoming document uses</source>
-          <target>færsla sem ekkert innkomuskjal notar</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=færsla sem ekkert innkomuskjal notar</note>
+          <target>færsla sem ekkert skjal í innleið notar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=færsla sem ekkert skjal í innleið notar</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Delete Impl ori - Method DeleteEntry - NamedType IncomingExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 518419689 - Method 697954495 - NamedType 146659443" size-unit="char" translate="yes" xml:space="preserve">
           <source>Process or delete incoming document %1 first.</source>
-          <target>Vinndu eða eyddu innkomuskjali %1 fyrst.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = incoming document entry number||is-IS=Vinndu eða eyddu innkomuskjali %1 fyrst.</note>
+          <target>Vinndu eða eyddu skjali í innleið %1 fyrst.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = incoming document entry number||is-IS=Vinndu eða eyddu skjali í innleið %1 fyrst.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Delete Impl ori - Method DeleteEntry - NamedType IncomingNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 518419689 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Deletes a Data Exch. entry and its parsed fields unless an incoming document uses it.</source>
-          <target>Eyðir gagnaskiptafærslu og þáttuðum reitum hennar nema innkomuskjal noti hana.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir gagnaskiptafærslu og þáttuðum reitum hennar nema innkomuskjal noti hana.</note>
+          <target>Eyðir gagnaskiptafærslu og þáttuðum reitum hennar nema skjal í innleið noti hana.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir gagnaskiptafærslu og þáttuðum reitum hennar nema skjal í innleið noti hana.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Delete Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 518419689 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
@@ -995,8 +995,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 518419689 - Method 3650283039 - NamedType 2344026547" size-unit="char" translate="yes" xml:space="preserve">
           <source>An entry that an incoming document uses is refused; delete or process the incoming document instead. Entries created by Bifröst are also removed by the retention policy for Bifrost Data Exchange Entry after 30 days by default.</source>
-          <target>Færslu sem innkomuskjal notar er hafnað; eyddu eða vinndu innkomuskjalið í staðinn. Færslum sem Bifröst stofnaði er einnig eytt með varðveislureglu fyrir gagnaskiptafærslur Bifröst, sjálfgefið eftir 30 daga.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færslu sem innkomuskjal notar er hafnað; eyddu eða vinndu innkomuskjalið í staðinn. Færslum sem Bifröst stofnaði er einnig eytt með varðveislureglu fyrir gagnaskiptafærslur Bifröst, sjálfgefið eftir 30 daga.</note>
+          <target>Færslu sem skjal í innleið notar er hafnað; eyddu eða vinndu skjalið í innleið í staðinn. Færslum sem Bifröst stofnaði er einnig eytt með varðveislureglu fyrir gagnaskiptafærslur Bifröst, sjálfgefið eftir 30 daga.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Færslu sem skjal í innleið notar er hafnað; eyddu eða vinndu skjalið í innleið í staðinn. Færslum sem Bifröst stofnaði er einnig eytt með varðveislureglu fyrir gagnaskiptafærslur Bifröst, sjálfgefið eftir 30 daga.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Delete Impl ori - Method GetNotes - NamedType NotesLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 518419689 - Method 2340569551 - NamedType 3593894611" size-unit="char" translate="yes" xml:space="preserve">
@@ -1055,8 +1055,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 4080870884 - Method 3650283039 - NamedType 2344026547" size-unit="char" translate="yes" xml:space="preserve">
           <source>A mapping error rolls back the whole processing and is answered as an error; the entry stays for another attempt. An entry is processed once. Mappings to the intermediate table belong to the incoming document path (Storage.Upload.CommitToRecord with dataExchangeType). The counts compare the target tables before and after the run, so writes by other sessions at the same time can be counted too.</source>
-          <target>Villa í vörpun afturkallar alla vinnsluna og er svarað sem villu; færslan bíður annarrar tilraunar. Færsla er unnin einu sinni. Varpanir í millitöfluna tilheyra leið innkomuskjala (Storage.Upload.CommitToRecord með dataExchangeType). Fjöldinn ber saman marktöflurnar fyrir og eftir keyrslu, svo skrif annarra lota á sama tíma geta talist með.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Villa í vörpun afturkallar alla vinnsluna og er svarað sem villu; færslan bíður annarrar tilraunar. Færsla er unnin einu sinni. Varpanir í millitöfluna tilheyra leið innkomuskjala (Storage.Upload.CommitToRecord með dataExchangeType). Fjöldinn ber saman marktöflurnar fyrir og eftir keyrslu, svo skrif annarra lota á sama tíma geta talist með.</note>
+          <target>Villa í vörpun afturkallar alla vinnsluna og er svarað sem villu; færslan bíður annarrar tilraunar. Færsla er unnin einu sinni. Varpanir í millitöfluna tilheyra leið skjala í innleið (Storage.Upload.CommitToRecord með dataExchangeType). Fjöldinn ber saman marktöflurnar fyrir og eftir keyrslu, svo skrif annarra lota á sama tíma geta talist með.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Villa í vörpun afturkallar alla vinnsluna og er svarað sem villu; færslan bíður annarrar tilraunar. Færsla er unnin einu sinni. Varpanir í millitöfluna tilheyra leið skjala í innleið (Storage.Upload.CommitToRecord með dataExchangeType). Fjöldinn ber saman marktöflurnar fyrir og eftir keyrslu, svo skrif annarra lota á sama tíma geta talist með.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Proc Impl ori - Method GetNotes - NamedType NotesLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 4080870884 - Method 2340569551 - NamedType 3593894611" size-unit="char" translate="yes" xml:space="preserve">
@@ -1109,20 +1109,20 @@
         </trans-unit>
         <trans-unit id="Codeunit 4080870884 - Method 925689529 - NamedType 1670342221" size-unit="char" translate="yes" xml:space="preserve">
           <source>Data Exch. entry %1 belongs to incoming document %2.</source>
-          <target>Gagnaskiptafærsla %1 tilheyrir innkomuskjali %2.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = entry number, %2 = incoming document entry number||is-IS=Gagnaskiptafærsla %1 tilheyrir innkomuskjali %2.</note>
+          <target>Gagnaskiptafærsla %1 tilheyrir skjali í innleið %2.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = entry number, %2 = incoming document entry number||is-IS=Gagnaskiptafærsla %1 tilheyrir skjali í innleið %2.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Proc Impl ori - Method ProcessEntry - NamedType IncomingErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 4080870884 - Method 925689529 - NamedType 3927012966" size-unit="char" translate="yes" xml:space="preserve">
           <source>an entry that is not part of an incoming document</source>
-          <target>færsla sem er ekki hluti af innkomuskjali</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=færsla sem er ekki hluti af innkomuskjali</note>
+          <target>færsla sem er ekki hluti af skjali í innleið</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=færsla sem er ekki hluti af skjali í innleið</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Proc Impl ori - Method ProcessEntry - NamedType IncomingExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 4080870884 - Method 925689529 - NamedType 146659443" size-unit="char" translate="yes" xml:space="preserve">
           <source>Process the incoming document with Incoming.Document.Process.</source>
-          <target>Vinndu innkomuskjalið með Incoming.Document.Process.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Vinndu innkomuskjalið með Incoming.Document.Process.</note>
+          <target>Vinndu skjalið í innleið með Incoming.Document.Process.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Vinndu skjalið í innleið með Incoming.Document.Process.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Proc Impl ori - Method ProcessEntry - NamedType IncomingNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2395862116 - NamedType 2947675549" size-unit="char" translate="yes" xml:space="preserve">
@@ -1511,8 +1511,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2737179671 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Returns a Markdown overview of the Data Exchange types: pipeline, decision table, chaining and permissions.</source>
-          <target>Skilar Markdown-yfirliti yfir gagnaskiptagerðirnar: ferli, ákvörðunartöflu, keðjun og heimildir.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skilar Markdown-yfirliti yfir gagnaskiptagerðirnar: ferli, ákvörðunartöflu, keðjun og heimildir.</note>
+          <target>Skilar Markdown-yfirliti yfir skilaboðategundir gagnaskipta: ferli, ákvörðunartöflu, keðjun og heimildir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skilar Markdown-yfirliti yfir skilaboðategundir gagnaskipta: ferli, ákvörðunartöflu, keðjun og heimildir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Help Get Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2737179671 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
@@ -1583,8 +1583,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2058621091 - NamedType 588669464" size-unit="char" translate="yes" xml:space="preserve">
           <source>Data Exchange definition %1 maps to the intermediate table. Intermediate data is turned into documents only through an incoming document.</source>
-          <target>Skilgreining gagnaskipta %1 varpar í millitöfluna. Gögnum í millitöflu er aðeins breytt í skjöl í gegnum innkomuskjal.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = definition code||is-IS=Skilgreining gagnaskipta %1 varpar í millitöfluna. Gögnum í millitöflu er aðeins breytt í skjöl í gegnum innkomuskjal.</note>
+          <target>Skilgreining gagnaskipta %1 varpar í millitöfluna. Gögnum í millitöflu er aðeins breytt í skjöl í gegnum skjal í innleið.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = definition code||is-IS=Skilgreining gagnaskipta %1 varpar í millitöfluna. Gögnum í millitöflu er aðeins breytt í skjöl í gegnum skjal í innleið.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - NamedType IntermediateErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2058621091 - NamedType 2492803058" size-unit="char" translate="yes" xml:space="preserve">
@@ -1715,20 +1715,20 @@
         </trans-unit>
         <trans-unit id="Codeunit 1004477244 - Method 2058993062 - NamedType 1151971474" size-unit="char" translate="yes" xml:space="preserve">
           <source>Incoming document %1 was not found.</source>
-          <target>Innkomuskjal %1 fannst ekki.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = entry number||is-IS=Innkomuskjal %1 fannst ekki.</note>
+          <target>Skjal í innleið %1 fannst ekki.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = entry number||is-IS=Skjal í innleið %1 fannst ekki.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Inc Doc Proc ori - Method ProcessIncomingDocument - NamedType MissingDocumentErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 1004477244 - Method 2058993062 - NamedType 3663062277" size-unit="char" translate="yes" xml:space="preserve">
           <source>an existing incoming document entry number</source>
-          <target>númer fyrirliggjandi innkomuskjals</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=númer fyrirliggjandi innkomuskjals</note>
+          <target>númer fyrirliggjandi skjals í innleið</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=númer fyrirliggjandi skjals í innleið</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Inc Doc Proc ori - Method ProcessIncomingDocument - NamedType ExpectedDocumentLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1004477244 - Method 2058993062 - NamedType 1607748007" size-unit="char" translate="yes" xml:space="preserve">
           <source>Create the incoming document first, then process it.</source>
-          <target>Stofnaðu innkomuskjalið fyrst og vinnðu það síðan.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Stofnaðu innkomuskjalið fyrst og vinnðu það síðan.</note>
+          <target>Stofnaðu skjalið í innleið fyrst og vinndu það síðan.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Stofnaðu skjalið í innleið fyrst og vinndu það síðan.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Inc Doc Proc ori - Method ProcessIncomingDocument - NamedType SelectDocumentLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2129390298 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -1979,8 +1979,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 4147945881" size-unit="char" translate="yes" xml:space="preserve">
           <source>an existing Data Exchange Type code</source>
-          <target>kóði fyrirliggjandi gagnaskiptagerðar</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=kóði fyrirliggjandi gagnaskiptagerðar</note>
+          <target>kóði fyrirliggjandi gerðar gagnaskipta</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=kóði fyrirliggjandi gerðar gagnaskipta</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType DataExchangeTypeExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 352425844" size-unit="char" translate="yes" xml:space="preserve">
@@ -2012,30 +2012,6 @@
           <target>Biddu kerfisstjóra um að veita aðgang að viðhengjum áður en þú reynir aftur.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Biddu kerfisstjóra um að veita aðgang að viðhengjum áður en þú reynir aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NativePermissionNextStepLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4170002622 - NamedType 1282222719" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The installed attachment fields could not be verified. Nothing was changed.</source>
-          <target>Ekki tókst að staðfesta uppsetta viðhengjareiti. Engu var breytt.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Ekki tókst að staðfesta uppsetta viðhengjareiti. Engu var breytt.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NativeSchemaErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4170002622 - NamedType 3911921096" size-unit="char" translate="yes" xml:space="preserve">
-          <source>supported native attachment fields</source>
-          <target>studdir innbyggðir viðhengjareitir</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=studdir innbyggðir viðhengjareitir</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NativeSchemaExpectedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4170002622 - NamedType 3662994510" size-unit="char" translate="yes" xml:space="preserve">
-          <source>installed native attachment field schema</source>
-          <target>skema uppsettra innbyggðra viðhengjareita</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=skema uppsettra innbyggðra viðhengjareita</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NativeSchemaLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4170002622 - NamedType 207276937" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Ask the administrator to verify the installed attachment application version.</source>
-          <target>Biddu kerfisstjóra um að staðfesta útgáfu uppsetts viðhengjaforrits.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Biddu kerfisstjóra um að staðfesta útgáfu uppsetts viðhengjaforrits.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NativeSchemaNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 324945142" size-unit="char" translate="yes" xml:space="preserve">
           <source>Business Central does not know which field identifies a record in table %1, so an attachment cannot be keyed to it.</source>
@@ -2213,8 +2189,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 1426384842" size-unit="char" translate="yes" xml:space="preserve">
           <source>Data Exchange Type %1 was not found.</source>
-          <target>Gagnaskiptagerð %1 fannst ekki.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = type code||is-IS=Gagnaskiptagerð %1 fannst ekki.</note>
+          <target>Gerð gagnaskipta %1 fannst ekki.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = type code||is-IS=Gerð gagnaskipta %1 fannst ekki.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType UnknownDataExchangeTypeErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 2155353685" size-unit="char" translate="yes" xml:space="preserve">
@@ -2327,14 +2303,14 @@
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3264825122" size-unit="char" translate="yes" xml:space="preserve">
           <source>Optional Data Exchange Type code for IncomingDocument. The type must already exist.</source>
-          <target>Valfrjáls kóði gagnaskiptagerðar fyrir IncomingDocument. Gerðin verður að vera til.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls kóði gagnaskiptagerðar fyrir IncomingDocument. Gerðin verður að vera til.</note>
+          <target>Valfrjáls kóði gerðar gagnaskipta fyrir IncomingDocument. Gerðin verður að vera til.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls kóði gerðar gagnaskipta fyrir IncomingDocument. Gerðin verður að vera til.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangeTypeParamLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1610349590" size-unit="char" translate="yes" xml:space="preserve">
           <source>The Data Exchange Type applied to the incoming document.</source>
-          <target>Gagnaskiptagerðin sem var sett á innkomuskjalið.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Gagnaskiptagerðin sem var sett á innkomuskjalið.</note>
+          <target>Gerð gagnaskipta sem var sett á skjalið í innleið.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Gerð gagnaskipta sem var sett á skjalið í innleið.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangeTypeResponseLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1754493333" size-unit="char" translate="yes" xml:space="preserve">
@@ -2621,8 +2597,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 191241554" size-unit="char" translate="yes" xml:space="preserve">
           <source>When true, run CreateDocumentWithDataExchange after the incoming document is created. Default false. The upload still succeeds when processing reports errors.</source>
-          <target>Þegar true er CreateDocumentWithDataExchange keyrt eftir að innkomuskjalið er stofnað. Sjálfgefið false. Upphleðslan heppnast samt þó vinnslan skili villum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Þegar true er CreateDocumentWithDataExchange keyrt eftir að innkomuskjalið er stofnað. Sjálfgefið false. Upphleðslan heppnast samt þó vinnslan skili villum.</note>
+          <target>Þegar true er CreateDocumentWithDataExchange keyrt eftir að skjalið í innleið er stofnað. Sjálfgefið false. Upphleðslan heppnast samt þó vinnslan skili villum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Þegar true er CreateDocumentWithDataExchange keyrt eftir að skjalið í innleið er stofnað. Sjálfgefið false. Upphleðslan heppnast samt þó vinnslan skili villum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessParamLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 9565484" size-unit="char" translate="yes" xml:space="preserve">
@@ -2729,8 +2705,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 29685804" size-unit="char" translate="yes" xml:space="preserve">
           <source>Optional vendor number for a new incoming document.</source>
-          <target>Valfrjálst lánardrottinsnúmer fyrir nýtt innkomuskjal.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjálst lánardrottinsnúmer fyrir nýtt innkomuskjal.</note>
+          <target>Valfrjálst lánardrottinsnúmer fyrir nýtt skjal í innleið.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjálst lánardrottinsnúmer fyrir nýtt skjal í innleið.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType VendorNoParamLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 225158890 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -3515,8 +3491,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 936370781 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
           <source>import large file into data exchange, upload csv to data exchange, finish upload as data exchange import, parse uploaded file, chunked import</source>
-          <target>flytja stóra skrá inn í gagnaskipti, hlaða csv-skrá upp í gagnaskipti, ljúka upphleðslu sem innflutningi gagnaskipta, þátta upphlaðna skrá, innflutningur í bútum</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=flytja stóra skrá inn í gagnaskipti, hlaða csv-skrá upp í gagnaskipti, ljúka upphleðslu sem innflutningi gagnaskipta, þátta upphlaðna skrá, innflutningur í bútum</note>
+          <target>flytja stóra skrá inn í gagnaskipti, hlaða csv-skrá upp í gagnaskipti, staðfesta upphleðslu sem innflutning gagnaskipta, þátta upphlaðna skrá, innflutningur í bútum</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=flytja stóra skrá inn í gagnaskipti, hlaða csv-skrá upp í gagnaskipti, staðfesta upphleðslu sem innflutning gagnaskipta, þátta upphlaðna skrá, innflutningur í bútum</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Commit DX ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 936370781 - Method 3650283039 - NamedType 2344026547" size-unit="char" translate="yes" xml:space="preserve">

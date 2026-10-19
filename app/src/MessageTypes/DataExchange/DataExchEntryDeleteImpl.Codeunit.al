@@ -37,7 +37,7 @@ codeunit 70013508 "DataExch Entry Delete Impl ori" implements "Msg Interface ori
     /// <returns>The description in the current language.</returns>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Deletes a Data Exch. entry and its parsed fields unless an incoming document uses it.', Comment = 'is-IS=Eyðir gagnaskiptafærslu og þáttuðum reitum hennar nema innkomuskjal noti hana.';
+        DescriptionLbl: Label 'Deletes a Data Exch. entry and its parsed fields unless an incoming document uses it.', Comment = 'is-IS=Eyðir gagnaskiptafærslu og þáttuðum reitum hennar nema skjal í innleið noti hana.';
     begin
         exit(DescriptionLbl);
     end;
@@ -178,7 +178,7 @@ codeunit 70013508 "DataExch Entry Delete Impl ori" implements "Msg Interface ori
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'An entry that an incoming document uses is refused; delete or process the incoming document instead. Entries created by Bifröst are also removed by the retention policy for Bifrost Data Exchange Entry after 30 days by default.', Comment = 'is-IS=Færslu sem innkomuskjal notar er hafnað; eyddu eða vinndu innkomuskjalið í staðinn. Færslum sem Bifröst stofnaði er einnig eytt með varðveislureglu fyrir gagnaskiptafærslur Bifröst, sjálfgefið eftir 30 daga.';
+        NotesLbl: Label 'An entry that an incoming document uses is refused; delete or process the incoming document instead. Entries created by Bifröst are also removed by the retention policy for Bifrost Data Exchange Entry after 30 days by default.', Comment = 'is-IS=Færslu sem skjal í innleið notar er hafnað; eyddu eða vinndu skjalið í innleið í staðinn. Færslum sem Bifröst stofnaði er einnig eytt með varðveislureglu fyrir gagnaskiptafærslur Bifröst, sjálfgefið eftir 30 daga.';
     begin
         Notes := NotesLbl;
         exit(true);
@@ -223,9 +223,9 @@ codeunit 70013508 "DataExch Entry Delete Impl ori" implements "Msg Interface ori
         EntryExpectedLbl: Label 'an existing entry number', Comment = 'is-IS=númer fyrirliggjandi færslu';
         ChooseEntryLbl: Label 'Use an entryNo returned by DataExchange.Entry.List.', Comment = 'is-IS=Notaðu entryNo sem DataExchange.Entry.List skilar.';
         PositiveErr: Label 'Parameter "entryNo" must be greater than 0.', Comment = 'is-IS=Færibreytan "entryNo" verður að vera stærri en 0.';
-        IncomingErr: Label 'Data Exch. entry %1 is used by incoming document %2 and cannot be deleted.', Comment = '%1 = entry number, %2 = incoming document entry number||is-IS=Innkomuskjal %2 notar gagnaskiptafærslu %1 og ekki er hægt að eyða henni.';
-        IncomingExpectedLbl: Label 'an entry that no incoming document uses', Comment = 'is-IS=færsla sem ekkert innkomuskjal notar';
-        IncomingNextStepLbl: Label 'Process or delete incoming document %1 first.', Comment = '%1 = incoming document entry number||is-IS=Vinndu eða eyddu innkomuskjali %1 fyrst.';
+        IncomingErr: Label 'Data Exch. entry %1 is used by incoming document %2 and cannot be deleted.', Comment = '%1 = entry number, %2 = incoming document entry number||is-IS=Skjal í innleið %2 notar gagnaskiptafærslu %1 og ekki er hægt að eyða henni.';
+        IncomingExpectedLbl: Label 'an entry that no incoming document uses', Comment = 'is-IS=færsla sem ekkert skjal í innleið notar';
+        IncomingNextStepLbl: Label 'Process or delete incoming document %1 first.', Comment = '%1 = incoming document entry number||is-IS=Vinndu eða eyddu skjali í innleið %1 fyrst.';
     begin
         RequestJson := Argument.GetRequestJson();
         if Reader.ReadInteger(Argument, RequestJson, 'entryNo', true, EntryNo) then

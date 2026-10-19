@@ -27,10 +27,6 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     Access = Internal;
 
     var
-        NativeSchemaErr: Label 'The installed attachment fields could not be verified. Nothing was changed.', Comment = 'is-IS=Ekki tókst að staðfesta uppsetta viðhengjareiti. Engu var breytt.';
-        NativeSchemaExpectedLbl: Label 'supported native attachment fields', Comment = 'is-IS=studdir innbyggðir viðhengjareitir';
-        NativeSchemaNextStepLbl: Label 'Ask the administrator to verify the installed attachment application version.', Comment = 'is-IS=Biddu kerfisstjóra um að staðfesta útgáfu uppsetts viðhengjaforrits.';
-        NativeSchemaLbl: Label 'installed native attachment field schema', Comment = 'is-IS=skema uppsettra innbyggðra viðhengjareita';
         BasePathTok: Label 'bifrost-attachments', Locked = true;
         IncDocPathWithYearTok: Label '%1/incoming-documents/%2/%3/%4', Comment = '%1 = base path, %2 = year, %3 = entry no., %4 = file name', Locked = true;
         IncDocPathTok: Label '%1/incoming-documents/%2/%3', Comment = '%1 = base path, %2 = entry no., %3 = file name', Locked = true;
@@ -85,8 +81,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         NoAttachmentKeyErr: Label 'Business Central does not know which field identifies a record in table %1, so an attachment cannot be keyed to it.', Comment = '%1 = table id, is-IS=Business Central veit ekki hvaða reitur auðkennir færslu í töflu %1 og því er ekki hægt að tengja viðhengi við hana.';
         AttachmentGoneErr: Label 'The attachment was removed while it was being processed.', Comment = 'is-IS=Viðhenginu var eytt á meðan verið var að vinna með það.';
         NoAttachmentKeyNextStepLbl: Label 'Attach the file to a record of a table that supports attachments, or have a developer subscribe to Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey for this table.', Comment = 'is-IS=Hengdu skrána við færslu í töflu sem styður viðhengi eða láttu forritara gerast áskrifanda að Document Attachment Mgmt.OnAfterTableHasNumberFieldPrimaryKey fyrir þessa töflu.';
-        UnknownDataExchangeTypeErr: Label 'Data Exchange Type %1 was not found.', Comment = '%1 = type code||is-IS=Gagnaskiptagerð %1 fannst ekki.';
-        DataExchangeTypeExpectedLbl: Label 'an existing Data Exchange Type code', Comment = 'is-IS=kóði fyrirliggjandi gagnaskiptagerðar';
+        UnknownDataExchangeTypeErr: Label 'Data Exchange Type %1 was not found.', Comment = '%1 = type code||is-IS=Gerð gagnaskipta %1 fannst ekki.';
+        DataExchangeTypeExpectedLbl: Label 'an existing Data Exchange Type code', Comment = 'is-IS=kóði fyrirliggjandi gerðar gagnaskipta';
         SelectDataExchangeTypeLbl: Label 'Call DataExchange.Type.List or DataExchange.Type.Set, then send the exact code.', Comment = 'is-IS=Kallaðu á DataExchange.Type.List eða DataExchange.Type.Set og sendu síðan nákvæman kóða.';
         DataExchangeTypeTooLongErr: Label 'Parameter "dataExchangeType" exceeds the maximum length of 20 characters.', Comment = 'is-IS=Færibreytan "dataExchangeType" er lengri en leyfilegt hámark, 20 stafir.';
         VendorNoTooLongErr: Label 'Parameter "vendorNo" exceeds the maximum length of 20 characters.', Comment = 'is-IS=Færibreytan "vendorNo" er lengri en leyfilegt hámark, 20 stafir.';
@@ -1104,8 +1100,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
            not NativeFieldMatches(RecRef, 8752, 'External File Path', FieldType::Text) or
            not NativeFieldMatches(RecRef, 8753, 'Stored Internally', FieldType::Boolean)
         then begin
+            // Microsoft's fields are only mirrored, never required: an unexpected schema skips the
+            // mirror (see TryGetDocAttachExtStorFields) and the write goes ahead (#120).
             RecRef.Close();
-            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, NativeSchemaErr, ParameterName, NativeSchemaLbl, NativeSchemaExpectedLbl, NativeSchemaNextStepLbl);
             exit;
         end;
         if not RecRef.ReadPermission() or not RecRef.WritePermission() then
@@ -1486,7 +1483,11 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         if not NavApp.GetModuleInfo(ExternalStorageAppId, ModuleInfo) then
             exit(false);
         RecRef.Open(Database::"Document Attachment");
-        if not RecRef.FieldExist(8750) or not RecRef.FieldExist(8751) or not RecRef.FieldExist(8752) or not RecRef.FieldExist(8753) then begin
+        if not NativeFieldMatches(RecRef, 8750, 'Stored Externally', FieldType::Boolean) or
+           not NativeFieldMatches(RecRef, 8751, 'External Upload Date', FieldType::DateTime) or
+           not NativeFieldMatches(RecRef, 8752, 'External File Path', FieldType::Text) or
+           not NativeFieldMatches(RecRef, 8753, 'Stored Internally', FieldType::Boolean)
+        then begin
             RecRef.Close();
             exit(false);
         end;

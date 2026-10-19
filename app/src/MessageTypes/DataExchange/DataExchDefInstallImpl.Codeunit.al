@@ -177,7 +177,7 @@ codeunit 70013509 "DataExch Def Install Impl ori" implements "Msg Interface ori"
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'An existing code is refused unless overwrite is true; overwrite deletes the existing definition with its lines and mappings first. Every code in the file is checked before anything is installed. Wire an import definition to incoming documents with DataExchange.Type.Set.', Comment = 'is-IS=Kóða sem er til er hafnað nema overwrite sé true; overwrite eyðir fyrst skilgreiningunni sem er til með línum hennar og vörpunum. Allir kóðar skrárinnar eru athugaðir áður en nokkuð er sett upp. Tengdu innflutningsskilgreiningu við innkomuskjöl með DataExchange.Type.Set.';
+        NotesLbl: Label 'An existing code is refused unless overwrite is true; overwrite deletes the existing definition with its lines and mappings first. Every code in the file is checked before anything is installed. Wire an import definition to incoming documents with DataExchange.Type.Set.', Comment = 'is-IS=Kóða sem er til er hafnað nema overwrite sé true; overwrite eyðir fyrst skilgreiningunni sem er til með línum hennar og vörpunum. Allir kóðar skrárinnar eru athugaðir áður en nokkuð er sett upp. Tengdu innflutningsskilgreiningu við skjöl í innleið með DataExchange.Type.Set.';
     begin
         Notes := NotesLbl;
         exit(true);

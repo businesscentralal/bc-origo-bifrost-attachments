@@ -178,7 +178,7 @@ codeunit 70013507 "DataExch Entry Proc Impl ori" implements "Msg Interface ori",
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'A mapping error rolls back the whole processing and is answered as an error; the entry stays for another attempt. An entry is processed once. Mappings to the intermediate table belong to the incoming document path (Storage.Upload.CommitToRecord with dataExchangeType). The counts compare the target tables before and after the run, so writes by other sessions at the same time can be counted too.', Comment = 'is-IS=Villa í vörpun afturkallar alla vinnsluna og er svarað sem villu; færslan bíður annarrar tilraunar. Færsla er unnin einu sinni. Varpanir í millitöfluna tilheyra leið innkomuskjala (Storage.Upload.CommitToRecord með dataExchangeType). Fjöldinn ber saman marktöflurnar fyrir og eftir keyrslu, svo skrif annarra lota á sama tíma geta talist með.';
+        NotesLbl: Label 'A mapping error rolls back the whole processing and is answered as an error; the entry stays for another attempt. An entry is processed once. Mappings to the intermediate table belong to the incoming document path (Storage.Upload.CommitToRecord with dataExchangeType). The counts compare the target tables before and after the run, so writes by other sessions at the same time can be counted too.', Comment = 'is-IS=Villa í vörpun afturkallar alla vinnsluna og er svarað sem villu; færslan bíður annarrar tilraunar. Færsla er unnin einu sinni. Varpanir í millitöfluna tilheyra leið skjala í innleið (Storage.Upload.CommitToRecord með dataExchangeType). Fjöldinn ber saman marktöflurnar fyrir og eftir keyrslu, svo skrif annarra lota á sama tíma geta talist með.';
     begin
         Notes := NotesLbl;
         exit(true);
@@ -233,9 +233,9 @@ codeunit 70013507 "DataExch Entry Proc Impl ori" implements "Msg Interface ori",
         AlreadyProcessedErr: Label 'Data Exch. entry %1 has already been processed.', Comment = '%1 = entry number||is-IS=Gagnaskiptafærsla %1 hefur þegar verið unnin.';
         UnprocessedExpectedLbl: Label 'an entry that has not been processed', Comment = 'is-IS=færsla sem hefur ekki verið unnin';
         ImportAgainLbl: Label 'Import the file again with DataExchange.Import.Run to process it again.', Comment = 'is-IS=Flyttu skrána inn aftur með DataExchange.Import.Run til að vinna hana aftur.';
-        IncomingErr: Label 'Data Exch. entry %1 belongs to incoming document %2.', Comment = '%1 = entry number, %2 = incoming document entry number||is-IS=Gagnaskiptafærsla %1 tilheyrir innkomuskjali %2.';
-        IncomingExpectedLbl: Label 'an entry that is not part of an incoming document', Comment = 'is-IS=færsla sem er ekki hluti af innkomuskjali';
-        IncomingNextStepLbl: Label 'Process the incoming document with Incoming.Document.Process.', Comment = 'is-IS=Vinndu innkomuskjalið með Incoming.Document.Process.';
+        IncomingErr: Label 'Data Exch. entry %1 belongs to incoming document %2.', Comment = '%1 = entry number, %2 = incoming document entry number||is-IS=Gagnaskiptafærsla %1 tilheyrir skjali í innleið %2.';
+        IncomingExpectedLbl: Label 'an entry that is not part of an incoming document', Comment = 'is-IS=færsla sem er ekki hluti af skjali í innleið';
+        IncomingNextStepLbl: Label 'Process the incoming document with Incoming.Document.Process.', Comment = 'is-IS=Vinndu skjalið í innleið með Incoming.Document.Process.';
     begin
         RequestJson := Argument.GetRequestJson();
         if Reader.ReadInteger(Argument, RequestJson, 'entryNo', true, EntryNo) then
