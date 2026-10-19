@@ -13,6 +13,18 @@ Business Central release versioning (`major.minor.build.revision`).
 - `DataExchange.Definition.Delete` checks caller definition read/mutation and reference-table reads before querying or deleting, returning structured `PermissionDenied` for missing grants. Existing deletion/reference behavior and standard BC prerequisites remain unchanged.
 - `Help.DataExchange.Get` now states that `BIFROST DataExch ori` grants discovery reads, while mutation operations need additional standard BC permissions. Restrictive tests cover Definition.Export success/missing-read and read-only Definition.Delete with persisted graph readback; genuine-identity and provider acceptance remain pending.
 
+### Fixed (2026-10-19) - root-refusal localization and restricted provider reads (#125, #122)
+
+- Root deletion retains its `InvalidParameter` refusal and raw received path before any connector call. The refusal labels now use compiler-generated translation identifiers so Icelandic callers receive the existing translated explanation, expected value and next step. The contract parameter guard can prove the typed request reads without an allow-list.
+- Restored indirect read grants for the Azure Blob and Azure File Share account tables in `BIFROST Attach ori`, accidentally removed during the earlier merge. Restricted callers can resolve physical provider scopes through the existing elevated codeunit without direct access to account data.
+- Updated the two protected-content regression scenarios to expect the root refusal's `InvalidParameter` code; both still verify that attachment bytes and links survive the refused delete.
+
+### Fixed (2026-10-18) - Storage.Directory.Delete root-refusal guard and test contract (#125)
+
+- `Storage Refusal 125 Tests ori` (96238) corrects the root-spelling test to the real contract: only a present path that canonicalizes to the connection root (`/`) reaches the root refusal. An empty or absent path is a `MissingParameter` error and a double slash (`//`) is rejected as an unsafe path, so neither is asserted as a root-refusal spelling. This removes a failing assertion introduced with the original implementation.
+
+- `Storage Dir Delete Impl ori` (10035645) uses the shared typed readers for both declared keys. The root refusal reads its raw received path from the original request through `Storage Request Reader ori.ReadText`; its unchanged labels are declared at codeunit scope, keeping the execution procedure's request acquisition provable by the contract parameter guard.
+
 ### Changed (2026-10-16) - stored storage descriptions (#126)
 
 - `Storage Contract Parts ori` (70013500) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
