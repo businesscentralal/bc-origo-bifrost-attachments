@@ -330,9 +330,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
                     CaseSensitive := false;
                 end;
             4580:
-                begin
-                    exit(ResolveSharePointAddress(Argument, StorageSetup, Address, Scope, CaseSensitive));
-                end;
+                exit(ResolveSharePointAddress(Argument, StorageSetup, Address, Scope, CaseSensitive));
             else
                 // Generic connector path, including SFTP (4621). Do not open the account table.
                 exit(true);

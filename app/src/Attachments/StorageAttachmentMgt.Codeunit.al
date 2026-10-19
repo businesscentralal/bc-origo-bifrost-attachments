@@ -1212,9 +1212,9 @@ codeunit 10035635 "Storage Attachment Mgt ori"
     var
         SelectedSetup: Record "Storage Setup ori";
         LinkSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
         RequestMgt: Codeunit "Storage Request Mgt ori";
         Provider: Codeunit "Storage Ext File Impl ori";
-        TempArgument: Record "Message Argument ori" temporary;
         TargetScope: Text;
         LinkScope: Text;
         LinkCaseSensitive: Boolean;
