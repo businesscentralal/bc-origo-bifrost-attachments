@@ -8,11 +8,17 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-19) - root-refusal localization and restricted provider reads (#125, #122)
+
+- Root deletion retains its `InvalidParameter` refusal and raw received path before any connector call. The refusal labels now use compiler-generated translation identifiers so Icelandic callers receive the existing translated explanation, expected value and next step. The contract parameter guard can prove the typed request reads without an allow-list.
+- Restored indirect read grants for the Azure Blob and Azure File Share account tables in `BIFROST Attach ori`, accidentally removed during the earlier merge. Restricted callers can resolve physical provider scopes through the existing elevated codeunit without direct access to account data.
+- Updated the two protected-content regression scenarios to expect the root refusal's `InvalidParameter` code; both still verify that attachment bytes and links survive the refused delete.
+
 ### Fixed (2026-10-18) - Storage.Directory.Delete root-refusal guard and test contract (#125)
 
 - `Storage Refusal 125 Tests ori` (96238) corrects the root-spelling test to the real contract: only a present path that canonicalizes to the connection root (`/`) reaches the root refusal. An empty or absent path is a `MissingParameter` error and a double slash (`//`) is rejected as an unsafe path, so neither is asserted as a root-refusal spelling. This removes a failing assertion introduced with the original implementation.
 
-- `Storage Dir Delete Impl ori` (10035645) keeps the ContractParameterKeys guard proof with the empty allow-list. The shared typed readers already prove both declared keys: `path` via `Storage Request Reader ori.ReadPath` → `ReadText` → `RequestJson.Get` and `storageCode` via `Storage Request Mgt ori.ReadSetup` → `ReadText` → `RequestJson.Get`. The AC01 raw-received-value echo of `/` for input `/` re-reads `path` (and re-touches `storageCode`) through the inline `Argument.GetRequestJson()` receiver shape, which the guard also counts, so the refusal still reports the caller's raw value and still runs before any connector call. The earlier top-level raw `Get`/`Contains` reads were removed: an uncounted `Contains`-with-token overload broke the product compile, and a top-level raw `Get` before the typed readers poisoned the guard's request tracking.
+- `Storage Dir Delete Impl ori` (10035645) uses the shared typed readers for both declared keys. The root refusal reads its raw received path from the original request through `Storage Request Reader ori.ReadText`; its unchanged labels are declared at codeunit scope, keeping the execution procedure's request acquisition provable by the contract parameter guard.
 
 ### Changed (2026-10-16) - stored storage descriptions (#126)
 

@@ -10,6 +10,11 @@ codeunit 10035645 "Storage Dir Delete Impl ori" implements "Msg Interface ori", 
 {
     Access = Internal;
 
+    var
+        RootPathDeleteErr: Label 'The connection root cannot be deleted with Storage.Directory.Delete.', Comment = 'is-IS=Rót geymslutengingar má ekki eyða með Storage.Directory.Delete.';
+        NonRootDirectoryExpectedLbl: Label 'a directory below the connection root', Comment = 'is-IS=mappa sem liggur undir rót geymslutengingar';
+        RootPathDeleteNextStepLbl: Label 'Name the folder to delete, for example the folder shown by Storage.Directory.List.', Comment = 'is-IS=Nefndu möppuna sem á að eyða, til dæmis möppu sem Storage.Directory.List sýnir.';
+
     procedure IsEnabled(): Boolean
     var
         StorageSetup: Record "Storage Setup ori";
@@ -144,10 +149,6 @@ codeunit 10035645 "Storage Dir Delete Impl ori" implements "Msg Interface ori", 
         RequestJson: JsonObject;
         Path: Text;
         Received: Text;
-        RawPathToken: JsonToken;
-        RootPathDeleteErr: Label 'The connection root cannot be deleted with Storage.Directory.Delete.', Comment = 'is-IS=Rót geymslutengingar má ekki eyða með Storage.Directory.Delete.';
-        NonRootDirectoryExpectedLbl: Label 'a directory below the connection root', Comment = 'is-IS=mappa sem liggur undir rót geymslutengingar';
-        RootPathDeleteNextStepLbl: Label 'Name the folder to delete, for example the folder shown by Storage.Directory.List.', Comment = 'is-IS=Nefndu möppuna sem á að eyða, til dæmis möppu sem Storage.Directory.List sýnir.';
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
@@ -157,12 +158,8 @@ codeunit 10035645 "Storage Dir Delete Impl ori" implements "Msg Interface ori", 
         if Reader.RespondIfErrors(Argument) then
             exit;
         if Path = '' then begin
-            // Echo the caller's raw value. Read it from the original request object because a later
-            // Argument.ReadText call can replace the Argument's request token and would otherwise
-            // break the echo (#125).
-            Received := Path;
-            if RequestJson.Get('path', RawPathToken) then
-                Received := Reader.TokenText(RawPathToken);
+            // Keep the raw spelling from the original request through the shared typed reader.
+            Reader.ReadText(Argument, RequestJson, 'path', true, Received);
             Argument.RespondWithError("Bifrost Error Code ori"::InvalidParameter, RootPathDeleteErr, 'path', Received, NonRootDirectoryExpectedLbl, RootPathDeleteNextStepLbl);
             exit;
         end;
