@@ -16,14 +16,13 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
 {
     Access = Internal;
     // Gunnar, 16 Oct 2026: app.json depends on all four Microsoft SaaS External File Storage connectors, so these tables always exist.
-    // Azure Blob 4560 and Azure File 4570 are read here for address resolution.
+    // Azure Blob 4560, Azure File 4570 and SharePoint 4580 public identity fields are read for address resolution.
     // BIFROST Attach ori grants indirect read (r) on those tables. Storage Full ori cannot: a permission set extension may not grant another application's tables. This property only raises an indirect permission the user already has; a user with no permission gets nothing. RecordRef.ReadPermission does not observe it.
-    // SharePoint (4580) and SFTP (4621): address resolution never opens those account tables.
-    // SharePoint returns an unverified operation after a path-length check, and SFTP goes through the generic connector path.
-    // They need no read grant and no restricted-user test. The dependency only guarantees the connectors are installed.
+    // SFTP (4621) follows the generic connector path without opening its account table.
     Permissions =
         tabledata 4560 = R,
-        tabledata 4570 = R;
+        tabledata 4570 = R,
+        tabledata 4580 = R;
 
     var
         BlobSegmentModeLbl: Label 'Blob segment mode', Comment = 'is-IS=hlutastilling Blob';
@@ -255,6 +254,8 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         RequestMgt: Codeunit "Storage Request Mgt ori";
         Address: Text;
         ConnectorId: Integer;
+        Scope: Text;
+        CaseSensitive: Boolean;
     begin
         if StorageSetup."Storage Type" <> StorageSetup."Storage Type"::"External File Storage" then
             exit(true);
@@ -263,8 +264,11 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         Address := RequestMgt.CombinedPath(StorageSetup."Base Path", Path);
         ConnectorId := StorageSetup.Connector.AsInteger();
         if ConnectorId = 4580 then begin
-            AddUnverifiedOperation(Argument, 'storageCode', SharePointRootLbl);
-            exit(false);
+            if not ResolvePhysicalAddress(Argument, StorageSetup, Path, Scope, Address, CaseSensitive) then
+                exit(false);
+            // The connector sends a leading slash; include it in the decoded 400-character budget.
+            CheckProviderBudget(Argument, ConnectorId, ParameterName, '/' + Address, IsDirectory);
+            exit(not Argument.HasCollectedErrors());
         end;
         if (ConnectorId = 4570) and ContainsNonAscii(Address) then begin
             AddUnverifiedOperation(Argument, 'path', FileShareComparisonLbl);
@@ -291,7 +295,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
             4570:
                 CheckFileSharePath(Argument, ParameterName, Address, IsDirectory);
             4580:
-                // Path-length check only. Address resolution never opens the SharePoint account table.
+                // Mutations pass the complete decoded server-relative path, including the account root.
                 Reader.CheckAddressLength(Argument, ParameterName, Address, 400);
         end;
     end;
@@ -326,11 +330,7 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
                     CaseSensitive := false;
                 end;
             4580:
-                begin
-                    // Unverified operation. Do not open the SharePoint account table. No read grant and no restricted-user test.
-                    AddUnverifiedOperation(Argument, 'storageCode', SharePointRootLbl);
-                    exit(false);
-                end;
+                exit(ResolveSharePointAddress(Argument, StorageSetup, Address, Scope, CaseSensitive));
             else
                 // Generic connector path, including SFTP (4621). Do not open the account table.
                 exit(true);
@@ -354,6 +354,81 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
             exit(false);
         end;
         exit(true);
+    end;
+
+    local procedure ResolveSharePointAddress(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; var Address: Text; var Scope: Text; var CaseSensitive: Boolean): Boolean
+    var
+        SiteUrl: Text;
+        FolderPath: Text;
+        ReadFailure: Text;
+    begin
+        if not TryReadSharePointAccount(StorageSetup."File Account Id", SiteUrl, FolderPath) then begin
+            ReadFailure := GetLastErrorText();
+            if (ReadFailure = AccountSchemaLbl) or (ReadFailure = AccountMetadataLbl) then
+                AddUnverifiedOperation(Argument, 'storageCode', ReadFailure)
+            else
+                Argument.AddError("Bifrost Error Code ori"::PermissionDenied, MetadataPermissionErr, 'storageCode', StorageSetup.Code, MetadataExpectedLbl, MetadataNextStepLbl);
+            exit(false);
+        end;
+        if not TryBuildSharePointAddress(SiteUrl, FolderPath, Address, Scope) then begin
+            AddUnverifiedOperation(Argument, 'storageCode', SharePointRootLbl);
+            exit(false);
+        end;
+        CaseSensitive := false;
+        exit(true);
+    end;
+
+    /// <summary>Reads only the public fields verified in Microsoft BCApps releases/28.0, b8e89d71bec21223d04fa7844e962b5989831ee6.</summary>
+    [TryFunction]
+    local procedure TryReadSharePointAccount(AccountId: Guid; var SiteUrl: Text; var FolderPath: Text)
+    var
+        Account: RecordRef;
+    begin
+        Account.Open(4580);
+        Account.ReadIsolation := IsolationLevel::RepeatableRead;
+        if (Account.Name <> 'Ext. SharePoint Account') or not IsMetadataField(Account, 1, 'Id', FieldType::Guid) or
+           not IsMetadataField(Account, 4, 'SharePoint Url', FieldType::Text) or not IsMetadataField(Account, 5, 'Base Relative Folder Path', FieldType::Text)
+        then
+            Error(AccountSchemaLbl);
+        Account.SetLoadFields(1, 4, 5);
+        Account.Field(1).SetRange(AccountId);
+        if not Account.FindFirst() then
+            Error(AccountMetadataLbl);
+        SiteUrl := Account.Field(4).Value;
+        FolderPath := Account.Field(5).Value;
+        Account.Close();
+    end;
+
+    /// <summary>Mirrors the BC28 connector's InitPath, then compares decoded server-relative addresses on the same authority.</summary>
+    [TryFunction]
+    local procedure TryBuildSharePointAddress(SiteUrl: Text; FolderPath: Text; var Address: Text; var Scope: Text)
+    var
+        Uri: Codeunit Uri;
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+        SitePath: Text;
+    begin
+        Uri.Init(SiteUrl);
+        if (LowerCase(Uri.GetScheme()) <> 'https') or (Uri.GetHost() = '') or (Uri.GetQuery() <> '') or (Uri.GetFragment() <> '') or (FolderPath = '') then
+            Error(SharePointRootLbl);
+        SitePath := Uri.GetAbsolutePath().TrimEnd('/');
+        // Do not normalize before mirroring InitPath: the connector tests this prefix before decoding.
+        if Address = '' then
+            Address := FolderPath
+        else
+            if FolderPath.EndsWith('/') then
+                Address := FolderPath + Address
+            else
+                Address := FolderPath + '/' + Address;
+        if not Address.StartsWith('/') then
+            Address := '/' + Address;
+        if (SitePath <> '') and not Address.StartsWith(SitePath) then
+            Address := SitePath + Address;
+        Address := Uri.UnescapeDataString(Address);
+        // Preserve the established conservative comparison policy: Unicode and ambiguous encoded aliases need verification.
+        if ContainsNonAscii(Address) or Address.Contains('%') or Address.Contains('?') or Address.Contains('#') or not RequestMgt.PathIsSafe(Address) then
+            Error(SharePointRootLbl);
+        Address := RequestMgt.CanonicalPath(Address);
+        Scope := '4580:' + LowerCase(Uri.GetAuthority());
     end;
 
     /// <summary>Reads the three public identity fields. A platform permission error stays caught so the caller can return PermissionDenied.</summary>

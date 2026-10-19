@@ -30,6 +30,14 @@ codeunit 96236 "Storage 124 Addr Tests ori"
         AssertRestrictedResolve(4570, '79447b11-8301-4d02-a546-2261eb811296', false);
     end;
 
+    /// <summary>SharePoint identity is readable through the application, without direct account access.</summary>
+    [Test]
+    procedure Scenario_AC01_RestrictedUser_ResolvesSharePointAddress()
+    begin
+        // Story #120, AC01 | Time: none | Risk: the old unconditional refusal prevented every write.
+        AssertRestrictedResolve(4580, '34bfcef7-f8ed-449f-94be-74024cadba3b', false);
+    end;
+
     local procedure AssertRestrictedResolve(TableId: Integer; ModuleId: Guid; ExpectedCaseSensitive: Boolean)
     var
         StorageSetup: Record "Storage Setup ori";
@@ -78,8 +86,13 @@ codeunit 96236 "Storage 124 Addr Tests ori"
         // [THEN] The physical address and scope come from the row this test inserted.
         LibraryAssert.IsTrue(Resolved, 'Indirect read must resolve the account address. ' + FailureText);
         LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'Resolution must not collect an error.');
-        LibraryAssert.AreEqual('x124base/dir/file.txt', Address, 'The address must keep the base path and relative path.');
-        LibraryAssert.AreEqual(Format(TableId, 0, 9) + ':' + HostName + '/' + RootName, Scope, 'The scope must use the inserted account and root.');
+        if TableId = 4580 then begin
+            LibraryAssert.AreEqual('sites/x124/' + RootName + '/x124base/dir/file.txt', Address, 'SharePoint address includes the decoded site and library root.');
+            LibraryAssert.AreEqual('4580:' + HostName + '.sharepoint.com', Scope, 'SharePoint account aliases share an authority scope.');
+        end else begin
+            LibraryAssert.AreEqual('x124base/dir/file.txt', Address, 'The address must keep the base path and relative path.');
+            LibraryAssert.AreEqual(Format(TableId, 0, 9) + ':' + HostName + '/' + RootName, Scope, 'The scope must use the inserted account and root.');
+        end;
         LibraryAssert.AreEqual(ExpectedCaseSensitive, CaseSensitive, 'Case sensitivity must follow the connector.');
     end;
 
@@ -119,8 +132,13 @@ codeunit 96236 "Storage 124 Addr Tests ori"
         Account.Init();
         Account.Field(1).Value := AccountId;
         Account.Field(2).Value := CopyStr('X124 ' + HostName, 1, 250);
-        Account.Field(3).Value := HostName;
-        Account.Field(4).Value := RootName;
+        if TableId = 4580 then begin
+            Account.Field(4).Value := 'https://' + HostName + '.sharepoint.com/sites/x124';
+            Account.Field(5).Value := RootName;
+        end else begin
+            Account.Field(3).Value := HostName;
+            Account.Field(4).Value := RootName;
+        end;
         Account.Insert(false);
         Account.Close();
     end;

@@ -8,6 +8,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-19) - SharePoint storage write preflight (#120)
+
+- Replaced the unconditional SharePoint write refusal with public-account schema validation, decoded site/library path budgets and shared physical alias identity. Moved attachment links retain their account-relative destination; indirect metadata reads are granted through BIFROST Attach ori. Documented the declared connector minimum instead of an exact build pin.
+- Added focused alias, restricted-identity, encoded-traversal and exact 400/401-character regressions. Actual provider write/readback, exact-candidate CI and UAT acceptance remain pending.
+
 ### Fixed (2026-10-19) - root-refusal localization and restricted provider reads (#125, #122)
 
 - Root deletion retains its `InvalidParameter` refusal and raw received path before any connector call. The refusal labels now use compiler-generated translation identifiers so Icelandic callers receive the existing translated explanation, expected value and next step. The contract parameter guard can prove the typed request reads without an allow-list.
