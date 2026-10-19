@@ -14,6 +14,7 @@ Gunnar's 2026-10-06 decision was that Attachments had no Partner Center offer. T
 | Artifact | Purpose |
 |---|---|
 | [release-checklist.md](release-checklist.md) | Source evidence, release inputs and named owners |
+| [readiness-2026-10-19.md](readiness-2026-10-19.md) | Integrated PR144 design, failed-main repair and retained-owner acceptance matrix |
 | [scenario-plan.md](scenario-plan.md) | Coverage and independent fixtures; not formal validator scenarios |
 | [validator-smoke-script.md](validator-smoke-script.md) | Manual script gated on candidate QA; not executed |
 | [partner-center-markets.csv](partner-center-markets.csv) | Fourteen source-declared countries; no validation claim |
@@ -24,7 +25,7 @@ Gunnar's 2026-10-06 decision was that Attachments had no Partner Center offer. T
 
 [Architect's 16 October candidate decision](https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749) explicitly authorizes checklist, scenario-plan and market preparation now. Formal `AppSource-UserScenarios.md` and the validator dry-run follow passing #80 QA on the integrated candidate. There is no additional internal-review gate.
 
-The candidate is the first main head with #72, worker-3's #122 repair (`dffe555`), PR127, PR128 and PR129 integrated, meaningful green Default + Test and a Default Apps artifact. PR127 must resolve its overlap with the #122 repair on its owner's branch and compile against the 28.5 connectors. Architect permits cutting without PR129 if its help-language assertion remains red when the other inputs land; document only what actually ships. Build 87 (`b66d1f2`) is explicitly excluded. Current source snapshots and old green runs are not that candidate.
+The candidate must satisfy Architect's integrated-source decision and subsequent accepted changes. Current main `f4d524d9bdcfe408701e222ef463b2928f395910` includes human PR144, which replaces provider-specific dispatch with registered connector interfaces and removes concrete connector dependencies. [Run39240173451](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39240173451) has successful Default signing but 2 native failures out of 313 tests. The bounded worker-6 repair must become green before a release candidate is frozen. Preserve #72/#122/#126 acceptance and current source provenance; older branch receipts and build87 do not verify this tip. The [19 October matrix](readiness-2026-10-19.md) records the changed source assumptions and remaining owners.
 
 After passing QA, regenerate the inventory, bind the signed app and every installed dependency by full source SHA/version/hash, and reconcile all plan rows against proven UI and public message contracts. Generate the independent Microsoft-format document with Publisher, packaged Version, Submission Date, Test Environment and numbered Setup / Steps / Expected Results / Cleanup per scenario. Preserve unrun categories as blockers. Record compiler/analyzers, BC country/build, languages, actual test counts, provider fixtures and cleanup. Then perform the owned validator dry-run.
 

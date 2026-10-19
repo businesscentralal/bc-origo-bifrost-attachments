@@ -85,6 +85,11 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         Link: Record "Storage Attachment Link ori";
         TempArgument: Record "Message Argument ori" temporary;
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
+        MockState: Codeunit "Storage Mock State";
+        Base64Convert: Codeunit "Base64 Convert";
+        Refusal: JsonObject;
+        LinkSystemId: Guid;
+        BeforeCalls: Integer;
         AccountId: Guid;
         AttachmentId: Guid;
     begin
@@ -97,14 +102,32 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         Link."Storage Code" := AliasSetup.Code;
         Link."Storage Path" := 'Xfile.txt';
         Link.Modify(false);
+        LinkSystemId := Link.SystemId;
+        BeforeCalls := MockState.GetWriteCalls();
+        // asserterror rolls back the current transaction: persist the alias fixture first.
+        Commit();
         AttachmentMgt.CheckMovedPath(TempArgument, SelectedSetup.Code, 'Xdir/Xfile.txt', 'outside.txt');
         LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'A destination outside the linked setup base must be refused.');
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
         LibraryAssert.AreEqual('Xfile.txt', Link."Storage Path", 'Refusal preserves link metadata.');
         asserterror AttachmentMgt.UpdateMovedStorageFile(SelectedSetup.Code, 'Xdir/Xfile.txt', 'outside.txt');
         LibraryAssert.AreNotEqual('', GetLastErrorText(), 'A direct AL caller must not bypass the linked base-path boundary.');
+        // Direct callers must consume the raised helper collection, as the dispatcher does.
+        Clear(TempArgument);
+        TempArgument.RespondWithLastError();
+        Refusal := TempArgument.GetResponseJson();
+        AssertRefusal(Refusal, 'PreconditionFailed');
+        LibraryAssert.AreEqual('targetPath', ReadText(Refusal, 'parameter'), 'The refusal must reach the linked base-path check.');
+        LibraryAssert.AreEqual('outside.txt', ReadText(Refusal, 'received'), 'The refusal must name the attempted destination.');
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
         LibraryAssert.AreEqual('Xfile.txt', Link."Storage Path", 'Direct-call refusal preserves link metadata.');
+        LibraryAssert.AreEqual(LinkSystemId, Link.SystemId, 'Refusal preserves the same link row.');
+        LibraryAssert.AreEqual(AliasSetup.Code, Link."Storage Code", 'Refusal preserves the alias connection.');
+        AliasSetup.Get(AliasSetup.Code);
+        LibraryAssert.AreEqual('Xdir', AliasSetup."Base Path", 'Refusal preserves the alias base.');
+        LibraryAssert.AreEqual(BeforeCalls, MockState.GetWriteCalls(), 'Refused metadata update reaches no provider write.');
+        LibraryAssert.AreEqual(Base64Convert.ToBase64('original'), MockState.GetFileContent('Xdir/Xfile.txt'), 'Refusal preserves the exact source bytes.');
+        LibraryAssert.IsFalse(MockState.HasFile('outside.txt'), 'Refusal creates no destination.');
         AttachmentMgt.UpdateMovedStorageFile(SelectedSetup.Code, 'Xdir/Xfile.txt', 'Xdir/archive/New%20File.txt');
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
         LibraryAssert.AreEqual(AliasSetup.Code, Link."Storage Code", 'Retain the link setup.');

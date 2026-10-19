@@ -7,16 +7,16 @@ locale: en-US
 
 # Collect Attachments release evidence
 
-**Preparation, not release certification.** Source observations are recorded in [source-inventory.json](source-inventory.json). Final release evidence must identify one accepted signed candidate; a merged PR, compile pass or successful deployment alone does not close #81.
+**Preparation, not release certification.** See the [19 October integrated-source acceptance matrix](readiness-2026-10-19.md) for the current failed-main evidence, bounded repair and retained release owners. Source observations are recorded in [source-inventory.json](source-inventory.json). Final release evidence must identify one accepted signed candidate; a merged PR, compile pass or successful deployment alone does not close #81.
 
 ## Select and prove the candidate
 
-- [ ] Architect identifies the integrated main SHA under [decision1792179827](https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749): #72, #122 repair `dffe555`, PR127, PR128 and PR129; PR129 may be excluded only as that decision specifies. Build87/b66d1f2 is not the candidate.
+- [ ] Architect freezes the qualifying integrated main SHA under [decision1792179827](https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749). Current main `f4d524d9bdcfe408701e222ef463b2928f395910` includes the later human PR144 interface-only design and its integrated repair history; run39240173451 has 313 executed / 311 passed / 2 failed / 0 skipped, so it is not a green release candidate. Reconcile #72/#122/#126 and subsequent merged changes at the eventual repaired tip; build87 is historical.
 - [ ] Main Default and Test are green with nonzero executed tests, zero failures/skips and a signed no-friend Default Apps artifact. Record full SHA, run/attempt/artifact IDs, package version/SHA256 and source/build metadata.
 - [ ] #78 / Reginn and ori-haraldurb reconcile the actual installed Foundation variant/hash against accepted input and verify Windows package signature trust. Compiler success or matching package size is insufficient.
 - [ ] #80 / Þráinn records the exact acceptance matrix: 14 markets, 36 provider cases, 10 lifecycle cases, Web Client UI and public MCP in LCIDs1033/1039; retain actual counts and sanitized evidence. No mocks or other candidates' receipts substitute for this.
 
-Historical [build87 receipt](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6222103811) at `b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005` reports app/test compile0errors/0warnings and 280executed/280passed/0failed/0skipped, package28.0.0.87. Existing Test-lane suppressions are disclosed there; this is not a no-suppression certification. It is historical input, not evidence for the future integrated candidate. PR128 merged16October; PR127/#122 integration and PR129 disposition still require current receipts.
+Historical [build87 receipt](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6222103811) at `b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005` reports app/test compile0errors/0warnings and 280executed/280passed/0failed/0skipped, package28.0.0.87. Existing Test-lane suppressions are disclosed there; this is not a no-suppression certification. It is historical input, not evidence for the future integrated candidate. PR127/128/129 and later integrated PR144 history have since merged; their old branch receipts do not establish current-head acceptance.
 
 ## Confirm identity, markets and dependencies
 
@@ -26,7 +26,7 @@ Historical [build87 receipt](https://github.com/businesscentralal/bc-origo-bifro
 | Version | Source28.0.0.4 | #80: actual packaged and deployed version, never inferred from source |
 | BC floor | Application/platform28.0.0.0, runtime17.0, Cloud | #80 / Architect: actual supported build/country matrix. CI28.5 success does not prove the declared BC28 floor with newly required connector versions |
 | Foundation | `7505e808-6e52-4b96-a328-82573391297a`, Origo, source minimum28.0.1.0 | #78/#80: accepted package version/hash/source, actual runtime hash and signature trust; historical523 is not the active pin |
-| Connectors | Production External File Storage and registered File Accounts; PR127 proposes four explicit Microsoft dependencies at28.5 | PR127 owner / Architect / #80: final merged names/IDs/versions/hashes, runtime compatibility and availability in every market. SFTP dependency does not add SFTP to the approved three-provider scope |
+| Connectors | PR144 uses registered External File Storage interfaces and opaque account GUIDs; concrete connector dependencies and account metadata reads were removed | #80 / Architect: actual installed connector versions and Blob/File Share/SharePoint compatibility, dedicated fixtures and market availability. Separate registrations are separate protection scopes. Do not restore provider introspection or assume physical-account equivalence |
 | Markets | IS,GB,DK,NO,SE,FI,DE,FR,NL,AT,CH,IE,PT,ES | #80: [14-row evidence plan](market-evidence-plan.md); Gunnar/offer owner: separately authorized Partner Center comparison |
 | Languages | en-US/is-IS | #80: actual UI and public MCP1033/1039 at candidate; #72/PR129 disposition reflected without promising unshipped behavior |
 | Registered suffix and both ranges | `ori`;10035635–10035684;70013500–70013549 | Gunnar / designated registration owner via Architect: authoritative allocation/registration evidence; #77 source audit alone is insufficient |

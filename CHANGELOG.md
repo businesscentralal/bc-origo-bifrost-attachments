@@ -8,6 +8,13 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-19) - Isolate direct storage regression fixtures
+
+- CU96225 commits the alias-link baseline before an expected direct-call rollback and verifies the refused destination, link identity, alias base, exact source bytes and absence of provider writes.
+- CU96225/CU96236 consume raised helper errors at direct-call test boundaries, preventing stale structured errors from masking a later connector existence failure. Existing expected paths, error codes and restrictive permission assertions are retained.
+- Updated the AppSource preparation checklist for the merged interface-only connector design and retained-owner release prerequisites. No product, permission, signing or workflow behavior changes.
+
+
 ### Changed (2026-10-19) - Use registered connector interfaces
 
 - Removed connector-ID dispatch, provider account-table inspection, metadata grants and dependencies on specific connector apps. Registered connectors own backend path rules, credentials and provider errors.
