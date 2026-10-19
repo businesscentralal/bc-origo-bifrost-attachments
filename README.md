@@ -360,7 +360,7 @@ Input problems are collected before any write with Foundation error codes and `p
 
 | App | ID | Purpose |
 | --- | --- | --- |
-| Bifrost Foundation | `7505e808-6e52-4b96-a328-82573391297a` | Origo 28.0.6.599 or later — the message-type kernel (`Message Type ori`, `Msg Interface ori`, `Message Argument ori`, the Queue → Task → Data API route). |
+| Bifrost Foundation | `7505e808-6e52-4b96-a328-82573391297a` | Origo 28.0.3.530 or later — the message-type kernel (`Message Type ori`, `Msg Interface ori`, `Message Argument ori`, the Queue → Task → Data API route). |
 
 The test app additionally depends on Bifrost Attachments itself and on Microsoft's
 Tests-TestLibraries, Application Test Library, Library Assert, Test Runner, Any and

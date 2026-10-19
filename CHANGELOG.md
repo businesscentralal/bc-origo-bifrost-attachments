@@ -25,7 +25,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-10-19) - AppSource preparation
 
-- **Version floors** match what is compiled and tested: Bifrost Foundation **28.0.6.599** (the 28.0.6 release; the app compiles against it with AppSourceCop clean) and Business Central application **28.3.0.0** in `app/app.json` and `test/app.json`. `tools/check_build_inputs.py` enforces the new Foundation floor.
+- **Version floors** match what is compiled and tested: Bifrost Foundation **28.0.3.530** (the hash-pinned package CI stages, compiles and tests against) and Business Central application **28.3.0.0** in `app/app.json` and `test/app.json`. `tools/check_build_inputs.py` enforces the new Foundation floor.
 - **Contracts** (#122, #125): every `Storage.*` type that takes `storageCode` lists `RecordNotFound` (unknown connection) and `PreconditionFailed` (disabled connection) in its errors chapter; `Storage.Directory.Delete` also lists the connection-root `InvalidParameter`. Test `Scenario_Contract_ListsStorageCodeAndRootRefusals` (96228).
 - **No connector minimum** (#120): `Help.Storage.Get` and the README state that any connector registered with External File Storage works, with no minimum connector version or build.
 - **Icelandic** (#72): Data Exchange definition types read as Icelandic terms with the English value the caller sends (*almennur innflutningur (Generic Import)*, *launainnflutningur (Payroll Import)*, *innflutningur bankayfirlita (Bank Statement Import)*); fixed *afturköllunar-*, the *Bifröst útvistað* field name and the *no*-addressing phrase. The offload term *útvista* stays.
