@@ -62,7 +62,7 @@ Default branch: main
 Migration branch: feature/bifrost-hnitbjorg-migration
 
 ## Dependencies
-- Bifrost Foundation, id `7505e808-6e52-4b96-a328-82573391297a`, publisher Origo, version **28.0.6.599** in `app/app.json` and `test/app.json` (the Foundation 28.0.6 release, raised 19.10.2026 for AppSource: the floor is the version the app is compiled against; application floor 28.3.0.0). AL-Go still probes the latest core CI build.
+- Bifrost Foundation, id `7505e808-6e52-4b96-a328-82573391297a`, publisher Origo, version **28.0.3.530** in `app/app.json` and `test/app.json`: the hash-pinned Foundation package CI stages, compiles and tests against (set 19.10.2026 for AppSource; raise it only together with the CI pin). Application floor 28.3.0.0.. AL-Go still probes the latest core CI build.
 
 At runtime the tenant must also have at least one Business Central external file storage
 connector app installed and configured (Azure Blob Storage, Azure File Share or SharePoint).
