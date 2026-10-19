@@ -43,11 +43,6 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-### Fixed (2026-10-19) - SharePoint storage write preflight (#120)
-
-- Replaced the unconditional SharePoint write refusal with public-account schema validation, decoded site/library path budgets and shared physical alias identity. Moved attachment links retain their account-relative destination; indirect metadata reads are granted through BIFROST Attach ori. Documented the declared connector minimum instead of an exact build pin.
-- Added focused alias, restricted-identity, encoded-traversal and exact 400/401-character regressions. Actual provider write/readback, exact-candidate CI and UAT acceptance remain pending.
-
 ### Added (2026-10-16) - Data Exchange Phase 2 incoming documents (#23)
 
 - `Storage.Upload.CommitToRecord` (IncomingDocument) and `Storage.Attachment.CreateLinked` accept optional `dataExchangeType`, `process` and `vendorNo`. An unknown type is refused before any write and leaves the upload session Open (AC01, AC03, AC04).
@@ -612,11 +607,6 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-### Fixed (2026-10-19) - SharePoint storage write preflight (#120)
-
-- Replaced the unconditional SharePoint write refusal with public-account schema validation, decoded site/library path budgets and shared physical alias identity. Moved attachment links retain their account-relative destination; indirect metadata reads are granted through BIFROST Attach ori. Documented the declared connector minimum instead of an exact build pin.
-- Added focused alias, restricted-identity, encoded-traversal and exact 400/401-character regressions. Actual provider write/readback, exact-candidate CI and UAT acceptance remain pending.
-
 ### Fixed (2026-10-16) - storage write direction (#130)
 
 - External storage writes were declared Outbound, so they used the read path and skipped the write gate. `Storage.File.Create` (10035649), `Storage.File.Delete` (10035650), `Storage.File.Copy` (10035648), `Storage.File.Move` (10035654), `Storage.Directory.Create` (10035644) and `Storage.Directory.Delete` (10035645) now report message direction Inbound. Read types stay Outbound. Contract effects are unchanged.
@@ -640,11 +630,6 @@ Business Central release versioning (`major.minor.build.revision`).
 - `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.
 - Attachments help pages are published through businesscentralal/bifrost PR100. At docs main `af179cc00f2842a15d8ea9bace890ae51031c171`, the unmodified `Test-HelpLinks.ps1` checks 7 pages with 0 problems in both locale trees; the 10 EN/IS help and landing URLs return HTTP 200. These are help checks, separate from native/UI/MCP acceptance.
 ## [Unreleased]
-
-### Fixed (2026-10-19) - SharePoint storage write preflight (#120)
-
-- Replaced the unconditional SharePoint write refusal with public-account schema validation, decoded site/library path budgets and shared physical alias identity. Moved attachment links retain their account-relative destination; indirect metadata reads are granted through BIFROST Attach ori. Documented the declared connector minimum instead of an exact build pin.
-- Added focused alias, restricted-identity, encoded-traversal and exact 400/401-character regressions. Actual provider write/readback, exact-candidate CI and UAT acceptance remain pending.
 
 ### Fixed (2026-10-16) - provider path preflight (#122)
 
@@ -674,11 +659,6 @@ Business Central release versioning (`major.minor.build.revision`).
 - `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.
 - Attachments help pages are published through businesscentralal/bifrost PR100. At docs main `af179cc00f2842a15d8ea9bace890ae51031c171`, the unmodified `Test-HelpLinks.ps1` checks 7 pages with 0 problems in both locale trees; the 10 EN/IS help and landing URLs return HTTP 200. These are help checks, separate from native/UI/MCP acceptance.
 ## [Unreleased]
-
-### Fixed (2026-10-19) - SharePoint storage write preflight (#120)
-
-- Replaced the unconditional SharePoint write refusal with public-account schema validation, decoded site/library path budgets and shared physical alias identity. Moved attachment links retain their account-relative destination; indirect metadata reads are granted through BIFROST Attach ori. Documented the declared connector minimum instead of an exact build pin.
-- Added focused alias, restricted-identity, encoded-traversal and exact 400/401-character regressions. Actual provider write/readback, exact-candidate CI and UAT acceptance remain pending.
 
 ### Fixed (2026-10-18) - connection root refusal for Storage.Directory.Delete (#125)
 
