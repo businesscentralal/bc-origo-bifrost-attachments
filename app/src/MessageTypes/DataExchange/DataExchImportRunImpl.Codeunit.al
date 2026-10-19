@@ -2,8 +2,9 @@ namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
 using System.IO;
+using System.Utilities;
 
-/// <summary>Validates a shipped import request and creates its Data Exchange header.</summary>
+/// <summary>Imports a file into a Data Exch. entry with an import definition and parses its fields; optionally applies the mappings.</summary>
 codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
@@ -11,7 +12,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
 
     trigger OnRun()
     begin
-        ImportHeader(Rec);
+        ImportFile(Rec);
     end;
 
     /// <summary>Reports whether the caller can write the affected table.</summary>
@@ -31,7 +32,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Describes the current operation.</summary>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Creates a Data Exch. header for a generic or payroll import without reading file content.', Comment = 'is-IS=Býr til haus gagnaskiptafærslu fyrir almennan innflutning eða launainnflutning án þess að lesa innihald skrár.';
+        DescriptionLbl: Label 'Imports a file from storage or inline content into a Data Exch. entry and parses its fields with a Generic Import or Payroll Import definition.', Comment = 'is-IS=Flytur skrá úr geymslu eða innfellt innihald inn í gagnaskiptafærslu og þáttar reiti hennar með skilgreiningu fyrir almennan innflutning eða launainnflutning.';
     begin
         exit(DescriptionLbl);
     end;
@@ -39,7 +40,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Returns localized discovery terms.</summary>
     procedure GetKeywords(): Text
     var
-        KeywordsLbl: Label 'data exchange import, create import header', Comment = 'is-IS=innflutningur gagnaskipta, stofna innflutningshaus';
+        KeywordsLbl: Label 'data exchange import, import file, parse file, generic import', Comment = 'is-IS=innflutningur gagnaskipta, flytja inn skrá, þátta skrá, almennur innflutningur';
     begin
         exit(KeywordsLbl);
     end;
@@ -47,7 +48,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Explains when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionLbl: Label 'Creates a header for a Generic Import or Payroll Import definition. Refuses Bank Statement Import and export definitions.', Comment = 'is-IS=Býr til haus fyrir skilgreiningu fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import). Hafnar innflutningi bankayfirlita (Bank Statement Import) og útflutningsskilgreiningum.';
+        SelectionLbl: Label 'Imports a file that is already in storage, or small inline content, with a Generic Import or Payroll Import definition. Use Storage.Upload.CommitToDataExchange for a chunked upload.', Locked = true;
     begin
         exit(SelectionLbl);
     end;
@@ -118,8 +119,9 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        Related.Add(ContractMgt.RelatedEntry('DataExchange.Definition.Get', 'Read the definition used to create the header.'));
-        Related.Add(ContractMgt.RelatedEntry('DataExchange.Entry.Get', 'Read the created entry.'));
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Entry.Get', 'Inspect the parsed fields of the entry.'));
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Entry.Process', 'Apply the mappings after inspecting the fields.'));
+        Related.Add(ContractMgt.RelatedEntry('Storage.Upload.CommitToDataExchange', 'Import a file sent as a chunked upload.'));
         exit(true);
     end;
 
@@ -138,7 +140,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Summarizes the operation.</summary>
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Creates a Data Exch. header for an import definition without executing a storage provider.', Comment = 'is-IS=Býr til gagnaskiptahaus fyrir innflutningsskilgreiningu án þess að keyra geymsluveitu.';
+        OverviewLbl: Label 'Reads the file from storage (the file stays there) or from contentBase64 (at most 1 MB), inserts a Data Exch. entry with the file content and runs the definition reader, so the parsed Data Exch. Field rows can be inspected with DataExchange.Entry.Get. With process true the mappings run as well.', Comment = 'is-IS=Les skrána úr geymslu (skráin er þar áfram) eða úr contentBase64 (mest 1 MB), stofnar gagnaskiptafærslu með innihaldi skrárinnar og keyrir lesara skilgreiningarinnar svo skoða megi þáttuðu reitina með DataExchange.Entry.Get. Með process true eru varpanirnar einnig keyrðar.';
     begin
         Overview := OverviewLbl;
         exit(true);
@@ -147,7 +149,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Explains operation restrictions.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Bank Statement Import stays on the bank statement types. Export definitions are refused.', Comment = 'is-IS=Innflutningur bankayfirlita notar áfram bankayfirlitsaðferðirnar. Útflutningsskilgreiningum er hafnað.';
+        NotesLbl: Label 'Bank Statement Import definitions are refused; import bank statements with Finance.BankReconciliation.Create. Export definitions are refused. A file the reader cannot read answers an error and leaves no entry. With process true the import is committed first, so a processing error is reported in processResult.errors and the entry stays for DataExchange.Entry.Process. A successful call answers status Accepted.', Comment = 'is-IS=Skilgreiningum fyrir innflutning bankayfirlita er hafnað; flyttu bankayfirlit inn með Finance.BankReconciliation.Create. Útflutningsskilgreiningum er hafnað. Skrá sem lesarinn getur ekki lesið skilar villu og engin færsla verður eftir. Með process true er innflutningurinn staðfestur fyrst, svo vinnsluvilla birtist í processResult.errors og færslan bíður DataExchange.Entry.Process. Kall sem heppnast skilar stöðunni Accepted.';
     begin
         Notes := NotesLbl;
         exit(true);
@@ -172,50 +174,103 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
             Reader.RespondIfErrors(Argument);
             exit;
         end;
-        // No Boolean return: do not introduce an implicit commit or catch postwrite errors.
+        // No Boolean return: a reader error rolls back the whole import. Only process true commits, after the import.
         Codeunit.Run(Codeunit::"DataExch Import Run Impl ori", Argument);
     end;
 
-    local procedure ImportHeader(var Argument: Record "Message Argument ori")
+    local procedure ImportFile(var Argument: Record "Message Argument ori")
     var
-        DataExchDef: Record "Data Exch. Def";
         DataExch: Record "Data Exch.";
+        StorageSetup: Record "Storage Setup ori";
+        ImportMgt: Codeunit "DataExch Import Mgt ori";
         Reader: Codeunit "Storage Request Reader ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+        TempBlob: Codeunit "Temp Blob";
+        Connector: Interface "Storage Connector ori";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
+        ProcessResult: JsonObject;
         DefCode: Code[20];
         StorageCode: Code[20];
         Path: Text;
-        NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
-        TypeErr: Label 'DataExchange.Import.Run accepts Generic Import and Payroll Import only.', Comment = 'is-IS=DataExchange.Import.Run tekur aðeins við almennum innflutningi (Generic Import) og launainnflutningi (Payroll Import).';
-        DefinitionExpectedLbl: Label 'an existing Generic Import or Payroll Import definition', Comment = 'is-IS=fyrirliggjandi skilgreining fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import)';
-        SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and use the exact code of a Generic Import or Payroll Import definition.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningar fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import).';
+        FileName: Text;
+        InlineSource: Boolean;
+        Process: Boolean;
+        EmptyGuid: Guid;
+        OneSourceErr: Label 'Send the file either as contentBase64 or as storageCode with path, not both.', Comment = 'is-IS=Sendu skrána annaðhvort sem contentBase64 eða sem storageCode með path, ekki hvort tveggja.';
+        OneSourceExpectedLbl: Label 'exactly one source: contentBase64, or storageCode with path', Comment = 'is-IS=nákvæmlega ein uppspretta: contentBase64, eða storageCode með path';
+        OneSourceNextStepLbl: Label 'Remove storageCode and path to import the inline content, or remove contentBase64 to import the stored file.', Comment = 'is-IS=Fjarlægðu storageCode og path til að flytja inn innfellda innihaldið, eða fjarlægðu contentBase64 til að flytja inn skrána úr geymslu.';
     begin
         RequestJson := Argument.GetRequestJson();
         Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefCode);
-        Reader.ReadMutationCode(Argument, RequestJson, 'storageCode', StorageCode);
-        if Reader.ReadMutationText(Argument, RequestJson, 'path', true, 2048, Path) then
-            Reader.CheckPath(Argument, 'path', Path);
+        InlineSource := RequestJson.Contains('contentBase64');
+        if InlineSource then begin
+            if Reader.ReadBase64Content(Argument, RequestJson, 'contentBase64', true, TempBlob) then
+                ImportMgt.CheckInlineSize(Argument, 'contentBase64', TempBlob.Length());
+            if RequestJson.Contains('storageCode') or RequestJson.Contains('path') then
+                Argument.AddError("Bifrost Error Code ori"::InvalidParameter, OneSourceErr, 'contentBase64', '', OneSourceExpectedLbl, OneSourceNextStepLbl);
+        end else begin
+            Reader.ReadMutationCode(Argument, RequestJson, 'storageCode', StorageCode);
+            if Reader.ReadMutationText(Argument, RequestJson, 'path', true, 2048, Path) then
+                Reader.CheckPath(Argument, 'path', Path);
+        end;
+        if Reader.ReadMutationText(Argument, RequestJson, 'fileName', false, MaxStrLen(DataExch."File Name"), FileName) then
+            if FileName <> '' then
+                Reader.CheckFileName(Argument, FileName);
+        Reader.ReadBoolean(Argument, RequestJson, 'process', false, Process);
         if Reader.RespondIfErrors(Argument) then
             exit;
-        DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
-        if not DataExchDef.Get(DefCode) then
-            Argument.AddError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(NotFoundErr, DefCode), 'dataExchDefCode', DefCode, DefinitionExpectedLbl, SelectDefinitionLbl)
-        else
-            if not (DataExchDef.Type in [DataExchDef.Type::"Generic Import", DataExchDef.Type::"Payroll Import"]) then
-                Argument.AddError("Bifrost Error Code ori"::InvalidParameter, TypeErr, 'dataExchDefCode', DefCode, DefinitionExpectedLbl, SelectDefinitionLbl);
+        ImportMgt.CheckImportDefinition(Argument, DefCode, 'dataExchDefCode');
+        if Reader.RespondIfErrors(Argument) then
+            exit;
+        if not InlineSource then
+            if RequestMgt.ResolveSetup(Argument, StorageCode, 'storageCode', StorageSetup, Connector) then
+                Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
         if Reader.RespondIfErrors(Argument) then
             exit;
         if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch.", true) then
             exit;
-        // This shipped operation creates a header only. It does not resolve storage or execute a provider/import pipeline.
-        DataExch.Init();
-        DataExch."Data Exch. Def Code" := DefCode;
-        DataExch.Insert(true);
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Field", true) then
+            exit;
+        ImportMgt.CheckReader(Argument, DefCode, 'dataExchDefCode');
+        if Reader.RespondIfErrors(Argument) then
+            exit;
+        // The stored file is only read; it stays in storage unchanged.
+        if not InlineSource then
+            if not RequestMgt.TryReadStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
+                Argument.RespondWithLastError();
+                exit;
+            end;
+        if FileName = '' then
+            if InlineSource then
+                FileName := DefaultFileName(DefCode)
+            else
+                FileName := RequestMgt.LeafName(Path);
+
+        // A reader error is raised and rolls back the entry and every parsed field with it.
+        ImportMgt.ImportFile(DefCode, FileName, TempBlob, EmptyGuid, 'DataExchange.Import.Run', StorageCode, Path, DataExch);
+
+        // The shipped wire shape is flat with status Accepted; the import result is added beside it.
         ResponseJson.Add('status', 'Accepted');
-        ResponseJson.Add('entryNo', DataExch."Entry No.");
-        ResponseJson.Add('dataExchDefCode', DefCode);
+        ImportMgt.AddImportResult(DataExch, ResponseJson);
+        if not InlineSource then begin
+            ResponseJson.Add('storageCode', StorageCode);
+            ResponseJson.Add('path', Path);
+        end;
+        if Process then begin
+            ResponseJson.Add('processed', ImportMgt.ProcessIsolated(DataExch."Entry No.", ProcessResult));
+            ResponseJson.Add('processResult', ProcessResult);
+        end else
+            ResponseJson.Add('processed', false);
         Argument.SetResponseJson(ResponseJson);
         Argument."Content Type" := Argument.GetContentTypeJson();
+    end;
+
+    local procedure DefaultFileName(DefCode: Code[20]): Text
+    var
+        DataExch: Record "Data Exch.";
+    begin
+        DataExch."Data Exch. Def Code" := DefCode;
+        exit(DefCode + DataExch.GetFileExtension());
     end;
 }

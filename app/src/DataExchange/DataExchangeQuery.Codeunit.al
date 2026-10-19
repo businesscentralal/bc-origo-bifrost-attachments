@@ -4,6 +4,7 @@ using Origo.Bifrost;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Utilities;
 
 /// <summary>
 /// Read-only queries behind the Data Exchange discovery message types.
@@ -129,14 +130,24 @@ codeunit 70013520 "Data Exchange Query ori"
         RespondSuccess(Argument, DefinitionDetailToJson(DataExchDef));
     end;
 
-    /// <summary>Returns the header of one Data Exch. Def (code, name, type) as DataExchange.Definition.Export answers it.</summary>
+    /// <summary>Returns the header of one Data Exch. Def (code, name, type) as DataExchange.Definition.Export answers it, and with a delivery also the definition XML.</summary>
     /// <param name="Argument">The message argument. Receives the success or error response.</param>
     procedure ExportDefinition(var Argument: Record "Message Argument ori")
     var
         DataExchDef: Record "Data Exch. Def";
+        StorageSetup: Record "Storage Setup ori";
+        ExportMgt: Codeunit "DataExch Export Mgt ori";
+        DefTransfer: Codeunit "DataExch Def Transfer ori";
+        TempBlob: Codeunit "Temp Blob";
+        Connector: Interface "Storage Connector ori";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         CodeText: Text;
+        Path: Text;
+        FolderPath: Text;
+        HasStorage: Boolean;
+        Inline: Boolean;
+        Deliver: Boolean;
     begin
         RequestJson := Argument.GetRequestJson();
         ReadText(Argument, RequestJson, 'code', true, MaxStrLen(DataExchDef.Code), CodeText);
@@ -150,11 +161,27 @@ codeunit 70013520 "Data Exchange Query ori"
             exit;
         end;
 
+        // Without a delivery the answer is the header only, as shipped. With storageCode or inline the
+        // definition is also written as the standard definition XML.
+        Deliver := RequestJson.Contains('storageCode') or RequestJson.Contains('inline') or RequestJson.Contains('path') or RequestJson.Contains('folderPath');
+        if Deliver then begin
+            ExportMgt.ReadDelivery(Argument, RequestJson, DataExchDef.Code + '.xml', StorageSetup, Connector, Path, HasStorage, Inline, FolderPath);
+            if RespondIfErrors(Argument) then
+                exit;
+            if HasStorage then
+                if not ExportMgt.CheckDestination(Argument, StorageSetup, Path) then
+                    exit;
+            DefTransfer.ExportDefinitionXml(DataExchDef.Code, TempBlob);
+        end;
+
         // The shipped wire shape is flat: status, code, name and type at the top level.
         ResponseJson.Add('status', 'Success');
         ResponseJson.Add('code', DataExchDef.Code);
         ResponseJson.Add('name', DataExchDef.Name);
         ResponseJson.Add('type', EnumName(DataExchDef.Type));
+        if Deliver then
+            if not ExportMgt.Deliver(Argument, TempBlob, StorageSetup, Connector, Path, HasStorage, Inline, false, ResponseJson) then
+                exit;
         Argument.SetResponseJson(ResponseJson);
         Argument."Content Type" := Argument.GetContentTypeJson();
     end;
