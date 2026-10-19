@@ -1,7 +1,7 @@
 # Bifrost Attachments
 
 **App name:** Bifrost Attachments (display form *Bifröst viðhengi*)  
-**Publisher:** Origo — **Version:** 28.0.0.0 — **Target:** Cloud (BC 28, runtime 17.0)  
+**Publisher:** Origo — **Version:** 28.0.0.4 in source (CI package 28.0.0.109 at main `304a1c2`) — **Target:** Cloud (BC 28.3 or later, runtime 17.0) — **Requires:** Bifrost Foundation 28.0.3.530  
 **App ID:** `672df32a-a0c5-4a22-b591-0efa38023e95` — **Test app ID:** `7cdb530b-b74b-446b-9ece-80e2b911bfb3`  
 **Object ID range:** 10035635–10035684 (tests 96200–96299) — **Namespace:** `Origo.Bifrost.Attachments`  
 **Environments:** Business Central online (SaaS) and the COSMO Alpaca development containers `bc28-is` (CRONUS IS) and `bc28-w1` (CRONUS International Ltd.)
@@ -87,7 +87,7 @@ For uploads destined for a record, omit `storageCode` in `Storage.Upload.Begin` 
   interface; no minimum connector version or build is required.
 - **Large files without timeouts.** Chunked uploads split a file into sessions and chunks, so a
   multi-hundred-megabyte upload never depends on a single request completing.
-- **One contract for every caller.** The same 23 message types serve the BC client, the Bifröst MCP
+- **One contract for every caller.** The same 39 message types (23 storage, 16 Data Exchange) serve the BC client, the Bifröst MCP
   server and any external integration, and each type documents itself at runtime.
 - **Bilingual captions.** The app carries en-US and is-IS caption resources and uses the ` ori`
   object affix. AppSource readiness and affix/range registration evidence remain open in [#83](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/83).
@@ -259,7 +259,7 @@ object carries the mandatory ` ori` affix.
 
 | ID | Name | Extends | Purpose |
 | --- | --- | --- | --- |
-| 10035635 | `Storage Msg Type ori` | `Message Type ori` (Foundation) | The 23 message types this app publishes. Captions are `Locked = true` — they are the public wire contract. |
+| 10035635 | `Storage Msg Type ori` | `Message Type ori` (Foundation) | The 23 storage message types this app publishes (the 16 Data Exchange types are listed below). Captions are `Locked = true` — they are the public wire contract. |
 
 ### Interface
 
@@ -497,4 +497,4 @@ release checklist, scenario plan, source market inventory and gated validator sa
 for #81. Formal scenarios follow exact-candidate internal QA; these planning files do not certify
 AppSource readiness. Published product/help documentation remains with its established owners.
 
-The internal submission workspace is approved with conditions for #81. Its refreshed inventory records the approved Foundation 28.0.2.523 input and named missing-evidence owners. Formal scenarios and the dry-run remain held for immutable #80 QA and explicit release.
+The internal submission workspace is approved with conditions for #81. Its inventory keeps Foundation 28.0.2.523 as historical input only; the current candidate (main `304a1c2`, package 28.0.0.109) requires Foundation 28.0.3.530, and named owners still hold the missing evidence. Formal scenarios and the dry-run remain held for immutable #80 QA and explicit release.

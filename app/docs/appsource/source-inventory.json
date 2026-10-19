@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "b55c1e039edc42febcfd8072a94850d0f22d8f25",
+  "sourceSha": "304a1c24985a00fb86b5caef10ca46ffe04096b6",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -279,9 +279,9 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-19T14:50:34.614355+00:00",
-  "inventoryPreparedFromDocumentationHead": "b55c1e039edc42febcfd8072a94850d0f22d8f25",
-  "productSourceBaselineUnchanged": false,
+  "refreshedAt": "2026-10-19T16:35:32.229466+00:00",
+  "inventoryPreparedFromDocumentationHead": "304a1c24985a00fb86b5caef10ca46ffe04096b6",
+  "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",
@@ -504,16 +504,47 @@
   "approvedFoundationInput": null,
   "integratedCandidate": {
     "authorityUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749",
-    "sha": null,
+    "sha": "304a1c24985a00fb86b5caef10ca46ffe04096b6",
     "qaPassed": false,
     "excludedCandidateSha": "b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005",
     "requiredIntegration": [
-      "#72",
-      "#122 repair dffe555",
-      "PR127",
-      "PR128",
-      "PR129 unless Architect conditional exclusion applies"
+      "#72 (merged)",
+      "#122 repair (merged)",
+      "PR127 (merged)",
+      "PR128 (merged)",
+      "PR129 (merged)"
     ],
+    "laterIntegration": [
+      "PR118 removed the exact connector-version pin",
+      "PR144 interface-only storage connectors; no connector-id/version logic",
+      "PR149 signed NAVX gate deferred under #78",
+      "PR150 Data Exchange import, processing, export and definition types",
+      "PR151 AL-Go probes Foundation from the core GitHub release 28.0.3"
+    ],
+    "pendingChange": "PR152 (#120, open) removes the last schema-based write refusal; if merged, the candidate moves to that merge head and needs its own receipts",
+    "buildEvidence": {
+      "run": 39276099802,
+      "runUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39276099802",
+      "conclusion": "success",
+      "jobs": "Default, Test and Deploy to Bifrost green",
+      "testsExecuted": 354,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "defaultPackageVersion": "28.0.0.109",
+      "internalsVisibleTo": [],
+      "dependencies": [
+        {
+          "name": "Bifrost Foundation",
+          "id": "7505e808-6e52-4b96-a328-82573391297a",
+          "minVersion": "28.0.3.530"
+        }
+      ],
+      "application": "28.3.0.0",
+      "messageTypes": 39,
+      "connectorAppDependencies": [],
+      "artifactIdAndPackageSha256": null,
+      "signatureTrustVerified": false
+    },
     "requiredBuildEvidence": "main Default+Test green, meaningful executed tests, signed no-friend Default Apps artifact",
     "preparationAuthorizedNow": true,
     "formalScenariosAndDryRun": "after passing #80 QA on accepted SHA"

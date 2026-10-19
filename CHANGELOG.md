@@ -8,6 +8,13 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Documentation (2026-10-19) - release candidate facts refreshed (#77, #81, #83)
+
+- The AppSource working package (`app/docs/appsource`), `API-SURFACE.md`, the README and `.claude/CLAUDE.md` now name the current candidate: main `304a1c2`, CI/CD run 39276099802 green (Default, Test with 354 executed / 0 failed / 0 skipped, Deploy to Bifrost), Default package 28.0.0.109 with empty `InternalsVisibleTo` and Bifrost Foundation 28.0.3.530 as its only dependency, application 28.3.0.0 and 39 message types.
+- Connector text now says storage is interface-only with no connector app dependency (PR118, PR144); the proposed 28.5 connector dependencies and SFTP wording are gone. The scenario plan describes the Data Exchange types PR150 shipped instead of the old header-only boundary.
+- AL-Go takes Foundation from the core GitHub release 28.0.3 (PR151); the signed NAVX gate is deferred under #78 (PR149) and open PR152 (#120) would move the candidate.
+- `source-inventory.json` records the candidate in `integratedCandidate` and is regenerated at `304a1c2`. Partner Center, production signing, the 14-market validation, provider accounts and SaaS identities stay open with their named owners. No AL code changed.
+
 ### Fixed (2026-10-19) - Data Exchange CI test failures (#150 follow-up)
 
 - `Help.Storage.Get` names `Storage.Upload.CommitToDataExchange` in its upload table and upload flow.
