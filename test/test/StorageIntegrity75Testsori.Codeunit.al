@@ -97,12 +97,15 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         Link."Storage Code" := AliasSetup.Code;
         Link."Storage Path" := 'Xfile.txt';
         Link.Modify(false);
+        // Establish the test-owned baseline before asserterror rolls back its transaction.
+        Commit();
         AttachmentMgt.CheckMovedPath(TempArgument, SelectedSetup.Code, 'Xdir/Xfile.txt', 'outside.txt');
         LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'A destination outside the linked setup base must be refused.');
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
         LibraryAssert.AreEqual('Xfile.txt', Link."Storage Path", 'Refusal preserves link metadata.');
         asserterror AttachmentMgt.UpdateMovedStorageFile(SelectedSetup.Code, 'Xdir/Xfile.txt', 'outside.txt');
         LibraryAssert.AreNotEqual('', GetLastErrorText(), 'A direct AL caller must not bypass the linked base-path boundary.');
+        AssertCaughtRefusal('PreconditionFailed');
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
         LibraryAssert.AreEqual('Xfile.txt', Link."Storage Path", 'Direct-call refusal preserves link metadata.');
         AttachmentMgt.UpdateMovedStorageFile(SelectedSetup.Code, 'Xdir/Xfile.txt', 'Xdir/archive/New%20File.txt');
@@ -679,6 +682,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         Commit();
         asserterror AttachmentMgt.UpdateMovedStorageFile(MockCodeTok, 'Xdir/Xfile.txt', PadStr('X', 2049, 'a'));
         LibraryAssert.AreNotEqual('', GetLastErrorText(), 'Overlong path must raise an actionable refusal.');
+        AssertCaughtRefusal('InvalidParameter');
         AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
     end;
 
@@ -793,6 +797,16 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
     local procedure AssertSuccess(Response: JsonObject)
     begin
         LibraryAssert.AreEqual('Success', ReadText(Response, 'status'), 'The fixture operation must succeed.');
+    end;
+
+    local procedure AssertCaughtRefusal(ExpectedCode: Text)
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+    begin
+        // Consume the same raised-error handover a message caller would answer, so a
+        // later independent test cannot inherit this deliberately caught refusal.
+        TempArgument.RespondWithLastError();
+        AssertRefusal(TempArgument.GetResponseJson(), ExpectedCode);
     end;
 
     local procedure AssertRefusal(Response: JsonObject; ExpectedCode: Text)
