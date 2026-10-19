@@ -135,9 +135,11 @@ codeunit 96236 "Storage Interface Tests ori"
     procedure Scenario_Interface_UnsafePath_ReachesNoWrite()
     var
         StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
         Provider: Codeunit "Storage Ext File Impl ori";
         MockState: Codeunit "Storage Mock State";
         Content: Codeunit "Temp Blob";
+        Response: JsonObject;
     begin
         // [GIVEN] An arbitrary connector with independently counted writes.
         Initialize(StorageSetup);
@@ -146,6 +148,16 @@ codeunit 96236 "Storage Interface Tests ori"
         // [WHEN] The application receives traversal syntax.
         asserterror Provider.CreateFile(StorageSetup, '../escape.txt', Content);
         LibraryAssert.AreNotEqual('', GetLastErrorText(), 'The invalid path must be refused.');
+        // Consume the deliberately raised collection before another independent
+        // connector failure is answered through Foundation's shared handover.
+        TempArgument.Init();
+        TempArgument.Type := TempArgument.Type::"Storage.File.Create";
+        TempArgument.Insert(true);
+        TempArgument.RespondWithLastError();
+        Response := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('InvalidParameter', ReadText(Response, 'code'), 'Traversal must retain its structured path refusal.');
+        LibraryAssert.AreEqual('path', ReadText(Response, 'parameter'), 'Identify the unsafe request path.');
+        LibraryAssert.AreNotEqual('', ReadText(Response, 'nextStep'), 'Keep an actionable traversal recovery step.');
         // [THEN] Interface writes and content creation never occurred.
         LibraryAssert.AreEqual(0, MockState.GetWriteCalls(), 'Validation must precede connector writes.');
         LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'A refused request creates no file.');
