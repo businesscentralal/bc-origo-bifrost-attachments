@@ -2013,30 +2013,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Biddu kerfisstjóra um að veita aðgang að viðhengjum áður en þú reynir aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NativePermissionNextStepLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 4170002622 - NamedType 1282222719" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The installed attachment fields could not be verified. Nothing was changed.</source>
-          <target>Ekki tókst að staðfesta uppsetta viðhengjareiti. Engu var breytt.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Ekki tókst að staðfesta uppsetta viðhengjareiti. Engu var breytt.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NativeSchemaErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4170002622 - NamedType 3911921096" size-unit="char" translate="yes" xml:space="preserve">
-          <source>supported native attachment fields</source>
-          <target>studdir innbyggðir viðhengjareitir</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=studdir innbyggðir viðhengjareitir</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NativeSchemaExpectedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4170002622 - NamedType 3662994510" size-unit="char" translate="yes" xml:space="preserve">
-          <source>installed native attachment field schema</source>
-          <target>skema uppsettra innbyggðra viðhengjareita</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=skema uppsettra innbyggðra viðhengjareita</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NativeSchemaLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 4170002622 - NamedType 207276937" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Ask the administrator to verify the installed attachment application version.</source>
-          <target>Biddu kerfisstjóra um að staðfesta útgáfu uppsetts viðhengjaforrits.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Biddu kerfisstjóra um að staðfesta útgáfu uppsetts viðhengjaforrits.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType NativeSchemaNextStepLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 324945142" size-unit="char" translate="yes" xml:space="preserve">
           <source>Business Central does not know which field identifies a record in table %1, so an attachment cannot be keyed to it.</source>
           <target>Business Central veit ekki hvaða reitur auðkennir færslu í töflu %1 og því er ekki hægt að tengja viðhengi við hana.</target>

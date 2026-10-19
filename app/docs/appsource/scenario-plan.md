@@ -58,7 +58,7 @@ Since PR150 (#24, #25, #26), `DataExchange.Import.Run` reads the file from stora
 
 | Input | Preparation disposition |
 |---|---|
-| Integrated candidate | Follow [Architect1792179827](https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749) and the [release checklist](release-checklist.md). The current candidate is main `304a1c2` (CI/CD run 39276099802 green, package 28.0.0.109); open PR152 would move it. Build87/b66d1f2 is excluded. Document only shipped behavior. |
+| Integrated candidate | Follow [Architect1792179827](https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749) and the [release checklist](release-checklist.md). The current candidate is main `304a1c2` (CI/CD run 39276099802 green, package 28.0.0.109); PR152 merged after it (`1f9d72a`) and moves it. Build87/b66d1f2 is excluded. Document only shipped behavior. |
 | Foundation | Historical 523 input is preserved in inventory history only. Source and the 28.0.0.109 package require Foundation 28.0.3.530, taken from the core 28.0.3 GitHub release (PR151); #78 must still reconcile actual runtime hash and Windows trust (signed NAVX gate deferred by PR149). Freeze the final hash only from accepted candidate evidence. |
 | Connectors | The package has no connector app dependency; storage goes through the External File Storage interface (PR118, PR144). Record the connector apps actually installed per market row and their hashes. Provider scope stays Azure Blob Storage, Azure File Share and SharePoint. |
 | Shipping source | Inventory sourceSha is a preparation snapshot, not a QA candidate. Regenerate on the accepted #80 SHA before formalization; preserve all 39 declared types without treating declarations as passes. |

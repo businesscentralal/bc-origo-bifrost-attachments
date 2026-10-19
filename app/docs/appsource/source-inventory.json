@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "304a1c24985a00fb86b5caef10ca46ffe04096b6",
+  "sourceSha": "f8a26023e6160995f7ec3ef1af33401ad8c2824a",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -279,8 +279,8 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-19T16:35:32.229466+00:00",
-  "inventoryPreparedFromDocumentationHead": "304a1c24985a00fb86b5caef10ca46ffe04096b6",
+  "refreshedAt": "2026-10-19T16:58:35.619229+00:00",
+  "inventoryPreparedFromDocumentationHead": "f8a26023e6160995f7ec3ef1af33401ad8c2824a",
   "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
@@ -521,7 +521,7 @@
       "PR150 Data Exchange import, processing, export and definition types",
       "PR151 AL-Go probes Foundation from the core GitHub release 28.0.3"
     ],
-    "pendingChange": "PR152 (#120, open) removes the last schema-based write refusal; if merged, the candidate moves to that merge head and needs its own receipts",
+    "pendingChange": "PR152 (#120) removed the last schema-based write refusal and merged after this receipt as 1f9d72a; the candidate moves to the main head that contains it and needs its own receipts",
     "buildEvidence": {
       "run": 39276099802,
       "runUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39276099802",

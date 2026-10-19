@@ -14,6 +14,14 @@ Business Central release versioning (`major.minor.build.revision`).
 - Connector text now says storage is interface-only with no connector app dependency (PR118, PR144); the proposed 28.5 connector dependencies and SFTP wording are gone. The scenario plan describes the Data Exchange types PR150 shipped instead of the old header-only boundary.
 - AL-Go takes Foundation from the core GitHub release 28.0.3 (PR151); the signed NAVX gate is deferred under #78 (PR149) and open PR152 (#120) would move the candidate.
 - `source-inventory.json` records the candidate in `integratedCandidate` and is regenerated at `304a1c2`. Partner Center, production signing, the 14-market validation, provider accounts and SaaS identities stay open with their named owners. No AL code changed.
+### Changed (2026-10-19) - Storage writes are never refused for the storage setup (#120)
+
+- Offload, linking and alias moves on Document Attachment no longer refuse with *The installed
+  attachment fields could not be verified* when Microsoft's External File Storage fields 8750-8753
+  have unexpected names or types. Those fields are only mirrored: the write goes ahead and the
+  mirror is skipped and logged, as it already was when the fields are missing. The mirror now also
+  checks field names and types before assigning. The exact connector-version pin was removed
+  earlier by PR #118; no provider, connector version or schema check refuses a write any more.
 
 ### Fixed (2026-10-19) - Data Exchange CI test failures (#150 follow-up)
 
