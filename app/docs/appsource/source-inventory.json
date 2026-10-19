@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "941fc409f799fa66d325762bd826ce7649bfe515",
+  "sourceSha": "1f2165996a412bce9b8e365820ba50a46100d291",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -260,7 +260,7 @@
   "files": {
     "app/app.json": "04d412c54a09f6afc8a87ae837b5763fe1be566a62de4e3d08d50087058f8fcc",
     "app/AppSourceCop.json": "3693ee0c9ff2b18b8528d8b9bc2ecb80610346762766e2d9c209e0742885f2e8",
-    ".AL-Go/settings.json": "ce3b6e64e45c91a7fe33835b2bc2e5b4cbc103403100f9136c162c5739c91a08",
+    ".AL-Go/settings.json": "21e957eee054b6348633a22c6b0520b522f1adb9ff426283b2ce294337004db4",
     "test/app.json": "8bdec6f3d780bf86efd6e96ae7ad2b0373643483d4bb93f563341adeb5807c26",
     "app/assets/Logo250x250.png": "0f9185810ff29e9c77c7258d7b7bd3a51f5fcaa2bed0bcbf4288fd673fc0cc60"
   },
@@ -279,8 +279,8 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-19T13:43:00.469891+00:00",
-  "inventoryPreparedFromDocumentationHead": "941fc409f799fa66d325762bd826ce7649bfe515",
+  "refreshedAt": "2026-10-19T14:25:05.289373+00:00",
+  "inventoryPreparedFromDocumentationHead": "1f2165996a412bce9b8e365820ba50a46100d291",
   "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
@@ -389,6 +389,7 @@
     "app/src/Upload/StorageUploadStatus.Enum.al": "22df978b424ff006ef6ea68a95e7818c55ee3e3032de9704e8ad0835754344c1"
   },
   "testSourceFiles": {
+    "test/src/DXTestTarget.PermissionSet.al": "4ea5367ebc8fe4b167ff8f0968b820fe9f39d0ce8ec854004b7d4079277c2836",
     "test/src/DataExchFixture.Codeunit.al": "48a63c21d7359c7bdaeb4a2809dcc6c292b50c00555129c583b3e75c521df50f",
     "test/src/DataExchTestBigWriter.Codeunit.al": "cefd9c9a9838d62cae7e6000c6453ecb41613d64e5829ac18ef172dd058a1f5e",
     "test/src/DataExchTestMapping.Codeunit.al": "d95e95c17117cbd8dc53cd11dcaae99382df855132be3d641fc7ce2f8af2f096",
