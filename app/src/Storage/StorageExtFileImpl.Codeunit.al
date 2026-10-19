@@ -266,7 +266,8 @@ codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
         if ConnectorId = 4580 then begin
             if not ResolvePhysicalAddress(Argument, StorageSetup, Path, Scope, Address, CaseSensitive) then
                 exit(false);
-            CheckProviderBudget(Argument, ConnectorId, ParameterName, Address, IsDirectory);
+            // The connector sends a leading slash; include it in the decoded 400-character budget.
+            CheckProviderBudget(Argument, ConnectorId, ParameterName, '/' + Address, IsDirectory);
             exit(not Argument.HasCollectedErrors());
         end;
         if (ConnectorId = 4570) and ContainsNonAscii(Address) then begin

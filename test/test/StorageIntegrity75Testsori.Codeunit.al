@@ -60,6 +60,23 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.IsTrue(TempArgument.HasCollectedErrors(), 'The provider budget must produce a structured refusal.');
     end;
 
+    /// <summary>The decoded full path budget includes the slash actually sent by the connector.</summary>
+    [Test]
+    procedure Scenario_AC01_SharePointBudget_400And401()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Provider: Codeunit "Storage Ext File Impl ori";
+        PrefixLength: Integer;
+    begin
+        // Story #120, AC01 | Time: none | Risk: stripping the leading slash admitted one extra character.
+        SharePointSetup(StorageSetup, 'Shared Documents', 'https://x120.sharepoint.com/sites/Team');
+        PrefixLength := StrLen('/sites/Team/Shared Documents/x120base/');
+        LibraryAssert.IsTrue(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', PadStr('x', 400 - PrefixLength, 'a'), false), 'Exactly 400 decoded characters must pass.');
+        Clear(TempArgument);
+        LibraryAssert.IsFalse(Provider.CheckMutationPath(TempArgument, StorageSetup, 'path', PadStr('x', 401 - PrefixLength, 'a'), false), '401 decoded characters must be refused before provider access.');
+    end;
+
     /// <summary>Encoded traversal and unsupported comparison identities stay blocked before provider access.</summary>
     [Test]
     procedure Scenario_AC01_SharePointEncodedTraversal_Refused()
@@ -100,6 +117,11 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         Link: Record "Storage Attachment Link ori";
         TempArgument: Record "Message Argument ori" temporary;
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
+        Provider: Codeunit "Storage Ext File Impl ori";
+        SelectedAddress: Text;
+        AliasAddress: Text;
+        Scope: Text;
+        CaseSensitive: Boolean;
         AttachmentId: Guid;
     begin
         // Story #120, AC01 | Time: none | Risk: different account roots cannot reuse the selected relative path.
@@ -122,12 +144,15 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
         LibraryAssert.AreEqual('File.txt', Link."Storage Path", 'Refusal preserves the original link.');
         Clear(TempArgument);
-        AttachmentMgt.CheckMovedPath(TempArgument, SelectedSetup.Code, 'dir/File.txt', 'dir/archive/File.txt');
+        AttachmentMgt.CheckMovedPath(TempArgument, SelectedSetup.Code, 'dir/%46ile.txt', 'dir/archive/New%20File.txt');
         LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'A destination inside both roots passes.');
-        AttachmentMgt.UpdateMovedStorageFile(SelectedSetup.Code, 'dir/File.txt', 'dir/archive/File.txt');
+        AttachmentMgt.UpdateMovedStorageFile(SelectedSetup.Code, 'dir/%46ile.txt', 'dir/archive/New%20File.txt');
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
         LibraryAssert.AreEqual(AliasSetup.Code, Link."Storage Code", 'Move retains the alias storage code.');
-        LibraryAssert.AreEqual('archive/File.txt', Link."Storage Path", 'Move records the destination relative to the alias account root.');
+        LibraryAssert.AreEqual('archive/New File.txt', Link."Storage Path", 'Move records the decoded destination relative to the alias account root.');
+        LibraryAssert.IsTrue(Provider.ResolvePhysicalAddress(TempArgument, SelectedSetup, 'dir/archive/New%20File.txt', Scope, SelectedAddress, CaseSensitive), 'Selected destination must resolve.');
+        LibraryAssert.IsTrue(Provider.ResolvePhysicalAddress(TempArgument, AliasSetup, Link."Storage Path", Scope, AliasAddress, CaseSensitive), 'Stored alias destination must resolve.');
+        LibraryAssert.AreEqual(SelectedAddress, AliasAddress, 'The updated link reads back to the same decoded physical destination.');
     end;
 
     /// <summary>Outer slash spelling cannot bypass linked file or parent-directory deletion guards.</summary>
