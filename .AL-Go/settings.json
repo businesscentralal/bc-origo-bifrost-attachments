@@ -16,8 +16,8 @@
   "appDependencyProbingPaths": [
     {
       "repo": "https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core",
-      "release_status": "latestBuild",
-      "version": "1.0.3.530",
+      "release_status": "release",
+      "version": "28.0.3",
       "projects": "*",
       "authTokenSecret": "ghTokenWorkflow"
     }
