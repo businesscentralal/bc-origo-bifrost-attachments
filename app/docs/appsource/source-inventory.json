@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "14e2786ccdc44d5c67af083bdd30e165fe3ee934",
+  "sourceSha": "941fc409f799fa66d325762bd826ce7649bfe515",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -16,7 +16,7 @@
         "id": "7505e808-6e52-4b96-a328-82573391297a",
         "name": "Bifrost Foundation",
         "publisher": "Origo",
-        "version": "28.0.6.599"
+        "version": "28.0.3.530"
       }
     ],
     "idRanges": [
@@ -258,10 +258,10 @@
     }
   ],
   "files": {
-    "app/app.json": "b3845d074c96fb0c205b623e6733fcced66c19f7dc65931607d66d06bc83038b",
+    "app/app.json": "04d412c54a09f6afc8a87ae837b5763fe1be566a62de4e3d08d50087058f8fcc",
     "app/AppSourceCop.json": "3693ee0c9ff2b18b8528d8b9bc2ecb80610346762766e2d9c209e0742885f2e8",
     ".AL-Go/settings.json": "ce3b6e64e45c91a7fe33835b2bc2e5b4cbc103403100f9136c162c5739c91a08",
-    "test/app.json": "254601dff397f69c36607044d828a282ac782cfcf8e507352d53c8235569572d",
+    "test/app.json": "8bdec6f3d780bf86efd6e96ae7ad2b0373643483d4bb93f563341adeb5807c26",
     "app/assets/Logo250x250.png": "0f9185810ff29e9c77c7258d7b7bd3a51f5fcaa2bed0bcbf4288fd673fc0cc60"
   },
   "offerPlan": {
@@ -279,9 +279,9 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-19T13:40:51.052095+00:00",
-  "inventoryPreparedFromDocumentationHead": "14e2786ccdc44d5c67af083bdd30e165fe3ee934",
-  "productSourceBaselineUnchanged": false,
+  "refreshedAt": "2026-10-19T13:43:00.469891+00:00",
+  "inventoryPreparedFromDocumentationHead": "941fc409f799fa66d325762bd826ce7649bfe515",
+  "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",
