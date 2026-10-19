@@ -39,3 +39,6 @@ TestResults/
 
 # migration staging
 out/
+
+__pycache__/
+*.pyc
