@@ -8,6 +8,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-19) - Data Exchange minimum-role refusals (#79)
+
+- `DataExchange.Definition.Delete` checks caller definition read/mutation and reference-table reads before querying or deleting, returning structured `PermissionDenied` for missing grants. Existing deletion/reference behavior and standard BC prerequisites remain unchanged.
+- `Help.DataExchange.Get` now states that `BIFROST DataExch ori` grants discovery reads, while mutation operations need additional standard BC permissions. Restrictive tests cover Definition.Export success/missing-read and read-only Definition.Delete with persisted graph readback; genuine-identity and provider acceptance remain pending.
+
 ### Changed (2026-10-16) - stored storage descriptions (#126)
 
 - `Storage Contract Parts ori` (70013500) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.

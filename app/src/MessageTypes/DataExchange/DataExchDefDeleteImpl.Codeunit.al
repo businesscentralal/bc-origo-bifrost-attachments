@@ -197,6 +197,15 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
         Reader.ReadMutationCode(Argument, RequestJson, 'code', DefCode);
         if Reader.RespondIfErrors(Argument) then
             exit;
+        // Refuse missing caller grants before reference reads or the delete trigger can raise a platform error.
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Def", false) then
+            exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Def", true) then
+            exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exchange Type", false) then
+            exit;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Bank Export/Import Setup", false) then
+            exit;
         DataExchDef.ReadIsolation := IsolationLevel::UpdLock;
         if not DataExchDef.Get(DefCode) then begin
             Argument.AddError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(NotFoundErr, DefCode), 'code', DefCode, DefinitionExpectedLbl, SelectDefinitionLbl);

@@ -174,7 +174,8 @@ codeunit 70013521 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
         Guide.AppendLine();
         Guide.AppendLine('## Permissions');
         Guide.AppendLine();
-        Guide.AppendLine('Assign the `BIFROST DataExch ori` permission set. It grants the Data Exchange tables these types read and write; `BIFROST Attach ori` does not include them.');
+        Guide.AppendLine('Assign `BIFROST DataExch ori` with the Foundation API baseline for Data Exchange discovery. This role grants read access, including `DataExchange.Definition.Export`; it does not grant table writes.');
+        Guide.AppendLine('`DataExchange.Type.Set`, `DataExchange.Import.Run`, `DataExchange.Export.Run` and `DataExchange.Definition.Delete` additionally require the appropriate standard Business Central table mutation permissions. Definition deletion also reads Data Exchange Type and Bank Export/Import Setup to check references. `BIFROST Attach ori` does not grant these Data Exchange table permissions.');
         exit(Guide.ToText());
     end;
 }
