@@ -8,6 +8,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-19) - Data Exchange minimum-role refusals (#79)
+
+- `DataExchange.Definition.Delete` checks caller definition read/mutation and reference-table reads before querying or deleting, returning structured `PermissionDenied` for missing grants. Existing deletion/reference behavior and standard BC prerequisites remain unchanged.
+- `Help.DataExchange.Get` now states that `BIFROST DataExch ori` grants discovery reads, while mutation operations need additional standard BC permissions. Restrictive tests cover Definition.Export success/missing-read and read-only Definition.Delete with persisted graph readback; genuine-identity and provider acceptance remain pending.
+
 ### Fixed (2026-10-19) - SharePoint storage write preflight (#120)
 
 - Replaced the unconditional SharePoint write refusal with public-account schema validation, decoded site/library path budgets and shared physical alias identity. Moved attachment links retain their account-relative destination; indirect metadata reads are granted through BIFROST Attach ori. Documented the declared connector minimum instead of an exact build pin.
