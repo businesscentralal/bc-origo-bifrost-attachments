@@ -8,6 +8,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Added (2026-10-19) - Restrictive permission tests for the Data Exchange pipeline types (#79)
+
+- `Storage 79 Perm Tests ori` (96218) covers the five message types added in #150 under `TestPermissions = Restrictive`, dispatched through the public `Dispatcher ori` with fresh observer readback. Refusals: `DataExchange.Entry.Process` without write on the mapping target (`PermissionDenied` naming the definition, no marker), `DataExchange.Entry.Delete` without `Data Exch.` mutation and without `Data Exch. Field` mutation, `DataExchange.Definition.Import` without definition mutation (valid exported XML under a new code installs nothing), `DataExchange.PaymentExport.Run` without `Gen. Journal Line` mutation (line not marked, no entry, no credit transfer register) and `Storage.Upload.CommitToDataExchange` with both product roles but no `Data Exch.` or `Data Exch. Field` mutation (session stays open with its chunk bytes). Each denial asserts the table id in `received`.
+- Positive minimum-role scenarios: Entry.Process with `BIFROST DataExch ori` plus write on the target table only; Entry.Delete and CommitToDataExchange with `BIFROST DataExch ori` (and `BIFROST Attach ori`) plus standard `Data Exch.`/`Data Exch. Field` mutation; Definition.Import with `BIFROST DataExch ori` plus standard mutation of the five definition tables. PaymentExport.Run has no positive scenario here (it needs a bank account with a payment export format and the base-app export).
+- Test permission sets `Storage79 DxWr ori` (96223), `Storage79 DxRows ori` (96224) and `Storage79 DxDef ori` (96247) supply only the standard Business Central table grants. `test/permissions-79.md` lists the five types and the current Foundation 28.0.3.530 / application 28.3.0.0 inputs.
+
 ### Fixed (2026-10-19) - Data Exchange CI test failures (#150 follow-up)
 
 - `Help.Storage.Get` names `Storage.Upload.CommitToDataExchange` in its upload table and upload flow.

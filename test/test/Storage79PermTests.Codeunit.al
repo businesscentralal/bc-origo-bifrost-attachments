@@ -1,5 +1,7 @@
 namespace Origo.Bifrost.Attachments.Test;
 
+using Microsoft.Bank.Payment;
+using Microsoft.Finance.GeneralLedger.Journal;
 using Microsoft.Foundation.Attachment;
 using Microsoft.Sales.Customer;
 using Origo.Bifrost;
@@ -645,6 +647,329 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         AssertDiscoveryDenial('Storage79 Type ori', Database::"Data Exchange Type", false);
     end;
 
+    // #150 pipeline types. Each refusal sends a complete, valid request so the permission boundary is what refuses it.
+    [Test]
+    /// <summary>Entry.Process under the Data Exchange role refuses a mapping target the caller cannot write and changes nothing.</summary>
+    procedure Scenario_AC02_ProcessWithoutTargetWrite_PreservesEntry()
+    var
+        EntryLink: Record "DataExch Entry Link ori";
+        EntryNo: Integer;
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Story79 AC02 | Time: none | Risk: the target-table check must refuse before any mapping runs.
+        Initialize();
+        EntryNo := SeedDataExchange();
+        LowerActor('BIFROST DataExch ori');
+        AssertDiscoveryReads(0);
+        RequestJson.Add('entryNo', EntryNo);
+        ResponseJson := Dispatch(MessageType::"DataExchange.Entry.Process", RequestJson);
+        Observe();
+        AssertDataExchangeUnchanged(EntryNo);
+        EntryLink.ReadIsolation := IsolationLevel::ReadCommitted;
+        LibraryAssert.IsFalse(EntryLink.Get(EntryNo), 'A refused process writes no entry marker.');
+        AssertStructuredError(ResponseJson, 'PermissionDenied');
+        LibraryAssert.AreEqual(DefinitionCode, ReadText(ResponseJson, 'received'), 'The denial names the definition whose Customer mapping the actor cannot write.');
+    end;
+
+    [Test]
+    /// <summary>Entry.Process succeeds with the Data Exchange role plus write on the mapping target table, without any Data Exchange table mutation.</summary>
+    procedure Scenario_AC01_ProcessWithTargetWrite_WritesTargetRows()
+    var
+        DataExch: Record "Data Exch.";
+        EntryLink: Record "DataExch Entry Link ori";
+        Fixture: Codeunit "DataExch Fixture ori";
+        ImportDefinitionCode: Code[20];
+        EntryNo: Integer;
+        RequestJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Story79 AC01 | Time: none | Risk: the entry marker is written through its inherent permissions only.
+        Initialize();
+        ImportDefinitionCode := Fixture.CreateImportDefinition(0);
+        EntryNo := ImportFixtureEntry(ImportDefinitionCode);
+        LowerActor('BIFROST DataExch ori');
+        LowerPermissions.AddPermissionSet('DX Test Target ori');
+        LibraryAssert.IsFalse(DataExch.WritePermission(), 'The actor holds no Data Exch. mutation.');
+        RequestJson.Add('entryNo', EntryNo);
+        AssertSuccess(Dispatch(MessageType::"DataExchange.Entry.Process", RequestJson));
+        Observe();
+        LibraryAssert.AreEqual(2, Fixture.TargetCount(EntryNo), 'Both parsed lines reach the mapping target.');
+        EntryLink.ReadIsolation := IsolationLevel::ReadCommitted;
+        EntryLink.Get(EntryNo);
+        LibraryAssert.IsTrue(EntryLink.Processed, 'The processed entry is marked processed.');
+    end;
+
+    [Test]
+    /// <summary>Entry.Delete under the read-only Data Exchange role refuses before deleting the entry or its fields.</summary>
+    procedure Scenario_AC02_ReadOnlyEntryDelete_PreservesEntry()
+    var
+        EntryNo: Integer;
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Story79 AC02 | Time: none | Risk: the Data Exch. mutation check must come before the lookup and the delete.
+        Initialize();
+        EntryNo := SeedDataExchange();
+        LowerActor('BIFROST DataExch ori');
+        AssertDiscoveryReads(0);
+        RequestJson.Add('entryNo', EntryNo);
+        ResponseJson := Dispatch(MessageType::"DataExchange.Entry.Delete", RequestJson);
+        Observe();
+        AssertDataExchangeUnchanged(EntryNo);
+        AssertStructuredError(ResponseJson, 'PermissionDenied');
+        LibraryAssert.AreEqual(Format(Database::"Data Exch.", 0, 9), ReadText(ResponseJson, 'received'), 'The denial names the missing Data Exch. mutation.');
+    end;
+
+    [Test]
+    /// <summary>Entry.Delete with Data Exch. mutation but no Data Exch. Field mutation refuses before the cascading delete.</summary>
+    procedure Scenario_AC02_EntryDeleteWithoutFieldWrite_PreservesEntry()
+    var
+        DataExch: Record "Data Exch.";
+        DataExchField: Record "Data Exch. Field";
+        EntryNo: Integer;
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Story79 AC02 | Time: none | Risk: the trigger deletes the fields, so their mutation is checked first.
+        Initialize();
+        EntryNo := SeedDataExchange();
+        LowerActor('BIFROST DataExch ori');
+        LowerPermissions.AddPermissionSet('Storage79 DxWr ori');
+        LibraryAssert.IsTrue(DataExch.WritePermission(), 'The entry mutation is granted to isolate the field check.');
+        LibraryAssert.IsFalse(DataExchField.WritePermission(), 'The field mutation must be absent.');
+        RequestJson.Add('entryNo', EntryNo);
+        ResponseJson := Dispatch(MessageType::"DataExchange.Entry.Delete", RequestJson);
+        Observe();
+        AssertDataExchangeUnchanged(EntryNo);
+        AssertStructuredError(ResponseJson, 'PermissionDenied');
+        LibraryAssert.AreEqual(Format(Database::"Data Exch. Field", 0, 9), ReadText(ResponseJson, 'received'), 'The denial names the missing Data Exch. Field mutation.');
+    end;
+
+    [Test]
+    /// <summary>Entry.Delete succeeds with the Data Exchange role plus the standard entry and field mutation, and leaves the definition.</summary>
+    procedure Scenario_AC01_EntryDeleteWithRowWrite_DeletesEntry()
+    var
+        DataExch: Record "Data Exch.";
+        DataExchField: Record "Data Exch. Field";
+        DataExchDef: Record "Data Exch. Def";
+        EntryNo: Integer;
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Story79 AC01 | Time: none | Risk: minimum documented grant; definition tables stay read-only.
+        Initialize();
+        EntryNo := SeedDataExchange();
+        LowerActor('BIFROST DataExch ori');
+        LowerPermissions.AddPermissionSet('Storage79 DxRows ori');
+        LibraryAssert.IsFalse(DataExchDef.WritePermission(), 'The actor holds no definition mutation.');
+        RequestJson.Add('entryNo', EntryNo);
+        ResponseJson := Dispatch(MessageType::"DataExchange.Entry.Delete", RequestJson);
+        AssertSuccess(ResponseJson);
+        LibraryAssert.AreEqual(1, ReadInteger(ReadData(ResponseJson), 'deletedFieldCount'), 'The response counts the seeded field.');
+        Observe();
+        DataExch.ReadIsolation := IsolationLevel::ReadCommitted;
+        LibraryAssert.IsFalse(DataExch.Get(EntryNo), 'The entry is deleted.');
+        DataExchField.ReadIsolation := IsolationLevel::ReadCommitted;
+        DataExchField.SetRange("Data Exch. No.", EntryNo);
+        LibraryAssert.IsTrue(DataExchField.IsEmpty(), 'The entry fields are deleted with it.');
+        DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
+        LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'The definition stays.');
+    end;
+
+    [Test]
+    /// <summary>Definition.Import under the read-only Data Exchange role refuses a valid definition XML and installs nothing.</summary>
+    procedure Scenario_AC02_ReadOnlyDefinitionImport_InstallsNothing()
+    var
+        DataExchDef: Record "Data Exch. Def";
+        LineDef: Record "Data Exch. Line Def";
+        EntryNo: Integer;
+        NewCode: Code[20];
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Story79 AC02 | Time: none | Risk: the five definition write checks run before the XML is read or installed.
+        Initialize();
+        EntryNo := SeedDataExchange();
+        NewCode := NewFixtureCode();
+        RequestJson := DefinitionImportRequest(NewCode);
+        LowerActor('BIFROST DataExch ori');
+        AssertDiscoveryReads(0);
+        ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Import", RequestJson);
+        Observe();
+        AssertDataExchangeUnchanged(EntryNo);
+        DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
+        LibraryAssert.IsFalse(DataExchDef.Get(NewCode), 'A refused import installs no definition.');
+        LineDef.ReadIsolation := IsolationLevel::ReadCommitted;
+        LineDef.SetRange("Data Exch. Def Code", NewCode);
+        LibraryAssert.IsTrue(LineDef.IsEmpty(), 'A refused import installs no line definition.');
+        AssertStructuredError(ResponseJson, 'PermissionDenied');
+        LibraryAssert.AreEqual(Format(Database::"Data Exch. Def", 0, 9), ReadText(ResponseJson, 'received'), 'The denial names the missing definition mutation.');
+    end;
+
+    [Test]
+    /// <summary>Definition.Import succeeds with the Data Exchange role plus the standard definition-table mutation.</summary>
+    procedure Scenario_AC01_DefinitionImportWithDefWrite_InstallsCopy()
+    var
+        DataExchDef: Record "Data Exch. Def";
+        LineDef: Record "Data Exch. Line Def";
+        Mapping: Record "Data Exch. Mapping";
+        DataExch: Record "Data Exch.";
+        EntryNo: Integer;
+        NewCode: Code[20];
+        RequestJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Story79 AC01 | Time: none | Risk: minimum documented grant; entry tables stay read-only.
+        Initialize();
+        EntryNo := SeedDataExchange();
+        NewCode := NewFixtureCode();
+        RequestJson := DefinitionImportRequest(NewCode);
+        LowerActor('BIFROST DataExch ori');
+        LowerPermissions.AddPermissionSet('Storage79 DxDef ori');
+        LibraryAssert.IsFalse(DataExch.WritePermission(), 'The actor holds no entry mutation.');
+        AssertSuccess(Dispatch(MessageType::"DataExchange.Definition.Import", RequestJson));
+        Observe();
+        DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
+        DataExchDef.Get(NewCode);
+        LibraryAssert.AreEqual('X79 seeded definition', DataExchDef.Name, 'The copy carries the exported name.');
+        LineDef.ReadIsolation := IsolationLevel::ReadCommitted;
+        LibraryAssert.IsTrue(LineDef.Get(NewCode, 'X79-LINE'), 'The copy carries the line definition.');
+        Mapping.ReadIsolation := IsolationLevel::ReadCommitted;
+        LibraryAssert.IsTrue(Mapping.Get(NewCode, 'X79-LINE', Database::Customer), 'The copy carries the mapping.');
+        AssertDataExchangeUnchanged(EntryNo);
+    end;
+
+    [Test]
+    /// <summary>PaymentExport.Run under the Data Exchange role refuses a valid journal request and leaves the journal and registers untouched.</summary>
+    procedure Scenario_AC02_ReadOnlyPaymentExport_PreservesJournal()
+    var
+        GenJournalLine: Record "Gen. Journal Line";
+        TemplateName: Code[10];
+        BatchName: Code[10];
+        DataExchCount: Integer;
+        RegisterCount: Integer;
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Story79 AC02 | Time: none | Risk: the journal mutation check must come before the base-app export marks lines.
+        Initialize();
+        SeedPaymentJournal(TemplateName, BatchName);
+        DataExchCount := CountDataExchEntries();
+        RegisterCount := CountTransferRegisters();
+        LowerActor('BIFROST DataExch ori');
+        LibraryAssert.IsFalse(GenJournalLine.WritePermission(), 'The journal mutation must be absent.');
+        RequestJson.Add('journalTemplate', TemplateName);
+        RequestJson.Add('journalBatch', BatchName);
+        RequestJson.Add('inline', true);
+        ResponseJson := Dispatch(MessageType::"DataExchange.PaymentExport.Run", RequestJson);
+        Observe();
+        GenJournalLine.ReadIsolation := IsolationLevel::ReadCommitted;
+        GenJournalLine.Get(TemplateName, BatchName, 10000);
+        LibraryAssert.IsFalse(GenJournalLine."Exported to Payment File", 'A refused export does not mark the line exported.');
+        LibraryAssert.AreEqual(0, GenJournalLine."Data Exch. Entry No.", 'A refused export links no entry to the line.');
+        LibraryAssert.AreEqual(DataExchCount, CountDataExchEntries(), 'A refused export creates no Data Exch. entry.');
+        LibraryAssert.AreEqual(RegisterCount, CountTransferRegisters(), 'A refused export creates no credit transfer register.');
+        AssertStructuredError(ResponseJson, 'PermissionDenied');
+        LibraryAssert.AreEqual(Format(Database::"Gen. Journal Line", 0, 9), ReadText(ResponseJson, 'received'), 'The denial names the missing journal mutation.');
+    end;
+
+    [Test]
+    /// <summary>CommitToDataExchange with both product roles but no Data Exch. mutation keeps the upload session and its bytes.</summary>
+    procedure Scenario_AC02_ReadOnlyCommitToDataExchange_PreservesUpload()
+    var
+        EntryNo: Integer;
+        UploadId: Guid;
+        ResponseJson: JsonObject;
+    begin
+        // Story79 AC02 | Time: none | Risk: a denied commit must not consume the session or its chunks.
+        Initialize();
+        EntryNo := SeedDataExchange();
+        UploadId := ArrangeUpload('X79 retained import bytes');
+        LowerActor('BIFROST DataExch ori');
+        LowerPermissions.AddPermissionSet('BIFROST Attach ori');
+        AssertDiscoveryReads(0);
+        ResponseJson := Dispatch("Message Type ori"::"Storage.Upload.CommitToDataExchange", CommitToDataExchangeRequest(UploadId, DefinitionCode));
+        Observe();
+        AssertDataExchangeUnchanged(EntryNo);
+        AssertUploadRetained(UploadId, 'X79 retained import bytes');
+        AssertStructuredError(ResponseJson, 'PermissionDenied');
+        LibraryAssert.AreEqual(Format(Database::"Data Exch.", 0, 9), ReadText(ResponseJson, 'received'), 'The denial names the missing Data Exch. mutation.');
+    end;
+
+    [Test]
+    /// <summary>CommitToDataExchange with Data Exch. mutation but no Data Exch. Field mutation keeps the upload session and its bytes.</summary>
+    procedure Scenario_AC02_CommitToDataExchangeWithoutFieldWrite_PreservesUpload()
+    var
+        DataExchField: Record "Data Exch. Field";
+        EntryNo: Integer;
+        UploadId: Guid;
+        ResponseJson: JsonObject;
+    begin
+        // Story79 AC02 | Time: none | Risk: the reader writes the fields, so their mutation is checked before the entry insert.
+        Initialize();
+        EntryNo := SeedDataExchange();
+        UploadId := ArrangeUpload('X79 retained import bytes');
+        LowerActor('BIFROST DataExch ori');
+        LowerPermissions.AddPermissionSet('BIFROST Attach ori');
+        LowerPermissions.AddPermissionSet('Storage79 DxWr ori');
+        LibraryAssert.IsFalse(DataExchField.WritePermission(), 'The field mutation must be absent.');
+        ResponseJson := Dispatch("Message Type ori"::"Storage.Upload.CommitToDataExchange", CommitToDataExchangeRequest(UploadId, DefinitionCode));
+        Observe();
+        AssertDataExchangeUnchanged(EntryNo);
+        AssertUploadRetained(UploadId, 'X79 retained import bytes');
+        AssertStructuredError(ResponseJson, 'PermissionDenied');
+        LibraryAssert.AreEqual(Format(Database::"Data Exch. Field", 0, 9), ReadText(ResponseJson, 'received'), 'The denial names the missing Data Exch. Field mutation.');
+    end;
+
+    [Test]
+    /// <summary>CommitToDataExchange succeeds with both product roles plus the standard entry and field mutation.</summary>
+    procedure Scenario_AC01_CommitToDataExchangeWithRowWrite_ImportsUpload()
+    var
+        DataExch: Record "Data Exch.";
+        DataExchField: Record "Data Exch. Field";
+        DataExchDef: Record "Data Exch. Def";
+        UploadSession: Record "Storage Upload Session ori";
+        UploadChunk: Record "Storage Upload Chunk ori";
+        Fixture: Codeunit "DataExch Fixture ori";
+        ImportDefinitionCode: Code[20];
+        UploadId: Guid;
+        EntryNo: Integer;
+        ResponseJson: JsonObject;
+    begin
+        // Story79 AC01 | Time: none | Risk: minimum documented grant; definition tables stay read-only.
+        Initialize();
+        ImportDefinitionCode := Fixture.CreateImportDefinition(0);
+        UploadId := ArrangeUpload(Fixture.TwoLineCsv(false));
+        LowerActor('BIFROST DataExch ori');
+        LowerPermissions.AddPermissionSet('BIFROST Attach ori');
+        LowerPermissions.AddPermissionSet('Storage79 DxRows ori');
+        LibraryAssert.IsFalse(DataExchDef.WritePermission(), 'The actor holds no definition mutation.');
+        ResponseJson := Dispatch("Message Type ori"::"Storage.Upload.CommitToDataExchange", CommitToDataExchangeRequest(UploadId, ImportDefinitionCode));
+        AssertSuccess(ResponseJson);
+        EntryNo := ReadInteger(ReadData(ResponseJson), 'entryNo');
+        Observe();
+        DataExch.ReadIsolation := IsolationLevel::ReadCommitted;
+        DataExch.Get(EntryNo);
+        LibraryAssert.AreEqual(ImportDefinitionCode, DataExch."Data Exch. Def Code", 'The entry uses the requested definition.');
+        DataExchField.ReadIsolation := IsolationLevel::ReadCommitted;
+        DataExchField.SetRange("Data Exch. No.", EntryNo);
+        LibraryAssert.AreEqual(ReadInteger(ReadData(ResponseJson), 'fieldCount'), DataExchField.Count(), 'The persisted fields match the response.');
+        LibraryAssert.IsFalse(DataExchField.IsEmpty(), 'The reader parsed the uploaded lines.');
+        UploadSession.ReadIsolation := IsolationLevel::ReadCommitted;
+        UploadSession.Get(UploadId);
+        LibraryAssert.AreEqual(UploadSession.Status::Committed, UploadSession.Status, 'The session is committed.');
+        UploadChunk.ReadIsolation := IsolationLevel::ReadCommitted;
+        UploadChunk.SetRange("Upload Id", UploadId);
+        LibraryAssert.IsTrue(UploadChunk.IsEmpty(), 'The committed chunks are cleared.');
+    end;
+
     local procedure Initialize()
     var
         StorageSetup: Record "Storage Setup ori";
@@ -1181,5 +1506,114 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         DataExchField.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExchField.Get(EntryNo, 1, 1, '');
         LibraryAssert.AreEqual(CustomerNo, DataExchField.Value, 'Entry field persists unchanged.');
+    end;
+
+    local procedure ImportFixtureEntry(ImportDefinitionCode: Code[20]): Integer
+    var
+        Fixture: Codeunit "DataExch Fixture ori";
+        RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // Arrangement with the runner's grants; the actor under test only processes the entry.
+        RequestJson.Add('dataExchDefCode', ImportDefinitionCode);
+        RequestJson.Add('contentBase64', Fixture.Encode(Fixture.TwoLineCsv(false)));
+        RequestJson.Add('fileName', 'X79-process.csv');
+        ResponseJson := Dispatch(MessageType::"DataExchange.Import.Run", RequestJson);
+        LibraryAssert.AreEqual('Accepted', ReadText(ResponseJson, 'status'), 'The arranged import must succeed.');
+        exit(ReadInteger(Fixture.Data(ResponseJson), 'entryNo'));
+    end;
+
+    local procedure DefinitionImportRequest(NewCode: Code[20]) RequestJson: JsonObject
+    var
+        ExportRequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        MessageType: Enum "Message Type ori";
+    begin
+        // The seeded definition's own XML, exported with the runner's grants, is a valid import payload.
+        ExportRequestJson.Add('code', DefinitionCode);
+        ExportRequestJson.Add('inline', true);
+        ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Export", ExportRequestJson);
+        AssertSuccess(ResponseJson);
+        RequestJson.Add('contentBase64', ReadText(ResponseJson, 'contentBase64'));
+        RequestJson.Add('newCode', NewCode);
+    end;
+
+    local procedure SeedPaymentJournal(var TemplateName: Code[10]; var BatchName: Code[10])
+    var
+        GenJournalTemplate: Record "Gen. Journal Template";
+        GenJournalBatch: Record "Gen. Journal Batch";
+        GenJournalLine: Record "Gen. Journal Line";
+    begin
+        TemplateName := NewJournalCode();
+        BatchName := NewJournalCode();
+        GenJournalTemplate.Init();
+        GenJournalTemplate.Name := TemplateName;
+        GenJournalTemplate.Type := GenJournalTemplate.Type::Payments;
+        GenJournalTemplate.Insert(false);
+        GenJournalBatch.Init();
+        GenJournalBatch."Journal Template Name" := TemplateName;
+        GenJournalBatch.Name := BatchName;
+        GenJournalBatch.Insert(false);
+        GenJournalLine.Init();
+        GenJournalLine."Journal Template Name" := TemplateName;
+        GenJournalLine."Journal Batch Name" := BatchName;
+        GenJournalLine."Line No." := 10000;
+        GenJournalLine.Description := 'X79 payment line';
+        GenJournalLine.Insert(false);
+    end;
+
+    local procedure NewJournalCode(): Code[10]
+    begin
+        exit(CopyStr('X79' + DelChr(Format(CreateGuid(), 0, 4), '=', '{}-'), 1, 10));
+    end;
+
+    local procedure CountDataExchEntries(): Integer
+    var
+        DataExch: Record "Data Exch.";
+    begin
+        DataExch.ReadIsolation := IsolationLevel::ReadCommitted;
+        exit(DataExch.Count());
+    end;
+
+    local procedure CountTransferRegisters(): Integer
+    var
+        CreditTransferRegister: Record "Credit Transfer Register";
+    begin
+        CreditTransferRegister.ReadIsolation := IsolationLevel::ReadCommitted;
+        exit(CreditTransferRegister.Count());
+    end;
+
+    local procedure ArrangeUpload(ContentText: Text) UploadId: Guid
+    begin
+        // The storage role opens and fills the session; the next lowering commits it before the attempt.
+        LowerStorageActor();
+        UploadId := BeginUpload(false);
+        AppendUpload(UploadId, 1, ContentText);
+        Observe();
+    end;
+
+    local procedure CommitToDataExchangeRequest(UploadId: Guid; ImportDefinitionCode: Code[20]) RequestJson: JsonObject
+    begin
+        RequestJson := UploadRequest(UploadId);
+        RequestJson.Add('dataExchDefCode', ImportDefinitionCode);
+    end;
+
+    local procedure AssertUploadRetained(UploadId: Guid; ExpectedContent: Text)
+    var
+        UploadSession: Record "Storage Upload Session ori";
+        UploadChunk: Record "Storage Upload Chunk ori";
+        EntryLink: Record "DataExch Entry Link ori";
+    begin
+        UploadSession.ReadIsolation := IsolationLevel::ReadCommitted;
+        UploadSession.Get(UploadId);
+        LibraryAssert.AreEqual(UploadSession.Status::Open, UploadSession.Status, 'A refused commit keeps the session open.');
+        LibraryAssert.AreEqual(1, UploadSession."Chunk Count", 'A refused commit keeps the chunk metadata.');
+        UploadChunk.ReadIsolation := IsolationLevel::ReadCommitted;
+        UploadChunk.Get(UploadId, 1);
+        AssertChunkBytes(UploadChunk, ExpectedContent);
+        EntryLink.ReadIsolation := IsolationLevel::ReadCommitted;
+        EntryLink.SetRange("Upload Id", UploadId);
+        LibraryAssert.IsTrue(EntryLink.IsEmpty(), 'A refused commit creates no entry marker.');
     end;
 }
