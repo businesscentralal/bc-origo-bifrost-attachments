@@ -622,7 +622,7 @@
       "owner": "worker-4 + Gunnar",
       "pr": 86,
       "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86",
-      "remainingEvidence": "Publication/baseline/consumer/range/affix evidence"
+      "remainingEvidence": "Gunnar: authentic both-range and ori/Origo registration evidence; current API audit/consumer proof retained by worker-4; first-publication baseline resolved by Architect1792485840"
     },
     {
       "issue": 78,
@@ -630,7 +630,7 @@
       "owner": "worker-6",
       "pr": 94,
       "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/94",
-      "remainingEvidence": "Input/compiler/package gates; PR91 separate pipeline owner / ori-haraldurb"
+      "remainingEvidence": "Current c30c225/build113 compile, Pipeline gate, no-IVT and manual Windows Valid/HashMismatch evidence supplied; preserve PR149 Signed deferral and final release/certificate-owner disposition"
     },
     {
       "issue": 79,
@@ -670,7 +670,7 @@
       "issue": 78,
       "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/78",
       "owner": "worker-6 / ori-haraldurb; separate retained scope",
-      "remainingEvidence": "Windows package trust and actual runtime Foundation variant/hash"
+      "remainingEvidence": "Current c30c225/build113 compile, Pipeline gate, no-IVT and manual Windows Valid/HashMismatch evidence supplied; preserve PR149 Signed deferral and final release/certificate-owner disposition"
     },
     {
       "issue": 79,
@@ -694,7 +694,7 @@
       "issue": 77,
       "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/77",
       "owner": "worker-4 / Gunnar-designated registration and publisher owners",
-      "remainingEvidence": "Authoritative affix/both-ranges/baseline evidence; PR128 audit merged"
+      "remainingEvidence": "Gunnar: authentic both-range and ori/Origo registration evidence; current API audit/consumer proof retained by worker-4; first-publication baseline resolved by Architect1792485840"
     }
   ],
   "containerPolicy": {
@@ -703,5 +703,17 @@
     "amendSameContainer": true,
     "deleteAfter": "Tester postdeploy UAT pass AND issue closure; verify owned404",
     "dataCleanup": "Developer/validator fixtures cleaned and verified per scenario; no UAT data cleanup"
+  },
+  "firstPublicationBaseline": {
+    "publishedAttachmentsBaseline": false,
+    "authorityUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792485840592319",
+    "authority": "Authenticated Architect disposition on Gunnar behalf; Foundation only released Bifrost app per Gunnar16Oct",
+    "registrationEvidenceOwner": "Gunnar",
+    "registrationEvidencePending": [
+      "10035635–10035684",
+      "70013500–70013549",
+      "ori/Origo"
+    ],
+    "personalTenantIssue20Included": false
   }
 }

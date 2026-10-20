@@ -210,5 +210,15 @@
       "expandedBytes": true,
       "entryCount": true
     }
+  },
+  "firstPublicationBaseline": {
+    "publishedAttachmentsBaseline": false,
+    "authorityUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792485840592319",
+    "registrationStillPendingOwner": "Gunnar",
+    "registrationStillPending": [
+      "10035635\u201310035684",
+      "70013500\u201370013549",
+      "ori/Origo"
+    ]
   }
 }
