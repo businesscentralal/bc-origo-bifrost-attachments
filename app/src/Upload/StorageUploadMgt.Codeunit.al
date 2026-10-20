@@ -369,6 +369,25 @@ codeunit 10035665 "Storage Upload Mgt ori"
         exit(true);
     end;
 
+    /// <summary>Reads a complete owned upload without changing its session or chunks.</summary>
+    /// <param name="Argument">The message argument; receives a refusal when the upload is not ready.</param>
+    /// <param name="UploadId">The upload session id.</param>
+    /// <param name="TempBlob">Returns the assembled content for preflight validation.</param>
+    /// <param name="FileName">Returns the session file name.</param>
+    /// <returns>True when the upload is ready to read.</returns>
+    internal procedure ReadUpload(var Argument: Record "Message Argument ori"; UploadId: Guid; var TempBlob: Codeunit "Temp Blob"; var FileName: Text): Boolean
+    var
+        Session: Record "Storage Upload Session ori";
+    begin
+        if not FindOpenSession(Argument, UploadId, Session) then
+            exit(false);
+        if not CheckReadyToCommit(Argument, Session) then
+            exit(false);
+        AssembleChunks(UploadId, TempBlob);
+        FileName := Session."File Name";
+        exit(true);
+    end;
+
     /// <summary>Discards an open session and all its chunks without writing anything to storage.</summary>
     /// <param name="Argument">The message argument carrying <c>uploadId</c>; receives the error response.</param>
     /// <param name="ResultData">Out: the success payload confirming the session was aborted.</param>

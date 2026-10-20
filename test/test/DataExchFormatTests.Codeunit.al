@@ -112,7 +112,6 @@ codeunit 96256 "DataExch Format Tests ori"
         DataExchField: Record "Data Exch. Field";
         EntryLink: Record "DataExch Entry Link ori";
         Request: JsonObject;
-        Response: JsonObject;
         DefCode: Code[20];
         FieldsBefore: Integer;
         LinksBefore: Integer;
@@ -124,9 +123,10 @@ codeunit 96256 "DataExch Format Tests ori"
         Request.Add('contentBase64', Fixture.Encode('code,name,amount'));
         FieldsBefore := DataExchField.Count();
         LinksBefore := EntryLink.Count();
-        Response := DispatchLocale("Message Type ori"::"DataExchange.Import.Run", Request, LanguageId);
-        LibraryAssert.AreEqual('Error', Fixture.ReadText(Response, 'status'), 'The reader fails.');
-        LibraryAssert.AreEqual('BusinessCentralError', Fixture.ReadText(Response, 'code'), 'Preserve Foundation error classification.');
+        // The native AL boundary raises; the external API supplies BusinessCentralError.
+        // Keep the actual reader error and prove rollback rather than swallowing it in a TryFunction.
+        asserterror DispatchLocale("Message Type ori"::"DataExchange.Import.Run", Request, LanguageId);
+        LibraryAssert.ExpectedError('The imported file contains unexpected formatting.');
         DataExch.SetRange("Data Exch. Def Code", DefCode);
         LibraryAssert.AreEqual(0, DataExch.Count(), 'The failed reader leaves no entry.');
         LibraryAssert.AreEqual(FieldsBefore, DataExchField.Count(), 'Parsed fields are rolled back.');
@@ -176,7 +176,7 @@ codeunit 96256 "DataExch Format Tests ori"
         Request.Add('dataExchDefCode', DefCode);
         ParameterName := 'contentBase64';
         if Stored then begin
-            MockState.PutFile('in/bad.dat', Content);
+            MockState.PutFile('in/bad.dat', Fixture.Encode(Content));
             Request.Add('storageCode', Fixture.StorageCode());
             Request.Add('path', 'in/bad.dat');
             ParameterName := 'path';
@@ -209,7 +209,7 @@ codeunit 96256 "DataExch Format Tests ori"
         BeforeCount := DataExchDef.Count();
         ParameterName := 'contentBase64';
         if Stored then begin
-            MockState.PutFile('defs/bad.xml', InvalidContent(false));
+            MockState.PutFile('defs/bad.xml', Fixture.Encode(InvalidContent(false)));
             Request.Add('storageCode', Fixture.StorageCode());
             Request.Add('path', 'defs/bad.xml');
             ParameterName := 'path';

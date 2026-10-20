@@ -18,7 +18,6 @@ codeunit 70013505 "DataExch Def Transfer ori"
         OneSourceErr: Label 'Send exactly one source: storageCode with path, contentBase64 or uploadId.', Comment = 'is-IS=Sendu nákvæmlega eina uppsprettu: storageCode með path, contentBase64 eða uploadId.';
         OneSourceExpectedLbl: Label 'exactly one of storageCode with path, contentBase64 or uploadId', Comment = 'is-IS=nákvæmlega eitt af storageCode með path, contentBase64 eða uploadId';
         OneSourceNextStepLbl: Label 'Send the XML inline as contentBase64 (at most 1 MB), name a stored file with storageCode and path, or send the uploadId of a complete chunked upload.', Comment = 'is-IS=Sendu XML-skjalið innfellt sem contentBase64 (mest 1 MB), tilgreindu skrá í geymslu með storageCode og path, eða sendu uploadId fullgerðrar upphleðslu í bútum.';
-        NotXmlErr: Label 'The file is not a well-formed Data Exchange definition XML document.', Comment = 'is-IS=Skráin er ekki gilt XML-skjal með skilgreiningu gagnaskipta.';
         XmlExpectedLbl: Label 'the XML that the Export Data Exchange Definition action writes, with a root element and DataExchDef elements', Comment = 'is-IS=XML-skjalið sem aðgerðin Flytja út skilgreiningu gagnaskipta skrifar, með rótarstaki og DataExchDef-stökum';
         ExportFirstLbl: Label 'Export a definition with DataExchange.Definition.Export to see the expected format.', Comment = 'is-IS=Fluttu skilgreiningu út með DataExchange.Definition.Export til að sjá væntanlegt snið.';
         NoDefinitionErr: Label 'The file contains no DataExchDef element.', Comment = 'is-IS=Skráin inniheldur ekkert DataExchDef-stak.';
@@ -59,7 +58,6 @@ codeunit 70013505 "DataExch Def Transfer ori"
         Overwrite: Boolean;
         UploadId: Guid;
         SourceCount: Integer;
-        Consumed: Boolean;
         LineDefCount: Integer;
         MappingCount: Integer;
         SourceParameter: Text;
@@ -101,10 +99,9 @@ codeunit 70013505 "DataExch Def Transfer ori"
                 exit;
             end;
         if not IsNullGuid(UploadId) then begin
-            // The upload is consumed here; a later refusal is raised so the session stays open.
-            if not UploadMgt.ConsumeUpload(Argument, UploadId, TempBlob, UploadFileName) then
+            // Validate the file before consuming the upload or writing any definition.
+            if not UploadMgt.ReadUpload(Argument, UploadId, TempBlob, UploadFileName) then
                 exit;
-            Consumed := true;
         end;
 
         SourceParameter := 'contentBase64';
@@ -118,11 +115,12 @@ codeunit 70013505 "DataExch Def Transfer ori"
         end;
         CheckDefinitionXml(Argument, TempBlob, NewCode, Overwrite, Codes, SourceParameter, SourceFileName);
         if Argument.HasCollectedErrors() then begin
-            if Consumed then
-                Argument.RaiseCollectedErrors("Bifrost Error Code ori"::MultipleErrors, NotXmlErr);
             Reader.RespondIfErrors(Argument);
             exit;
         end;
+        if not IsNullGuid(UploadId) then
+            if not UploadMgt.ConsumeUpload(Argument, UploadId, TempBlob, UploadFileName) then
+                exit;
         if NewCode <> '' then
             RenameDefinition(TempBlob, NewCode);
         foreach Code in Codes do
