@@ -50,9 +50,9 @@ codeunit 96274 "Attachments Build Tests ori"
         Actual.Add(Discovery.GetSelectionDescription());
         GlobalLanguage(SavedLanguageId);
         // [THEN] Exact expectations reject fallback, empty text and a wrong sibling implementation.
-        LibraryAssert.AreEqual('Returns the header of a Data Exchange definition: code, name and type.', Actual.Get(1), 'Exact English discovery text 1.');
+        LibraryAssert.AreEqual('Returns the definition header (code, name and type); optionally returns XML inline or writes it to storage.', Actual.Get(1), 'Exact English discovery text 1.');
         LibraryAssert.AreEqual('export data exchange definition, dump definition', Actual.Get(2), 'Exact English discovery text 2.');
-        LibraryAssert.AreEqual('Returns only the code, name and type of one definition; DataExchange.Definition.Get also returns its lines and mappings.', Actual.Get(3), 'Exact English discovery text 3.');
+        LibraryAssert.AreEqual('Use for the definition header by default, XML with inline true, or an XML file with storageCode and path. Both XML destinations may be requested.', Actual.Get(3), 'Exact English discovery text 3.');
         LibraryAssert.AreEqual('Exports records with a Generic Export definition and writes the file to storage or returns it inline.', Actual.Get(4), 'Exact English discovery text 4.');
         LibraryAssert.AreEqual('data exchange export, export records to file, export csv, generic export, export to storage', Actual.Get(5), 'Exact English discovery text 5.');
         LibraryAssert.AreEqual(ExportRunSelectionTok, Actual.Get(6), 'Exact English discovery text 6.');
@@ -95,9 +95,9 @@ codeunit 96274 "Attachments Build Tests ori"
         Actual.Add(Discovery.GetSelectionDescription());
         GlobalLanguage(SavedLanguageId);
         // [THEN] Exact expectations reject fallback, empty text and a wrong sibling implementation.
-        LibraryAssert.AreEqual('Skilar haus skilgreiningar gagnaskipta: kóða, heiti og gerð.', Actual.Get(1), 'Exact Icelandic discovery text 1.');
+        LibraryAssert.AreEqual('Skilar haus skilgreiningar gagnaskipta (kóða, heiti og gerð); skilar einnig XML innfellt eða skrifar það í geymslu ef óskað er.', Actual.Get(1), 'Exact Icelandic discovery text 1.');
         LibraryAssert.AreEqual('flytja út skilgreiningu gagnaskipta, afrita skilgreiningu', Actual.Get(2), 'Exact Icelandic discovery text 2.');
-        LibraryAssert.AreEqual('Skilar aðeins kóða, heiti og gerð einnar skilgreiningar; DataExchange.Definition.Get skilar einnig línum hennar og vörpunum.', Actual.Get(3), 'Exact Icelandic discovery text 3.');
+        LibraryAssert.AreEqual('Notaðu fyrir haus skilgreiningar sjálfgefið, XML með inline true eða XML-skrá með storageCode og path. Biðja má um báða áfangastaði XML.', Actual.Get(3), 'Exact Icelandic discovery text 3.');
         LibraryAssert.AreEqual('Flytur út færslur með skilgreiningu fyrir almennan útflutning og skrifar skrána í geymslu eða skilar henni innfellt.', Actual.Get(4), 'Exact Icelandic discovery text 4.');
         LibraryAssert.AreEqual('útflutningur gagnaskipta, flytja færslur út í skrá, flytja út csv, almennur útflutningur, flytja út í geymslu', Actual.Get(5), 'Exact Icelandic discovery text 5.');
         // #157: caller-facing selection text must translate; only public help chapters stay English.
