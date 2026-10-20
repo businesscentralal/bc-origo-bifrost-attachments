@@ -252,7 +252,7 @@ codeunit 10035163 "DataExch Entry Proc Impl ori" implements "Msg Interface ori",
             Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(EntryNotFoundErr, EntryNo), 'entryNo', Format(EntryNo, 0, 9), EntryExpectedLbl, ChooseEntryLbl);
             exit;
         end;
-        ImportMgt.CheckImportDefinition(Argument, DataExch."Data Exch. Def Code", 'entryNo', Format(EntryNo, 0, 9));
+        ImportMgt.CheckSelectedImportDefinition(Argument, DataExch."Data Exch. Def Code", 'entryNo', Format(EntryNo, 0, 9));
         if Reader.RespondIfErrors(Argument) then
             exit;
         if DataExch."Incoming Entry No." <> 0 then begin

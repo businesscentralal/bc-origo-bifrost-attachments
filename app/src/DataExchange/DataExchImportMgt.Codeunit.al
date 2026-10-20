@@ -56,7 +56,7 @@ codeunit 10035141 "DataExch Import Mgt ori"
     /// <returns>True when the definition is a usable import definition.</returns>
     procedure CheckImportDefinition(var Argument: Record "Message Argument ori"; DefCode: Code[20]; ParameterName: Text): Boolean
     begin
-        exit(CheckImportDefinition(Argument, DefCode, ParameterName, DefCode));
+        exit(CheckSelectedImportDefinition(Argument, DefCode, ParameterName, DefCode));
     end;
 
     /// <summary>Checks the definition while retaining the actual value of the request parameter that selected it.</summary>
@@ -65,7 +65,7 @@ codeunit 10035141 "DataExch Import Mgt ori"
     /// <param name="ParameterName">The request parameter, such as entryNo.</param>
     /// <param name="ReceivedValue">The value the caller supplied for that parameter.</param>
     /// <returns>True when the definition can import.</returns>
-    internal procedure CheckImportDefinition(var Argument: Record "Message Argument ori"; DefCode: Code[20]; ParameterName: Text; ReceivedValue: Text): Boolean
+    internal procedure CheckSelectedImportDefinition(var Argument: Record "Message Argument ori"; DefCode: Code[20]; ParameterName: Text; ReceivedValue: Text): Boolean
     var
         DataExchDef: Record "Data Exch. Def";
     begin
