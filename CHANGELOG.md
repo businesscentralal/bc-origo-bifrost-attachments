@@ -12,6 +12,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - #157: translate the eight Data Exchange selection descriptions (codeunits 10035158, 10035160, 10035163, 10035164, 10035165, 10035166, 10035168, 10035187) and the closed-upload status in refusals (codeunit 10035197). Keep wire status values unchanged. Extend the mixed-language guard to reject Locked discovery labels; add exact Icelandic catalogue, committed/aborted refusal and existing JSON-string grammar regressions (test codeunits 96205, 96211 and 96213), and update the existing Icelandic expectation in test codeunit 96274.
 
+- Rename the non-temporary argument variable in test codeunit 96256 to satisfy the CI compiler AA0237 naming rule; preserve the UTF-16 assertions and record semantics.
+
 ### Changed (2026-10-20) - All objects renumbered into the single registered range 10035135-10035234
 
 - `app.json` declares one range, 10035135-10035234, confirmed for this app in the allocation workbook on 20.10.2026. The former blocks 10035635-10035684 and 70013500-70013549 are freed. Every table, table extension, page, page extension, codeunit, enum, enum extension, permission set and permission set extension now numbers from 10035135 per object type. Object names are unchanged.
