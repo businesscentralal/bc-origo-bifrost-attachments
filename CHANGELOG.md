@@ -8,6 +8,9 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-20) - Icelandic discovery and upload refusals (#157)
+
+- #157: translate the eight Data Exchange selection descriptions (codeunits 10035158, 10035160, 10035163, 10035164, 10035165, 10035166, 10035168, 10035187) and the closed-upload status in refusals (codeunit 10035197). Keep wire status values unchanged. Extend the mixed-language guard to reject Locked discovery labels; add exact Icelandic catalogue, committed/aborted refusal and existing JSON-string grammar regressions (test codeunits 96205, 96211 and 96213), and update the existing Icelandic expectation in test codeunit 96274.
 ### Fixed (2026-10-20) - Definition export contract and storage effects (#158)
 
 - `DataExch Def Export Impl ori` (10035156) now describes the same header-default, optional inline XML and optional storage XML behavior in the English/Icelandic catalogue, overview and notes. It is registered Inbound because it can write storage; the existing type and wire shape are preserved.

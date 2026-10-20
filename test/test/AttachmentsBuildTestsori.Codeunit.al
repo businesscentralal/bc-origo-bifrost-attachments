@@ -100,8 +100,8 @@ codeunit 96274 "Attachments Build Tests ori"
         LibraryAssert.AreEqual('Notaðu fyrir haus skilgreiningar sjálfgefið, XML með inline true eða XML-skrá með storageCode og path. Biðja má um báða áfangastaði XML.', Actual.Get(3), 'Exact Icelandic discovery text 3.');
         LibraryAssert.AreEqual('Flytur út færslur með skilgreiningu fyrir almennan útflutning og skrifar skrána í geymslu eða skilar henni innfellt.', Actual.Get(4), 'Exact Icelandic discovery text 4.');
         LibraryAssert.AreEqual('útflutningur gagnaskipta, flytja færslur út í skrá, flytja út csv, almennur útflutningur, flytja út í geymslu', Actual.Get(5), 'Exact Icelandic discovery text 5.');
-        // The selection description is a Locked label (CLAUDE.md, Foundation #144), so it stays English.
-        LibraryAssert.AreEqual(ExportRunSelectionTok, Actual.Get(6), 'Exact Icelandic discovery text 6.');
+        // #157: caller-facing selection text must translate; only public help chapters stay English.
+        LibraryAssert.AreEqual('Keyrir skilgreiningu fyrir almennan útflutning á töflusýn eða lista af SystemId-auðkennum færslna og afhendir skrána; notaðu DataExchange.PaymentExport.Run fyrir greiðsluskrár.', Actual.Get(6), 'Exact Icelandic discovery text 6.');
         LibraryAssert.AreEqual('Stofnar eða uppfærir gerð gagnaskipta og krefst innflutningsskilgreiningar.', Actual.Get(7), 'Exact Icelandic discovery text 7.');
         LibraryAssert.AreEqual('gerð gagnaskipta, gerð skjals í innleið, stilla skilgreiningu', Actual.Get(8), 'Exact Icelandic discovery text 8.');
         LibraryAssert.AreEqual('Tengir gerð gagnaskipta við innflutningsskilgreiningu.', Actual.Get(9), 'Exact Icelandic discovery text 9.');

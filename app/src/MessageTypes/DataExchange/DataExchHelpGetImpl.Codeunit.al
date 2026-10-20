@@ -36,7 +36,7 @@ codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
 
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Returns the Data Exchange discovery guide; use a specific Data Exchange type to inspect definitions or entries.', Locked = true;
+        SelectionDescriptionLbl: Label 'Returns the Data Exchange discovery guide; use a specific Data Exchange type to inspect definitions or entries.', Comment = 'is-IS=Skilar leiðbeiningum um gagnaskipti; notaðu tiltekna gagnaskiptategund til að skoða skilgreiningar eða færslur.';
     begin
         exit(SelectionDescriptionLbl);
     end;

@@ -831,6 +831,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Les XML-skjalið úr storageCode og path, úr contentBase64 (mest 1 MB) eða úr fullgerðri upphleðslu í bútum (uploadId, sem er notuð upp) og setur það upp með XMLport grunnkerfisins Imp / Exp Data Exch Def &amp; Map. newCode setur eina skilgreiningu upp undir öðrum kóða.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Install Impl ori - Method GetOverview - NamedType OverviewLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 1351389712 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Creates or replaces Data Exchange definitions from an XML file, the same file the Export Data Exchange Definition action writes and DataExchange.Definition.Export returns.</source>
+          <target>Stofnar eða skiptir út skilgreiningum gagnaskipta úr XML-skrá, sömu skrá og aðgerðin Flytja út skilgreiningu gagnaskipta skrifar og DataExchange.Definition.Export skilar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Stofnar eða skiptir út skilgreiningum gagnaskipta úr XML-skrá, sömu skrá og aðgerðin Flytja út skilgreiningu gagnaskipta skrifar og DataExchange.Definition.Export skilar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Install Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2730585033 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lists Data Exchange definitions, with the Data Exchange Type codes that reference each one.</source>
           <target>Listar skilgreiningar gagnaskipta með kóðum þeirra gerða gagnaskipta sem vísa í hverja skilgreiningu.</target>
@@ -999,6 +1005,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Eyðir færslunni, gagnaskiptareitum hennar og Bifröst-merkinu. Færslum sem vinnslan hefur þegar skrifað er ekki breytt.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Delete Impl ori - Method GetOverview - NamedType OverviewLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 518419689 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Removes one imported or exported Data Exch. entry and its fields; the definition and the business records written from the entry stay.</source>
+          <target>Fjarlægir eina innflutta eða útflutta gagnaskiptafærslu og reiti hennar; skilgreiningin og viðskiptafærslurnar sem voru skrifaðar úr færslunni haldast.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Fjarlægir eina innflutta eða útflutta gagnaskiptafærslu og reiti hennar; skilgreiningin og viðskiptafærslurnar sem voru skrifaðar úr færslunni haldast.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Delete Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 625919956 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Returns one Data Exch. entry, with paged fields and optional file content up to 1 MB.</source>
           <target>Skilar einni gagnaskiptafærslu með síðuskiptum reitum og valkvæðu skráarinnihaldi allt að 1 MB.</target>
@@ -1058,6 +1070,12 @@
           <target>Keyrir vörpunarkóðaeiningar skilgreiningar færslunnar (Process Data Exch.) og skilar marktöflum með fjölda nýrra og breyttra færslna og allt að 100 SystemId-gildum færslna í hverri töflu.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Keyrir vörpunarkóðaeiningar skilgreiningar færslunnar (Process Data Exch.) og skilar marktöflum með fjölda nýrra og breyttra færslna og allt að 100 SystemId-gildum færslna í hverri töflu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Proc Impl ori - Method GetOverview - NamedType OverviewLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4080870884 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Writes the parsed fields of an imported entry to the business tables of the definition mappings, as the second step after DataExchange.Import.Run or Storage.Upload.CommitToDataExchange.</source>
+          <target>Skrifar þáttaða reiti innfluttrar færslu í viðskiptatöflur samkvæmt vörpunum skilgreiningarinnar, sem annað skref á eftir DataExchange.Import.Run eða Storage.Upload.CommitToDataExchange.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skrifar þáttaða reiti innfluttrar færslu í viðskiptatöflur samkvæmt vörpunum skilgreiningarinnar, sem annað skref á eftir DataExchange.Import.Run eða Storage.Upload.CommitToDataExchange.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Entry Proc Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 4080870884 - Method 925689529 - NamedType 2791289126" size-unit="char" translate="yes" xml:space="preserve">
           <source>Data Exch. entry %1 was not found.</source>
@@ -1503,6 +1521,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Velur færslur upprunatöflu vörpunarinnar með tableView eða recordIds, keyrir stöðluð útflutningsskref skilgreiningarinnar (Export Mapping og ritarann) og skrifar skrána í geymslu (storageCode með path eða folderPath) og/eða skilar henni innfellt (mest 1 MB). Gagnaskiptafærslan geymir skrána.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Run Impl ori - Method GetOverview - NamedType OverviewLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 3322002649 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Runs a Generic Export definition over a table view or a list of record SystemIds and delivers the file; payment files use DataExchange.PaymentExport.Run.</source>
+          <target>Keyrir skilgreiningu fyrir almennan útflutning á töflusýn eða lista af SystemId-auðkennum færslna og afhendir skrána; notaðu DataExchange.PaymentExport.Run fyrir greiðsluskrár.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Keyrir skilgreiningu fyrir almennan útflutning á töflusýn eða lista af SystemId-auðkennum færslna og afhendir skrána; notaðu DataExchange.PaymentExport.Run fyrir greiðsluskrár.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Run Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2737179671 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Returns a Markdown overview of the Data Exchange types: pipeline, decision table, chaining and permissions.</source>
           <target>Skilar Markdown-yfirliti yfir skilaboðategundir gagnaskipta: ferli, ákvörðunartöflu, keðjun og heimildir.</target>
@@ -1514,6 +1538,12 @@
           <target>gagnaskiptahjálp, uppgötvun innflutnings, yfirlit gagnaskipta</target>
           <note from="Developer" annotates="general" priority="2">is-IS=gagnaskiptahjálp, uppgötvun innflutnings, yfirlit gagnaskipta</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Help Get Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2737179671 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Returns the Data Exchange discovery guide; use a specific Data Exchange type to inspect definitions or entries.</source>
+          <target>Skilar leiðbeiningum um gagnaskipti; notaðu tiltekna gagnaskiptategund til að skoða skilgreiningar eða færslur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skilar leiðbeiningum um gagnaskipti; notaðu tiltekna gagnaskiptategund til að skoða skilgreiningar eða færslur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Help Get Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2058621091 - NamedType 579164577" size-unit="char" translate="yes" xml:space="preserve">
           <source>Add a mapping to the definition, or call DataExchange.Definition.Get to see the line definitions that have one.</source>
@@ -1731,6 +1761,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Les skrána úr geymslu (skráin er þar áfram) eða úr contentBase64 (mest 1 MB), stofnar gagnaskiptafærslu með innihaldi skrárinnar og keyrir lesara skilgreiningarinnar svo skoða megi þáttuðu reitina með DataExchange.Entry.Get. Með process true eru varpanirnar einnig keyrðar.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Run Impl ori - Method GetOverview - NamedType OverviewLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 882503026 - Method 79446908 - NamedType 895773054" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Imports a file that is already in storage, or small inline content, with a Generic Import or Payroll Import definition. Use Storage.Upload.CommitToDataExchange for a chunked upload.</source>
+          <target>Flytur inn skrá sem er þegar í geymslu, eða lítið innfellt innihald, með skilgreiningu fyrir almennan innflutning eða launainnflutning. Notaðu Storage.Upload.CommitToDataExchange fyrir upphleðslu í bútum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Flytur inn skrá sem er þegar í geymslu, eða lítið innfellt innihald, með skilgreiningu fyrir almennan innflutning eða launainnflutning. Notaðu Storage.Upload.CommitToDataExchange fyrir upphleðslu í bútum.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Run Impl ori - Method GetSelectionDescription - NamedType SelectionLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 882503026 - Method 2197396733 - NamedType 2361965528" size-unit="char" translate="yes" xml:space="preserve">
           <source>Send the file either as contentBase64 or as storageCode with path, not both.</source>
           <target>Sendu skrána annaðhvort sem contentBase64 eða sem storageCode með path, ekki hvort tveggja.</target>
@@ -1790,6 +1826,12 @@
           <target>Keyrir útflutning greiðslna grunnkerfisins fyrir keyrsluna eins og aðgerðin Flytja út í greiðslubókinni: línurnar fá merkið Flutt út í greiðsluskrá, millifærsluskrá geymir skrána og skráin er skrifuð í geymslu (storageCode með path eða folderPath) og/eða skilað innfellt (mest 1 MB).</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Keyrir útflutning greiðslna grunnkerfisins fyrir keyrsluna eins og aðgerðin Flytja út í greiðslubókinni: línurnar fá merkið Flutt út í greiðsluskrá, millifærsluskrá geymir skrána og skráin er skrifuð í geymslu (storageCode með path eða folderPath) og/eða skilað innfellt (mest 1 MB).</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Pay Export Impl ori - Method GetOverview - NamedType OverviewLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2129390298 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Runs the Payment Journal export of one journal batch (SEPA credit transfer or a Data Exchange payment export format) and puts the bank file in storage, marking the lines as exported.</source>
+          <target>Keyrir útflutning einnar greiðslubókarkeyrslu (SEPA-millifærslu eða greiðsluútflutningssniðs gagnaskipta), setur bankaskrána í geymslu og merkir línurnar sem útfluttar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Keyrir útflutning einnar greiðslubókarkeyrslu (SEPA-millifærslu eða greiðsluútflutningssniðs gagnaskipta), setur bankaskrána í geymslu og merkir línurnar sem útfluttar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Pay Export Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2801241356 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lists Data Exchange Types and the definition type each one resolves to.</source>
@@ -3585,6 +3627,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Sameinar búta opinnar upphleðslulotu, stofnar gagnaskiptafærslu með skránni og keyrir lesara skilgreiningarinnar. Lotan er staðfest. Með keepFileInStorage er skráin líka skrifuð á slóð lotunnar; með process eru varpanirnar keyrðar eftir að innflutningurinn er staðfestur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Commit DX ori - Method GetOverview - NamedType OverviewLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 936370781 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Turns a complete chunked upload into a parsed Data Exch. entry of a Generic Import or Payroll Import definition, instead of a file in storage or an attachment.</source>
+          <target>Breytir fullbúinni upphleðslu í bútum í þáttaða gagnaskiptafærslu samkvæmt skilgreiningu fyrir almennan innflutning eða launainnflutning, í stað skrár í geymslu eða viðhengis.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Breytir fullbúinni upphleðslu í bútum í þáttaða gagnaskiptafærslu samkvæmt skilgreiningu fyrir almennan innflutning eða launainnflutning, í stað skrár í geymslu eða viðhengis.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Commit DX ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 3184599297 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Assembles an upload session's chunks and writes the file to the storage connection.</source>
           <target>Sameinar búta upphleðslulotu og skrifar skrána í geymslutenginguna.</target>
@@ -3728,6 +3776,24 @@
           <target>Athugaðu geymslutenginguna og reyndu aftur með sama uploadId, eða slepptu keepFileInStorage.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu geymslutenginguna og reyndu aftur með sama uploadId, eða slepptu keepFileInStorage.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - Method CommitToDataExchange - NamedType StorageWriteNextStepLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 987128476 - Method 2861375614 - NamedType 4013669850" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Open</source>
+          <target>opin</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=opin</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - Method StatusCaption - NamedType OpenLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 987128476 - Method 2861375614 - NamedType 3500036810" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Committed</source>
+          <target>staðfest</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=staðfest</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - Method StatusCaption - NamedType CommittedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 987128476 - Method 2861375614 - NamedType 3708707235" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Aborted</source>
+          <target>hætt við</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=hætt við</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - Method StatusCaption - NamedType AbortedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1175196741 - NamedType 563474316" size-unit="char" translate="yes" xml:space="preserve">
           <source>Purged %1 upload session(s) and %2 chunk(s).</source>
