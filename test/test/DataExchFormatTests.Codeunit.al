@@ -138,7 +138,7 @@ codeunit 96256 "DataExch Format Tests ori"
     [Test]
     procedure Utf16Csv_IsNotMistakenForBinary()
     var
-        TempArgument: Record "Message Argument ori";
+        Argument: Record "Message Argument ori";
         DataExchDef: Record "Data Exch. Def";
         ImportMgt: Codeunit "DataExch Import Mgt ori";
         TempBlob: Codeunit "Temp Blob";
@@ -152,8 +152,8 @@ codeunit 96256 "DataExch Format Tests ori"
         DataExchDef.Modify();
         TempBlob.CreateOutStream(Content, TextEncoding::UTF16);
         Content.WriteText(Fixture.TwoLineCsv(false));
-        LibraryAssert.IsTrue(ImportMgt.CheckFileFormat(TempArgument, DefCode, TempBlob, 'contentBase64', ''), 'UTF-16 CSV must pass preflight.');
-        LibraryAssert.IsFalse(TempArgument.HasCollectedErrors(), 'No spurious format refusal.');
+        LibraryAssert.IsTrue(ImportMgt.CheckFileFormat(Argument, DefCode, TempBlob, 'contentBase64', ''), 'UTF-16 CSV must pass preflight.');
+        LibraryAssert.IsFalse(Argument.HasCollectedErrors(), 'No spurious format refusal.');
     end;
 
     local procedure CheckImportRefusal(LanguageId: Integer; Stored: Boolean; BinaryCsv: Boolean)

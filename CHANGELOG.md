@@ -8,6 +8,13 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-20) - Definition export contract and storage effects (#158)
+
+- `DataExch Def Export Impl ori` (10035156) now describes the same header-default, optional inline XML and optional storage XML behavior in the English/Icelandic catalogue, overview and notes. It is registered Inbound because it can write storage; the existing type and wire shape are preserved.
+- `Storage Contract Parts ori` (10035183) documents header-only requests without requiring a delivery destination and classifies Definition.Export as irreversible, explaining that header/inline reads change nothing while external writes can overwrite files and cannot roll back. `DataExch Help Get Impl ori` (10035165) reflects the same modes and permissions.
+- Native tests in `DataExch Def Xfer Tests ori` (96244) cover header-only/no-storage writes, inline-only, combined inline/storage overwrite and contract direction/effects. `Attachments Build Tests ori` (96274) checks the updated exact English/Icelandic catalogue text; XLF stays synchronized.
+- `DataExch Format Tests ori` (96256) renames the inherited non-temporary `TempArgument` local to `Argument`, retaining the real record, to fix CI AL 17 warning AA0237 reported on PR #163.
+
 ### Changed (2026-10-20) - All objects renumbered into the single registered range 10035135-10035234
 
 - `app.json` declares one range, 10035135-10035234, confirmed for this app in the allocation workbook on 20.10.2026. The former blocks 10035635-10035684 and 70013500-70013549 are freed. Every table, table extension, page, page extension, codeunit, enum, enum extension, permission set and permission set extension now numbers from 10035135 per object type. Object names are unchanged.
@@ -100,7 +107,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-10-16) - stored storage descriptions (#126)
 
-- `Storage Contract Parts ori` (70013500) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
+- `Storage Contract Parts ori` (10035183) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
 
 ### Changed (2026-10-16) - public help language and translated descriptions (#126)
 
