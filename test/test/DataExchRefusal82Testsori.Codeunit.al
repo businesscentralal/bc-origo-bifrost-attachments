@@ -589,7 +589,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         asserterror ImportThenDelete(DefinitionCode);
         LibraryAssert.ExpectedError('X82 postwrite failure');
         UnbindSubscription(Faults);
-        // [THEN] The earlier Accepted import was not implicitly committed.
+        // [THEN] The earlier successful import was not implicitly committed.
         LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'An earlier chained write must roll back.');
         LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'The failed delete must roll back.');
         DataExchDef.Delete(true);
@@ -715,12 +715,12 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         DefinitionCode: Code[20];
         Response: JsonObject;
     begin
-        // Story #82, AC03 | Time: none | Risk: the shipped flat wire shape must stay unchanged.
+        // Story #82, AC03 | Time: none | Risk: the success payload must be inside data.
         // [GIVEN] A Generic Export definition.
         DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Export");
         // [WHEN] DataExchange.Definition.Export is dispatched for its exact code.
         Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":"' + DefinitionCode + '"}');
-        // [THEN] The flat answer carries status, code and the type name.
+        // [THEN] The success data carries code and the type name.
         AssertText(Response, 'status', 'Success');
         AssertText(SuccessData(Response), 'code', DefinitionCode);
         AssertText(SuccessData(Response), 'type', 'Generic Export');

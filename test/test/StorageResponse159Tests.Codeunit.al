@@ -466,6 +466,99 @@ codeunit 96258 "Storage Response159 Tests ori"
         LibraryAssert.AreEqual(' ', Fixture.ReadText(Fixture.Data(Response), 'documentType'), 'Blank document type uses the enum name, not ordinal zero.');
     end;
 
+    /// <summary>WarningObjects uses the same response contract in LCID 1033.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure WarningObjects_1033()
+    begin
+        CheckWarningObjects(1033);
+    end;
+
+    /// <summary>WarningObjects uses the same response contract in LCID 1039.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure WarningObjects_1039()
+    begin
+        CheckWarningObjects(1039);
+    end;
+
+    /// <summary>UploadDocumentType uses the same response contract in LCID 1033.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure UploadDocumentType_1033()
+    begin
+        CheckUploadDocumentType(1033);
+    end;
+
+    /// <summary>UploadDocumentType uses the same response contract in LCID 1039.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure UploadDocumentType_1039()
+    begin
+        CheckUploadDocumentType(1039);
+    end;
+
+    local procedure CheckWarningObjects(LanguageId: Integer)
+    var
+        DataExch: Record "Data Exch.";
+        Mapping: Record "Data Exch. Mapping";
+        Request: JsonObject;
+        Response: JsonObject;
+        Warning: JsonObject;
+        Warnings: JsonArray;
+        Token: JsonToken;
+        DefCode: Code[20];
+    begin
+        DefCode := Fixture.CreateImportDefinition(0);
+        Mapping.SetRange("Data Exch. Def Code", DefCode);
+        Mapping.FindFirst();
+        Mapping."Mapping Codeunit" := 0;
+        Mapping.Modify();
+        DataExch.Init();
+        DataExch."Data Exch. Def Code" := DefCode;
+        DataExch.Insert(true);
+        Request.Add('entryNo', DataExch."Entry No.");
+        Request.Add('mappingLineDef', Mapping."Data Exch. Line Def Code");
+        Response := Dispatch("Message Type ori"::"DataExchange.Entry.Process", Request, LanguageId);
+        AssertEnvelope(Response);
+        Warnings := Fixture.ReadArray(Fixture.Data(Response), 'warnings');
+        LibraryAssert.AreEqual(1, Warnings.Count(), 'One mapping without a processing codeunit.');
+        Warnings.Get(0, Token);
+        LibraryAssert.IsTrue(Token.IsObject(), 'Warnings are objects, never bare strings.');
+        Warning := Token.AsObject();
+        LibraryAssert.AreEqual('NoMappingCodeunit', Fixture.ReadText(Warning, 'code'), 'Stable warning code.');
+        LibraryAssert.AreNotEqual('', Fixture.ReadText(Warning, 'message'), 'Localized warning message.');
+        LibraryAssert.AreEqual(2, Warning.Keys().Count(), 'Exactly code and message.');
+    end;
+
+    local procedure CheckUploadDocumentType(LanguageId: Integer)
+    var
+        Request: JsonObject;
+        Response: JsonObject;
+        UploadId: Text;
+        CustomerNos: List of [Code[20]];
+    begin
+        Fixture.InitializeStorage();
+        CustomerNos := Fixture.CreateCustomers(1, 'X159UPLOAD');
+        Request.Add('fileName', 'x159-upload.txt');
+        Response := Dispatch("Message Type ori"::"Storage.Upload.Begin", Request, LanguageId);
+        AssertEnvelope(Response);
+        UploadId := Fixture.ReadText(Fixture.Data(Response), 'uploadId');
+        Clear(Request);
+        Request.Add('uploadId', UploadId);
+        Request.Add('sequence', 1);
+        Request.Add('contentBase64', Fixture.Encode('owned X159 upload'));
+        Response := Dispatch("Message Type ori"::"Storage.Upload.Append", Request, LanguageId);
+        AssertEnvelope(Response);
+        Clear(Request);
+        Request.Add('uploadId', UploadId);
+        Request.Add('tableId', Database::Customer);
+        Request.Add('no', CustomerNos.Get(1));
+        Response := Dispatch("Message Type ori"::"Storage.Upload.CommitToRecord", Request, LanguageId);
+        AssertEnvelope(Response);
+        LibraryAssert.AreEqual(' ', Fixture.ReadText(Fixture.Data(Response), 'documentType'), 'Return the blank document type enum name.');
+    end;
+
     local procedure AssertEnvelope(Response: JsonObject)
     var
         Token: JsonToken;
