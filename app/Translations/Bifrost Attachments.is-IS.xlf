@@ -99,6 +99,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Stærð innihalds</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Attachment Link ori - Field Content Size - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 4034440960 - Field 335761825 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether this attachment created a new storage file. Restore and attachment deletion preserve pre-existing files and links with unknown ownership.</source>
+          <target>Tilgreinir hvort þetta viðhengi stofnaði nýja geymsluskrá. Endurheimt og eyðing viðhengis varðveita fyrirliggjandi skrár og tengingar með óþekkt eignarhald.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Tilgreinir hvort þetta viðhengi stofnaði nýja geymsluskrá. Endurheimt og eyðing viðhengis varðveita fyrirliggjandi skrár og tengingar með óþekkt eignarhald.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Storage Attachment Link ori - Field Created Storage File - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 4034440960 - Field 335761825 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Created Storage File</source>
+          <target>Stofnaði geymsluskrá</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Stofnaði geymsluskrá</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Storage Attachment Link ori - Field Created Storage File - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 4034440960 - Field 804481195 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the file name of the offloaded content.</source>
           <target>Tilgreinir skráarheiti útvistaða innihaldsins.</target>
@@ -1491,17 +1503,11 @@
           <note from="Developer" annotates="general" priority="2">is-IS=skilgreining með kóðaeiningu eða XMLport til lestrar og skriftar</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - NamedType WriterExpectedLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2395862116 - Method 3106354608 - NamedType 1889265656" size-unit="char" translate="yes" xml:space="preserve">
-          <source>File "%1" backs a Business Central attachment and cannot be overwritten by an export.</source>
-          <target>Skráin "%1" geymir viðhengi í Business Central og útflutningur má ekki yfirskrifa hana.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = storage path||is-IS=Skráin "%1" geymir viðhengi í Business Central og útflutningur má ekki yfirskrifa hana.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - Method CompletePath - NamedType LinkedErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2395862116 - Method 3106354608 - NamedType 1962101970" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Choose another path or folderPath and export again.</source>
-          <target>Veldu aðra slóð eða möppu (path eða folderPath) og fluttu út aftur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Veldu aðra slóð eða möppu (path eða folderPath) og fluttu út aftur.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - Method CompletePath - NamedType LinkedNextStepLbl</note>
+        <trans-unit id="Codeunit 2395862116 - Method 3106354608 - NamedType 1648229763" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The export destination "%1" is not available.</source>
+          <target>Áfangastaður útflutnings "%1" er ekki tiltækur.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = storage path||is-IS=Áfangastaður útflutnings "%1" er ekki tiltækur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - Method CompletePath - NamedType DestinationErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 3322002649 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Exports records with a Generic Export definition and writes the file to storage or returns it inline.</source>
@@ -2446,9 +2452,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DefinitionDeliveryStorageLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3640963336" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Header-only and inline-only requests read the definition without changing it. With storageCode, writes the XML to external storage and can overwrite an existing file. This write is irreversible: it happens outside the Business Central transaction and is not rolled back with it.</source>
-          <target>Beiðnir um haus eingöngu eða innfellt XML eingöngu lesa skilgreininguna án þess að breyta henni. Með storageCode er XML skrifað í ytri geymslu og getur yfirskrifað fyrirliggjandi skrá. Skrifin eru óafturkræf: þau fara fram utan færslu Business Central og eru ekki afturkölluð með henni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Beiðnir um haus eingöngu eða innfellt XML eingöngu lesa skilgreininguna án þess að breyta henni. Með storageCode er XML skrifað í ytri geymslu og getur yfirskrifað fyrirliggjandi skrá. Skrifin eru óafturkræf: þau fara fram utan færslu Business Central og eru ekki afturkölluð með henni.</note>
+          <source>Header-only and inline-only requests read the definition without changing it. With storageCode, writes the XML to external storage and refuses an existing file unless overwrite is true. This write is irreversible: it happens outside the Business Central transaction and is not rolled back with it.</source>
+          <target>Beiðnir um haus eingöngu eða innfellt XML eingöngu lesa skilgreininguna án þess að breyta henni. Með storageCode er XML skrifað í ytri geymslu og hafnar fyrirliggjandi skrá nema overwrite sé true. Skrifin eru óafturkræf: þau fara fram utan færslu Business Central og eru ekki afturkölluð með henni.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Beiðnir um haus eingöngu eða innfellt XML eingöngu lesa skilgreininguna án þess að breyta henni. Með storageCode er XML skrifað í ytri geymslu og hafnar fyrirliggjandi skrá nema overwrite sé true. Skrifin eru óafturkræf: þau fara fram utan færslu Business Central og eru ekki afturkölluð með henni.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DefinitionExportEffectLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2839081276" size-unit="char" translate="yes" xml:space="preserve">
@@ -2559,18 +2565,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls töflusýn Business Central á upprunatöfluna, til dæmis WHERE(No.=FILTER(10000..30000)). Sannreynd eins og í Data.Records.Get.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ExportTableViewLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 741746372" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The path does not name an existing file; only the relative path is returned.</source>
-          <target>Slóðin vísar ekki á fyrirliggjandi skrá; aðeins afstæða slóðin er birt.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Slóðin vísar ekki á fyrirliggjandi skrá; aðeins afstæða slóðin er birt.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType FileMissingLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2218127053 - NamedType 385994830" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Call Storage.File.List and use the relative path of an existing file.</source>
-          <target>Kallaðu á Storage.File.List og notaðu afstæða slóð að fyrirliggjandi skrá.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á Storage.File.List og notaðu afstæða slóð að fyrirliggjandi skrá.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType FindStoredFileLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2315934710" size-unit="char" translate="yes" xml:space="preserve">
           <source>The existing import definition code, at most 20 characters.</source>
           <target>Kóði fyrirliggjandi innflutningsskilgreiningar, að hámarki 20 stafir.</target>
@@ -2648,6 +2642,12 @@
           <target>Þegar true er samsetta skráin einnig skrifuð á geymsluslóð upphleðslulotunnar. Sjálfgefið false.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Þegar true er samsetta skráin einnig skrifuð á geymsluslóð upphleðslulotunnar. Sjálfgefið false.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType KeepFileLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 1681977747" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Storage input links the existing file and takes responsibility for serving attachment content from it, without copying or taking deletion ownership. Restore copies the content into Business Central and preserves the source file; deleting the attachment also preserves that file.</source>
+          <target>Inntak úr geymslu tengir fyrirliggjandi skrá og tekur ábyrgð á að afhenda innihald viðhengis úr henni án þess að afrita eða taka eignarhald til eyðingar. Endurheimt afritar innihaldið í Business Central og varðveitir upprunaskrána; eyðing viðhengisins varðveitir einnig þá skrá.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Inntak úr geymslu tengir fyrirliggjandi skrá og tekur ábyrgð á að afhenda innihald viðhengis úr henni án þess að afrita eða taka eignarhald til eyðingar. Endurheimt afritar innihaldið í Business Central og varðveitir upprunaskrána; eyðing viðhengisins varðveitir einnig þá skrá.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType LinkedSourceEffectLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 439774025" size-unit="char" translate="yes" xml:space="preserve">
           <source>Optional line definition whose mappings run alone. Default: every mapping of the definition.</source>
@@ -2763,6 +2763,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Hlutir með stöðugum kóða (code) og þýddum skilaboðum (message): NoMappingCodeunit eða RecordIdsCapped.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessWarningsLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 1408926781" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Writes the content back into the Business Central attachment and removes its link. Deletes the external file only when this attachment created a new file. Pre-existing files, explicitly overwritten files and legacy links with unknown ownership are preserved.</source>
+          <target>Skrifar innihaldið aftur í viðhengið í Business Central og fjarlægir tengingu þess. Eyðir ytri skránni aðeins ef þetta viðhengi stofnaði nýja skrá. Fyrirliggjandi skrár, sérstaklega yfirskrifaðar skrár og eldri tengingar með óþekkt eignarhald eru varðveittar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skrifar innihaldið aftur í viðhengið í Business Central og fjarlægir tengingu þess. Eyðir ytri skránni aðeins ef þetta viðhengi stofnaði nýja skrá. Fyrirliggjandi skrár, sérstaklega yfirskrifaðar skrár og eldri tengingar með óþekkt eignarhald eru varðveittar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType RestoreOwnedFileLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2539551719" size-unit="char" translate="yes" xml:space="preserve">
           <source>Rows or fields to skip; a nonnegative integer.</source>
           <target>Færslur eða reitir sem á að sleppa; heiltala sem er ekki neikvæð.</target>
@@ -2780,6 +2786,18 @@
           <target>Nauðsynlegt með sourceSystemId: IncomingDocument eða DocumentAttachment. Veldu nákvæmlega eina uppsprettu: contentBase64 (eða content), storageCode með path eða sourceTarget með sourceSystemId.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Nauðsynlegt með sourceSystemId: IncomingDocument eða DocumentAttachment. Veldu nákvæmlega eina uppsprettu: contentBase64 (eða content), storageCode með path eða sourceTarget með sourceSystemId.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType SourceTargetLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 1782949940" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Default false. An existing destination is refused with PreconditionFailed on path. Set overwrite true to replace it explicitly. Files backing attachments remain protected.</source>
+          <target>Sjálfgefið false. Fyrirliggjandi áfangastað er hafnað með PreconditionFailed á path. Settu overwrite true til að skipta honum sérstaklega út. Skrár sem geyma viðhengi eru áfram verndaðar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sjálfgefið false. Fyrirliggjandi áfangastað er hafnað með PreconditionFailed á path. Settu overwrite true til að skipta honum sérstaklega út. Skrár sem geyma viðhengi eru áfram verndaðar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType StorageOverwriteLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 322524193" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Choose a new path or send overwrite true. Restore or remove any linked attachment before replacing its file.</source>
+          <target>Veldu nýja slóð eða sendu overwrite true. Endurheimtu eða fjarlægðu tengt viðhengi áður en skipt er um skrá þess.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Veldu nýja slóð eða sendu overwrite true. Endurheimtu eða fjarlægðu tengt viðhengi áður en skipt er um skrá þess.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType StorageOverwriteNextLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 667696185" size-unit="char" translate="yes" xml:space="preserve">
           <source>Every success answers status Success. The fields below belong to the data object, not to the top level.</source>
@@ -3201,6 +3219,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Setja upp Bifröst viðhengi</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Install ori - NamedType SetupWizardTitleTok</note>
         </trans-unit>
+        <trans-unit id="Codeunit 223275718 - NamedType 2684945297" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The storage destination could not be checked.</source>
+          <target>Ekki tókst að athuga áfangastað í geymslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Ekki tókst að athuga áfangastað í geymslu.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType DestinationCheckErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - NamedType 2627015273" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check the storage connection and permissions, then retry. No file was written.</source>
+          <target>Athugaðu geymslutenginguna og heimildir og reyndu aftur. Engin skrá var skrifuð.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu geymslutenginguna og heimildir og reyndu aftur. Engin skrá var skrifuð.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType DestinationCheckNextLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 3864761490" size-unit="char" translate="yes" xml:space="preserve">
           <source>Source and destination resolve to the same storage file.</source>
           <target>Uppruni og áfangastaður vísa á sömu skrá í geymslunni.</target>
@@ -3249,29 +3279,17 @@
           <note from="Developer" annotates="general" priority="2">is-IS=virk geymslutenging</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType EnabledExpectedLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 223275718 - NamedType 1569752377" size-unit="char" translate="yes" xml:space="preserve">
-          <source>an existing file path relative to the storage connection</source>
-          <target>slóð að fyrirliggjandi skrá miðað við geymslutenginguna</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=slóð að fyrirliggjandi skrá miðað við geymslutenginguna</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType ExistingFileLbl</note>
+        <trans-unit id="Codeunit 223275718 - NamedType 832709966" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The destination file already exists.</source>
+          <target>Áfangaskráin er þegar til.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Áfangaskráin er þegar til.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType ExistingDestinationErr</note>
         </trans-unit>
-        <trans-unit id="Codeunit 223275718 - NamedType 1733285004" size-unit="char" translate="yes" xml:space="preserve">
-          <source>File "%1" was not found.</source>
-          <target>Skráin "%1" fannst ekki.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = relative path, is-IS=Skráin "%1" fannst ekki.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType FileNotFoundErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 223275718 - NamedType 2353416510" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The file at "%1" could not be read from storage.</source>
-          <target>Ekki tókst að lesa skrána á "%1" úr geymslu.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = relative path, is-IS=Ekki tókst að lesa skrána á "%1" úr geymslu.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType FileReadFailedErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 223275718 - NamedType 3949973115" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Call Storage.File.List and use the relative path of an existing file.</source>
-          <target>Kallaðu á Storage.File.List og notaðu afstæða slóð að fyrirliggjandi skrá.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á Storage.File.List og notaðu afstæða slóð að fyrirliggjandi skrá.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType FindFileLbl</note>
+        <trans-unit id="Codeunit 223275718 - NamedType 1193190134" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Choose another path or send overwrite true to replace the existing file. Linked attachment files cannot be overwritten.</source>
+          <target>Veldu aðra slóð eða sendu overwrite true til að skipta út fyrirliggjandi skrá. Ekki má yfirskrifa skrár sem tengjast viðhengjum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Veldu aðra slóð eða sendu overwrite true til að skipta út fyrirliggjandi skrá. Ekki má yfirskrifa skrár sem tengjast viðhengjum.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType ExistingDestinationNextLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 681023433" size-unit="char" translate="yes" xml:space="preserve">
           <source>Restore the attachment with Storage.Attachment.Restore, or delete the attachment in Business Central, then delete the file.</source>
@@ -3333,6 +3351,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Endurheimtu viðhengið áður en skráin er færð eða veldu tengi sem tryggir varðveislu upprunaskrár og þekkta niðurstöðu við bilun.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType MoveRecoveryNextStepLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 223275718 - NamedType 4291608272" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a new file path, or overwrite true</source>
+          <target>ný skráarslóð eða overwrite true</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=ný skráarslóð eða overwrite true</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType NewDestinationExpectedLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 2606231272" size-unit="char" translate="yes" xml:space="preserve">
           <source>a destination that does not already exist</source>
           <target>áfangastaður sem er ekki þegar til</target>
@@ -3344,12 +3368,6 @@
           <target>Veldu nýja áfangaslóð og reyndu tilfærsluna aftur.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Veldu nýja áfangaslóð og reyndu tilfærsluna aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType NewTransferTargetNextStepLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 223275718 - NamedType 3776335946" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Check access to the storage connection and retry the relative file path.</source>
-          <target>Athugaðu aðgang að geymslutengingunni og reyndu afstæðu skráarslóðina aftur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu aðgang að geymslutengingunni og reyndu afstæðu skráarslóðina aftur.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType RetryFileReadLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 683079086" size-unit="char" translate="yes" xml:space="preserve">
           <source>The transfer destination already exists. Nothing was changed.</source>
