@@ -33,6 +33,9 @@ codeunit 70013500 "Storage Contract Parts ori"
         ProcessImportLbl: Label 'When true, the import is committed and the definition mappings run at once, as DataExchange.Entry.Process does. Default false.', Comment = 'is-IS=Þegar true er innflutningurinn staðfestur og varpanir skilgreiningarinnar keyrðar strax, eins og DataExchange.Entry.Process gerir. Sjálfgefið false.';
         KeepFileLbl: Label 'When true, the assembled file is also written to the storage path of the upload session. Default false.', Comment = 'is-IS=Þegar true er samsetta skráin einnig skrifuð á geymsluslóð upphleðslulotunnar. Sjálfgefið false.';
         DeliveryStorageLbl: Label 'The storage connection the file is written to. Send it, or inline true, or both.', Comment = 'is-IS=Geymslutengingin sem skráin er skrifuð í. Sendu hana, eða inline true, eða hvort tveggja.';
+        DefinitionDeliveryStorageLbl: Label 'Optional storage connection for writing the definition XML. Omit all delivery parameters for the header only; use inline true for XML without storage, or combine both destinations.', Comment = 'is-IS=Valfrjáls geymslutenging til að skrifa XML skilgreiningarinnar. Slepptu öllum afhendingarbreytum fyrir hausinn eingöngu; notaðu inline true fyrir XML án geymslu eða sameinaðu báða áfangastaði.';
+        DefinitionDeliveredStorageLbl: Label 'The storage connection used when the definition XML was written; omitted for header-only or inline-only requests.', Comment = 'is-IS=Geymslutengingin sem var notuð þegar XML skilgreiningarinnar var skrifað; sleppt þegar aðeins er beðið um haus eða innfellt XML.';
+        DefinitionExportEffectLbl: Label 'Header-only and inline-only requests read the definition without changing it. With storageCode, writes the XML to external storage and can overwrite an existing file. This write is irreversible: it happens outside the Business Central transaction and is not rolled back with it.', Comment = 'is-IS=Beiðnir um haus eingöngu eða innfellt XML eingöngu lesa skilgreininguna án þess að breyta henni. Með storageCode er XML skrifað í ytri geymslu og getur yfirskrifað fyrirliggjandi skrá. Skrifin eru óafturkræf: þau fara fram utan færslu Business Central og eru ekki afturkölluð með henni.';
         DeliveryPathLbl: Label 'The destination file path in storage. Default: folderPath (or the connection root) with the file name.', Comment = 'is-IS=Áfangaslóð skrárinnar í geymslu. Sjálfgefið: folderPath (eða rót tengingarinnar) með skráarheitinu.';
         DeliveryFolderLbl: Label 'The destination folder in storage; the file name is appended. Do not send with path.', Comment = 'is-IS=Áfangamappa í geymslu; skráarheitinu er bætt aftan við. Ekki senda með path.';
         DeliveryInlineLbl: Label 'When true, the file is returned as contentBase64; refused when it is larger than 1 MB.', Comment = 'is-IS=Þegar true er skránni skilað sem contentBase64; hafnað ef hún er stærri en 1 MB.';
@@ -230,7 +233,7 @@ codeunit 70013500 "Storage Contract Parts ori"
             'DataExchange.Definition.Export':
                 begin
                     Parameters.Add(ContractMgt.Parameter('code', 'string', true, DefinitionCodeLbl));
-                    AddDeliveryParameters(Parameters);
+                    AddDeliveryParameters(Parameters, MessageType = 'DataExchange.Definition.Export');
                 end;
             'Storage.Upload.CommitToDataExchange':
                 begin
@@ -260,7 +263,7 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Parameters.Add(ContractMgt.Parameter('journalTemplate', 'string', true, JournalTemplateLbl));
                     Parameters.Add(ContractMgt.Parameter('journalBatch', 'string', true, JournalBatchLbl));
                     Parameters.Add(ContractMgt.Parameter('fileName', 'string', false, PaymentFileNameLbl));
-                    AddDeliveryParameters(Parameters);
+                    AddDeliveryParameters(Parameters, MessageType = 'DataExchange.Definition.Export');
                 end;
             'DataExchange.Entry.List':
                 begin
@@ -302,17 +305,20 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Parameters.Add(ContractMgt.Parameter('tableView', 'string', false, ExportTableViewLbl));
                     Parameters.Add(ContractMgt.Parameter('recordIds', 'array', false, ExportRecordIdsLbl));
                     Parameters.Add(ContractMgt.Parameter('lineDef', 'string', false, ExportLineDefLbl));
-                    AddDeliveryParameters(Parameters);
+                    AddDeliveryParameters(Parameters, MessageType = 'DataExchange.Definition.Export');
                 end;
 
         end;
     end;
 
-    local procedure AddDeliveryParameters(var Parameters: JsonArray)
+    local procedure AddDeliveryParameters(var Parameters: JsonArray; HeaderOnlyAllowed: Boolean)
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        Parameters.Add(ContractMgt.Parameter('storageCode', 'string', false, DeliveryStorageLbl));
+        if HeaderOnlyAllowed then
+            Parameters.Add(ContractMgt.Parameter('storageCode', 'string', false, DefinitionDeliveryStorageLbl))
+        else
+            Parameters.Add(ContractMgt.Parameter('storageCode', 'string', false, DeliveryStorageLbl));
         Parameters.Add(ContractMgt.Parameter('path', 'string', false, DeliveryPathLbl));
         Parameters.Add(ContractMgt.Parameter('folderPath', 'string', false, DeliveryFolderLbl));
         Parameters.Add(ContractMgt.Parameter('inline', 'boolean', false, DeliveryInlineLbl));
@@ -454,7 +460,7 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('code', 'string', DefinitionCodeLbl));
                     Fields.Add(ContractMgt.ResponseField('name', 'string', DefinitionNameLbl));
                     Fields.Add(ContractMgt.ResponseField('type', 'string', DefinitionTypeLbl));
-                    AddDeliveryFields(Fields);
+                    AddDeliveryFields(Fields, MessageType = 'DataExchange.Definition.Export');
                 end;
             'DataExchange.Import.Run', 'DataExchange.Export.Run', 'Storage.Upload.CommitToDataExchange':
                 begin
@@ -465,7 +471,7 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('fileName', 'string', 'The file name stored on the entry.'));
                     if MessageType = 'DataExchange.Export.Run' then begin
                         Fields.Add(ContractMgt.ResponseField('recordCount', 'integer', 'Number of exported source records.'));
-                        AddDeliveryFields(Fields);
+                        AddDeliveryFields(Fields, MessageType = 'DataExchange.Definition.Export');
                     end else begin
                         Fields.Add(ContractMgt.ResponseField('lineCount', 'integer', ImportResultLbl));
                         Fields.Add(ContractMgt.ResponseField('fieldCount', 'integer', ImportResultLbl));
@@ -507,7 +513,7 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('creditTransferRegisterNo', 'integer', 'The credit transfer register that keeps the file.'));
                     Fields.Add(ContractMgt.ResponseField('entryNo', 'integer', 'The Data Exch. entry, for a Data Exchange payment export format.'));
                     Fields.Add(ContractMgt.ResponseField('fileName', 'string', 'The payment file name.'));
-                    AddDeliveryFields(Fields);
+                    AddDeliveryFields(Fields, MessageType = 'DataExchange.Definition.Export');
                 end;
             'DataExchange.Type.List':
                 begin
@@ -545,11 +551,14 @@ codeunit 70013500 "Storage Contract Parts ori"
         Response.Add('fields', Fields);
     end;
 
-    local procedure AddDeliveryFields(var Fields: JsonArray)
+    local procedure AddDeliveryFields(var Fields: JsonArray; HeaderOnlyAllowed: Boolean)
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        Fields.Add(ContractMgt.ResponseField('storageCode', 'string', DeliveryStorageLbl));
+        if HeaderOnlyAllowed then
+            Fields.Add(ContractMgt.ResponseField('storageCode', 'string', DefinitionDeliveredStorageLbl))
+        else
+            Fields.Add(ContractMgt.ResponseField('storageCode', 'string', DeliveryStorageLbl));
         Fields.Add(ContractMgt.ResponseField('path', 'string', DeliveredPathLbl));
         Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', DeliveredLengthLbl));
         Fields.Add(ContractMgt.ResponseField('contentBase64', 'string', DeliveredContentLbl));
@@ -629,6 +638,11 @@ codeunit 70013500 "Storage Contract Parts ori"
                 begin
                     Effect.Add('effect', 'write');
                     Effect.Add('changes', DataExchangeChangesLbl);
+                end;
+            MessageType = 'DataExchange.Definition.Export':
+                begin
+                    Effect.Add('effect', 'irreversible');
+                    Effect.Add('changes', DefinitionExportEffectLbl);
                 end;
             MessageType = 'DataExchange.PaymentExport.Run':
                 begin

@@ -772,9 +772,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method GetSelectionDescription - NamedType SelectionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1813886267 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Returns the header of a Data Exchange definition: code, name and type.</source>
-          <target>Skilar haus skilgreiningar gagnaskipta: kóða, heiti og gerð.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skilar haus skilgreiningar gagnaskipta: kóða, heiti og gerð.</note>
+          <source>Returns the definition header (code, name and type); optionally returns XML inline or writes it to storage.</source>
+          <target>Skilar haus skilgreiningar gagnaskipta (kóða, heiti og gerð); skilar einnig XML innfellt eða skrifar það í geymslu ef óskað er.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skilar haus skilgreiningar gagnaskipta (kóða, heiti og gerð); skilar einnig XML innfellt eða skrifar það í geymslu ef óskað er.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Export Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1813886267 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
@@ -784,9 +784,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Export Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1813886267 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Returns only the code, name and type of one definition; DataExchange.Definition.Get also returns its lines and mappings.</source>
-          <target>Skilar aðeins kóða, heiti og gerð einnar skilgreiningar; DataExchange.Definition.Get skilar einnig línum hennar og vörpunum.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skilar aðeins kóða, heiti og gerð einnar skilgreiningar; DataExchange.Definition.Get skilar einnig línum hennar og vörpunum.</note>
+          <source>Use for the definition header by default, XML with inline true, or an XML file with storageCode and path. Both XML destinations may be requested.</source>
+          <target>Notaðu fyrir haus skilgreiningar sjálfgefið, XML með inline true eða XML-skrá með storageCode og path. Biðja má um báða áfangastaði XML.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Notaðu fyrir haus skilgreiningar sjálfgefið, XML með inline true eða XML-skrá með storageCode og path. Biðja má um báða áfangastaði XML.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Export Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 146493229 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -2324,6 +2324,24 @@
           <target>Allur kóði gagnaskiptaskilgreiningar, að hámarki 20 stafir.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Allur kóði gagnaskiptaskilgreiningar, að hámarki 20 stafir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DefinitionCodeLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 3418240630" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The storage connection used when the definition XML was written; omitted for header-only or inline-only requests.</source>
+          <target>Geymslutengingin sem var notuð þegar XML skilgreiningarinnar var skrifað; sleppt þegar aðeins er beðið um haus eða innfellt XML.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Geymslutengingin sem var notuð þegar XML skilgreiningarinnar var skrifað; sleppt þegar aðeins er beðið um haus eða innfellt XML.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DefinitionDeliveredStorageLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 2316858590" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Optional storage connection for writing the definition XML. Omit all delivery parameters for the header only; use inline true for XML without storage, or combine both destinations.</source>
+          <target>Valfrjáls geymslutenging til að skrifa XML skilgreiningarinnar. Slepptu öllum afhendingarbreytum fyrir hausinn eingöngu; notaðu inline true fyrir XML án geymslu eða sameinaðu báða áfangastaði.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls geymslutenging til að skrifa XML skilgreiningarinnar. Slepptu öllum afhendingarbreytum fyrir hausinn eingöngu; notaðu inline true fyrir XML án geymslu eða sameinaðu báða áfangastaði.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DefinitionDeliveryStorageLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 3640963336" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Header-only and inline-only requests read the definition without changing it. With storageCode, writes the XML to external storage and can overwrite an existing file. This write is irreversible: it happens outside the Business Central transaction and is not rolled back with it.</source>
+          <target>Beiðnir um haus eingöngu eða innfellt XML eingöngu lesa skilgreininguna án þess að breyta henni. Með storageCode er XML skrifað í ytri geymslu og getur yfirskrifað fyrirliggjandi skrá. Skrifin eru óafturkræf: þau fara fram utan færslu Business Central og eru ekki afturkölluð með henni.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Beiðnir um haus eingöngu eða innfellt XML eingöngu lesa skilgreininguna án þess að breyta henni. Með storageCode er XML skrifað í ytri geymslu og getur yfirskrifað fyrirliggjandi skrá. Skrifin eru óafturkræf: þau fara fram utan færslu Business Central og eru ekki afturkölluð með henni.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DefinitionExportEffectLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 2839081276" size-unit="char" translate="yes" xml:space="preserve">
           <source>The definition name.</source>
