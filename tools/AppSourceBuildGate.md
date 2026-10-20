@@ -45,23 +45,30 @@ Container-only compilation needs a supported identity collector before acceptanc
 
 ## Infrastructure and acceptance holds
 
-The concrete workflow patch is an external review artifact, **not applied here**.
-It runs `Assert-AppSourceBuild.ps1 -Stage Pipeline` immediately after RunPipeline,
-then `-Stage Signed` immediately after the existing Sign action when shipping
-signing is intended. It preserves signing selection, action pins and credentials.
-Windows `Get-AuthenticodeSignature` must return `Valid` for the actual NAVX output
-with a signer certificate and supported SIP/trust; absence or an unsupported
-provider is a blocker. Signing is allowed to change whole-package bytes, but
-must preserve every package entry/manifest. No synthetic signature success is
-used by the tests. Failed builds retain the original failure and upload sanitized
-receipts only.
+Current integration is implemented by PR147 and adjusted by PR149. The real
+`_BuildALGoProject.yaml` runs `Assert-AppSourceBuild.ps1 -Stage Pipeline`
+immediately after RunPipeline. The existing Sign action remains. Apps/TestApps
+uploads require Pipeline success and use `if-no-files-found: error`; final
+sanitized receipts are uploaded on success/failure when finalize evidence exists.
+At main c30c225, CI39298155811 retained Default/Test finalize and pipeline receipts.
+The signed Default content digest matches the pre-sign Pipeline package, with no
+friend grants. Its full-file hash changes when the signature is added.
 
-PR84 / worker-3 is the sole product/test compile repair. PR87 remains donor-only
-on its explicit hold; its branch is not merged. PR91 has separate pipeline
-ownership. This tooling implementation does not release infrastructure, runtime,
-QA, input/access or publication holds. Actual product/test analyzer builds with
-0 errors / 0 warnings, all guards, owned serial COSMO unit/MCP/UI verification and
-verified deletion remain required after PR84 merges and integration is approved.
+**Signed is intentionally deferred, not a missing-code defect.** PR149 records that
+the hosted runner lacks NAVX SIP/trust and CI uses a self-signed certificate. Do
+not restore the known-failing CI Signed step. Before submission, the actual final
+artifact still requires a real certificate and Windows NAVX
+`Get-AuthenticodeSignature` verdict `Valid`, signer/chain evidence and rejection
+of a task-owned payload-tampered copy. Signing success, signature-tail bytes and
+controlled signature tests cannot prove that acceptance. Architect/root routes
+this manual verification and the designated certificate/signing owner supplies
+its prerequisite. No trust-store or credential change is authorized here.
+
+The old PR84/87/91 compile/integration holds are historical; current builds have
+superseded them. Keep independent current-candidate #80 QA, real provider/UI/MCP,
+legal/registration and release-owner gates explicit. See
+`app/docs/appsource/candidate-2026-10-20.json` for the immutable build113 receipt;
+its native365/365/0/0 is existing CI execution, not formal validation.
 
 ## Tooling regressions
 

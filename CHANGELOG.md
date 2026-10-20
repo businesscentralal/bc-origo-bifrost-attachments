@@ -8,6 +8,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Added (2026-10-20) - Executable submission preparation checks (#78, #81)
+
+- `tools/validate_submission.py` checks current source inventory, fourteen-market listing, scenario families, local document links and unconfigured offer delivery; optional sanitized smoke receipts are reconciled against the actual immutable package, exact QA identity, readback bytes, structured negative result and owned cleanup. It does not run a sandbox flow or certify an app.
+- The working submission package records main `c30c2254bf953ed2e6f90fdf080dfb216bea799f`, shipping Default28.0.0.113, all eight verified artifact digests, clean compiler spans and existing CI365/365/0/0. Pipeline enforcement is integrated; Signed remains intentionally deferred under PR149 pending actual real-certificate Windows trust/tamper evidence. No AL objects or message contracts changed.
+
 ### Added (2026-10-19) - Restrictive permission tests for the Data Exchange pipeline types (#79)
 
 - `Storage 79 Perm Tests ori` (96218) covers the five message types added in #150 under `TestPermissions = Restrictive`, dispatched through the public `Dispatcher ori` with fresh observer readback. Refusals: `DataExchange.Entry.Process` without write on the mapping target (`PermissionDenied` naming the definition, no marker), `DataExchange.Entry.Delete` without `Data Exch.` mutation and without `Data Exch. Field` mutation, `DataExchange.Definition.Import` without definition mutation (valid exported XML under a new code installs nothing), `DataExchange.PaymentExport.Run` without `Gen. Journal Line` mutation (line not marked, no entry, no credit transfer register) and `Storage.Upload.CommitToDataExchange` with both product roles but no `Data Exch.` or `Data Exch. Field` mutation (session stays open with its chunk bytes). Each denial asserts the table id in `received`.

@@ -7,6 +7,8 @@ locale: en-US
 
 # Plan independent Attachments validation coverage
 
+Current technical receipt: [build113 evidence](candidate-2026-10-20.json), source `c30c2254bf953ed2e6f90fdf080dfb216bea799f`, existing CI **365/365/0/0**. This is preparation evidence; final #80 QA and certification remain pending. [Run the executable preparation/receipt checker](validator-evidence-format.md).
+
 **Planning only — none of these flows has been executed or certified by this artifact.** Issue #80 owns final internal QA; formal Microsoft-format documents follow its passing immutable evidence on the Architect-defined integrated candidate. The [source inventory](source-inventory.json) records 39 declared message types (23 storage, 16 Data Exchange), not 39 proven behaviors. PR150 added the Data Exchange import, processing, export and definition types that older context files omit. #69/#82 must reconcile their actual request/error contracts before exact examples and expected responses are frozen.
 
 The submission plan targets a new Attachments offer: Gunnar confirmed on 2026-10-06 that none currently exists. There is no existing offer ID to request. Offer creation and supplying its genuine ID are future operator-owned release prerequisites under separate authorization; `deliverToAppSource` stays unconfigured. Internal QA and formal scenario preparation retain their gates below.
@@ -58,8 +60,8 @@ Since PR150 (#24, #25, #26), `DataExchange.Import.Run` reads the file from stora
 
 | Input | Preparation disposition |
 |---|---|
-| Integrated candidate | Follow [Architect1792179827](https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749) and the [release checklist](release-checklist.md). The current candidate is main `304a1c2` (CI/CD run 39276099802 green, package 28.0.0.109); PR152 merged after it (`1f9d72a`) and moves it. Build87/b66d1f2 is excluded. Document only shipped behavior. |
-| Foundation | Historical 523 input is preserved in inventory history only. Source and the 28.0.0.109 package require Foundation 28.0.3.530, taken from the core 28.0.3 GitHub release (PR151); #78 must still reconcile actual runtime hash and Windows trust (signed NAVX gate deferred by PR149). Freeze the final hash only from accepted candidate evidence. |
+| Integrated candidate | Follow Architect1792179827 and the [release checklist](release-checklist.md). [Build113 receipt](candidate-2026-10-20.json) records main `c30c2254bf953ed2e6f90fdf080dfb216bea799f`, CI365/365/0/0, package28.0.0.113. #80 live certification remains pending; build87 is excluded. |
+| Foundation | Source and build113 require Foundation28.0.3.530 from core release28.0.3. Actual installed package/hash and Windows trust remain separate #78/#80 evidence; PR149 intentionally deferred the CI Signed gate. Historical523 does not verify this candidate. |
 | Connectors | The package has no connector app dependency; storage goes through the External File Storage interface (PR118, PR144). Record the connector apps actually installed per market row and their hashes. Provider scope stays Azure Blob Storage, Azure File Share and SharePoint. |
 | Shipping source | Inventory sourceSha is a preparation snapshot, not a QA candidate. Regenerate on the accepted #80 SHA before formalization; preserve all 39 declared types without treating declarations as passes. |
 | Languages and help | Capture setup UI1033/1039 and candidate public-help behavior separately. PR129 has merged; its help-language assertion counts only through candidate test receipts. Obtain current external help-route receipts from documentation owners; historical404 is not a current outage claim. |
