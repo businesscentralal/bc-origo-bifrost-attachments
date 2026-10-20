@@ -238,7 +238,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
         // The stored file is only read; it stays in storage unchanged.
         if not InlineSource then
             if not RequestMgt.TryReadStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
-                Argument.RespondWithLastError();
+                ImportMgt.RespondFileReadError(Argument, Path);
                 exit;
             end;
         if FileName = '' then
@@ -246,6 +246,13 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
                 FileName := DefaultFileName(DefCode)
             else
                 FileName := RequestMgt.LeafName(Path);
+
+        if InlineSource then
+            ImportMgt.CheckFileFormat(Argument, DefCode, TempBlob, 'contentBase64', FileName)
+        else
+            ImportMgt.CheckFileFormat(Argument, DefCode, TempBlob, 'path', FileName);
+        if Reader.RespondIfErrors(Argument) then
+            exit;
 
         // A reader error is raised and rolls back the entry and every parsed field with it.
         ImportMgt.ImportFile(DefCode, FileName, TempBlob, EmptyGuid, 'DataExchange.Import.Run', StorageCode, Path, DataExch);

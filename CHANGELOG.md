@@ -8,6 +8,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed - import format refusals (#156)
+
+- Data Exchange import preflight (70013501), Import.Run (70013540), definition transfer (70013505) and chunked-upload import now refuse malformed XML and binary text files with translated `InvalidParameterFormat`, the actual source parameter, file metadata, expected format and a next step. Content is never echoed. UTF-16 text is preserved.
+- Storage read failures for file and definition imports retain `BusinessCentralError` with path and recovery guidance. Definition imports identify storage/upload sources correctly. Errors chapters and Icelandic XLF are synchronized; test codeunit 96256 exercises the EN/IS queue and refusal state. Unexpected post-write reader/DB errors retain Foundation's current error shape and transaction rollback (Architect AC2 disposition 1792485999.787709).
+
 ### Added (2026-10-20) - Executable submission preparation checks (#78, #81)
 
 - `tools/validate_submission.py` checks current source inventory, fourteen-market listing, scenario families, local document links and unconfigured offer delivery; optional sanitized smoke receipts are reconciled against the actual immutable package, exact QA identity, readback bytes, structured negative result and owned cleanup. It does not run a sandbox flow or certify an app.

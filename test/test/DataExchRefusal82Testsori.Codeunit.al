@@ -605,6 +605,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [GIVEN] An already canonical Unicode definition.
         DataExchDef.Code := 'XÞÓR';
         DataExchDef.Type := DataExchDef.Type::"Generic Import";
+        DataExchDef."File Type" := DataExchDef."File Type"::"Variable Text";
         DataExchDef."Reading/Writing XMLport" := Xmlport::"Data Exch. Import - CSV";
         DataExchDef.Insert(true);
         // [WHEN] The unchanged key reaches the registered handler.
@@ -968,6 +969,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         DataExchDef.Code := CopyStr('X' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(DataExchDef.Code));
         DataExchDef.Type := DefinitionType;
         // A reader, so an import reads the inline file (#24).
+        DataExchDef."File Type" := DataExchDef."File Type"::"Variable Text";
         DataExchDef."Reading/Writing XMLport" := Xmlport::"Data Exch. Import - CSV";
         DataExchDef.Insert(true);
         exit(DataExchDef.Code);
