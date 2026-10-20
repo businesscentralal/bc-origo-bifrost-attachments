@@ -98,11 +98,10 @@ codeunit 70013505 "DataExch Def Transfer ori"
                 ImportMgt.RespondFileReadError(Argument, Path);
                 exit;
             end;
-        if not IsNullGuid(UploadId) then begin
-            // Validate the file before consuming the upload or writing any definition.
+        // Validate the file before consuming the upload or writing any definition.
+        if not IsNullGuid(UploadId) then
             if not UploadMgt.ReadUpload(Argument, UploadId, TempBlob, UploadFileName) then
                 exit;
-        end;
 
         SourceParameter := 'contentBase64';
         if Path <> '' then begin
