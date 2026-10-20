@@ -11,7 +11,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Added
 
 - A source build guard and native conformance assertion reject missing or empty overview/examples chapters for all 39 types (#160).
-- English overview chapters for every Attachments message type (#160), including files, directories, attachments, uploads and Data Exchange. Shared chapter text is built in codeunit 10035183.
+- English overview and recorded request/answer example chapters for every Attachments message type (#160), including files, directories, attachments, uploads and Data Exchange. Shared chapter text is built in codeunit 10035183.
 
 ### Fixed
 

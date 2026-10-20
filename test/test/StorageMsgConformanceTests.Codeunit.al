@@ -188,6 +188,14 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Contract: JsonObject;
         ChapterToken: JsonToken;
         Examples: JsonArray;
+        ExampleToken: JsonToken;
+        Example: JsonObject;
+        RequestToken: JsonToken;
+        ResponseToken: JsonToken;
+        TypeToken: JsonToken;
+        StatusToken: JsonToken;
+        MessageInterface: Interface "Msg Interface ori";
+        HasRefusal: Boolean;
         Ordinal: Integer;
         Count: Integer;
         Offenders: Text;
@@ -211,6 +219,32 @@ codeunit 96211 "Storage Msg Conformance Tests"
                     Examples := ChapterToken.AsArray();
                     if Examples.Count() = 0 then
                         Offenders += TypeName(Ordinal) + '|examples empty ';
+                    HasRefusal := false;
+                    foreach ExampleToken in Examples do begin
+                        Example := ExampleToken.AsObject();
+                        if not Example.Get('request', RequestToken) then
+                            Offenders += TypeName(Ordinal) + '|example request missing '
+                        else
+                            if not RequestToken.AsObject().Get('type', TypeToken) then
+                                Offenders += TypeName(Ordinal) + '|example type missing '
+                            else
+                                if TypeToken.AsValue().AsText() <> TypeName(Ordinal) then
+                                    Offenders += TypeName(Ordinal) + '|example type mismatch ';
+                        if not Example.Get('response', ResponseToken) then
+                            Offenders += TypeName(Ordinal) + '|example answer missing '
+                        else begin
+                            if ResponseToken.AsObject().Keys().Count() = 0 then
+                                Offenders += TypeName(Ordinal) + '|example answer empty ';
+                            if ResponseToken.AsObject().Get('status', StatusToken) then
+                                HasRefusal := HasRefusal or (StatusToken.AsValue().AsText() = 'Error');
+                        end;
+                    end;
+                    MessageInterface := MessageType;
+                    if (MessageInterface.GetMessageDirection() <> Enum::"Msg Direction ori"::Outbound) or
+                        (TypeName(Ordinal) = 'DataExchange.Definition.Export')
+                    then
+                        if not HasRefusal then
+                            Offenders += TypeName(Ordinal) + '|write refusal missing ';
                 end;
             end;
         LibraryAssert.AreEqual(39, Count, 'All 39 Attachments message types must be checked.');
