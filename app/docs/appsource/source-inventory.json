@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "fc6746d515892724491d82f08fb975f1ae658d4b",
+  "sourceSha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -279,9 +279,9 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-19T17:34:36.359944+00:00",
-  "inventoryPreparedFromDocumentationHead": "fc6746d515892724491d82f08fb975f1ae658d4b",
-  "productSourceBaselineUnchanged": false,
+  "refreshedAt": "2026-10-20T08:42:42.452110+00:00",
+  "inventoryPreparedFromDocumentationHead": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+  "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",
@@ -507,7 +507,7 @@
   "approvedFoundationInput": null,
   "integratedCandidate": {
     "authorityUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792179827684749",
-    "sha": "304a1c24985a00fb86b5caef10ca46ffe04096b6",
+    "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
     "qaPassed": false,
     "excludedCandidateSha": "b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005",
     "requiredIntegration": [
@@ -522,18 +522,23 @@
       "PR144 interface-only storage connectors; no connector-id/version logic",
       "PR149 signed NAVX gate deferred under #78",
       "PR150 Data Exchange import, processing, export and definition types",
-      "PR151 AL-Go probes Foundation from the core GitHub release 28.0.3"
+      "PR151 AL-Go probes Foundation from the core GitHub release 28.0.3",
+      "PR152 removed schema-based write refusal (merged)",
+      "PR153 restored Icelandic glossary (merged)",
+      "PR154 refreshed preparation facts (merged)",
+      "PR155 added restrictive Data Exchange permission tests (merged)"
     ],
-    "pendingChange": "PR152 (#120) removed the last schema-based write refusal and merged after this receipt as 1f9d72a; the candidate moves to the main head that contains it and needs its own receipts",
+    "pendingChange": null,
     "buildEvidence": {
-      "run": 39276099802,
-      "runUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39276099802",
+      "run": 39298155811,
+      "runUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39298155811",
       "conclusion": "success",
-      "jobs": "Default, Test and Deploy to Bifrost green",
-      "testsExecuted": 354,
+      "jobs": "Default, Test, Deploy to Bifrost and final cleanup successful",
+      "testsExecuted": 365,
+      "testsPassed": 365,
       "testsFailed": 0,
       "testsSkipped": 0,
-      "defaultPackageVersion": "28.0.0.109",
+      "defaultPackageVersion": "28.0.0.113",
       "internalsVisibleTo": [],
       "dependencies": [
         {
@@ -545,8 +550,10 @@
       "application": "28.3.0.0",
       "messageTypes": 39,
       "connectorAppDependencies": [],
-      "artifactIdAndPackageSha256": null,
-      "signatureTrustVerified": false
+      "artifactId": 12211715204,
+      "packageSha256": "e68e79c6450d9c666b928b91022905cf78fccd35466a86db769c3e6476e950a6",
+      "signatureTrustVerified": true,
+      "signatureTrustEvidence": "candidate-2026-10-20.json#windowsTrust"
     },
     "requiredBuildEvidence": "main Default+Test green, meaningful executed tests, signed no-friend Default Apps artifact",
     "preparationAuthorizedNow": true,
@@ -615,7 +622,7 @@
       "owner": "worker-4 + Gunnar",
       "pr": 86,
       "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86",
-      "remainingEvidence": "Publication/baseline/consumer/range/affix evidence"
+      "remainingEvidence": "Gunnar: authentic both-range and ori/Origo registration evidence; current API audit/consumer proof retained by worker-4; first-publication baseline resolved by Architect1792485840"
     },
     {
       "issue": 78,
@@ -623,7 +630,7 @@
       "owner": "worker-6",
       "pr": 94,
       "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/94",
-      "remainingEvidence": "Input/compiler/package gates; PR91 separate pipeline owner / ori-haraldurb"
+      "remainingEvidence": "Current c30c225/build113 compile, Pipeline gate, no-IVT and manual Windows Valid/HashMismatch evidence supplied; preserve PR149 Signed deferral and final release/certificate-owner disposition"
     },
     {
       "issue": 79,
@@ -663,7 +670,7 @@
       "issue": 78,
       "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/78",
       "owner": "worker-6 / ori-haraldurb; separate retained scope",
-      "remainingEvidence": "Windows package trust and actual runtime Foundation variant/hash"
+      "remainingEvidence": "Current c30c225/build113 compile, Pipeline gate, no-IVT and manual Windows Valid/HashMismatch evidence supplied; preserve PR149 Signed deferral and final release/certificate-owner disposition"
     },
     {
       "issue": 79,
@@ -687,7 +694,7 @@
       "issue": 77,
       "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/77",
       "owner": "worker-4 / Gunnar-designated registration and publisher owners",
-      "remainingEvidence": "Authoritative affix/both-ranges/baseline evidence; PR128 audit merged"
+      "remainingEvidence": "Gunnar: authentic both-range and ori/Origo registration evidence; current API audit/consumer proof retained by worker-4; first-publication baseline resolved by Architect1792485840"
     }
   ],
   "containerPolicy": {
@@ -696,5 +703,17 @@
     "amendSameContainer": true,
     "deleteAfter": "Tester postdeploy UAT pass AND issue closure; verify owned404",
     "dataCleanup": "Developer/validator fixtures cleaned and verified per scenario; no UAT data cleanup"
+  },
+  "firstPublicationBaseline": {
+    "publishedAttachmentsBaseline": false,
+    "authorityUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792485840592319",
+    "authority": "Authenticated Architect disposition on Gunnar behalf; Foundation only released Bifrost app per Gunnar16Oct",
+    "registrationEvidenceOwner": "Gunnar",
+    "registrationEvidencePending": [
+      "10035635–10035684",
+      "70013500–70013549",
+      "ori/Origo"
+    ],
+    "personalTenantIssue20Included": false
   }
 }
