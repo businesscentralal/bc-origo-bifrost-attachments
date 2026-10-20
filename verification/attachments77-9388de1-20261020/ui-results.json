@@ -1,0 +1,73 @@
+{
+  "sha": "9388de175779e5e950a5218648bdef90498f113d",
+  "containerId": "f09c5823ec0a",
+  "appVersion": "28.0.0.4",
+  "testAppVersion": null,
+  "testAppInstalled": false,
+  "mode": "Default without friend grant; test app uninstalled/unpublished",
+  "scenarios": [
+    {
+      "page": 10035637,
+      "language": "en-US",
+      "lcid": 1033,
+      "expectedCaption": "Bifrost Storage Setup",
+      "passed": true,
+      "screenshot": "ui-en-US-10035637.png",
+      "at": "2026-10-20T09:10:24.315Z"
+    },
+    {
+      "page": 10035635,
+      "language": "en-US",
+      "lcid": 1033,
+      "expectedCaption": "Select File Account",
+      "passed": true,
+      "screenshot": "ui-en-US-10035635.png",
+      "at": "2026-10-20T09:10:27.877Z"
+    },
+    {
+      "page": 10035637,
+      "language": "is-IS",
+      "lcid": 1039,
+      "expectedCaption": "Uppsetning Bifröst geymslu",
+      "passed": true,
+      "screenshot": "ui-is-IS-10035637.png",
+      "at": "2026-10-20T09:10:41.165Z"
+    },
+    {
+      "page": 10035635,
+      "language": "is-IS",
+      "lcid": 1039,
+      "expectedCaption": "Velja skráareikning",
+      "passed": true,
+      "screenshot": "ui-is-IS-10035635.png",
+      "at": "2026-10-20T09:10:44.876Z"
+    }
+  ],
+  "languageSelection": "Actual My Settings page9204 Language lookup; no URL language override",
+  "verified": true,
+  "createsBusinessData": false,
+  "languageRestored": true,
+  "languageChanges": [
+    {
+      "before": "Language\nEnglish (United States)",
+      "after": "Language\nIcelandic (Iceland)",
+      "at": "2026-10-20T09:10:36.093Z"
+    },
+    {
+      "before": "Language\nEnglish (United States)",
+      "after": "Language\nEnglish (United States)",
+      "at": "2026-10-20T09:13:24.118Z",
+      "verification": "Active lookup scoped to modal and English product caption read back"
+    }
+  ],
+  "finishedAt": "2026-10-20T09:13:24.119Z",
+  "restoreVerifiedAt": "2026-10-20T09:13:24.119Z",
+  "total": 4,
+  "passed": 4,
+  "failed": 0,
+  "skipped": 0,
+  "navigationDiagnostics": [
+    "ui-attempt1-results.json",
+    "ui-attempt2-results.json"
+  ]
+}

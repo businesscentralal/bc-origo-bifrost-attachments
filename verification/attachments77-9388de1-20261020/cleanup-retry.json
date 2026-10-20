@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-20T09:07:33.348627+00:00",
+  "candidateSha": "9388de175779e5e950a5218648bdef90498f113d",
+  "containerId": "f09c5823ec0a",
+  "operation": "Owned test extension cleanup",
+  "actualFailure": "Unpublish-NAVApp does not accept Force in this runtime; tenant uninstall succeeded before unpublish parameter binding failed",
+  "normalRecovery": "Existing finish-testapp-removal helper re-reads actual tenant app state, refuses installed or different app identity, conditionally includes supported parameters, and unpublishes only the already-uninstalled owned test app. No repeated uninstall.",
+  "nativeResultUnaffected": "365passed0failed0skipped; source unchanged",
+  "outcome": "Recovered by read-before-write tenant-scoped unpublish with supported parameters; test-app absence verified. No repeated uninstall or test rerun."
+}

@@ -1,0 +1,15 @@
+{
+  "sha": "9388de175779e5e950a5218648bdef90498f113d",
+  "containerId": "f09c5823ec0a",
+  "operationalTablesChecked": 10,
+  "companies": 2,
+  "totalRows": 0,
+  "remainingOwnedFixtures": 0,
+  "noCustomerSharedDataTouched": true,
+  "dataEvidence": "posttests-owned-data-counts.log",
+  "containerDeletionAllowed": false,
+  "retentionGate": "Tester postdeploymentUAT plus issue closure",
+  "cleanupScope": "Ten operational Attachments table instances across two owned development companies directly checked0rows after365tests. Native tests require function isolation; current365-source/JUnit matched without skips. No externalMCPfixtures or UIbusinessdata created; no customer/shared/UAT data deletion.",
+  "testAppAbsent": true,
+  "testAppCleanupEvidence": "testapp-tenant-removal-readback.log"
+}

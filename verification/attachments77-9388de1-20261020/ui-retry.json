@@ -1,0 +1,33 @@
+{
+  "at": "2026-10-20T09:10:13.528699+00:00",
+  "candidateSha": "9388de175779e5e950a5218648bdef90498f113d",
+  "containerId": "f09c5823ec0a",
+  "attempt1": {
+    "executed": 0,
+    "passed": 0,
+    "result": "UI expected caption did not appear; diagnostic shows SignIn with user/password controls; no product page or language change exercised",
+    "evidence": "ui-attempt1-results.json"
+  },
+  "diagnosisEvidence": "ui-diagnostic.json",
+  "fix": "Private Playwright helper explicitly signs in using existing owned-container credentials when #UserName exists. No credential change, production/source change, or browser safety bypass.",
+  "nextAction": "Rerun four actual UI scenarios at same unchanged9388de1 Default deployment; preserve failed attempt",
+  "attempt2": {
+    "scenariosExecuted": 4,
+    "passed": 4,
+    "productScenarioFailures": 0,
+    "cleanupCompleted": false,
+    "actualIssue": "Language restore locator matched background Region English text under the active lookup, so click was intercepted; product EN/IS page scenarios all passed"
+  },
+  "cleanupRecovery": "Existing private language restore helper scopes English row to active modal, uses actual UI lookup, reads back English caption. No rerun of proved four scenarios, no backend language write.",
+  "updatedAt": "2026-10-20T09:12:29.900332+00:00",
+  "cleanupRecoveryAttempt1": "Modal-scoped English selection succeeded through UI settings OK, then helper tried to read a detached frame. Read-after-navigation helper timing fault; no product page scenario failed. Next recovery re-reads current language and skips preference writes when already English.",
+  "finalOutcome": {
+    "uiScenariosExecuted": 4,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "languageRestored": true,
+    "readback": "Actual MySettings EnglishUnitedStates and English product caption, no repeated language write when alreadyEnglish",
+    "finishedAt": "2026-10-20T09:13:24.119Z"
+  }
+}

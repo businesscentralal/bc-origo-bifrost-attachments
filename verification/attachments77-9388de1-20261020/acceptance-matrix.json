@@ -8,8 +8,8 @@
       "owner": "worker-4 for audit; Claude Code independent verification"
     },
     "AC02": {
-      "verified": "Original11StorageConnector signatures unchanged from b42ad90; production+mock match; StorageType extensible; separate optional linked-move interface; app/test CodeCop/UICop/AppSourceCop compile0errors0warnings at candidate",
-      "pending": "Own exact candidate native/UI and independent verification; published-baseline package comparison not applicable under authenticated no-baseline disposition",
+      "verified": "Original11StorageConnector signatures unchanged from b42ad90; production+mock match; StorageType extensible; separate optional linked-move interface; app/test CodeCop/UICop/AppSourceCop compile0errors0warnings at candidate; full365native tests passed with0failed/skipped and4UI scenarios passed1033/1039, owned cleanup verified",
+      "pending": "Claude exact-head independent audit; published-baseline comparison not applicable per Architect ruling",
       "owner": "worker-4; Gunnar/designated baseline owner"
     },
     "AC03": {
@@ -20,7 +20,14 @@
     "AC04": {
       "verified": "Source and downloaded main113 manifest declare10035635\u201310035684 and70013500\u201370013549; AppSourceCop requires ori/Origo",
       "pending": "Gunnar authentic Partner Center both-range and ori/Origo registration evidence attached to retained release checklist. Issue77 remains open until attachment.",
-      "owner": "Gunnar"
+      "owner": "Gunnar",
+      "releaseChecklistEvidence": {
+        "sha": "dd0fdc2d34b52febee3d938e5b7422e523fd51b8",
+        "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/dd0fdc2d34b52febee3d938e5b7422e523fd51b8",
+        "owner": "worker-6",
+        "sourceCustodyTransferred": false,
+        "status": "Retained release owner recorded baseline ruling/namedGunnar dependency; actual authentic registration still pending"
+      }
     }
   },
   "mcp": {
@@ -29,8 +36,38 @@
   },
   "runtime": {
     "sha": "9388de175779e5e950a5218648bdef90498f113d",
-    "nativeExecuted": 0,
-    "uiExecuted": 0,
-    "status": "New candidate compilation in progress; retained owned container startup pending; no previous-tip runtime evidence inherited"
+    "nativeExecuted": 365,
+    "nativePassed": 365,
+    "nativeFailed": 0,
+    "nativeSkipped": 0,
+    "nativeErrors": 0,
+    "fullConfiguredSuite": true,
+    "sourceMethodMatch": {
+      "sha": "9388de175779e5e950a5218648bdef90498f113d",
+      "sourceMethods": 365,
+      "executed": 365,
+      "passed": 365,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "missing": 0,
+      "extra": 0,
+      "duplicates": 0,
+      "junitSha256": "d599df3b373b1bdef6ae4892c243fc80ddee5bcf2eb919c24d513d86aa4166c4"
+    },
+    "uiExecuted": 4,
+    "uiPassed": 4,
+    "uiFailed": 0,
+    "uiSkipped": 0,
+    "uiLcids": [
+      1033,
+      1039
+    ],
+    "languageRestored": true,
+    "status": "Developer exact-tip native/UI complete; independent Claude/Grok/Architect delivery remains pending",
+    "deployedProductVersion": "28.0.0.4",
+    "deployedTestVersion": "28.0.0.6 (removed after native run)",
+    "shippingMainArtifactVersion": "28.0.0.113",
+    "containerId": "f09c5823ec0a"
   }
 }

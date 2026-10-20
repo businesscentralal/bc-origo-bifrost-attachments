@@ -1,0 +1,12 @@
+{
+  "repo": "businesscentralal/bc-origo-bifrost-attachments",
+  "sourceOwner": "worker-6",
+  "sourceCustodyTransferred": false,
+  "candidateSha": "dd0fdc2d34b52febee3d938e5b7422e523fd51b8",
+  "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/chore/78-81-release-evidence-worker6",
+  "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/dd0fdc2d34b52febee3d938e5b7422e523fd51b8",
+  "at": "2026-10-20T08:58:32.750707+00:00",
+  "summary": "Reginn applied Architect1792485840 first-publication ruling to retained #81 release-checklist/source-inventory: no published Attachments AppSource baseline; authentic both-range10035635\u201310035684/70013500\u201370013549 and ori/Origo registration evidence owned by Gunnar. Current source interface permission-plan finding also fixed. Shared baseline QA still c30c225/Default113; preparation branch does not replace worker8 finalQA source. Real root WindowsValid/HashMismatch supplied in sanitized candidate-2026-10-20.json. No API audit edits, offer/registration/licence writes or #77 closure.",
+  "appliedAt": "2026-10-20T09:00:33.978283+00:00",
+  "applicationEvidence": "evidence/checkpoint.json"
+}

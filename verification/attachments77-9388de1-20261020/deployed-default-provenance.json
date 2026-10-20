@@ -1,0 +1,20 @@
+{
+  "sha": "9388de175779e5e950a5218648bdef90498f113d",
+  "containerId": "f09c5823ec0a",
+  "mode": "default",
+  "artifacts": [
+    {
+      "app": "default",
+      "sha256": "300994cf2a5ff8ecebb4b97c45ca26e8baf40404199e0dc4d5f6a5b8dc074ee3",
+      "downloadedSha256": "300994cf2a5ff8ecebb4b97c45ca26e8baf40404199e0dc4d5f6a5b8dc074ee3",
+      "deployedBytesMatch": true,
+      "bytes": 387719,
+      "source": [
+        {
+          "RepositoryUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments",
+          "Commit": "9388de175779e5e950a5218648bdef90498f113d"
+        }
+      ]
+    }
+  ]
+}
