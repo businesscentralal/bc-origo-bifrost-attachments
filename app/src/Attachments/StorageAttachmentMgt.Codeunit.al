@@ -327,6 +327,9 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         Link.Insert(true);
 
 
+        Clear(IncomingDocumentAttachment.Content);
+        IncomingDocumentAttachment.Modify(true);
+
         ResultData.Add('target', IncomingDocumentTok);
         ResultData.Add('incomingDocumentEntryNo', IncomingDocumentAttachment."Incoming Document Entry No.");
         ResultData.Add('lineNo', IncomingDocumentAttachment."Line No.");
@@ -336,11 +339,6 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         ResultData.Add('fileName', FileName);
         ResultData.Add('contentLength', Link."Content Size");
         AddDataExchangeResult(Argument, IncomingDocument, DataExchangeTypeCode, Process, ResultData);
-        // Base processing reads Content directly; offload only after it has consumed the bytes.
-        if IncomingDocumentAttachment.GetBySystemId(Link."Record System Id") then begin
-            Clear(IncomingDocumentAttachment.Content);
-            IncomingDocumentAttachment.Modify(true);
-        end;
         exit(true);
     end;
 
