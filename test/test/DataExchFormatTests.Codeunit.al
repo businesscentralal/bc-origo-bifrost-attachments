@@ -90,7 +90,7 @@ codeunit 96256 "DataExch Format Tests ori"
 
     [Test]
     [TransactionModel(TransactionModel::AutoCommit)]
-    procedure MissingStoredFile_RemainsBusinessCentralError()
+    procedure MissingStoredFile_UsesTheOperationErrorContract()
     begin
         CheckReadFailure(1033, "Message Type ori"::"DataExchange.Import.Run");
         CheckReadFailure(1039, "Message Type ori"::"DataExchange.Import.Run");
@@ -282,7 +282,10 @@ codeunit 96256 "DataExch Format Tests ori"
         Request.Add('storageCode', Fixture.StorageCode());
         Request.Add('path', 'in/not-created.xml');
         Response := DispatchLocale(MessageType, Request, LanguageId);
-        Fixture.AssertRefusal(Response, 'BusinessCentralError', 'path');
+        if MessageType = "Message Type ori"::"DataExchange.Definition.Import" then
+            Fixture.AssertRefusal(Response, 'RecordNotFound', 'path')
+        else
+            Fixture.AssertRefusal(Response, 'BusinessCentralError', 'path');
         LibraryAssert.AreEqual('in/not-created.xml', Fixture.ReadText(Response, 'received'), 'Name the source path.');
         DeleteDefinition(DefCode);
     end;

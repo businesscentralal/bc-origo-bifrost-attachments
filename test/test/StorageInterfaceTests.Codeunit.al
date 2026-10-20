@@ -126,7 +126,8 @@ codeunit 96236 "Storage Interface Tests ori"
         Provider.GetFile(StorageSetup, 'source.txt', Result);
         AssertContent(Result, 'preserved source');
         asserterror Provider.GetFile(StorageSetup, 'missing.txt', Result);
-        LibraryAssert.IsTrue(GetLastErrorText().Contains('was not found'), 'Read refusal must come from the selected connector.');
+        LibraryAssert.IsTrue(GetLastErrorText().Contains('private-account.invalid'), 'Direct provider refusal must come from the selected mock connector.');
+        LibraryAssert.IsTrue(GetLastErrorText().Contains('Response Code: 404'), 'The raw facade error remains a404; message handlers sanitize it.');
         LowerPermissions.StopLoggingNAVPermissions();
     end;
 

@@ -10,7 +10,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-20) - Storage and processing error contracts (#167)
 
-- #167: Missing storage resources now return localized `RecordNotFound` with the caller path; provider failures omit internal URLs. Incoming-document processing returns structured `processErrors` and `incomingDocumentStatus` by reading its persisted errors. Updated help and bilingual regressions (codeunits 10035136, 10035139, 10035183, 10035193, 96200, 96212, 96237).
+- #167: Missing storage resources now return localized `RecordNotFound` with the caller path; provider failures omit internal URLs. Incoming-document processing returns structured `processErrors` and `incomingDocumentStatus` by reading its persisted errors. Updated help and bilingual regressions (codeunits 10035136, 10035139, 10035183, 10035193, 96200, 96212, 96236, 96237, 96256).
 
 ### Fixed (2026-10-20) - Icelandic discovery and upload refusals (#157)
 

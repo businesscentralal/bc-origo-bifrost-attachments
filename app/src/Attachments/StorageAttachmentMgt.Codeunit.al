@@ -639,11 +639,12 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         // SaveErrorMessages writes INTO the record buffer; it does not read persisted errors.
         ErrorMessage.SetRange("Context Record ID", IncomingDocument.RecordId);
         ErrorMessage.SetRange("Message Type", ErrorMessage."Message Type"::Error);
-        if ErrorMessage.FindSet() then
-            repeat
-                if ErrorMessage."Message" <> '' then
-                    AddProcessError(ProcessErrors, ErrorMessage."Message");
-            until ErrorMessage.Next() = 0;
+        if ErrorMessage.ReadPermission() then
+            if ErrorMessage.FindSet() then
+                repeat
+                    if ErrorMessage."Message" <> '' then
+                        AddProcessError(ProcessErrors, ErrorMessage."Message");
+                until ErrorMessage.Next() = 0;
         if (ProcessErrors.Count() = 0) and (LastError <> '') then
             AddProcessError(ProcessErrors, LastError);
         if (ProcessErrors.Count() = 0) and (IncomingDocument.Status = IncomingDocument.Status::Failed) then
