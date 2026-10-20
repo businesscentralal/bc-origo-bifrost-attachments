@@ -1,5 +1,5 @@
 {
-  "hashSourceSha": "f4d524d9bdcfe408701e222ef463b2928f395910",
+  "hashSourceSha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
   "sourceSha": "fca2943658e9843d3cfcce80ff6093657e8bd51e",
   "appId": "672df32a-a0c5-4a22-b591-0efa38023e95",
   "appVersion": "28.0.0.4",
@@ -94,6 +94,7 @@
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentSubscr.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
@@ -145,7 +146,7 @@
       "sha256": "df0926186a2ade36bfe7c10aff16fc56379cda60b8b33e2e9b846420a8f316ce",
       "access": "Internal",
       "extensible": "false",
-      "decision": "KEEP Internal: current merged state; historical baseline and foreign-consumer acceptance pending",
+      "decision": "KEEP Internal: no published baseline per Architect1792485840; preserve demonstrated consumers",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al"
       ],
@@ -236,7 +237,8 @@
       ],
       "testConsumers": [
         "test/test/DataExchDefXferTests.Codeunit.al",
-        "test/test/DataExchImportTests.Codeunit.al"
+        "test/test/DataExchImportTests.Codeunit.al",
+        "test/test/Storage79PermTests.Codeunit.al"
       ],
       "nonLocalProcedureCount": 0,
       "fields": [
@@ -695,7 +697,9 @@
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
-        "app/src/MessageTypes/DataExchange/DataExchDefExpEnumExt.EnumExt.al"
+        "app/src/MessageTypes/DataExchange/DataExchDefExpEnumExt.EnumExt.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
       "testConsumers": [
         "test/test/AttachmentsBuildTestsori.Codeunit.al"
@@ -1759,7 +1763,7 @@
       "sha256": "7d1ac50f45f916ff09105dc0d1d3dd306e9d49d7c35a1009d11b0ff7f358619b",
       "access": "Public (default)",
       "extensible": "false",
-      "decision": "KEEP UI entry point; HOLD any member access reduction pending baseline",
+      "decision": "KEEP UI entry point; preserve demonstrated consumers",
       "appConsumers": [
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al",
@@ -1801,7 +1805,7 @@
       "sha256": "bb4315b200c11c2bc2ae2d07fc47cb3e26ddc912e938d29dc49c6b9e1311dfde",
       "access": "Public (default)",
       "extensible": "false",
-      "decision": "KEEP UI entry point; HOLD any member access reduction pending baseline",
+      "decision": "KEEP UI entry point; preserve demonstrated consumers",
       "appConsumers": [
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al",
@@ -1827,7 +1831,7 @@
       "sha256": "b5bdd3e28bb21b30a060f94a423661f09ee1517e7c5978695c81b96f7f7686d9",
       "access": "Public (default)",
       "extensible": "false",
-      "decision": "KEEP UI entry point; HOLD any member access reduction pending baseline",
+      "decision": "KEEP UI entry point; preserve demonstrated consumers",
       "appConsumers": [
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al",
@@ -1861,7 +1865,7 @@
       "sha256": "143d3cb1406d0164359da173b9b746e32ab8555c9c76db9a101793aecaaad424",
       "access": "Public (default)",
       "extensible": "false",
-      "decision": "KEEP UI entry point; HOLD any member access reduction pending baseline",
+      "decision": "KEEP UI entry point; preserve demonstrated consumers",
       "appConsumers": [
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
         "app/src/Permissions/StorageFull.PermissionSetExt.al",
@@ -1891,14 +1895,18 @@
       "sha256": "b5b5269fe07b9080456b3a185efbd9dfd9ed9d8718d444ee9da47185119b0586",
       "access": "Public (default)",
       "extensible": "false",
-      "decision": "KEEP UI entry point; HOLD any member access reduction pending baseline",
+      "decision": "KEEP UI entry point; preserve demonstrated consumers",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
         "app/src/Install/StorageTakeover.Codeunit.al",
         "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
@@ -1929,6 +1937,7 @@
         "app/src/Upload/StorageUploadMgt.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/DataExchFixture.Codeunit.al",
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/src/Permissions/StorageIface.PermissionSet.al",
@@ -1972,11 +1981,15 @@
       "decision": "KEEP Public: provider contract",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
         "app/src/Install/StorageTakeover.Codeunit.al",
         "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
@@ -2007,6 +2020,7 @@
         "app/src/Upload/StorageUploadMgt.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/DataExchFixture.Codeunit.al",
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/src/Permissions/StorageIface.PermissionSet.al",
@@ -2049,7 +2063,7 @@
       "sha256": "31e3f48e1e233bed6a9716edc94b673528893e6a8a2523bc0f2b9085c135f8b1",
       "access": "Public (default)",
       "extensible": "false",
-      "decision": "KEEP UI entry point; HOLD any member access reduction pending baseline",
+      "decision": "KEEP UI entry point; preserve demonstrated consumers",
       "appConsumers": [
         "app/src/Lifecycle/StorageInstall.Codeunit.al",
         "app/src/Permissions/BIFROSTAttach.PermissionSet.al",
@@ -2077,6 +2091,10 @@
       "decision": "KEEP Public: provider contract",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
@@ -2221,14 +2239,20 @@
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
         "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefInstallImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryProcImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchIncDocProc.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchPayExportImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
@@ -2433,8 +2457,11 @@
         "app/src/Upload/StorageUploadPurge.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/DataExchFixture.Codeunit.al",
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/DataExchDefXferTests.Codeunit.al",
+        "test/test/DataExchImportTests.Codeunit.al",
         "test/test/DataExchPhase2Testsori.Codeunit.al",
         "test/test/Storage79PermTests.Codeunit.al",
         "test/test/StorageErrorResponseTests.Codeunit.al",
@@ -2464,7 +2491,7 @@
       "sha256": "22df978b424ff006ef6ea68a95e7818c55ee3e3032de9704e8ad0835754344c1",
       "access": "Internal",
       "extensible": "false",
-      "decision": "KEEP Internal: current merged state; historical baseline and foreign-consumer acceptance pending",
+      "decision": "KEEP Internal: no published baseline per Architect1792485840; preserve demonstrated consumers",
       "appConsumers": [
         "app/src/Upload/StorageUploadMgt.Codeunit.al",
         "app/src/Upload/StorageUploadSession.Table.al"
@@ -2485,13 +2512,106 @@
     "scope": "app/src and test at consumerSourceSha; lexical quoted-name matches outside line comments; historical external-app searches remain separate",
     "method": "Quoted name lexical matches after removing line comments; strings and block comments may match; no foreign-consumer absence assertion"
   },
-  "refreshedAt": "2026-10-19T14:49:42.179960+00:00",
+  "refreshedAt": "2026-10-20T08:48:48.394431+00:00",
   "originalSnapshot": {
     "sourceSha": "b42ad90eaee2803205408a1cac8b0d9752b91c0e",
     "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86",
     "commit": "ef39ae86b5729038877b2427e9a892487ce09728",
     "note": "Original audit remains attributable in Git history; this refresh inventories current product source."
   },
-  "consumerSourceSha": "f4d524d9bdcfe408701e222ef463b2928f395910",
-  "procedureLocationsSourceSha": "f4d524d9bdcfe408701e222ef463b2928f395910"
+  "consumerSourceSha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+  "procedureLocationsSourceSha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+  "publicationEvidence": {
+    "status": "no-published-AppSource-baseline",
+    "sourceUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792485840592319",
+    "sourceTs": "1792485840.592319",
+    "authority": "Architect records Gunnar16October confirmation on his behalf: only Foundation released",
+    "recordedAt": "2026-10-20T08:44:00.592319+00:00",
+    "scope": "Attachments AppId672df32a-a0c5-4a22-b591-0efa38023e95 only. Personal-tenant installs issue20 are not a published baseline. No registration evidence inferred.",
+    "registrationEvidenceOwner": "Gunnar",
+    "registrationEvidenceStatus": "pending-authentic-both-range-and-ori-Origo-evidence"
+  },
+  "externalConsumerSearch": {
+    "checkedAt": "2026-10-20",
+    "method": "Read-only git grep -F across every AL source and app.json manifest at exact freshly fetched main SHA for each named repository; quoted shipping names, namespace, appId, app name; no source checkout modification. Lexical evidence, not type resolution or coverage of unavailable tenant/third-party code.",
+    "repositoryCount": 12,
+    "nonemptySourceRepositories": 10,
+    "filesScanned": 2126,
+    "matches": 0,
+    "unknownTenantAndThirdPartyConsumersScanned": false,
+    "repositories": [
+      {
+        "repo": "businesscentralal/bc-origo-bifrost-timesheets",
+        "sha": "0bce539cf472c49f95c244a87efdee57e20acb01",
+        "filesScanned": 110,
+        "matches": 0
+      },
+      {
+        "repo": "businesscentralal/bc-origo-bifrost-subscription-billing",
+        "sha": "384f6bceeb82c189b5f2f329ca40c1a8c2bdc062",
+        "filesScanned": 88,
+        "matches": 0
+      },
+      {
+        "repo": "businesscentralal/bc-origo-bifrost-language-models",
+        "sha": "815fdc4a3829494f0a1527ae80f702ec61c423ab",
+        "filesScanned": 120,
+        "matches": 0
+      },
+      {
+        "repo": "businesscentralal/bc-origo-bifrost-orchestrator",
+        "sha": "cecd2ddd057529c4f0767caf8a0f72c9d1e0f21f",
+        "filesScanned": 160,
+        "matches": 0
+      },
+      {
+        "repo": "businesscentralal/bc-origo-bifrost-inventory",
+        "sha": "d49ad44b166e04cd00617a5ee2deca0e2e700fef",
+        "filesScanned": 167,
+        "matches": 0
+      },
+      {
+        "repo": "businesscentralal/bc-origo-bifrost-warehouse",
+        "sha": "7861dae2b85141567445b8b2ac2a6e3c59e0ba59",
+        "filesScanned": 94,
+        "matches": 0
+      },
+      {
+        "repo": "businesscentralal/bc-origo-bifrost-servicemanagement",
+        "sha": "f63fd81223b60cb0d73eacff3133b6831ffcf286",
+        "filesScanned": 0,
+        "matches": 0
+      },
+      {
+        "repo": "businesscentralal/bc-origo-bifrost-manufacturing",
+        "sha": "0a9c8cf250c7be648eae295b8676cd70708ac489",
+        "filesScanned": 0,
+        "matches": 0
+      },
+      {
+        "repo": "businesscentralal/bc-origo-bifrost-reference",
+        "sha": "bb85ab2bb1ff719c06a0141d2ac9b45e6d990b3e",
+        "filesScanned": 16,
+        "matches": 0
+      },
+      {
+        "repo": "OrigoSoftwareSolutions/bc-origo-bifrost-iceland",
+        "sha": "4aeb4e8ed1240f6c1b17a5b4b22fcf3b20a31262",
+        "filesScanned": 365,
+        "matches": 0
+      },
+      {
+        "repo": "OrigoSoftwareSolutions/bc-origo-bifrost-iceland-treasury",
+        "sha": "cde5a52c6551b15a37fb815c42dee79d65ec26a3",
+        "filesScanned": 776,
+        "matches": 0
+      },
+      {
+        "repo": "OrigoSoftwareSolutions/bc-origo-bifrost-iceland-docex",
+        "sha": "c0853deaa22dd19d5056d81add057f48b944055e",
+        "filesScanned": 230,
+        "matches": 0
+      }
+    ]
+  }
 }

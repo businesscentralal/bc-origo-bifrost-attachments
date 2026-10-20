@@ -13,6 +13,11 @@ Business Central release versioning (`major.minor.build.revision`).
 - Data Exchange import preflight (70013501), Import.Run (70013540), definition transfer (70013505) and chunked-upload import now refuse malformed XML and binary text files with translated `InvalidParameterFormat`, the actual source parameter, file metadata, expected format and a next step. Content is never echoed. UTF-16 text is preserved.
 - Storage read failures for file and definition imports retain `BusinessCentralError` with path and recovery guidance. Definition imports identify storage/upload sources correctly. Errors chapters and Icelandic XLF are synchronized; test codeunit 96256 exercises the EN/IS queue and refusal state. Unexpected post-write reader/DB errors retain Foundation's current error shape and transaction rollback (Architect AC2 disposition 1792485999.787709).
 
+### Added (2026-10-20) - Executable submission preparation checks (#78, #81)
+
+- `tools/validate_submission.py` checks current source inventory, fourteen-market listing, scenario families, local document links and unconfigured offer delivery; optional sanitized smoke receipts are reconciled against the actual immutable package, exact QA identity, readback bytes, structured negative result and owned cleanup. It does not run a sandbox flow or certify an app.
+- The working submission package records main `c30c2254bf953ed2e6f90fdf080dfb216bea799f`, shipping Default28.0.0.113, all eight verified artifact digests, clean compiler spans and existing CI365/365/0/0. Pipeline enforcement is integrated; Signed remains intentionally deferred under PR149; independent root Windows verification now supplies real Origo hf certificate `Valid` and tamper `HashMismatch` for that exact shipping artifact. No AL objects or message contracts changed.
+- The release checklist applies Architect1792485840’s first-publication ruling: Attachments has no published AppSource baseline. Authentic registration of both object ranges and `ori`/`Origo` remains a named Gunnar dependency; no offer/registration writes.
 
 ### Added (2026-10-19) - Restrictive permission tests for the Data Exchange pipeline types (#79)
 
