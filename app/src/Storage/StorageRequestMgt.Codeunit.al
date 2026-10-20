@@ -17,6 +17,11 @@ codeunit 10035662 "Storage Request Mgt ori"
     Access = Internal;
 
     var
+        FileNotFoundErr: Label 'File "%1" was not found.', Comment = '%1 = relative path, is-IS=Skráin "%1" fannst ekki.';
+        ExistingFileLbl: Label 'an existing file path relative to the storage connection', Comment = 'is-IS=slóð að fyrirliggjandi skrá miðað við geymslutenginguna';
+        FindFileLbl: Label 'Call Storage.File.List and use the relative path of an existing file.', Comment = 'is-IS=Kallaðu á Storage.File.List og notaðu afstæða slóð að fyrirliggjandi skrá.';
+        FileReadFailedErr: Label 'The file at "%1" could not be read from storage.', Comment = '%1 = relative path, is-IS=Ekki tókst að lesa skrána á "%1" úr geymslu.';
+        RetryFileReadLbl: Label 'Check access to the storage connection and retry the relative file path.', Comment = 'is-IS=Athugaðu aðgang að geymslutengingunni og reyndu afstæðu skráarslóðina aftur.';
         TransferDestinationExistsErr: Label 'The transfer destination already exists. Nothing was changed.', Comment = 'is-IS=Áfangastaður tilfærslunnar er þegar til. Engu var breytt.';
         NewTransferTargetLbl: Label 'a destination that does not already exist', Comment = 'is-IS=áfangastaður sem er ekki þegar til';
         NewTransferTargetNextStepLbl: Label 'Choose a new target path and retry the transfer.', Comment = 'is-IS=Veldu nýja áfangaslóð og reyndu tilfærsluna aftur.';
@@ -232,11 +237,20 @@ codeunit 10035662 "Storage Request Mgt ori"
         Base64Convert: Codeunit "Base64 Convert";
         DataObject: JsonObject;
         ContentInStream: InStream;
+        Exists: Boolean;
     begin
         if not CheckOperationPath(Argument, StorageSetup, 'path', Path, false) then
             exit;
+        if not TryExists(StorageSetup, Connector, Enum::"Ext. File Storage File Type"::File, Path, Exists) then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::BusinessCentralError, StrSubstNo(FileReadFailedErr, Path), 'path', Path, ExistingFileLbl, RetryFileReadLbl);
+            exit;
+        end;
+        if not Exists then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(FileNotFoundErr, Path), 'path', Path, ExistingFileLbl, FindFileLbl);
+            exit;
+        end;
         if not TryGetFile(StorageSetup, Connector, Path, TempBlob) then begin
-            Argument.RespondWithLastError();
+            Argument.RespondWithError("Bifrost Error Code ori"::BusinessCentralError, StrSubstNo(FileReadFailedErr, Path), 'path', Path, ExistingFileLbl, RetryFileReadLbl);
             exit;
         end;
         TempBlob.CreateInStream(ContentInStream);

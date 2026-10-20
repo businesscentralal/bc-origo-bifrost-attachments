@@ -185,6 +185,7 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
         DataExchType: Record "Data Exchange Type";
         BankExportImportSetup: Record "Bank Export/Import Setup";
         Reader: Codeunit "Storage Request Reader ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         DefCode: Code[20];
@@ -223,10 +224,8 @@ codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
         if Reader.RespondIfErrors(Argument) then
             exit;
         DataExchDef.Delete(true);
-        ResponseJson.Add('status', 'Success');
         ResponseJson.Add('code', DefCode);
-        Argument.SetResponseJson(ResponseJson);
-        Argument."Content Type" := Argument.GetContentTypeJson();
+        RequestMgt.RespondSuccess(Argument, ResponseJson);
     end;
     // Bank accounts reach a definition through Bank Export/Import Setup, checked above. These setups
     // name a definition directly; a caller who cannot read one of them cannot change it either.

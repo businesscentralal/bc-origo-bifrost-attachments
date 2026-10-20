@@ -224,6 +224,7 @@ codeunit 70013507 "DataExch Entry Proc Impl ori" implements "Msg Interface ori",
         Expected: Text;
         NextStep: Text;
         ParameterName: Text;
+        ReceivedValue: Text;
         StartTime: DateTime;
         EntryNo: Integer;
         EntryNotFoundErr: Label 'Data Exch. entry %1 was not found.', Comment = '%1 = entry number||is-IS=Gagnaskiptafærsla %1 fannst ekki.';
@@ -251,7 +252,7 @@ codeunit 70013507 "DataExch Entry Proc Impl ori" implements "Msg Interface ori",
             Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(EntryNotFoundErr, EntryNo), 'entryNo', Format(EntryNo, 0, 9), EntryExpectedLbl, ChooseEntryLbl);
             exit;
         end;
-        ImportMgt.CheckImportDefinition(Argument, DataExch."Data Exch. Def Code", 'entryNo');
+        ImportMgt.CheckImportDefinition(Argument, DataExch."Data Exch. Def Code", 'dataExchDefCode');
         if Reader.RespondIfErrors(Argument) then
             exit;
         if DataExch."Incoming Entry No." <> 0 then begin
@@ -266,9 +267,12 @@ codeunit 70013507 "DataExch Entry Proc Impl ori" implements "Msg Interface ori",
             end;
         if ImportMgt.FindProcessBlocker(DataExch, CopyStr(LineDefText, 1, 20), ErrorCode, ErrorText, Expected, NextStep) then begin
             ParameterName := 'entryNo';
-            if LineDefText <> '' then
+            ReceivedValue := Format(EntryNo, 0, 9);
+            if LineDefText <> '' then begin
                 ParameterName := 'mappingLineDef';
-            Argument.RespondWithError(ErrorCode, ErrorText, ParameterName, DataExch."Data Exch. Def Code", Expected, NextStep);
+                ReceivedValue := LineDefText;
+            end;
+            Argument.RespondWithError(ErrorCode, ErrorText, ParameterName, ReceivedValue, Expected, NextStep);
             exit;
         end;
         ImportMgt.SnapshotTargets(DataExch, CopyStr(LineDefText, 1, 20), Counts, StartTime);

@@ -95,6 +95,7 @@ codeunit 70013503 "DataExch Export Mgt ori"
         DataExch: Record "Data Exch.";
         StorageSetup: Record "Storage Setup ori";
         ImportMgt: Codeunit "DataExch Import Mgt ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
         Reader: Codeunit "Storage Request Reader ori";
         TempBlob: Codeunit "Temp Blob";
         SourceRef: RecordRef;
@@ -121,30 +122,32 @@ codeunit 70013503 "DataExch Export Mgt ori"
         if Reader.ReadMutationText(Argument, RequestJson, 'fileName', false, MaxStrLen(DataExch."File Name"), FileName) then
             if FileName <> '' then
                 Reader.CheckFileName(Argument, FileName);
-        if Reader.RespondIfErrors(Argument) then
-            exit;
-        CheckExportDefinition(Argument, DefCode, DataExchDef);
+        // Read all independent request fields before returning collected problems.
+        Reader.ReadMutationText(Argument, RequestJson, 'lineDef', false, 20, LineDefText);
+        ReadSourceTable(Argument, RequestJson, TableId, TableParameter);
+        ReadRecordIds(Argument, RequestJson, RecordIds);
+        Reader.ReadText(Argument, RequestJson, 'tableView', false, TableView);
+        if RequestJson.Contains('tableView') and RequestJson.Contains('recordIds') then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, ViewAndIdsErr, 'tableView', TableView, ViewAndIdsExpectedLbl, ViewAndIdsNextStepLbl);
+        if (TableId = 0) and (TableParameter = '') and (RecordIds.Count() = 0) and not RequestJson.Contains('recordIds') then
+            Argument.AddError("Bifrost Error Code ori"::MissingParameter, SourceRequiredErr, 'tableId', '', SourceExpectedLbl, SourceNextStepLbl);
+        if DefCode <> '' then
+            CheckExportDefinition(Argument, DefCode, DataExchDef);
+        if (FileName = '') and (DataExchDef.Code <> '') then
+            FileName := DefaultExportFileName(DataExchDef);
+        ReadDelivery(Argument, RequestJson, FileName, StorageSetup, Connector, Path, HasStorage, Inline, FolderPath);
         if Reader.RespondIfErrors(Argument) then
             exit;
         if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch.", true) then
             exit;
         if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Field", true) then
             exit;
-
-        // Phase 2: the records and the delivery.
-        Reader.ReadMutationText(Argument, RequestJson, 'lineDef', false, 20, LineDefText);
-        ReadSourceTable(Argument, RequestJson, TableId, TableParameter);
-        ReadRecordIds(Argument, RequestJson, RecordIds);
-        Reader.ReadText(Argument, RequestJson, 'tableView', false, TableView);
-        if (TableView <> '') and (RecordIds.Count() > 0) then
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, ViewAndIdsErr, 'tableView', TableView, ViewAndIdsExpectedLbl, ViewAndIdsNextStepLbl);
-        if (TableId = 0) and (TableParameter = '') and (RecordIds.Count() = 0) and not RequestJson.Contains('recordIds') then
-            Argument.AddError("Bifrost Error Code ori"::MissingParameter, SourceRequiredErr, 'tableId', '', SourceExpectedLbl, SourceNextStepLbl);
         if FileName = '' then
             FileName := DefaultExportFileName(DataExchDef);
-        ReadDelivery(Argument, RequestJson, FileName, StorageSetup, Connector, Path, HasStorage, Inline, FolderPath);
-        if Reader.RespondIfErrors(Argument) then
-            exit;
+        if HasStorage and (Path = '') then begin
+            Path := RequestMgt.CombinedPath(FolderPath, FileName);
+            Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
+        end;
         FindExportMapping(Argument, DataExchDef, CopyStr(LineDefText, 1, 20), DataExchMapping);
         if (TableId <> 0) and (DataExchMapping."Table ID" <> 0) and (TableId <> DataExchMapping."Table ID") then
             Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(TableMismatchErr, TableId, DefCode, DataExchMapping."Table ID"), TableParameter, Format(TableId, 0, 9),
@@ -176,14 +179,12 @@ codeunit 70013503 "DataExch Export Mgt ori"
         RunExportSteps(DataExch, DataExchDef, DataExchMapping);
         ReadFileContent(Argument, DataExch, TempBlob);
 
-        ResponseJson.Add('status', 'Success');
         ResponseJson.Add('entryNo', DataExch."Entry No.");
         ResponseJson.Add('fileName', FileName);
         ResponseJson.Add('dataExchDefCode', DefCode);
         ResponseJson.Add('recordCount', RecordCount);
         Deliver(Argument, TempBlob, StorageSetup, Connector, Path, HasStorage, Inline, true, ResponseJson);
-        Argument.SetResponseJson(ResponseJson);
-        Argument."Content Type" := Argument.GetContentTypeJson();
+        RequestMgt.RespondSuccess(Argument, ResponseJson);
     end;
 
     /// <summary>
@@ -201,6 +202,7 @@ codeunit 70013503 "DataExch Export Mgt ori"
         Capture: Codeunit "DataExch Pay Capture ori";
         ImportMgt: Codeunit "DataExch Import Mgt ori";
         Reader: Codeunit "Storage Request Reader ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
         TempBlob: Codeunit "Temp Blob";
         Connector: Interface "Storage Connector ori";
         RequestJson: JsonObject;
@@ -290,7 +292,6 @@ codeunit 70013503 "DataExch Export Mgt ori"
         CreditTransferRegister.SetLoadFields("No.", "From Bank Account No.");
         CreditTransferRegister.SetRange("From Bank Account No.", BankAccount."No.");
 
-        ResponseJson.Add('status', 'Success');
         ResponseJson.Add('journalTemplate', TemplateName);
         ResponseJson.Add('journalBatch', BatchName);
         ResponseJson.Add('bankAccountNo', BankAccount."No.");
@@ -303,8 +304,7 @@ codeunit 70013503 "DataExch Export Mgt ori"
             ResponseJson.Add('entryNo', DataExchEntryNo);
         ResponseJson.Add('fileName', FileName);
         Deliver(Argument, TempBlob, StorageSetup, Connector, Path, HasStorage, Inline, true, ResponseJson);
-        Argument.SetResponseJson(ResponseJson);
-        Argument."Content Type" := Argument.GetContentTypeJson();
+        RequestMgt.RespondSuccess(Argument, ResponseJson);
     end;
 
     /// <summary>
@@ -325,6 +325,7 @@ codeunit 70013503 "DataExch Export Mgt ori"
         Reader: Codeunit "Storage Request Reader ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
         StorageCode: Code[20];
+        InlineValid: Boolean;
     begin
         Clear(Path);
         Clear(FolderPath);
@@ -332,7 +333,7 @@ codeunit 70013503 "DataExch Export Mgt ori"
         Connector := StorageSetup."Storage Type";
         HasStorage := RequestJson.Contains('storageCode');
         Inline := false;
-        Reader.ReadBoolean(Argument, RequestJson, 'inline', false, Inline);
+        InlineValid := Reader.ReadBoolean(Argument, RequestJson, 'inline', false, Inline);
         if Reader.ReadMutationText(Argument, RequestJson, 'path', false, 2048, Path) then
             if Path <> '' then
                 Reader.CheckPath(Argument, 'path', Path);
@@ -343,10 +344,11 @@ codeunit 70013503 "DataExch Export Mgt ori"
             Argument.AddError("Bifrost Error Code ori"::InvalidParameter, PathAndFolderErr, 'folderPath', FolderPath, PathAndFolderExpectedLbl, PathAndFolderNextStepLbl);
         if not HasStorage then begin
             if Path <> '' then
-                Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(PathWithoutStorageErr, 'path'), 'storageCode', '', DeliveryExpectedLbl, DeliveryNextStepLbl);
-            if FolderPath <> '' then
-                Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(PathWithoutStorageErr, 'folderPath'), 'storageCode', '', DeliveryExpectedLbl, DeliveryNextStepLbl);
-            if not Inline then
+                Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(PathWithoutStorageErr, 'path'), 'storageCode', '', DeliveryExpectedLbl, DeliveryNextStepLbl)
+            else
+                if FolderPath <> '' then
+                    Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(PathWithoutStorageErr, 'folderPath'), 'storageCode', '', DeliveryExpectedLbl, DeliveryNextStepLbl);
+            if (Path = '') and (FolderPath = '') and InlineValid and not Inline then
                 Argument.AddError("Bifrost Error Code ori"::MissingParameter, DeliveryRequiredErr, 'storageCode', '', DeliveryExpectedLbl, DeliveryNextStepLbl);
             exit;
         end;
@@ -411,7 +413,7 @@ codeunit 70013503 "DataExch Export Mgt ori"
     /// <param name="HasStorage">Whether the file goes to storage.</param>
     /// <param name="Inline">Whether the file is returned inline.</param>
     /// <param name="RaiseOnFailure">True after database writes: a failure is raised so the writes roll back. False: the failure is answered.</param>
-    /// <param name="ResponseJson">The flat response that receives the delivery fields.</param>
+    /// <param name="ResponseJson">The data payload that receives the delivery fields.</param>
     /// <returns>True when the file was delivered; false when an error response was written.</returns>
     procedure Deliver(var Argument: Record "Message Argument ori"; var TempBlob: Codeunit "Temp Blob"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; HasStorage: Boolean; Inline: Boolean; RaiseOnFailure: Boolean; var ResponseJson: JsonObject): Boolean
     var

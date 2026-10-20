@@ -8,6 +8,14 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-20) - response contract consistency (#159)
+
+- **Contract changes:** every successful Attachments response uses `status: Success` and a `data` object. DataExchange.Type.Set, Definition.Export/Delete, Import.Run, Export.Run and PaymentExport.Run move their operation fields from the top level into `data`; Import.Run no longer returns `Accepted`. Callers must read `data.entryNo`, `data.code` and the other payload fields. Storage and the remaining Data Exchange types already use this envelope.
+- Processing warnings are `{code, message}` objects with stable `NoMappingCodeunit` and `RecordIdsCapped` codes. CreateForRecord and Upload.CommitToRecord return the language-independent document type enum name, including the blank enum member, instead of its numeric ordinal.
+- Collect independent definition/delivery/selection/source problems before execution; overlong definition codes use `InvalidParameterFormat`. Entry.Process pairs the parameter with its actual value; Definition.Import identifies the selected content source. File-name and missing-import-source recovery steps describe the correct input. Payment delivery reports a missing storage connection once.
+- Storage.File.Get reports absent files as `RecordNotFound` on the relative `path`; connector read failures have a safe recovery step and do not expose the account base path. Response/error chapters and Icelandic translations describe the contract.
+- Changed product codeunits 10035635, 10035662, 10035682, 70013500, 70013501, 70013503, 70013505, 70013507, 70013520, 70013531, 70013540 and 70013543; native bilingual response regressions in codeunit 96258 and strengthened existing Data Exchange/upload assertions. Compiler/runtime evidence is recorded separately at the verified commit.
+
 ### Added (2026-10-19) - Restrictive permission tests for the Data Exchange pipeline types (#79)
 
 - `Storage 79 Perm Tests ori` (96218) covers the five message types added in #150 under `TestPermissions = Restrictive`, dispatched through the public `Dispatcher ori` with fresh observer readback. Refusals: `DataExchange.Entry.Process` without write on the mapping target (`PermissionDenied` naming the definition, no marker), `DataExchange.Entry.Delete` without `Data Exch.` mutation and without `Data Exch. Field` mutation, `DataExchange.Definition.Import` without definition mutation (valid exported XML under a new code installs nothing), `DataExchange.PaymentExport.Run` without `Gen. Journal Line` mutation (line not marked, no entry, no credit transfer register) and `Storage.Upload.CommitToDataExchange` with both product roles but no `Data Exch.` or `Data Exch. Field` mutation (session stays open with its chunk bytes). Each denial asserts the table id in `received`.

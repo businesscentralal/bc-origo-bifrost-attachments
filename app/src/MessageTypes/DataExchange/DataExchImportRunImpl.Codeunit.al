@@ -149,7 +149,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Explains operation restrictions.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Bank Statement Import definitions are refused; import bank statements with Finance.BankReconciliation.Create. Export definitions are refused. A file the reader cannot read answers an error and leaves no entry. With process true the import is committed first, so a processing error is reported in processResult.errors and the entry stays for DataExchange.Entry.Process. A successful call answers status Accepted.', Comment = 'is-IS=Skilgreiningum fyrir innflutning bankayfirlita er hafnað; flyttu bankayfirlit inn með Finance.BankReconciliation.Create. Útflutningsskilgreiningum er hafnað. Skrá sem lesarinn getur ekki lesið skilar villu og engin færsla verður eftir. Með process true er innflutningurinn staðfestur fyrst, svo vinnsluvilla birtist í processResult.errors og færslan bíður DataExchange.Entry.Process. Kall sem heppnast skilar stöðunni Accepted.';
+        NotesLbl: Label 'Bank Statement Import definitions are refused; import bank statements with Finance.BankReconciliation.Create. Export definitions are refused. A file the reader cannot read answers an error and leaves no entry. With process true the import is committed first, so a processing error is reported in processResult.errors and the entry stays for DataExchange.Entry.Process. A successful call answers status Success with the import result in data.', Comment = 'is-IS=Skilgreiningum fyrir innflutning bankayfirlita er hafnað; flyttu bankayfirlit inn með Finance.BankReconciliation.Create. Útflutningsskilgreiningum er hafnað. Skrá sem lesarinn getur ekki lesið skilar villu og engin færsla verður eftir. Með process true er innflutningurinn staðfestur fyrst, svo vinnsluvilla birtist í processResult.errors og færslan bíður DataExchange.Entry.Process. Kall sem heppnast skilar stöðunni Success með innflutningsniðurstöðunni í data.';
     begin
         Notes := NotesLbl;
         exit(true);
@@ -199,6 +199,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
         EmptyGuid: Guid;
         OneSourceErr: Label 'Send the file either as contentBase64 or as storageCode with path, not both.', Comment = 'is-IS=Sendu skrána annaðhvort sem contentBase64 eða sem storageCode með path, ekki hvort tveggja.';
         OneSourceExpectedLbl: Label 'exactly one source: contentBase64, or storageCode with path', Comment = 'is-IS=nákvæmlega ein uppspretta: contentBase64, eða storageCode með path';
+        MissingSourceErr: Label 'Send contentBase64 or storageCode with path to select the file to import.', Comment = 'is-IS=Sendu contentBase64 eða storageCode með path til að velja skrána sem á að flytja inn.';
         OneSourceNextStepLbl: Label 'Remove storageCode and path to import the inline content, or remove contentBase64 to import the stored file.', Comment = 'is-IS=Fjarlægðu storageCode og path til að flytja inn innfellda innihaldið, eða fjarlægðu contentBase64 til að flytja inn skrána úr geymslu.';
     begin
         RequestJson := Argument.GetRequestJson();
@@ -209,7 +210,10 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
                 ImportMgt.CheckInlineSize(Argument, 'contentBase64', TempBlob.Length());
             if RequestJson.Contains('storageCode') or RequestJson.Contains('path') then
                 Argument.AddError("Bifrost Error Code ori"::InvalidParameter, OneSourceErr, 'contentBase64', '', OneSourceExpectedLbl, OneSourceNextStepLbl);
-        end else begin
+        end else
+            if not RequestJson.Contains('storageCode') and not RequestJson.Contains('path') then
+                Argument.AddError("Bifrost Error Code ori"::MissingParameter, MissingSourceErr, 'contentBase64', '', OneSourceExpectedLbl, MissingSourceErr)
+            else begin
             Reader.ReadMutationCode(Argument, RequestJson, 'storageCode', StorageCode);
             if Reader.ReadMutationText(Argument, RequestJson, 'path', true, 2048, Path) then
                 Reader.CheckPath(Argument, 'path', Path);
@@ -250,8 +254,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
         // A reader error is raised and rolls back the entry and every parsed field with it.
         ImportMgt.ImportFile(DefCode, FileName, TempBlob, EmptyGuid, 'DataExchange.Import.Run', StorageCode, Path, DataExch);
 
-        // The shipped wire shape is flat with status Accepted; the import result is added beside it.
-        ResponseJson.Add('status', 'Accepted');
+        // All successful operations return their payload in the common Success/data envelope.
         ImportMgt.AddImportResult(DataExch, ResponseJson);
         if not InlineSource then begin
             ResponseJson.Add('storageCode', StorageCode);
@@ -262,8 +265,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
             ResponseJson.Add('processResult', ProcessResult);
         end else
             ResponseJson.Add('processed', false);
-        Argument.SetResponseJson(ResponseJson);
-        Argument."Content Type" := Argument.GetContentTypeJson();
+        RequestMgt.RespondSuccess(Argument, ResponseJson);
     end;
 
     local procedure DefaultFileName(DefCode: Code[20]): Text

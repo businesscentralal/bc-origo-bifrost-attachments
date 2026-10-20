@@ -48,10 +48,10 @@ codeunit 96243 "DataExch Export Tests ori"
         Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Export.Run", Request);
 
         LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'AC01 status. ' + Fixture.ReadText(Response, 'error'));
-        LibraryAssert.AreEqual(3, Fixture.ReadInt(Response, 'recordCount'), 'AC01 recordCount 3.');
-        LibraryAssert.AreEqual('out/ac01.csv', Fixture.ReadText(Response, 'path'), 'AC01 path.');
-        LibraryAssert.AreNotEqual(0, Fixture.ReadInt(Response, 'entryNo'), 'AC01 entry.');
-        LibraryAssert.IsFalse(Response.Contains('contentBase64'), 'AC01 nothing inline.');
+        LibraryAssert.AreEqual(3, Fixture.ReadInt(Fixture.Data(Response), 'recordCount'), 'AC01 recordCount 3.');
+        LibraryAssert.AreEqual('out/ac01.csv', Fixture.ReadText(Fixture.Data(Response), 'path'), 'AC01 path.');
+        LibraryAssert.AreNotEqual(0, Fixture.ReadInt(Fixture.Data(Response), 'entryNo'), 'AC01 entry.');
+        LibraryAssert.IsFalse(Fixture.Data(Response).Contains('contentBase64'), 'AC01 nothing inline.');
         LibraryAssert.IsTrue(MockState.HasFile('out/ac01.csv'), 'AC01 file in storage.');
         Content := Fixture.Decode(MockState.GetFileContent('out/ac01.csv'));
         Lines := Content.TrimEnd().Split(LineBreak());
@@ -59,7 +59,7 @@ codeunit 96243 "DataExch Export Tests ori"
         Customer.Get(CustomerNos.Get(1));
         LibraryAssert.IsTrue(Content.Contains(Customer."No."), 'AC01 file carries the customer number.');
         LibraryAssert.IsTrue(Content.Contains(Customer.Name), 'AC01 file carries the customer name.');
-        LibraryAssert.AreEqual(StrLen(Content), Fixture.ReadInt(Response, 'contentLength'), 'AC01 contentLength.');
+        LibraryAssert.AreEqual(StrLen(Content), Fixture.ReadInt(Fixture.Data(Response), 'contentLength'), 'AC01 contentLength.');
     end;
 
     [Test]
@@ -93,9 +93,9 @@ codeunit 96243 "DataExch Export Tests ori"
         Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Export.Run", Request);
 
         LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'AC02 status. ' + Fixture.ReadText(Response, 'error'));
-        LibraryAssert.AreEqual(2, Fixture.ReadInt(Response, 'recordCount'), 'AC02 recordCount 2.');
-        LibraryAssert.AreEqual('out/ac02.csv', Fixture.ReadText(Response, 'path'), 'AC02 folderPath plus file name.');
-        Inline := Fixture.ReadText(Response, 'contentBase64');
+        LibraryAssert.AreEqual(2, Fixture.ReadInt(Fixture.Data(Response), 'recordCount'), 'AC02 recordCount 2.');
+        LibraryAssert.AreEqual('out/ac02.csv', Fixture.ReadText(Fixture.Data(Response), 'path'), 'AC02 folderPath plus file name.');
+        Inline := Fixture.ReadText(Fixture.Data(Response), 'contentBase64');
         LibraryAssert.AreNotEqual('', Inline, 'AC02 inline content.');
         LibraryAssert.AreEqual(Inline, MockState.GetFileContent('out/ac02.csv'), 'AC02 stored and inline bytes are the same.');
     end;

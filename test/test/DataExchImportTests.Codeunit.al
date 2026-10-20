@@ -93,11 +93,11 @@ codeunit 96242 "DataExch Import Tests ori"
 
         Response := ImportInline(DefCode, Fixture.TwoLineCsv(true), true);
 
-        LibraryAssert.AreEqual('Accepted', Fixture.ReadText(Response, 'status'), 'AC02 status. ' + Fixture.ReadText(Response, 'error'));
-        EntryNo := Fixture.ReadInt(Response, 'entryNo');
-        LibraryAssert.AreEqual(6, Fixture.ReadInt(Response, 'fieldCount'), 'AC02 header line is skipped.');
-        LibraryAssert.IsTrue(Fixture.ReadBool(Response, 'processed'), 'AC02 processed. ' + Format(Fixture.ReadObject(Response, 'processResult')));
-        ProcessResult := Fixture.ReadObject(Response, 'processResult');
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'AC02 status. ' + Fixture.ReadText(Response, 'error'));
+        EntryNo := Fixture.ReadInt(Fixture.Data(Response), 'entryNo');
+        LibraryAssert.AreEqual(6, Fixture.ReadInt(Fixture.Data(Response), 'fieldCount'), 'AC02 header line is skipped.');
+        LibraryAssert.IsTrue(Fixture.ReadBool(Fixture.Data(Response), 'processed'), 'AC02 processed. ' + Format(Fixture.ReadObject(Fixture.Data(Response), 'processResult')));
+        ProcessResult := Fixture.ReadObject(Fixture.Data(Response), 'processResult');
         Targets := Fixture.ReadArray(ProcessResult, 'targets');
         LibraryAssert.AreEqual(1, Targets.Count(), 'AC02 one target table.');
         Targets.Get(0, TargetToken);
@@ -132,13 +132,13 @@ codeunit 96242 "DataExch Import Tests ori"
 
         Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Import.Run", Request);
 
-        LibraryAssert.AreEqual('Accepted', Fixture.ReadText(Response, 'status'), 'AC03 status. ' + Fixture.ReadText(Response, 'error'));
-        LibraryAssert.AreEqual(6, Fixture.ReadInt(Response, 'fieldCount'), 'AC03 fieldCount.');
-        LibraryAssert.AreEqual('ac03.csv', Fixture.ReadText(Response, 'fileName'), 'AC03 file name from the path.');
-        LibraryAssert.AreEqual('in/ac03.csv', Fixture.ReadText(Response, 'path'), 'AC03 echoes the path.');
-        LibraryAssert.IsFalse(Fixture.ReadBool(Response, 'processed'), 'AC03 not processed.');
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'AC03 status. ' + Fixture.ReadText(Response, 'error'));
+        LibraryAssert.AreEqual(6, Fixture.ReadInt(Fixture.Data(Response), 'fieldCount'), 'AC03 fieldCount.');
+        LibraryAssert.AreEqual('ac03.csv', Fixture.ReadText(Fixture.Data(Response), 'fileName'), 'AC03 file name from the path.');
+        LibraryAssert.AreEqual('in/ac03.csv', Fixture.ReadText(Fixture.Data(Response), 'path'), 'AC03 echoes the path.');
+        LibraryAssert.IsFalse(Fixture.ReadBool(Fixture.Data(Response), 'processed'), 'AC03 not processed.');
         LibraryAssert.AreEqual(Content, MockState.GetFileContent('in/ac03.csv'), 'AC03 file untouched.');
-        AssertEntryFields(Fixture.ReadInt(Response, 'entryNo'), 6);
+        AssertEntryFields(Fixture.ReadInt(Fixture.Data(Response), 'entryNo'), 6);
     end;
 
     [Test]
@@ -370,9 +370,9 @@ codeunit 96242 "DataExch Import Tests ori"
 
         Response := ImportInline(DefCode, Fixture.TwoLineCsv(false), true);
 
-        LibraryAssert.AreEqual('Accepted', Fixture.ReadText(Response, 'status'), 'The import succeeds.');
-        LibraryAssert.IsFalse(Fixture.ReadBool(Response, 'processed'), 'Not processed.');
-        ProcessResult := Fixture.ReadObject(Response, 'processResult');
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'The import succeeds.');
+        LibraryAssert.IsFalse(Fixture.ReadBool(Fixture.Data(Response), 'processed'), 'Not processed.');
+        ProcessResult := Fixture.ReadObject(Fixture.Data(Response), 'processResult');
         LibraryAssert.AreEqual(1, Fixture.ReadArray(ProcessResult, 'errors').Count(), 'One processing error.');
         LibraryAssert.AreEqual(1, EntryCount(DefCode), 'The entry stays.');
     end;

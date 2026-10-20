@@ -352,7 +352,7 @@ codeunit 70013501 "DataExch Import Mgt ori"
         if DataExchMapping.FindSet() then
             repeat
                 if (DataExchMapping."Mapping Codeunit" = 0) and (DataExchMapping."Pre-Mapping Codeunit" = 0) and (DataExchMapping."Post-Mapping Codeunit" = 0) then
-                    Warnings.Add(StrSubstNo(NoMappingCodeunitWarningLbl, DataExchMapping."Data Exch. Line Def Code", DataExchMapping."Table ID"));
+                    Warnings.Add(ProcessWarning('NoMappingCodeunit', StrSubstNo(NoMappingCodeunitWarningLbl, DataExchMapping."Data Exch. Line Def Code", DataExchMapping."Table ID")));
             until DataExchMapping.Next() = 0;
         if Processed then
             foreach TableId in Counts.Keys() do
@@ -490,7 +490,7 @@ codeunit 70013501 "DataExch Import Mgt ori"
                 RecordIds.Add(Format(RecordSystemId, 0, 4));
             until (TargetRef.Next() = 0) or (RecordIds.Count() >= MaxRecordIds);
         if NewRecords > MaxRecordIds then
-            Warnings.Add(StrSubstNo(RecordIdsCappedWarningLbl, TableId, NewRecords, MaxRecordIds));
+            Warnings.Add(ProcessWarning('RecordIdsCapped', StrSubstNo(RecordIdsCappedWarningLbl, TableId, NewRecords, MaxRecordIds)));
         CreatedAtRef.SetFilter('<%1', StartTime);
         ModifiedAtRef.SetFilter('>=%1', StartTime);
         Modified := TargetRef.Count();
@@ -500,5 +500,10 @@ codeunit 70013501 "DataExch Import Mgt ori"
         Target.Add('recordsModified', Modified);
         Target.Add('recordIds', RecordIds);
         TargetRef.Close();
+    end;
+    local procedure ProcessWarning(Code: Text; Message: Text) Warning: JsonObject
+    begin
+        Warning.Add('code', Code);
+        Warning.Add('message', Message);
     end;
 }

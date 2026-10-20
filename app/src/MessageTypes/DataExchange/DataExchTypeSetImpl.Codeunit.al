@@ -177,6 +177,7 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         DataExchangeType: Record "Data Exchange Type";
         DataExchDef: Record "Data Exch. Def";
         Reader: Codeunit "Storage Request Reader ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         DefinitionCode: Code[20];
@@ -215,10 +216,8 @@ codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         if RequestJson.Contains('description') then
             DataExchangeType.Description := CopyStr(Description, 1, MaxStrLen(DataExchangeType.Description));
         DataExchangeType.Modify(true);
-        ResponseJson.Add('status', 'Success');
         ResponseJson.Add('code', DataExchangeType.Code);
         ResponseJson.Add('dataExchDefCode', DataExchangeType."Data Exch. Def. Code");
-        Argument.SetResponseJson(ResponseJson);
-        Argument."Content Type" := Argument.GetContentTypeJson();
+        RequestMgt.RespondSuccess(Argument, ResponseJson);
     end;
 }

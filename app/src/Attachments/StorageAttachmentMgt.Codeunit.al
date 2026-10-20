@@ -806,7 +806,11 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         end;
         HasContent := HasContentBase64 or HasContentAlias;
         HasStorage := (RequestMgt.GetText(RequestJson, 'storageCode') <> '') or (RequestMgt.GetText(RequestJson, 'path') <> '');
-        HasSource := RequestMgt.GetText(RequestJson, 'sourceSystemId') <> '';
+        HasSource := RequestJson.Contains('sourceTarget') or RequestJson.Contains('sourceSystemId');
+        if HasSource then begin
+            ReadTarget(Argument, RequestJson, 'sourceTarget', SourceTarget);
+            Reader.ReadGuid(Argument, RequestJson, 'sourceSystemId', true, SourceSystemId);
+        end;
         if HasContent then
             SourceCount += 1;
         if HasStorage then
@@ -824,10 +828,8 @@ codeunit 10035635 "Storage Attachment Mgt ori"
             exit(Reader.ReadBase64Content(Argument, RequestJson, 'content', true, TempBlob));
         end;
 
-        if HasSource then begin
-            ReadTarget(Argument, RequestJson, 'sourceTarget', SourceTarget);
-            exit(Reader.ReadGuid(Argument, RequestJson, 'sourceSystemId', true, SourceSystemId));
-        end;
+        if HasSource then
+            exit(not Argument.HasCollectedErrors());
 
         FromStorage := true;
         RequestMgt.ReadSetup(Argument, RequestJson, StorageSetup, Connector);
@@ -892,7 +894,7 @@ codeunit 10035635 "Storage Attachment Mgt ori"
         ResultData.Add('target', DocumentAttachmentTok);
         ResultData.Add('tableId', DocumentAttachment."Table ID");
         ResultData.Add('no', DocumentAttachment."No.");
-        ResultData.Add('documentType', Format(DocumentAttachment."Document Type", 0, 9));
+        ResultData.Add('documentType', DocumentAttachment."Document Type".Names().Get(DocumentAttachment."Document Type".Ordinals().IndexOf(DocumentAttachment."Document Type".AsInteger())));
         ResultData.Add('lineNo', DocumentAttachment."Line No.");
         ResultData.Add('attachmentId', DocumentAttachment.ID);
         ResultData.Add('systemId', Format(DocumentAttachment.SystemId, 0, 4));

@@ -8,6 +8,11 @@ codeunit 70013500 "Storage Contract Parts ori"
     Access = Internal;
 
     var
+        SuccessEnvelopeLbl: Label 'Every success answers status Success. The fields below belong to the data object, not to the top level.', Comment = 'is-IS=Öll svör sem heppnast hafa stöðuna Success. Reitirnir hér að neðan tilheyra hlutnum data, ekki efsta stigi svarsins.';
+        ProcessWarningsLbl: Label 'Objects with a stable code and a localized message: NoMappingCodeunit or RecordIdsCapped.', Comment = 'is-IS=Hlutir með stöðugum kóða (code) og þýddum skilaboðum (message): NoMappingCodeunit eða RecordIdsCapped.';
+        DocumentTypeNameLbl: Label 'The language-independent document type enum name, never its numeric ordinal.', Comment = 'is-IS=Tungumálaóháð heiti talningargildis skjalagerðar, aldrei tölugildi þess.';
+        FileMissingLbl: Label 'The path does not name an existing file; only the relative path is returned.', Comment = 'is-IS=Slóðin vísar ekki á fyrirliggjandi skrá; aðeins afstæða slóðin er birt.';
+        FindStoredFileLbl: Label 'Call Storage.File.List and use the relative path of an existing file.', Comment = 'is-IS=Kallaðu á Storage.File.List og notaðu afstæða slóð að fyrirliggjandi skrá.';
         DataExchangeFailureLbl: Label 'Business Central cannot complete the Data Exchange operation.', Comment = 'is-IS=Business Central getur ekki lokið gagnaskiptaaðgerðinni.';
         DataExchangeFailureFixLbl: Label 'Check the supplied definition or entry and the Business Central error details.', Comment = 'is-IS=Athugaðu uppgefna skilgreiningu eða færslu og villuupplýsingar Business Central.';
         PagingSkipLbl: Label 'Number of rows or fields skipped.', Comment = 'is-IS=Fjöldi færslna eða reita sem var sleppt.';
@@ -49,7 +54,7 @@ codeunit 70013500 "Storage Contract Parts ori"
         JournalBatchLbl: Label 'The payment journal batch name, exactly as stored.', Comment = 'is-IS=Heiti keyrslu greiðslubókar, nákvæmlega eins og það er vistað.';
         PaymentFileNameLbl: Label 'Optional file name. Default: the name the payment export chooses, for example the credit transfer identifier.', Comment = 'is-IS=Valfrjálst skráarheiti. Sjálfgefið: heitið sem útflutningur greiðslna velur, til dæmis auðkenni millifærslunnar.';
         ImportResultLbl: Label 'Parsed result: lines and fields read by the definition reader.', Comment = 'is-IS=Þáttuð niðurstaða: línur og reitir sem lesari skilgreiningarinnar las.';
-        ProcessResultLbl: Label 'When process is true: processed, targets, warnings and errors of the mapping run.', Comment = 'is-IS=Þegar process er true: processed, targets, warnings og errors úr keyrslu varpananna.';
+        ProcessResultLbl: Label 'When process is true: processed, targets, warnings and errors of the mapping run. Each warning is an object with code and message.', Comment = 'is-IS=Þegar process er true: processed, targets, warnings og errors úr keyrslu varpananna. Hver viðvörun er hlutur með code og message.';
         TargetsLbl: Label 'One object per target table: tableId, tableName, recordsInserted, recordsModified and up to 100 recordIds (SystemIds).', Comment = 'is-IS=Einn hlutur fyrir hverja marktöflu: tableId, tableName, recordsInserted, recordsModified og allt að 100 recordIds (SystemId-gildi).';
         DeliveredLengthLbl: Label 'The file size in bytes.', Comment = 'is-IS=Stærð skrárinnar í bætum.';
         DeliveredContentLbl: Label 'The file content as base64, when inline is true.', Comment = 'is-IS=Innihald skrárinnar sem base64, þegar inline er true.';
@@ -354,6 +359,9 @@ codeunit 70013500 "Storage Contract Parts ori"
         Fields: JsonArray;
     begin
         Response.Add('contentType', 'text/json');
+        Response.Add('description', SuccessEnvelopeLbl);
+        Response.Add('status', 'Success');
+        Response.Add('payloadPath', 'data');
         case MessageType of
             'Help.Storage.Get':
                 Fields.Add(ContractMgt.ResponseField('markdown', 'string', 'The storage connector overview and message type guidance.'));
@@ -395,6 +403,8 @@ codeunit 70013500 "Storage Contract Parts ori"
             'Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.CommitToRecord':
                 begin
                     Fields.Add(ContractMgt.ResponseField('target', 'string', 'The attachment target.'));
+                    if MessageType in ['Storage.Attachment.CreateForRecord', 'Storage.Upload.CommitToRecord'] then
+                        Fields.Add(ContractMgt.ResponseField('documentType', 'string', DocumentTypeNameLbl));
                     Fields.Add(ContractMgt.ResponseField('systemId', 'string', 'The new attachment SystemId.'));
                     Fields.Add(ContractMgt.ResponseField('fileName', 'string', 'The final attachment file name.'));
                     Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The file size in bytes.'));
@@ -481,7 +491,7 @@ codeunit 70013500 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('dataExchDefCode', 'string', DefinitionCodeLbl));
                     Fields.Add(ContractMgt.ResponseField('processed', 'boolean', 'True when the mappings ran.'));
                     Fields.Add(ContractMgt.ResponseField('targets', 'array', TargetsLbl));
-                    Fields.Add(ContractMgt.ResponseField('warnings', 'array', 'Mappings that wrote nothing, and capped record id lists.'));
+                    Fields.Add(ContractMgt.ResponseField('warnings', 'array', ProcessWarningsLbl));
                 end;
             'DataExchange.Entry.Delete':
                 begin
@@ -560,6 +570,8 @@ codeunit 70013500 "Storage Contract Parts ori"
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
+        if MessageType = 'Storage.File.Get' then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, FileMissingLbl, FindStoredFileLbl));
         if not (MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List']) then begin
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::MissingParameter, MissingInputLbl, SupplyInputLbl));
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameterFormat, InvalidFormatLbl, CorrectInputLbl));

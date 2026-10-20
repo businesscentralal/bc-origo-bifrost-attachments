@@ -30,6 +30,7 @@ codeunit 10035682 "Storage Request Reader ori"
         TextLengthExpectedLbl: Label 'at most %1 characters', Comment = '%1 = maximum length, is-IS=í mesta lagi %1 stafir';
         ShortenTextLbl: Label 'Shorten the file name or folder path and try again; storage addresses cannot be truncated.', Comment = 'is-IS=Styttu skráarheitið eða möppuslóðina og reyndu aftur; ekki má stytta geymsluslóðir sjálfkrafa.';
         InvalidFileNameErr: Label 'Parameter "fileName" must be a file name without folders or relative segments.', Comment = 'is-IS=Færibreytan "fileName" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.';
+        SendFileNameLbl: Label 'Send only the file name, for example INV-001.pdf, without a folder path.', Comment = 'is-IS=Sendu aðeins skráarheitið, til dæmis INV-001.pdf, án möppuslóðar.';
         FileNameExpectedLbl: Label 'a nonempty file name without slash or backslash', Comment = 'is-IS=skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik';
         ProblemsInRequestErr: Label '%1 problems in the request. Nothing was changed.', Comment = '%1 = number of problems, is-IS=%1 vandamál í beiðninni. Engu var breytt.';
         TextExpectedLbl: Label 'a JSON string', Comment = 'is-IS=JSON-strengur';
@@ -330,7 +331,7 @@ codeunit 10035682 "Storage Request Reader ori"
             exit(false);
         if (FileName <> '') and not FileName.Contains('/') and not FileName.Contains('\') and RequestMgt.PathIsSafe(FileName) then
             exit(true);
-        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, InvalidFileNameErr, 'fileName', FileName, FileNameExpectedLbl, SendRelativePathLbl);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameter, InvalidFileNameErr, 'fileName', FileName, FileNameExpectedLbl, SendFileNameLbl);
         exit(false);
     end;
 

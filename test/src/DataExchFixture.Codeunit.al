@@ -202,17 +202,17 @@ codeunit 96241 "DataExch Fixture ori"
         LibraryAssert.IsTrue(ResponseJson.ReadFrom(ResponseText), 'A dispatch must return JSON.');
     end;
 
-    /// <summary>Returns the data object of a success envelope, or the flat response itself.</summary>
+    /// <summary>Returns the required data object of a success envelope.</summary>
     /// <param name="ResponseJson">The response.</param>
     /// <returns>The data object.</returns>
     procedure Data(ResponseJson: JsonObject) DataObject: JsonObject
     var
         Token: JsonToken;
     begin
-        if ResponseJson.Get('data', Token) then
-            if Token.IsObject() then
-                exit(Token.AsObject());
-        exit(ResponseJson);
+        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'A data payload requires Success.');
+        LibraryAssert.IsTrue(ResponseJson.Get('data', Token), 'A success response must contain data.');
+        LibraryAssert.IsTrue(Token.IsObject(), 'The data payload must be an object.');
+        exit(Token.AsObject());
     end;
 
     /// <summary>Reads a text property; empty when absent.</summary>

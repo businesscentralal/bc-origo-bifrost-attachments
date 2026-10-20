@@ -378,6 +378,7 @@ codeunit 96205 "Storage Upload Tests"
 
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'CommitToRecord should succeed.');
         LibraryAssert.AreEqual('DocumentAttachment', ReadDataText(TempArgument, 'target'), 'target should be DocumentAttachment.');
+        LibraryAssert.AreEqual(' ', ReadDataText(TempArgument, 'documentType'), 'The blank document type is its enum name, never ordinal zero.');
         LibraryAssert.AreEqual(Format(false), Format(ReadDataBool(TempArgument, 'offloaded')), 'Content should be in database.');
 
         DocAttachment.SetRange("Table ID", Database::Customer);

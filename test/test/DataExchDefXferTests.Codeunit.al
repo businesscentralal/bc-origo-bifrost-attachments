@@ -101,7 +101,7 @@ codeunit 96244 "DataExch Def Xfer Tests ori"
         Request.Add('folderPath', 'defs');
         Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Definition.Export", Request);
         LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'AC03 export status. ' + Fixture.ReadText(Response, 'error'));
-        LibraryAssert.AreEqual('defs/' + DefCode + '.xml', Fixture.ReadText(Response, 'path'), 'AC03 default file name.');
+        LibraryAssert.AreEqual('defs/' + DefCode + '.xml', Fixture.ReadText(Fixture.Data(Response), 'path'), 'AC03 default file name.');
         LibraryAssert.IsTrue(MockState.HasFile('defs/' + DefCode + '.xml'), 'AC03 file in storage.');
 
         Clear(Request);
@@ -198,8 +198,8 @@ codeunit 96244 "DataExch Def Xfer Tests ori"
         Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Definition.Export", Request);
 
         LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'Status. ' + Fixture.ReadText(Response, 'error'));
-        LibraryAssert.AreEqual(DefCode, Fixture.ReadText(Response, 'code'), 'The flat header stays.');
-        Xml := Fixture.Decode(Fixture.ReadText(Response, 'contentBase64'));
+        LibraryAssert.AreEqual(DefCode, Fixture.ReadText(Fixture.Data(Response), 'code'), 'The header is inside data.');
+        Xml := Fixture.Decode(Fixture.ReadText(Fixture.Data(Response), 'contentBase64'));
         LibraryAssert.IsTrue(Xml.Contains('DataExchDef'), 'The XML carries the definition.');
         LibraryAssert.IsTrue(Xml.Contains(DefCode), 'The XML carries the code.');
     end;
@@ -245,7 +245,7 @@ codeunit 96244 "DataExch Def Xfer Tests ori"
         Request.Add('inline', true);
         Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Definition.Export", Request);
         LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'Definition.Export succeeds. ' + Fixture.ReadText(Response, 'error'));
-        ContentBase64 := Fixture.ReadText(Response, 'contentBase64');
+        ContentBase64 := Fixture.ReadText(Fixture.Data(Response), 'contentBase64');
     end;
 
     local procedure BeginAndAppend(FileName: Text; ContentBase64: Text) UploadId: Text

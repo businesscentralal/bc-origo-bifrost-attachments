@@ -21,7 +21,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         FailTypeModify: Boolean;
         FailureDefinitionCode: Code[20];
 
-    /// <summary>A valid request retains Accepted and creates only the header.</summary>
+    /// <summary>A valid request returns Success/data and creates only the header.</summary>
     [Test]
     procedure Scenario_AC03_GenericImport_ImportsInlineFile()
     var
@@ -34,19 +34,19 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
         // [WHEN] The registered import message is dispatched with inline content.
         Response := DispatchImportInline(DefinitionCode, 'X82,Row');
-        // [THEN] The entry keeps the file content and its parsed fields; the status stays Accepted.
-        AssertText(Response, 'status', 'Accepted');
-        AssertText(Response, 'dataExchDefCode', DefinitionCode);
-        DataExch.Get(IntegerProperty(Response, 'entryNo'));
+        // [THEN] The entry keeps the file content and its parsed fields; the status is Success.
+        AssertText(Response, 'status', 'Success');
+        AssertText(SuccessData(Response), 'dataExchDefCode', DefinitionCode);
+        DataExch.Get(IntegerProperty(SuccessData(Response), 'entryNo'));
         LibraryAssert.AreEqual(DefinitionCode, DataExch."Data Exch. Def Code", 'Wrong definition on the created entry.');
         LibraryAssert.AreEqual('X82.csv', DataExch."File Name", 'The entry keeps the file name.');
         DataExch.CalcFields("File Content");
         LibraryAssert.IsTrue(DataExch."File Content".HasValue(), 'The entry keeps the file content.');
-        LibraryAssert.AreEqual(2, IntegerProperty(Response, 'fieldCount'), 'The reader parsed both columns.');
+        LibraryAssert.AreEqual(2, IntegerProperty(SuccessData(Response), 'fieldCount'), 'The reader parsed both columns.');
         LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Exactly one entry must be created.');
     end;
 
-    /// <summary>A valid request retains Accepted and creates only the header.</summary>
+    /// <summary>A valid request returns Success/data and creates only the header.</summary>
     [Test]
     procedure Scenario_AC03_PayrollImport_ImportsInlineFile()
     var
@@ -59,10 +59,10 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Payroll Import");
         // [WHEN] The registered import message is dispatched with inline content.
         Response := DispatchImportInline(DefinitionCode, 'X82,Row');
-        // [THEN] The entry keeps the file content; the status stays Accepted.
-        AssertText(Response, 'status', 'Accepted');
-        AssertText(Response, 'dataExchDefCode', DefinitionCode);
-        DataExch.Get(IntegerProperty(Response, 'entryNo'));
+        // [THEN] The entry keeps the file content; the status is Success.
+        AssertText(Response, 'status', 'Success');
+        AssertText(SuccessData(Response), 'dataExchDefCode', DefinitionCode);
+        DataExch.Get(IntegerProperty(SuccessData(Response), 'entryNo'));
         LibraryAssert.AreEqual(DefinitionCode, DataExch."Data Exch. Def Code", 'Wrong definition on the created entry.');
         DataExch.CalcFields("File Content");
         LibraryAssert.IsTrue(DataExch."File Content".HasValue(), 'The entry keeps the file content.');
@@ -82,7 +82,9 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] A registered import is dispatched.
         Response := Dispatch("Message Type ori"::"DataExchange.Import.Run", '{}');
         // [THEN] All three fields refuse without writing a header.
-        AssertThreeInputErrors(Response, 'MissingParameter');
+        AssertRefusal(Response, 'MissingParameter', 'dataExchDefCode', '');
+        AssertRefusal(Response, 'MissingParameter', 'contentBase64', '');
+        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Definition and content source are required.');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Missing input must not write.');
     end;
 
@@ -411,7 +413,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Response := DispatchDelete(DefinitionCode);
         // [THEN] Success identifies the deleted key, and parent and child are absent.
         AssertText(Response, 'status', 'Success');
-        AssertText(Response, 'code', DefinitionCode);
+        AssertText(SuccessData(Response), 'code', DefinitionCode);
         LibraryAssert.IsFalse(DataExchDef.Get(DefinitionCode), 'Definition must be deleted.');
         LibraryAssert.IsFalse(LineDef.Get(DefinitionCode, 'XLINE'), 'Delete triggers must remove children.');
     end;
@@ -610,8 +612,8 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         // [WHEN] The unchanged key reaches the registered handler.
         Response := DispatchImportInline('XÞÓR', 'X82,Row');
         // [THEN] It succeeds and persists the same key.
-        AssertText(Response, 'status', 'Accepted');
-        AssertText(Response, 'dataExchDefCode', 'XÞÓR');
+        AssertText(Response, 'status', 'Success');
+        AssertText(SuccessData(Response), 'dataExchDefCode', 'XÞÓR');
         LibraryAssert.AreEqual(1, EntryCount('XÞÓR'), 'Canonical Unicode must be accepted.');
     end;
 
@@ -659,7 +661,9 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Response := Dispatch("Message Type ori"::"DataExchange.Export.Run", '{"dataExchDefCode":[],"fileName":false}');
         AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', '');
         AssertRefusal(Response, 'InvalidParameterFormat', 'fileName', '');
-        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both errors must be collected.');
+        AssertRefusal(Response, 'MissingParameter', 'tableId', '');
+        AssertRefusal(Response, 'MissingParameter', 'storageCode', '');
+        LibraryAssert.AreEqual(4, ErrorCount(Response), 'Both malformed and both missing fields are collected.');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Refused export must not write.');
     end;
 
@@ -698,7 +702,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         AssertRefusal(Response, 'InvalidParameterFormat', 'code', '7');
         OverlongCode := PadStr('', 21, 'X');
         Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":"' + OverlongCode + '"}');
-        AssertRefusal(Response, 'InvalidParameter', 'code', OverlongCode);
+        AssertRefusal(Response, 'InvalidParameterFormat', 'code', OverlongCode);
         Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":"X82MISSING"}');
         AssertRefusal(Response, 'RecordNotFound', 'code', 'X82MISSING');
     end;
@@ -717,8 +721,8 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", '{"code":"' + DefinitionCode + '"}');
         // [THEN] The flat answer carries status, code and the type name.
         AssertText(Response, 'status', 'Success');
-        AssertText(Response, 'code', DefinitionCode);
-        AssertText(Response, 'type', 'Generic Export');
+        AssertText(SuccessData(Response), 'code', DefinitionCode);
+        AssertText(SuccessData(Response), 'type', 'Generic Export');
     end;
 
     /// <summary>File-name boundary is accepted exactly; one character beyond is refused.</summary>
@@ -956,7 +960,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         Response: JsonObject;
     begin
         Response := DispatchImportInline(DefinitionCode, 'X82,Row');
-        AssertText(Response, 'status', 'Accepted');
+        AssertText(Response, 'status', 'Success');
         LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'First call must actually write before the later failure.');
         FailOnReturnedResponse(DispatchDelete(DefinitionCode));
     end;
@@ -1205,5 +1209,14 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     begin
         LibraryAssert.IsTrue(Response.Get(PropertyName, PropertyToken), 'Missing property ' + PropertyName);
         exit(PropertyToken.AsValue().AsInteger());
+    end;
+    local procedure SuccessData(Response: JsonObject): JsonObject
+    var
+        Token: JsonToken;
+    begin
+        AssertText(Response, 'status', 'Success');
+        LibraryAssert.IsTrue(Response.Get('data', Token), 'Success must contain data.');
+        LibraryAssert.IsTrue(Token.IsObject(), 'Success data is an object.');
+        exit(Token.AsObject());
     end;
 }

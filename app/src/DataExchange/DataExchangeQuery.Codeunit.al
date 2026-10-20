@@ -151,6 +151,10 @@ codeunit 70013520 "Data Exchange Query ori"
     begin
         RequestJson := Argument.GetRequestJson();
         ReadText(Argument, RequestJson, 'code', true, MaxStrLen(DataExchDef.Code), CodeText);
+        // Collect independent delivery problems even when the definition code is invalid.
+        Deliver := RequestJson.Contains('storageCode') or RequestJson.Contains('inline') or RequestJson.Contains('path') or RequestJson.Contains('folderPath');
+        if Deliver then
+            ExportMgt.ReadDelivery(Argument, RequestJson, CodeText + '.xml', StorageSetup, Connector, Path, HasStorage, Inline, FolderPath);
         if RespondIfErrors(Argument) then
             exit;
 
@@ -163,27 +167,21 @@ codeunit 70013520 "Data Exchange Query ori"
 
         // Without a delivery the answer is the header only, as shipped. With storageCode or inline the
         // definition is also written as the standard definition XML.
-        Deliver := RequestJson.Contains('storageCode') or RequestJson.Contains('inline') or RequestJson.Contains('path') or RequestJson.Contains('folderPath');
         if Deliver then begin
-            ExportMgt.ReadDelivery(Argument, RequestJson, DataExchDef.Code + '.xml', StorageSetup, Connector, Path, HasStorage, Inline, FolderPath);
-            if RespondIfErrors(Argument) then
-                exit;
             if HasStorage then
                 if not ExportMgt.CheckDestination(Argument, StorageSetup, Path) then
                     exit;
             DefTransfer.ExportDefinitionXml(DataExchDef.Code, TempBlob);
         end;
 
-        // The shipped wire shape is flat: status, code, name and type at the top level.
-        ResponseJson.Add('status', 'Success');
+        // Keep all operation fields in the common success payload.
         ResponseJson.Add('code', DataExchDef.Code);
         ResponseJson.Add('name', DataExchDef.Name);
         ResponseJson.Add('type', EnumName(DataExchDef.Type));
         if Deliver then
             if not ExportMgt.Deliver(Argument, TempBlob, StorageSetup, Connector, Path, HasStorage, Inline, false, ResponseJson) then
                 exit;
-        Argument.SetResponseJson(ResponseJson);
-        Argument."Content Type" := Argument.GetContentTypeJson();
+        RespondSuccess(Argument, ResponseJson);
     end;
 
     /// <summary>
@@ -603,7 +601,7 @@ codeunit 70013520 "Data Exchange Query ori"
             exit(false);
         end;
         if (MaximumLength > 0) and (StrLen(TextValue) > MaximumLength) then begin
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(CodeLengthErr, ParameterName, MaximumLength), ParameterName, TextValue, StrSubstNo(CodeLengthExpectedLbl, MaximumLength), ShortenCodeLbl);
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(CodeLengthErr, ParameterName, MaximumLength), ParameterName, TextValue, StrSubstNo(CodeLengthExpectedLbl, MaximumLength), ShortenCodeLbl);
             Clear(TextValue);
             exit(false);
         end;
