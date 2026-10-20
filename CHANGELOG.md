@@ -10,7 +10,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-20) - Icelandic discovery and upload refusals (#157)
 
-- #157: translate the eight Data Exchange selection descriptions (codeunits 70013506–70013510, 70013521, 70013534 and 70013540) and the closed-upload status in refusals (codeunit 10035665). Keep wire status values unchanged. Extend the mixed-language guard to reject Locked discovery labels; add exact Icelandic catalogue, committed/aborted refusal and existing JSON-string grammar regressions (test codeunits 96205, 96211 and 96213).
+- #157: translate the eight Data Exchange selection descriptions (codeunits 70013506–70013510, 70013521, 70013534 and 70013540) and the closed-upload status in refusals (codeunit 10035665). Keep wire status values unchanged. Extend the mixed-language guard to reject Locked discovery labels; add exact Icelandic catalogue, committed/aborted refusal and existing JSON-string grammar regressions (test codeunits 96205, 96211 and 96213), and update the existing Icelandic expectation in test codeunit 96274.
 
 ### Added (2026-10-19) - Restrictive permission tests for the Data Exchange pipeline types (#79)
 
