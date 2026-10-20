@@ -1,22 +1,22 @@
 object,file,line,effectiveAccess,modifier,signature,fixedLengthTypes
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,100,Internal,public/default,"Offload(var Argument: Record ""Message Argument ori""; var ResultData: JsonObject): Boolean",
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,190,Internal,public/default,"Restore(var Argument: Record ""Message Argument ori""; var ResultData: JsonObject): Boolean",
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,254,Internal,public/default,"CreateLinked(var Argument: Record ""Message Argument ori""; var ResultData: JsonObject): Boolean",
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,363,Internal,public/default,"CreateForRecord(var Argument: Record ""Message Argument ori""; var ResultData: JsonObject): Boolean",
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,449,Internal,public/default,"CreateForRecordFromBlob(var Argument: Record ""Message Argument ori""; var TempBlob: Codeunit ""Temp Blob""; SessionFileName: Text; var ResultData: JsonObject): Boolean",
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,489,Internal,public/default,"CreateIncomingFromBlob(var Argument: Record ""Message Argument ori""; var TempBlob: Codeunit ""Temp Blob""; SessionFileName: Text; var ResultData: JsonObject): Boolean",
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,667,Internal,public/default,"ReadTarget(var Argument: Record ""Message Argument ori""; RequestJson: JsonObject; ParameterName: Text; var Target: Enum ""Storage Attachment Target ori""): Boolean",
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,944,Internal,public/default,"FetchContent(StorageCode: Code[20]; Path: Text; var TempBlob: Codeunit ""Temp Blob"")",Code[20]
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,956,Internal,public/default,DeleteRemote(StorageCode: Code[20]; Path: Text),Code[20]
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,969,Internal,public/default,IsStorageFileLinked(StorageCode: Code[20]; Path: Text): Boolean,Code[20]
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,980,Internal,public/default,IsStorageDirectoryLinked(StorageCode: Code[20]; DirectoryPath: Text): Boolean,Code[20]
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,995,Internal,public/default,CanUpdateLinksOf(StorageCode: Code[20]; SourcePath: Text; var BlockReason: Text): Boolean,Code[20]
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1016,Internal,public/default,UpdateMovedStorageFile(StorageCode: Code[20]; SourcePath: Text; TargetPath: Text),Code[20]
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1050,Internal,internal,"CheckMovedPath(var Argument: Record ""Message Argument ori""; StorageCode: Code[20]; SourcePath: Text; TargetPath: Text)",Code[20]
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1149,Internal,public/default,"TableIdForTarget(Target: Enum ""Storage Attachment Target ori""): Integer",
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1439,Internal,internal,SetNativeExternalStorageFields(RecSystemId: Guid; StorageCode: Code[20]; Path: Text),Code[20]
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1461,Internal,internal,ClearNativeExternalStorageFields(RecSystemId: Guid),
-Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1524,Internal,internal,"NativeFieldMirrorFailureDimensions(RecSystemId: Guid; Offloaded: Boolean) Dimensions: Dictionary of [Text, Text]",
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,96,Internal,public/default,"Offload(var Argument: Record ""Message Argument ori""; var ResultData: JsonObject): Boolean",
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,186,Internal,public/default,"Restore(var Argument: Record ""Message Argument ori""; var ResultData: JsonObject): Boolean",
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,250,Internal,public/default,"CreateLinked(var Argument: Record ""Message Argument ori""; var ResultData: JsonObject): Boolean",
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,359,Internal,public/default,"CreateForRecord(var Argument: Record ""Message Argument ori""; var ResultData: JsonObject): Boolean",
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,445,Internal,public/default,"CreateForRecordFromBlob(var Argument: Record ""Message Argument ori""; var TempBlob: Codeunit ""Temp Blob""; SessionFileName: Text; var ResultData: JsonObject): Boolean",
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,485,Internal,public/default,"CreateIncomingFromBlob(var Argument: Record ""Message Argument ori""; var TempBlob: Codeunit ""Temp Blob""; SessionFileName: Text; var ResultData: JsonObject): Boolean",
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,663,Internal,public/default,"ReadTarget(var Argument: Record ""Message Argument ori""; RequestJson: JsonObject; ParameterName: Text; var Target: Enum ""Storage Attachment Target ori""): Boolean",
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,940,Internal,public/default,"FetchContent(StorageCode: Code[20]; Path: Text; var TempBlob: Codeunit ""Temp Blob"")",Code[20]
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,952,Internal,public/default,DeleteRemote(StorageCode: Code[20]; Path: Text),Code[20]
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,965,Internal,public/default,IsStorageFileLinked(StorageCode: Code[20]; Path: Text): Boolean,Code[20]
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,976,Internal,public/default,IsStorageDirectoryLinked(StorageCode: Code[20]; DirectoryPath: Text): Boolean,Code[20]
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,991,Internal,public/default,CanUpdateLinksOf(StorageCode: Code[20]; SourcePath: Text; var BlockReason: Text): Boolean,Code[20]
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1012,Internal,public/default,UpdateMovedStorageFile(StorageCode: Code[20]; SourcePath: Text; TargetPath: Text),Code[20]
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1046,Internal,internal,"CheckMovedPath(var Argument: Record ""Message Argument ori""; StorageCode: Code[20]; SourcePath: Text; TargetPath: Text)",Code[20]
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1146,Internal,public/default,"TableIdForTarget(Target: Enum ""Storage Attachment Target ori""): Integer",
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1436,Internal,internal,SetNativeExternalStorageFields(RecSystemId: Guid; StorageCode: Code[20]; Path: Text),Code[20]
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1458,Internal,internal,ClearNativeExternalStorageFields(RecSystemId: Guid),
+Storage Attachment Mgt ori,app/src/Attachments/StorageAttachmentMgt.Codeunit.al,1525,Internal,internal,"NativeFieldMirrorFailureDimensions(RecSystemId: Guid; Offloaded: Boolean) Dimensions: Dictionary of [Text, Text]",
 DataExch Def Transfer ori,app/src/DataExchange/DataExchDefTransfer.Codeunit.al,39,Internal,public/default,"ImportDefinitions(var Argument: Record ""Message Argument ori"")",
 DataExch Def Transfer ori,app/src/DataExchange/DataExchDefTransfer.Codeunit.al,138,Internal,public/default,"ExportDefinitionXml(DefCode: Code[20]; var TempBlob: Codeunit ""Temp Blob"")",Code[20]
 DataExch Export Mgt ori,app/src/DataExchange/DataExchExportMgt.Codeunit.al,91,Internal,public/default,"RunGenericExport(var Argument: Record ""Message Argument ori"")",
@@ -353,25 +353,25 @@ DataExch Export Run Impl ori,app/src/MessageTypes/DataExchange/DataExchExportRun
 DataExch Export Run Impl ori,app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al,181,Internal,public/default,GetNotes(var Notes: Text): Boolean,
 DataExch Export Run Impl ori,app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al,191,Internal,public/default,"GetMessageDirection(): Enum ""Msg Direction ori""",
 DataExch Export Run Impl ori,app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al,198,Internal,public/default,"ExecuteBifrostTask(var Argument: Record ""Message Argument ori"")",
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,12,Internal,public/default,IsEnabled(): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,17,Internal,public/default,GetFilterTableNo(): Integer,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,22,Internal,public/default,GetDescription(): Text[250],Text[250]
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,29,Internal,public/default,GetKeywords(): Text,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,36,Internal,public/default,GetSelectionDescription(): Text,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,43,Internal,public/default,GetEnvelope(var Envelope: JsonObject): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,51,Internal,public/default,GetTarget(var Target: JsonArray): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,56,Internal,public/default,GetParameters(var Parameters: JsonArray): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,61,Internal,public/default,GetResponse(var Response: JsonObject): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,69,Internal,public/default,GetErrors(var Errors: JsonArray): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,77,Internal,public/default,GetEffect(var Effect: JsonObject): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,85,Internal,public/default,GetMetering(var Metering: JsonObject): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,90,Internal,public/default,GetRelated(var Related: JsonArray): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,98,Internal,public/default,GetWorkflow(var Workflow: JsonObject): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,103,Internal,public/default,GetExamples(var Examples: JsonArray): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,108,Internal,public/default,GetOverview(var Overview: Text): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,114,Internal,public/default,GetNotes(var Notes: Text): Boolean,
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,120,Internal,public/default,"GetMessageDirection(): Enum ""Msg Direction ori""",
-DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,125,Internal,public/default,"ExecuteBifrostTask(var Argument: Record ""Message Argument ori"")",
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,13,Internal,public/default,IsEnabled(): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,18,Internal,public/default,GetFilterTableNo(): Integer,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,23,Internal,public/default,GetDescription(): Text[250],Text[250]
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,30,Internal,public/default,GetKeywords(): Text,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,37,Internal,public/default,GetSelectionDescription(): Text,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,44,Internal,public/default,GetEnvelope(var Envelope: JsonObject): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,52,Internal,public/default,GetTarget(var Target: JsonArray): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,57,Internal,public/default,GetParameters(var Parameters: JsonArray): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,62,Internal,public/default,GetResponse(var Response: JsonObject): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,70,Internal,public/default,GetErrors(var Errors: JsonArray): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,78,Internal,public/default,GetEffect(var Effect: JsonObject): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,86,Internal,public/default,GetMetering(var Metering: JsonObject): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,91,Internal,public/default,GetRelated(var Related: JsonArray): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,99,Internal,public/default,GetWorkflow(var Workflow: JsonObject): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,104,Internal,public/default,GetExamples(var Examples: JsonArray): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,109,Internal,public/default,GetOverview(var Overview: Text): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,115,Internal,public/default,GetNotes(var Notes: Text): Boolean,
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,121,Internal,public/default,"GetMessageDirection(): Enum ""Msg Direction ori""",
+DataExch Help Get Impl ori,app/src/MessageTypes/DataExchange/DataExchHelpGetImpl.Codeunit.al,126,Internal,public/default,"ExecuteBifrostTask(var Argument: Record ""Message Argument ori"")",
 DataExch Import Run Impl ori,app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al,19,Internal,public/default,IsEnabled(): Boolean,
 DataExch Import Run Impl ori,app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al,27,Internal,public/default,GetFilterTableNo(): Integer,
 DataExch Import Run Impl ori,app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al,33,Internal,public/default,GetDescription(): Text[250],Text[250]
@@ -657,25 +657,25 @@ Storage File Move Impl ori,app/src/MessageTypes/Files/StorageFileMoveImpl.Codeun
 Storage File Move Impl ori,app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al,127,Internal,public/default,GetNotes(var Notes: Text): Boolean,
 Storage File Move Impl ori,app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al,133,Internal,public/default,"GetMessageDirection(): Enum ""Msg Direction ori""",
 Storage File Move Impl ori,app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al,138,Internal,public/default,"ExecuteBifrostTask(var Argument: Record ""Message Argument ori"")",
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,13,Internal,public/default,IsEnabled(): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,18,Internal,public/default,GetFilterTableNo(): Integer,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,23,Internal,public/default,GetDescription(): Text[250],Text[250]
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,30,Internal,public/default,GetKeywords(): Text,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,37,Internal,public/default,GetSelectionDescription(): Text,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,44,Internal,public/default,GetEnvelope(var Envelope: JsonObject): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,52,Internal,public/default,GetTarget(var Target: JsonArray): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,57,Internal,public/default,GetParameters(var Parameters: JsonArray): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,62,Internal,public/default,GetResponse(var Response: JsonObject): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,70,Internal,public/default,GetErrors(var Errors: JsonArray): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,78,Internal,public/default,GetEffect(var Effect: JsonObject): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,86,Internal,public/default,GetMetering(var Metering: JsonObject): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,91,Internal,public/default,GetRelated(var Related: JsonArray): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,99,Internal,public/default,GetWorkflow(var Workflow: JsonObject): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,104,Internal,public/default,GetExamples(var Examples: JsonArray): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,109,Internal,public/default,GetOverview(var Overview: Text): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,117,Internal,public/default,GetNotes(var Notes: Text): Boolean,
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,123,Internal,public/default,"GetMessageDirection(): Enum ""Msg Direction ori""",
-Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,128,Internal,public/default,"ExecuteBifrostTask(var Argument: Record ""Message Argument ori"")",
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,14,Internal,public/default,IsEnabled(): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,19,Internal,public/default,GetFilterTableNo(): Integer,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,24,Internal,public/default,GetDescription(): Text[250],Text[250]
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,31,Internal,public/default,GetKeywords(): Text,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,38,Internal,public/default,GetSelectionDescription(): Text,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,45,Internal,public/default,GetEnvelope(var Envelope: JsonObject): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,53,Internal,public/default,GetTarget(var Target: JsonArray): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,58,Internal,public/default,GetParameters(var Parameters: JsonArray): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,63,Internal,public/default,GetResponse(var Response: JsonObject): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,71,Internal,public/default,GetErrors(var Errors: JsonArray): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,79,Internal,public/default,GetEffect(var Effect: JsonObject): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,87,Internal,public/default,GetMetering(var Metering: JsonObject): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,92,Internal,public/default,GetRelated(var Related: JsonArray): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,100,Internal,public/default,GetWorkflow(var Workflow: JsonObject): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,105,Internal,public/default,GetExamples(var Examples: JsonArray): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,110,Internal,public/default,GetOverview(var Overview: Text): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,118,Internal,public/default,GetNotes(var Notes: Text): Boolean,
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,124,Internal,public/default,"GetMessageDirection(): Enum ""Msg Direction ori""",
+Storage Help Get Impl ori,app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al,129,Internal,public/default,"ExecuteBifrostTask(var Argument: Record ""Message Argument ori"")",
 Storage Contract Parts ori,app/src/MessageTypes/StorageContractParts.Codeunit.al,92,Internal,public/default,GetEnvelope(DataRequired: Boolean) Envelope: JsonObject,
 Storage Contract Parts ori,app/src/MessageTypes/StorageContractParts.Codeunit.al,109,Internal,public/default,GetDataExchangeEnvelope(DataRequired: Boolean) Envelope: JsonObject,
 Storage Contract Parts ori,app/src/MessageTypes/StorageContractParts.Codeunit.al,126,Internal,public/default,IsDataExchangeType(MessageType: Text): Boolean,
