@@ -9,7 +9,7 @@ using Origo.Bifrost;
 /// asset, a posted document — from inline base64, from a file already in storage, or by copying
 /// an attachment that already exists elsewhere in Business Central.
 /// </summary>
-codeunit 10035667 "Storage Attach Record Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035152 "Storage Attach Record Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

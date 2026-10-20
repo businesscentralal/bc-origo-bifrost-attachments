@@ -7,7 +7,7 @@ using System.IO;
 /// Implementation of <c>DataExchange.Entry.Delete</c>. Deletes a Data Exch. entry and its parsed fields
 /// unless an incoming document uses it.
 /// </summary>
-codeunit 70013508 "DataExch Entry Delete Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035160 "DataExch Entry Delete Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
     TableNo = "Message Argument ori";

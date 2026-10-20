@@ -7,7 +7,7 @@ using System.IO;
 /// <c>if Worker.Run(DataExch)</c> after the import was committed, so a failing mapping rolls back
 /// only the processing and the imported entry stays for inspection.
 /// </summary>
-codeunit 70013502 "DataExch Process Worker ori"
+codeunit 10035143 "DataExch Process Worker ori"
 {
     Access = Internal;
     TableNo = "Data Exch.";

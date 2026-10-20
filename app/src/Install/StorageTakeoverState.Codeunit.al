@@ -6,7 +6,7 @@ namespace Origo.Bifrost.Attachments;
 /// seams so unit tests can force a denial without Origo Cloud Events Storage installed.
 /// Ambiguity A1: no singleton pending flag — skip is telemetry-only and idempotent.
 /// </summary>
-codeunit 10035681 "Storage Takeover State ori"
+codeunit 10035146 "Storage Takeover State ori"
 {
     Access = Internal;
     SingleInstance = true;

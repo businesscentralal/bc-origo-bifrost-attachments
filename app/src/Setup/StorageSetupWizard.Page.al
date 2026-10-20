@@ -7,7 +7,7 @@ using System.Environment.Configuration;
 /// Setup wizard for Bifrost Attachments. Guides the user through enabling
 /// HTTP client requests so the extension can communicate with external storage.
 /// </summary>
-page 10035638 "Storage Setup Wizard ori"
+page 10035140 "Storage Setup Wizard ori"
 {
     Extensible = false;
     PageType = NavigatePage;

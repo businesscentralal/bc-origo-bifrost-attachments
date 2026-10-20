@@ -11,7 +11,7 @@ using System.ExternalFileStorage;
 /// those belong to the shared Bifröst Setup page, which reaches this app through
 /// <c>Attachments Registration ori</c>.
 /// </summary>
-page 10035677 "Attachments Setup ori"
+page 10035135 "Attachments Setup ori"
 {
     Extensible = false;
     PageType = Card;

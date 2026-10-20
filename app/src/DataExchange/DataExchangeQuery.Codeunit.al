@@ -11,7 +11,7 @@ using System.Utilities;
 /// Implementations stay thin and call this codeunit. Base-table reads on the
 /// message hot path are covered by the <c>Permissions</c> property.
 /// </summary>
-codeunit 70013520 "Data Exchange Query ori"
+codeunit 10035138 "Data Exchange Query ori"
 {
     Access = Internal;
     Permissions =

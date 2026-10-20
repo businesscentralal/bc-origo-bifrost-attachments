@@ -10,7 +10,14 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-20) - Icelandic discovery and upload refusals (#157)
 
-- #157: translate the eight Data Exchange selection descriptions (codeunits 70013506–70013510, 70013521, 70013534 and 70013540) and the closed-upload status in refusals (codeunit 10035665). Keep wire status values unchanged. Extend the mixed-language guard to reject Locked discovery labels; add exact Icelandic catalogue, committed/aborted refusal and existing JSON-string grammar regressions (test codeunits 96205, 96211 and 96213), and update the existing Icelandic expectation in test codeunit 96274.
+- #157: translate the eight Data Exchange selection descriptions (codeunits 10035158, 10035160, 10035163, 10035164, 10035165, 10035166, 10035168, 10035187) and the closed-upload status in refusals (codeunit 10035197). Keep wire status values unchanged. Extend the mixed-language guard to reject Locked discovery labels; add exact Icelandic catalogue, committed/aborted refusal and existing JSON-string grammar regressions (test codeunits 96205, 96211 and 96213), and update the existing Icelandic expectation in test codeunit 96274.
+
+### Changed (2026-10-20) - All objects renumbered into the single registered range 10035135-10035234
+
+- `app.json` declares one range, 10035135-10035234, confirmed for this app in the allocation workbook on 20.10.2026. The former blocks 10035635-10035684 and 70013500-70013549 are freed. Every table, table extension, page, page extension, codeunit, enum, enum extension, permission set and permission set extension now numbers from 10035135 per object type. Object names are unchanged.
+- The 39 message-type values in Foundation's `Message Type ori` moved into the same range, which clears the AppSourceCop AS0099 findings: Storage values to 10035135-10035157 (same order), Data Exchange values to 10035158-10035173. Message-type keys, bindings and contracts are unchanged, so callers that address types by name are unaffected.
+- Breaking for any database that has the app installed with the old ids: table data and stored message-type ordinals do not carry over. Uninstall the earlier build and clear its data before you install this one. No AppSource version has been published.
+- Tests that pin ordinals (96204, 96211, 96274), the API surface matrix (`API-SURFACE.md`, `api-surface-objects.json`, `tools/Test-ApiSurfaceMatrix.py`) and the id notes in the README, AGENTS.md and `.claude/CLAUDE.md` use the new ids.
 
 ### Added (2026-10-19) - Restrictive permission tests for the Data Exchange pipeline types (#79)
 

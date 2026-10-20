@@ -6,7 +6,7 @@ using System.IO;
 /// <summary>
 /// Implementation of <c>DataExchange.Entry.Get</c>. Returns one Data Exch. entry.
 /// </summary>
-codeunit 70013526 "DataExch Entry Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035161 "DataExch Entry Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

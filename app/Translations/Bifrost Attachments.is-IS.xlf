@@ -915,12 +915,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Skráin inniheldur ekkert DataExchDef-stak.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Transfer ori - NamedType NoDefinitionErr</note>
         </trans-unit>
-        <trans-unit id="Codeunit 3768190266 - NamedType 2935312819" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The file is not a well-formed Data Exchange definition XML document.</source>
-          <target>Skráin er ekki gilt XML-skjal með skilgreiningu gagnaskipta.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skráin er ekki gilt XML-skjal með skilgreiningu gagnaskipta.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Transfer ori - NamedType NotXmlErr</note>
-        </trans-unit>
         <trans-unit id="Codeunit 3768190266 - NamedType 2361965528" size-unit="char" translate="yes" xml:space="preserve">
           <source>Send exactly one source: storageCode with path, contentBase64 or uploadId.</source>
           <target>Sendu nákvæmlega eina uppsprettu: storageCode með path, contentBase64 eða uploadId.</target>
@@ -1700,6 +1694,48 @@
           <target>Settu skrána í geymslu með Storage.File.Create eða upphleðslu í bútum og sendu svo storageCode og path, eða notaðu Storage.Upload.CommitToDataExchange.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Settu skrána í geymslu með Storage.File.Create eða upphleðslu í bútum og sendu svo storageCode og path, eða notaðu Storage.Upload.CommitToDataExchange.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - NamedType UseStorageSourceLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 2285494296 - NamedType 3983763326" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The file cannot be read as %1.</source>
+          <target>Ekki er hægt að lesa skrána sem %1.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = expected file type||is-IS=Ekki er hægt að lesa skrána sem %1.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method AddFileFormatError - NamedType InvalidFileErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 2285494296 - NamedType 108462947" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 bytes</source>
+          <target>%1 bæti</target>
+          <note from="Developer" annotates="general" priority="2">%1 = file size||is-IS=%1 bæti</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method AddFileFormatError - NamedType FileSizeLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 2285494296 - NamedType 458091662" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Supply a file in the format required by the definition and retry. Use DataExchange.Definition.Get to inspect the definition.</source>
+          <target>Sendu skrá á því sniði sem skilgreiningin krefst og reyndu aftur. Notaðu DataExchange.Definition.Get til að skoða skilgreininguna.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu skrá á því sniði sem skilgreiningin krefst og reyndu aftur. Notaðu DataExchange.Definition.Get til að skoða skilgreininguna.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method AddFileFormatError - NamedType CorrectFileLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 2830706709 - NamedType 1939372134" size-unit="char" translate="yes" xml:space="preserve">
+          <source>fixed width text</source>
+          <target>texti með fastri breidd</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=texti með fastri breidd</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method CheckFileFormat - NamedType FixedWidthLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 4008332335 - NamedType 1340493656" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Business Central could not read the file from storage.</source>
+          <target>Business Central gat ekki lesið skrána úr geymslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Business Central gat ekki lesið skrána úr geymslu.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method RespondFileReadError - NamedType ReadFailedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 4008332335 - NamedType 2706124578" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a readable file at the storage path</source>
+          <target>lesanleg skrá á geymsluslóðinni</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=lesanleg skrá á geymsluslóðinni</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method RespondFileReadError - NamedType ReadExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 4008332335 - NamedType 225315183" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check the path, storage connection and read permissions, then retry.</source>
+          <target>Athugaðu slóðina, geymslutenginguna og lesheimildir og reyndu aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu slóðina, geymslutenginguna og lesheimildir og reyndu aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method RespondFileReadError - NamedType ReadNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 882503026 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Imports a file from storage or inline content into a Data Exch. entry and parses its fields with a Generic Import or Payroll Import definition.</source>
@@ -2750,6 +2786,30 @@
           <target>Valfrjálst lánardrottinsnúmer fyrir nýtt skjal í innleið.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Valfrjálst lánardrottinsnúmer fyrir nýtt skjal í innleið.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType VendorNoParamLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 3528980560" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The file cannot be read in the definition file type. The refusal identifies contentBase64, path or uploadId and reports only the file name or size, never its content.</source>
+          <target>Ekki er hægt að lesa skrána samkvæmt skráargerð skilgreiningarinnar. Höfnunin tilgreinir contentBase64, path eða uploadId og sýnir aðeins skráarheiti eða stærð, aldrei innihaldið.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Ekki er hægt að lesa skrána samkvæmt skráargerð skilgreiningarinnar. Höfnunin tilgreinir contentBase64, path eða uploadId og sýnir aðeins skráarheiti eða stærð, aldrei innihaldið.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ImportFormatLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 391818373" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Supply the required XML, CSV or fixed width file and retry. Inspect the definition with DataExchange.Definition.Get; use DataExchange.Definition.Export for the definition XML format.</source>
+          <target>Sendu tilskilda XML-skrá, CSV-skrá eða skrá með fastri breidd og reyndu aftur. Skoðaðu skilgreininguna með DataExchange.Definition.Get; notaðu DataExchange.Definition.Export fyrir XML-snið skilgreiningarinnar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu tilskilda XML-skrá, CSV-skrá eða skrá með fastri breidd og reyndu aftur. Skoðaðu skilgreininguna með DataExchange.Definition.Get; notaðu DataExchange.Definition.Export fyrir XML-snið skilgreiningarinnar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ImportFormatNextLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 3568450841" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Business Central errors caught while reading the source before writes include parameter and nextStep. Unexpected reader or database errors after writes retain the Foundation BusinessCentralError response; the failed import is rolled back with no entry.</source>
+          <target>Business Central villur sem gripnar eru við lestur uppsprettunnar áður en skrif hefjast innihalda parameter og nextStep. Óvæntar villur í lesara eða gagnagrunni eftir skrif halda svarinu BusinessCentralError frá Foundation; misheppnaður innflutningur er afturkallaður án færslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Business Central villur sem gripnar eru við lestur uppsprettunnar áður en skrif hefjast innihalda parameter og nextStep. Óvæntar villur í lesara eða gagnagrunni eftir skrif halda svarinu BusinessCentralError frá Foundation; misheppnaður innflutningur er afturkallaður án færslu.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ImportBoundaryLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 3140821260" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check the source and definition before retrying. Post-write errors may lack parameter and nextStep until Foundation supports rollback-safe error context.</source>
+          <target>Athugaðu uppsprettuna og skilgreininguna áður en reynt er aftur. Villur eftir skrif geta verið án parameter og nextStep þar til Foundation styður villusamhengi sem varðveitir afturköllun.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu uppsprettuna og skilgreininguna áður en reynt er aftur. Villur eftir skrif geta verið án parameter og nextStep þar til Foundation styður villusamhengi sem varðveitir afturköllun.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ImportBoundaryNextLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 225158890 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Creates a directory in the configured storage connection.</source>

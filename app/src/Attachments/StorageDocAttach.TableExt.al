@@ -7,11 +7,11 @@ using Microsoft.Foundation.Attachment;
 /// The field is true when the attachment's content has been offloaded to external storage
 /// and a corresponding <c>Bifrost Storage Attachment Link</c> row exists.
 /// </summary>
-tableextension 10035636 "Storage Doc. Attach. ori" extends "Document Attachment"
+tableextension 10035135 "Storage Doc. Attach. ori" extends "Document Attachment"
 {
     fields
     {
-        field(10035635; "Offloaded ori"; Boolean)
+        field(10035135; "Offloaded ori"; Boolean)
         {
             Caption = 'Bifrost Offloaded', Comment = 'is-IS=Bifröst útvistað';
             ToolTip = 'Specifies whether the attachment content has been offloaded to external storage.', Comment = 'is-IS=Tilgreinir hvort innihald viðhengisins hafi verið útvistað í ytri geymslu.';

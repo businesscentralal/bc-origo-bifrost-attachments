@@ -417,7 +417,7 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Ordinal: Integer;
     begin
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            if ((Ordinal >= FirstOrdinal) and (Ordinal <= LastOrdinal)) or ((Ordinal >= 70013510) and (Ordinal <= 70013515)) then
+            if ((Ordinal >= FirstOrdinal) and (Ordinal <= LastOrdinal)) or ((Ordinal >= 10035158) and (Ordinal <= 10035163)) then
                 Ordinals.Add(Ordinal);
         LibraryAssert.AreEqual(29, Ordinals.Count(), 'Bifröst Attachments declares 29 message types.');
     end;
@@ -440,8 +440,8 @@ codeunit 96211 "Storage Msg Conformance Tests"
 
     local procedure Initialize()
     begin
-        // The app's object-id block; the enum-extension values live in the same numbers.
-        FirstOrdinal := 10035635;
-        LastOrdinal := 10035684;
+        // Storage message-type values; the Data Exchange help values follow at 10035158-10035163.
+        FirstOrdinal := 10035135;
+        LastOrdinal := 10035157;
     end;
 }

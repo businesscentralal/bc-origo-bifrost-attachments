@@ -7,7 +7,7 @@ using Origo.Bifrost;
 /// or unfilterable field fails closed with a structured refusal) and keeps the applied view, so
 /// <c>DataExchange.Export.Run</c> can select its source records without applying an unchecked view.
 /// </summary>
-codeunit 70013511 "DataExch View Filter ori"
+codeunit 10035144 "DataExch View Filter ori"
 {
     Access = Internal;
 

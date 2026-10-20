@@ -7,7 +7,7 @@ using Origo.Bifrost;
 /// of the storage connector, release baseline, and every message type it exposes.
 /// No request body is required.
 /// </summary>
-codeunit 10035655 "Storage Help Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

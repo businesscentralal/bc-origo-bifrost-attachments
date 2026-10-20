@@ -9,7 +9,7 @@ using Origo.Bifrost;
 /// the file stays transparently available to Business Central and can be brought back with
 /// <c>Storage.Attachment.Restore</c>.
 /// </summary>
-codeunit 10035641 "Storage Att. Offload Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035153 "Storage Att. Offload Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 
