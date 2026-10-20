@@ -123,6 +123,7 @@ codeunit 96256 "DataExch Format Tests ori"
         Request.Add('contentBase64', Fixture.Encode('code,name,amount'));
         FieldsBefore := DataExchField.Count();
         LinksBefore := EntryLink.Count();
+        Commit(); // Keep the fixture outside the failing import transaction.
         // The native AL boundary raises; the external API supplies BusinessCentralError.
         // Keep the actual reader error and prove rollback rather than swallowing it in a TryFunction.
         asserterror DispatchLocale("Message Type ori"::"DataExchange.Import.Run", Request, LanguageId);
