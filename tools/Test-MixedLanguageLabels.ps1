@@ -37,6 +37,9 @@
     AddWarning or RaiseCollected*, directly or through other procedures); a SQL string or a reason that is only stored does
     not.
 
+    Discovery labels reached by GetDescription, GetKeywords or GetSelectionDescription must also be translatable (#157),
+    including one-word labels and labels returned through helpers. Wire tokens outside discovery are unchanged.
+
     A second rule reads the names (#772). A label with Locked = true whose name ends in Err, Error, NextStep..., Expected...
     or Hint... is a refusal text, whatever the call that carries it looks like, when its text is English words
     ("Send subject.", "a duration", "%1 is required."). A text of single tokens ("id, identityInsert, primaryKey"), a format
@@ -501,6 +504,23 @@ function Get-AnswerKinds($Objects, $Answering, $Object, $Proc) {
     return $kinds
 }
 
+# Discovery is caller-facing even when it does not call RespondWith*. Do not apply the prose heuristic:
+# a one-word keyword is still a translatable discovery label. Follow same-object and resolved helper calls.
+function Find-LockedDiscoveryLabels($Objects, $Object, $Proc, $Seen) {
+    if (-not $Seen.Add($Proc.Key)) { return }
+    $code = Get-Blanked $Proc.Code
+    foreach ($m in $identifier.Matches($code)) {
+        $label = Find-Label $Object $Proc $m.Value.Trim('"')
+        if ($label -and $label.Locked) { "$($Object.Name).$($label.Name)" }
+    }
+    foreach ($m in $callSite.Matches($code)) {
+        $recv = if ($m.Groups['recv'].Success) { $m.Groups['recv'].Value } else { $null }
+        foreach ($resolved in (Resolve-Call $Objects $Object $Proc $recv $m.Groups['name'].Value)) {
+            Find-LockedDiscoveryLabels $Objects $resolved.Object $resolved.Proc $Seen
+        }
+    }
+}
+
 function Find-MixedLanguage([string]$AppFolder, [object[]]$Allowed, [string]$ExplainName = '') {
     $objects = Read-Source (Join-Path $AppFolder 'src')
     $answering = Find-Answering $objects
@@ -510,6 +530,12 @@ function Find-MixedLanguage([string]$AppFolder, [object[]]$Allowed, [string]$Exp
     foreach ($object in ($objects.Values | Sort-Object { $_.Name })) {
         foreach ($proc in $object.List) {
             if ($ExplainName -and $proc.Name -ne $ExplainName) { continue }
+            if (-not $ExplainName -and $proc.Name -in @('GetSelectionDescription', 'GetDescription', 'GetKeywords')) {
+                $discoveryLabels = @(Find-LockedDiscoveryLabels $objects $object $proc ([System.Collections.Generic.HashSet[string]]::new()) | Sort-Object -Unique)
+                if ($discoveryLabels.Count) {
+                    $violations.Add("$($proc.File):$($proc.Line): [locked-discovery] $($proc.Name) uses Locked labels: $($discoveryLabels -join ', ')")
+                }
+            }
             $kinds = Get-AnswerKinds $objects $answering $object $proc
             $locked = @($kinds | Where-Object { $_.StartsWith('L|') } | ForEach-Object { $_.Substring(2) } | Sort-Object)
             $translated = @($kinds | Where-Object { $_.StartsWith('T|') } | ForEach-Object { $_.Substring(2) } | Sort-Object)
@@ -732,12 +758,69 @@ codeunit 3 "Clean ori"
 }
 '@ | Set-Content -LiteralPath (Join-Path $src 'Clean.Codeunit.al') -Encoding UTF8
 
+        @'
+codeunit 4 "Discovery ori"
+{
+    var
+        GlobalLbl: Label 'storage', Locked = true;
+    procedure GetDescription(): Text
+    var
+        DescriptionLbl: Label 'Description.', Locked = true;
+    begin
+        exit(DescriptionLbl);
+    end;
+    procedure GetKeywords(): Text
+    begin
+        exit(GlobalLbl);
+    end;
+    procedure GetSelectionDescription(): Text
+    begin
+        exit(SelectionHelper());
+    end;
+    local procedure SelectionHelper(): Text
+    var
+        SelectionLbl: Label 'Choose this operation.', Locked = true;
+    begin
+        exit(SelectionLbl);
+    end;
+}
+'@ | Set-Content -LiteralPath (Join-Path $src 'Discovery.Codeunit.al') -Encoding UTF8
+        @'
+codeunit 5 "Translated Discovery ori"
+{
+    procedure GetDescription(): Text
+    var
+        DescriptionLbl: Label 'Description.', Comment = 'is-IS=Lýsing.';
+    begin
+        // Locked = true in a comment is not a label property.
+        exit(DescriptionLbl);
+    end;
+    procedure GetKeywords(): Text
+    var
+        KeywordsLbl: Label 'storage', Comment = 'is-IS=geymsla';
+    begin
+        exit(KeywordsLbl);
+    end;
+    procedure GetSelectionDescription(): Text
+    var
+        SelectionLbl: Label 'Choose this operation.', Comment = 'is-IS=Veldu þessa aðgerð.';
+    begin
+        exit(SelectionLbl);
+    end;
+}
+'@ | Set-Content -LiteralPath (Join-Path $src 'TranslatedDiscovery.Codeunit.al') -Encoding UTF8
         $allowed = @(
             @{ File = 'Bad.Codeunit.al'; Procedure = 'Allowed'; Reason = 'self-test' },
             @{ File = 'Clean.Codeunit.al'; Procedure = 'AllTranslated'; Reason = 'self-test: not reported, so stale' }
         )
         $found = Find-MixedLanguage $root $allowed
         $failed = $false
+        $discovery = @($found | Where-Object { $_.Contains('[locked-discovery]') })
+        foreach ($name in @('GetDescription', 'GetKeywords', 'GetSelectionDescription')) {
+            if (-not ($discovery | Where-Object { $_.StartsWith('Discovery.Codeunit.al:') -and $_.Contains("[locked-discovery] $name ") })) { Write-Host "SelfTest FAILED: $name must reject Locked discovery labels."; $failed = $true }
+        }
+        if ($discovery.Count -ne 3) { Write-Host "SelfTest FAILED: expected exactly three locked discovery findings, got $($discovery.Count)."; $failed = $true }
+
         foreach ($name in @('SameCall', 'ThroughHelper', 'ThroughVariable', 'LiteralSentence', 'LiteralThroughHelper', 'OnlyLocked', 'ThroughRaise')) {
             if (-not ($found | Where-Object { $_.StartsWith('Bad.Codeunit.al:') -and $_.Contains("[mixed-language] $name ") })) { Write-Host "SelfTest FAILED: $name was not reported."; $failed = $true }
         }
@@ -781,4 +864,4 @@ if ($violations.Count -gt 0) {
     $violations | ForEach-Object { Write-Host $_ }
     exit 1
 }
-Write-Host 'No procedure answers a Locked English sentence.'
+Write-Host 'No procedure answers a Locked English sentence; discovery labels are translatable.'

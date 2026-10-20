@@ -55,7 +55,7 @@ codeunit 70013508 "DataExch Entry Delete Impl ori" implements "Msg Interface ori
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Removes one imported or exported Data Exch. entry and its fields; the definition and the business records written from the entry stay.', Locked = true;
+        SelectionDescriptionLbl: Label 'Removes one imported or exported Data Exch. entry and its fields; the definition and the business records written from the entry stay.', Comment = 'is-IS=Fjarlægir eina innflutta eða útflutta gagnaskiptafærslu og reiti hennar; skilgreiningin og viðskiptafærslurnar sem voru skrifaðar úr færslunni haldast.';
     begin
         exit(SelectionDescriptionLbl);
     end;

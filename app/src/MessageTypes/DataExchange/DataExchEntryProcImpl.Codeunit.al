@@ -55,7 +55,7 @@ codeunit 70013507 "DataExch Entry Proc Impl ori" implements "Msg Interface ori",
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Writes the parsed fields of an imported entry to the business tables of the definition mappings, as the second step after DataExchange.Import.Run or Storage.Upload.CommitToDataExchange.', Locked = true;
+        SelectionDescriptionLbl: Label 'Writes the parsed fields of an imported entry to the business tables of the definition mappings, as the second step after DataExchange.Import.Run or Storage.Upload.CommitToDataExchange.', Comment = 'is-IS=Skrifar þáttaða reiti innfluttrar færslu í viðskiptatöflur samkvæmt vörpunum skilgreiningarinnar, sem annað skref á eftir DataExchange.Import.Run eða Storage.Upload.CommitToDataExchange.';
     begin
         exit(SelectionDescriptionLbl);
     end;

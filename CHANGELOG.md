@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-20) - Icelandic discovery and upload refusals (#157)
+
+- #157: translate the eight Data Exchange selection descriptions (codeunits 70013506–70013510, 70013521, 70013534 and 70013540) and the closed-upload status in refusals (codeunit 10035665). Keep wire status values unchanged. Extend the mixed-language guard to reject Locked discovery labels; add exact Icelandic catalogue, committed/aborted refusal and existing JSON-string grammar regressions (test codeunits 96205, 96211 and 96213).
+
 ### Added (2026-10-19) - Restrictive permission tests for the Data Exchange pipeline types (#79)
 
 - `Storage 79 Perm Tests ori` (96218) covers the five message types added in #150 under `TestPermissions = Restrictive`, dispatched through the public `Dispatcher ori` with fresh observer readback. Refusals: `DataExchange.Entry.Process` without write on the mapping target (`PermissionDenied` naming the definition, no marker), `DataExchange.Entry.Delete` without `Data Exch.` mutation and without `Data Exch. Field` mutation, `DataExchange.Definition.Import` without definition mutation (valid exported XML under a new code installs nothing), `DataExchange.PaymentExport.Run` without `Gen. Journal Line` mutation (line not marked, no entry, no credit transfer register) and `Storage.Upload.CommitToDataExchange` with both product roles but no `Data Exch.` or `Data Exch. Field` mutation (session stays open with its chunk bytes). Each denial asserts the table id in `received`.

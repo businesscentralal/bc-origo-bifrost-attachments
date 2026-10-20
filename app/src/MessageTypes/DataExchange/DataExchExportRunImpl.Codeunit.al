@@ -57,7 +57,7 @@ codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Runs a Generic Export definition over a table view or a list of record SystemIds and delivers the file; payment files use DataExchange.PaymentExport.Run.', Locked = true;
+        SelectionDescriptionLbl: Label 'Runs a Generic Export definition over a table view or a list of record SystemIds and delivers the file; payment files use DataExchange.PaymentExport.Run.', Comment = 'is-IS=Keyrir skilgreiningu fyrir almennan útflutning á töflusýn eða lista af SystemId-auðkennum færslna og afhendir skrána; notaðu DataExchange.PaymentExport.Run fyrir greiðsluskrár.';
     begin
         exit(SelectionDescriptionLbl);
     end;

@@ -29,6 +29,27 @@ codeunit 96213 "Data Exch Discovery Tests"
         WriteHintTok: Label 'DataExchange.Import.Run / Storage.Upload.CommitToDataExchange', Locked = true;
 
     [Test]
+    procedure Scenario_AC03_CodeTypeRefusal_UsesAccusativeIcelandic()
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        Request: JsonObject;
+        Response: JsonObject;
+        SavedLanguage: Integer;
+    begin
+        // Story #157, AC03 | Time: independent | Risk: existing correct source must survive XLF generation.
+        // [GIVEN] A numeric code where the contract requires a JSON string.
+        Request.Add('code', 123);
+        SavedLanguage := GlobalLanguage();
+        // [WHEN] The invalid request is dispatched at LCID 1039.
+        GlobalLanguage(1039);
+        ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Definition.Get", Request);
+        Response := TempArgument.GetResponseJson();
+        GlobalLanguage(SavedLanguage);
+        // [THEN] The complete recovery instruction uses the accusative form.
+        LibraryAssert.AreEqual('Sendu "code" sem JSON-streng.', ReadText(Response, 'nextStep'), 'Icelandic grammar.');
+    end;
+
+    [Test]
     procedure RepairedBindings_ResolveTheirOwnTargetTables()
     var
         MessageType: Enum "Message Type ori";

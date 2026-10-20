@@ -587,6 +587,63 @@ codeunit 96205 "Storage Upload Tests"
         Contract.WriteTo(Result);
     end;
 
+    [Test]
+    procedure Scenario_AC02_CommittedUpload_RefusalIsIcelandic()
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        UploadId: Text;
+        Path: Text;
+        SavedLanguage: Integer;
+        Response: JsonObject;
+    begin
+        // Story #157, AC02 | Time: independent | Risk: real dispatcher and compiled XLF.
+        // [GIVEN] A session committed through the production message path.
+        Initialize();
+        BeginUpload('committed-is.txt', '', UploadId, Path);
+        AppendChunk(UploadId, 1, 'content');
+        CommitUpload(TempArgument, UploadId);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'First commit succeeds.');
+        // [WHEN] The caller retries the closed upload in Icelandic.
+        SavedLanguage := GlobalLanguage();
+        GlobalLanguage(1039);
+        CommitUpload(TempArgument, UploadId);
+        Response := TempArgument.GetResponseJson();
+        GlobalLanguage(SavedLanguage);
+        // [THEN] The whole refusal is Icelandic; structured protocol values stay stable.
+        LibraryAssert.AreEqual('PreconditionFailed', ReadText(Response, 'code'), 'Closed upload error code.');
+        LibraryAssert.AreEqual('Upphleðslulotan er staðfest, ekki opin; hún hefur þegar verið staðfest eða hætt við hana.', ReadText(Response, 'error'), 'Committed refusal at 1039.');
+        LibraryAssert.AreEqual('uploadId', ReadText(Response, 'parameter'), 'Refused upload parameter.');
+    end;
+
+    [Test]
+    procedure Scenario_AC02_AbortedUpload_RefusalIsIcelandic()
+    var
+        Session: Record "Storage Upload Session ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Request: JsonObject;
+        Response: JsonObject;
+        SavedLanguage: Integer;
+    begin
+        // Story #157, AC02 | Time: independent | Risk: Abort deletes sessions, so seed a retained closed row.
+        // [GIVEN] An owned aborted session (normal Abort removes the row).
+        Initialize();
+        Session.Init();
+        Session."Upload Id" := CreateGuid();
+        Session.Status := Session.Status::Aborted;
+        Session.Insert(true);
+        Request.Add('uploadId', Format(Session."Upload Id", 0, 4));
+        // [WHEN] The caller tries to commit the aborted session in Icelandic.
+        SavedLanguage := GlobalLanguage();
+        GlobalLanguage(1039);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Commit", Request);
+        Response := TempArgument.GetResponseJson();
+        GlobalLanguage(SavedLanguage);
+        // [THEN] The status inside the refusal is translated without changing its protocol code.
+        LibraryAssert.AreEqual('PreconditionFailed', ReadText(Response, 'code'), 'Closed upload error code.');
+        LibraryAssert.AreEqual('Upphleðslulotan er hætt við, ekki opin; hún hefur þegar verið staðfest eða hætt við hana.', ReadText(Response, 'error'), 'Aborted refusal at 1039.');
+        Session.Delete(true);
+    end;
+
     local procedure Initialize()
     var
         StorageSetup: Record "Storage Setup ori";

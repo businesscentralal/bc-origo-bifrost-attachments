@@ -48,7 +48,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Explains when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionLbl: Label 'Imports a file that is already in storage, or small inline content, with a Generic Import or Payroll Import definition. Use Storage.Upload.CommitToDataExchange for a chunked upload.', Locked = true;
+        SelectionLbl: Label 'Imports a file that is already in storage, or small inline content, with a Generic Import or Payroll Import definition. Use Storage.Upload.CommitToDataExchange for a chunked upload.', Comment = 'is-IS=Flytur inn skrá sem er þegar í geymslu, eða lítið innfellt innihald, með skilgreiningu fyrir almennan innflutning eða launainnflutning. Notaðu Storage.Upload.CommitToDataExchange fyrir upphleðslu í bútum.';
     begin
         exit(SelectionLbl);
     end;

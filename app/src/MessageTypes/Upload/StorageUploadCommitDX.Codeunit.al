@@ -49,7 +49,7 @@ codeunit 70013506 "Storage Upload Commit DX ori" implements "Msg Interface ori",
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Turns a complete chunked upload into a parsed Data Exch. entry of a Generic Import or Payroll Import definition, instead of a file in storage or an attachment.', Locked = true;
+        SelectionDescriptionLbl: Label 'Turns a complete chunked upload into a parsed Data Exch. entry of a Generic Import or Payroll Import definition, instead of a file in storage or an attachment.', Comment = 'is-IS=Breytir fullbúinni upphleðslu í bútum í þáttaða gagnaskiptafærslu samkvæmt skilgreiningu fyrir almennan innflutning eða launainnflutning, í stað skrár í geymslu eða viðhengis.';
     begin
         exit(SelectionDescriptionLbl);
     end;

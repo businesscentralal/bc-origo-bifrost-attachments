@@ -57,7 +57,7 @@ codeunit 70013509 "DataExch Def Install Impl ori" implements "Msg Interface ori"
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Creates or replaces Data Exchange definitions from an XML file, the same file the Export Data Exchange Definition action writes and DataExchange.Definition.Export returns.', Locked = true;
+        SelectionDescriptionLbl: Label 'Creates or replaces Data Exchange definitions from an XML file, the same file the Export Data Exchange Definition action writes and DataExchange.Definition.Export returns.', Comment = 'is-IS=Stofnar eða skiptir út skilgreiningum gagnaskipta úr XML-skrá, sömu skrá og aðgerðin Flytja út skilgreiningu gagnaskipta skrifar og DataExchange.Definition.Export skilar.';
     begin
         exit(SelectionDescriptionLbl);
     end;
