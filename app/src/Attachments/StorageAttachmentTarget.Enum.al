@@ -5,7 +5,7 @@ namespace Origo.Bifrost.Attachments;
 /// The value maps to a table id (see <see cref="Codeunit.StorageAttachmentMgt"/>) and is
 /// carried as the <c>target</c> string in the attachment message types.
 /// </summary>
-enum 10035635 "Storage Attachment Target ori"
+enum 10035135 "Storage Attachment Target ori"
 {
     Access = Internal;
     Extensible = false;

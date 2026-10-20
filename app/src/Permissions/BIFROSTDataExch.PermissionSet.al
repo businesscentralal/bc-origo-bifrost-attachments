@@ -13,7 +13,7 @@ using System.IO;
 /// Holders do not need <c>BIFROST Attach ori</c>. A permission set extension cannot
 /// grant or include these tables.
 /// </summary>
-permissionset 70013548 "BIFROST DataExch ori"
+permissionset 10035136 "BIFROST DataExch ori"
 {
     Access = Public;
     Assignable = true;

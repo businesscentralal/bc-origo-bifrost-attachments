@@ -12,7 +12,7 @@ using System.Utilities;
 /// <c>Ext. File Storage Connector</c> are all reached through the same facade. The
 /// connector apps own authentication and secrets.
 /// </summary>
-codeunit 10035661 "Storage Ext File Impl ori" implements "Storage Connector ori"
+codeunit 10035192 "Storage Ext File Impl ori" implements "Storage Connector ori"
 {
     Access = Internal;
     var

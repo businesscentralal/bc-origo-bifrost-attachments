@@ -37,7 +37,7 @@ using System.IO;
 /// <c>Storage.Upload.CommitToRecord / DataExchange.Type.Set</c>. The rest of Incoming Document
 /// stays writable through the generic data types.
 /// </summary>
-codeunit 10035663 "Storage Data Restriction ori"
+codeunit 10035195 "Storage Data Restriction ori"
 {
     Access = Internal;
 

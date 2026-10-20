@@ -112,11 +112,11 @@ codeunit 96274 "Attachments Build Tests ori"
     procedure Scenario_AC03_MessageTypes_ResolveDistinctContracts()
     begin
         // [SCENARIO] Issue74 AC03 | Time: no date dependency | Risk: enum binding collisions.
-        LibraryAssert.AreEqual(70013516, Enum::"Message Type ori"::"DataExchange.Type.Set".AsInteger(), 'Type.Set ordinal');
-        LibraryAssert.AreEqual(70013522, Enum::"Message Type ori"::"DataExchange.Import.Run".AsInteger(), 'Import.Run ordinal');
-        LibraryAssert.AreEqual(70013519, Enum::"Message Type ori"::"DataExchange.Export.Run".AsInteger(), 'Export.Run ordinal');
-        LibraryAssert.AreEqual(70013523, Enum::"Message Type ori"::"DataExchange.Definition.Delete".AsInteger(), 'Definition.Delete ordinal');
-        LibraryAssert.AreEqual(70013521, Enum::"Message Type ori"::"DataExchange.Definition.Export".AsInteger(), 'Definition.Export ordinal');
+        LibraryAssert.AreEqual(10035164, Enum::"Message Type ori"::"DataExchange.Type.Set".AsInteger(), 'Type.Set ordinal');
+        LibraryAssert.AreEqual(10035170, Enum::"Message Type ori"::"DataExchange.Import.Run".AsInteger(), 'Import.Run ordinal');
+        LibraryAssert.AreEqual(10035167, Enum::"Message Type ori"::"DataExchange.Export.Run".AsInteger(), 'Export.Run ordinal');
+        LibraryAssert.AreEqual(10035171, Enum::"Message Type ori"::"DataExchange.Definition.Delete".AsInteger(), 'Definition.Delete ordinal');
+        LibraryAssert.AreEqual(10035169, Enum::"Message Type ori"::"DataExchange.Definition.Export".AsInteger(), 'Definition.Export ordinal');
         AssertContract(Enum::"Message Type ori"::"DataExchange.Type.Set", 'DataExchange.Type.Set');
         AssertContract(Enum::"Message Type ori"::"DataExchange.Import.Run", 'DataExchange.Import.Run');
         AssertContract(Enum::"Message Type ori"::"DataExchange.Export.Run", 'DataExchange.Export.Run');

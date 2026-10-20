@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of the <c>Storage.File.Get</c> message type. Downloads a file from the
 /// configured storage connection and returns its content as base64.
 /// </summary>
-codeunit 10035652 "Storage File Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035179 "Storage File Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

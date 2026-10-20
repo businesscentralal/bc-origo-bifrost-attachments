@@ -4,7 +4,7 @@ using Origo.Bifrost;
 using System.IO;
 
 /// <summary>Binds an existing import definition to a Data Exchange Type.</summary>
-codeunit 70013531 "DataExch Type Set Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035170 "DataExch Type Set Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
     TableNo = "Message Argument ori";

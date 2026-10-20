@@ -8,7 +8,7 @@ using Origo.Bifrost;
 /// attachment's file back into the Business Central database from its storage connection and
 /// deletes the remote copy, reversing <c>Storage.Attachment.Offload</c>.
 /// </summary>
-codeunit 10035642 "Storage Att. Restore Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035154 "Storage Att. Restore Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

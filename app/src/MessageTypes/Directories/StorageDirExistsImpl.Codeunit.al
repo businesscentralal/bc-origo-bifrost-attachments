@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of the <c>Storage.Directory.Exists</c> message type. Reports whether a
 /// directory exists in the configured storage connection.
 /// </summary>
-codeunit 10035646 "Storage Dir Exists Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035173 "Storage Dir Exists Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

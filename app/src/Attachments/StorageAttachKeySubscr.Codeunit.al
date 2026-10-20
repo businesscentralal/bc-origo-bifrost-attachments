@@ -20,7 +20,7 @@ using Microsoft.Foundation.Attachment;
 /// for composite keys, where one field cannot identify the record.
 /// </para>
 /// </summary>
-codeunit 10035668 "Storage Attach Key Subscr ori"
+codeunit 10035135 "Storage Attach Key Subscr ori"
 {
     Access = Internal;
 

@@ -6,7 +6,7 @@ using System.IO;
 /// <summary>
 /// Implementation of <c>DataExchange.Entry.List</c>. Lists processed Data Exch. entries.
 /// </summary>
-codeunit 70013525 "DataExch Entry List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035162 "DataExch Entry List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

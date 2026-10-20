@@ -8,7 +8,7 @@ using System.ExternalFileStorage;
 /// storage connections — their codes, descriptions, connectors and enabled state — so a
 /// caller can discover the <c>storageCode</c> values to use. No secrets are exposed.
 /// </summary>
-codeunit 10035639 "Storage Account List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035150 "Storage Account List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

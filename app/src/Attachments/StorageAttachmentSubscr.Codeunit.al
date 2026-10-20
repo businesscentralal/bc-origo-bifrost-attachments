@@ -12,7 +12,7 @@ using System.Utilities;
 /// existing processes behave as if the file were still local. Also cleans up the remote copy
 /// and the link when an attachment record is deleted.
 /// </summary>
-codeunit 10035636 "Storage Attachment Subscr ori"
+codeunit 10035137 "Storage Attachment Subscr ori"
 {
     Access = Internal;
 

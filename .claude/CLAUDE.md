@@ -9,32 +9,31 @@ because it is a brand prefix)
 Origo.Bifrost.Attachments (tests: Origo.Bifrost.Attachments.Test)
 
 ## Object ID Range
-App:   10035635-10035684 (allocated in origo_cloudevents_object_ranges.xlsx; migrated from the
-       Cloud Events Storage range 10075985-10076034 with offset -40350. The original target block
-       10035485-10035534, offset -40500, was already occupied by the legacy Cloud Events Chat app
-       on bc28-is, so the coordinator reallocated this app to 10035635-10035684 in the workbook.)
-Tests: 96200-96299 (migrated from 92700-92799 with offset +3500)
+App:   10035135-10035234 - one block, CONFIRMED 20.10.2026 by Gunnar in origo_cloudevents_object_ranges.xlsx
+       (sheet Solution Allocations, ex-Tollvis + ex-Halo). It replaces the two former blocks
+       10035635-10035684 and 70013500-70013549, which the workbook marks as freed; never use them again.
+Tests: 96200-96299 (migrated from 92700-92799 with offset +3500; unchanged by the renumber)
 
-Object ids re-derived 16.10.2026 for #23: app block 10035635-10035684 is in use through 10035683 (`Storage Link Upgrade ori`); free in that block 10035684. Second block 70013500-70013549: codeunit 70013500 (`Storage Contract Parts ori`), Data Exchange codeunits 70013520-70013526, 70013531, **70013532** (`DataExch Inc Doc Proc ori`, #23), 70013534, 70013536, 70013540, 70013543; enumextension objects 70013510, 70013511, 70013514, 70013516, 70013519, 70013521; message-type values 70013510-70013516, 70013519, 70013521-70013523; permission set 70013548. Retired, do not reuse: 70013544, 70013545. Free codeunit IDs in that block include 70013533, 70013535, 70013537-70013539, 70013541-70013542, 70013546-70013549. Tests on main include 96200-96218, 96225, 96226, 96274; **96237** is `DataExch Phase2 Tests ori` (#23). Permission-set test IDs 96218-96222 and 96227-96234 remain #79.
-
-Compile collision repair (06.10.2026): newer `DataExch Entry Del Impl ori` moved from duplicate codeunit 70013521 to 70013544; `DataExch Def Import Impl ori` moved from duplicate codeunit 70013524 to 70013545. Earlier Help Get (70013521) and Type List (70013524) keep their IDs. `DataExchange.Import.Run` moved from duplicate ordinal 70013516 to 70013522; `DataExchange.Definition.Delete` moved from duplicate ordinal 70013519 to 70013523. Earlier Type.Set (70013516) and Export.Run (70013519) keep their ordinals. Message names and bindings are unchanged. No object-ID MCP tool is available; allocation used the standards manual fallback after scanning every app/test declaration and message enum extension.
-Data Exchange phases #24/#25/#26 (19.10.2026): table 70013500 `DataExch Entry Link ori`; codeunits 70013501-70013511 (`DataExch Import Mgt`, `Process Worker`, `Export Mgt`, `Pay Capture`, `Def Transfer`, `Storage Upload Commit DX`, `Entry Proc Impl`, `Entry Delete Impl`, `Def Install Impl`, `Pay Export Impl`, `View Filter`); enumextension 70013512 `DataExch Pipeline MsgType ori` with message-type values 70013517 (Storage.Upload.CommitToDataExchange), 70013518 (DataExchange.Entry.Process), 70013520 (DataExchange.Entry.Delete), 70013524 (DataExchange.Definition.Import), 70013525 (DataExchange.PaymentExport.Run). Tests: table/codeunit 96240 (test target + mapping), codeunits 96241-96245. Free codeunits left in block 2: 70013512-70013519, 70013527-70013530, 70013533, 70013535, 70013537-70013539, 70013541-70013542, 70013546-70013547, 70013549.
-Retired 13.10.2026: codeunits 70013544 (`DataExch Entry Del Impl ori`) and 70013545 (`DataExch Def Import Impl ori`) were removed because no message type was bound to them (parked roadmap #24/#26). Do not reuse either id.
+Renumber 20.10.2026 (branch fix/object-renumbering-20261020): every app object was renumbered from
+10035135 upwards per object type; names, message-type keys and behaviour are unchanged. Current use:
+tables 10035135-10035139, tableextensions 10035135-10035136 (field `Offloaded ori` = 10035135 on both),
+pages 10035135-10035140, pageextension 10035135, codeunits 10035135-10035198, enums 10035135-10035137,
+enumextensions 10035135-10035142, permission sets 10035135-10035136, permissionsetextension 10035135.
+Free per type: codeunits 10035199-10035234, tables 10035140+, pages 10035141+, enums 10035138+,
+enumextensions 10035143+, permission sets 10035137+.
+Message-type enum values (ordinals of Foundation's `Message Type ori`): Storage values 10035135-10035157
+(old ordinal - 500, same order, `Help.Storage.Get` = 10035135 ... `Storage.Upload.CommitToRecord` = 10035157);
+Data Exchange values 10035158-10035173 (old ordinal - 70013510 + 10035158: `Help.DataExchange.Get` =
+10035158 ... `DataExchange.Entry.Get` = 10035163, `DataExchange.Type.Set` = 10035164, ...,
+`DataExchange.PaymentExport.Run` = 10035173). Next free message-type ordinal is 10035174. Tests 96211
+(conformance), 96274 (build) and 96204 (connector) pin these ordinals. The renumber is a breaking change for any tenant
+that has the app installed with the old ids (table data and stored `Message Type ori` ordinals do not
+carry over); it was made before the first AppSource release.
+Test ids on main include 96200-96218, 96225, 96226, 96274; 96237 is `DataExch Phase2 Tests ori` (#23);
+table/codeunit 96240 (Data Exchange test target + mapping) and codeunits 96241-96245 (#24/#25/#26).
+Permission-set test ids 96218-96222 and 96227-96234 remain #79.
 Register any further block in the workbook before using it - never squeeze objects into a
 neighbouring app's range.
-
-Ids taken by the setup migration (2026-09-06): page 10035677 `Attachments Setup ori`,
-page 10035678 `Storage Conn. Part ori`, codeunit 10035679 `Storage Upload Purge ori`.
-No id was freed - `Setup Ext. ori` keeps 10035635, it was only reduced in scope.
-
-Ids changed by the setup-notification move (2026-09-07): codeunit 10035680
-`Attachments Registration ori` added; codeunit 10035666 `Storage Http Notif. Action ori`
-deleted - that codeunit id is free but is not reused (permission set 10035666
-`BIFROST Attach ori` keeps its own id, object types have separate id spaces).
-
-Ids freed by the move to message type contracts (attachments#60, #61): codeunits 10035643
-`Storage Help Builder ori` and 10035670-10035675 (`Storage Account/File/Dir/Attachment/Upload/Overview
-Help ori`). Contract content lives in `Storage Contract Parts ori` (70013500).
 Test app: codeunit 96207 `Storage Setup Page Tests`, codeunit 96208
 `Storage App Registry Tests` (96208), `Storage Takeover Tests` (96209), `Storage Takeover Probe Tests` (96210); on main through **96213** (`Storage DataExchange Tests`, #51); open PR #45 uses 96211–96212; open PR #52 uses 96214; next free test id **96215**.
 `Storage Msg Conformance Tests` (96211), `Storage Error Response Tests` (96212); next free test id **96213**.
@@ -140,7 +139,7 @@ Key rules always in effect:
   ` ori` suffix yourself before pushing.
 
 ## Message Type Conventions
-- `Storage Msg Type ori` (10035635) extends Foundation's `Message Type ori` enum with 23 values.
+- `Storage Msg Type ori` (10035142) extends Foundation's `Message Type ori` enum with 23 values.
   Each value binds `Msg Interface ori` to a `<Name> Impl ori` codeunit that implements
   `ExecuteBifrostTask`. Captions are `Locked = true` - the keys are the public wire contract.
 - Keys are `Area.Entity.Verb`: `Help.Storage.Get` is the module directory; the rest are
@@ -157,7 +156,7 @@ Key rules always in effect:
   `storageCode` to a `Storage Setup ori` row and returns the `Storage Connector ori`
   implementation to use.
 - **Errors follow Foundation's structured shape** (Foundation #138/#135/#136): read every request
-  value with `Storage Request Reader ori` (10035682) and `Storage Request Mgt ori.ReadSetup` /
+  value with `Storage Request Reader ori` (10035194) and `Storage Request Mgt ori.ReadSetup` /
   `ResolveSetup`, which *collect* problems on the Argument (`AddError` with a `Bifrost Error Code ori`
   code, `parameter`, `received`, `expected`, `nextStep`); then call `Reader.RespondIfErrors` once so
   all problems are answered together. Check data states (session open, attachment offloaded, file
@@ -185,33 +184,33 @@ Key rules always in effect:
   `Storage.Upload.*` types.
 
 ## Setup Surface
-- `Attachments Setup ori` (10035677) is the app's own setup page and the only place the module is
-  configured. It embeds `Storage Conn. Part ori` (10035678) for the storage connections and carries
+- `Attachments Setup ori` (10035135) is the app's own setup page and the only place the module is
+  configured. It embeds `Storage Conn. Part ori` (10035138) for the storage connections and carries
   the Storage Setup Wizard / File Accounts / Bifrost Storage Setup / Purge Upload Sessions
   actions. It raises no notification and has no `OnOpenPage` trigger.
 - **Setup notifications live on Bifröst Foundation's `Setup ori` page only** - never on this app's
   setup page, never on any other page of this app, and their only action is "Start setup wizard".
-  This app makes itself known to Foundation through `Attachments Registration ori` (10035680),
+  This app makes itself known to Foundation through `Attachments Registration ori` (10035191),
   which subscribes to `App Registry ori.OnRegisterApps` and calls `AddApp` with the app id, the
   app name and `Page::"Attachments Setup ori"`. The subscriber parameter must be named `Apps` -
   the compiler matches it to the publisher's parameter name (AL0282), so the CodeCop `Temp`
   prefix cannot be applied here. Notifications that are not about setup (business warnings) are
   unaffected by this rule.
-- `Setup Ext. ori` (10035635) must stay at exactly one `addlast(Apps)` action plus its
+- `Setup Ext. ori` (10035135) must stay at exactly one `addlast(Apps)` action plus its
   `addlast(Category_Apps)` actionref - no layout changes, no other group, no notification, no
   `ContextSensitiveHelpPage` override. The shared `Setup ori` page belongs to Bifröst Foundation.
-- Purge logic lives in `Storage Upload Purge ori` (10035679), never inline on a page.
+- Purge logic lives in `Storage Upload Purge ori` (10035198), never inline on a page.
 
 ## Install and Take-over
-- `Storage Install ori` (10035637) registers the ChangeLog guard exception for the attachment
+- `Storage Install ori` (10035147) registers the ChangeLog guard exception for the attachment
   link table, the assisted setup entry for `Storage Setup Wizard ori`, and the initial-release
   upgrade tag.
-- `Storage Takeover ori` (10035676) takes data over from the published
+- `Storage Takeover ori` (10035145) takes data over from the published
   (permission-tolerant probe via `TryProbeTakeOverPermissions` / `TryRunTakeOverAtInstall`, #8;
-  state seam `Storage Takeover State ori` 10035681 — telemetry-only skip, never Foundation Setup ori)
+  state seam `Storage Takeover State ori` 10035146 — telemetry-only skip, never Foundation Setup ori)
   *Origo Cloud Events Storage* app (`7acf9361-f558-442b-a516-f5e5dd92aecb`) on first install per
-  company: `CE Storage Attachment Link` (10075985) -> `Storage Attachment Link ori` (10035635)
-  and `Cloud Events Storage Setup` (10075986) -> `Storage Setup ori` (10035636) with
+  company: `CE Storage Attachment Link` (10075985) -> `Storage Attachment Link ori` (10035135)
+  and `Cloud Events Storage Setup` (10075986) -> `Storage Setup ori` (10035137) with
   `DataTransfer`, plus the `Access Control` re-grant from `CE Storage` to `BIFROST Attach ori`.
   The generator `gen_install.py` (DataTransfer copies only) is archived in
   `D:\Git\Private\_bifrost-migration-archive\hnitbjorg\` (not a repo). The FieldExist guards, the

@@ -15,7 +15,7 @@ using System.Upgrade;
 /// Record System Id) are deleted after take-over. The connector keeps no singleton setup:
 /// storage connections are created as needed in <c>Bifrost Storage Setup</c>.
 /// </summary>
-codeunit 10035637 "Storage Install ori"
+codeunit 10035147 "Storage Install ori"
 {
     Subtype = Install;
     Access = Internal;

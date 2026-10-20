@@ -14,7 +14,7 @@ using System.IO;
 /// without a permission-set assignment; the generic <c>Data.Records.*</c> types are blocked from the
 /// table by <see cref="Codeunit.StorageDataRestriction"/>.
 /// </remarks>
-table 70013500 "DataExch Entry Link ori"
+table 10035136 "DataExch Entry Link ori"
 {
     Caption = 'Bifrost Data Exchange Entry', Comment = 'is-IS=Gagnaskiptafærsla Bifröst';
     DataClassification = SystemMetadata;

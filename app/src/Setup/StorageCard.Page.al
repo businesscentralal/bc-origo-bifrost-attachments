@@ -7,7 +7,7 @@ using System.ExternalFileStorage;
 /// to a registered Business Central file account and an optional base path, and to test
 /// that the backend can be reached.
 /// </summary>
-page 10035636 "Storage Card ori"
+page 10035137 "Storage Card ori"
 {
     Extensible = false;
     PageType = Card;

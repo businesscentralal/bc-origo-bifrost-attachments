@@ -22,7 +22,7 @@ using System.Utilities;
 /// delivery. Every check runs before the first write; a problem that shows only after a write (inline
 /// size, storage write failure) is raised with the collected errors so all writes roll back.
 /// </remarks>
-codeunit 70013503 "DataExch Export Mgt ori"
+codeunit 10035140 "DataExch Export Mgt ori"
 {
     Access = Internal;
 

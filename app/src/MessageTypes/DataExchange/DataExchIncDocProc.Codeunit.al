@@ -8,7 +8,7 @@ using Origo.Bifrost;
 /// failure rolls back only this codeunit, so the incoming document created by
 /// <c>Storage.Upload.CommitToRecord</c> or <c>Storage.Attachment.CreateLinked</c> remains.
 /// </summary>
-codeunit 70013532 "DataExch Inc Doc Proc ori"
+codeunit 10035167 "DataExch Inc Doc Proc ori"
 {
     Access = Internal;
     TableNo = "Message Argument ori";

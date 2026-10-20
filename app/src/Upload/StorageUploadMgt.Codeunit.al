@@ -20,7 +20,7 @@ using System.Utilities;
 /// storage is the last step of a commit, mirroring the offload transaction discipline: a failure
 /// before it rolls back the database work, and a failed upload rolls back the status change with it.
 /// </remarks>
-codeunit 10035665 "Storage Upload Mgt ori"
+codeunit 10035197 "Storage Upload Mgt ori"
 {
     Access = Internal;
 
@@ -312,6 +312,9 @@ codeunit 10035665 "Storage Upload Mgt ori"
             exit(false);
 
         AssembleChunks(UploadId, TempBlob);
+        ImportMgt.CheckFileFormat(Argument, DefCode, TempBlob, 'uploadId', Session."File Name");
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
         // A reader error is raised and rolls back the entry, its fields and the session change.
         ImportMgt.ImportFile(DefCode, Session."File Name", TempBlob, UploadId, 'Storage.Upload.CommitToDataExchange', StorageSetup.Code, Path, DataExch);
         Session.Status := Session.Status::Committed;
@@ -363,6 +366,25 @@ codeunit 10035665 "Storage Upload Mgt ori"
         Session."Received Size" := TempBlob.Length();
         Session.Modify(true);
         DeleteChunks(UploadId);
+        exit(true);
+    end;
+
+    /// <summary>Reads a complete owned upload without changing its session or chunks.</summary>
+    /// <param name="Argument">The message argument; receives a refusal when the upload is not ready.</param>
+    /// <param name="UploadId">The upload session id.</param>
+    /// <param name="TempBlob">Returns the assembled content for preflight validation.</param>
+    /// <param name="FileName">Returns the session file name.</param>
+    /// <returns>True when the upload is ready to read.</returns>
+    internal procedure ReadUpload(var Argument: Record "Message Argument ori"; UploadId: Guid; var TempBlob: Codeunit "Temp Blob"; var FileName: Text): Boolean
+    var
+        Session: Record "Storage Upload Session ori";
+    begin
+        if not FindOpenSession(Argument, UploadId, Session) then
+            exit(false);
+        if not CheckReadyToCommit(Argument, Session) then
+            exit(false);
+        AssembleChunks(UploadId, TempBlob);
+        FileName := Session."File Name";
         exit(true);
     end;
 

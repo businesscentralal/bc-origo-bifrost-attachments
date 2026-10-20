@@ -18,7 +18,7 @@ using System.Utilities;
 /// entry behind. Only <see cref="ProcessIsolated"/> commits first, because a failed processing must
 /// keep the imported entry for inspection.
 /// </remarks>
-codeunit 70013501 "DataExch Import Mgt ori"
+codeunit 10035141 "DataExch Import Mgt ori"
 {
     Access = Internal;
 
@@ -149,6 +149,135 @@ codeunit 70013501 "DataExch Import Mgt ori"
         DataExch.ImportToDataExch(DataExchDef);
         DataExch.Reset();
         DataExch.Get(EntryNo);
+    end;
+
+    /// <summary>Checks the file format without writing an entry or running a definition codeunit.</summary>
+    /// <param name="Argument">The request that receives a structured refusal.</param>
+    /// <param name="DefCode">The checked import definition.</param>
+    /// <param name="TempBlob">The decoded file, never included in a refusal.</param>
+    /// <param name="ParameterName">contentBase64, path or uploadId.</param>
+    /// <param name="FileName">A file name, or empty to report only the byte count.</param>
+    /// <returns>True when the file can have the definition's format.</returns>
+    internal procedure CheckFileFormat(var Argument: Record "Message Argument ori"; DefCode: Code[20]; var TempBlob: Codeunit "Temp Blob"; ParameterName: Text; FileName: Text): Boolean
+    var
+        DataExchDef: Record "Data Exch. Def";
+        Valid: Boolean;
+        Expected: Text;
+        FixedWidthLbl: Label 'fixed width text', Comment = 'is-IS=texti með fastri breidd';
+    begin
+        DataExchDef.Get(DefCode);
+        case DataExchDef."File Type" of
+            DataExchDef."File Type"::Xml:
+                begin
+                    Expected := 'XML';
+                    Valid := TryReadXmlFile(TempBlob);
+                end;
+            DataExchDef."File Type"::Json:
+                begin
+                    Expected := 'JSON';
+                    Valid := TryReadJsonFile(TempBlob);
+                end;
+            DataExchDef."File Type"::"Variable Text", DataExchDef."File Type"::"Fixed Text":
+                begin
+                    if DataExchDef."File Type" = DataExchDef."File Type"::"Variable Text" then
+                        Expected := 'CSV'
+                    else
+                        Expected := FixedWidthLbl;
+                    Valid := IsTextFile(TempBlob, DataExchDef."File Encoding" = DataExchDef."File Encoding"::"UTF-16");
+                end;
+            else
+                exit(true);
+        end;
+        if Valid then
+            exit(true);
+        AddFileFormatError(Argument, ParameterName, FileName, TempBlob.Length(), Expected);
+        exit(false);
+    end;
+
+    /// <summary>Adds a localized format refusal with file metadata only.</summary>
+    /// <param name="Argument">The request that collects the error.</param>
+    /// <param name="ParameterName">The source parameter.</param>
+    /// <param name="FileName">A file name, or empty.</param>
+    /// <param name="Length">The file size in bytes.</param>
+    /// <param name="Expected">The definition file type.</param>
+    internal procedure AddFileFormatError(var Argument: Record "Message Argument ori"; ParameterName: Text; FileName: Text; Length: Integer; Expected: Text)
+    var
+        Received: Text;
+        InvalidFileErr: Label 'The file cannot be read as %1.', Comment = '%1 = expected file type||is-IS=Ekki er hægt að lesa skrána sem %1.';
+        FileSizeLbl: Label '%1 bytes', Comment = '%1 = file size||is-IS=%1 bæti';
+        CorrectFileLbl: Label 'Supply a file in the format required by the definition and retry. Use DataExchange.Definition.Get to inspect the definition.', Comment = 'is-IS=Sendu skrá á því sniði sem skilgreiningin krefst og reyndu aftur. Notaðu DataExchange.Definition.Get til að skoða skilgreininguna.';
+    begin
+        Received := FileName;
+        if Received = '' then
+            Received := StrSubstNo(FileSizeLbl, Format(Length, 0, 9));
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(InvalidFileErr, Expected), ParameterName, Received, Expected, CorrectFileLbl);
+    end;
+
+    /// <summary>Answers a non-format storage read failure without misclassifying it as invalid content.</summary>
+    /// <param name="Argument">The request that receives the refusal.</param>
+    /// <param name="Path">The requested storage path.</param>
+    internal procedure RespondFileReadError(var Argument: Record "Message Argument ori"; Path: Text)
+    var
+        ReadFailedErr: Label 'Business Central could not read the file from storage.', Comment = 'is-IS=Business Central gat ekki lesið skrána úr geymslu.';
+        ReadExpectedLbl: Label 'a readable file at the storage path', Comment = 'is-IS=lesanleg skrá á geymsluslóðinni';
+        ReadNextStepLbl: Label 'Check the path, storage connection and read permissions, then retry.', Comment = 'is-IS=Athugaðu slóðina, geymslutenginguna og lesheimildir og reyndu aftur.';
+    begin
+        Argument.RespondWithError("Bifrost Error Code ori"::BusinessCentralError, ReadFailedErr, 'path', Path, ReadExpectedLbl, ReadNextStepLbl);
+    end;
+
+    [TryFunction]
+    local procedure TryReadXmlFile(var TempBlob: Codeunit "Temp Blob")
+    var
+        Content: InStream;
+        Document: XmlDocument;
+    begin
+        TempBlob.CreateInStream(Content);
+        XmlDocument.ReadFrom(Content, Document);
+    end;
+
+    [TryFunction]
+    local procedure TryReadJsonFile(var TempBlob: Codeunit "Temp Blob")
+    var
+        Content: InStream;
+        Document: JsonToken;
+    begin
+        TempBlob.CreateInStream(Content, TextEncoding::UTF8);
+        Document.ReadFrom(Content);
+    end;
+
+    local procedure IsTextFile(var TempBlob: Codeunit "Temp Blob"; Unicode: Boolean): Boolean
+    var
+        Content: InStream;
+        FirstByte: Byte;
+        SecondByte: Byte;
+        Character: Integer;
+        BigEndian: Boolean;
+        FirstCharacter: Boolean;
+    begin
+        if not TempBlob.HasValue() then
+            exit(false);
+        TempBlob.CreateInStream(Content);
+        FirstCharacter := true;
+        while not Content.EOS() do begin
+            Content.Read(FirstByte);
+            Character := FirstByte;
+            if Unicode then begin
+                if Content.EOS() then
+                    exit(false);
+                Content.Read(SecondByte);
+                if FirstCharacter then
+                    BigEndian := (FirstByte = 254) and (SecondByte = 255);
+                if BigEndian then
+                    Character := FirstByte * 256 + SecondByte
+                else
+                    Character := FirstByte + SecondByte * 256;
+            end;
+            // NUL and binary control bytes are not text. Preserve tabs, line endings and UTF-16.
+            if (Character < 32) and not (Character in [9, 10, 13]) then
+                exit(false);
+            FirstCharacter := false;
+        end;
+        exit(true);
     end;
 
     /// <summary>Marks an entry as created by a Bifröst message type, so the retention policy covers it.</summary>

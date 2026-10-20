@@ -7,7 +7,7 @@ using Microsoft.EServices.EDocument;
 /// Use with Foundation's API baseline and the selected connector's own account and operation
 /// permissions. Connector account metadata and credentials remain owned by the connector.
 /// </summary>
-permissionset 10035666 "BIFROST Attach ori"
+permissionset 10035135 "BIFROST Attach ori"
 {
     Access = Public;
     Assignable = true;

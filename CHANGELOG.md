@@ -10,9 +10,16 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-10-20) - Definition export contract and storage effects (#158)
 
-- `DataExch Def Export Impl ori` (70013536) now describes the same header-default, optional inline XML and optional storage XML behavior in the English/Icelandic catalogue, overview and notes. It is registered Inbound because it can write storage; the existing type and wire shape are preserved.
-- `Storage Contract Parts ori` (70013500) documents header-only requests without requiring a delivery destination and classifies Definition.Export as irreversible, explaining that header/inline reads change nothing while external writes can overwrite files and cannot roll back. `DataExch Help Get Impl ori` (70013521) reflects the same modes and permissions.
+- `DataExch Def Export Impl ori` (10035156) now describes the same header-default, optional inline XML and optional storage XML behavior in the English/Icelandic catalogue, overview and notes. It is registered Inbound because it can write storage; the existing type and wire shape are preserved.
+- `Storage Contract Parts ori` (10035183) documents header-only requests without requiring a delivery destination and classifies Definition.Export as irreversible, explaining that header/inline reads change nothing while external writes can overwrite files and cannot roll back. `DataExch Help Get Impl ori` (10035165) reflects the same modes and permissions.
 - Native tests in `DataExch Def Xfer Tests ori` (96244) cover header-only/no-storage writes, inline-only, combined inline/storage overwrite and contract direction/effects. `Attachments Build Tests ori` (96274) checks the updated exact English/Icelandic catalogue text; XLF stays synchronized.
+
+### Changed (2026-10-20) - All objects renumbered into the single registered range 10035135-10035234
+
+- `app.json` declares one range, 10035135-10035234, confirmed for this app in the allocation workbook on 20.10.2026. The former blocks 10035635-10035684 and 70013500-70013549 are freed. Every table, table extension, page, page extension, codeunit, enum, enum extension, permission set and permission set extension now numbers from 10035135 per object type. Object names are unchanged.
+- The 39 message-type values in Foundation's `Message Type ori` moved into the same range, which clears the AppSourceCop AS0099 findings: Storage values to 10035135-10035157 (same order), Data Exchange values to 10035158-10035173. Message-type keys, bindings and contracts are unchanged, so callers that address types by name are unaffected.
+- Breaking for any database that has the app installed with the old ids: table data and stored message-type ordinals do not carry over. Uninstall the earlier build and clear its data before you install this one. No AppSource version has been published.
+- Tests that pin ordinals (96204, 96211, 96274), the API surface matrix (`API-SURFACE.md`, `api-surface-objects.json`, `tools/Test-ApiSurfaceMatrix.py`) and the id notes in the README, AGENTS.md and `.claude/CLAUDE.md` use the new ids.
 
 ### Added (2026-10-19) - Restrictive permission tests for the Data Exchange pipeline types (#79)
 
@@ -99,7 +106,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-10-16) - stored storage descriptions (#126)
 
-- `Storage Contract Parts ori` (70013500) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
+- `Storage Contract Parts ori` (10035183) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
 
 ### Changed (2026-10-16) - public help language and translated descriptions (#126)
 

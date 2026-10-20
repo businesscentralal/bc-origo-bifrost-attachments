@@ -7,9 +7,11 @@ locale: en-US
 
 # Prepare Attachments market evidence
 
+Current technical receipt: [build113 evidence](candidate-2026-10-20.json), source `c30c2254bf953ed2e6f90fdf080dfb216bea799f`, existing CI **365/365/0/0**. This is preparation evidence; final #80 QA and certification remain pending. [Run the executable preparation/receipt checker](validator-evidence-format.md).
+
 **Fourteen source-declared countries, zero countries certified by this document.** Codes match `app/AppSourceCop.json` and [partner-center-markets.csv](partner-center-markets.csv). Locales1033/1039 are language checks, not a substitute for market coverage. W1 or one provider run cannot certify the other countries.
 
-The current candidate is main `304a1c2` (CI/CD run 39276099802, package 28.0.0.109, one dependency: Bifrost Foundation 28.0.3.530). Its signed hash, installed Foundation runtime hash and the connector apps installed per country remain pending Architect's confirmation and #80 QA. Build87 is excluded by decision1792179827. Do not populate this matrix with historical or foreign fixture passes.
+The inspected source is main `c30c2254bf953ed2e6f90fdf080dfb216bea799f` (CI39298155811, package28.0.0.113, one dependency: Bifrost Foundation28.0.3.530). Its signed artifact hash and exact Windows Valid/HashMismatch receipt are recorded in the linked build113 receipt. Installed Foundation runtime identity/hash, the connector apps installed per country remain pending current-candidate #78/#80 evidence and Architect’s release-candidate confirmation. Build87 is excluded by decision1792179827. Do not populate this matrix with historical or foreign fixture passes.
 
 | Code | Country | Candidate/build/dependency evidence | Provider/lifecycle/UI/MCP result | Owner / status |
 |---|---|---|---|---|
