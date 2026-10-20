@@ -27,6 +27,7 @@ codeunit 70013503 "DataExch Export Mgt ori"
     Access = Internal;
 
     var
+        MissingValueLbl: Label '(missing)', Comment = 'is-IS=(vantar)';
         DefinitionNotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
         ExportDefinitionExpectedLbl: Label 'an existing Generic Export definition', Comment = 'is-IS=fyrirliggjandi skilgreining fyrir almennan útflutning (Generic Export)';
         SelectExportDefinitionLbl: Label 'Call DataExchange.Definition.List with direction Export and use the exact code of a Generic Export definition.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List með direction Export og notaðu nákvæman kóða skilgreiningar fyrir almennan útflutning (Generic Export).';
@@ -130,7 +131,7 @@ codeunit 70013503 "DataExch Export Mgt ori"
         if RequestJson.Contains('tableView') and RequestJson.Contains('recordIds') then
             Argument.AddError("Bifrost Error Code ori"::InvalidParameter, ViewAndIdsErr, 'tableView', TableView, ViewAndIdsExpectedLbl, ViewAndIdsNextStepLbl);
         if (TableId = 0) and (TableParameter = '') and (RecordIds.Count() = 0) and not RequestJson.Contains('recordIds') then
-            Argument.AddError("Bifrost Error Code ori"::MissingParameter, SourceRequiredErr, 'tableId', '', SourceExpectedLbl, SourceNextStepLbl);
+            Argument.AddError("Bifrost Error Code ori"::MissingParameter, SourceRequiredErr, 'tableId', MissingValueLbl, SourceExpectedLbl, SourceNextStepLbl);
         if DefCode <> '' then
             CheckExportDefinition(Argument, DefCode, DataExchDef);
         if (FileName = '') and (DataExchDef.Code <> '') then
@@ -344,12 +345,12 @@ codeunit 70013503 "DataExch Export Mgt ori"
             Argument.AddError("Bifrost Error Code ori"::InvalidParameter, PathAndFolderErr, 'folderPath', FolderPath, PathAndFolderExpectedLbl, PathAndFolderNextStepLbl);
         if not HasStorage then begin
             if Path <> '' then
-                Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(PathWithoutStorageErr, 'path'), 'storageCode', '', DeliveryExpectedLbl, DeliveryNextStepLbl)
+                Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(PathWithoutStorageErr, 'path'), 'storageCode', MissingValueLbl, DeliveryExpectedLbl, DeliveryNextStepLbl)
             else
                 if FolderPath <> '' then
-                    Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(PathWithoutStorageErr, 'folderPath'), 'storageCode', '', DeliveryExpectedLbl, DeliveryNextStepLbl);
+                    Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(PathWithoutStorageErr, 'folderPath'), 'storageCode', MissingValueLbl, DeliveryExpectedLbl, DeliveryNextStepLbl);
             if (Path = '') and (FolderPath = '') and InlineValid and not Inline then
-                Argument.AddError("Bifrost Error Code ori"::MissingParameter, DeliveryRequiredErr, 'storageCode', '', DeliveryExpectedLbl, DeliveryNextStepLbl);
+                Argument.AddError("Bifrost Error Code ori"::MissingParameter, DeliveryRequiredErr, 'storageCode', MissingValueLbl, DeliveryExpectedLbl, DeliveryNextStepLbl);
             exit;
         end;
         if not Reader.ReadMutationCode(Argument, RequestJson, 'storageCode', StorageCode) then

@@ -55,21 +55,32 @@ codeunit 70013501 "DataExch Import Mgt ori"
     /// <param name="ParameterName">The request parameter that carried the code.</param>
     /// <returns>True when the definition is a usable import definition.</returns>
     procedure CheckImportDefinition(var Argument: Record "Message Argument ori"; DefCode: Code[20]; ParameterName: Text): Boolean
+    begin
+        exit(CheckImportDefinition(Argument, DefCode, ParameterName, DefCode));
+    end;
+
+    /// <summary>Checks the definition while retaining the actual value of the request parameter that selected it.</summary>
+    /// <param name="Argument">The message argument that collects the refusal.</param>
+    /// <param name="DefCode">The referenced definition code.</param>
+    /// <param name="ParameterName">The request parameter, such as entryNo.</param>
+    /// <param name="ReceivedValue">The value the caller supplied for that parameter.</param>
+    /// <returns>True when the definition can import.</returns>
+    internal procedure CheckImportDefinition(var Argument: Record "Message Argument ori"; DefCode: Code[20]; ParameterName: Text; ReceivedValue: Text): Boolean
     var
         DataExchDef: Record "Data Exch. Def";
     begin
         DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExchDef.SetLoadFields(Code, Type);
         if not DataExchDef.Get(DefCode) then begin
-            Argument.AddError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(DefinitionNotFoundErr, DefCode), ParameterName, DefCode, ImportDefinitionExpectedLbl, SelectImportDefinitionLbl);
+            Argument.AddError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(DefinitionNotFoundErr, DefCode), ParameterName, ReceivedValue, ImportDefinitionExpectedLbl, SelectImportDefinitionLbl);
             exit(false);
         end;
         if DataExchDef.Type = DataExchDef.Type::"Bank Statement Import" then begin
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(BankStatementErr, DefCode), ParameterName, DefCode, ImportDefinitionExpectedLbl, BankStatementNextStepLbl);
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(BankStatementErr, DefCode), ParameterName, ReceivedValue, ImportDefinitionExpectedLbl, BankStatementNextStepLbl);
             exit(false);
         end;
         if not (DataExchDef.Type in [DataExchDef.Type::"Generic Import", DataExchDef.Type::"Payroll Import"]) then begin
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(ImportTypeErr, DefCode), ParameterName, DefCode, ImportDefinitionExpectedLbl, SelectImportDefinitionLbl);
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(ImportTypeErr, DefCode), ParameterName, ReceivedValue, ImportDefinitionExpectedLbl, SelectImportDefinitionLbl);
             exit(false);
         end;
         exit(true);

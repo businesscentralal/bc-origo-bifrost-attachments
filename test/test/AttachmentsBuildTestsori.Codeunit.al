@@ -214,10 +214,10 @@ codeunit 96274 "Attachments Build Tests ori"
 
         // [THEN] The answer contains the actual stored header; no roadmap XML export is implied.
         LibraryAssert.AreEqual('Success', ReadText(Response, 'status'), 'Definition.Export status');
-        LibraryAssert.AreEqual(Definition.Code, ReadText(Response, 'code'), 'Exported code');
-        LibraryAssert.AreEqual(Definition.Name, ReadText(Response, 'name'), 'Exported name');
+        LibraryAssert.AreEqual(Definition.Code, ReadText(SuccessData(Response), 'code'), 'Exported code');
+        LibraryAssert.AreEqual(Definition.Name, ReadText(SuccessData(Response), 'name'), 'Exported name');
         // The type is the enum name, never Format() of the enum (#82).
-        LibraryAssert.AreEqual('Generic Import', ReadText(Response, 'type'), 'Exported type name');
+        LibraryAssert.AreEqual('Generic Import', ReadText(SuccessData(Response), 'type'), 'Exported type name');
     end;
 
     /// <summary>The relocated Definition.Delete ordinal still dispatches and removes a persisted header.</summary>
@@ -315,7 +315,7 @@ codeunit 96274 "Attachments Build Tests ori"
         Response := Execute(Enum::"Message Type ori"::"DataExchange.Export.Run", Request);
         // [THEN] The response agrees with the newly persisted entry.
         LibraryAssert.AreEqual('Success', ReadText(Response, 'status'), 'Export.Run status');
-        LibraryAssert.IsTrue(Response.Get('entryNo', Token), 'Export response must name the persisted entry.');
+        LibraryAssert.IsTrue(SuccessData(Response).Get('entryNo', Token), 'Export response must name the persisted entry.');
         LibraryAssert.IsTrue(Entry.Get(Token.AsValue().AsInteger()), 'Export entry must exist.');
         LibraryAssert.AreEqual(Definition.Code, Entry."Data Exch. Def Code", 'Entry definition');
         LibraryAssert.AreEqual('XBUILD74-export.txt', Entry."File Name", 'Entry file name');
@@ -406,6 +406,16 @@ codeunit 96274 "Attachments Build Tests ori"
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ContentType);
         ResponseContent.GetSubText(ResponseText, 1);
         LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'Dispatcher must return JSON.');
+    end;
+
+    local procedure SuccessData(Response: JsonObject): JsonObject
+    var
+        Token: JsonToken;
+    begin
+        LibraryAssert.AreEqual('Success', ReadText(Response, 'status'), 'Success envelope required.');
+        LibraryAssert.IsTrue(Response.Get('data', Token), 'Success data required.');
+        LibraryAssert.IsTrue(Token.IsObject(), 'Success data must be an object.');
+        exit(Token.AsObject());
     end;
 
     local procedure ReadText(Response: JsonObject; Name: Text): Text

@@ -506,9 +506,9 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         EnglishResponse := DispatchLocale('{}', 1033);
         IcelandicResponse := DispatchLocale('{}', 1039);
         // [THEN] Both envelopes are complete and errors actually differ by locale.
-        AssertThreeInputErrors(EnglishResponse, 'MissingParameter');
-        AssertThreeInputErrors(IcelandicResponse, 'MissingParameter');
-        LibraryAssert.AreNotEqual(TextProperty(FindError(EnglishResponse, 'path'), 'error'), TextProperty(FindError(IcelandicResponse, 'path'), 'error'), 'Icelandic errors must be translated at runtime.');
+        AssertMissingSourceErrors(EnglishResponse);
+        AssertMissingSourceErrors(IcelandicResponse);
+        LibraryAssert.AreNotEqual(TextProperty(FindError(EnglishResponse, 'contentBase64'), 'error'), TextProperty(FindError(IcelandicResponse, 'contentBase64'), 'error'), 'Icelandic errors must be translated at runtime.');
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Localized refusal must not write.');
     end;
 
@@ -1115,6 +1115,13 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         AssertRefusal(Response, ExpectedCode, 'dataExchDefCode', '');
         AssertRefusal(Response, ExpectedCode, 'storageCode', '');
         AssertRefusal(Response, ExpectedCode, 'path', '');
+    end;
+
+    local procedure AssertMissingSourceErrors(Response: JsonObject)
+    begin
+        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Definition and a content source are required.');
+        AssertRefusal(Response, 'MissingParameter', 'dataExchDefCode', '');
+        AssertRefusal(Response, 'MissingParameter', 'contentBase64', '');
     end;
 
     local procedure AssertRefusal(Response: JsonObject; ExpectedCode: Text; ParameterName: Text; ExpectedReceived: Text)

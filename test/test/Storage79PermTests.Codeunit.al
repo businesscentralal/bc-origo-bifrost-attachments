@@ -490,8 +490,8 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         LibraryAssert.AreEqual(DefinitionCode, ReadText(ReadData(ResponseJson), 'code'), 'The seeded definition was actually reached.');
         ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Export", RequestJson);
         AssertSuccess(ResponseJson);
-        LibraryAssert.AreEqual(DefinitionCode, ReadText(ResponseJson, 'code'), 'Header export reaches the same seeded definition.');
-        LibraryAssert.AreEqual('X79 seeded definition', ReadText(ResponseJson, 'name'), 'Header export returns the persisted name.');
+        LibraryAssert.AreEqual(DefinitionCode, ReadText(ReadData(ResponseJson), 'code'), 'Header export reaches the same seeded definition.');
+        LibraryAssert.AreEqual('X79 seeded definition', ReadText(ReadData(ResponseJson), 'name'), 'Header export returns the persisted name.');
         Clear(RequestJson);
         AssertSuccess(Dispatch(MessageType::"DataExchange.Definition.List", RequestJson));
         AssertSuccess(Dispatch(MessageType::"DataExchange.Type.List", RequestJson));
@@ -670,7 +670,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         EntryLink.ReadIsolation := IsolationLevel::ReadCommitted;
         LibraryAssert.IsFalse(EntryLink.Get(EntryNo), 'A refused process writes no entry marker.');
         AssertStructuredError(ResponseJson, 'PermissionDenied');
-        LibraryAssert.AreEqual(DefinitionCode, ReadText(ResponseJson, 'received'), 'The denial names the definition whose Customer mapping the actor cannot write.');
+        LibraryAssert.AreEqual(Format(EntryNo, 0, 9), ReadText(ResponseJson, 'received'), 'The denial identifies the supplied entry whose mapping the actor cannot write.');
     end;
 
     [Test]
@@ -1362,7 +1362,11 @@ codeunit 96218 "Storage 79 Perm Tests ori"
                     RequestJson.Add('path', 'X79-input.txt');
                 end;
             MessageType::"DataExchange.Export.Run":
-                RequestJson.Add('fileName', 'X79-export.txt');
+                begin
+                    RequestJson.Add('fileName', 'X79-export.txt');
+                    RequestJson.Add('tableId', Database::Customer);
+                    RequestJson.Add('inline', true);
+                end;
         end;
         ResponseJson := Dispatch(MessageType, RequestJson);
         Observe();
@@ -1520,7 +1524,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         RequestJson.Add('contentBase64', Fixture.Encode(Fixture.TwoLineCsv(false)));
         RequestJson.Add('fileName', 'X79-process.csv');
         ResponseJson := Dispatch(MessageType::"DataExchange.Import.Run", RequestJson);
-        LibraryAssert.AreEqual('Accepted', ReadText(ResponseJson, 'status'), 'The arranged import must succeed.');
+        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'The arranged import must succeed.');
         exit(ReadInteger(Fixture.Data(ResponseJson), 'entryNo'));
     end;
 
@@ -1535,7 +1539,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         ExportRequestJson.Add('inline', true);
         ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Export", ExportRequestJson);
         AssertSuccess(ResponseJson);
-        RequestJson.Add('contentBase64', ReadText(ResponseJson, 'contentBase64'));
+        RequestJson.Add('contentBase64', ReadText(ReadData(ResponseJson), 'contentBase64'));
         RequestJson.Add('newCode', NewCode);
     end;
 

@@ -406,7 +406,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Clear(Request);
         Request.Add('code', '123456789012345678901');
         Response := Dispatch('DataExchange.Definition.Get', Request, 1033);
-        AssertProblem(Response, 'code', 'InvalidParameter');
+        AssertProblem(Response, 'code', 'InvalidParameterFormat');
         Definition.Get('12345678901234567890');
         LibraryAssert.AreEqual('Exact boundary', Definition.Name, 'The record is unchanged.');
     end;

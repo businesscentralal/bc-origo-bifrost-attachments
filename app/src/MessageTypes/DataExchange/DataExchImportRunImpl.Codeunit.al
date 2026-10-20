@@ -199,6 +199,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
         EmptyGuid: Guid;
         OneSourceErr: Label 'Send the file either as contentBase64 or as storageCode with path, not both.', Comment = 'is-IS=Sendu skrána annaðhvort sem contentBase64 eða sem storageCode með path, ekki hvort tveggja.';
         OneSourceExpectedLbl: Label 'exactly one source: contentBase64, or storageCode with path', Comment = 'is-IS=nákvæmlega ein uppspretta: contentBase64, eða storageCode með path';
+        MissingValueLbl: Label '(missing)', Comment = 'is-IS=(vantar)';
         MissingSourceErr: Label 'Send contentBase64 or storageCode with path to select the file to import.', Comment = 'is-IS=Sendu contentBase64 eða storageCode með path til að velja skrána sem á að flytja inn.';
         OneSourceNextStepLbl: Label 'Remove storageCode and path to import the inline content, or remove contentBase64 to import the stored file.', Comment = 'is-IS=Fjarlægðu storageCode og path til að flytja inn innfellda innihaldið, eða fjarlægðu contentBase64 til að flytja inn skrána úr geymslu.';
     begin
@@ -212,7 +213,7 @@ codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori",
                 Argument.AddError("Bifrost Error Code ori"::InvalidParameter, OneSourceErr, 'contentBase64', '', OneSourceExpectedLbl, OneSourceNextStepLbl);
         end else
             if not RequestJson.Contains('storageCode') and not RequestJson.Contains('path') then
-                Argument.AddError("Bifrost Error Code ori"::MissingParameter, MissingSourceErr, 'contentBase64', '', OneSourceExpectedLbl, MissingSourceErr)
+                Argument.AddError("Bifrost Error Code ori"::MissingParameter, MissingSourceErr, 'contentBase64', MissingValueLbl, OneSourceExpectedLbl, MissingSourceErr)
             else begin
             Reader.ReadMutationCode(Argument, RequestJson, 'storageCode', StorageCode);
             if Reader.ReadMutationText(Argument, RequestJson, 'path', true, 2048, Path) then

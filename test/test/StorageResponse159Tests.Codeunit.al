@@ -162,8 +162,8 @@ codeunit 96258 "Storage Response159 Tests ori"
         DataExch.Insert(true);
         Request.Add('entryNo', DataExch."Entry No.");
         Response := Dispatch("Message Type ori"::"DataExchange.Entry.Process", Request, LanguageId);
-        AssertProblem(Response, 'InvalidParameter', 'dataExchDefCode');
-        LibraryAssert.AreEqual(DefCode, Fixture.ReadText(Response, 'received'), 'Definition context uses its own parameter.');
+        AssertProblem(Response, 'InvalidParameter', 'entryNo');
+        LibraryAssert.AreEqual(Format(DataExch."Entry No.", 0, 9), Fixture.ReadText(Response, 'received'), 'The definition refusal identifies the selected entry.');
     end;
 
     /// <summary>EntryMapping: the public message contract in LCID 1033.</summary>
@@ -463,7 +463,7 @@ codeunit 96258 "Storage Response159 Tests ori"
         Request.Add('contentBase64', Fixture.Encode('owned X159 content'));
         Response := Dispatch("Message Type ori"::"Storage.Attachment.CreateForRecord", Request, LanguageId);
         AssertEnvelope(Response);
-        LibraryAssert.AreEqual(' ', Fixture.ReadText(Fixture.Data(Response), 'documentType'), 'Blank document type uses the enum name, not ordinal zero.');
+        LibraryAssert.AreEqual('Quote', Fixture.ReadText(Fixture.Data(Response), 'documentType'), 'The stored document type uses its enum name, not ordinal zero.');
     end;
 
     /// <summary>WarningObjects uses the same response contract in LCID 1033.</summary>
@@ -556,7 +556,7 @@ codeunit 96258 "Storage Response159 Tests ori"
         Request.Add('no', CustomerNos.Get(1));
         Response := Dispatch("Message Type ori"::"Storage.Upload.CommitToRecord", Request, LanguageId);
         AssertEnvelope(Response);
-        LibraryAssert.AreEqual(' ', Fixture.ReadText(Fixture.Data(Response), 'documentType'), 'Return the blank document type enum name.');
+        LibraryAssert.AreEqual('Quote', Fixture.ReadText(Fixture.Data(Response), 'documentType'), 'Return the stored document type enum name.');
     end;
 
     local procedure AssertEnvelope(Response: JsonObject)

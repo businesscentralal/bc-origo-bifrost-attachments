@@ -255,7 +255,7 @@ codeunit 96242 "DataExch Import Tests ori"
         // [SCENARIO] AC06: an entry that an incoming document uses cannot be deleted.
         Fixture.InitializeStorage();
         DefCode := Fixture.CreateImportDefinition(0);
-        EntryNo := Fixture.ReadInt(ImportInline(DefCode, Fixture.TwoLineCsv(false), false), 'entryNo');
+        EntryNo := Fixture.ReadInt(Fixture.Data(ImportInline(DefCode, Fixture.TwoLineCsv(false), false)), 'entryNo');
         DataExch.Get(EntryNo);
         DataExch."Incoming Entry No." := IncomingDocument.CreateIncomingDocument('DXI AC06', '');
         DataExch.Modify();
@@ -281,7 +281,7 @@ codeunit 96242 "DataExch Import Tests ori"
         // [SCENARIO] Entry.Delete removes the entry, its parsed fields and the Bifröst marker.
         Fixture.InitializeStorage();
         DefCode := Fixture.CreateImportDefinition(0);
-        EntryNo := Fixture.ReadInt(ImportInline(DefCode, Fixture.TwoLineCsv(false), false), 'entryNo');
+        EntryNo := Fixture.ReadInt(Fixture.Data(ImportInline(DefCode, Fixture.TwoLineCsv(false), false)), 'entryNo');
         LibraryAssert.IsTrue(EntryLink.Get(EntryNo), 'The import marks the entry as created by Bifröst.');
         Request.Add('entryNo', EntryNo);
 
@@ -317,7 +317,7 @@ codeunit 96242 "DataExch Import Tests ori"
         // [SCENARIO] Entry.Process applies the mappings once; a second run is refused so nothing is written twice.
         Fixture.InitializeStorage();
         DefCode := Fixture.CreateImportDefinition(0);
-        EntryNo := Fixture.ReadInt(ImportInline(DefCode, Fixture.TwoLineCsv(false), false), 'entryNo');
+        EntryNo := Fixture.ReadInt(Fixture.Data(ImportInline(DefCode, Fixture.TwoLineCsv(false), false)), 'entryNo');
         Request.Add('entryNo', EntryNo);
 
         Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Entry.Process", Request);
@@ -346,7 +346,7 @@ codeunit 96242 "DataExch Import Tests ori"
         Fixture.InitializeStorage();
         DefCode := Fixture.CreateImportDefinition(0);
         Fixture.UseIntermediateTable(DefCode);
-        EntryNo := Fixture.ReadInt(ImportInline(DefCode, Fixture.TwoLineCsv(false), false), 'entryNo');
+        EntryNo := Fixture.ReadInt(Fixture.Data(ImportInline(DefCode, Fixture.TwoLineCsv(false), false)), 'entryNo');
         Request.Add('entryNo', EntryNo);
 
         Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Entry.Process", Request);

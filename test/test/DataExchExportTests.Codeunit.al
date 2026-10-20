@@ -156,6 +156,7 @@ codeunit 96243 "DataExch Export Tests ori"
         // [SCENARIO] AC04: a payment export definition points to DataExchange.PaymentExport.Run.
         Fixture.InitializeStorage();
         DefCode := Fixture.CreateBareDefinition("Data Exchange Definition Type"::"Payment Export");
+        Request.Add('tableId', Database::Customer);
         Request.Add('dataExchDefCode', DefCode);
         Request.Add('inline', true);
 
