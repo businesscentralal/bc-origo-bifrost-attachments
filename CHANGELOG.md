@@ -13,7 +13,7 @@ Business Central release versioning (`major.minor.build.revision`).
 - `DataExch Def Export Impl ori` (10035156) now describes the same header-default, optional inline XML and optional storage XML behavior in the English/Icelandic catalogue, overview and notes. It is registered Inbound because it can write storage; the existing type and wire shape are preserved.
 - `Storage Contract Parts ori` (10035183) documents header-only requests without requiring a delivery destination and classifies Definition.Export as irreversible, explaining that header/inline reads change nothing while external writes can overwrite files and cannot roll back. `DataExch Help Get Impl ori` (10035165) reflects the same modes and permissions.
 - Native tests in `DataExch Def Xfer Tests ori` (96244) cover header-only/no-storage writes, inline-only, combined inline/storage overwrite and contract direction/effects. `Attachments Build Tests ori` (96274) checks the updated exact English/Icelandic catalogue text; XLF stays synchronized.
-- `Storage DX Format Tests ori` (96256) renames the inherited non-temporary `TempArgument` local to `Argument`, retaining the real record, to fix CI AL 17 warning AA0237 reported on PR #163.
+- `DataExch Format Tests ori` (96256) renames the inherited non-temporary `TempArgument` local to `Argument`, retaining the real record, to fix CI AL 17 warning AA0237 reported on PR #163.
 
 ### Changed (2026-10-20) - All objects renumbered into the single registered range 10035135-10035234
 
