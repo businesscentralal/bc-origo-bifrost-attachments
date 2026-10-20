@@ -198,11 +198,12 @@ codeunit 10035137 "Storage Attachment Subscr ori"
         Link: Record "Storage Attachment Link ori";
         AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
     begin
-        Link.SetLoadFields("Storage Code", "Storage Path");
+        Link.SetLoadFields("Storage Code", "Storage Path", "Created Storage File");
         if not Link.Get(TableId, RecSystemId) then
             exit;
-        if not TryDeleteRemote(AttachmentMgt, Link."Storage Code", Link."Storage Path") then
-            ClearLastError();
+        if Link."Created Storage File" then
+            if not TryDeleteRemote(AttachmentMgt, Link."Storage Code", Link."Storage Path") then
+                ClearLastError();
         Link.Delete(true);
     end;
 

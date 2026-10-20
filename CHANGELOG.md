@@ -8,6 +8,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-20) - Safe storage replacement and attachment ownership (#166)
+
+- Storage.File.Create, Storage.Upload.Commit, Storage.Attachment.Offload and shared Data Exchange storage delivery refuse an existing target with `PreconditionFailed` on `path` and an actionable next step. Explicit `overwrite: true` permits replacement; linked attachment files remain protected and Copy/Move keep their refusal. The shared delivery also covers Definition.Export, Export.Run, PaymentExport.Run and CommitToDataExchange with keepFileInStorage. CommitToRecord writes BC attachments only and never replaces a storage file.
+- `Storage Attachment Link ori` (table 10035135) records whether Offload created a new file. Restore and attachment deletion preserve pre-existing files, explicitly overwritten destinations and legacy links of unknown origin. CreateForRecord and CreateLinked retain their storage-link behavior without acquiring deletion ownership. Updated management/subscriber codeunits 10035136/10035137 and request/upload/export helpers 10035193/10035197/10035140 enforce the checks before writes.
+- Contract/help codeunits 10035183, 10035156, 10035165 and 10035182 describe explicit replacement and file ownership. Bilingual regressions in test codeunit96261 cover refusals, byte preservation, explicit replacement, reusable uploads, export side effects and Restore/delete ownership; test96244 now supplies explicit overwrite consent. Test-only table/enum/permission set96261 and connector96262 persist isolated MCP files across sessions; they do not certify real providers or licensing. XLF synchronized. External connector preflight does not provide an atomic create-if-absent guarantee against concurrent provider writers.
+
 ### Fixed (2026-10-20) - Icelandic discovery and upload refusals (#157)
 
 - #157: translate the eight Data Exchange selection descriptions (codeunits 10035158, 10035160, 10035163, 10035164, 10035165, 10035166, 10035168, 10035187) and the closed-upload status in refusals (codeunit 10035197). Keep wire status values unchanged. Extend the mixed-language guard to reject Locked discovery labels; add exact Icelandic catalogue, committed/aborted refusal and existing JSON-string grammar regressions (test codeunits 96205, 96211 and 96213), and update the existing Icelandic expectation in test codeunit 96274.

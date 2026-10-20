@@ -35,7 +35,7 @@ codeunit 10035183 "Storage Contract Parts ori"
         DeliveryStorageLbl: Label 'The storage connection the file is written to. Send it, or inline true, or both.', Comment = 'is-IS=Geymslutengingin sem skráin er skrifuð í. Sendu hana, eða inline true, eða hvort tveggja.';
         DefinitionDeliveryStorageLbl: Label 'Optional storage connection for writing the definition XML. Omit all delivery parameters for the header only; use inline true for XML without storage, or combine both destinations.', Comment = 'is-IS=Valfrjáls geymslutenging til að skrifa XML skilgreiningarinnar. Slepptu öllum afhendingarbreytum fyrir hausinn eingöngu; notaðu inline true fyrir XML án geymslu eða sameinaðu báða áfangastaði.';
         DefinitionDeliveredStorageLbl: Label 'The storage connection used when the definition XML was written; omitted for header-only or inline-only requests.', Comment = 'is-IS=Geymslutengingin sem var notuð þegar XML skilgreiningarinnar var skrifað; sleppt þegar aðeins er beðið um haus eða innfellt XML.';
-        DefinitionExportEffectLbl: Label 'Header-only and inline-only requests read the definition without changing it. With storageCode, writes the XML to external storage and can overwrite an existing file. This write is irreversible: it happens outside the Business Central transaction and is not rolled back with it.', Comment = 'is-IS=Beiðnir um haus eingöngu eða innfellt XML eingöngu lesa skilgreininguna án þess að breyta henni. Með storageCode er XML skrifað í ytri geymslu og getur yfirskrifað fyrirliggjandi skrá. Skrifin eru óafturkræf: þau fara fram utan færslu Business Central og eru ekki afturkölluð með henni.';
+        DefinitionExportEffectLbl: Label 'Header-only and inline-only requests read the definition without changing it. With storageCode, writes the XML to external storage and refuses an existing file unless overwrite is true. This write is irreversible: it happens outside the Business Central transaction and is not rolled back with it.', Comment = 'is-IS=Beiðnir um haus eingöngu eða innfellt XML eingöngu lesa skilgreininguna án þess að breyta henni. Með storageCode er XML skrifað í ytri geymslu og hafnar fyrirliggjandi skrá nema overwrite sé true. Skrifin eru óafturkræf: þau fara fram utan færslu Business Central og eru ekki afturkölluð með henni.';
         DeliveryPathLbl: Label 'The destination file path in storage. Default: folderPath (or the connection root) with the file name.', Comment = 'is-IS=Áfangaslóð skrárinnar í geymslu. Sjálfgefið: folderPath (eða rót tengingarinnar) með skráarheitinu.';
         DeliveryFolderLbl: Label 'The destination folder in storage; the file name is appended. Do not send with path.', Comment = 'is-IS=Áfangamappa í geymslu; skráarheitinu er bætt aftan við. Ekki senda með path.';
         DeliveryInlineLbl: Label 'When true, the file is returned as contentBase64; refused when it is larger than 1 MB.', Comment = 'is-IS=Þegar true er skránni skilað sem contentBase64; hafnað ef hún er stærri en 1 MB.';
@@ -46,6 +46,10 @@ codeunit 10035183 "Storage Contract Parts ori"
         EntryNoLbl: Label 'The Data Exchange entry number.', Comment = 'is-IS=Númer gagnaskiptafærslunnar.';
         MappingLineDefLbl: Label 'Optional line definition whose mappings run alone. Default: every mapping of the definition.', Comment = 'is-IS=Valfrjáls línuskilgreining þar sem aðeins varpanir hennar eru keyrðar. Sjálfgefið: allar varpanir skilgreiningarinnar.';
         DefinitionUploadLbl: Label 'The uploadId of a complete chunked upload that holds the XML. The upload is consumed.', Comment = 'is-IS=uploadId fullgerðrar upphleðslu í bútum sem geymir XML-skjalið. Upphleðslan er notuð upp.';
+        StorageOverwriteLbl: Label 'Default false. An existing destination is refused with PreconditionFailed on path. Set overwrite true to replace it explicitly. Files backing attachments remain protected.', Comment = 'is-IS=Sjálfgefið false. Fyrirliggjandi áfangastað er hafnað með PreconditionFailed á path. Settu overwrite true til að skipta honum sérstaklega út. Skrár sem geyma viðhengi eru áfram verndaðar.';
+        StorageOverwriteNextLbl: Label 'Choose a new path or send overwrite true. Restore or remove any linked attachment before replacing its file.', Comment = 'is-IS=Veldu nýja slóð eða sendu overwrite true. Endurheimtu eða fjarlægðu tengt viðhengi áður en skipt er um skrá þess.';
+        RestoreOwnedFileLbl: Label 'Writes the content back into the Business Central attachment and removes its link. Deletes the external file only when this attachment created a new file. Pre-existing files, explicitly overwritten files and legacy links with unknown ownership are preserved.', Comment = 'is-IS=Skrifar innihaldið aftur í viðhengið í Business Central og fjarlægir tengingu þess. Eyðir ytri skránni aðeins ef þetta viðhengi stofnaði nýja skrá. Fyrirliggjandi skrár, sérstaklega yfirskrifaðar skrár og eldri tengingar með óþekkt eignarhald eru varðveittar.';
+        LinkedSourceEffectLbl: Label 'Storage input links the existing file and takes responsibility for serving attachment content from it, without copying or taking deletion ownership. Restore copies the content into Business Central and preserves the source file; deleting the attachment also preserves that file.', Comment = 'is-IS=Inntak úr geymslu tengir fyrirliggjandi skrá og tekur ábyrgð á að afhenda innihald viðhengis úr henni án þess að afrita eða taka eignarhald til eyðingar. Endurheimt afritar innihaldið í Business Central og varðveitir upprunaskrána; eyðing viðhengisins varðveitir einnig þá skrá.';
         OverwriteLbl: Label 'When true, an existing definition with the same code is deleted and installed again. Default false.', Comment = 'is-IS=Þegar true er skilgreiningu með sama kóða eytt og hún sett upp aftur. Sjálfgefið false.';
         NewCodeLbl: Label 'Optional code to install a file with one definition under, for example to copy a definition.', Comment = 'is-IS=Valfrjáls kóði til að setja upp skrá með einni skilgreiningu undir, til dæmis til að afrita skilgreiningu.';
         JournalTemplateLbl: Label 'The payment journal template name, exactly as stored.', Comment = 'is-IS=Heiti sniðmáts greiðslubókar, nákvæmlega eins og það er vistað.';
@@ -139,6 +143,9 @@ codeunit 10035183 "Storage Contract Parts ori"
         if MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List'] then
             exit;
 
+        if MessageType in ['Storage.File.Create', 'Storage.Attachment.Offload', 'Storage.Upload.Commit',
+            'DataExchange.Definition.Export', 'DataExchange.Export.Run', 'DataExchange.PaymentExport.Run', 'Storage.Upload.CommitToDataExchange'] then
+            Parameters.Add(ContractMgt.Parameter('overwrite', 'boolean', false, StorageOverwriteLbl));
         if not (MessageType in ['Storage.Attachment.Restore', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.Status', 'DataExchange.Definition.Get', 'DataExchange.Entry.Get', 'DataExchange.Definition.List', 'DataExchange.Entry.List', 'DataExchange.Type.Set', 'DataExchange.Definition.Delete', 'DataExchange.Definition.Export', 'DataExchange.Import.Run', 'DataExchange.Export.Run', 'Storage.Upload.Begin', 'Storage.Upload.CommitToRecord',
             'Storage.Upload.CommitToDataExchange', 'DataExchange.Entry.Process', 'DataExchange.Entry.Delete', 'DataExchange.Definition.Import', 'DataExchange.PaymentExport.Run']) then
             Parameters.Add(ContractMgt.Parameter('storageCode', 'string', true, 'The configured storage connection code. Resolve it with Storage.Account.List.'));
@@ -309,6 +316,12 @@ codeunit 10035183 "Storage Contract Parts ori"
                 end;
 
         end;
+    end;
+
+    local procedure SupportsStorageOverwrite(MessageType: Text): Boolean
+    begin
+        exit(MessageType in ['Storage.File.Create', 'Storage.Attachment.Offload', 'Storage.Upload.Commit',
+            'DataExchange.Definition.Export', 'DataExchange.Export.Run', 'DataExchange.PaymentExport.Run', 'Storage.Upload.CommitToDataExchange']);
     end;
 
     local procedure AddDeliveryParameters(var Parameters: JsonArray; HeaderOnlyAllowed: Boolean)
@@ -600,6 +613,8 @@ codeunit 10035183 "Storage Contract Parts ori"
             if MessageType in ['DataExchange.Import.Run', 'DataExchange.Export.Run', 'DataExchange.Definition.Import', 'DataExchange.Definition.Export', 'DataExchange.PaymentExport.Run'] then
                 Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::LimitExceeded, 'Inline content or an inline file is larger than 1 MB.', 'Use storageCode with path, or a chunked upload.'));
         end;
+        if SupportsStorageOverwrite(MessageType) then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, StorageOverwriteLbl, StorageOverwriteNextLbl));
         if UsesStorageCode(MessageType) then begin
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The storageCode does not name a storage connection.', 'Use Storage.Account.List to find the storageCode.'));
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The storage connection is disabled.', 'Enable it on the Bifrost Storage Connection card, or use another storageCode.'));
@@ -641,6 +656,8 @@ codeunit 10035183 "Storage Contract Parts ori"
 
     /// <summary>Builds the operation effect for one message type.</summary>
     procedure GetEffect(MessageType: Text) Effect: JsonObject
+    var
+        Changes: JsonToken;
     begin
         case true of
             MessageType in ['DataExchange.Type.Set', 'DataExchange.Definition.Delete', 'DataExchange.Import.Run', 'DataExchange.Export.Run', 'Storage.Upload.CommitToDataExchange',
@@ -667,7 +684,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             MessageType = 'Storage.Attachment.Restore':
                 begin
                     Effect.Add('effect', 'irreversible');
-                    Effect.Add('changes', 'Writes the content back into the Business Central attachment, then deletes the offloaded file in the external storage. The delete happens outside the Business Central transaction and cannot be undone.');
+                    Effect.Add('changes', RestoreOwnedFileLbl);
                 end;
             MessageType = 'Storage.Attachment.Offload':
                 begin
@@ -694,6 +711,12 @@ codeunit 10035183 "Storage Contract Parts ori"
                 Effect.Add('changes', 'Reads only; nothing is changed.');
             end;
         end;
+        if SupportsStorageOverwrite(MessageType) then begin
+            Effect.Get('changes', Changes);
+            Effect.Replace('changes', Changes.AsValue().AsText() + ' ' + StorageOverwriteLbl);
+        end;
+        if MessageType in ['Storage.Attachment.CreateForRecord', 'Storage.Attachment.CreateLinked'] then
+            Effect.Replace('changes', LinkedSourceEffectLbl);
         Effect.Add('idempotent', MessageType in ['Storage.Account.List', 'Storage.File.List', 'Storage.File.Get', 'Storage.File.Exists', 'Storage.Directory.List', 'Storage.Directory.Exists', 'Storage.Upload.Status', 'DataExchange.Definition.List', 'DataExchange.Definition.Get', 'DataExchange.Type.List', 'DataExchange.Entry.List', 'DataExchange.Entry.Get']);
         // The Data Exchange tables are granted by BIFROST DataExch ori only; BIFROST Attach ori does not include them.
         if IsDataExchangeType(MessageType) or (MessageType = 'Storage.Upload.CommitToDataExchange') then

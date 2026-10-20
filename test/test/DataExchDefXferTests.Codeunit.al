@@ -247,6 +247,7 @@ codeunit 96244 "DataExch Def Xfer Tests ori"
         Request.Add('storageCode', Fixture.StorageCode());
         Request.Add('path', 'definition.xml');
         Request.Add('inline', true);
+        Request.Add('overwrite', true);
 
         Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Definition.Export", Request);
 
@@ -287,7 +288,7 @@ codeunit 96244 "DataExch Def Xfer Tests ori"
 
         LibraryAssert.AreEqual("Msg Direction ori"::Inbound, Implementation.GetMessageDirection(), 'The type can write external storage.');
         LibraryAssert.AreEqual('irreversible', Fixture.ReadText(Effect, 'effect'), 'The strongest supported effect includes overwrites.');
-        LibraryAssert.IsTrue(Fixture.ReadText(Effect, 'changes').Contains('can overwrite an existing file'), 'The overwrite effect is explicit.');
+        LibraryAssert.IsTrue(Fixture.ReadText(Effect, 'changes').Contains('refuses an existing file unless overwrite is true'), 'The overwrite effect is explicit.');
         LibraryAssert.IsTrue(Fixture.ReadText(Effect, 'changes').Contains('Header-only and inline-only requests read'), 'Read-only modes are explicit.');
         LibraryAssert.IsTrue(Overview.Contains('by default') and Overview.Contains('contentBase64') and Overview.Contains('storageCode'), 'Overview covers all three modes.');
         LibraryAssert.IsTrue(Notes.Contains('header only') and Notes.Contains('not rolled back'), 'Notes cover the default and external write boundary.');

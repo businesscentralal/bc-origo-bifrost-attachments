@@ -142,6 +142,7 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
     var
         Guide: TextBuilder;
     begin
+        Guide.AppendLine('Storage file writes refuse an existing destination by default. Send overwrite: true only to intentionally replace an unlinked file. Copy and Move always refuse an existing destination. CreateForRecord and CreateLinked link pre-existing storage files without acquiring deletion ownership: Restore and attachment deletion preserve those files.');
         Guide.AppendLine('# Bifrost Attachments - storage message types');
         Guide.AppendLine();
         Guide.AppendLine('Read and write files in external storage (Azure Blob Storage, Azure File Share or SharePoint) through the Business Central external file storage connectors, stage large files in chunks and keep document attachments in storage instead of the database.');
@@ -172,7 +173,7 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         Guide.AppendLine('| Directories | `Storage.Directory.Create` | Creates a folder. |');
         Guide.AppendLine('| Directories | `Storage.Directory.Delete` | Deletes a folder that holds no linked file. |');
         Guide.AppendLine('| Attachments | `Storage.Attachment.Offload` | Moves the content of a document attachment to storage and links it. |');
-        Guide.AppendLine('| Attachments | `Storage.Attachment.Restore` | Writes linked content back into the attachment and deletes the stored file. |');
+        Guide.AppendLine('| Attachments | `Storage.Attachment.Restore` | Writes linked content back into the attachment. Deletes only a file newly created by that attachment; pre-existing files and legacy links are preserved. |');
         Guide.AppendLine('| Attachments | `Storage.Attachment.CreateLinked` | Attaches a stored file to a new or existing incoming document. Optional `dataExchangeType`, `process` and `vendorNo`. |');
         Guide.AppendLine('| Attachments | `Storage.Attachment.CreateForRecord` | Creates an attachment on a record from base64 content. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.Begin` | Opens a chunked upload session. |');
