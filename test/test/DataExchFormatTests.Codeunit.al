@@ -99,6 +99,42 @@ codeunit 96256 "DataExch Format Tests ori"
     end;
 
     [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure PostwriteReaderFailure_RetainsRollback()
+    begin
+        CheckReaderRollback(1033);
+        CheckReaderRollback(1039);
+    end;
+
+    local procedure CheckReaderRollback(LanguageId: Integer)
+    var
+        DataExch: Record "Data Exch.";
+        DataExchField: Record "Data Exch. Field";
+        EntryLink: Record "DataExch Entry Link ori";
+        Request: JsonObject;
+        Response: JsonObject;
+        DefCode: Code[20];
+        FieldsBefore: Integer;
+        LinksBefore: Integer;
+    begin
+        // [SCENARIO] Architect AC2 disposition: unexpected reader errors keep the Foundation shape and rollback.
+        Fixture.InitializeStorage();
+        DefCode := Fixture.CreateImportDefinition(1);
+        Request.Add('dataExchDefCode', DefCode);
+        Request.Add('contentBase64', Fixture.Encode('code,name,amount'));
+        FieldsBefore := DataExchField.Count();
+        LinksBefore := EntryLink.Count();
+        Response := DispatchLocale("Message Type ori"::"DataExchange.Import.Run", Request, LanguageId);
+        LibraryAssert.AreEqual('Error', Fixture.ReadText(Response, 'status'), 'The reader fails.');
+        LibraryAssert.AreEqual('BusinessCentralError', Fixture.ReadText(Response, 'code'), 'Preserve Foundation error classification.');
+        DataExch.SetRange("Data Exch. Def Code", DefCode);
+        LibraryAssert.AreEqual(0, DataExch.Count(), 'The failed reader leaves no entry.');
+        LibraryAssert.AreEqual(FieldsBefore, DataExchField.Count(), 'Parsed fields are rolled back.');
+        LibraryAssert.AreEqual(LinksBefore, EntryLink.Count(), 'Entry link is rolled back.');
+        DeleteDefinition(DefCode);
+    end;
+
+    [Test]
     procedure Utf16Csv_IsNotMistakenForBinary()
     var
         TempArgument: Record "Message Argument ori";

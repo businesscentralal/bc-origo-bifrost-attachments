@@ -2763,6 +2763,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Sendu tilskilda XML-skrá, CSV-skrá eða skrá með fastri breidd og reyndu aftur. Skoðaðu skilgreininguna með DataExchange.Definition.Get; notaðu DataExchange.Definition.Export fyrir XML-snið skilgreiningarinnar.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ImportFormatNextLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 3568450841" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Business Central errors caught while reading the source before writes include parameter and nextStep. Unexpected reader or database errors after writes retain the Foundation BusinessCentralError response; the failed import is rolled back with no entry.</source>
+          <target>Business Central villur sem gripnar eru við lestur uppsprettunnar áður en skrif hefjast innihalda parameter og nextStep. Óvæntar villur í lesara eða gagnagrunni eftir skrif halda svarinu BusinessCentralError frá Foundation; misheppnaður innflutningur er afturkallaður án færslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Business Central villur sem gripnar eru við lestur uppsprettunnar áður en skrif hefjast innihalda parameter og nextStep. Óvæntar villur í lesara eða gagnagrunni eftir skrif halda svarinu BusinessCentralError frá Foundation; misheppnaður innflutningur er afturkallaður án færslu.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ImportBoundaryLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 3140821260" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check the source and definition before retrying. Post-write errors may lack parameter and nextStep until Foundation supports rollback-safe error context.</source>
+          <target>Athugaðu uppsprettuna og skilgreininguna áður en reynt er aftur. Villur eftir skrif geta verið án parameter og nextStep þar til Foundation styður villusamhengi sem varðveitir afturköllun.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu uppsprettuna og skilgreininguna áður en reynt er aftur. Villur eftir skrif geta verið án parameter og nextStep þar til Foundation styður villusamhengi sem varðveitir afturköllun.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ImportBoundaryNextLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 225158890 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Creates a directory in the configured storage connection.</source>
           <target>Býr til möppu í uppsettri geymslutengingu.</target>
