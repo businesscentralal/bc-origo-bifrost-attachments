@@ -134,8 +134,11 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
 
     /// <summary>Reports that no example chapter is supplied.</summary>
     procedure GetExamples(var Examples: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        exit(false);
+        Examples := ContractParts.GetExamples('DataExchange.Definition.Delete');
+        exit(Examples.Count() > 0);
     end;
 
     /// <summary>Summarizes the operation.</summary>

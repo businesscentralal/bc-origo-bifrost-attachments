@@ -102,8 +102,11 @@ codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetExamples(var Examples: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        exit(false);
+        Examples := ContractParts.GetExamples('Help.DataExchange.Get');
+        exit(Examples.Count() > 0);
     end;
 
     procedure GetOverview(var Overview: Text): Boolean

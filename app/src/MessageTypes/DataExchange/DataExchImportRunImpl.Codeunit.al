@@ -133,8 +133,11 @@ codeunit 10035166 "DataExch Import Run Impl ori" implements "Msg Interface ori",
 
     /// <summary>Reports that no example chapter is supplied.</summary>
     procedure GetExamples(var Examples: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        exit(false);
+        Examples := ContractParts.GetExamples('DataExchange.Import.Run');
+        exit(Examples.Count() > 0);
     end;
 
     /// <summary>Summarizes the operation.</summary>

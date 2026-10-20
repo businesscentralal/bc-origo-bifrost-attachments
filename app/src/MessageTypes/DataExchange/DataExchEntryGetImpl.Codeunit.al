@@ -122,15 +122,20 @@ codeunit 10035161 "DataExch Entry Get Impl ori" implements "Msg Interface ori", 
 
     /// <summary>Provides the Examples discovery or contract chapter.</summary>
     procedure GetExamples(var Examples: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        exit(false);
+        Examples := ContractParts.GetExamples('DataExchange.Entry.Get');
+        exit(Examples.Count() > 0);
     end;
 
     /// <summary>Provides the Overview discovery or contract chapter.</summary>
     procedure GetOverview(var Overview: Text): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Clear(Overview);
-        exit(false);
+        Overview := ContractParts.GetOverview('DataExchange.Entry.Get');
+        exit(Overview <> '');
     end;
 
     /// <summary>Provides the Notes discovery or contract chapter.</summary>

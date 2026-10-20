@@ -150,21 +150,26 @@ codeunit 10035189 "Storage Upload Commit Rec ori" implements "Msg Interface ori"
         exit(false);
     end;
 
-    /// <summary>Declares that this implementation supplies no examples chapter.</summary>
-    /// <param name="Examples">Unchanged; callers must ignore this value when the procedure returns false.</param>
-    /// <returns>False; this chapter is not supplied.</returns>
+    /// <summary>Returns the recorded English examples for this message type.</summary>
+    /// <param name="Examples">Out: recorded request and answer pairs.</param>
+    /// <returns>True when recorded examples are available.</returns>
     procedure GetExamples(var Examples: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        exit(false);
+        Examples := ContractParts.GetExamples('Storage.Upload.CommitToRecord');
+        exit(Examples.Count() > 0);
     end;
 
-    /// <summary>Declares that this implementation supplies no overview chapter.</summary>
-    /// <param name="Overview">Out: cleared to empty.</param>
-    /// <returns>False; this chapter is not supplied.</returns>
+    /// <summary>Returns the English overview of this message type.</summary>
+    /// <param name="Overview">Out: the overview chapter.</param>
+    /// <returns>True when the chapter is supplied.</returns>
     procedure GetOverview(var Overview: Text): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Clear(Overview);
-        exit(false);
+        Overview := ContractParts.GetOverview('Storage.Upload.CommitToRecord');
+        exit(Overview <> '');
     end;
 
     /// <summary>Declares that this implementation supplies no notes chapter.</summary>

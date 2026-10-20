@@ -446,14 +446,14 @@ remains a separate operator access gate; see [the permission matrix](test/permis
 ## Documentation
 
 All public documentation lives in the [businesscentralal/bifrost](https://github.com/businesscentralal/bifrost)
-site repository and is published at <https://businesscentralal.github.io/bifrost>. There are no `docs/` or `Help/`
+site repository and is published at <https://docs.bifrost.origo.is>. There are no `docs/` or `Help/`
 folders in this repository — an approved deviation from Origo PR gateway check 8.
 
 | What | Where |
 | --- | --- |
-| Product documentation (overview, message types, AppSource listing) | <https://businesscentralal.github.io/bifrost/en-us/attachments/> |
-| In-product help (context-sensitive help pages, en-US and is-IS) | <https://businesscentralal.github.io/bifrost/en-us/help/attachments/> |
-| Building on Bifröst (extensibility guide) | <https://businesscentralal.github.io/bifrost/en-us/extensibility/> |
+| Product documentation (overview, message types, AppSource listing) | <https://docs.bifrost.origo.is/en-us/attachments/> |
+| In-product help (context-sensitive help pages, en-US and is-IS) | <https://docs.bifrost.origo.is/en-us/help/attachments/> |
+| Building on Bifröst (extensibility guide) | <https://docs.bifrost.origo.is/en-us/extensibility/> |
 | Release notes | [CHANGELOG.md](CHANGELOG.md) |
 | Maintainer API audit, bounded lexical matches and publication/registration holds (#77) | [API-SURFACE.md](API-SURFACE.md) |
 
@@ -464,7 +464,7 @@ the module directory, and every message type answers its contract chapters throu
 ### Context-Sensitive Help
 
 `app.json` declares `contextSensitiveHelpUrl` =
-`https://businesscentralal.github.io/bifrost/{0}/help/attachments/` and `supportedLocales`
+`https://docs.bifrost.origo.is/{0}/help/attachments/` and `supportedLocales`
 `["en-US", "is-IS"]`, so every help page must exist in both locales on the site.
 
 | Slug | Pages that use it |

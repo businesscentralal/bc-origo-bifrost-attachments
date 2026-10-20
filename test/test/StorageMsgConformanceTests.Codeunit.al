@@ -213,6 +213,77 @@ codeunit 96211 "Storage Msg Conformance Tests"
     end;
 
     [Test]
+    procedure Help_All39Types_HaveOverviewAndExamples()
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        MessageType: Enum "Message Type ori";
+        Contract: JsonObject;
+        ChapterToken: JsonToken;
+        Examples: JsonArray;
+        ExampleToken: JsonToken;
+        Example: JsonObject;
+        RequestToken: JsonToken;
+        ResponseToken: JsonToken;
+        TypeToken: JsonToken;
+        StatusToken: JsonToken;
+        MessageInterface: Interface "Msg Interface ori";
+        HasRefusal: Boolean;
+        Ordinal: Integer;
+        Count: Integer;
+        Offenders: Text;
+    begin
+        // #160 AC1/AC2: check actual aggregated chapters, including all ten newer types.
+        // Time: no date dependency. Risk: a stub can return true without supplying content.
+        foreach Ordinal in Enum::"Message Type ori".Ordinals() do
+            if (Ordinal >= 10035135) and (Ordinal <= 10035173) then begin
+                Count += 1;
+                MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
+                Clear(Contract);
+                ContractMgt.GetContract(MessageType, Contract);
+                if not Contract.Get('overview', ChapterToken) then
+                    Offenders += TypeName(Ordinal) + '|overview missing '
+                else
+                    if ChapterToken.AsValue().AsText() = '' then
+                        Offenders += TypeName(Ordinal) + '|overview empty ';
+                if not Contract.Get('examples', ChapterToken) then
+                    Offenders += TypeName(Ordinal) + '|examples missing '
+                else begin
+                    Examples := ChapterToken.AsArray();
+                    if Examples.Count() = 0 then
+                        Offenders += TypeName(Ordinal) + '|examples empty ';
+                    HasRefusal := false;
+                    foreach ExampleToken in Examples do begin
+                        Example := ExampleToken.AsObject();
+                        if not Example.Get('request', RequestToken) then
+                            Offenders += TypeName(Ordinal) + '|example request missing '
+                        else
+                            if not RequestToken.AsObject().Get('type', TypeToken) then
+                                Offenders += TypeName(Ordinal) + '|example type missing '
+                            else
+                                if TypeToken.AsValue().AsText() <> TypeName(Ordinal) then
+                                    Offenders += TypeName(Ordinal) + '|example type mismatch ';
+                        if not Example.Get('response', ResponseToken) then
+                            Offenders += TypeName(Ordinal) + '|example answer missing '
+                        else begin
+                            if ResponseToken.AsObject().Keys().Count() = 0 then
+                                Offenders += TypeName(Ordinal) + '|example answer empty ';
+                            if ResponseToken.AsObject().Get('status', StatusToken) then
+                                HasRefusal := HasRefusal or (StatusToken.AsValue().AsText() = 'Error');
+                        end;
+                    end;
+                    MessageInterface := MessageType;
+                    if (MessageInterface.GetMessageDirection() <> Enum::"Msg Direction ori"::Outbound) or
+                        (TypeName(Ordinal) = 'DataExchange.Definition.Export')
+                    then
+                        if not HasRefusal then
+                            Offenders += TypeName(Ordinal) + '|write refusal missing ';
+                end;
+            end;
+        LibraryAssert.AreEqual(39, Count, 'All 39 Attachments message types must be checked.');
+        LibraryAssert.AreEqual('', Offenders, 'First-call help chapters: ' + Offenders);
+    end;
+
+    [Test]
     procedure Description_EveryType_IsOneCallerFacingSentence()
     var
         MsgInterface: Interface "Msg Interface ori";
