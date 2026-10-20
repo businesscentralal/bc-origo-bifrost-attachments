@@ -10,7 +10,7 @@
 | AppSourceCop / product and test compile / runtime | **CI VERIFIED at main `304a1c24985a00fb86b5caef10ca46ffe04096b6`**: [CI39276099802](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39276099802) succeeded (Default, Test and Deploy to Bifrost); Test executed 354 tests with 0 failed / 0 skipped. The Default package is 28.0.0.109 with empty `InternalsVisibleTo` and one dependency, Bifrost Foundation minimum 28.0.3.530. This is existing-main evidence, not baseline comparison, UI/MCP proof or AppSource certification. The earlier receipt at `b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005` ([CI38918381017](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/38918381017), 280 executed / 280 passed) is historical. |
 | Independent review | Pending; this audit is an author inventory, not independent certification. |
 
-Current source checked: Attachments main `f4d524d9bdcfe408701e222ef463b2928f395910`,
+Current source checked: Attachments main `c30c2254bf953ed2e6f90fdf080dfb216bea799f`,
 source app `28.0.0.4`, source test app `28.0.0.6`. These source versions are not deployed versions.
 The JSON retains its historical audit `sourceSha`; `hashSourceSha`, `consumerSourceSha`
 and `procedureLocationsSourceSha` now identify the source snapshot above. All 94 shipping
@@ -22,8 +22,8 @@ This additive interface is separate from `Storage Connector ori`; existing conne
 The capability reports source preservation on failure and an unambiguous outcome; it does not
 promise destination cleanup or filesystem rollback. This audit changes no AL or contract.
 
-Current main [CI39276099802](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39276099802)
-at `304a1c2` is green: Default, Test (354 executed, 0 failed, 0 skipped) and Deploy to Bifrost.
+Current main [CI39298155811](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39298155811)
+at `c30c225` is green: Default, Test (365 executed, 0 failed, 0 skipped) and Deploy to Bifrost.
 The earlier failure in CI39240173451 is resolved on main; this audit neither changes those tests
 nor transfers passes to other commits. UI, MCP and independent verification of the candidate remain
 separate pending checks. Historical CI results below stay attributable to their named commits.
@@ -211,11 +211,18 @@ does not make an event subscriber unused.
 
 ## Bound the consumer search
 
+The 20 October reconciliation refreshed ten bounded consumer-list entries and 56
+procedure declaration locations against `c30c225`. Production and mock connector
+implementations still match all eleven interface signatures. The optional linked-move
+interface remains separate. No AL, access, wire contract or registration was changed.
+The existing matrix guard checks object identities/hashes, not CSV locations or
+consumer-list freshness; those were checked separately against source for this audit.
+
 | Search corpus | Result |
 |---|---|
 | Attachments app and test at audited main | Bounded lexical matches are recorded per object in the JSON; table/page subtype attribution requires typed evidence. The mock provider, setup tests and message conformance tests are demonstrated seams. |
 | Foundation at comparison SHA | No quoted shipping Attachments object references found. |
-| Historical feature/reference snapshots from the original audit | No quoted shipping Attachments object references, Attachments namespace references, app-ID dependencies or Bifrost Attachments manifest dependencies found in the scanned AL/manifests. |
+| Current feature/reference main snapshots (20 October) | Twelve repository heads read back; ten contain AL/manifests, totaling 2,126 files. No quoted shipping object name, Attachments namespace, AppId or app-name match. Two empty source repositories are recorded as empty, not compatibility passes. Exact SHAs are below and in the JSON. |
 | Tenant PTEs, third-party providers and Marketplace consumers | Not available. Absence cannot be inferred from the repository scan. |
 
 The original audit feature/reference corpus covers Timesheets, Subscription Billing, Language Models,
@@ -224,7 +231,41 @@ app, Iceland, Iceland Treasury and Iceland DocEx. Exact snapshot SHAs and full s
 are retained in worker-4 task evidence. This is a bounded search of those sources, not proof
 that no foreign consumer exists. Preserve any consumer demonstrated before a reduction.
 
+### Current external source snapshots
+
+Read-only source search; no foreign source or checkout was modified. These are bounded
+lexical observations, not tenant/provider discovery or published-baseline compatibility.
+
+| Repository | Exact main SHA | AL/manifest files | Matches |
+|---|---|---:|---:|
+| businesscentralal/bc-origo-bifrost-timesheets | `0bce539cf472c49f95c244a87efdee57e20acb01` | 110 | 0 |
+| businesscentralal/bc-origo-bifrost-subscription-billing | `384f6bceeb82c189b5f2f329ca40c1a8c2bdc062` | 88 | 0 |
+| businesscentralal/bc-origo-bifrost-language-models | `815fdc4a3829494f0a1527ae80f702ec61c423ab` | 120 | 0 |
+| businesscentralal/bc-origo-bifrost-orchestrator | `cecd2ddd057529c4f0767caf8a0f72c9d1e0f21f` | 160 | 0 |
+| businesscentralal/bc-origo-bifrost-inventory | `d49ad44b166e04cd00617a5ee2deca0e2e700fef` | 167 | 0 |
+| businesscentralal/bc-origo-bifrost-warehouse | `7861dae2b85141567445b8b2ac2a6e3c59e0ba59` | 94 | 0 |
+| businesscentralal/bc-origo-bifrost-servicemanagement | `f63fd81223b60cb0d73eacff3133b6831ffcf286` | 0 | 0 |
+| businesscentralal/bc-origo-bifrost-manufacturing | `0a9c8cf250c7be648eae295b8676cd70708ac489` | 0 | 0 |
+| businesscentralal/bc-origo-bifrost-reference | `bb85ab2bb1ff719c06a0141d2ac9b45e6d990b3e` | 16 | 0 |
+| OrigoSoftwareSolutions/bc-origo-bifrost-iceland | `4aeb4e8ed1240f6c1b17a5b4b22fcf3b20a31262` | 365 | 0 |
+| OrigoSoftwareSolutions/bc-origo-bifrost-iceland-treasury | `cde5a52c6551b15a37fb815c42dee79d65ec26a3` | 776 | 0 |
+| OrigoSoftwareSolutions/bc-origo-bifrost-iceland-docex | `c0853deaa22dd19d5056d81add057f48b944055e` | 230 | 0 |
+
 ## Obtain publication and allocation evidence
+
+[Architect ruling1792485840](https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792485840592319) is the first-publish evidence for this audit:
+Bifrost Attachments has **no published AppSource baseline**. Architect records this on
+Gunnar’s behalf, citing Gunnar’s 16 October confirmation that Foundation was the only
+released Bifröst app. Old personal-tenant installs (#20) are not a baseline and remain
+outside this scope. This is positive authorized evidence; absence of a current offer,
+GitHub release or AppSourceCop.version alone would not establish it.
+
+Internalizing or sealing accidental surface is permitted where the in-suite consumer
+search finds no consumer requiring that public contract. Keep Storage Type extensibility,
+Storage Connector and the separate optional linked-move interface, Foundation message
+bindings and every demonstrated consumer. This audit changes no AL or access modifier.
+A published-baseline package comparison is not applicable under this ruling. The bounded
+search does not claim that unknown tenant extensions or third-party providers were scanned.
 
 | Required evidence | Current evidence / limitation | Owner / next action |
 |---|---|---|

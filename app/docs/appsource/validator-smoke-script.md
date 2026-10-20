@@ -9,6 +9,11 @@ locale: en-US
 
 **Manual test script; not executed.** Run only after the exact candidate passes internal QA on the Architect-defined integrated SHA, with formal scenarios derived from that evidence. This script contains no executable network or publication command. Stop at the first failed prerequisite; do not interpret a stopped run as a pass.
 
+The [executable preparation and receipt checker](validator-evidence-format.md)
+validates inputs/evidence locally. It does not execute these sandbox steps or
+replace passing #80 QA. Record real observations before using its optional smoke
+receipt mode; a stopped/unrun flow is never a pass.
+
 ## Validate inputs before running
 
 | Input | Required proof / reject condition |

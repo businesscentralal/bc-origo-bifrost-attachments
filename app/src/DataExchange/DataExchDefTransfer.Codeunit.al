@@ -18,7 +18,6 @@ codeunit 10035139 "DataExch Def Transfer ori"
         OneSourceErr: Label 'Send exactly one source: storageCode with path, contentBase64 or uploadId.', Comment = 'is-IS=Sendu nákvæmlega eina uppsprettu: storageCode með path, contentBase64 eða uploadId.';
         OneSourceExpectedLbl: Label 'exactly one of storageCode with path, contentBase64 or uploadId', Comment = 'is-IS=nákvæmlega eitt af storageCode með path, contentBase64 eða uploadId';
         OneSourceNextStepLbl: Label 'Send the XML inline as contentBase64 (at most 1 MB), name a stored file with storageCode and path, or send the uploadId of a complete chunked upload.', Comment = 'is-IS=Sendu XML-skjalið innfellt sem contentBase64 (mest 1 MB), tilgreindu skrá í geymslu með storageCode og path, eða sendu uploadId fullgerðrar upphleðslu í bútum.';
-        NotXmlErr: Label 'The file is not a well-formed Data Exchange definition XML document.', Comment = 'is-IS=Skráin er ekki gilt XML-skjal með skilgreiningu gagnaskipta.';
         XmlExpectedLbl: Label 'the XML that the Export Data Exchange Definition action writes, with a root element and DataExchDef elements', Comment = 'is-IS=XML-skjalið sem aðgerðin Flytja út skilgreiningu gagnaskipta skrifar, með rótarstaki og DataExchDef-stökum';
         ExportFirstLbl: Label 'Export a definition with DataExchange.Definition.Export to see the expected format.', Comment = 'is-IS=Fluttu skilgreiningu út með DataExchange.Definition.Export til að sjá væntanlegt snið.';
         NoDefinitionErr: Label 'The file contains no DataExchDef element.', Comment = 'is-IS=Skráin inniheldur ekkert DataExchDef-stak.';
@@ -59,9 +58,10 @@ codeunit 10035139 "DataExch Def Transfer ori"
         Overwrite: Boolean;
         UploadId: Guid;
         SourceCount: Integer;
-        Consumed: Boolean;
         LineDefCount: Integer;
         MappingCount: Integer;
+        SourceParameter: Text;
+        SourceFileName: Text;
     begin
         RequestJson := Argument.GetRequestJson();
         if RequestJson.Contains('contentBase64') then begin
@@ -95,23 +95,31 @@ codeunit 10035139 "DataExch Def Transfer ori"
             exit;
         if Path <> '' then
             if not RequestMgt.TryReadStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
-                Argument.RespondWithLastError();
+                ImportMgt.RespondFileReadError(Argument, Path);
                 exit;
             end;
-        if not IsNullGuid(UploadId) then begin
-            // The upload is consumed here; a later refusal is raised so the session stays open.
-            if not UploadMgt.ConsumeUpload(Argument, UploadId, TempBlob, UploadFileName) then
+        // Validate the file before consuming the upload or writing any definition.
+        if not IsNullGuid(UploadId) then
+            if not UploadMgt.ReadUpload(Argument, UploadId, TempBlob, UploadFileName) then
                 exit;
-            Consumed := true;
-        end;
 
-        CheckDefinitionXml(Argument, TempBlob, NewCode, Overwrite, Codes);
+        SourceParameter := 'contentBase64';
+        if Path <> '' then begin
+            SourceParameter := 'path';
+            SourceFileName := RequestMgt.LeafName(Path);
+        end;
+        if not IsNullGuid(UploadId) then begin
+            SourceParameter := 'uploadId';
+            SourceFileName := UploadFileName;
+        end;
+        CheckDefinitionXml(Argument, TempBlob, NewCode, Overwrite, Codes, SourceParameter, SourceFileName);
         if Argument.HasCollectedErrors() then begin
-            if Consumed then
-                Argument.RaiseCollectedErrors("Bifrost Error Code ori"::MultipleErrors, NotXmlErr);
             Reader.RespondIfErrors(Argument);
             exit;
         end;
+        if not IsNullGuid(UploadId) then
+            if not UploadMgt.ConsumeUpload(Argument, UploadId, TempBlob, UploadFileName) then
+                exit;
         if NewCode <> '' then
             RenameDefinition(TempBlob, NewCode);
         foreach Code in Codes do
@@ -162,9 +170,10 @@ codeunit 10035139 "DataExch Def Transfer ori"
         exit(false);
     end;
 
-    local procedure CheckDefinitionXml(var Argument: Record "Message Argument ori"; var TempBlob: Codeunit "Temp Blob"; NewCode: Code[20]; Overwrite: Boolean; var Codes: List of [Text])
+    local procedure CheckDefinitionXml(var Argument: Record "Message Argument ori"; var TempBlob: Codeunit "Temp Blob"; NewCode: Code[20]; Overwrite: Boolean; var Codes: List of [Text]; SourceParameter: Text; SourceFileName: Text)
     var
         DataExchDef: Record "Data Exch. Def";
+        ImportMgt: Codeunit "DataExch Import Mgt ori";
         Document: XmlDocument;
         Definitions: XmlNodeList;
         Definition: XmlNode;
@@ -173,12 +182,12 @@ codeunit 10035139 "DataExch Def Transfer ori"
     begin
         Clear(Codes);
         if not TryReadXml(TempBlob, Document) then begin
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, NotXmlErr, 'contentBase64', '', XmlExpectedLbl, ExportFirstLbl);
+            ImportMgt.AddFileFormatError(Argument, SourceParameter, SourceFileName, TempBlob.Length(), 'XML');
             exit;
         end;
         Document.SelectNodes('/root/DataExchDef', Definitions);
         if Definitions.Count() = 0 then begin
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, NoDefinitionErr, 'contentBase64', '', XmlExpectedLbl, ExportFirstLbl);
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, NoDefinitionErr, SourceParameter, SourceFileName, XmlExpectedLbl, ExportFirstLbl);
             exit;
         end;
         if (NewCode <> '') and (Definitions.Count() <> 1) then begin
@@ -192,7 +201,7 @@ codeunit 10035139 "DataExch Def Transfer ori"
             if NewCode <> '' then
                 Code := NewCode;
             if (Code = '') or (StrLen(Code) > MaxStrLen(DataExchDef.Code)) or (Code <> UpperCase(Code)) then
-                Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(CodeInvalidErr, Code), 'contentBase64', Code, CodeExpectedLbl, ExportFirstLbl)
+                Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(CodeInvalidErr, Code), SourceParameter, Code, CodeExpectedLbl, ExportFirstLbl)
             else begin
                 Codes.Add(Code);
                 DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;

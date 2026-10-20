@@ -1,0 +1,233 @@
+{
+  "schema": 1,
+  "status": "technical-build-evidence-not-release-certification",
+  "sourceCommit": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+  "immutableCommitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+  "runUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39298155811",
+  "runAttempt": 1,
+  "shippingDefault": {
+    "identity": {
+      "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
+      "publisher": "Origo",
+      "name": "Bifrost Attachments",
+      "version": "28.0.0.113"
+    },
+    "sha256": "e68e79c6450d9c666b928b91022905cf78fccd35466a86db769c3e6476e950a6",
+    "contentSha256": "a62e70856e38be308d7ad0cd395bad08a35e1dc191d77efc2dd942b7e2459709",
+    "friends": [],
+    "sourceCommit": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+    "buildUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39298155811",
+    "signatureTailBytes": 12139,
+    "artifactId": 12211715204,
+    "artifactUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39298155811/artifacts/12211715204"
+  },
+  "compiler": [
+    {
+      "mode": "default",
+      "errors": 0,
+      "warnings": 0,
+      "project": "Bifrost Attachments",
+      "sourceCount": 94,
+      "compilerVersion": "17.0.42.60745"
+    },
+    {
+      "mode": "test",
+      "errors": 0,
+      "warnings": 0,
+      "project": "Bifrost Attachments",
+      "sourceCount": 94,
+      "compilerVersion": "17.0.42.60745"
+    },
+    {
+      "mode": "test",
+      "errors": 0,
+      "warnings": 0,
+      "project": "Bifrost Attachments - Tests",
+      "sourceCount": 57,
+      "compilerVersion": "17.0.42.60745"
+    }
+  ],
+  "effectiveSettings": {
+    "default": {
+      "enableCodeCop": true,
+      "enableUICop": true,
+      "enableCodeAnalyzersOnTestApps": true,
+      "failOn": "warning",
+      "alpaca": {
+        "enableCodeCopForTestApps": true,
+        "enableUICopForTestApps": true,
+        "enableAppSourceCopForTestApps": true
+      },
+      "doNotBuildTests": true,
+      "doNotRunTests": true,
+      "doNotSignApps": false,
+      "skipUpgrade": false
+    },
+    "test": {
+      "enableCodeCop": true,
+      "enableUICop": true,
+      "enableCodeAnalyzersOnTestApps": true,
+      "failOn": "warning",
+      "alpaca": {
+        "enableCodeCopForTestApps": true,
+        "enableUICopForTestApps": true,
+        "enableAppSourceCopForTestApps": true
+      },
+      "doNotBuildTests": false,
+      "doNotRunTests": false,
+      "doNotSignApps": true,
+      "skipUpgrade": true
+    }
+  },
+  "nativeSuite": {
+    "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+    "source": "Existing CI39298155811 digest-verified XML; audited, not newly executed",
+    "executed": 365,
+    "passed": 365,
+    "failed": 0,
+    "skipped": 0
+  },
+  "artifactDownloads": [
+    {
+      "id": 12212240160,
+      "name": "bc-origo-bifrost-attachments-main-BuildOutput-1.0.0.113-AppSourceFinalReceipts",
+      "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+      "digest": "sha256:b93896b70a8d67f1c4edd181a9db88786c4322369f41387ccbda3312f0c5ffac",
+      "verified": true
+    },
+    {
+      "id": 12212171432,
+      "name": "bc-origo-bifrost-attachments-main-TestTestResults-1.0.0.113",
+      "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+      "digest": "sha256:7eb84f183390afe9c89a44fecee40890d1c78667f4dd50a14dbf0a2b2b22c836",
+      "verified": true
+    },
+    {
+      "id": 12212127035,
+      "name": "bc-origo-bifrost-attachments-main-TestBuildOutput-1.0.0.113-AppSourceFinalReceipts",
+      "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+      "digest": "sha256:c868eeed246a3340bd2aca80c17707a220e950d9850f3c00752b308ec5d6a45b",
+      "verified": true
+    },
+    {
+      "id": 12211715204,
+      "name": "bc-origo-bifrost-attachments-main-Apps-1.0.0.113",
+      "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+      "digest": "sha256:0f1172dc4401ea8e288307fc7afbef627fb533ad6327bc62e65a62a586beffc3",
+      "verified": true
+    },
+    {
+      "id": 12211701492,
+      "name": "bc-origo-bifrost-attachments-main-TestApps-1.0.0.113",
+      "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+      "digest": "sha256:6b770b2dd73fd5128172e0d732b51aa4df5b10a0856d14b5fe4fd2b4024e1939",
+      "verified": true
+    },
+    {
+      "id": 12211417253,
+      "name": "bc-origo-bifrost-attachments-main-TestBuildOutput-1.0.0.113",
+      "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+      "digest": "sha256:2512f2ac5a84320c3dfee15f889095cfaebec47c41ff20608e9808684fc02545",
+      "verified": true
+    },
+    {
+      "id": 12211000351,
+      "name": "bc-origo-bifrost-attachments-main-BuildOutput-1.0.0.113",
+      "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+      "digest": "sha256:f78d53179cf21566b475faa55934015120ef8a5e4584c9bbab1c947665326718",
+      "verified": true
+    },
+    {
+      "id": 12210626582,
+      "name": "bc-origo-bifrost-attachments-main-TestTestApps-1.0.0.113",
+      "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+      "digest": "sha256:affb1dc044c594062eb1d7ceca52e0a046bcc9cb27abc48e7551f43106ab0714",
+      "verified": true
+    }
+  ],
+  "gateRegressions": {
+    "gateAndPolicy": 90,
+    "staging": 22,
+    "callback": 31,
+    "total": 143,
+    "failed": 0,
+    "skipped": 0,
+    "boundary": "controlled tooling checks freshly executed at sourceCommit, not product runtime or NAVX trust"
+  },
+  "integration": {
+    "Pipeline": "enforced after RunPipeline, before Sign and output uploads; PR147",
+    "Signed": "intentionally deferred by PR149 after hosted-runner SIP/trust failure; current build113 has independent manual Windows Valid/HashMismatch evidence",
+    "noFilesFail": true,
+    "finalReceipts": [
+      "Default/finalize.json",
+      "Default/pipeline.json",
+      "Test/finalize.json",
+      "Test/pipeline.json"
+    ],
+    "defaultSignedContentMatchesPipeline": true
+  },
+  "acceptancePending": {
+    "issue80": "worker-8; current candidate14markets/36provider/10lifecycle, bilingual UI/publicMCP remains pending",
+    "issue81": "worker-6; formal scenarios and actual validator dry-run after passing issue80 QA",
+    "externalMaterials": "Gunnar/designated legal/support/registration/provider/identity/offer owners; no offer creation or submission authorized",
+    "certificateReleaseDisposition": "Architect/Gunnar: release/certificate-owner decision; current exact-artifact manual Windows verification is supplied, no publication authority"
+  },
+  "releaseReady": false,
+  "candidateCertified": false,
+  "windowsTrust": {
+    "source": "root-coordinator Windows verification receipt2026-10-20",
+    "rawReportSha256": "caf4ac8991a848f875c47d4ec529f3a3d8539bea3d3297c15e0013e68c823de4",
+    "packageSha256": "e68e79c6450d9c666b928b91022905cf78fccd35466a86db769c3e6476e950a6",
+    "status": "Valid",
+    "signerSubject": "CN=Origo hf, O=Origo hf, L=Reykjav\u00edk, C=IS",
+    "signerThumbprint": "2AD5FF188D0B22858A2813817A929BCC1EC03E4A",
+    "timestampSubject": "CN=DigiCert SHA256 RSA4096 Timestamp Responder 2026 1, O=\"DigiCert, Inc.\", C=US",
+    "timestampThumbprint": "51D9ABDA034973D84F4266ACA48248E6B369C439",
+    "tamperStatus": "HashMismatch",
+    "tamperedCopySha256": "049c2b1bd23e5937b268173688cd3de5dbf84acebbb9e0dd1b7bec8e7fe01171",
+    "appliesOnlyToArtifact": 12211715204,
+    "releaseAuthorized": false
+  },
+  "signaturePhaseReconciliation": {
+    "unsignedFinalizeSHA256": "381a827b689ee435a4527f103ed1b098142129c38b22fed6e0e2265d5f3c5ad1",
+    "unsignedFinalizeBytes": 391361,
+    "signedUploadedSHA256": "e68e79c6450d9c666b928b91022905cf78fccd35466a86db769c3e6476e950a6",
+    "signedUploadedBytes": 403500,
+    "signatureTailBytes": 12139,
+    "contentMatchesFinalize": {
+      "identity": true,
+      "friends": true,
+      "dependencies": true,
+      "application": true,
+      "platform": true,
+      "propagateDependencies": true,
+      "sourceCommit": true,
+      "compilerVersion": true,
+      "buildUrl": true,
+      "contentSha256": true,
+      "symbolReferenceSha256": true,
+      "compilerManifestSha256": true,
+      "expandedBytes": true,
+      "entryCount": true
+    }
+  },
+  "firstPublicationBaseline": {
+    "publishedAttachmentsBaseline": false,
+    "authorityUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792485840592319",
+    "registrationStillPendingOwner": "Gunnar",
+    "registrationStillPending": [
+      "10035635\u201310035684",
+      "70013500\u201370013549",
+      "ori/Origo"
+    ]
+  },
+  "deploymentObservation": {
+    "source": "CI39298155811 Deploy to Bifrost log at2026-10-19T18:15:04Z",
+    "attachmentsArtifactVersion": "28.0.0.113",
+    "foundationAlreadyInstalledVersion": "28.0.8.607",
+    "foundationDeclaredMinimum": "28.0.3.530",
+    "sameFoundationVariantAsDeveloperContainer": false,
+    "liveCurrentUatReadbackPerformed": false,
+    "acceptance": "Deployment success is not UAT acceptance or pinned530 runtime proof"
+  }
+}
