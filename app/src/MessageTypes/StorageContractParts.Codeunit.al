@@ -559,10 +559,15 @@ codeunit 70013500 "Storage Contract Parts ori"
     procedure GetErrors(MessageType: Text) Errors: JsonArray
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
+        ImportFormatLbl: Label 'The file cannot be read in the definition file type. The refusal identifies contentBase64, path or uploadId and reports only the file name or size, never its content.', Comment = 'is-IS=Ekki er hægt að lesa skrána samkvæmt skráargerð skilgreiningarinnar. Höfnunin tilgreinir contentBase64, path eða uploadId og sýnir aðeins skráarheiti eða stærð, aldrei innihaldið.';
+        ImportFormatNextLbl: Label 'Supply the required XML, CSV or fixed width file and retry. Inspect the definition with DataExchange.Definition.Get; use DataExchange.Definition.Export for the definition XML format.', Comment = 'is-IS=Sendu tilskilda XML-skrá, CSV-skrá eða skrá með fastri breidd og reyndu aftur. Skoðaðu skilgreininguna með DataExchange.Definition.Get; notaðu DataExchange.Definition.Export fyrir XML-snið skilgreiningarinnar.';
     begin
         if not (MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List']) then begin
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::MissingParameter, MissingInputLbl, SupplyInputLbl));
-            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameterFormat, InvalidFormatLbl, CorrectInputLbl));
+            if MessageType in ['DataExchange.Import.Run', 'DataExchange.Definition.Import', 'Storage.Upload.CommitToDataExchange'] then
+                Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameterFormat, ImportFormatLbl, ImportFormatNextLbl))
+            else
+                Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameterFormat, InvalidFormatLbl, CorrectInputLbl));
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameter, InvalidInputLbl, CorrectInputLbl));
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::MultipleErrors, MultipleInputLbl, CorrectInputLbl));
             if MessageType in ['DataExchange.Type.Set', 'DataExchange.Definition.Delete', 'DataExchange.Definition.Export', 'DataExchange.Import.Run', 'DataExchange.Export.Run', 'Storage.Upload.CommitToDataExchange', 'DataExchange.Definition.Import'] then begin

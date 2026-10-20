@@ -312,6 +312,9 @@ codeunit 10035665 "Storage Upload Mgt ori"
             exit(false);
 
         AssembleChunks(UploadId, TempBlob);
+        ImportMgt.CheckFileFormat(Argument, DefCode, TempBlob, 'uploadId', Session."File Name");
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
         // A reader error is raised and rolls back the entry, its fields and the session change.
         ImportMgt.ImportFile(DefCode, Session."File Name", TempBlob, UploadId, 'Storage.Upload.CommitToDataExchange', StorageSetup.Code, Path, DataExch);
         Session.Status := Session.Status::Committed;
