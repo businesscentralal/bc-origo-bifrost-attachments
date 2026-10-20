@@ -909,12 +909,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Skráin inniheldur ekkert DataExchDef-stak.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Transfer ori - NamedType NoDefinitionErr</note>
         </trans-unit>
-        <trans-unit id="Codeunit 3768190266 - NamedType 2935312819" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The file is not a well-formed Data Exchange definition XML document.</source>
-          <target>Skráin er ekki gilt XML-skjal með skilgreiningu gagnaskipta.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Skráin er ekki gilt XML-skjal með skilgreiningu gagnaskipta.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Transfer ori - NamedType NotXmlErr</note>
-        </trans-unit>
         <trans-unit id="Codeunit 3768190266 - NamedType 2361965528" size-unit="char" translate="yes" xml:space="preserve">
           <source>Send exactly one source: storageCode with path, contentBase64 or uploadId.</source>
           <target>Sendu nákvæmlega eina uppsprettu: storageCode með path, contentBase64 eða uploadId.</target>
