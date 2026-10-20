@@ -18,7 +18,7 @@ using System.Utilities;
 /// entry behind. Only <see cref="ProcessIsolated"/> commits first, because a failed processing must
 /// keep the imported entry for inspection.
 /// </remarks>
-codeunit 70013501 "DataExch Import Mgt ori"
+codeunit 10035141 "DataExch Import Mgt ori"
 {
     Access = Internal;
 

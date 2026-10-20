@@ -9,7 +9,7 @@ using Origo.Bifrost;
 /// chunked upload session's data and attaches it directly to a Business Central record
 /// without writing to external storage — the content goes straight into the database.
 /// </summary>
-codeunit 10035669 "Storage Upload Commit Rec ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035189 "Storage Upload Commit Rec ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

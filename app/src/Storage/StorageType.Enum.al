@@ -7,7 +7,7 @@ namespace Origo.Bifrost.Attachments;
 /// <c>External File Storage</c> facade (Azure Blob, Azure File Share, SharePoint). The
 /// enum is extensible so the test app can add a <c>Mock</c> in-memory backend.
 /// </summary>
-enum 10035636 "Storage Type ori" implements "Storage Connector ori"
+enum 10035136 "Storage Type ori" implements "Storage Connector ori"
 {
     Extensible = true;
     Caption = 'Bifrost Storage Type', Comment = 'is-IS=Tegund Bifröst geymslu';

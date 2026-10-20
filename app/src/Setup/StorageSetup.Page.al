@@ -4,7 +4,7 @@ namespace Origo.Bifrost.Attachments;
 /// List of configured storage connections. Each row is the <c>storageCode</c> a Cloud
 /// Event request uses to address a Business Central file account.
 /// </summary>
-page 10035637 "Storage Setup ori"
+page 10035139 "Storage Setup ori"
 {
     Extensible = false;
     PageType = List;

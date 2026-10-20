@@ -6,7 +6,7 @@ namespace Origo.Bifrost.Attachments;
 /// assembled content has been written to storage, and is <c>Aborted</c> when the caller
 /// discards it before committing.
 /// </summary>
-enum 10035637 "Storage Upload Status ori"
+enum 10035137 "Storage Upload Status ori"
 {
     Access = Internal;
     Extensible = false;

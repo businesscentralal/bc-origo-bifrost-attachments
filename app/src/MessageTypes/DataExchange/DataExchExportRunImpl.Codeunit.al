@@ -7,7 +7,7 @@ using System.IO;
 /// Implementation of <c>DataExchange.Export.Run</c>. Exports records with a Generic Export definition and
 /// delivers the file to storage or inline.
 /// </summary>
-codeunit 70013534 "DataExch Export Run Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035164 "DataExch Export Run Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
     TableNo = "Message Argument ori";

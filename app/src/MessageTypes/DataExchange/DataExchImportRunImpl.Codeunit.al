@@ -5,7 +5,7 @@ using System.IO;
 using System.Utilities;
 
 /// <summary>Imports a file into a Data Exch. entry with an import definition and parses its fields; optionally applies the mappings.</summary>
-codeunit 70013540 "DataExch Import Run Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035166 "DataExch Import Run Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
     TableNo = "Message Argument ori";

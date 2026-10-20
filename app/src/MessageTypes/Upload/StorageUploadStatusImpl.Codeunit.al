@@ -7,7 +7,7 @@ using Origo.Bifrost;
 /// state of an upload session: its file name, destination, status, and how many bytes and chunks
 /// have been received.
 /// </summary>
-codeunit 10035660 "Storage Upload Status Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035190 "Storage Upload Status Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

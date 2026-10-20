@@ -12,7 +12,7 @@ using System.Utilities;
 /// storage action, and packages every result into the uniform Bifrost response
 /// envelope <c>{ status, data | error }</c>. Binary file content is carried as base64.
 /// </summary>
-codeunit 10035662 "Storage Request Mgt ori"
+codeunit 10035193 "Storage Request Mgt ori"
 {
     Access = Internal;
 

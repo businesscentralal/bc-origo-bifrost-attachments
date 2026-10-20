@@ -15,7 +15,7 @@ using System.Utilities;
 /// session has been resolved under the per-user <c>FilterGroup(2)</c> filter, so they inherit the
 /// same isolation.
 /// </remarks>
-table 10035637 "Storage Upload Chunk ori"
+table 10035138 "Storage Upload Chunk ori"
 {
     Extensible = false;
     Caption = 'Bifrost Storage Upload Chunk', Comment = 'is-IS=Upphleðslubútur Bifröst geymslu';

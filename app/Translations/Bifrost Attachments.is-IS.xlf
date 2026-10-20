@@ -1263,6 +1263,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Búðu til greiðslulínurnar, til dæmis með Leggja til greiðslur lánardrottna, og reyndu svo aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - NamedType LinesNextStepLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2395862116 - NamedType 2374435183" size-unit="char" translate="yes" xml:space="preserve">
+          <source>(missing)</source>
+          <target>(vantar)</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=(vantar)</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - NamedType MissingValueLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2395862116 - NamedType 3458218424" size-unit="char" translate="yes" xml:space="preserve">
           <source>Data Exchange definition %1 has no mapping that names a source table.</source>
           <target>Skilgreining gagnaskipta %1 hefur enga vörpun sem tilgreinir upprunatöflu.</target>
@@ -1742,6 +1748,12 @@
           <target>nákvæmlega ein uppspretta: contentBase64, eða storageCode með path</target>
           <note from="Developer" annotates="general" priority="2">is-IS=nákvæmlega ein uppspretta: contentBase64, eða storageCode með path</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Run Impl ori - Method ImportFile - NamedType OneSourceExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 882503026 - Method 2197396733 - NamedType 2374435183" size-unit="char" translate="yes" xml:space="preserve">
+          <source>(missing)</source>
+          <target>(vantar)</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=(vantar)</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Run Impl ori - Method ImportFile - NamedType MissingValueLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 882503026 - Method 2197396733 - NamedType 845101464" size-unit="char" translate="yes" xml:space="preserve">
           <source>Send contentBase64 or storageCode with path to select the file to import.</source>

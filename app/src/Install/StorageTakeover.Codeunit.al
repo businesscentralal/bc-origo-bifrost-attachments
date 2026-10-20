@@ -24,7 +24,7 @@ using System.Telemetry;
 /// <c>D:\Git\Private\_bifrost-migration-archive\hnitbjorg</c>). The FieldExist guards, the permission
 /// probe, the install/upgrade entry point and the telemetry are maintained by hand here; they are not in the generator.
 /// </summary>
-codeunit 10035676 "Storage Takeover ori"
+codeunit 10035145 "Storage Takeover ori"
 {
     Access = Internal;
     Permissions = tabledata "Access Control" = RI;
@@ -123,7 +123,7 @@ codeunit 10035676 "Storage Takeover ori"
         TakeOverStorageSetup();
     end;
 
-    /// <summary>Copies <c>CE Storage Attachment Link</c> (10075985) into <c>Storage Attachment Link ori</c> (10035635).</summary>
+    /// <summary>Copies <c>CE Storage Attachment Link</c> (10075985) into <c>Storage Attachment Link ori</c> (10035135).</summary>
     local procedure TakeOverStorageAttachmentLink()
     var
         Target: Record "Storage Attachment Link ori";
@@ -146,7 +146,7 @@ codeunit 10035676 "Storage Takeover ori"
         LogTakeOver('Storage Attachment Link ori', Target.Count());
     end;
 
-    /// <summary>Copies <c>Cloud Events Storage Setup</c> (10075986) into <c>Storage Setup ori</c> (10035636).</summary>
+    /// <summary>Copies <c>Cloud Events Storage Setup</c> (10075986) into <c>Storage Setup ori</c> (10035137).</summary>
     local procedure TakeOverStorageSetup()
     var
         Target: Record "Storage Setup ori";

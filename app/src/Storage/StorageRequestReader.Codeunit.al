@@ -14,7 +14,7 @@ using System.Utilities;
 /// <c>LimitExceeded</c>. A present but invalid value never falls back to a default.
 /// Read every value of a request first, then call <see cref="RespondIfErrors"/> once.
 /// </summary>
-codeunit 10035682 "Storage Request Reader ori"
+codeunit 10035194 "Storage Request Reader ori"
 {
     Access = Internal;
 

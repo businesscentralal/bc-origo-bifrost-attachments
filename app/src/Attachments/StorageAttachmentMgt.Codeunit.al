@@ -22,7 +22,7 @@ using System.Utilities;
 /// such an answer leaves nothing behind. A problem that only shows after a write is raised with
 /// <c>RaiseCollectedErrors</c>, which rolls the write back and still reaches the caller structured.
 /// </remarks>
-codeunit 10035635 "Storage Attachment Mgt ori"
+codeunit 10035136 "Storage Attachment Mgt ori"
 {
     Access = Internal;
 

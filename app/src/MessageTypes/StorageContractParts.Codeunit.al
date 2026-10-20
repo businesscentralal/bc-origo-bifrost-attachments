@@ -3,7 +3,7 @@ namespace Origo.Bifrost.Attachments;
 using Origo.Bifrost;
 
 /// <summary>Builds the shared contract chapters for Bifröst Attachments message types.</summary>
-codeunit 70013500 "Storage Contract Parts ori"
+codeunit 10035183 "Storage Contract Parts ori"
 {
     Access = Internal;
 

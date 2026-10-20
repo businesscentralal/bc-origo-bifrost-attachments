@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of the <c>Storage.File.Move</c> message type. Moves a file within the
 /// configured storage connection.
 /// </summary>
-codeunit 10035654 "Storage File Move Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035181 "Storage File Move Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

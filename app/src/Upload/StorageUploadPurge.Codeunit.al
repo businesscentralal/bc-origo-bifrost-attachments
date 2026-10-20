@@ -5,7 +5,7 @@ namespace Origo.Bifrost.Attachments;
 /// aborted leaves its session row and its chunks behind; this codeunit deletes both so an
 /// administrator can reclaim the space from the Bifrost Attachments setup page.
 /// </summary>
-codeunit 10035679 "Storage Upload Purge ori"
+codeunit 10035198 "Storage Upload Purge ori"
 {
     Access = Internal;
     Permissions = tabledata "Storage Upload Session ori" = RD,

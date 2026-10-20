@@ -8,7 +8,7 @@ using Origo.Bifrost;
 /// table access stays on the assignable "BIFROST DataExch ori" set. The selected
 /// connector supplies its own account and operation permissions.
 /// </summary>
-permissionsetextension 10035635 "Storage Full ori" extends "BIFROST Full ori"
+permissionsetextension 10035135 "Storage Full ori" extends "BIFROST Full ori"
 {
     Permissions =
         tabledata "DataExch Entry Link ori" = RIMD,

@@ -10,7 +10,7 @@ using System.ExternalFileStorage;
 /// <c>Storage Type</c> interface, which delegates to the
 /// <c>External File Storage</c> facade. Secrets are owned by the connector apps, never stored here.
 /// </summary>
-table 10035636 "Storage Setup ori"
+table 10035137 "Storage Setup ori"
 {
     Extensible = false;
     Caption = 'Bifrost Storage Setup', Comment = 'is-IS=Uppsetning Bifröst geymslu';

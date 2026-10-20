@@ -12,7 +12,7 @@ using System.Utilities;
 /// (Exp. External Data Gen. Jnl.) both report the file as created, so the journal lines get the
 /// standard exported marks and the credit transfer register keeps the file.
 /// </summary>
-codeunit 70013504 "DataExch Pay Capture ori"
+codeunit 10035142 "DataExch Pay Capture ori"
 {
     Access = Internal;
     EventSubscriberInstance = Manual;

@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of the <c>Storage.Upload.Abort</c> message type. Discards an open upload
 /// session and all of its chunks without writing anything to storage.
 /// </summary>
-codeunit 10035656 "Storage Upload Abort Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035184 "Storage Upload Abort Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

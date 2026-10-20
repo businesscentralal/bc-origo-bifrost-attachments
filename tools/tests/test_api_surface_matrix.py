@@ -92,7 +92,7 @@ class ApiSurfaceMatrixTests(unittest.TestCase):
         # The table has no public members since 2026-10-13; make one public in the copy and document it under the page.
         path = self.root / 'app/src/Setup/StorageSetup.Table.al'
         path.write_text(path.read_text(encoding='utf-8-sig').replace('    internal procedure HasFileAccount', '    procedure HasFileAccount', 1), encoding='utf-8')
-        self.document += '\n| page 10035637 [Storage Setup ori](app/src/Setup/StorageSetup.Page.al) | `HasFileAccount(): Boolean` | None |\n'
+        self.document += '\n| page 10035139 [Storage Setup ori](app/src/Setup/StorageSetup.Page.al) | `HasFileAccount(): Boolean` | None |\n'
         self.assert_finding('Document public member kind/identity mismatch: app/src/Setup/StorageSetup.Table.al')
 
     def test_provider_signature_requires_setup_record(self):
