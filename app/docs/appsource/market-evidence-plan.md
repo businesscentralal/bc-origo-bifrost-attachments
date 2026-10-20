@@ -11,7 +11,7 @@ Current technical receipt: [build113 evidence](candidate-2026-10-20.json), sourc
 
 **Fourteen source-declared countries, zero countries certified by this document.** Codes match `app/AppSourceCop.json` and [partner-center-markets.csv](partner-center-markets.csv). Locales1033/1039 are language checks, not a substitute for market coverage. W1 or one provider run cannot certify the other countries.
 
-The inspected source is main `c30c2254bf953ed2e6f90fdf080dfb216bea799f` (CI39298155811, package28.0.0.113, one dependency: Bifrost Foundation28.0.3.530). Its signed artifact hash is recorded in the linked build113 receipt. Installed Foundation runtime identity/hash, real-certificate trust and the connector apps installed per country remain pending current-candidate #78/#80 evidence and Architect’s release-candidate confirmation. Build87 is excluded by decision1792179827. Do not populate this matrix with historical or foreign fixture passes.
+The inspected source is main `c30c2254bf953ed2e6f90fdf080dfb216bea799f` (CI39298155811, package28.0.0.113, one dependency: Bifrost Foundation28.0.3.530). Its signed artifact hash and exact Windows Valid/HashMismatch receipt are recorded in the linked build113 receipt. Installed Foundation runtime identity/hash, the connector apps installed per country remain pending current-candidate #78/#80 evidence and Architect’s release-candidate confirmation. Build87 is excluded by decision1792179827. Do not populate this matrix with historical or foreign fixture passes.
 
 | Code | Country | Candidate/build/dependency evidence | Provider/lifecycle/UI/MCP result | Owner / status |
 |---|---|---|---|---|

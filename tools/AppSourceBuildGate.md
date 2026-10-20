@@ -55,14 +55,14 @@ The signed Default content digest matches the pre-sign Pipeline package, with no
 friend grants. Its full-file hash changes when the signature is added.
 
 **Signed is intentionally deferred, not a missing-code defect.** PR149 records that
-the hosted runner lacks NAVX SIP/trust and CI uses a self-signed certificate. Do
-not restore the known-failing CI Signed step. Before submission, the actual final
-artifact still requires a real certificate and Windows NAVX
+the hosted runner lacks NAVX SIP/trust; that failing run also reported a self-signed certificate. Do
+not restore the known-failing CI Signed step. Every final submission
+artifact requires a real certificate and Windows NAVX
 `Get-AuthenticodeSignature` verdict `Valid`, signer/chain evidence and rejection
 of a task-owned payload-tampered copy. Signing success, signature-tail bytes and
 controlled signature tests cannot prove that acceptance. Architect/root routes
 this manual verification and the designated certificate/signing owner supplies
-its prerequisite. No trust-store or credential change is authorized here.
+its release disposition. Root has now supplied actual Windows `Valid` with Origo hf signer and DigiCert timestamp plus tamper `HashMismatch` for build113 signed hash `e68e79c6450d9c666b928b91022905cf78fccd35466a86db769c3e6476e950a6`. This resolves the manual trust capability/acceptance check for that artifact only; it does not reinstate automated Signed enforcement or authorize release. No trust-store or credential change is authorized here.
 
 The old PR84/87/91 compile/integration holds are historical; current builds have
 superseded them. Keep independent current-candidate #80 QA, real provider/UI/MCP,

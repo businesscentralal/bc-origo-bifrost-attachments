@@ -552,7 +552,8 @@
       "connectorAppDependencies": [],
       "artifactId": 12211715204,
       "packageSha256": "e68e79c6450d9c666b928b91022905cf78fccd35466a86db769c3e6476e950a6",
-      "signatureTrustVerified": false
+      "signatureTrustVerified": true,
+      "signatureTrustEvidence": "candidate-2026-10-20.json#windowsTrust"
     },
     "requiredBuildEvidence": "main Default+Test green, meaningful executed tests, signed no-friend Default Apps artifact",
     "preparationAuthorizedNow": true,
