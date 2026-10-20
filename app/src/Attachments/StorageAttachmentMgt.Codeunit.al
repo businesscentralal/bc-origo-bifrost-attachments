@@ -4,6 +4,7 @@ using Microsoft.EServices.EDocument;
 using Microsoft.Foundation.Attachment;
 using Origo.Bifrost;
 using System.DataAdministration;
+using System.ExternalFileStorage;
 using System.IO;
 using System.Reflection;
 using System.Utilities;
@@ -291,7 +292,10 @@ codeunit 10035136 "Storage Attachment Mgt ori"
             RespondPathAlreadyLinked(Argument, StorageSetup."Code", StoragePath);
             exit(false);
         end;
-        Connector.GetFile(StorageSetup, StoragePath, TempBlob);
+        if not RequestMgt.TryReadStorageFile(StorageSetup, Connector, StoragePath, TempBlob) then begin
+            RequestMgt.RespondStorageFailure(Argument, StorageSetup, Connector, StoragePath, 'path', Enum::"Ext. File Storage File Type"::File);
+            exit(false);
+        end;
         if not TempBlob.HasValue() then begin
             Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(NoStorageFileErr, StoragePath), 'path', StoragePath, '', NoStorageFileNextStepLbl);
             exit(false);
@@ -322,8 +326,6 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         Link."Offloaded By" := UserSecurityId();
         Link.Insert(true);
 
-        Clear(IncomingDocumentAttachment.Content);
-        IncomingDocumentAttachment.Modify(true);
 
         ResultData.Add('target', IncomingDocumentTok);
         ResultData.Add('incomingDocumentEntryNo', IncomingDocumentAttachment."Incoming Document Entry No.");
@@ -334,6 +336,11 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         ResultData.Add('fileName', FileName);
         ResultData.Add('contentLength', Link."Content Size");
         AddDataExchangeResult(Argument, IncomingDocument, DataExchangeTypeCode, Process, ResultData);
+        // Base processing reads Content directly; offload only after it has consumed the bytes.
+        if IncomingDocumentAttachment.GetBySystemId(Link."Record System Id") then begin
+            Clear(IncomingDocumentAttachment.Content);
+            IncomingDocumentAttachment.Modify(true);
+        end;
         exit(true);
     end;
 
@@ -606,6 +613,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
             Argument.SetRequestJson(SavedRequest);
             if IncomingDocument.Get(EntryNo) then begin
                 CollectProcessErrors(IncomingDocument, LastError, ProcessErrors);
+                ResultData.Add('incomingDocumentStatus', IncomingDocumentStatusName(IncomingDocument));
                 if IncomingDocument."Document No." <> '' then begin
                     Processed := true;
                     CreatedDocument.Add('type', IncomingDocumentTypeName(IncomingDocument));
@@ -615,24 +623,52 @@ codeunit 10035136 "Storage Attachment Mgt ori"
                 end;
             end else
                 if LastError <> '' then
-                    ProcessErrors.Add(LastError);
+                    AddProcessError(ProcessErrors, LastError);
             ResultData.Add('processErrors', ProcessErrors);
         end;
         ResultData.Add('processed', Processed);
     end;
 
-    local procedure CollectProcessErrors(var IncomingDocument: Record "Incoming Document"; LastError: Text; var ProcessErrors: JsonArray)
+    /// <summary>Reads persisted errors scoped to this incoming document and supplies an actionable fallback.</summary>
+    /// <param name="IncomingDocument">The document whose context owns the errors.</param>
+    /// <param name="LastError">Raised processing failure when there is no persisted error.</param>
+    /// <param name="ProcessErrors">Receives structured code, message and nextStep entries.</param>
+    internal procedure CollectProcessErrors(var IncomingDocument: Record "Incoming Document"; LastError: Text; var ProcessErrors: JsonArray)
     var
-        TempErrorMessage: Record "Error Message" temporary;
+        ErrorMessage: Record "Error Message";
+        FailedErr: Label 'Incoming document processing failed. Inspect the incoming document for details.', Comment = 'is-IS=Úrvinnsla skjals í innleið mistókst. Skoðaðu skjalið í innleið til að fá nánari upplýsingar.';
     begin
-        IncomingDocument.SaveErrorMessages(TempErrorMessage);
-        if TempErrorMessage.FindSet() then
+        // SaveErrorMessages writes INTO the record buffer; it does not read persisted errors.
+        ErrorMessage.SetRange("Context Record ID", IncomingDocument.RecordId);
+        ErrorMessage.SetRange("Message Type", ErrorMessage."Message Type"::Error);
+        if ErrorMessage.FindSet() then
             repeat
-                if TempErrorMessage."Message" <> '' then
-                    ProcessErrors.Add(TempErrorMessage."Message");
-            until TempErrorMessage.Next() = 0;
+                if ErrorMessage."Message" <> '' then
+                    AddProcessError(ProcessErrors, ErrorMessage."Message");
+            until ErrorMessage.Next() = 0;
         if (ProcessErrors.Count() = 0) and (LastError <> '') then
-            ProcessErrors.Add(LastError);
+            AddProcessError(ProcessErrors, LastError);
+        if (ProcessErrors.Count() = 0) and (IncomingDocument.Status = IncomingDocument.Status::Failed) then
+            AddProcessError(ProcessErrors, FailedErr);
+    end;
+
+    local procedure AddProcessError(var ProcessErrors: JsonArray; ErrorText: Text)
+    var
+        ProcessError: JsonObject;
+        NextStepLbl: Label 'Inspect Incoming.Document.Get and correct the data exchange definition or source file, then retry Incoming.Document.Process.', Comment = 'is-IS=Skoðaðu Incoming.Document.Get og leiðréttu gagnaskiptaskilgreininguna eða upprunaskrána og reyndu svo Incoming.Document.Process aftur.';
+    begin
+        ProcessError.Add('code', 'BusinessCentralError');
+        ProcessError.Add('message', ErrorText);
+        ProcessError.Add('nextStep', NextStepLbl);
+        ProcessErrors.Add(ProcessError);
+    end;
+
+    local procedure IncomingDocumentStatusName(IncomingDocument: Record "Incoming Document"): Text
+    var
+        Status: Enum "Incoming Document Status";
+    begin
+        Status := IncomingDocument.Status;
+        exit(Status.Names().Get(Status.Ordinals().IndexOf(Status.AsInteger())));
     end;
 
     local procedure IncomingDocumentTypeName(IncomingDocument: Record "Incoming Document"): Text

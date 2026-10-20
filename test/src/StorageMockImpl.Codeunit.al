@@ -13,8 +13,8 @@ using System.Utilities;
 codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori", "Storage Linked Move ori"
 {
     var
-        FileNotFoundErr: Label 'Mock file ''%1'' was not found.', Comment = '%1 = path';
-        DirNotFoundErr: Label 'Mock directory ''%1'' was not found.', Comment = '%1 = path';
+        FileNotFoundErr: Label 'Could not read https://private-account.invalid/container/%1. Response Code: 404 The specified blob does not exist.', Locked = true;
+        DirNotFoundErr: Label 'Could not delete https://private-account.invalid/container/%1. Response Code: 404 The specified blob does not exist.', Locked = true;
 
     procedure TestConnection(StorageSetup: Record "Storage Setup ori")
     begin

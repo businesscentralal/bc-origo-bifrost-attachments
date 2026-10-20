@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-20) - Storage and processing error contracts (#167)
+
+- #167: Missing storage resources now return localized `RecordNotFound` with the caller path; provider failures omit internal URLs. Incoming-document processing returns structured `processErrors` and `incomingDocumentStatus` by reading its persisted errors. Updated help and bilingual regressions (codeunits 10035136, 10035139, 10035183, 10035193, 96200, 96212, 96237).
+
 ### Fixed (2026-10-20) - Icelandic discovery and upload refusals (#157)
 
 - #157: translate the eight Data Exchange selection descriptions (codeunits 10035158, 10035160, 10035163, 10035164, 10035165, 10035166, 10035168, 10035187) and the closed-upload status in refusals (codeunit 10035197). Keep wire status values unchanged. Extend the mixed-language guard to reject Locked discovery labels; add exact Icelandic catalogue, committed/aborted refusal and existing JSON-string grammar regressions (test codeunits 96205, 96211 and 96213), and update the existing Icelandic expectation in test codeunit 96274.

@@ -4,6 +4,7 @@ using Microsoft.EServices.EDocument;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
+using System.Utilities;
 using System.Text;
 
 /// <summary>
@@ -18,6 +19,54 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         LibraryAssert: Codeunit System.TestLibraries.Utilities."Library Assert";
         MockCodeTok: Label 'MOCK', Locked = true;
         TypeSetHintTok: Label 'DataExchange.Type.Set', Locked = true;
+
+    /// <summary>Verifies persisted processing errors are scoped to one document and have bilingual next steps.</summary>
+    [Test]
+    procedure PersistedProcessingErrors_AreScopedAndBilingual()
+    begin
+        AssertPersistedProcessingErrors(1033, 'Inspect Incoming.Document.Get');
+        AssertPersistedProcessingErrors(1039, 'Skoðaðu Incoming.Document.Get');
+    end;
+
+    local procedure AssertPersistedProcessingErrors(LanguageId: Integer; ExpectedNextStep: Text)
+    var
+        IncomingDocument: Record "Incoming Document";
+        OtherDocument: Record "Incoming Document";
+        ErrorMessage: Record "Error Message";
+        AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
+        ProcessErrors: JsonArray;
+        Token: JsonToken;
+        SavedLanguage: Integer;
+    begin
+        IncomingDocument.Get(IncomingDocument.CreateIncomingDocument('BIFT-167 error context', ''));
+        OtherDocument.Get(OtherDocument.CreateIncomingDocument('BIFT-167 other context', ''));
+        ErrorMessage.Init();
+        ErrorMessage."Context Record ID" := OtherDocument.RecordId;
+        ErrorMessage."Message Type" := ErrorMessage."Message Type"::Error;
+        ErrorMessage.Message := 'Unrelated private failure';
+        ErrorMessage.Insert(true);
+        ErrorMessage.Init();
+        ErrorMessage.ID := 0;
+        ErrorMessage."Context Record ID" := IncomingDocument.RecordId;
+        ErrorMessage."Message Type" := ErrorMessage."Message Type"::Error;
+        ErrorMessage.Message := 'The selected definition has no target table.';
+        ErrorMessage.Insert(true);
+        SavedLanguage := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        AttachmentMgt.CollectProcessErrors(IncomingDocument, '', ProcessErrors);
+        GlobalLanguage(SavedLanguage);
+        LibraryAssert.AreEqual(1, ProcessErrors.Count(), 'Only this document persisted error must be returned.');
+        ProcessErrors.Get(0, Token);
+        LibraryAssert.AreEqual('The selected definition has no target table.', ReadText(Token.AsObject(), 'message'), 'Return the actual persisted error.');
+        LibraryAssert.AreEqual('BusinessCentralError', ReadText(Token.AsObject(), 'code'), 'Return a stable code.');
+        LibraryAssert.IsTrue(ReadText(Token.AsObject(), 'nextStep').StartsWith(ExpectedNextStep), 'Next step must be translated.');
+        ErrorMessage.SetRange("Context Record ID", IncomingDocument.RecordId);
+        ErrorMessage.DeleteAll(true);
+        ErrorMessage.SetRange("Context Record ID", OtherDocument.RecordId);
+        ErrorMessage.DeleteAll(true);
+        IncomingDocument.Delete(true);
+        OtherDocument.Delete(true);
+    end;
 
     [Test]
     procedure AC01_CommitToRecord_SetsDataExchangeType_LeavesUnprocessed()
@@ -76,9 +125,13 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         DataObject := ReadData(ResponseJson);
         LibraryAssert.IsTrue(DataObject.Get('processErrors', Token), 'AC02 returns processErrors.');
         ProcessErrors := Token.AsArray();
-        LibraryAssert.IsTrue(
-            DataObject.Contains('createdDocument') or (ProcessErrors.Count() > 0),
-            'AC02 returns a created document or base-app process errors.');
+        LibraryAssert.IsTrue(ProcessErrors.Count() > 0, 'Invalid processing must return its errors.');
+        ProcessErrors.Get(0, Token);
+        LibraryAssert.IsTrue(Token.IsObject(), 'Processing errors must be structured objects.');
+        LibraryAssert.AreEqual('BusinessCentralError', ReadText(Token.AsObject(), 'code'), 'Stable processing error code.');
+        LibraryAssert.AreNotEqual('', ReadText(Token.AsObject(), 'message'), 'Actual processing failure must be visible.');
+        LibraryAssert.IsTrue(ReadText(Token.AsObject(), 'nextStep').Contains('Incoming.Document.Process'), 'Processing failure must offer a retry route.');
+        LibraryAssert.AreNotEqual('', ReadText(DataObject, 'incomingDocumentStatus'), 'Return the incoming document status.');
         LibraryAssert.AreEqual(IncomingDocument."Document No." <> '', ReadDataBool(TempArgument, 'processed'), 'AC02 processed tracks a created document no.');
         if DataObject.Contains('createdDocument') then
             LibraryAssert.AreNotEqual('', IncomingDocument."Document No.", 'AC02 createdDocument matches a document no.');
