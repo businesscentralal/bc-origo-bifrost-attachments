@@ -103,8 +103,11 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
     end;
 
     procedure GetExamples(var Examples: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        exit(false);
+        Examples := ContractParts.GetExamples('Help.Storage.Get');
+        exit(Examples.Count() > 0);
     end;
 
     procedure GetOverview(var Overview: Text): Boolean

@@ -88,6 +88,84 @@ codeunit 10035183 "Storage Contract Parts ori"
         ProcessErrorsResponseLbl: Label 'Base-app processing messages when process is true. Status stays Success.', Comment = 'is-IS=Vinnsluskilaboð grunnforrits þegar process er true. Staða er áfram Success.';
 
 
+    /// <summary>Returns recorded request and answer pairs for a public message type.</summary>
+    /// <param name="MessageType">The public message type name.</param>
+    /// <returns>The recorded examples; empty when none have been supplied.</returns>
+    procedure GetExamples(MessageType: Text) Examples: JsonArray
+    begin
+        // #160: populate only from genuine, sanitized bc28-w1 recordings.
+        // An empty result is deliberate until those recordings are available;
+        // the source and native conformance guards reject missing examples.
+        case MessageType of
+            '':
+                exit(Examples);
+        end;
+    end;
+
+    /// <summary>Builds the English overview for a storage or Data Exchange message type.</summary>
+    /// <param name="MessageType">The public message type name.</param>
+    /// <returns>The overview chapter; empty for an unknown type.</returns>
+    procedure GetOverview(MessageType: Text): Text
+    begin
+        case MessageType of
+            'Storage.Account.List':
+                exit('Lists configured storage connections with their codes, descriptions, connectors, base paths and enabled status. Choose an enabled connection code for storageCode; no connector credentials are returned.');
+            'Storage.File.List':
+                exit('Lists files below a directory relative to the selected connection. Use the returned relative paths with Storage.File.Get; this call does not download file content.');
+            'Storage.File.Get':
+                exit('Downloads one file from the selected connection and returns its content as base64. The path is relative to the connection; the file stays in storage.');
+            'Storage.File.Create':
+                exit('Decodes contentBase64 and writes a file to the selected connection at a relative path. This external write is outside the Business Central transaction.');
+            'Storage.File.Delete':
+                exit('Deletes one file at a relative path in the selected connection. The external deletion cannot be rolled back with the Business Central transaction.');
+            'Storage.File.Copy':
+                exit('Copies a file between two relative paths in the selected connection. The source remains available; the external write is outside the Business Central transaction.');
+            'Storage.File.Move':
+                exit('Moves a file between two relative paths in the selected connection. The external change cannot be rolled back with the Business Central transaction.');
+            'Storage.File.Exists':
+                exit('Checks whether a file exists at a relative path in the selected connection. It returns the existence result without downloading or changing the file.');
+            'Storage.Directory.List':
+                exit('Lists directories below a relative path in the selected connection. It does not list file content or change the storage.');
+            'Storage.Directory.Create':
+                exit('Creates a directory at a relative path in the selected connection. The external write is outside the Business Central transaction.');
+            'Storage.Directory.Delete':
+                exit('Deletes a directory at a relative path in the selected connection. The external deletion cannot be rolled back with the Business Central transaction.');
+            'Storage.Directory.Exists':
+                exit('Checks whether a directory exists at a relative path in the selected connection. It does not create the directory.');
+            'Storage.Attachment.Offload':
+                exit('Moves the content of an existing IncomingDocument or DocumentAttachment into storage and keeps a link so Business Central can still open it. The external file write is outside the Business Central transaction.');
+            'Storage.Attachment.Restore':
+                exit('Restores an offloaded IncomingDocument or DocumentAttachment to Business Central and deletes its stored file. The external deletion cannot be rolled back with the Business Central transaction.');
+            'Storage.Upload.Begin':
+                exit('Opens a chunked upload and returns its uploadId. Append numbered base64 chunks, then choose Commit, CommitToRecord or CommitToDataExchange; use Abort to discard an open session.');
+            'Storage.Upload.Append':
+                exit('Stores one numbered base64 chunk in an open upload session. Repeating the same sequence number replaces that chunk; use Storage.Upload.Status to inspect progress.');
+            'Storage.Upload.Commit':
+                exit('Assembles the chunks of an upload session and writes the file to its storage connection. The external write is outside the Business Central transaction; use CommitToRecord for a record-only upload.');
+            'Storage.Upload.Abort':
+                exit('Discards an open upload session and its chunks without writing a file to external storage. Use this to cancel an upload that will not be committed.');
+            'Storage.Upload.Status':
+                exit('Returns the state, declared size and received chunks of an upload session. It does not append content or commit the upload.');
+            'Storage.Attachment.CreateLinked':
+                exit('Links a file already in storage to a new or existing Incoming Document. It uses the storage connection and relative path instead of uploading another copy.');
+            'Storage.Attachment.CreateForRecord':
+                exit('Creates an IncomingDocument or DocumentAttachment from inline base64, a stored file or another attachment. Choose exactly one source and identify the destination record as described in target and parameters.');
+            'Storage.Upload.CommitToRecord':
+                exit('Assembles an upload session and creates an IncomingDocument or DocumentAttachment. No external storage is required unless keepFile is requested.');
+            'DataExchange.Definition.List':
+                exit('Lists Data Exchange definitions available to the caller, including their codes and types. Select a compatible code before importing or exporting data.');
+            'DataExchange.Definition.Get':
+                exit('Returns the structure of one Data Exchange definition, including its line, column and mapping metadata. It does not run the definition or import a file.');
+            'DataExchange.Type.List':
+                exit('Lists Data Exchange Types and their linked import and export definitions. Use the returned codes to choose or configure the definition used by a workflow.');
+            'DataExchange.Entry.List':
+                exit('Lists Data Exchange entries visible to the caller. Use an entry number with Entry.Get to inspect it or Entry.Process to run its mappings.');
+            'DataExchange.Entry.Get':
+                exit('Returns one Data Exchange entry and its parsed data. File content is included only when requested and within the inline limit; no mappings are run.');
+        end;
+        exit('');
+    end;
+
     /// <summary>Builds the envelope shared by storage requests.</summary>
     procedure GetEnvelope(DataRequired: Boolean) Envelope: JsonObject
     var

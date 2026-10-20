@@ -115,14 +115,19 @@ codeunit 10035180 "Storage File List Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetExamples(var Examples: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        exit(false);
+        Examples := ContractParts.GetExamples('Storage.File.List');
+        exit(Examples.Count() > 0);
     end;
 
     procedure GetOverview(var Overview: Text): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Clear(Overview);
-        exit(false);
+        Overview := ContractParts.GetOverview('Storage.File.List');
+        exit(Overview <> '');
     end;
 
     procedure GetNotes(var Notes: Text): Boolean

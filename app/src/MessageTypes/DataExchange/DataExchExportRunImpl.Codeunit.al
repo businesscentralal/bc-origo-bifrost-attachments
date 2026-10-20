@@ -156,12 +156,15 @@ codeunit 10035164 "DataExch Export Run Impl ori" implements "Msg Interface ori",
         exit(false);
     end;
 
-    /// <summary>Declares that this implementation supplies no examples chapter.</summary>
-    /// <param name="Examples">Unchanged; callers must ignore this value when the procedure returns false.</param>
-    /// <returns>False; this chapter is not supplied.</returns>
+    /// <summary>Returns the recorded English examples for this message type.</summary>
+    /// <param name="Examples">Out: recorded request and answer pairs.</param>
+    /// <returns>True when recorded examples are available.</returns>
     procedure GetExamples(var Examples: JsonArray): Boolean
+    var
+        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        exit(false);
+        Examples := ContractParts.GetExamples('DataExchange.Export.Run');
+        exit(Examples.Count() > 0);
     end;
 
     /// <summary>Summarizes the operation.</summary>

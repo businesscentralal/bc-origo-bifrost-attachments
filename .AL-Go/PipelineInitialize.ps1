@@ -1,3 +1,14 @@
+# #160: reject missing first-call help before either build mode compiles.
+# Keep this in the existing build callback so every full AL-Go build enforces it.
+$helpPython = Get-Command python3 -ErrorAction SilentlyContinue
+if (-not $helpPython) {
+    $helpPython = Get-Command python -ErrorAction Stop
+}
+& $helpPython.Source (Join-Path $env:GITHUB_WORKSPACE 'tools/check_help_chapters.py')
+if ($LASTEXITCODE -ne 0) {
+    throw 'Shipped message types must declare nonempty overview and examples chapters.'
+}
+
 # Bifrost: never ship the test app's internalsVisibleTo grant.
 # COSMO Alpaca replaces .AL-Go/PreCompileApp.ps1 with its own override and never calls ours,
 # so the strip happens here, before anything compiles. Only the Test build mode keeps the grant.

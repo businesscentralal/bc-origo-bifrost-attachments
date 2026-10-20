@@ -8,6 +8,16 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Added
+
+- A source build guard and native conformance assertion reject missing or empty overview/examples chapters for all 39 types (#160).
+- English overview chapters for every Attachments message type (#160), including files, directories, attachments, uploads and Data Exchange. Shared chapter text is built in codeunit 10035183.
+
+### Fixed
+
+- README documentation and context-sensitive help addresses now use `https://docs.bifrost.origo.is`, matching `app.json` (#160).
+
+
 ### Changed (2026-10-20) - All objects renumbered into the single registered range 10035135-10035234
 
 - `app.json` declares one range, 10035135-10035234, confirmed for this app in the allocation workbook on 20.10.2026. The former blocks 10035635-10035684 and 70013500-70013549 are freed. Every table, table extension, page, page extension, codeunit, enum, enum extension, permission set and permission set extension now numbers from 10035135 per object type. Object names are unchanged.
