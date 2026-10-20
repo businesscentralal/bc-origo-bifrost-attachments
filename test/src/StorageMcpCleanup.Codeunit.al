@@ -16,7 +16,7 @@ codeunit 96263 "Storage MCP Cleanup ori"
     begin
         if Item.FindSet(true) then
             repeat
-                if not Item."Run Id".StartsWith('W9166') then
+                if CopyStr(Item."Run Id", 1, 5) <> 'W9166' then
                     Error(InvalidFixtureErr);
                 if not (Item."Table Id" in [Database::Customer, Database::"Document Attachment", Database::"Incoming Document",
                     Database::"Incoming Document Attachment", Database::"Storage Setup ori", Database::"Storage Upload Session ori", Database::"Storage MCP File ori"]) then
