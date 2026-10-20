@@ -110,6 +110,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         FileName: Text;
         FolderPath: Text;
         Path: Text;
+        Existing: Boolean;
     begin
         RequestJson := Argument.GetRequestJson();
         ReadTarget(Argument, RequestJson, 'target', Target);
@@ -139,7 +140,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         CheckNativePathLength(Argument, TableId, StorageSetup.Code, Path, 'path');
         if Reader.RespondIfErrors(Argument) then
             exit(false);
-        if not RequestMgt.CheckUnlinkedDestination(Argument, StorageSetup.Code, Path, 'path') then
+        if not RequestMgt.CheckWriteDestination(Argument, StorageSetup, Connector, Path, 'path', Existing) then
             exit(false);
         if Reader.RespondIfTablePermissionDenied(Argument, Database::"Storage Attachment Link ori", true) then
             exit(false);
@@ -155,6 +156,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         Link."Storage Path" := CopyStr(Path, 1, MaxStrLen(Link."Storage Path"));
         Link."File Name" := CopyStr(FileName, 1, MaxStrLen(Link."File Name"));
         Link."Content Size" := TempBlob.Length();
+        Link."Created Storage File" := not Existing;
         Link."Inc. Doc. Entry No." := EntryNo;
         Link."Inc. Doc. Line No." := LineNo;
         Link."Offloaded At" := CurrentDateTime();
@@ -179,7 +181,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         exit(true);
     end;
 
-    /// <summary>Restores an offloaded attachment's content into the database and deletes the remote copy.</summary>
+    /// <summary>Restores attachment content and deletes only a remote file newly created by this attachment.</summary>
     /// <param name="Argument">The message argument carrying <c>target</c> and <c>systemId</c>; receives the error response.</param>
     /// <param name="ResultData">Out: the success payload describing the restored file.</param>
     /// <returns>True when the attachment was restored; false when an error response was written.</returns>
@@ -207,7 +209,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
             RespondRecordNotFound(Argument, TableId, Format(RecSystemId, 0, 4), 'systemId');
             exit(false);
         end;
-        Link.SetLoadFields("Storage Code", "Storage Path", "File Name");
+        Link.SetLoadFields("Storage Code", "Storage Path", "File Name", "Created Storage File");
         if not Link.Get(TableId, RecSystemId) then begin
             Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, NotOffloadedErr, 'systemId', Format(RecSystemId, 0, 4), OffloadedExpectedLbl, NotOffloadedNextStepLbl);
             exit(false);
@@ -233,7 +235,8 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         // file already gone. In this order a failing delete rolls the whole task back instead —
         // the attachment stays offloaded and its remote copy stays where the link says it is.
         Link.Delete(true);
-        Connector.DeleteFile(StorageSetup, Link."Storage Path");
+        if Link."Created Storage File" then
+            Connector.DeleteFile(StorageSetup, Link."Storage Path");
         exit(true);
     end;
 

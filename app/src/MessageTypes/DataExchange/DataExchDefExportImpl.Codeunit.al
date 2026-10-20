@@ -139,7 +139,7 @@ codeunit 10035156 "DataExch Def Export Impl ori" implements "Msg Interface ori",
     /// <summary>Describes the limits of the currently implemented operation.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     begin
-        Notes := 'Omit storageCode, inline, path and folderPath for the header only. Inline XML includes the definition lines, columns and mappings and is limited to 1 MB. With storageCode, path selects the output file; otherwise folderPath (or the connection root) and code.xml are used. Storage writes can overwrite a file and are not rolled back with Business Central. DataExchange.Definition.Get returns lines and mappings as JSON.';
+        Notes := 'Omit storageCode, inline, path and folderPath for the header only. Inline XML includes the definition lines, columns and mappings and is limited to 1 MB. With storageCode, path selects the output file; otherwise folderPath (or the connection root) and code.xml are used. Storage writes refuse an existing file unless overwrite is true. Linked attachment files cannot be replaced. External writes are not rolled back with Business Central. DataExchange.Definition.Get returns lines and mappings as JSON.';
         exit(true);
     end;
 

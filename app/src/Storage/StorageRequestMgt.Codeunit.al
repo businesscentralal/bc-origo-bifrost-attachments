@@ -47,6 +47,44 @@ codeunit 10035193 "Storage Request Mgt ori"
         DifferentPathsErr: Label 'Source and destination resolve to the same storage file.', Comment = 'is-IS=Uppruni og áfangastaður vísa á sömu skrá í geymslunni.';
         DifferentPathsNextStepLbl: Label 'Choose a different destination file name or folder.', Comment = 'is-IS=Veldu annað skráarheiti eða aðra möppu fyrir áfangastaðinn.';
         UnlinkedExpectedLbl: Label 'a file that no attachment is linked to', Comment = 'is-IS=skrá sem ekkert viðhengi er tengt við';
+        ExistingDestinationErr: Label 'The destination file already exists.', Comment = 'is-IS=Áfangaskráin er þegar til.';
+        NewDestinationExpectedLbl: Label 'a new file path, or overwrite true', Comment = 'is-IS=ný skráarslóð eða overwrite true';
+        ExistingDestinationNextLbl: Label 'Choose another path or send overwrite true to replace the existing file. Linked attachment files cannot be overwritten.', Comment = 'is-IS=Veldu aðra slóð eða sendu overwrite true til að skipta út fyrirliggjandi skrá. Ekki má yfirskrifa skrár sem tengjast viðhengjum.';
+        DestinationCheckErr: Label 'The storage destination could not be checked.', Comment = 'is-IS=Ekki tókst að athuga áfangastað í geymslu.';
+        DestinationCheckNextLbl: Label 'Check the storage connection and permissions, then retry. No file was written.', Comment = 'is-IS=Athugaðu geymslutenginguna og heimildir og reyndu aftur. Engin skrá var skrifuð.';
+
+    /// <summary>Collects overwrite and linked-file refusals before storage writes. Existing files require explicit consent.</summary>
+    internal procedure CollectWriteDestinationErrors(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; ParameterName: Text; var Existing: Boolean)
+    var
+        AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
+        Reader: Codeunit "Storage Request Reader ori";
+        Overwrite: Boolean;
+    begin
+        Existing := false;
+        Reader.ReadBoolean(Argument, Argument.GetRequestJson(), 'overwrite', false, Overwrite);
+        if Argument.HasCollectedErrors() then
+            exit;
+        if AttachmentMgt.IsStorageFileLinked(StorageSetup.Code, Path) then begin
+            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(LinkedFileWriteErr, Path), ParameterName, Path, UnlinkedExpectedLbl, LinkedWriteNextStepLbl);
+            exit;
+        end;
+        if not TryExists(StorageSetup, Connector, Enum::"Ext. File Storage File Type"::File, Path, Existing) then begin
+            ClearLastError();
+            Argument.AddError("Bifrost Error Code ori"::BusinessCentralError, DestinationCheckErr, ParameterName, Path, '', DestinationCheckNextLbl);
+            exit;
+        end;
+        if Existing and not Overwrite then
+            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, ExistingDestinationErr, ParameterName, Path, NewDestinationExpectedLbl, ExistingDestinationNextLbl);
+    end;
+
+    /// <summary>Checks an external write destination and answers collected refusals before any mutation.</summary>
+    internal procedure CheckWriteDestination(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; ParameterName: Text; var Existing: Boolean): Boolean
+    var
+        Reader: Codeunit "Storage Request Reader ori";
+    begin
+        CollectWriteDestinationErrors(Argument, StorageSetup, Connector, Path, ParameterName, Existing);
+        exit(not Reader.RespondIfErrors(Argument));
+    end;
 
     /// <summary>Rejects relative, ambiguous and control-character paths before provider normalization.</summary>
     /// <param name="Path">The complete path to test.</param>
@@ -269,10 +307,11 @@ codeunit 10035193 "Storage Request Mgt ori"
     procedure ExecuteCreateFile(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; var TempBlob: Codeunit "Temp Blob")
     var
         DataObject: JsonObject;
+        Existing: Boolean;
     begin
         if not CheckOperationPath(Argument, StorageSetup, 'path', Path, false) then
             exit;
-        if not CheckUnlinkedDestination(Argument, StorageSetup.Code, Path, 'path') then
+        if not CheckWriteDestination(Argument, StorageSetup, Connector, Path, 'path', Existing) then
             exit;
         if not TryCreateFile(StorageSetup, Connector, Path, TempBlob) then begin
             Argument.RespondWithLastError();

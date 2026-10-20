@@ -373,21 +373,20 @@ codeunit 10035140 "DataExch Export Mgt ori"
     /// <param name="Path">The path; completed when empty.</param>
     procedure CompletePath(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; FolderPath: Text; FileName: Text; var Path: Text)
     var
-        AttachmentMgt: Codeunit "Storage Attachment Mgt ori";
         Reader: Codeunit "Storage Request Reader ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
-        LinkedErr: Label 'File "%1" backs a Business Central attachment and cannot be overwritten by an export.', Comment = '%1 = storage path||is-IS=Skráin "%1" geymir viðhengi í Business Central og útflutningur má ekki yfirskrifa hana.';
-        LinkedNextStepLbl: Label 'Choose another path or folderPath and export again.', Comment = 'is-IS=Veldu aðra slóð eða möppu (path eða folderPath) og fluttu út aftur.';
+        Connector: Interface "Storage Connector ori";
+        Existing: Boolean;
+        DestinationErr: Label 'The export destination "%1" is not available.', Comment = '%1 = storage path||is-IS=Áfangastaður útflutnings "%1" er ekki tiltækur.';
     begin
         if Path = '' then begin
             Path := RequestMgt.CombinedPath(FolderPath, FileName);
             Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
-            if not Argument.HasCollectedErrors() then
-                if AttachmentMgt.IsStorageFileLinked(StorageSetup.Code, Path) then
-                    Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(LinkedErr, Path), 'path', Path, '', LinkedNextStepLbl);
+            Connector := StorageSetup."Storage Type";
+            RequestMgt.CollectWriteDestinationErrors(Argument, StorageSetup, Connector, Path, 'path', Existing);
         end;
         if Argument.HasCollectedErrors() then
-            Argument.RaiseCollectedErrors("Bifrost Error Code ori"::MultipleErrors, StrSubstNo(LinkedErr, Path));
+            Argument.RaiseCollectedErrors("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(DestinationErr, Path));
     end;
 
     /// <summary>Refuses a destination that backs an attachment, before any write.</summary>
@@ -398,8 +397,11 @@ codeunit 10035140 "DataExch Export Mgt ori"
     procedure CheckDestination(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Path: Text): Boolean
     var
         RequestMgt: Codeunit "Storage Request Mgt ori";
+        Connector: Interface "Storage Connector ori";
+        Existing: Boolean;
     begin
-        exit(RequestMgt.CheckUnlinkedDestination(Argument, StorageSetup.Code, Path, 'path'));
+        Connector := StorageSetup."Storage Type";
+        exit(RequestMgt.CheckWriteDestination(Argument, StorageSetup, Connector, Path, 'path', Existing));
     end;
 
     /// <summary>

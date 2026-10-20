@@ -159,6 +159,7 @@ codeunit 10035197 "Storage Upload Mgt ori"
         Connector: Interface "Storage Connector ori";
         UploadId: Guid;
         Path: Text;
+        Existing: Boolean;
     begin
         Reader.ReadGuid(Argument, Argument.GetRequestJson(), 'uploadId', true, UploadId);
         if Reader.RespondIfErrors(Argument) then
@@ -180,7 +181,7 @@ codeunit 10035197 "Storage Upload Mgt ori"
         Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
         if Reader.RespondIfErrors(Argument) then
             exit(false);
-        if not RequestMgt.CheckUnlinkedDestination(Argument, StorageSetup.Code, Path, 'path') then
+        if not RequestMgt.CheckWriteDestination(Argument, StorageSetup, Connector, Path, 'path', Existing) then
             exit(false);
         AssembleChunks(UploadId, TempBlob);
 
@@ -269,6 +270,7 @@ codeunit 10035197 "Storage Upload Mgt ori"
         DefCode: Code[20];
         Process: Boolean;
         KeepFile: Boolean;
+        Existing: Boolean;
         Path: Text;
         StorageWriteFailedErr: Label 'The file could not be written to storage, so the import was rolled back: %1', Comment = '%1 = connector error||is-IS=Ekki tókst að skrifa skrána í geymslu og því var innflutningurinn afturkallaður: %1';
         StorageWriteNextStepLbl: Label 'Check the storage connection and retry with the same uploadId, or omit keepFileInStorage.', Comment = 'is-IS=Athugaðu geymslutenginguna og reyndu aftur með sama uploadId, eða slepptu keepFileInStorage.';
@@ -300,7 +302,7 @@ codeunit 10035197 "Storage Upload Mgt ori"
             Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
             if Reader.RespondIfErrors(Argument) then
                 exit(false);
-            if not RequestMgt.CheckUnlinkedDestination(Argument, StorageSetup.Code, Path, 'path') then
+            if not RequestMgt.CheckWriteDestination(Argument, StorageSetup, Connector, Path, 'path', Existing) then
                 exit(false);
         end;
         if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch.", true) then

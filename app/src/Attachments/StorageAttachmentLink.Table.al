@@ -66,6 +66,11 @@ table 10035135 "Storage Attachment Link ori"
             Caption = 'Offloaded By', Comment = 'is-IS=Útvistað af';
             ToolTip = 'Specifies the user that offloaded the content.', Comment = 'is-IS=Tilgreinir notandann sem útvistaði innihaldinu.';
         }
+        field(11; "Created Storage File"; Boolean)
+        {
+            Caption = 'Created Storage File', Comment = 'is-IS=Stofnaði geymsluskrá';
+            ToolTip = 'Specifies whether this attachment created a new storage file. Restore and attachment deletion preserve pre-existing files and links with unknown ownership.', Comment = 'is-IS=Tilgreinir hvort þetta viðhengi stofnaði nýja geymsluskrá. Endurheimt og eyðing viðhengis varðveita fyrirliggjandi skrár og tengingar með óþekkt eignarhald.';
+        }
     }
 
     keys
