@@ -16,6 +16,16 @@ Business Central release versioning (`major.minor.build.revision`).
 - Storage.File.Get reports absent files as `RecordNotFound` on the relative `path`; connector read failures have a safe recovery step and do not expose the account base path. Response/error chapters and Icelandic translations describe the contract.
 - Changed product codeunits 10035136, 10035138, 10035140, 10035141, 10035155, 10035163, 10035166, 10035170, 10035183, 10035193, 10035194; native bilingual response regressions in codeunit 96258 and strengthened existing Data Exchange/upload assertions. Compiler/runtime evidence is recorded separately at the verified commit.
 
+### Fixed (2026-10-20) - Icelandic discovery and upload refusals (#157)
+
+- #157: translate the eight Data Exchange selection descriptions (codeunits 10035158, 10035160, 10035163, 10035164, 10035165, 10035166, 10035168, 10035187) and the closed-upload status in refusals (codeunit 10035197). Keep wire status values unchanged. Extend the mixed-language guard to reject Locked discovery labels; add exact Icelandic catalogue, committed/aborted refusal and existing JSON-string grammar regressions (test codeunits 96205, 96211 and 96213), and update the existing Icelandic expectation in test codeunit 96274.
+### Fixed (2026-10-20) - Definition export contract and storage effects (#158)
+
+- `DataExch Def Export Impl ori` (10035156) now describes the same header-default, optional inline XML and optional storage XML behavior in the English/Icelandic catalogue, overview and notes. It is registered Inbound because it can write storage; the existing type and wire shape are preserved.
+- `Storage Contract Parts ori` (10035183) documents header-only requests without requiring a delivery destination and classifies Definition.Export as irreversible, explaining that header/inline reads change nothing while external writes can overwrite files and cannot roll back. `DataExch Help Get Impl ori` (10035165) reflects the same modes and permissions.
+- Native tests in `DataExch Def Xfer Tests ori` (96244) cover header-only/no-storage writes, inline-only, combined inline/storage overwrite and contract direction/effects. `Attachments Build Tests ori` (96274) checks the updated exact English/Icelandic catalogue text; XLF stays synchronized.
+- `DataExch Format Tests ori` (96256) renames the inherited non-temporary `TempArgument` local to `Argument`, retaining the real record, to fix CI AL 17 warning AA0237 reported on PR #163.
+
 ### Changed (2026-10-20) - All objects renumbered into the single registered range 10035135-10035234
 
 - `app.json` declares one range, 10035135-10035234, confirmed for this app in the allocation workbook on 20.10.2026. The former blocks 10035635-10035684 and 70013500-70013549 are freed. Every table, table extension, page, page extension, codeunit, enum, enum extension, permission set and permission set extension now numbers from 10035135 per object type. Object names are unchanged.
@@ -108,7 +118,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Changed (2026-10-16) - stored storage descriptions (#126)
 
-- `Storage Contract Parts ori` (70013500) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
+- `Storage Contract Parts ori` (10035183) documents `accounts[].description` as the stored `Storage Setup ori.Description` field, returned verbatim at every LCID, including app-seeded values. No translation table, schema or data rewrite is introduced. `Storage Connector Tests` (96204) exercises account discovery at 1033 → 1039 → 1033 and checks both returned text and the unchanged stored row; existing label-description coverage checks both language directions.
 
 ### Changed (2026-10-16) - public help language and translated descriptions (#126)
 

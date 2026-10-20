@@ -29,6 +29,23 @@ codeunit 96213 "Data Exch Discovery Tests"
         WriteHintTok: Label 'DataExchange.Import.Run / Storage.Upload.CommitToDataExchange', Locked = true;
 
     [Test]
+    procedure Scenario_AC03_CodeTypeRefusal_UsesAccusativeIcelandic()
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        Request: JsonObject;
+        Response: JsonObject;
+    begin
+        // Story #157, AC03 | Time: independent | Risk: existing correct source must survive XLF generation.
+        // [GIVEN] A numeric code where the contract requires a JSON string.
+        Request.Add('code', 123);
+        // [WHEN] The invalid request is dispatched at LCID 1039.
+        ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Definition.Get", Request, 1039);
+        Response := TempArgument.GetResponseJson();
+        // [THEN] The complete recovery instruction uses the accusative form.
+        LibraryAssert.AreEqual('Sendu "code" sem JSON-streng.', ReadText(Response, 'nextStep'), 'Icelandic grammar.');
+    end;
+
+    [Test]
     procedure RepairedBindings_ResolveTheirOwnTargetTables()
     var
         MessageType: Enum "Message Type ori";
@@ -519,6 +536,11 @@ codeunit 96213 "Data Exch Discovery Tests"
     end;
 
     local procedure ExecuteType(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    begin
+        ExecuteType(TempArgument, MessageType, RequestJson, 0);
+    end;
+
+    local procedure ExecuteType(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -526,12 +548,18 @@ codeunit 96213 "Data Exch Discovery Tests"
         ResponseContentType: Text[100];
         MessageVersion: Enum "Message Version ori";
         RequestText: Text;
+        TaskId: Guid;
+        MessageId: Guid;
+        ResponseTime: Duration;
         ResponseText: Text;
         ResponseJson: JsonObject;
     begin
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
+        if LanguageId = 0 then
+            Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType)
+        else
+            Dispatcher.EnqueueAndProcess(MessageType, MessageVersion, '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseContentType, ResponseTime);
         ResponseContent.GetSubText(ResponseText, 1);
         ResponseJson.ReadFrom(ResponseText);
         Clear(TempArgument);

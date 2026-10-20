@@ -65,6 +65,38 @@ codeunit 96211 "Storage Msg Conformance Tests"
     end;
 
     [Test]
+    procedure Scenario_AC01_DataExchangeSelections_AreIcelandic()
+    var
+        Discovery: Interface "Msg Discovery ori";
+        Expected: Dictionary of [Integer, Text];
+        Actual: Dictionary of [Integer, Text];
+        Ordinal: Integer;
+        SavedLanguage: Integer;
+    begin
+        // Story #157, AC01 | Time: independent | Risk: compiled XLF must match source.
+        // [GIVEN] Exact Icelandic selection text for all eight reported catalogue entries.
+        Expected.Add(Enum::"Message Type ori"::"Help.DataExchange.Get".AsInteger(), 'Skilar leiðbeiningum um gagnaskipti; notaðu tiltekna gagnaskiptategund til að skoða skilgreiningar eða færslur.');
+        Expected.Add(Enum::"Message Type ori"::"DataExchange.Import.Run".AsInteger(), 'Flytur inn skrá sem er þegar í geymslu, eða lítið innfellt innihald, með skilgreiningu fyrir almennan innflutning eða launainnflutning. Notaðu Storage.Upload.CommitToDataExchange fyrir upphleðslu í bútum.');
+        Expected.Add(Enum::"Message Type ori"::"Storage.Upload.CommitToDataExchange".AsInteger(), 'Breytir fullbúinni upphleðslu í bútum í þáttaða gagnaskiptafærslu samkvæmt skilgreiningu fyrir almennan innflutning eða launainnflutning, í stað skrár í geymslu eða viðhengis.');
+        Expected.Add(Enum::"Message Type ori"::"DataExchange.Entry.Process".AsInteger(), 'Skrifar þáttaða reiti innfluttrar færslu í viðskiptatöflur samkvæmt vörpunum skilgreiningarinnar, sem annað skref á eftir DataExchange.Import.Run eða Storage.Upload.CommitToDataExchange.');
+        Expected.Add(Enum::"Message Type ori"::"DataExchange.Entry.Delete".AsInteger(), 'Fjarlægir eina innflutta eða útflutta gagnaskiptafærslu og reiti hennar; skilgreiningin og viðskiptafærslurnar sem voru skrifaðar úr færslunni haldast.');
+        Expected.Add(Enum::"Message Type ori"::"DataExchange.Definition.Import".AsInteger(), 'Stofnar eða skiptir út skilgreiningum gagnaskipta úr XML-skrá, sömu skrá og aðgerðin Flytja út skilgreiningu gagnaskipta skrifar og DataExchange.Definition.Export skilar.');
+        Expected.Add(Enum::"Message Type ori"::"DataExchange.PaymentExport.Run".AsInteger(), 'Keyrir útflutning einnar greiðslubókarkeyrslu (SEPA-millifærslu eða greiðsluútflutningssniðs gagnaskipta), setur bankaskrána í geymslu og merkir línurnar sem útfluttar.');
+        Expected.Add(Enum::"Message Type ori"::"DataExchange.Export.Run".AsInteger(), 'Keyrir skilgreiningu fyrir almennan útflutning á töflusýn eða lista af SystemId-auðkennum færslna og afhendir skrána; notaðu DataExchange.PaymentExport.Run fyrir greiðsluskrár.');
+        SavedLanguage := GlobalLanguage();
+        // [WHEN] The caller requests each selection description in Icelandic.
+        GlobalLanguage(1039);
+        foreach Ordinal in Expected.Keys() do begin
+            Discovery := Enum::"Message Type ori".FromInteger(Ordinal);
+            Actual.Add(Ordinal, Discovery.GetSelectionDescription());
+        end;
+        GlobalLanguage(SavedLanguage);
+        // [THEN] No English fallback or stale translation is accepted.
+        foreach Ordinal in Expected.Keys() do
+            LibraryAssert.AreEqual(Expected.Get(Ordinal), Actual.Get(Ordinal), TypeName(Ordinal) + ' Icelandic selection.');
+    end;
+
+    [Test]
     procedure Scenario_D7_Envelope_StaysEnglish()
     var
         Contract: Interface "Msg Contract ori";

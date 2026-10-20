@@ -184,6 +184,7 @@ codeunit 96244 "DataExch Def Xfer Tests ori"
     [Test]
     procedure DefinitionExport_InlineReturnsXml()
     var
+        MockState: Codeunit "Storage Mock State";
         Request: JsonObject;
         Response: JsonObject;
         DefCode: Code[20];
@@ -202,6 +203,100 @@ codeunit 96244 "DataExch Def Xfer Tests ori"
         Xml := Fixture.Decode(Fixture.ReadText(Fixture.Data(Response), 'contentBase64'));
         LibraryAssert.IsTrue(Xml.Contains('DataExchDef'), 'The XML carries the definition.');
         LibraryAssert.IsTrue(Xml.Contains(DefCode), 'The XML carries the code.');
+        LibraryAssert.AreEqual(0, MockState.GetWriteCalls(), 'Inline-only export never writes storage.');
+        LibraryAssert.IsFalse(Response.Contains('storageCode') or Response.Contains('path'), 'Inline-only export has no storage destination.');
+    end;
+
+    /// <summary>Omitting delivery parameters returns exactly the header inside data and does not write storage.</summary>
+    [Test]
+    procedure DefinitionExport_NoDeliveryReturnsOnlyHeader()
+    var
+        MockState: Codeunit "Storage Mock State";
+        Request: JsonObject;
+        Response: JsonObject;
+        DefCode: Code[20];
+    begin
+        Fixture.InitializeStorage();
+        DefCode := Fixture.CreateImportDefinition(0);
+        Request.Add('code', DefCode);
+
+        Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Definition.Export", Request);
+
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'Header-only export succeeds.');
+        LibraryAssert.AreEqual(2, Response.Keys().Count(), 'Only status and data are returned.');
+        LibraryAssert.AreEqual(3, Fixture.Data(Response).Keys().Count(), 'Data contains only code, name and type.');
+        LibraryAssert.AreEqual(DefCode, Fixture.ReadText(Fixture.Data(Response), 'code'), 'The selected header is returned.');
+        LibraryAssert.IsTrue(Fixture.Data(Response).Contains('name') and Fixture.Data(Response).Contains('type'), 'The complete header is returned.');
+        LibraryAssert.AreEqual(0, MockState.GetWriteCalls(), 'Header-only export never writes storage.');
+        LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'No file was created.');
+    end;
+
+    /// <summary>Combining inline and storage replaces an existing file with exactly the returned XML.</summary>
+    [Test]
+    procedure DefinitionExport_BothDestinationsOverwriteSameXml()
+    var
+        MockState: Codeunit "Storage Mock State";
+        Request: JsonObject;
+        Response: JsonObject;
+        DefCode: Code[20];
+        ContentBase64: Text;
+    begin
+        Fixture.InitializeStorage();
+        DefCode := Fixture.CreateImportDefinition(0);
+        MockState.PutFile('definition.xml', Fixture.Encode('previous file'));
+        Request.Add('code', DefCode);
+        Request.Add('storageCode', Fixture.StorageCode());
+        Request.Add('path', 'definition.xml');
+        Request.Add('inline', true);
+
+        Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Definition.Export", Request);
+
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'Combined export succeeds.');
+        LibraryAssert.AreEqual(DefCode, Fixture.ReadText(Fixture.Data(Response), 'code'), 'The header is retained.');
+        LibraryAssert.AreEqual(Fixture.StorageCode(), Fixture.ReadText(Fixture.Data(Response), 'storageCode'), 'The destination is returned.');
+        LibraryAssert.AreEqual('definition.xml', Fixture.ReadText(Fixture.Data(Response), 'path'), 'The explicit path is returned.');
+        ContentBase64 := Fixture.ReadText(Fixture.Data(Response), 'contentBase64');
+        LibraryAssert.IsTrue(Fixture.Decode(ContentBase64).Contains(DefCode), 'The returned XML contains the seeded definition.');
+        LibraryAssert.AreEqual(ContentBase64, MockState.GetFileContent('definition.xml'), 'Existing storage content is replaced by the returned XML.');
+        LibraryAssert.AreEqual(1, MockState.GetWriteCalls(), 'Exactly one connector write occurs.');
+    end;
+
+    /// <summary>Discovery classifies the storage-capable type as Inbound with irreversible writes and an optional header-only mode.</summary>
+    [Test]
+    procedure DefinitionExport_ContractDescribesAllModesAndEffects()
+    var
+        Implementation: Codeunit "DataExch Def Export Impl ori";
+        Contract: Interface "Msg Contract ori";
+        Effect: JsonObject;
+        Response: JsonObject;
+        Parameters: JsonArray;
+        Overview: Text;
+        Notes: Text;
+        ParametersText: Text;
+        ResponseText: Text;
+        SavedLanguageId: Integer;
+    begin
+        SavedLanguageId := GlobalLanguage();
+        GlobalLanguage(1033);
+        Contract := Implementation;
+        Contract.GetEffect(Effect);
+        Contract.GetParameters(Parameters);
+        Contract.GetResponse(Response);
+        Contract.GetOverview(Overview);
+        Contract.GetNotes(Notes);
+        GlobalLanguage(SavedLanguageId);
+
+        LibraryAssert.AreEqual("Msg Direction ori"::Inbound, Implementation.GetMessageDirection(), 'The type can write external storage.');
+        LibraryAssert.AreEqual('irreversible', Fixture.ReadText(Effect, 'effect'), 'The strongest supported effect includes overwrites.');
+        LibraryAssert.IsTrue(Fixture.ReadText(Effect, 'changes').Contains('can overwrite an existing file'), 'The overwrite effect is explicit.');
+        LibraryAssert.IsTrue(Fixture.ReadText(Effect, 'changes').Contains('Header-only and inline-only requests read'), 'Read-only modes are explicit.');
+        LibraryAssert.IsTrue(Overview.Contains('by default') and Overview.Contains('contentBase64') and Overview.Contains('storageCode'), 'Overview covers all three modes.');
+        LibraryAssert.IsTrue(Notes.Contains('header only') and Notes.Contains('not rolled back'), 'Notes cover the default and external write boundary.');
+        Parameters.WriteTo(ParametersText);
+        Response.WriteTo(ResponseText);
+        LibraryAssert.IsTrue(ParametersText.Contains('Omit all delivery parameters for the header only'), 'Parameters permit the shipped header-only request.');
+        LibraryAssert.IsTrue(ResponseText.Contains('omitted for header-only or inline-only requests'), 'Response describes optional storage output.');
+        LibraryAssert.IsFalse(ParametersText.Contains('Send it, or inline true, or both'), 'Parameters do not falsely require XML delivery.');
     end;
 
     [Test]

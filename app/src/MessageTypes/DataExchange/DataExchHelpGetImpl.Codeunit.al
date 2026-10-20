@@ -36,7 +36,7 @@ codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
 
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Returns the Data Exchange discovery guide; use a specific Data Exchange type to inspect definitions or entries.', Locked = true;
+        SelectionDescriptionLbl: Label 'Returns the Data Exchange discovery guide; use a specific Data Exchange type to inspect definitions or entries.', Comment = 'is-IS=Skilar leiðbeiningum um gagnaskipti; notaðu tiltekna gagnaskiptategund til að skoða skilgreiningar eða færslur.';
     begin
         exit(SelectionDescriptionLbl);
     end;
@@ -145,7 +145,7 @@ codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
         Guide.AppendLine();
         Guide.AppendLine('## Pipeline');
         Guide.AppendLine();
-        Guide.AppendLine('1. **Install or discover** a definition: `DataExchange.Definition.Import` installs the standard definition XML (`storageCode` + `path`, `contentBase64` up to 1 MB, or a chunked `uploadId`; `overwrite`, `newCode`). `DataExchange.Definition.List` and `DataExchange.Definition.Get` show what exists; `DataExchange.Definition.Export` writes a definition back as XML (`storageCode` + `path`/`folderPath` and/or `inline`).');
+        Guide.AppendLine('1. **Install or discover** a definition: `DataExchange.Definition.Import` installs the standard definition XML (`storageCode` + `path`, `contentBase64` up to 1 MB, or a chunked `uploadId`; `overwrite`, `newCode`). `DataExchange.Definition.List` and `DataExchange.Definition.Get` show what exists; `DataExchange.Definition.Export` returns the header by default; `inline: true` adds the XML, and `storageCode` + `path`/`folderPath` writes the XML to storage. Both XML destinations may be requested. Storage writes can overwrite a file and cannot be rolled back.');
         Guide.AppendLine('2. **Import** a file with a Generic Import or Payroll Import definition: `DataExchange.Import.Run` (`storageCode` + `path` of a stored file, which stays unchanged, or `contentBase64` up to 1 MB) or, for a large file, `Storage.Upload.Begin` -> `Storage.Upload.Append` -> `Storage.Upload.CommitToDataExchange` (`uploadId`, `dataExchDefCode`, optional `keepFileInStorage`). Both create a Data Exch. entry, run the definition reader and return `entryNo`, `lineCount` and `fieldCount`. A file the reader cannot read is refused and leaves no entry.');
         Guide.AppendLine('3. **Inspect** the parsed fields: `DataExchange.Entry.Get` (`entryNo`, paged `fields`), `DataExchange.Entry.List` for older entries.');
         Guide.AppendLine('4. **Process** the entry: `DataExchange.Entry.Process` runs the definition mappings and returns `targets[]` (table, inserted and modified counts, record SystemIds). Or send `process: true` on the import to do both in one call; the import is then committed first, and a processing error is returned in `processResult.errors` while the entry stays.');
@@ -182,7 +182,7 @@ codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
         Guide.AppendLine();
         Guide.AppendLine('## Permissions');
         Guide.AppendLine();
-        Guide.AppendLine('Assign `BIFROST DataExch ori` with the Foundation API baseline. This role grants read access, including `DataExchange.Definition.Export`; it does not grant table writes.');
+        Guide.AppendLine('Assign `BIFROST DataExch ori` with the Foundation API baseline. This role grants table read access, including the definition read by `DataExchange.Definition.Export`; it does not grant table writes. Definition.Export is registered Inbound because its optional storage output writes an external file; the storage connector also requires its own permissions.');
         Guide.AppendLine('The write types additionally require the standard Business Central permissions of the tables they write: Data Exch. and Data Exch. Field for imports and exports, the definition tables for `DataExchange.Definition.Import` and `DataExchange.Definition.Delete`, the target tables of the mappings for processing, and Gen. Journal Line and Credit Transfer Register for payment exports. Types with `storageCode` also use the storage connection. `BIFROST Attach ori` does not grant these Data Exchange table permissions.');
         exit(Guide.ToText());
     end;
