@@ -587,6 +587,57 @@ codeunit 96205 "Storage Upload Tests"
         Contract.WriteTo(Result);
     end;
 
+    [Test]
+    procedure Scenario_AC02_CommittedUpload_RefusalIsIcelandic()
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        UploadId: Text;
+        Path: Text;
+        Request: JsonObject;
+        Response: JsonObject;
+    begin
+        // Story #157, AC02 | Time: independent | Risk: real dispatcher and compiled XLF.
+        // [GIVEN] A session committed through the production message path.
+        Initialize();
+        BeginUpload('committed-is.txt', '', UploadId, Path);
+        AppendChunk(UploadId, 1, 'content');
+        CommitUpload(TempArgument, UploadId);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'First commit succeeds.');
+        // [WHEN] The public queue path receives LCID 1039 explicitly.
+        Request.Add('uploadId', UploadId);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Commit", Request, 1039);
+        Response := TempArgument.GetResponseJson();
+        // [THEN] The whole refusal is Icelandic; structured protocol values stay stable.
+        LibraryAssert.AreEqual('PreconditionFailed', ReadText(Response, 'code'), 'Closed upload error code.');
+        LibraryAssert.AreEqual('Upphleðslulotan er staðfest, ekki opin; hún hefur þegar verið staðfest eða hætt við hana.', ReadText(Response, 'error'), 'Committed refusal at 1039.');
+        LibraryAssert.AreEqual('uploadId', ReadText(Response, 'parameter'), 'Refused upload parameter.');
+    end;
+
+    [Test]
+    procedure Scenario_AC02_AbortedUpload_RefusalIsIcelandic()
+    var
+        Session: Record "Storage Upload Session ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Request: JsonObject;
+        Response: JsonObject;
+    begin
+        // Story #157, AC02 | Time: independent | Risk: Abort deletes sessions, so seed a retained closed row.
+        // [GIVEN] An owned aborted session (normal Abort removes the row).
+        Initialize();
+        Session.Init();
+        Session."Upload Id" := CreateGuid();
+        Session.Status := Session.Status::Aborted;
+        Session.Insert(true);
+        Request.Add('uploadId', Format(Session."Upload Id", 0, 4));
+        // [WHEN] The caller tries to commit the aborted session in Icelandic.
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Commit", Request, 1039);
+        Response := TempArgument.GetResponseJson();
+        // [THEN] The status inside the refusal is translated without changing its protocol code.
+        LibraryAssert.AreEqual('PreconditionFailed', ReadText(Response, 'code'), 'Closed upload error code.');
+        LibraryAssert.AreEqual('Upphleðslulotan er hætt við, ekki opin; hún hefur þegar verið staðfest eða hætt við hana.', ReadText(Response, 'error'), 'Aborted refusal at 1039.');
+        Session.Delete(true);
+    end;
+
     local procedure Initialize()
     var
         StorageSetup: Record "Storage Setup ori";
@@ -680,6 +731,11 @@ codeunit 96205 "Storage Upload Tests"
     end;
 
     local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
+    begin
+        ExecuteTypeWithRequest(TempArgument, MessageType, RequestJson, 0);
+    end;
+
+    local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer)
     var
         Dispatcher: Codeunit "Dispatcher ori";
         RequestContent: BigText;
@@ -687,12 +743,18 @@ codeunit 96205 "Storage Upload Tests"
         ResponseContentType: Text[100];
         MessageVersion: Enum "Message Version ori";
         RequestText: Text;
+        TaskId: Guid;
+        MessageId: Guid;
+        ResponseTime: Duration;
         ResponseText: Text;
         ResponseJson: JsonObject;
     begin
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
+        if LanguageId = 0 then
+            Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType)
+        else
+            Dispatcher.EnqueueAndProcess(MessageType, MessageVersion, '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseContentType, ResponseTime);
         ResponseContent.GetSubText(ResponseText, 1);
         ResponseJson.ReadFrom(ResponseText);
         // Clear PK before Insert: Init keeps ID; reuse after a prior Insert raises

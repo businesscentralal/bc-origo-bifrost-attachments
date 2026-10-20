@@ -530,7 +530,7 @@ codeunit 10035197 "Storage Upload Mgt ori"
         end;
         if Session.Status = Session.Status::Open then
             exit(true);
-        Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(NotOpenErr, StatusName(Session.Status)), 'uploadId',
+        Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(NotOpenErr, StatusCaption(Session.Status)), 'uploadId',
             Format(UploadId, 0, 4), OpenExpectedLbl, NotOpenNextStepLbl);
         exit(false);
     end;
@@ -558,6 +558,22 @@ codeunit 10035197 "Storage Upload Mgt ori"
         RequestMgt: Codeunit "Storage Request Mgt ori";
     begin
         exit(RequestMgt.CanonicalPath(FolderPath));
+    end;
+
+    local procedure StatusCaption(Status: Enum "Storage Upload Status ori"): Text
+    var
+        OpenLbl: Label 'Open', Comment = 'is-IS=opin';
+        CommittedLbl: Label 'Committed', Comment = 'is-IS=staðfest';
+        AbortedLbl: Label 'Aborted', Comment = 'is-IS=hætt við';
+    begin
+        case Status of
+            Status::Open:
+                exit(OpenLbl);
+            Status::Committed:
+                exit(CommittedLbl);
+            Status::Aborted:
+                exit(AbortedLbl);
+        end;
     end;
 
     local procedure StatusName(Status: Enum "Storage Upload Status ori"): Text

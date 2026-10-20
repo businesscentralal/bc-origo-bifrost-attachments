@@ -57,7 +57,7 @@ codeunit 10035168 "DataExch Pay Export Impl ori" implements "Msg Interface ori",
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Runs the Payment Journal export of one journal batch (SEPA credit transfer or a Data Exchange payment export format) and puts the bank file in storage, marking the lines as exported.', Locked = true;
+        SelectionDescriptionLbl: Label 'Runs the Payment Journal export of one journal batch (SEPA credit transfer or a Data Exchange payment export format) and puts the bank file in storage, marking the lines as exported.', Comment = 'is-IS=Keyrir útflutning einnar greiðslubókarkeyrslu (SEPA-millifærslu eða greiðsluútflutningssniðs gagnaskipta), setur bankaskrána í geymslu og merkir línurnar sem útfluttar.';
     begin
         exit(SelectionDescriptionLbl);
     end;
