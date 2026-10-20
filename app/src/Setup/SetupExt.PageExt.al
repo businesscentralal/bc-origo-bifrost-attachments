@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Adds Bifrost Attachments to the Apps group on the Bifröst Setup page. The single action
 /// opens <c>Attachments Setup ori</c>, which owns everything this module contributes to setup.
 /// </summary>
-pageextension 10035635 "Setup Ext. ori" extends "Setup ori"
+pageextension 10035135 "Setup Ext. ori" extends "Setup ori"
 {
     actions
     {

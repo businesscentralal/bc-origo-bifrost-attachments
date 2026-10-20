@@ -7,7 +7,7 @@ using Origo.Bifrost;
 /// an open upload session. Re-sending the same <c>sequence</c> replaces that chunk, so retries
 /// are safe.
 /// </summary>
-codeunit 10035657 "Storage Upload Append Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035185 "Storage Upload Append Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

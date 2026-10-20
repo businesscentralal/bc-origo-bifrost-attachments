@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of <c>Help.DataExchange.Get</c>. Returns the Data Exchange discovery overview.
 /// No request body is required.
 /// </summary>
-codeunit 70013521 "DataExch Help Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

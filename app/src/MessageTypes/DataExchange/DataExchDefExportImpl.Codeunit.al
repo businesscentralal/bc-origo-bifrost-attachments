@@ -4,7 +4,7 @@ using Origo.Bifrost;
 using System.IO;
 
 /// <summary>Returns the existing Data Exchange definition header.</summary>
-codeunit 70013536 "DataExch Def Export Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035156 "DataExch Def Export Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

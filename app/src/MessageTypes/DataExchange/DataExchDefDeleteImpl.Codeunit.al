@@ -7,7 +7,7 @@ using Origo.Bifrost;
 using System.IO;
 
 /// <summary>Refuses invalid or referenced definitions before deleting a Data Exchange definition.</summary>
-codeunit 70013543 "DataExch Def Delete Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
     TableNo = "Message Argument ori";

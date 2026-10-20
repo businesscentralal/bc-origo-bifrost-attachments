@@ -7,7 +7,7 @@ using System.ExternalFileStorage;
 /// Implementation of the <c>Storage.File.List</c> message type. Lists the files in a
 /// directory of the configured storage connection.
 /// </summary>
-codeunit 10035653 "Storage File List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035180 "Storage File List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of the <c>Storage.File.Delete</c> message type. Deletes a file from the
 /// configured storage connection.
 /// </summary>
-codeunit 10035650 "Storage File Delete Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035177 "Storage File Delete Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

@@ -20,7 +20,7 @@ using System.Utilities;
 /// storage is the last step of a commit, mirroring the offload transaction discipline: a failure
 /// before it rolls back the database work, and a failed upload rolls back the status change with it.
 /// </remarks>
-codeunit 10035665 "Storage Upload Mgt ori"
+codeunit 10035197 "Storage Upload Mgt ori"
 {
     Access = Internal;
 

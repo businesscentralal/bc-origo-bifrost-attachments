@@ -15,7 +15,7 @@ namespace Origo.Bifrost.Attachments;
 /// the table by <see cref="Codeunit.StorageDataRestriction"/>. Abandoned sessions are pruned
 /// by a retention policy registered in <see cref="Codeunit.StorageRetenPolicy"/>.
 /// </remarks>
-table 10035638 "Storage Upload Session ori"
+table 10035139 "Storage Upload Session ori"
 {
     Extensible = false;
     Caption = 'Bifrost Storage Upload Session', Comment = 'is-IS=Upphleðslulota Bifröst geymslu';

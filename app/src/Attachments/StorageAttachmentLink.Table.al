@@ -7,7 +7,7 @@ namespace Origo.Bifrost.Attachments;
 /// the content can be served transparently on read and brought back on restore. While a row
 /// exists the attachment's local content (BLOB or media) is empty.
 /// </summary>
-table 10035635 "Storage Attachment Link ori"
+table 10035135 "Storage Attachment Link ori"
 {
     Extensible = false;
     Caption = 'Bifrost Storage Attachment Link', Comment = 'is-IS=Viðhengjatenging Bifröst geymslu';

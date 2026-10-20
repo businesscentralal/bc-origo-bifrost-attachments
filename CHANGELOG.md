@@ -8,6 +8,13 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-20) - All objects renumbered into the single registered range 10035135-10035234
+
+- `app.json` declares one range, 10035135-10035234, confirmed for this app in the allocation workbook on 20.10.2026. The former blocks 10035635-10035684 and 70013500-70013549 are freed. Every table, table extension, page, page extension, codeunit, enum, enum extension, permission set and permission set extension now numbers from 10035135 per object type. Object names are unchanged.
+- The 39 message-type values in Foundation's `Message Type ori` moved into the same range, which clears the AppSourceCop AS0099 findings: Storage values to 10035135-10035157 (same order), Data Exchange values to 10035158-10035173. Message-type keys, bindings and contracts are unchanged, so callers that address types by name are unaffected.
+- Breaking for any database that has the app installed with the old ids: table data and stored message-type ordinals do not carry over. Uninstall the earlier build and clear its data before you install this one. No AppSource version has been published.
+- Tests that pin ordinals (96204, 96211, 96274), the API surface matrix (`API-SURFACE.md`, `api-surface-objects.json`, `tools/Test-ApiSurfaceMatrix.py`) and the id notes in the README, AGENTS.md and `.claude/CLAUDE.md` use the new ids.
+
 ### Added (2026-10-19) - Restrictive permission tests for the Data Exchange pipeline types (#79)
 
 - `Storage 79 Perm Tests ori` (96218) covers the five message types added in #150 under `TestPermissions = Restrictive`, dispatched through the public `Dispatcher ori` with fresh observer readback. Refusals: `DataExchange.Entry.Process` without write on the mapping target (`PermissionDenied` naming the definition, no marker), `DataExchange.Entry.Delete` without `Data Exch.` mutation and without `Data Exch. Field` mutation, `DataExchange.Definition.Import` without definition mutation (valid exported XML under a new code installs nothing), `DataExchange.PaymentExport.Run` without `Gen. Journal Line` mutation (line not marked, no entry, no credit transfer register) and `Storage.Upload.CommitToDataExchange` with both product roles but no `Data Exch.` or `Data Exch. Field` mutation (session stays open with its chunk bytes). Each denial asserts the table id in `received`.

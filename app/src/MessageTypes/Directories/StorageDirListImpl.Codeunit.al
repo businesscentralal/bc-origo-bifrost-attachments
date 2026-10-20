@@ -7,7 +7,7 @@ using System.ExternalFileStorage;
 /// Implementation of the <c>Storage.Directory.List</c> message type. Lists the
 /// subdirectories of a directory in the configured storage connection.
 /// </summary>
-codeunit 10035647 "Storage Dir List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035174 "Storage Dir List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

@@ -8,7 +8,7 @@ using System.Upgrade;
 /// Purges from install and once per company on upgrade. Every company upgrade first retries
 /// the permission-probed legacy take-over, including when the orphan purge already ran.
 /// </summary>
-codeunit 10035683 "Storage Link Upgrade ori"
+codeunit 10035148 "Storage Link Upgrade ori"
 {
     Access = Internal;
     Subtype = Upgrade;

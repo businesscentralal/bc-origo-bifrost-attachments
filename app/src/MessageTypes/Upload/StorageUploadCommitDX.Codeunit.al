@@ -7,7 +7,7 @@ using System.IO;
 /// Implementation of <c>Storage.Upload.CommitToDataExchange</c>. Assembles a chunked upload into a
 /// Data Exch. entry, parses it with an import definition and optionally applies the mappings.
 /// </summary>
-codeunit 70013506 "Storage Upload Commit DX ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035187 "Storage Upload Commit DX ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

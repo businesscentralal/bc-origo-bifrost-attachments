@@ -6,7 +6,7 @@ using System.IO;
 /// <summary>
 /// Implementation of <c>DataExchange.Type.List</c>. Lists Data Exchange Type rows.
 /// </summary>
-codeunit 70013524 "DataExch Type List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035169 "DataExch Type List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

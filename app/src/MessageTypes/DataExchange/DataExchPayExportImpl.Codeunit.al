@@ -7,7 +7,7 @@ using Origo.Bifrost;
 /// Implementation of <c>DataExchange.PaymentExport.Run</c>. Exports a payment journal batch with the
 /// payment export format of its bank account and delivers the bank file to storage or inline.
 /// </summary>
-codeunit 70013510 "DataExch Pay Export Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035168 "DataExch Pay Export Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
     TableNo = "Message Argument ori";

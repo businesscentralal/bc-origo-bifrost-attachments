@@ -7,7 +7,7 @@ using System.IO;
 /// Implementation of <c>DataExchange.Entry.Process</c>. Applies the mappings of the definition to a
 /// parsed Data Exch. entry and reports the records written to each target table.
 /// </summary>
-codeunit 70013507 "DataExch Entry Proc Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035163 "DataExch Entry Proc Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
     TableNo = "Message Argument ori";
