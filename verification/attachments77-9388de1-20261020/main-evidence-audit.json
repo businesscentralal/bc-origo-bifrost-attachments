@@ -1,0 +1,107 @@
+{
+  "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+  "runId": 39298155811,
+  "attempt": 1,
+  "runUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39298155811",
+  "compiler": {
+    "12211000351": {
+      "errors": 0,
+      "warnings": 0,
+      "infos": 0,
+      "compilations": 1,
+      "logSha256": "3e777810e024f2e899ffcb08ad472ee41de661daaea319e599feae9d38cc0b4c"
+    },
+    "12211417253": {
+      "errors": 0,
+      "warnings": 0,
+      "infos": 5,
+      "compilations": 2,
+      "logSha256": "6ed5dfb58ab8bb23eaa5472c0fedf05cb9963f90a0f2f692902665af4fbb4a0b"
+    }
+  },
+  "packages": [
+    {
+      "artifactId": 12211715204,
+      "name": "Origo_Bifrost Attachments_28.0.0.113.app",
+      "version": "28.0.0.113",
+      "sha256": "e68e79c6450d9c666b928b91022905cf78fccd35466a86db769c3e6476e950a6",
+      "bytes": 403500,
+      "source": {
+        "RepositoryUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments",
+        "Commit": "c30c2254bf953ed2e6f90fdf080dfb216bea799f"
+      },
+      "friends": [],
+      "suppressedWarnings": [],
+      "signatureTrustVerified": false
+    },
+    {
+      "artifactId": 12211701492,
+      "name": "Origo_Bifrost Attachments_28.0.0.113.app",
+      "version": "28.0.0.113",
+      "sha256": "2cbda4bd9a09a7ae753bba95b14a404b31f95079117e5124f2ff41e7efd48324",
+      "bytes": 391466,
+      "source": {
+        "RepositoryUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments",
+        "Commit": "c30c2254bf953ed2e6f90fdf080dfb216bea799f"
+      },
+      "friends": [
+        {
+          "Id": "7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+          "Name": "Bifrost Attachments - Tests",
+          "Publisher": "Origo"
+        }
+      ],
+      "suppressedWarnings": [
+        {
+          "Name": "AS0081"
+        }
+      ],
+      "signatureTrustVerified": false
+    },
+    {
+      "artifactId": 12210626582,
+      "name": "Origo_Bifrost Attachments - Tests_28.0.0.113.app",
+      "version": "28.0.0.113",
+      "sha256": "327958fbf627e4a5de8ddb7ef56e156f2cfd31109d128d96519aae1ba1886d23",
+      "bytes": 186393,
+      "source": {
+        "RepositoryUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments",
+        "Commit": "c30c2254bf953ed2e6f90fdf080dfb216bea799f"
+      },
+      "friends": [],
+      "suppressedWarnings": [
+        {
+          "Name": "AS0092"
+        },
+        {
+          "Name": "AS0051"
+        },
+        {
+          "Name": "AS0084"
+        },
+        {
+          "Name": "AS0015"
+        },
+        {
+          "Name": "AS0054"
+        }
+      ],
+      "signatureTrustVerified": false
+    }
+  ],
+  "tests": {
+    "executed": 365,
+    "passed": 365,
+    "failed": 0,
+    "skipped": 0,
+    "junitSha256": "9f65c51e3eda6d513f733b61c8d3bf2a644cad9c26ed638d3d66180bbaed6a52",
+    "sourceMethodMatch": {
+      "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+      "sourceMethods": 365,
+      "junitCases": 365,
+      "missing": 0,
+      "extra": 0,
+      "duplicates": 0
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/77",
+  "candidateSha": "9388de175779e5e950a5218648bdef90498f113d",
+  "criteria": {
+    "AC01": {
+      "implemented": "94objects/904signatures/12publicmembers;10consumer entries/56locations refreshed. Positive first-publish evidence Architect1792485840 records Gunnar16Oct onlyFoundationreleased confirmation. Current12repo heads/2126ALmanifestfiles0directmatches;2empty repositories explicit.",
+      "pending": "Claude current-head independent audit; no-published-baseline ruling resolves prior publication dependency",
+      "owner": "worker-4 for audit; Claude Code independent verification"
+    },
+    "AC02": {
+      "verified": "Original11StorageConnector signatures unchanged from b42ad90; production+mock match; StorageType extensible; separate optional linked-move interface; app/test CodeCop/UICop/AppSourceCop compile0errors0warnings at candidate",
+      "pending": "Own exact candidate native/UI and independent verification; published-baseline package comparison not applicable under authenticated no-baseline disposition",
+      "owner": "worker-4; Gunnar/designated baseline owner"
+    },
+    "AC03": {
+      "implemented": "PR118 reductions already merged; authenticated Architect no-published-baseline disposition permits accidental-surface reductions where no in-suite consumer requires public access. Current provider interfaces/extensible enum/SetupRecord/messagebindings/testseams preserved. No AL/access/sealing change.",
+      "pending": "Claude independent exact-head source audit",
+      "owner": "worker-4/Claude Code"
+    },
+    "AC04": {
+      "verified": "Source and downloaded main113 manifest declare10035635\u201310035684 and70013500\u201370013549; AppSourceCop requires ori/Origo",
+      "pending": "Gunnar authentic Partner Center both-range and ori/Origo registration evidence attached to retained release checklist. Issue77 remains open until attachment.",
+      "owner": "Gunnar"
+    }
+  },
+  "mcp": {
+    "touchedMessageTypes": [],
+    "notApplicableReason": "Only API audit Markdown/JSON/CSV metadata changes. No AL, message registration, implementation, wire or permissions changes."
+  },
+  "runtime": {
+    "sha": "9388de175779e5e950a5218648bdef90498f113d",
+    "nativeExecuted": 0,
+    "uiExecuted": 0,
+    "status": "New candidate compilation in progress; retained owned container startup pending; no previous-tip runtime evidence inherited"
+  }
+}

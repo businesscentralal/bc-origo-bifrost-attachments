@@ -1,0 +1,9 @@
+{
+  "oldSourceSha": "b42ad90eaee2803205408a1cac8b0d9752b91c0e",
+  "newSourceSha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+  "providerMembersBefore": 11,
+  "providerMembersAfter": 11,
+  "providerSignatureListsIdentical": true,
+  "publishedBaselineCompared": false,
+  "note": "Repository source history comparison, not authoritative published baseline. Optional linked-move interface is separate; source enum remains extensible and mock provider compile passed."
+}

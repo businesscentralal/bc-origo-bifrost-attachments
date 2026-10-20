@@ -1,0 +1,22 @@
+{
+  "sha": "9388de175779e5e950a5218648bdef90498f113d",
+  "mode": "Default",
+  "exitCode": 0,
+  "errors": 0,
+  "warnings": 0,
+  "infos": 0,
+  "compiler": "18.0.41.62505",
+  "analyzers": [
+    "CodeCop",
+    "UICop",
+    "AppSourceCop"
+  ],
+  "workingSourceUnmodified": true,
+  "manifestCopyTransforms": [
+    "Remove internalsVisibleTo",
+    "Remove AS0081 from suppressWarnings"
+  ],
+  "signed": false,
+  "signatureTrustClaimed": false,
+  "friends": 0
+}

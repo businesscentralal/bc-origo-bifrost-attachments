@@ -1,0 +1,134 @@
+{
+  "sha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+  "objects": 94,
+  "procedures": 904,
+  "publicMembers": 12,
+  "csvMatchesExactSource": true,
+  "providerImplementations": [
+    {
+      "file": "app/src/Storage/StorageExtFileImpl.Codeunit.al",
+      "interfaceMembers": 11,
+      "mismatches": []
+    },
+    {
+      "file": "test/src/StorageMockImpl.Codeunit.al",
+      "interfaceMembers": 11,
+      "mismatches": []
+    }
+  ],
+  "consumerSnapshotDelta": [],
+  "consumerInterpretation": "Lexical matches only; changes since recorded f4d snapshot are not API signature changes or proof of foreign consumer absence",
+  "publicSurface": [
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "22",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "TestConnection(StorageSetup: Record \"Storage Setup ori\")",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "29",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "ListEntries(StorageSetup: Record \"Storage Setup ori\"; Path: Text; EntryType: Enum \"Ext. File Storage File Type\"; var TempFileAccountContent: Record \"File Account Content\" temporary)",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "35",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "GetFile(StorageSetup: Record \"Storage Setup ori\"; Path: Text; var TempBlob: Codeunit \"Temp Blob\")",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "41",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "CreateFile(StorageSetup: Record \"Storage Setup ori\"; Path: Text; var TempBlob: Codeunit \"Temp Blob\")",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "46",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "DeleteFile(StorageSetup: Record \"Storage Setup ori\"; Path: Text)",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "52",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "FileExists(StorageSetup: Record \"Storage Setup ori\"; Path: Text): Boolean",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "58",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "CopyFile(StorageSetup: Record \"Storage Setup ori\"; SourcePath: Text; TargetPath: Text)",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "64",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "MoveFile(StorageSetup: Record \"Storage Setup ori\"; SourcePath: Text; TargetPath: Text)",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "69",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "CreateDirectory(StorageSetup: Record \"Storage Setup ori\"; Path: Text)",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "74",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "DeleteDirectory(StorageSetup: Record \"Storage Setup ori\"; Path: Text)",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Connector ori",
+      "file": "app/src/Storage/StorageConnector.Interface.al",
+      "line": "80",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "DirectoryExists(StorageSetup: Record \"Storage Setup ori\"; Path: Text): Boolean",
+      "fixedLengthTypes": ""
+    },
+    {
+      "object": "Storage Linked Move ori",
+      "file": "app/src/Storage/StorageLinkedMove.Interface.al",
+      "line": "9",
+      "effectiveAccess": "Public",
+      "modifier": "public/default",
+      "signature": "SupportsLinkedMove(): Boolean",
+      "fixedLengthTypes": ""
+    }
+  ],
+  "rangeRegistrationProven": false,
+  "baselineComparisonProven": false,
+  "candidateSha": "9388de175779e5e950a5218648bdef90498f113d"
+}

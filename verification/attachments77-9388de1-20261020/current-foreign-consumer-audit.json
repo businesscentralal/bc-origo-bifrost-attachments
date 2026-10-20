@@ -1,0 +1,114 @@
+{
+  "attachmentsSourceSha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+  "method": "Read-only git grep -F across every AL source and app.json manifest at exact freshly fetched main SHA for each named repository; quoted shipping names, namespace, appId, app name; no source checkout modification. Lexical evidence, not type resolution or coverage of unavailable tenant/third-party code.",
+  "repositories": [
+    {
+      "repo": "businesscentralal/bc-origo-bifrost-timesheets",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "0bce539cf472c49f95c244a87efdee57e20acb01",
+      "scannedALAndManifestFiles": 110,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "businesscentralal/bc-origo-bifrost-subscription-billing",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "384f6bceeb82c189b5f2f329ca40c1a8c2bdc062",
+      "scannedALAndManifestFiles": 88,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "businesscentralal/bc-origo-bifrost-language-models",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "815fdc4a3829494f0a1527ae80f702ec61c423ab",
+      "scannedALAndManifestFiles": 120,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "businesscentralal/bc-origo-bifrost-orchestrator",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "cecd2ddd057529c4f0767caf8a0f72c9d1e0f21f",
+      "scannedALAndManifestFiles": 160,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "businesscentralal/bc-origo-bifrost-inventory",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "d49ad44b166e04cd00617a5ee2deca0e2e700fef",
+      "scannedALAndManifestFiles": 167,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "businesscentralal/bc-origo-bifrost-warehouse",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "7861dae2b85141567445b8b2ac2a6e3c59e0ba59",
+      "scannedALAndManifestFiles": 94,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "businesscentralal/bc-origo-bifrost-servicemanagement",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "f63fd81223b60cb0d73eacff3133b6831ffcf286",
+      "scannedALAndManifestFiles": 0,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "businesscentralal/bc-origo-bifrost-manufacturing",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "0a9c8cf250c7be648eae295b8676cd70708ac489",
+      "scannedALAndManifestFiles": 0,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "businesscentralal/bc-origo-bifrost-reference",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "bb85ab2bb1ff719c06a0141d2ac9b45e6d990b3e",
+      "scannedALAndManifestFiles": 16,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "OrigoSoftwareSolutions/bc-origo-bifrost-iceland",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "4aeb4e8ed1240f6c1b17a5b4b22fcf3b20a31262",
+      "scannedALAndManifestFiles": 365,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "OrigoSoftwareSolutions/bc-origo-bifrost-iceland-treasury",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "cde5a52c6551b15a37fb815c42dee79d65ec26a3",
+      "scannedALAndManifestFiles": 776,
+      "scanSucceeded": true,
+      "matches": []
+    },
+    {
+      "repo": "OrigoSoftwareSolutions/bc-origo-bifrost-iceland-docex",
+      "fetchExitCode": 0,
+      "error": null,
+      "sha": "c0853deaa22dd19d5056d81add057f48b944055e",
+      "scannedALAndManifestFiles": 230,
+      "scanSucceeded": true,
+      "matches": []
+    }
+  ]
+}

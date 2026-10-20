@@ -1,0 +1,19 @@
+test_changed_document_decision (test_api_surface_matrix.ApiSurfaceMatrixTests.test_changed_document_decision) ... ok
+test_changed_identity (test_api_surface_matrix.ApiSurfaceMatrixTests.test_changed_identity) ... ok
+test_changed_source_hash (test_api_surface_matrix.ApiSurfaceMatrixTests.test_changed_source_hash) ... ok
+test_current_inventory (test_api_surface_matrix.ApiSurfaceMatrixTests.test_current_inventory) ... ok
+test_duplicate_inventory_entry (test_api_surface_matrix.ApiSurfaceMatrixTests.test_duplicate_inventory_entry) ... ok
+test_lexical_matches_cannot_claim_kind_resolution (test_api_surface_matrix.ApiSurfaceMatrixTests.test_lexical_matches_cannot_claim_kind_resolution) ... ok
+test_missing_inventory_entry (test_api_surface_matrix.ApiSurfaceMatrixTests.test_missing_inventory_entry) ... ok
+test_missing_provider_interface (test_api_surface_matrix.ApiSurfaceMatrixTests.test_missing_provider_interface) ... ok
+test_missing_source_cli_returns_findings_without_traceback (test_api_surface_matrix.ApiSurfaceMatrixTests.test_missing_source_cli_returns_findings_without_traceback) ... ok
+test_provider_signature_requires_setup_record (test_api_surface_matrix.ApiSurfaceMatrixTests.test_provider_signature_requires_setup_record) ... ok
+test_provider_table_attribution (test_api_surface_matrix.ApiSurfaceMatrixTests.test_provider_table_attribution) ... ok
+test_public_table_members_cannot_be_attributed_to_page (test_api_surface_matrix.ApiSurfaceMatrixTests.test_public_table_members_cannot_be_attributed_to_page) ... ok
+test_stale_renamed_path (test_api_surface_matrix.ApiSurfaceMatrixTests.test_stale_renamed_path) ... ok
+test_unrecognized_source_identity (test_api_surface_matrix.ApiSurfaceMatrixTests.test_unrecognized_source_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 23.387s
+
+OK

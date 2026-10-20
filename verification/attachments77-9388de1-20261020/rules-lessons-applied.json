@@ -1,0 +1,20 @@
+{
+  "id": "applied-current-attachments77-authority-20261020",
+  "owner": "worker-4",
+  "appliedAt": "2026-10-20T08:42:09.939886+00:00",
+  "taskId": "attachments-api-delivery-20261020",
+  "scope": "Only fresh resumed Attachments77 contract. Cancelled task/contract records preserved. Foundation1115/1124 branch/container unchanged. Applied newer coding/publication/v2/one-status/parked/retention/no-consent rules; old internal-review/no-Slack language excluded.",
+  "standingRulesRead": "evidence/standing-rules-read.json",
+  "standardsSnapshot": {
+    "sha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
+    "capturedAt": "2026-10-03T17:24:35.318900+00:00",
+    "freshSynchronizationClaimed": false
+  },
+  "appliedLessonIds": [
+    "attachments77-publication-registration-plan-kind-identity-20261006",
+    "attachments77-audit-ef39ae86-residual-procedure-kind-attribution",
+    "attachments77-worker4-source-runtime-boundaries-20261006"
+  ],
+  "prevention": "Qualified kind/ID/source identities checked; CSV declaration locations and bounded consumer freshness checked independently in addition to matrix hash guard. Compile, historical source comparison and main receipts never imply external baseline/registration or runtime proof at another SHA.",
+  "evidencePath": "/workspace/evidence/attachments77-delivery-20261020"
+}
