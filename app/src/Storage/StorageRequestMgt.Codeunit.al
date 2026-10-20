@@ -17,11 +17,6 @@ codeunit 10035193 "Storage Request Mgt ori"
     Access = Internal;
 
     var
-        FileNotFoundErr: Label 'File "%1" was not found.', Comment = '%1 = relative path, is-IS=Skráin "%1" fannst ekki.';
-        ExistingFileLbl: Label 'an existing file path relative to the storage connection', Comment = 'is-IS=slóð að fyrirliggjandi skrá miðað við geymslutenginguna';
-        FindFileLbl: Label 'Call Storage.File.List and use the relative path of an existing file.', Comment = 'is-IS=Kallaðu á Storage.File.List og notaðu afstæða slóð að fyrirliggjandi skrá.';
-        FileReadFailedErr: Label 'The file at "%1" could not be read from storage.', Comment = '%1 = relative path, is-IS=Ekki tókst að lesa skrána á "%1" úr geymslu.';
-        RetryFileReadLbl: Label 'Check access to the storage connection and retry the relative file path.', Comment = 'is-IS=Athugaðu aðgang að geymslutengingunni og reyndu afstæðu skráarslóðina aftur.';
         TransferDestinationExistsErr: Label 'The transfer destination already exists. Nothing was changed.', Comment = 'is-IS=Áfangastaður tilfærslunnar er þegar til. Engu var breytt.';
         NewTransferTargetLbl: Label 'a destination that does not already exist', Comment = 'is-IS=áfangastaður sem er ekki þegar til';
         NewTransferTargetNextStepLbl: Label 'Choose a new target path and retry the transfer.', Comment = 'is-IS=Veldu nýja áfangaslóð og reyndu tilfærsluna aftur.';
@@ -84,6 +79,36 @@ codeunit 10035193 "Storage Request Mgt ori"
     begin
         CollectWriteDestinationErrors(Argument, StorageSetup, Connector, Path, ParameterName, Existing);
         exit(not Reader.RespondIfErrors(Argument));
+    end;
+
+    /// <summary>Answers a failed connector operation without exposing provider URLs or internal paths.</summary>
+    /// <remarks>A successful existence probe distinguishes a missing resource from an unavailable provider.</remarks>
+    /// <param name="Argument">Original request and structured error response.</param>
+    /// <param name="StorageSetup">Resolved storage setup.</param>
+    /// <param name="Connector">Selected connector; no provider-specific lookup is used.</param>
+    /// <param name="Path">Validated logical path to probe.</param>
+    /// <param name="ParameterName">Original request field containing the path.</param>
+    /// <param name="EntryType">Whether the failing operation requires a file or directory.</param>
+    internal procedure RespondStorageFailure(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; ParameterName: Text; EntryType: Enum "Ext. File Storage File Type")
+    var
+        Exists: Boolean;
+        ReceivedPath: Text;
+        MissingErr: Label 'The storage file or folder "%1" was not found.', Comment = '%1 = caller path||is-IS=Geymsluskráin eða mappan "%1" fannst ekki.';
+        MissingExpectedLbl: Label 'an existing file or folder at the requested path', Comment = 'is-IS=skrá eða mappa sem er til á umbeðinni slóð';
+        MissingNextLbl: Label 'Use Storage.File.List or Storage.File.Exists to check the path, then retry.', Comment = 'is-IS=Notaðu Storage.File.List eða Storage.File.Exists til að athuga slóðina og reyndu aftur.';
+        ProviderErr: Label 'The storage provider could not complete the operation.', Comment = 'is-IS=Geymsluveitan gat ekki lokið aðgerðinni.';
+        ProviderNextLbl: Label 'Check the storage connection and provider permissions, then retry.', Comment = 'is-IS=Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur.';
+    begin
+        // Read the original request spelling, not the normalized path or configured base path.
+        ReceivedPath := GetText(Argument.GetRequestJson(), ParameterName);
+        if ReceivedPath = '' then
+            ReceivedPath := Path;
+        if TryExists(StorageSetup, Connector, EntryType, Path, Exists) then
+            if not Exists then begin
+                Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(MissingErr, ReceivedPath), ParameterName, ReceivedPath, MissingExpectedLbl, MissingNextLbl);
+                exit;
+            end;
+        Argument.RespondWithError("Bifrost Error Code ori"::BusinessCentralError, ProviderErr, ParameterName, ReceivedPath, '', ProviderNextLbl);
     end;
 
     /// <summary>Rejects relative, ambiguous and control-character paths before provider normalization.</summary>
@@ -275,20 +300,11 @@ codeunit 10035193 "Storage Request Mgt ori"
         Base64Convert: Codeunit "Base64 Convert";
         DataObject: JsonObject;
         ContentInStream: InStream;
-        Exists: Boolean;
     begin
         if not CheckOperationPath(Argument, StorageSetup, 'path', Path, false) then
             exit;
-        if not TryExists(StorageSetup, Connector, Enum::"Ext. File Storage File Type"::File, Path, Exists) then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::BusinessCentralError, StrSubstNo(FileReadFailedErr, Path), 'path', Path, ExistingFileLbl, RetryFileReadLbl);
-            exit;
-        end;
-        if not Exists then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(FileNotFoundErr, Path), 'path', Path, ExistingFileLbl, FindFileLbl);
-            exit;
-        end;
         if not TryGetFile(StorageSetup, Connector, Path, TempBlob) then begin
-            Argument.RespondWithError("Bifrost Error Code ori"::BusinessCentralError, StrSubstNo(FileReadFailedErr, Path), 'path', Path, ExistingFileLbl, RetryFileReadLbl);
+            RespondStorageFailure(Argument, StorageSetup, Connector, Path, 'path', Enum::"Ext. File Storage File Type"::File);
             exit;
         end;
         TempBlob.CreateInStream(ContentInStream);
@@ -340,7 +356,7 @@ codeunit 10035193 "Storage Request Mgt ori"
         if TryDeleteFile(StorageSetup, Connector, Path) then
             RespondPath(Argument, Path)
         else
-            Argument.RespondWithLastError();
+            RespondStorageFailure(Argument, StorageSetup, Connector, Path, 'path', Enum::"Ext. File Storage File Type"::File);
     end;
 
     /// <summary>Creates a directory and responds with the created path.</summary>
@@ -375,7 +391,7 @@ codeunit 10035193 "Storage Request Mgt ori"
             exit;
         end;
         if not TryDirectoryIsEmpty(StorageSetup, Connector, Path, DirectoryIsEmpty) then begin
-            Argument.RespondWithLastError();
+            RespondStorageFailure(Argument, StorageSetup, Connector, Path, 'path', Enum::"Ext. File Storage File Type"::Directory);
             exit;
         end;
         if not DirectoryIsEmpty then begin
@@ -385,7 +401,7 @@ codeunit 10035193 "Storage Request Mgt ori"
         if TryDeleteDirectory(StorageSetup, Connector, Path) then
             RespondPath(Argument, Path)
         else
-            Argument.RespondWithLastError();
+            RespondStorageFailure(Argument, StorageSetup, Connector, Path, 'path', Enum::"Ext. File Storage File Type"::Directory);
     end;
 
     /// <summary>Copies a file and responds with the source and target paths.</summary>
@@ -405,7 +421,7 @@ codeunit 10035193 "Storage Request Mgt ori"
         if TryCopyFile(StorageSetup, Connector, SourcePath, TargetPath) then
             RespondTransfer(Argument, SourcePath, TargetPath)
         else
-            Argument.RespondWithLastError();
+            RespondStorageFailure(Argument, StorageSetup, Connector, SourcePath, 'sourcePath', Enum::"Ext. File Storage File Type"::File);
     end;
 
     /// <summary>Moves a file and responds with the source and target paths.</summary>

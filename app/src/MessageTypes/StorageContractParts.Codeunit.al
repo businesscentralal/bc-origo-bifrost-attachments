@@ -11,8 +11,6 @@ codeunit 10035183 "Storage Contract Parts ori"
         SuccessEnvelopeLbl: Label 'Every success answers status Success. The fields below belong to the data object, not to the top level.', Comment = 'is-IS=Öll svör sem heppnast hafa stöðuna Success. Reitirnir hér að neðan tilheyra hlutnum data, ekki efsta stigi svarsins.';
         ProcessWarningsLbl: Label 'Objects with a stable code and a localized message: NoMappingCodeunit or RecordIdsCapped.', Comment = 'is-IS=Hlutir með stöðugum kóða (code) og þýddum skilaboðum (message): NoMappingCodeunit eða RecordIdsCapped.';
         DocumentTypeNameLbl: Label 'The language-independent document type enum name, never its numeric ordinal.', Comment = 'is-IS=Tungumálaóháð heiti talningargildis skjalagerðar, aldrei tölugildi þess.';
-        FileMissingLbl: Label 'The path does not name an existing file; only the relative path is returned.', Comment = 'is-IS=Slóðin vísar ekki á fyrirliggjandi skrá; aðeins afstæða slóðin er birt.';
-        FindStoredFileLbl: Label 'Call Storage.File.List and use the relative path of an existing file.', Comment = 'is-IS=Kallaðu á Storage.File.List og notaðu afstæða slóð að fyrirliggjandi skrá.';
         DataExchangeFailureLbl: Label 'Business Central cannot complete the Data Exchange operation.', Comment = 'is-IS=Business Central getur ekki lokið gagnaskiptaaðgerðinni.';
         DataExchangeFailureFixLbl: Label 'Check the supplied definition or entry and the Business Central error details.', Comment = 'is-IS=Athugaðu uppgefna skilgreiningu eða færslu og villuupplýsingar Business Central.';
         PagingSkipLbl: Label 'Number of rows or fields skipped.', Comment = 'is-IS=Fjöldi færslna eða reita sem var sleppt.';
@@ -97,7 +95,8 @@ codeunit 10035183 "Storage Contract Parts ori"
         DataExchangeTypeResponseLbl: Label 'The Data Exchange Type applied to the incoming document.', Comment = 'is-IS=Gerð gagnaskipta sem var sett á skjalið í innleið.';
         ProcessedResponseLbl: Label 'True when CreateDocumentWithDataExchange created a document.', Comment = 'is-IS=Satt þegar CreateDocumentWithDataExchange stofnaði skjal.';
         CreatedDocumentResponseLbl: Label 'The created document type, number and systemId when processing succeeded.', Comment = 'is-IS=Gerð, númer og systemId stofnaðs skjals þegar vinnsla tókst.';
-        ProcessErrorsResponseLbl: Label 'Base-app processing messages when process is true. Status stays Success.', Comment = 'is-IS=Vinnsluskilaboð grunnforrits þegar process er true. Staða er áfram Success.';
+        IncomingStatusResponseLbl: Label 'Stable incoming document status name after processing, for example Failed or Created.', Comment = 'is-IS=Fast stöðuheiti skjals í innleið eftir úrvinnslu, til dæmis Failed eða Created.';
+        ProcessErrorsResponseLbl: Label 'Processing errors as objects containing code, message and nextStep; an empty array means no processing errors were reported.', Comment = 'is-IS=Úrvinnsluvillur sem hlutir með code, message og nextStep; tómt fylki þýðir að engar úrvinnsluvillur voru tilkynntar.';
 
 
     /// <summary>Builds the envelope shared by storage requests.</summary>
@@ -432,6 +431,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                         Fields.Add(ContractMgt.ResponseField('processed', 'boolean', ProcessedResponseLbl));
                         Fields.Add(ContractMgt.ResponseField('createdDocument', 'object', CreatedDocumentResponseLbl));
                         Fields.Add(ContractMgt.ResponseField('processErrors', 'array', ProcessErrorsResponseLbl));
+                        Fields.Add(ContractMgt.ResponseField('incomingDocumentStatus', 'string', IncomingStatusResponseLbl));
                     end;
                 end;
             'Storage.Upload.Begin':
@@ -591,13 +591,21 @@ codeunit 10035183 "Storage Contract Parts ori"
     procedure GetErrors(MessageType: Text) Errors: JsonArray
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
+        MissingPathLbl: Label 'A missing storage file or folder returns RecordNotFound on path or sourcePath, using the path exactly as sent without account, container or base-path details.', Comment = 'is-IS=Geymsluskrá eða mappa sem vantar skilar RecordNotFound á path eða sourcePath með slóðinni nákvæmlega eins og hún var send, án upplýsinga um reikning, geymsluhólf eða grunnslóð.';
+        MissingPathNextLbl: Label 'Use Storage.File.List or Storage.File.Exists to check the path, then retry.', Comment = 'is-IS=Notaðu Storage.File.List eða Storage.File.Exists til að athuga slóðina og reyndu aftur.';
+        ProviderFailureLbl: Label 'Other storage provider failures return BusinessCentralError with localized text and no provider URL.', Comment = 'is-IS=Aðrar villur hjá geymsluveitunni skila BusinessCentralError með þýddum texta án vefslóðar veitunnar.';
+        ProviderNextLbl: Label 'Check the storage connection and provider permissions, then retry.', Comment = 'is-IS=Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur.';
+        ProcessFailureLbl: Label 'With process true, a retained incoming document can report processed false. processErrors contains code, message and nextStep; incomingDocumentStatus reports its current status.', Comment = 'is-IS=Með process true getur varðveitt skjal í innleið skilað processed false. processErrors inniheldur code, message og nextStep; incomingDocumentStatus sýnir núverandi stöðu þess.';
+        ProcessNextLbl: Label 'Inspect Incoming.Document.Get, correct the definition or source file, then retry Incoming.Document.Process.', Comment = 'is-IS=Skoðaðu Incoming.Document.Get, leiðréttu skilgreininguna eða upprunaskrána og reyndu svo Incoming.Document.Process aftur.';
         ImportFormatLbl: Label 'The file cannot be read in the definition file type. The refusal identifies contentBase64, path or uploadId and reports only the file name or size, never its content.', Comment = 'is-IS=Ekki er hægt að lesa skrána samkvæmt skráargerð skilgreiningarinnar. Höfnunin tilgreinir contentBase64, path eða uploadId og sýnir aðeins skráarheiti eða stærð, aldrei innihaldið.';
         ImportFormatNextLbl: Label 'Supply the required XML, CSV or fixed width file and retry. Inspect the definition with DataExchange.Definition.Get; use DataExchange.Definition.Export for the definition XML format.', Comment = 'is-IS=Sendu tilskilda XML-skrá, CSV-skrá eða skrá með fastri breidd og reyndu aftur. Skoðaðu skilgreininguna með DataExchange.Definition.Get; notaðu DataExchange.Definition.Export fyrir XML-snið skilgreiningarinnar.';
         ImportBoundaryLbl: Label 'Business Central errors caught while reading the source before writes include parameter and nextStep. Unexpected reader or database errors after writes retain the Foundation BusinessCentralError response; the failed import is rolled back with no entry.', Comment = 'is-IS=Business Central villur sem gripnar eru við lestur uppsprettunnar áður en skrif hefjast innihalda parameter og nextStep. Óvæntar villur í lesara eða gagnagrunni eftir skrif halda svarinu BusinessCentralError frá Foundation; misheppnaður innflutningur er afturkallaður án færslu.';
         ImportBoundaryNextLbl: Label 'Check the source and definition before retrying. Post-write errors may lack parameter and nextStep until Foundation supports rollback-safe error context.', Comment = 'is-IS=Athugaðu uppsprettuna og skilgreininguna áður en reynt er aftur. Villur eftir skrif geta verið án parameter og nextStep þar til Foundation styður villusamhengi sem varðveitir afturköllun.';
     begin
-        if MessageType = 'Storage.File.Get' then
-            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, FileMissingLbl, FindStoredFileLbl));
+        if MessageType in ['Storage.File.Get', 'Storage.File.Copy', 'Storage.File.Delete', 'Storage.Directory.Delete', 'Storage.Attachment.CreateLinked', 'DataExchange.Definition.Import'] then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, MissingPathLbl, MissingPathNextLbl));
+        if MessageType in ['Storage.Attachment.CreateLinked', 'Storage.Upload.CommitToRecord'] then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, ProcessFailureLbl, ProcessNextLbl));
         if not (MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List']) then begin
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::MissingParameter, MissingInputLbl, SupplyInputLbl));
             if MessageType in ['DataExchange.Import.Run', 'DataExchange.Definition.Import', 'Storage.Upload.CommitToDataExchange'] then
@@ -649,6 +657,9 @@ codeunit 10035183 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The definition code does not exist.', 'Use DataExchange.Definition.List first.'));
         if MessageType in ['DataExchange.Entry.Get'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The entry number does not exist.', 'Use DataExchange.Entry.List first.'));
+        if MessageType in ['Storage.File.Get', 'Storage.File.Copy', 'Storage.File.Delete', 'Storage.Directory.Delete', 'Storage.Attachment.CreateLinked', 'DataExchange.Definition.Import'] then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, ProviderFailureLbl, ProviderNextLbl))
+        else
         if MessageType in ['DataExchange.Import.Run', 'DataExchange.Definition.Import', 'Storage.Upload.CommitToDataExchange'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, ImportBoundaryLbl, ImportBoundaryNextLbl))
         else

@@ -77,6 +77,8 @@ For uploads destined for a record, omit `storageCode` in `Storage.Upload.Begin` 
 
 ---
 
+Missing storage files and folders return `RecordNotFound` on `path` or `sourcePath`, with the caller's original path and a next step naming `Storage.File.List` or `Storage.File.Exists`. Provider failures use localized text without storage account URLs. For incoming documents created with `process: true`, `processErrors` contains objects with `code`, `message` and `nextStep`; `incomingDocumentStatus` reports the stable status name. A failed processing attempt keeps the incoming document for inspection and retry.
+
 ## Benefits
 
 - **No database bloat.** Attachment content lives in cloud storage instead of the BC database, while

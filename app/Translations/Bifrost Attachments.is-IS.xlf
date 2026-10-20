@@ -2331,6 +2331,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Færibreytan "vendorNo" er lengri en leyfilegt hámark, 20 stafir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType VendorNoTooLongErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - Method 2384893022 - NamedType 680257497" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inspect Incoming.Document.Get and correct the data exchange definition or source file, then retry Incoming.Document.Process.</source>
+          <target>Skoðaðu Incoming.Document.Get og leiðréttu gagnaskiptaskilgreininguna eða upprunaskrána og reyndu svo Incoming.Document.Process aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skoðaðu Incoming.Document.Get og leiðréttu gagnaskiptaskilgreininguna eða upprunaskrána og reyndu svo Incoming.Document.Process aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - Method AddProcessError - NamedType NextStepLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - Method 3102963730 - NamedType 3352172482" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Incoming document processing failed. Inspect the incoming document for details.</source>
+          <target>Úrvinnsla skjals í innleið mistókst. Skoðaðu skjalið í innleið til að fá nánari upplýsingar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Úrvinnsla skjals í innleið mistókst. Skoðaðu skjalið í innleið til að fá nánari upplýsingar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - Method CollectProcessErrors - NamedType FailedErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - Method 496511085 - NamedType 1067445849" size-unit="char" translate="yes" xml:space="preserve">
           <source>The destination path exceeds the attachment link capacity.</source>
           <target>Áfangaslóðin er lengri en viðhengjatengingin leyfir.</target>
@@ -2589,6 +2601,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Lýsing fyrir nýtt IncomingDocument; hunsað fyrir DocumentAttachment.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType IncomingDescriptionLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 2720220853" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stable incoming document status name after processing, for example Failed or Created.</source>
+          <target>Fast stöðuheiti skjals í innleið eftir úrvinnslu, til dæmis Failed eða Created.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Fast stöðuheiti skjals í innleið eftir úrvinnslu, til dæmis Failed eða Created.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType IncomingStatusResponseLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 905949934" size-unit="char" translate="yes" xml:space="preserve">
           <source>The file content encoded as base64, at most 1 MB. Send instead of storageCode and path.</source>
           <target>Innihald skrárinnar kóðað sem base64, mest 1 MB. Sendu í stað storageCode og path.</target>
@@ -2716,9 +2734,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessedResponseLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3514665411" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Base-app processing messages when process is true. Status stays Success.</source>
-          <target>Vinnsluskilaboð grunnforrits þegar process er true. Staða er áfram Success.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Vinnsluskilaboð grunnforrits þegar process er true. Staða er áfram Success.</note>
+          <source>Processing errors as objects containing code, message and nextStep; an empty array means no processing errors were reported.</source>
+          <target>Úrvinnsluvillur sem hlutir með code, message og nextStep; tómt fylki þýðir að engar úrvinnsluvillur voru tilkynntar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Úrvinnsluvillur sem hlutir með code, message og nextStep; tómt fylki þýðir að engar úrvinnsluvillur voru tilkynntar.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessErrorsResponseLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1072459112" size-unit="char" translate="yes" xml:space="preserve">
@@ -2852,6 +2870,42 @@
           <target>Valfrjálst lánardrottinsnúmer fyrir nýtt skjal í innleið.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Valfrjálst lánardrottinsnúmer fyrir nýtt skjal í innleið.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType VendorNoParamLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 502045709" size-unit="char" translate="yes" xml:space="preserve">
+          <source>A missing storage file or folder returns RecordNotFound on path or sourcePath, using the path exactly as sent without account, container or base-path details.</source>
+          <target>Geymsluskrá eða mappa sem vantar skilar RecordNotFound á path eða sourcePath með slóðinni nákvæmlega eins og hún var send, án upplýsinga um reikning, geymsluhólf eða grunnslóð.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Geymsluskrá eða mappa sem vantar skilar RecordNotFound á path eða sourcePath með slóðinni nákvæmlega eins og hún var send, án upplýsinga um reikning, geymsluhólf eða grunnslóð.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType MissingPathLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 184131448" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Use Storage.File.List or Storage.File.Exists to check the path, then retry.</source>
+          <target>Notaðu Storage.File.List eða Storage.File.Exists til að athuga slóðina og reyndu aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Notaðu Storage.File.List eða Storage.File.Exists til að athuga slóðina og reyndu aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType MissingPathNextLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 1417474493" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Other storage provider failures return BusinessCentralError with localized text and no provider URL.</source>
+          <target>Aðrar villur hjá geymsluveitunni skila BusinessCentralError með þýddum texta án vefslóðar veitunnar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Aðrar villur hjá geymsluveitunni skila BusinessCentralError með þýddum texta án vefslóðar veitunnar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ProviderFailureLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 3942044384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check the storage connection and provider permissions, then retry.</source>
+          <target>Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ProviderNextLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 2123058259" size-unit="char" translate="yes" xml:space="preserve">
+          <source>With process true, a retained incoming document can report processed false. processErrors contains code, message and nextStep; incomingDocumentStatus reports its current status.</source>
+          <target>Með process true getur varðveitt skjal í innleið skilað processed false. processErrors inniheldur code, message og nextStep; incomingDocumentStatus sýnir núverandi stöðu þess.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Með process true getur varðveitt skjal í innleið skilað processed false. processErrors inniheldur code, message og nextStep; incomingDocumentStatus sýnir núverandi stöðu þess.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ProcessFailureLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 1759508394" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inspect Incoming.Document.Get, correct the definition or source file, then retry Incoming.Document.Process.</source>
+          <target>Skoðaðu Incoming.Document.Get, leiðréttu skilgreininguna eða upprunaskrána og reyndu svo Incoming.Document.Process aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skoðaðu Incoming.Document.Get, leiðréttu skilgreininguna eða upprunaskrána og reyndu svo Incoming.Document.Process aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - Method GetErrors - NamedType ProcessNextLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - Method 1158096087 - NamedType 3528980560" size-unit="char" translate="yes" xml:space="preserve">
           <source>The file cannot be read in the definition file type. The refusal identifies contentBase64, path or uploadId and reports only the file name or size, never its content.</source>
@@ -3326,6 +3380,36 @@
           <target>Slóðin „%1“ er ekki leyfð: enginn hluti slóðarinnar má vera „.“ eða „..“.</target>
           <note from="Developer" annotates="general" priority="2">%1 = the rejected path||is-IS=Slóðin „%1“ er ekki leyfð: enginn hluti slóðarinnar má vera „.“ eða „..“.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType UnsafePathErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 4087107588 - NamedType 1830439019" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The storage file or folder "%1" was not found.</source>
+          <target>Geymsluskráin eða mappan "%1" fannst ekki.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = caller path||is-IS=Geymsluskráin eða mappan "%1" fannst ekki.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method RespondStorageFailure - NamedType MissingErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 4087107588 - NamedType 287669188" size-unit="char" translate="yes" xml:space="preserve">
+          <source>an existing file or folder at the requested path</source>
+          <target>skrá eða mappa sem er til á umbeðinni slóð</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=skrá eða mappa sem er til á umbeðinni slóð</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method RespondStorageFailure - NamedType MissingExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 4087107588 - NamedType 3129818787" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Use Storage.File.List or Storage.File.Exists to check the path, then retry.</source>
+          <target>Notaðu Storage.File.List eða Storage.File.Exists til að athuga slóðina og reyndu aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Notaðu Storage.File.List eða Storage.File.Exists til að athuga slóðina og reyndu aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method RespondStorageFailure - NamedType MissingNextLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 4087107588 - NamedType 2586478584" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The storage provider could not complete the operation.</source>
+          <target>Geymsluveitan gat ekki lokið aðgerðinni.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Geymsluveitan gat ekki lokið aðgerðinni.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method RespondStorageFailure - NamedType ProviderErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 4087107588 - NamedType 3942044384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check the storage connection and provider permissions, then retry.</source>
+          <target>Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method RespondStorageFailure - NamedType ProviderNextLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 2940235957" size-unit="char" translate="yes" xml:space="preserve">
           <source>base64 content</source>

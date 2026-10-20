@@ -324,6 +324,87 @@ codeunit 96212 "Storage Error Response Tests"
         AssertErrorAnswer(TempArgument, 'InvalidParameterFormat', 'tableId');
     end;
 
+    /// <summary>Verifies missing resources in English through all affected message handlers.</summary>
+    [Test]
+    procedure MissingStoragePaths_English_AreSafeAndActionable()
+    begin
+        AssertMissingStoragePaths(1033, 'The storage file or folder "/missing.txt/" was not found.');
+    end;
+
+    /// <summary>Verifies missing resources in Icelandic without exposing private provider paths.</summary>
+    [Test]
+    procedure MissingStoragePaths_Icelandic_AreSafeAndActionable()
+    begin
+        AssertMissingStoragePaths(1039, 'Geymsluskráin eða mappan "/missing.txt/" fannst ekki.');
+    end;
+
+    /// <summary>Verifies a provider failure against an existing source remains a translated provider error.</summary>
+    [Test]
+    procedure ExistingSource_ProviderFailure_RemainsBusinessCentralError()
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        MockState: Codeunit "Storage Mock State";
+        RequestJson: JsonObject;
+    begin
+        Initialize();
+        MockState.PutFile('source.txt', 'eA==');
+        MockState.FailNextWrite();
+        RequestJson.Add('storageCode', MockCodeTok);
+        RequestJson.Add('sourcePath', 'source.txt');
+        RequestJson.Add('targetPath', 'target.txt');
+        ExecuteTypeWithRequestInLanguage(TempArgument, TempArgument."Type"::"Storage.File.Copy", RequestJson, 1039);
+        AssertErrorAnswer(TempArgument, 'BusinessCentralError', 'sourcePath');
+        LibraryAssert.AreEqual('Geymsluveitan gat ekki lokið aðgerðinni.', ReadText(TempArgument.GetResponseJson(), 'error'), 'Provider refusal must be localized.');
+        LibraryAssert.IsFalse(MockState.HasFile('target.txt'), 'Failed copy must not create a destination.');
+    end;
+
+    local procedure AssertMissingStoragePaths(LanguageId: Integer; ExpectedMessage: Text)
+    var
+        StorageSetup: Record "Storage Setup ori";
+        Types: List of [Enum "Message Type ori"];
+        MessageType: Enum "Message Type ori";
+    begin
+        Initialize();
+        StorageSetup.Get(MockCodeTok);
+        StorageSetup."Base Path" := 'private-base';
+        StorageSetup.Modify();
+        Types.Add(MessageType::"Storage.File.Copy");
+        Types.Add(MessageType::"Storage.File.Delete");
+        Types.Add(MessageType::"Storage.File.Get");
+        Types.Add(MessageType::"Storage.Directory.Delete");
+        Types.Add(MessageType::"Storage.Attachment.CreateLinked");
+        Types.Add(MessageType::"DataExchange.Definition.Import");
+        foreach MessageType in Types do
+            AssertMissingStoragePath(LanguageId, MessageType, ExpectedMessage);
+    end;
+
+    local procedure AssertMissingStoragePath(LanguageId: Integer; MessageType: Enum "Message Type ori"; ExpectedMessage: Text)
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        RequestJson: JsonObject;
+        ResponseText: Text;
+        ParameterName: Text;
+    begin
+        ParameterName := 'path';
+        RequestJson.Add('storageCode', MockCodeTok);
+        if MessageType = MessageType::"Storage.File.Copy" then begin
+            ParameterName := 'sourcePath';
+            RequestJson.Add('targetPath', 'new-target.txt');
+        end;
+        RequestJson.Add(ParameterName, '/missing.txt/');
+        if MessageType = MessageType::"Storage.Attachment.CreateLinked" then
+            RequestJson.Add('fileName', 'missing.txt');
+        ExecuteTypeWithRequestInLanguage(TempArgument, MessageType, RequestJson, LanguageId);
+        AssertErrorAnswer(TempArgument, 'RecordNotFound', ParameterName);
+        LibraryAssert.AreEqual('/missing.txt/', ReadText(TempArgument.GetResponseJson(), 'received'), 'Return the caller path exactly.');
+        LibraryAssert.AreEqual(ExpectedMessage, ReadText(TempArgument.GetResponseJson(), 'error'), 'Missing resource message must be translated.');
+        LibraryAssert.IsTrue(ReadText(TempArgument.GetResponseJson(), 'nextStep').Contains('Storage.File.Exists'), 'Missing resource needs a usable next step.');
+        TempArgument.GetResponseJson().WriteTo(ResponseText);
+        LibraryAssert.IsFalse(ResponseText.Contains('private-base'), 'Base path must not leak.');
+        LibraryAssert.IsFalse(ResponseText.Contains('private-account'), 'Account must not leak.');
+        LibraryAssert.IsFalse(ResponseText.Contains('404'), 'Raw connector status must not leak.');
+    end;
+
     // ————— Helpers —————
 
     /// <summary>Checks localized filename refusals through dispatch while preserving protocol fields.</summary>

@@ -1,6 +1,7 @@
 namespace Origo.Bifrost.Attachments;
 
 using Origo.Bifrost;
+using System.ExternalFileStorage;
 using System.IO;
 using System.Utilities;
 
@@ -95,7 +96,7 @@ codeunit 10035139 "DataExch Def Transfer ori"
             exit;
         if Path <> '' then
             if not RequestMgt.TryReadStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
-                ImportMgt.RespondFileReadError(Argument, Path);
+                RequestMgt.RespondStorageFailure(Argument, StorageSetup, Connector, Path, 'path', Enum::"Ext. File Storage File Type"::File);
                 exit;
             end;
         // Validate the file before consuming the upload or writing any definition.
