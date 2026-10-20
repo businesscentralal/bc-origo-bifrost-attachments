@@ -569,12 +569,19 @@ codeunit 70013500 "Storage Contract Parts ori"
     procedure GetErrors(MessageType: Text) Errors: JsonArray
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
+        ImportFormatLbl: Label 'The file cannot be read in the definition file type. The refusal identifies contentBase64, path or uploadId and reports only the file name or size, never its content.', Comment = 'is-IS=Ekki er hægt að lesa skrána samkvæmt skráargerð skilgreiningarinnar. Höfnunin tilgreinir contentBase64, path eða uploadId og sýnir aðeins skráarheiti eða stærð, aldrei innihaldið.';
+        ImportFormatNextLbl: Label 'Supply the required XML, CSV or fixed width file and retry. Inspect the definition with DataExchange.Definition.Get; use DataExchange.Definition.Export for the definition XML format.', Comment = 'is-IS=Sendu tilskilda XML-skrá, CSV-skrá eða skrá með fastri breidd og reyndu aftur. Skoðaðu skilgreininguna með DataExchange.Definition.Get; notaðu DataExchange.Definition.Export fyrir XML-snið skilgreiningarinnar.';
+        ImportBoundaryLbl: Label 'Business Central errors caught while reading the source before writes include parameter and nextStep. Unexpected reader or database errors after writes retain the Foundation BusinessCentralError response; the failed import is rolled back with no entry.', Comment = 'is-IS=Business Central villur sem gripnar eru við lestur uppsprettunnar áður en skrif hefjast innihalda parameter og nextStep. Óvæntar villur í lesara eða gagnagrunni eftir skrif halda svarinu BusinessCentralError frá Foundation; misheppnaður innflutningur er afturkallaður án færslu.';
+        ImportBoundaryNextLbl: Label 'Check the source and definition before retrying. Post-write errors may lack parameter and nextStep until Foundation supports rollback-safe error context.', Comment = 'is-IS=Athugaðu uppsprettuna og skilgreininguna áður en reynt er aftur. Villur eftir skrif geta verið án parameter og nextStep þar til Foundation styður villusamhengi sem varðveitir afturköllun.';
     begin
         if MessageType = 'Storage.File.Get' then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, FileMissingLbl, FindStoredFileLbl));
         if not (MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List']) then begin
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::MissingParameter, MissingInputLbl, SupplyInputLbl));
-            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameterFormat, InvalidFormatLbl, CorrectInputLbl));
+            if MessageType in ['DataExchange.Import.Run', 'DataExchange.Definition.Import', 'Storage.Upload.CommitToDataExchange'] then
+                Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameterFormat, ImportFormatLbl, ImportFormatNextLbl))
+            else
+                Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameterFormat, InvalidFormatLbl, CorrectInputLbl));
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameter, InvalidInputLbl, CorrectInputLbl));
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::MultipleErrors, MultipleInputLbl, CorrectInputLbl));
             if MessageType in ['DataExchange.Type.Set', 'DataExchange.Definition.Delete', 'DataExchange.Definition.Export', 'DataExchange.Import.Run', 'DataExchange.Export.Run', 'Storage.Upload.CommitToDataExchange', 'DataExchange.Definition.Import'] then begin
@@ -618,10 +625,13 @@ codeunit 70013500 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The definition code does not exist.', 'Use DataExchange.Definition.List first.'));
         if MessageType in ['DataExchange.Entry.Get'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The entry number does not exist.', 'Use DataExchange.Entry.List first.'));
-        if MessageType.StartsWith('DataExchange.') then
-            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, DataExchangeFailureLbl, DataExchangeFailureFixLbl))
+        if MessageType in ['DataExchange.Import.Run', 'DataExchange.Definition.Import', 'Storage.Upload.CommitToDataExchange'] then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, ImportBoundaryLbl, ImportBoundaryNextLbl))
         else
-            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, 'The storage connector rejects or cannot complete the operation.', 'Check the path, connection and connector error details.'));
+            if MessageType.StartsWith('DataExchange.') then
+                Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, DataExchangeFailureLbl, DataExchangeFailureFixLbl))
+            else
+                Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, 'The storage connector rejects or cannot complete the operation.', 'Check the path, connection and connector error details.'));
     end;
 
     local procedure UsesStorageCode(MessageType: Text): Boolean
