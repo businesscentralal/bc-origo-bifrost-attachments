@@ -439,6 +439,9 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         AttachmentId: Guid;
         ContentIn: InStream;
         ContentText: Text;
+        PathsBefore: List of [Text];
+        PathsAfter: List of [Text];
+        StoredPath: Text;
     begin
         // Story #75, AC03 | Time: no date dependence | Risk: generated path exceeds a valid folder.
         Initialize();
@@ -447,6 +450,11 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         RequestJson.Add('target', 'IncomingDocument');
         RequestJson.Add('systemId', Format(AttachmentId, 0, 4));
         AssertSuccess(Execute(Enum::"Message Type ori"::"Storage.Attachment.Restore", RequestJson));
+        // #166: the linked source file pre-existed the attachment, so Restore preserves it. Snapshot the
+        // remote state so the guard below catches any file the rejected offload would add.
+        PathsBefore := MockState.FilePaths();
+        LibraryAssert.AreEqual(1, PathsBefore.Count(), 'Restore must preserve the pre-existing linked source file.');
+        LibraryAssert.IsTrue(PathsBefore.Contains('Xdir/Xfile.txt'), 'The preserved file must be the pre-existing source.');
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('folderPath', LongPath(2048));
         // [WHEN] A valid-size folder generates a path too large for the link.
@@ -454,7 +462,11 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [THEN] No link or remote orphan is created and the blob is still local and readable.
         AssertRefusal(Response, 'InvalidParameter');
         LibraryAssert.IsFalse(Link.Get(Database::"Incoming Document Attachment", AttachmentId), 'Rejected offload must not insert a link.');
-        LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'Rejected offload must not create a remote orphan.');
+        PathsAfter := MockState.FilePaths();
+        LibraryAssert.AreEqual(PathsBefore.Count(), PathsAfter.Count(), 'Rejected offload must not create a remote orphan.');
+        foreach StoredPath in PathsAfter do
+            LibraryAssert.IsTrue(PathsBefore.Contains(StoredPath), 'Rejected offload must not create a remote orphan: ' + StoredPath);
+        LibraryAssert.AreEqual('original', StoredText('Xdir/Xfile.txt'), 'Rejected offload must not change the pre-existing source file.');
         Attachment.GetBySystemId(AttachmentId);
         Attachment.CalcFields(Content);
         LibraryAssert.IsTrue(Attachment.Content.HasValue(), 'The only local copy must not be cleared.');

@@ -8,6 +8,13 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-20) - main red after consolidating #159/#160/#166/#167
+
+- `Storage Help Get Impl ori` (10035182): the #166 overwrite/ownership paragraph now follows the guide's `#` heading and introduction instead of preceding it, so Help.Storage.Get starts with its heading again (test codeunit 96213).
+- `Storage Contract Parts ori` (10035183): the recorded Help.Storage.Get and Help.DataExchange.Get example answers (#160) now include the #166 wording (refuse-by-default storage writes, `overwrite: true`, Restore deleting only files the attachment created), matching the live guides.
+- Test codeunit 96216 expects the intentional #166 `overwrite` parameter on DataExchange.Definition.Export (6 keys) and DataExchange.Export.Run (12 keys) and asserts its schema.
+- Test codeunit 96225 AC03 keeps its no-remote-orphan guard but snapshots the remote files first: since #166, Restore preserves the pre-existing linked source file, so the rejected offload must leave exactly that file set, unchanged and with its original bytes.
+
 ### Changed (2026-10-20) - response contract consistency (#159)
 
 - **Contract changes:** every successful Attachments response uses `status: Success` and a `data` object. DataExchange.Type.Set, Definition.Export/Delete, Import.Run, Export.Run and PaymentExport.Run move their operation fields from the top level into `data`; Import.Run no longer returns `Accepted`. Callers must read `data.entryNo`, `data.code` and the other payload fields. Storage and the remaining Data Exchange types already use this envelope.
