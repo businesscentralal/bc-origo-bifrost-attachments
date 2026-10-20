@@ -1,5 +1,5 @@
 {
-  "hashSourceSha": "f4d524d9bdcfe408701e222ef463b2928f395910",
+  "hashSourceSha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
   "sourceSha": "fca2943658e9843d3cfcce80ff6093657e8bd51e",
   "appId": "672df32a-a0c5-4a22-b591-0efa38023e95",
   "appVersion": "28.0.0.4",
@@ -94,6 +94,7 @@
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentSubscr.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
@@ -236,7 +237,8 @@
       ],
       "testConsumers": [
         "test/test/DataExchDefXferTests.Codeunit.al",
-        "test/test/DataExchImportTests.Codeunit.al"
+        "test/test/DataExchImportTests.Codeunit.al",
+        "test/test/Storage79PermTests.Codeunit.al"
       ],
       "nonLocalProcedureCount": 0,
       "fields": [
@@ -695,7 +697,9 @@
       "extensible": "not declared / not applicable",
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
-        "app/src/MessageTypes/DataExchange/DataExchDefExpEnumExt.EnumExt.al"
+        "app/src/MessageTypes/DataExchange/DataExchDefExpEnumExt.EnumExt.al",
+        "app/src/Permissions/BIFROSTDataExch.PermissionSet.al",
+        "app/src/Permissions/StorageFull.PermissionSetExt.al"
       ],
       "testConsumers": [
         "test/test/AttachmentsBuildTestsori.Codeunit.al"
@@ -1894,11 +1898,15 @@
       "decision": "KEEP UI entry point; HOLD any member access reduction pending baseline",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
         "app/src/Install/StorageTakeover.Codeunit.al",
         "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
@@ -1929,6 +1937,7 @@
         "app/src/Upload/StorageUploadMgt.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/DataExchFixture.Codeunit.al",
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/src/Permissions/StorageIface.PermissionSet.al",
@@ -1972,11 +1981,15 @@
       "decision": "KEEP Public: provider contract",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
         "app/src/Install/StorageTakeover.Codeunit.al",
         "app/src/MessageTypes/Accounts/StorageAccountListImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttOffloadImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttRestoreImpl.Codeunit.al",
         "app/src/MessageTypes/Attachments/StorageAttachLinkImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
@@ -2007,6 +2020,7 @@
         "app/src/Upload/StorageUploadMgt.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/DataExchFixture.Codeunit.al",
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al",
         "test/src/Permissions/StorageIface.PermissionSet.al",
@@ -2077,6 +2091,10 @@
       "decision": "KEEP Public: provider contract",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al",
@@ -2221,14 +2239,20 @@
       "decision": "KEEP Internal; preserve friend tests and Foundation interface bindings",
       "appConsumers": [
         "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+        "app/src/DataExchange/DataExchDefTransfer.Codeunit.al",
+        "app/src/DataExchange/DataExchExportMgt.Codeunit.al",
         "app/src/DataExchange/DataExchangeQuery.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefExportImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchDefGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchDefInstallImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryDeleteImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchEntryGetImpl.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchEntryProcImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchExportRunImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchImportRunImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchIncDocProc.Codeunit.al",
+        "app/src/MessageTypes/DataExchange/DataExchPayExportImpl.Codeunit.al",
         "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al",
         "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al",
@@ -2433,8 +2457,11 @@
         "app/src/Upload/StorageUploadPurge.Codeunit.al"
       ],
       "testConsumers": [
+        "test/src/DataExchFixture.Codeunit.al",
         "test/src/Permissions/Storage79Link.PermissionSet.al",
         "test/src/Permissions/Storage79Setup.PermissionSet.al",
+        "test/test/DataExchDefXferTests.Codeunit.al",
+        "test/test/DataExchImportTests.Codeunit.al",
         "test/test/DataExchPhase2Testsori.Codeunit.al",
         "test/test/Storage79PermTests.Codeunit.al",
         "test/test/StorageErrorResponseTests.Codeunit.al",
@@ -2485,13 +2512,13 @@
     "scope": "app/src and test at consumerSourceSha; lexical quoted-name matches outside line comments; historical external-app searches remain separate",
     "method": "Quoted name lexical matches after removing line comments; strings and block comments may match; no foreign-consumer absence assertion"
   },
-  "refreshedAt": "2026-10-19T14:49:42.179960+00:00",
+  "refreshedAt": "2026-10-20T08:37:03.660392+00:00",
   "originalSnapshot": {
     "sourceSha": "b42ad90eaee2803205408a1cac8b0d9752b91c0e",
     "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/86",
     "commit": "ef39ae86b5729038877b2427e9a892487ce09728",
     "note": "Original audit remains attributable in Git history; this refresh inventories current product source."
   },
-  "consumerSourceSha": "f4d524d9bdcfe408701e222ef463b2928f395910",
-  "procedureLocationsSourceSha": "f4d524d9bdcfe408701e222ef463b2928f395910"
+  "consumerSourceSha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f",
+  "procedureLocationsSourceSha": "c30c2254bf953ed2e6f90fdf080dfb216bea799f"
 }
