@@ -8,7 +8,7 @@ using System.ExternalFileStorage;
 /// Call <see cref="SetConnector"/> before running the page modally, then read the
 /// chosen account with <see cref="GetSelectedAccount"/>.
 /// </summary>
-page 10035635 "Storage Account Lookup ori"
+page 10035136 "Storage Account Lookup ori"
 {
     Extensible = false;
     PageType = List;

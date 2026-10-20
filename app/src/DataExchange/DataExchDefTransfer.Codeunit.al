@@ -10,7 +10,7 @@ using System.Utilities;
 /// <c>Imp / Exp Data Exch Def &amp; Map</c>). Used by <c>DataExchange.Definition.Import</c> and
 /// <c>DataExchange.Definition.Export</c>.
 /// </summary>
-codeunit 70013505 "DataExch Def Transfer ori"
+codeunit 10035139 "DataExch Def Transfer ori"
 {
     Access = Internal;
 

@@ -36,7 +36,7 @@ does now: **Bifrost Attachments**, shown to Icelandic users as *Bifröst viðhen
 ## Repository Structure
 
 ```
-app/                Business Central AL extension (publisher: Origo, ID range 10035635–10035684)
+app/                Business Central AL extension (publisher: Origo, ID range 10035135–10035234)
   src/
     MessageTypes/   The 29 message-type implementations, grouped by domain
       Accounts/     Storage.Account.List
@@ -83,7 +83,7 @@ writes its answer back onto the `Argument` and Foundation serves it from the dat
 ### Interface / Enum / Impl Pattern
 
 Every message type is:
-- A **value** in `Storage Msg Type ori` (10035635), the enum extension on Foundation's
+- A **value** in `Storage Msg Type ori` (10035142), the enum extension on Foundation's
   `Message Type ori`, with a `Locked = true` caption — the key is the public wire contract.
 - An **impl codeunit** named `<Name> Impl ori` that satisfies `Msg Interface ori`,
   `Msg Contract ori` and `Msg Discovery ori`.
@@ -187,7 +187,7 @@ offloaded records filterable.
 - Do not carry the legacy default folder names (`cloud-events-attachments`,
   `cloud-events-uploads`) back in — the defaults are `bifrost-attachments` and
   `bifrost-uploads`.
-- Do not change the object ID range or claim ids outside 10035635–10035684 (tests
+- Do not change the object ID range or claim ids outside 10035135–10035234 (tests
   96200–96299). Request a new block in `origo_cloudevents_object_ranges.xlsx` instead.
 
 ---

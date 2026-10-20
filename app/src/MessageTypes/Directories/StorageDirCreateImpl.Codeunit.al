@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of the <c>Storage.Directory.Create</c> message type. Creates a directory
 /// in the configured storage connection.
 /// </summary>
-codeunit 10035644 "Storage Dir Create Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035171 "Storage Dir Create Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

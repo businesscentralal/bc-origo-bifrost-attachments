@@ -9,7 +9,7 @@ using System.DataAdministration;
 /// them through the session's <c>OnDelete</c> cascade — so no orphaned upload state or chunk
 /// blobs accumulate.
 /// </summary>
-codeunit 10035664 "Storage Reten. Policy ori"
+codeunit 10035196 "Storage Reten. Policy ori"
 {
     Access = Internal;
 

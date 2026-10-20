@@ -49,7 +49,7 @@ def validate(root, inventory, document):
                 if sum(line.startswith(row) for line in document.splitlines()) != 1:
                     errors.append(f"Document public member kind/identity mismatch: {obj['file']}: {signature.strip()}")
         if obj['name'] == 'Storage Setup ori':
-            expected = {'table': 10035636, 'page': 10035637}
+            expected = {'table': 10035137, 'page': 10035139}
             if obj['kind'] not in expected or obj['id'] != expected[obj['kind']]:
                 errors.append('Storage Setup table/page identity changed; review attribution')
             if obj['kind'] == 'page' and 'provider contract' in obj['decision'].lower():

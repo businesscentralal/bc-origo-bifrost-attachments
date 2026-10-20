@@ -5,7 +5,7 @@ namespace Origo.Bifrost.Attachments;
 /// <c>Attachments Setup ori</c> so an administrator sees every <c>storageCode</c> that Bifröst
 /// requests can address without leaving the application setup page.
 /// </summary>
-page 10035678 "Storage Conn. Part ori"
+page 10035138 "Storage Conn. Part ori"
 {
     Extensible = false;
     PageType = ListPart;

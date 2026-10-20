@@ -82,14 +82,14 @@ codeunit 96204 "Storage Connector Tests"
         // core#64 renamed call_message_type to invoke_message_type and get_message_type_help to describe_message_type.
         Ordinals := MessageType.Ordinals();
         foreach Ordinal in Ordinals do
-            if (Ordinal >= 10035635) and (Ordinal <= 10035657) then begin
+            if (Ordinal >= 10035135) and (Ordinal <= 10035157) then begin
                 MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
                 HelpText := MessageHelp(MessageType);
                 LibraryAssert.IsFalse(HelpText.Contains('call_message_type'), StrSubstNo(StaleToolErr, MessageType, 'call_message_type'));
                 LibraryAssert.IsFalse(HelpText.Contains('get_message_type_help'), StrSubstNo(StaleToolErr, MessageType, 'get_message_type_help'));
                 Checked += 1;
             end;
-        LibraryAssert.AreEqual(23, Checked, 'Every storage message type (10035635-10035657) should be checked.');
+        LibraryAssert.AreEqual(23, Checked, 'Every storage message type (10035135-10035157) should be checked.');
 
         // [THEN] AC02 — Getting started names the current tools and the message types, not the retired ones.
         Overview := MessageHelp(Enum::"Message Type ori"::"Help.Storage.Get");
@@ -100,14 +100,14 @@ codeunit 96204 "Storage Connector Tests"
         // [THEN] #12 reopen — every Data Exchange help type is held to the same retired-name rule.
         Checked := 0;
         foreach Ordinal in Ordinals do
-            if (Ordinal >= 70013510) and (Ordinal <= 70013515) then begin
+            if (Ordinal >= 10035158) and (Ordinal <= 10035163) then begin
                 MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
                 HelpText := MessageHelp(MessageType);
                 LibraryAssert.IsFalse(HelpText.Contains('call_message_type'), StrSubstNo(StaleToolErr, MessageType, 'call_message_type'));
                 LibraryAssert.IsFalse(HelpText.Contains('get_message_type_help'), StrSubstNo(StaleToolErr, MessageType, 'get_message_type_help'));
                 Checked += 1;
             end;
-        LibraryAssert.AreEqual(6, Checked, 'Every Data Exchange help type (70013510-70013515) should be checked.');
+        LibraryAssert.AreEqual(6, Checked, 'Every Data Exchange help type (10035158-10035163) should be checked.');
         LibraryAssert.IsTrue(
             MessageHelp(Enum::"Message Type ori"::"Help.DataExchange.Get").Contains('invoke_message_type'),
             'Help.DataExchange.Get should name invoke_message_type.');
@@ -126,8 +126,8 @@ codeunit 96204 "Storage Connector Tests"
         // [SCENARIO] #12 — Storage and Data Exchange help render real characters. AL does not interpret \u escapes.
         Ordinals := MessageType.Ordinals();
         foreach Ordinal in Ordinals do
-            if ((Ordinal >= 10035635) and (Ordinal <= 10035657)) or
-               ((Ordinal >= 70013510) and (Ordinal <= 70013515))
+            if ((Ordinal >= 10035135) and (Ordinal <= 10035157)) or
+               ((Ordinal >= 10035158) and (Ordinal <= 10035163))
             then begin
                 MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
                 HelpText := MessageHelp(MessageType);

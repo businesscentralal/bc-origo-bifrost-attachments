@@ -6,7 +6,7 @@ using System.IO;
 /// <summary>
 /// Implementation of <c>DataExchange.Definition.Get</c>. Returns one definition in full.
 /// </summary>
-codeunit 70013523 "DataExch Def Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035157 "DataExch Def Get Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

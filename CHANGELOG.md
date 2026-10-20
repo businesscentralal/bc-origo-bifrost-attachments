@@ -8,16 +8,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-### Fixed - import format refusals (#156)
+### Changed (2026-10-20) - All objects renumbered into the single registered range 10035135-10035234
 
-- Data Exchange import preflight (70013501), Import.Run (70013540), definition transfer (70013505) and chunked-upload import now refuse malformed XML and binary text files with translated `InvalidParameterFormat`, the actual source parameter, file metadata, expected format and a next step. Content is never echoed. UTF-16 text is preserved.
-- Storage read failures for file and definition imports retain `BusinessCentralError` with path and recovery guidance. Definition imports identify storage/upload sources correctly. Errors chapters and Icelandic XLF are synchronized; test codeunit 96256 exercises the EN/IS queue and refusal state. Unexpected post-write reader/DB errors retain Foundation's current error shape and transaction rollback (Architect AC2 disposition 1792485999.787709).
-
-### Added (2026-10-20) - Executable submission preparation checks (#78, #81)
-
-- `tools/validate_submission.py` checks current source inventory, fourteen-market listing, scenario families, local document links and unconfigured offer delivery; optional sanitized smoke receipts are reconciled against the actual immutable package, exact QA identity, readback bytes, structured negative result and owned cleanup. It does not run a sandbox flow or certify an app.
-- The working submission package records main `c30c2254bf953ed2e6f90fdf080dfb216bea799f`, shipping Default28.0.0.113, all eight verified artifact digests, clean compiler spans and existing CI365/365/0/0. Pipeline enforcement is integrated; Signed remains intentionally deferred under PR149; independent root Windows verification now supplies real Origo hf certificate `Valid` and tamper `HashMismatch` for that exact shipping artifact. No AL objects or message contracts changed.
-- The release checklist applies Architect1792485840’s first-publication ruling: Attachments has no published AppSource baseline. Authentic registration of both object ranges and `ori`/`Origo` remains a named Gunnar dependency; no offer/registration writes.
+- `app.json` declares one range, 10035135-10035234, confirmed for this app in the allocation workbook on 20.10.2026. The former blocks 10035635-10035684 and 70013500-70013549 are freed. Every table, table extension, page, page extension, codeunit, enum, enum extension, permission set and permission set extension now numbers from 10035135 per object type. Object names are unchanged.
+- The 39 message-type values in Foundation's `Message Type ori` moved into the same range, which clears the AppSourceCop AS0099 findings: Storage values to 10035135-10035157 (same order), Data Exchange values to 10035158-10035173. Message-type keys, bindings and contracts are unchanged, so callers that address types by name are unaffected.
+- Breaking for any database that has the app installed with the old ids: table data and stored message-type ordinals do not carry over. Uninstall the earlier build and clear its data before you install this one. No AppSource version has been published.
+- Tests that pin ordinals (96204, 96211, 96274), the API surface matrix (`API-SURFACE.md`, `api-surface-objects.json`, `tools/Test-ApiSurfaceMatrix.py`) and the id notes in the README, AGENTS.md and `.claude/CLAUDE.md` use the new ids.
 
 ### Added (2026-10-19) - Restrictive permission tests for the Data Exchange pipeline types (#79)
 

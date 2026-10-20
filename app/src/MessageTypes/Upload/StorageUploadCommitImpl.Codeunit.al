@@ -7,7 +7,7 @@ using Origo.Bifrost;
 /// chunks in order and writes the resulting file to the storage connection, then clears the
 /// chunks.
 /// </summary>
-codeunit 10035659 "Storage Upload Commit Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035188 "Storage Upload Commit Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

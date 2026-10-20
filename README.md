@@ -3,7 +3,7 @@
 **App name:** Bifrost Attachments (display form *Bifröst viðhengi*)  
 **Publisher:** Origo — **Version:** 28.0.0.4 in source (CI package 28.0.0.109 at main `304a1c2`) — **Target:** Cloud (BC 28.3 or later, runtime 17.0) — **Requires:** Bifrost Foundation 28.0.3.530  
 **App ID:** `672df32a-a0c5-4a22-b591-0efa38023e95` — **Test app ID:** `7cdb530b-b74b-446b-9ece-80e2b911bfb3`  
-**Object ID range:** 10035635–10035684 (tests 96200–96299) — **Namespace:** `Origo.Bifrost.Attachments`  
+**Object ID range:** 10035135–10035234 (tests 96200–96299) — **Namespace:** `Origo.Bifrost.Attachments`  
 **Environments:** Business Central online (SaaS) and the COSMO Alpaca development containers `bc28-is` (CRONUS IS) and `bc28-w1` (CRONUS International Ltd.)
 
 ---
@@ -142,11 +142,11 @@ Supporting paths:
 | --- | --- | --- |
 | 1 | Extension Management (page 2500) | Enable **Allow HttpClient Requests** for Bifrost Attachments. The shared **Bifröst Setup** page notifies the administrator when it is off — this app registers itself with Foundation's `App Registry ori` so that notification can name it and offer *Start setup wizard*. |
 | 2 | Business Central **File Accounts** | Register and configure the storage account in the Azure Blob Storage, Azure File Share or SharePoint connector app. That app owns the credentials. |
-| 3 | **Bifröst Setup** → *Apps* → **Bifröst viðhengi** | Open `Attachments Setup ori` (page 10035677), the single place this module is configured. |
+| 3 | **Bifröst Setup** → *Apps* → **Bifröst viðhengi** | Open `Attachments Setup ori` (page 10035135), the single place this module is configured. |
 | 4 | `Storage Conn. Part ori` on that page | Add one row per connection. |
 | 5 | `Storage Card ori` | Fill in the connection and test it. |
 
-`Storage Setup ori` (table 10035636) fields:
+`Storage Setup ori` (table 10035137) fields:
 
 | Field | Purpose |
 | --- | --- |
@@ -210,56 +210,58 @@ as `status = Error` with a message naming the cause; no exception escapes to the
 
 ## Objects
 
-63 objects, all inside range 10035635–10035684. Free ids left: 10035681–10035684 (codeunit id
-10035666 was freed when `Storage Http Notif. Action ori` was removed and is not reused). Every
+92 objects, all inside range 10035135–10035234 (renumbered into this single block on 20.10.2026;
+the earlier blocks 10035635–10035684 and 70013500–70013549 are released). Ids are unique per
+object type, so the same number appears for different types. Ids 10035199–10035234 (36 ids) are used by no
+object type and are free; lower ids are free only in the types that do not use them. Every
 object carries the mandatory ` ori` affix.
 
 ### Tables
 
 | ID | Name | Purpose |
 | --- | --- | --- |
-| 10035635 | `Storage Attachment Link ori` | Maps a BC attachment to the storage path that holds its content. |
-| 10035636 | `Storage Setup ori` | One row per configured storage connection (`storageCode`). |
-| 10035637 | `Storage Upload Chunk ori` | Transient chunk buffer for an in-flight chunked upload. |
-| 10035638 | `Storage Upload Session ori` | Transient header of an in-flight chunked upload. |
+| 10035135 | `Storage Attachment Link ori` | Maps a BC attachment to the storage path that holds its content. |
+| 10035137 | `Storage Setup ori` | One row per configured storage connection (`storageCode`). |
+| 10035138 | `Storage Upload Chunk ori` | Transient chunk buffer for an in-flight chunked upload. |
+| 10035139 | `Storage Upload Session ori` | Transient header of an in-flight chunked upload. |
 
 ### Table extensions
 
 | ID | Name | Extends | Purpose |
 | --- | --- | --- | --- |
-| 10035635 | `Storage Inc. Doc. Attach. ori` | Incoming Document Attachment | Marks an incoming-document attachment as offloaded. |
-| 10035636 | `Storage Doc. Attach. ori` | Document Attachment | Marks a document attachment as offloaded. |
+| 10035135 | `Storage Doc. Attach. ori` | Document Attachment | Marks a document attachment as offloaded. |
+| 10035136 | `Storage Inc. Doc. Attach. ori` | Incoming Document Attachment | Marks an incoming-document attachment as offloaded. |
 
 ### Pages
 
 | ID | Name | Purpose |
 | --- | --- | --- |
-| 10035635 | `Storage Account Lookup ori` | Picks a registered BC File Account for a connection. |
-| 10035636 | `Storage Card ori` | Edits one storage connection and tests it. |
-| 10035637 | `Storage Setup ori` | List of storage connections; reached from the setup page, not searchable. |
-| 10035638 | `Storage Setup Wizard ori` | Assisted setup: HTTP client permission, file account, finish. |
-| 10035677 | `Attachments Setup ori` | The module's own setup page — the only place it is configured. |
-| 10035678 | `Storage Conn. Part ori` | List part embedded in the setup page showing the connections. |
+| 10035135 | `Attachments Setup ori` | The module's own setup page — the only place it is configured. |
+| 10035136 | `Storage Account Lookup ori` | Picks a registered BC File Account for a connection. |
+| 10035137 | `Storage Card ori` | Edits one storage connection and tests it. |
+| 10035138 | `Storage Conn. Part ori` | List part embedded in the setup page showing the connections. |
+| 10035139 | `Storage Setup ori` | List of storage connections; reached from the setup page, not searchable. |
+| 10035140 | `Storage Setup Wizard ori` | Assisted setup: HTTP client permission, file account, finish. |
 
 ### Page extension
 
 | ID | Name | Extends | Purpose |
 | --- | --- | --- | --- |
-| 10035635 | `Setup Ext. ori` | `Setup ori` (Foundation) | Adds exactly one *Apps* action pointing at `Attachments Setup ori`. |
+| 10035135 | `Setup Ext. ori` | `Setup ori` (Foundation) | Adds exactly one *Apps* action pointing at `Attachments Setup ori`. |
 
 ### Enums
 
 | ID | Name | Purpose |
 | --- | --- | --- |
-| 10035635 | `Storage Attachment Target ori` | `DocumentAttachment` / `IncomingDocument`. |
-| 10035636 | `Storage Type ori` | Selects the `Storage Connector ori` implementation. |
-| 10035637 | `Storage Upload Status ori` | State of a chunked upload session. |
+| 10035135 | `Storage Attachment Target ori` | `DocumentAttachment` / `IncomingDocument`. |
+| 10035136 | `Storage Type ori` | Selects the `Storage Connector ori` implementation. |
+| 10035137 | `Storage Upload Status ori` | State of a chunked upload session. |
 
 ### Enum extension
 
 | ID | Name | Extends | Purpose |
 | --- | --- | --- | --- |
-| 10035635 | `Storage Msg Type ori` | `Message Type ori` (Foundation) | The 23 storage message types this app publishes (the 16 Data Exchange types are listed below). Captions are `Locked = true` — they are the public wire contract. |
+| 10035142 | `Storage Msg Type ori` | `Message Type ori` (Foundation) | The 23 storage message types this app publishes (the 16 Data Exchange types are listed below). Captions are `Locked = true` — they are the public wire contract. |
 
 ### Interface
 
@@ -271,78 +273,81 @@ object carries the mandatory ` ori` affix.
 
 | ID | Name | Purpose |
 | --- | --- | --- |
-| 10035635 | `Storage Attachment Mgt ori` | Offload, restore, link and create attachments; owns the link table. |
-| 10035636 | `Storage Attachment Subscr ori` | Event subscribers that serve offloaded attachment content to the standard BC pages. |
-| 10035637 | `Storage Install ori` | ChangeLog guard exception, assisted setup entry, upgrade tag. |
-| 10035638 | `Storage Overview Subscr ori` | Registers the module in Foundation's message-type overview. |
-| 10035639 | `Storage Account List Impl ori` | `Storage.Account.List` |
-| 10035640 | `Storage Attach Link Impl ori` | `Storage.Attachment.CreateLinked` |
-| 10035641 | `Storage Att. Offload Impl ori` | `Storage.Attachment.Offload` |
-| 10035642 | `Storage Att. Restore Impl ori` | `Storage.Attachment.Restore` |
-| 10035644 | `Storage Dir Create Impl ori` | `Storage.Directory.Create` |
-| 10035645 | `Storage Dir Delete Impl ori` | `Storage.Directory.Delete` |
-| 10035646 | `Storage Dir Exists Impl ori` | `Storage.Directory.Exists` |
-| 10035647 | `Storage Dir List Impl ori` | `Storage.Directory.List` |
-| 10035648 | `Storage File Copy Impl ori` | `Storage.File.Copy` |
-| 10035649 | `Storage File Create Impl ori` | `Storage.File.Create` |
-| 10035650 | `Storage File Delete Impl ori` | `Storage.File.Delete` |
-| 10035651 | `Storage File Exists Impl ori` | `Storage.File.Exists` |
-| 10035652 | `Storage File Get Impl ori` | `Storage.File.Get` |
-| 10035653 | `Storage File List Impl ori` | `Storage.File.List` |
-| 10035654 | `Storage File Move Impl ori` | `Storage.File.Move` |
-| 10035655 | `Storage Help Get Impl ori` | `Help.Storage.Get` — the module directory. |
-| 10035656 | `Storage Upload Abort Impl ori` | `Storage.Upload.Abort` |
-| 10035657 | `Storage Upload Append Impl ori` | `Storage.Upload.Append` |
-| 10035658 | `Storage Upload Begin Impl ori` | `Storage.Upload.Begin` |
-| 10035659 | `Storage Upload Commit Impl ori` | `Storage.Upload.Commit` |
-| 10035660 | `Storage Upload Status Impl ori` | `Storage.Upload.Status` |
-| 10035661 | `Storage Ext File Impl ori` | Production `Storage Connector ori` — delegates to the BC External File Storage facade. |
-| 10035662 | `Storage Request Mgt ori` | Resolves `storageCode` to a connection and connector, validates parameters, wraps every backend call and shapes the response envelope. |
-| 10035663 | `Storage Data Restriction ori` | Blocks the upload session and chunk tables from the generic `Data.Records.*` message types. |
-| 10035664 | `Storage Reten. Policy ori` | Registers the retention policy for spent upload sessions. |
-| 10035665 | `Storage Upload Mgt ori` | Owns the chunked-upload lifecycle and chunk assembly. |
-| 10035667 | `Storage Attach Record Impl ori` | `Storage.Attachment.CreateForRecord` |
-| 10035668 | `Storage Attach Key Subscr ori` | Supplies the primary-key field for the attachment link table to the platform. |
-| 10035669 | `Storage Upload Commit Rec ori` | `Storage.Upload.CommitToRecord` |
-| 10035676 | `Storage Takeover ori` | One-time data take-over from the published *Origo Cloud Events Storage* app. |
-| 10035679 | `Storage Upload Purge ori` | Purges spent upload sessions and their chunks. |
-| 10035680 | `Attachments Registration ori` | Registers this app with Foundation's `App Registry ori` so the shared Bifröst Setup page can list it and raise its setup notification. |
-| 70013500 | `Storage Contract Parts ori` | Builds the contract chapters (`Msg Contract ori`) shared by the storage and Data Exchange message types. |
+| 10035135 | `Storage Attach Key Subscr ori` | Supplies the primary-key field for the attachment link table to the platform. |
+| 10035136 | `Storage Attachment Mgt ori` | Offload, restore, link and create attachments; owns the link table. |
+| 10035137 | `Storage Attachment Subscr ori` | Event subscribers that serve offloaded attachment content to the standard BC pages. |
+| 10035145 | `Storage Takeover ori` | One-time data take-over from the published *Origo Cloud Events Storage* app. |
+| 10035146 | `Storage Takeover State ori` | State seam for the take-over: telemetry-only skip, never Foundation's `Setup ori`. |
+| 10035147 | `Storage Install ori` | ChangeLog guard exception, assisted setup entry, upgrade tag. |
+| 10035148 | `Storage Link Upgrade ori` | Upgrade codeunit for the attachment link table. |
+| 10035149 | `Storage Overview Subscr ori` | Registers the module in Foundation's message-type overview. |
+| 10035150 | `Storage Account List Impl ori` | `Storage.Account.List` |
+| 10035151 | `Storage Attach Link Impl ori` | `Storage.Attachment.CreateLinked` |
+| 10035152 | `Storage Attach Record Impl ori` | `Storage.Attachment.CreateForRecord` |
+| 10035153 | `Storage Att. Offload Impl ori` | `Storage.Attachment.Offload` |
+| 10035154 | `Storage Att. Restore Impl ori` | `Storage.Attachment.Restore` |
+| 10035171 | `Storage Dir Create Impl ori` | `Storage.Directory.Create` |
+| 10035172 | `Storage Dir Delete Impl ori` | `Storage.Directory.Delete` |
+| 10035173 | `Storage Dir Exists Impl ori` | `Storage.Directory.Exists` |
+| 10035174 | `Storage Dir List Impl ori` | `Storage.Directory.List` |
+| 10035175 | `Storage File Copy Impl ori` | `Storage.File.Copy` |
+| 10035176 | `Storage File Create Impl ori` | `Storage.File.Create` |
+| 10035177 | `Storage File Delete Impl ori` | `Storage.File.Delete` |
+| 10035178 | `Storage File Exists Impl ori` | `Storage.File.Exists` |
+| 10035179 | `Storage File Get Impl ori` | `Storage.File.Get` |
+| 10035180 | `Storage File List Impl ori` | `Storage.File.List` |
+| 10035181 | `Storage File Move Impl ori` | `Storage.File.Move` |
+| 10035182 | `Storage Help Get Impl ori` | `Help.Storage.Get` — the module directory. |
+| 10035183 | `Storage Contract Parts ori` | Builds the contract chapters (`Msg Contract ori`) shared by the storage and Data Exchange message types. |
+| 10035184 | `Storage Upload Abort Impl ori` | `Storage.Upload.Abort` |
+| 10035185 | `Storage Upload Append Impl ori` | `Storage.Upload.Append` |
+| 10035186 | `Storage Upload Begin Impl ori` | `Storage.Upload.Begin` |
+| 10035188 | `Storage Upload Commit Impl ori` | `Storage.Upload.Commit` |
+| 10035189 | `Storage Upload Commit Rec ori` | `Storage.Upload.CommitToRecord` |
+| 10035190 | `Storage Upload Status Impl ori` | `Storage.Upload.Status` |
+| 10035191 | `Attachments Registration ori` | Registers this app with Foundation's `App Registry ori` so the shared Bifröst Setup page can list it and raise its setup notification. |
+| 10035192 | `Storage Ext File Impl ori` | Production `Storage Connector ori` — delegates to the BC External File Storage facade. |
+| 10035193 | `Storage Request Mgt ori` | Resolves `storageCode` to a connection and connector, validates parameters, wraps every backend call and shapes the response envelope. |
+| 10035194 | `Storage Request Reader ori` | Reads and validates request values and collects structured errors on the argument. |
+| 10035195 | `Storage Data Restriction ori` | Blocks the upload session and chunk tables from the generic `Data.Records.*` message types. |
+| 10035196 | `Storage Reten. Policy ori` | Registers the retention policy for spent upload sessions. |
+| 10035197 | `Storage Upload Mgt ori` | Owns the chunked-upload lifecycle and chunk assembly. |
+| 10035198 | `Storage Upload Purge ori` | Purges spent upload sessions and their chunks. |
 
 ### Data Exchange objects
 
 | Type | ID | Name | Purpose |
 | --- | --- | --- | --- |
-| table | 70013500 | `DataExch Entry Link ori` | Marks a Data Exch. entry created by a Bifröst type (upload, storage path, processed); its retention policy (30 days by default) deletes the entry with the marker. |
-| codeunit | 70013501 | `DataExch Import Mgt ori` | Import engine: definition checks, entry insert, reader, mappings and the processing result. |
-| codeunit | 70013502 | `DataExch Process Worker ori` | Isolated run of the mappings for `process: true`. |
-| codeunit | 70013503 | `DataExch Export Mgt ori` | Generic export, payment export and the storage/inline delivery. |
-| codeunit | 70013504 | `DataExch Pay Capture ori` | Captures the payment file the base-app export would download. |
-| codeunit | 70013505 | `DataExch Def Transfer ori` | Definition XML install and dump (XMLport `Imp / Exp Data Exch Def & Map`). |
-| codeunit | 70013506 | `Storage Upload Commit DX ori` | `Storage.Upload.CommitToDataExchange` |
-| codeunit | 70013507 | `DataExch Entry Proc Impl ori` | `DataExchange.Entry.Process` |
-| codeunit | 70013508 | `DataExch Entry Delete Impl ori` | `DataExchange.Entry.Delete` |
-| codeunit | 70013509 | `DataExch Def Install Impl ori` | `DataExchange.Definition.Import` |
-| codeunit | 70013510 | `DataExch Pay Export Impl ori` | `DataExchange.PaymentExport.Run` |
-| codeunit | 70013511 | `DataExch View Filter ori` | Validates and applies the `tableView` of an export through Foundation. |
-| codeunit | 70013520 | `Data Exchange Query ori` | Read queries behind the discovery types and `DataExchange.Definition.Export`. |
-| codeunit | 70013521 | `DataExch Help Get Impl ori` | `Help.DataExchange.Get` |
-| codeunit | 70013522–70013526 | `DataExch Def List/Get, Type List, Entry List/Get Impl ori` | The discovery types. |
-| codeunit | 70013531 | `DataExch Type Set Impl ori` | `DataExchange.Type.Set` |
-| codeunit | 70013532 | `DataExch Inc Doc Proc ori` | Isolated incoming-document processing (#23). |
-| codeunit | 70013534 | `DataExch Export Run Impl ori` | `DataExchange.Export.Run` |
-| codeunit | 70013536 | `DataExch Def Export Impl ori` | `DataExchange.Definition.Export` |
-| codeunit | 70013540 | `DataExch Import Run Impl ori` | `DataExchange.Import.Run` |
-| codeunit | 70013543 | `DataExch Def Delete Impl ori` | `DataExchange.Definition.Delete` |
-| enumextension | 70013510, 70013511, 70013512, 70013514, 70013516, 70013519, 70013521 | `DataExch ... MsgType ori` | The 16 Data Exchange message types on `Message Type ori` (values 70013510–70013525). |
-| permissionset | 70013548 | `BIFROST DataExch ori` | Data Exchange reads and the type codeunits; table writes stay with the standard BC permissions. |
+| enumextension | 10035135, 10035136, 10035137, 10035138, 10035139, 10035140, 10035141 | `DataExch ... MsgType ori` | The 16 Data Exchange message types on `Message Type ori` (values 10035158–10035173). |
+| table | 10035136 | `DataExch Entry Link ori` | Marks a Data Exch. entry created by a Bifröst type (upload, storage path, processed); its retention policy (30 days by default) deletes the entry with the marker. |
+| permissionset | 10035136 | `BIFROST DataExch ori` | Data Exchange reads and the type codeunits; table writes stay with the standard BC permissions. |
+| codeunit | 10035138 | `Data Exchange Query ori` | Read queries behind the discovery types and `DataExchange.Definition.Export`. |
+| codeunit | 10035139 | `DataExch Def Transfer ori` | Definition XML install and dump (XMLport `Imp / Exp Data Exch Def & Map`). |
+| codeunit | 10035140 | `DataExch Export Mgt ori` | Generic export, payment export and the storage/inline delivery. |
+| codeunit | 10035141 | `DataExch Import Mgt ori` | Import engine: definition checks, entry insert, reader, mappings and the processing result. |
+| codeunit | 10035142 | `DataExch Pay Capture ori` | Captures the payment file the base-app export would download. |
+| codeunit | 10035143 | `DataExch Process Worker ori` | Isolated run of the mappings for `process: true`. |
+| codeunit | 10035144 | `DataExch View Filter ori` | Validates and applies the `tableView` of an export through Foundation. |
+| codeunit | 10035155 | `DataExch Def Delete Impl ori` | `DataExchange.Definition.Delete` |
+| codeunit | 10035156 | `DataExch Def Export Impl ori` | `DataExchange.Definition.Export` |
+| codeunit | 10035158 | `DataExch Def Install Impl ori` | `DataExchange.Definition.Import` |
+| codeunit | 10035157, 10035159, 10035161, 10035162, 10035169 | `DataExch Def List/Get, Entry List/Get, Type List Impl ori` | The discovery types. |
+| codeunit | 10035160 | `DataExch Entry Delete Impl ori` | `DataExchange.Entry.Delete` |
+| codeunit | 10035163 | `DataExch Entry Proc Impl ori` | `DataExchange.Entry.Process` |
+| codeunit | 10035164 | `DataExch Export Run Impl ori` | `DataExchange.Export.Run` |
+| codeunit | 10035165 | `DataExch Help Get Impl ori` | `Help.DataExchange.Get` |
+| codeunit | 10035166 | `DataExch Import Run Impl ori` | `DataExchange.Import.Run` |
+| codeunit | 10035167 | `DataExch Inc Doc Proc ori` | Isolated incoming-document processing (#23). |
+| codeunit | 10035168 | `DataExch Pay Export Impl ori` | `DataExchange.PaymentExport.Run` |
+| codeunit | 10035170 | `DataExch Type Set Impl ori` | `DataExchange.Type.Set` |
+| codeunit | 10035187 | `Storage Upload Commit DX ori` | `Storage.Upload.CommitToDataExchange` |
 
 ### Permission sets
 
 | Type | ID | Name | Purpose |
 | --- | --- | --- | --- |
-| permissionset | 10035666 | `BIFROST Attach ori` | Assignable set with everything the module needs (caption *Bifrost Storage*). |
-| permissionsetextension | 10035635 | `Storage Full ori` | Adds the same grants to Foundation's `BIFROST Full ori` role. |
+| permissionset | 10035135 | `BIFROST Attach ori` | Assignable set with everything the module needs (caption *Bifrost Storage*). |
+| permissionsetextension | 10035135 | `Storage Full ori` | Adds the same grants to Foundation's `BIFROST Full ori` role. |
 
 ---
 

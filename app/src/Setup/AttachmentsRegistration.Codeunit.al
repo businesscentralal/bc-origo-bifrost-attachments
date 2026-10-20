@@ -9,7 +9,7 @@ using Origo.Bifrost;
 /// gives Foundation this app's identity, its display name and the page to open when the
 /// administrator follows the notification's "Start setup wizard" action.
 /// </summary>
-codeunit 10035680 "Attachments Registration ori"
+codeunit 10035191 "Attachments Registration ori"
 {
     Access = Internal;
 

@@ -8,7 +8,7 @@ using Origo.Bifrost;
 /// discovery endpoint to the overview Markdown table built by
 /// <c>Help.Bifrost.Get</c>.
 /// </summary>
-codeunit 10035638 "Storage Overview Subscr ori"
+codeunit 10035149 "Storage Overview Subscr ori"
 {
     Access = Internal;
 

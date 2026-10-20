@@ -6,7 +6,7 @@ using System.IO;
 /// <summary>
 /// Implementation of <c>DataExchange.Definition.List</c>. Lists Data Exch. Def rows.
 /// </summary>
-codeunit 70013522 "DataExch Def List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035159 "DataExch Def List Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

@@ -7,7 +7,7 @@ using System.IO;
 /// Implementation of <c>DataExchange.Definition.Import</c>. Installs Data Exchange definitions from the
 /// standard definition XML.
 /// </summary>
-codeunit 70013509 "DataExch Def Install Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035158 "DataExch Def Install Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
     TableNo = "Message Argument ori";

@@ -9,7 +9,7 @@ using Origo.Bifrost;
 /// upload) into an incoming-document attachment that is served transparently from storage,
 /// without the file passing through the database from the caller.
 /// </summary>
-codeunit 10035640 "Storage Attach Link Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035151 "Storage Attach Link Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// Implementation of the <c>Storage.Upload.Begin</c> message type. Opens a chunked upload
 /// session and returns the <c>uploadId</c> used to append chunks and commit the file.
 /// </summary>
-codeunit 10035658 "Storage Upload Begin Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035186 "Storage Upload Begin Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 

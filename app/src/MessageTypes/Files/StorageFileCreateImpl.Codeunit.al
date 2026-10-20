@@ -7,7 +7,7 @@ using System.Utilities;
 /// Implementation of the <c>Storage.File.Create</c> message type. Uploads base64 content
 /// to a file path in the configured storage connection.
 /// </summary>
-codeunit 10035649 "Storage File Create Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035176 "Storage File Create Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
 
