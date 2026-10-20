@@ -11,5 +11,10 @@
   "retentionGate": "Tester postdeploymentUAT plus issue closure",
   "cleanupScope": "Ten operational Attachments table instances across two owned development companies directly checked0rows after365tests. Native tests require function isolation; current365-source/JUnit matched without skips. No externalMCPfixtures or UIbusinessdata created; no customer/shared/UAT data deletion.",
   "testAppAbsent": true,
-  "testAppCleanupEvidence": "testapp-tenant-removal-readback.log"
+  "testAppCleanupEvidence": "testapp-tenant-removal-readback.log",
+  "finalPostUIOperationalTablesChecked": 10,
+  "finalPostUIRows": 0,
+  "finalPostUIEvidence": "final-owned-data-counts.log",
+  "languageRestored": true,
+  "verifiedAt": "2026-10-20T09:15:51.278768+00:00"
 }

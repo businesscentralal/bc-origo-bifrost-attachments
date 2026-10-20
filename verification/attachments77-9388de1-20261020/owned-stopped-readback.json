@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-20T09:17:03.151Z",
+  "id": "f09c5823ec0a",
+  "name": "codex-worker4-attachments77-20261016",
+  "owner": "worker-4",
+  "priorState": "Running",
+  "state": "Stopped",
+  "stopStatus": 204,
+  "deleted": false,
+  "retentionGate": "Retain until Tester postdeploymentUAT and issue77closure; restart same container for amendments",
+  "dataCleanupVerified": true,
+  "sourceSha": "9388de175779e5e950a5218648bdef90498f113d"
+}
