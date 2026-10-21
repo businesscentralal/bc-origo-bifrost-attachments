@@ -1,0 +1,32 @@
+[
+  {
+    "kind": "default-deployed-symbols",
+    "path": "/workspace/evidence/attachments160-worker6/final-de0c3c5/compile/default-deployed-symbols/Origo.Bifrost_Attachments.28.3.0.0.app",
+    "sha256": "ee1b16ea73607b50a834bd7fc18bcfc08b735fe164f5eff322089cb71e3d0b46",
+    "sourceCommit": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+    "friends": [],
+    "sha256MatchesCompiledArtifact": true
+  },
+  {
+    "kind": "test-deployed-symbols",
+    "path": "/workspace/evidence/attachments160-worker6/final-de0c3c5/compile/test-deployed-symbols/Origo.Bifrost_Attachments.28.3.0.0.app",
+    "sha256": "71258d441d8a0e43f3469953762a7e12a07d1f733eea08ecac1c87775fa6b95c",
+    "sourceCommit": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+    "friends": [
+      {
+        "Id": "7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+        "Name": "Bifrost Attachments - Tests",
+        "Publisher": "Origo"
+      }
+    ],
+    "sha256MatchesCompiledArtifact": true
+  },
+  {
+    "kind": "test-deployed-symbols",
+    "path": "/workspace/evidence/attachments160-worker6/final-de0c3c5/compile/test-deployed-symbols/Origo.Bifrost_Attachments_Tests.28.3.0.0.app",
+    "sha256": "fac6f9dbdf162656013851ab40a364bc4e90bc33637a8a42c9043b777ebcb4d3",
+    "sourceCommit": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+    "friends": [],
+    "sha256MatchesCompiledArtifact": true
+  }
+]

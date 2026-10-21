@@ -1,0 +1,206 @@
+{
+  "owner": "Reginn (worker-6)",
+  "workerId": "worker-6",
+  "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/160",
+  "candidateSha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+  "candidateBranch": "fix/160-help-chapters-sourceguard-worker6",
+  "appVersion": "28.3.0.0",
+  "testAppVersion": "28.3.0.0",
+  "foundationVersion": "28.0.7.606",
+  "compile": {
+    "defaultProduct": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "testProduct": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "testApp": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "compiler": "17.0.44.19451",
+    "analyzers": [
+      "CodeCop",
+      "UICop",
+      "AppSourceCop"
+    ],
+    "deployedHashesMatch": true
+  },
+  "tests": {
+    "fullSuite": true,
+    "executed": 447,
+    "passed": 447,
+    "failed": 0,
+    "skipped": 0,
+    "codeunits": 31,
+    "missing": [],
+    "extra": [],
+    "duplicates": []
+  },
+  "mcp": {
+    "functional": {
+      "executed": 128,
+      "passed": 128,
+      "failed": 0,
+      "skipped": 0
+    },
+    "help": {
+      "executed": 78,
+      "passed": 78,
+      "failed": 0,
+      "skipped": 0
+    },
+    "primaryScenarioChecks": 206,
+    "additionalHelpPreflightToolCalls": 78,
+    "types": [
+      "Help.Storage.Get",
+      "Storage.Account.List",
+      "Storage.File.List",
+      "Storage.File.Get",
+      "Storage.File.Create",
+      "Storage.File.Delete",
+      "Storage.File.Copy",
+      "Storage.File.Move",
+      "Storage.File.Exists",
+      "Storage.Directory.List",
+      "Storage.Directory.Create",
+      "Storage.Directory.Delete",
+      "Storage.Directory.Exists",
+      "Storage.Attachment.Offload",
+      "Storage.Attachment.Restore",
+      "Storage.Upload.Begin",
+      "Storage.Upload.Append",
+      "Storage.Upload.Commit",
+      "Storage.Upload.Abort",
+      "Storage.Upload.Status",
+      "Storage.Attachment.CreateLinked",
+      "Storage.Attachment.CreateForRecord",
+      "Storage.Upload.CommitToRecord",
+      "DataExchange.Definition.Delete",
+      "DataExchange.Definition.Export",
+      "DataExchange.Export.Run",
+      "DataExchange.Import.Run",
+      "Help.DataExchange.Get",
+      "DataExchange.Definition.List",
+      "DataExchange.Definition.Get",
+      "DataExchange.Type.List",
+      "DataExchange.Entry.List",
+      "DataExchange.Entry.Get",
+      "Storage.Upload.CommitToDataExchange",
+      "DataExchange.Entry.Process",
+      "DataExchange.Entry.Delete",
+      "DataExchange.Definition.Import",
+      "DataExchange.PaymentExport.Run",
+      "DataExchange.Type.Set"
+    ],
+    "lcids": [
+      1033,
+      1039
+    ],
+    "englishExamplesExactMatches": 64,
+    "dataSetup": "Own X160 request payloads use deliberately nonexistent prerequisite IDs or malformed values; all write scenarios refuse before changes. Normal reads do not rely on existing customer/provider/financial fixtures. No business fixture writes.",
+    "licensingProofClaimed": false
+  },
+  "ui": {
+    "helpViewAndDownload": {
+      "executed": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "actualClientLocales": {
+      "executed": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "types": [
+      "Storage.Upload.Begin",
+      "DataExchange.Export.Run"
+    ],
+    "requestLcids": [
+      1033,
+      1039
+    ],
+    "actualClientLcids": [
+      1033,
+      1039
+    ],
+    "languageRestored": true
+  },
+  "cleanup": {
+    "businessFixtureCleanupVerified": true,
+    "businessTables": 16,
+    "businessRows": 0,
+    "transportRowsRemoved": 0,
+    "protectedTransportRowsRetained": 1202,
+    "auditDeletionVerified": false,
+    "auditRetentionDesigned": true,
+    "prReadinessBlocker": false,
+    "reason": "This Bifröst message has not been reported to the licensing service yet, so it cannot be changed or deleted. Try again after the next usage sync.",
+    "disposition": {
+      "sourceTs": "1792577401.521159",
+      "sourceUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792577401521159",
+      "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+      "owner": "Architect",
+      "ruling": "Protected unreported MCP audit retention is designed licensing behavior, not a gap or PR-readiness gate. Stop all deletion probes; no HTTP/licence/counter/backend/consent writes or manual usage reporting. Record count, ID range and container once in PR body Current state. Normal usage sync or container deletion after TesterUAT+issueclosure handles eventual cleanup. Claude recordings remain pending.",
+      "appliedAt": "2026-10-21T10:16:05.455329+00:00"
+    },
+    "noLicenceEulaTrialCounterBackendWrites": true,
+    "container": {
+      "id": "f0328cfb44e5",
+      "name": "worker6-attachments160-20261020-w1",
+      "beforeState": "Running",
+      "patchStatus": 204,
+      "afterStatus": 200,
+      "afterState": "Stopped",
+      "verifiedStopped": true,
+      "deleted": false,
+      "retentionReason": "Architect standing1792155806: retain sameownedcontainer until postdeployTesterUAT and issueclosure;1202protected unreported-usage auditrows await explicitcleanup/retention disposition. Businessfixtures16instances0rows.",
+      "sourceSha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+      "at": "2026-10-21T10:10:14.214Z",
+      "currentRetentionDisposition": {
+        "sourceTs": "1792577401.521159",
+        "sourceUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792577401521159",
+        "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+        "owner": "Architect",
+        "ruling": "Protected unreported MCP audit retention is designed licensing behavior, not a gap or PR-readiness gate. Stop all deletion probes; no HTTP/licence/counter/backend/consent writes or manual usage reporting. Record count, ID range and container once in PR body Current state. Normal usage sync or container deletion after TesterUAT+issueclosure handles eventual cleanup. Claude recordings remain pending.",
+        "appliedAt": "2026-10-21T10:16:05.455329+00:00"
+      }
+    }
+  },
+  "acceptance": {
+    "AC1": "39 overviews and64actualexamples present; refreshed6staleanswers verifiedexactly. Every39bc28-w1recording remains pendingClaude underArchitect1792491812.",
+    "AC2": "Existing PipelineInitialize sourceguard passes39types;8regressions;2actualcallbackmissingchaptermutationchecks stopbeforecompile;447nativechecksincludeconformance.",
+    "AC3": "README docs.bifrost.origo.is helpaddress correct; Unreleased/Fixed entry includes10035183; sourceinventory/XLFchecked.",
+    "AC4": "Pending independent Claude exacttipdescribe_message_type/recordings, currenttip Grokclearance, eligibleapproval, Architectmerge/deployment and newpostdeployUAT."
+  },
+  "prReady": true,
+  "independentReviewReady": false,
+  "auditRetentionDisposition": {
+    "sourceTs": "1792577401.521159",
+    "sourceUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792577401521159",
+    "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+    "owner": "Architect",
+    "ruling": "Protected unreported MCP audit retention is designed licensing behavior, not a gap or PR-readiness gate. Stop all deletion probes; no HTTP/licence/counter/backend/consent writes or manual usage reporting. Record count, ID range and container once in PR body Current state. Normal usage sync or container deletion after TesterUAT+issueclosure handles eventual cleanup. Claude recordings remain pending.",
+    "appliedAt": "2026-10-21T10:16:05.455329+00:00"
+  },
+  "readinessBlockers": [],
+  "pendingIndependentGates": [
+    "Claude all39bc28-w1recordings and independentexacthead receipt remain separate, scopedrecordingdeferralperArchitect1792491812",
+    "CI/Grokcurrenttipclearance/eligibleapproval/Architectmerge-deploy/newTesterUAT"
+  ],
+  "advisories": [
+    "PRgatewayraw22/23: missingdated28.3.0.0CHANGELOGheadingalreadyonmain; issueAC3requiresUnreleased. Rawfailedfield=2; onlyenumeratedfailedcheck=changelog. No suppression/exclusionintroduced.",
+    "Defaultlocalpackageunsigned; no signedDefault/AppSourcecertification claim. Testproduct keeps existing repository testfriendgrant/AS0081; Defaultstrippedboth.",
+    "Earlier dc93759had6stalesamples; fixedde0c3c5rerunallchecks. OriginalDefaultdependentTestpublish422andUIextraction/lookup/SQLreportingharnessretries retainedprivately; finalresults applyonlynamedSHA."
+  ],
+  "standardsSnapshot": {
+    "sha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
+    "capturedAt": "2026-10-03T16:02:22.475Z",
+    "freshSyncClaimed": false
+  },
+  "at": "2026-10-21T10:16:53.927467+00:00"
+}

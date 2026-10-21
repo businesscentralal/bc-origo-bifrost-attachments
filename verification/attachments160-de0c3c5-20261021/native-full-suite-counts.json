@@ -1,0 +1,16 @@
+{
+  "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+  "containerId": "f0328cfb44e5",
+  "fullSuite": true,
+  "executed": 447,
+  "passed": 447,
+  "failed": 0,
+  "skipped": 0,
+  "codeunits": 31,
+  "expectedSourceMethods": 447,
+  "missing": [],
+  "extra": [],
+  "duplicates": [],
+  "xmlSha256": "0cab7d3393c5953615e902fde817231e81f4ac787bd4584214ca7c0eeb0d6f3b",
+  "failures": []
+}

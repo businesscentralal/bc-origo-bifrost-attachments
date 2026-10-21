@@ -1,0 +1,396 @@
+{
+  "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+  "containerId": "f0328cfb44e5",
+  "executed": 64,
+  "passed": 64,
+  "failed": 0,
+  "skipped": 0,
+  "createsOwnData": true,
+  "assertion": "Replay identical64 own requests at1039; assert same status/code/parameter and collectederrorcodes/parameters as1033. Actuallocalizedtext retained inrawrecordings; Englishpublicexamples separately comparedexactly.",
+  "checks": [
+    {
+      "type": "Help.Storage.Get",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Account.List",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.List",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Get",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Create",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Create",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Delete",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Delete",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Copy",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Copy",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Move",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Move",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Exists",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.List",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.Create",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.Create",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.Delete",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.Delete",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.Exists",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.Offload",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.Offload",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.Restore",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.Restore",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Append",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Append",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Commit",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Commit",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Abort",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Abort",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Status",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.CreateForRecord",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.CreateForRecord",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.CommitToRecord",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.CommitToRecord",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Delete",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Delete",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Export",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Export",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Import.Run",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Import.Run",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Help.DataExchange.Get",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.List",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Get",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Type.List",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.List",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.Get",
+      "scenario": "Inspect the response with no configured prerequisites",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.CommitToDataExchange",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.CommitToDataExchange",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.Process",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.Process",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.Delete",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.Delete",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Import",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Import",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.PaymentExport.Run",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.PaymentExport.Run",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "scenario": "A request refused before any change",
+      "lcid": 1039,
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "scenario": "Refusal: required request data is missing",
+      "lcid": 1039,
+      "passed": true
+    }
+  ]
+}

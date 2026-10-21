@@ -1,0 +1,8 @@
+{
+  "sourceTs": "1792577401.521159",
+  "sourceUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792577401521159",
+  "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+  "owner": "Architect",
+  "ruling": "Protected unreported MCP audit retention is designed licensing behavior, not a gap or PR-readiness gate. Stop all deletion probes; no HTTP/licence/counter/backend/consent writes or manual usage reporting. Record count, ID range and container once in PR body Current state. Normal usage sync or container deletion after TesterUAT+issueclosure handles eventual cleanup. Claude recordings remain pending.",
+  "appliedAt": "2026-10-21T10:16:05.455329+00:00"
+}

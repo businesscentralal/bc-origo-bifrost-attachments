@@ -1,0 +1,112 @@
+{
+  "version": "28.3.0.0",
+  "files_scanned": 1,
+  "mode": "diff (vs origin/main)",
+  "total_al_files": 94,
+  "checks": {
+    "object_naming": {
+      "pass": true,
+      "findings": []
+    },
+    "hardcoded_values": {
+      "pass": true,
+      "findings": []
+    },
+    "commit_in_loop": {
+      "pass": true,
+      "findings": []
+    },
+    "confirm_in_page": {
+      "pass": true,
+      "findings": []
+    },
+    "try_prefix_convention": {
+      "pass": true,
+      "findings": []
+    },
+    "set_load_fields": {
+      "findings": [],
+      "advisory": "Loops without SetLoadFields - consider it only for wide tables; not a gate failure",
+      "pass": true
+    },
+    "one_statement_per_line": {
+      "pass": true,
+      "findings": []
+    },
+    "global_variables": {
+      "pass": true,
+      "findings": []
+    },
+    "app_json": {
+      "pass": true,
+      "findings": []
+    },
+    "changelog": {
+      "pass": false,
+      "findings": [
+        "No entry for version 28.3.0.0"
+      ]
+    },
+    "with_statements": {
+      "pass": true,
+      "findings": []
+    },
+    "read_isolation": {
+      "pass": true,
+      "findings": []
+    },
+    "xml_doc_comments": {
+      "pass": true,
+      "findings": []
+    },
+    "format_guid": {
+      "pass": true,
+      "findings": []
+    },
+    "caption_translation": {
+      "skipped": null,
+      "findings": [],
+      "pass": true
+    },
+    "event_subscriber_placement": {
+      "pass": true,
+      "findings": []
+    },
+    "format_evaluate_enum": {
+      "pass": true,
+      "findings": []
+    },
+    "reserved_var_names": {
+      "pass": true,
+      "findings": []
+    },
+    "data_classification": {
+      "pass": true,
+      "findings": []
+    },
+    "page_code_minimal": {
+      "pass": true,
+      "findings": []
+    },
+    "namespace": {
+      "pass": true,
+      "findings": []
+    },
+    "today_vs_workdate": {
+      "pass": true,
+      "findings": []
+    },
+    "modernization": {
+      "pass": true,
+      "findings": []
+    }
+  },
+  "project": "Bifrost Attachments",
+  "summary": {
+    "total": 23,
+    "passed": 22,
+    "ready": false,
+    "failed": 2
+  },
+  "publisher": "Origo"
+}

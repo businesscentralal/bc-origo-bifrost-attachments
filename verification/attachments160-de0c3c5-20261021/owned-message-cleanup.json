@@ -1,0 +1,51 @@
+{
+  "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+  "containerId": "f0328cfb44e5",
+  "companyId": "04931c73-7acb-f111-98ec-6045bdacacac",
+  "method": "Attempted supported BC Web Client Select All/Delete for exact exclusive-owner MCP transport inventory; read whole same-visibility API set and3exactIDs afterward. Initial API DELETE400 was not repeated.",
+  "before": 1202,
+  "deleted": 0,
+  "readbackAbsent": 0,
+  "remaining": 1202,
+  "historicalOwnedRows": 563,
+  "foreignRowsDeleted": 0,
+  "verified": false,
+  "at": "2026-10-21T10:06:07.239Z",
+  "sampledExactIdReadbacks": [
+    {
+      "id": "eb90dde4-7d0c-4a45-8575-000ee48f8f2e",
+      "status": 200
+    },
+    {
+      "id": "53b4db7c-af9f-4a5b-a930-78dfc48c4d06",
+      "status": 200
+    },
+    {
+      "id": "ec67e60b-cc6b-4d52-beca-ffff4dd6ce94",
+      "status": 200
+    }
+  ],
+  "refusal": "This Bifr\u00f6st message has not been reported to the licensing service yet, so it cannot be changed or deleted. Try again after the next usage sync.",
+  "blockerOwner": "Architect",
+  "blockerReason": "Protected unreported usage audit rows cannot be deleted. No usage-reporting/licence/backend/counter writes or guard bypass authorized; need explicit issue160 cleanup/retention disposition.",
+  "retryPolicy": "Do not repeat deletion or licensing probes until relevant authenticated disposition/dependency change.",
+  "businessFixtureCleanupVerified": true,
+  "businessTableInstances": 16,
+  "businessRows": 0,
+  "auditRetentionDesigned": true,
+  "prReadinessBlocker": false,
+  "auditDeletionVerified": false,
+  "disposition": {
+    "sourceTs": "1792577401.521159",
+    "sourceUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792577401521159",
+    "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+    "owner": "Architect",
+    "ruling": "Protected unreported MCP audit retention is designed licensing behavior, not a gap or PR-readiness gate. Stop all deletion probes; no HTTP/licence/counter/backend/consent writes or manual usage reporting. Record count, ID range and container once in PR body Current state. Normal usage sync or container deletion after TesterUAT+issueclosure handles eventual cleanup. Claude recordings remain pending.",
+    "appliedAt": "2026-10-21T10:16:05.455329+00:00"
+  },
+  "lexicographicIdRange": {
+    "first": "004cf585-c0fe-45b1-96d3-11e2595315ab",
+    "last": "ffe9b87c-198a-4ea7-8866-d33b7da4575f"
+  },
+  "nextAction": "Retain stopped; normal usage sync or removal only after TesterUAT and issueclosure. No deletion retries/manual reporting."
+}

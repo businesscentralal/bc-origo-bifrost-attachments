@@ -1,0 +1,48 @@
+{
+  "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+  "baseSha": "dc93759a5f9d6a078bc389c15df110a653917d45",
+  "baseBranch": "origin/main",
+  "tier": "Standard",
+  "layer1": {
+    "filesScanned": 1,
+    "passed": 22,
+    "total": 23,
+    "rawReady": false,
+    "rawFailedField": 2,
+    "enumeratedFailingChecks": [
+      [
+        "changelog",
+        [
+          "No entry for version 28.3.0.0"
+        ]
+      ]
+    ]
+  },
+  "triage": "Only enumerated failedcheck requires dated28.3.0.0CHANGELOGheading. SameconditiononmainafterPR173. Issue160AC3 explicitlyrequiresUnreleased; newentrycorrectlyunderUnreleased/Fixed. No releaseheadinginvented; rawresultretainedanddisclosed. SnapshotstandardsSHAac05e88, notfreshlysynced. No new scopedsourcefinding.",
+  "layer2": {
+    "compile": "3builds3cops0/0;exactsourceartifacthashesverified",
+    "namingRange": "Existingcodeunit10035183 andprocedureidentitiesunchanged;10035135-10035234range; nonewobjects",
+    "dataPerformanceSecurity": "Only6staticexampleanswersreplaced; norecordaccess/businesslogic/permissions/secrets/IDschanged",
+    "publicCompatibility": "NoAPI/implementationparameters/types/statuschanges inthisdiff; examplesnowmatchalreadymergedexecutionlogic",
+    "manifests": "Noapp/testmanifestchangeagainstmain; both28.3.0.0coherent",
+    "docs": "Unreleasedupdated;READMEURLsremaincorrect;publichelpEnglishbyexplicitAC;XMLdocsretained;derivedsourceinventoryfresh;is-ISmatchesgeneratedXLF",
+    "tests": "447/447/0/0;all447sourcemethodsexactlyonce;78helpand128MCPchecksfinalcandidatepassed;64Englishsamplesexactruntimecomparison",
+    "story": "Issue160iscurrentACcontract; nohistoricalstoryresurrection",
+    "ui": "6/6finalcandidate:4changedhelpview/downloadchecks at1033/1039;actualclientEN/IS;Englishrestored/readback. Originalharnessretriesretained.",
+    "htmlHelp": "Notapplicable;repositoryapprovedexternaldocumentationnoHelpfolder",
+    "rolePlatform": "Nonewobjects/permissions/platformdiscoverychanges"
+  },
+  "gaps": [
+    "Claude independent exacttip39bc28-w1recordings/describe_message_type pending underArchitect1792491812",
+    "CI/Grokcurrenttipclearance/eligibleapproval/Architectmerge-deploy/newpostdeployUATpending"
+  ],
+  "at": "2026-10-21T09:58:16.833130+00:00",
+  "auditRetentionDisposition": {
+    "sourceTs": "1792577401.521159",
+    "sourceUrl": "https://bifrst-group.slack.com/archives/C0C0XM70YF8/p1792577401521159",
+    "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+    "owner": "Architect",
+    "ruling": "Protected unreported MCP audit retention is designed licensing behavior, not a gap or PR-readiness gate. Stop all deletion probes; no HTTP/licence/counter/backend/consent writes or manual usage reporting. Record count, ID range and container once in PR body Current state. Normal usage sync or container deletion after TesterUAT+issueclosure handles eventual cleanup. Claude recordings remain pending.",
+    "appliedAt": "2026-10-21T10:16:05.455329+00:00"
+  }
+}

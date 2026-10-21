@@ -1,0 +1,64 @@
+Skip to main content
+CRONUS International Ltd.
+Finance
+Cash Management
+Sales
+Purchasing
+Shopify
+All Reports
+
+Bifrost Messages:
+All
+
+
+Delete
+Edit List
+Task
+
+Request
+
+Response
+
+Export
+
+
+
+
+
+	
+Id
+	
+	
+Version
+	
+Type
+	
+Status
+	
+Source
+	
+Subject
+	
+Language
+	
+Date & Time
+	
+Date
+	
+User ID
+	
+Last Modified
+	
+Response Time
+	
+Data Content Type
+	
+		
+													
+Request Data
+Response Data
+Content Length
+Caller Identity
+Name
+Type
+Use the Left and Right arrow keys to adjust the size. Use the Escape key to undo or the Enter key to accept.

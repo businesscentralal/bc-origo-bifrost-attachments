@@ -1,0 +1,50 @@
+[
+  {
+    "name": "default-app",
+    "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+    "dirty": false,
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "analyzers": [
+      "CodeCop",
+      "UICop",
+      "AppSourceCop"
+    ],
+    "testAnalyzerConfiguration": "Repository enables all three analyzers for test apps",
+    "sha256": "ee1b16ea73607b50a834bd7fc18bcfc08b735fe164f5eff322089cb71e3d0b46",
+    "finishedAt": "2026-10-21T09:35:51.367503+00:00"
+  },
+  {
+    "name": "test-product",
+    "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+    "dirty": false,
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "analyzers": [
+      "CodeCop",
+      "UICop",
+      "AppSourceCop"
+    ],
+    "testAnalyzerConfiguration": "Repository enables all three analyzers for test apps",
+    "sha256": "71258d441d8a0e43f3469953762a7e12a07d1f733eea08ecac1c87775fa6b95c",
+    "finishedAt": "2026-10-21T09:36:04.795799+00:00"
+  },
+  {
+    "name": "test-app",
+    "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+    "dirty": false,
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "analyzers": [
+      "CodeCop",
+      "UICop",
+      "AppSourceCop"
+    ],
+    "testAnalyzerConfiguration": "Repository enables all three analyzers for test apps",
+    "sha256": "fac6f9dbdf162656013851ab40a364bc4e90bc33637a8a42c9043b777ebcb4d3",
+    "finishedAt": "2026-10-21T09:36:16.409664+00:00"
+  }
+]

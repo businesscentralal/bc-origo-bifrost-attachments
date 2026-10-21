@@ -1,0 +1,108 @@
+Fara í aðalefni
+CRONUS International Ltd.
+Finance
+Cash Management
+Sales
+Purchasing
+Shopify
+Allar skýrslur
+
+Bifröst skilaboð:
+Allt
+
+
+Eyða
+Breyta lista
+Vinnsla
+
+Beiðni
+
+Svar
+
+Flytja út
+
+
+
+
+
+	
+Kenni
+	
+	
+Útgáfa
+	
+Tegund
+	
+Staða
+	
+Uppruni
+	
+Viðfangsefni
+	
+Tungumál
+	
+Dagsetning og tími
+	
+Dagsetning
+	
+Notandakenni
+	
+Síðast breytt
+	
+Svartími
+	
+Efnistegund gagna
+	
+		
+													
+	{c2527790-81fe-4bba-aee4-97a9b286dee5}	
+	1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Type.Set	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	14 millisekúndur	text/json	
+	{4920c46f-8c15-47ff-802c-78523cab8647}		1.0	DataExchange.Type.Set	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	30 millisekúndur	text/json	
+	{c37bdc2f-db98-45ea-9926-e08cc9b31ba1}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Type.Set	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	18 millisekúndur	text/json	
+	{444a581a-4ee6-44ca-a0e6-86cf2627f46a}		1.0	DataExchange.Type.Set	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	36 millisekúndur	text/json	
+	{9e9cba22-ce22-4783-bc81-d549afc70ebd}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Type.Set	Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	14 millisekúndur	text/json	
+	{32ee8611-f387-4f82-a923-ae5366560524}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.PaymentExport.Run	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	15 millisekúndur	text/json	
+	{8489569e-33bd-4fdc-b0a1-1327d7b0b6ee}		1.0	DataExchange.PaymentExport.Run	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	13 millisekúndur	text/json	
+	{35f2cbd2-a3d7-40db-9d9e-5d2b9822f1a9}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.PaymentExport.Run	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	14 millisekúndur	text/json	
+	{dd9514ce-34bd-4784-aaa3-09ba3e460572}		1.0	DataExchange.PaymentExport.Run	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	14 millisekúndur	text/json	
+	{20edc02b-6280-4776-beaa-1ed74c0fa864}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.PaymentExport.Run	Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	16 millisekúndur	text/json	
+	{8bcf6043-b570-4130-b4ff-d7771ab014b4}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Definition.Import	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	14 millisekúndur	text/json	
+	{c2186f17-c43e-4667-a5b8-123525778f8c}		1.0	DataExchange.Definition.Import	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	13 millisekúndur	text/json	
+	{79a141dd-787b-488d-a65b-5d03d7326f6f}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Definition.Import	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	15 millisekúndur	text/json	
+	{d182585e-aac7-469f-adcd-10ca755ec099}		1.0	DataExchange.Definition.Import	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	21 millisekúndur	text/json	
+	{925d33c4-ccc7-4c34-b5a6-d8565c5fe6ad}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Definition.Import	Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	24 millisekúndur	text/json	
+	{86e2c3da-4f8d-4b61-9d43-045301a02974}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Delete	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	11 millisekúndur	text/json	
+	{df096453-2b0e-439e-ae10-841b5c4d7989}		1.0	DataExchange.Entry.Delete	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	11 millisekúndur	text/json	
+	{699ca06f-d0a5-4419-ae70-fb2a4a0166df}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Delete	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	13 millisekúndur	text/json	
+	{aa70cbf2-9e34-430c-9065-b7ccbd2c3098}		1.0	DataExchange.Entry.Delete	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	14 millisekúndur	text/json	
+	{bca9d08e-7cec-47ef-ac81-d7e1652b15e8}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Delete	Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	30 millisekúndur	text/json	
+	{cf923885-472a-4a1c-b0c0-9c0931cd4ffd}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Process	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	14 millisekúndur	text/json	
+	{5a2575e0-b9cc-41b9-8c7e-dd0973465b53}		1.0	DataExchange.Entry.Process	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	12 millisekúndur	text/json	
+	{87281d35-9dc9-4b80-9142-ccc833619b60}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Process	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	12 millisekúndur	text/json	
+	{b8f15104-9176-4947-9bd4-9ce98eaed0c8}		1.0	DataExchange.Entry.Process	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	10 millisekúndur	text/json	
+	{c476d8c7-3445-49da-8dd3-ef9d19fa57ee}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Process	Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	13 millisekúndur	text/json	
+	{a51335d3-fafa-48b2-b96a-8c2bf43021d3}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	Storage.Upload.CommitToDataExchange	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	10 millisekúndur	text/json	
+	{f9ab07d7-fa87-4b4a-9103-3439d387d4ae}		1.0	Storage.Upload.CommitToDataExchange	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	12 millisekúndur	text/json	
+	{660f90d7-afe3-4e85-8f94-eb23558407cf}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	Storage.Upload.CommitToDataExchange	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	14 millisekúndur	text/json	
+	{ff5c1ed9-189d-4b19-b1a2-8d2fce3642ac}		1.0	Storage.Upload.CommitToDataExchange	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	46 millisekúndur	text/json	
+	{782d552c-f4eb-43e4-bec2-18ca8340a16a}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	Storage.Upload.CommitToDataExchange	Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	19 millisekúndur	text/json	
+	{51db5cd0-6ef5-4762-ae8f-72107cc0e0e8}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Get	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	11 millisekúndur	text/json	
+	{dcf3008b-da4c-4a9e-a007-51836b43537e}		1.0	DataExchange.Entry.Get	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	19 millisekúndur	text/json	
+	{e8929686-e8e8-43ae-a87b-dd66c4cf3fde}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Get	Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	32 millisekúndur	text/json	
+	{53b4db7c-af9f-4a5b-a930-78dfc48c4d06}		1.0	DataExchange.Entry.List	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	11 millisekúndur	text/json	
+	{de17470e-8e77-4a73-a5a3-7545bdf087b5}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.List	Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	21 millisekúndur	text/json	
+	{fcac134b-d364-416a-833c-acac1ca133a2}		1.0	DataExchange.Type.List	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	27 millisekúndur	text/json	
+	{37234082-dd4e-4598-93e0-8950c121985c}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Type.List	Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	19 millisekúndur	text/json	
+	{42658dad-b7a4-4426-a275-fefa3f2a0575}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Definition.Get	English (United States)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	12 millisekúndur	text/json	
+	{9ac26028-2e6f-4d8f-abbb-83f4baefca33}		1.0	DataExchange.Definition.Get	Bakgrunnsverkefni lokið (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	11 millisekúndur	text/json	
+	{0e8d6fd9-004c-4af1-9e85-9dff7e5efd74}		1.0	Help.Implementation.Get	Bakgrunnsverkefni lokið (Success)	Origo-BC Cloud Events MCP	DataExchange.Definition.Get	Icelandic (Iceland)	10/21/2026 9:50 AM	10/21/2026	GUNNAR	10/21/2026 9:50 AM	24 millisekúndur	text/json	
+
+Gögn beiðni
+Svargögn
+Lengd efnis
+Auðkenni kallara
+Nafn
+Tegund
+Notaðu hægri og vinstri örvalyklana til að stilla stærðina. Notaðu Escape-lykilinn til að afturkalla eða Enter-lykilinn til að staðfesta.
+
+Síðast breytt, raðað í pöntunina Lækkandi

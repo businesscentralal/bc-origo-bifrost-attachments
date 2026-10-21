@@ -1,0 +1,9 @@
+{
+  "version": "17.0.2902947",
+  "url": "https://ms-dynamics-smb.gallerycdn.vsassets.io/extensions/ms-dynamics-smb/al/17.0.2902947/1792388103481/Microsoft.VisualStudio.Services.VSIXPackage",
+  "sha256": "d6ba014db1e9a0d2d55bc7df8e9185ac021a99526a4a245597b4a29a2de1288c",
+  "bytes": 319123144,
+  "downloadedAt": "2026-10-20T10:54:51.462873+00:00",
+  "verifiedDigest": true,
+  "purpose": "Use same17.0.44.19451 compiler/analyzers as current verified PR169; prior local30.0.42.60748 differs and produced AA0073 against table-temporary metadata."
+}

@@ -1,0 +1,26 @@
+{
+  "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+  "executed": 2,
+  "passed": 2,
+  "failed": 0,
+  "skipped": 0,
+  "checks": [
+    {
+      "mutation": "Remove shared examples branch content for Storage.File.Create",
+      "exitCode": 1,
+      "expectedFailure": "Storage.File.Create: missing or empty examples chapter",
+      "passed": true,
+      "beforeCompile": true,
+      "ownedTemporarySourceRemoved": true
+    },
+    {
+      "mutation": "Remove shared overview branch content for Storage.File.Create",
+      "exitCode": 1,
+      "expectedFailure": "Storage.File.Create: missing or empty overview chapter",
+      "passed": true,
+      "beforeCompile": true,
+      "ownedTemporarySourceRemoved": true
+    }
+  ],
+  "at": "2026-10-21T09:37:02.355111+00:00"
+}

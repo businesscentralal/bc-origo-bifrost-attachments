@@ -1,0 +1,8 @@
+Checked 39 registered message types for overview and examples.
+::error::Storage.File.Create: missing or empty overview chapter
+Exception: /workspace/attachments160-sourceguard-worker6/.AL-Go/PipelineInitialize.ps1:9
+Line |
+   9 |      throw 'Shipped message types must declare nonempty overview and e …
+     |      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Shipped message types must declare nonempty overview and examples
+     | chapters.

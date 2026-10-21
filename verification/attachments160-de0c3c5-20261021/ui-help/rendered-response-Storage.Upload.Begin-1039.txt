@@ -1,0 +1,19 @@
+{"status":"Success","result":[{"status":"Success","name":"Storage.Upload.Begin","isEnabled":true,"filterTableNo":0,"description":"Opnar upphleðslulotu fyrir skrá sem rúmast ekki í einu kalli; hún er send í bútum sem eru allt að 240 MiB hver.","selectionDescription":"Opnar upphleðslulotu fyrir skrár yfir 240 MiB eða skrár sendar í bútum; notaðu skráarstofnun í einu kalli fyrir skrár sem rúmast í einni beiðni.","messageDirection":"Inbound","keywords":["hefja stóra upphleðslu","hlaða upp stórri skrá","upphleðsla í bútum","hlaða upp í bútum","streyma skrá","upphleðsla sem má halda áfram","hefja upphleðslulotu","skrá of stór fyrir eitt kall"],"chargeable":true,"examples":[{"title":"A request refused before any change","request":{"type":"Storage.Upload.Begin","data":{"fileName":"X160-help/example.txt","declaredSize":5},"lcid":1033},"response":{"status":"Error","code":"InvalidParameter","error":"Parameter 
+"fileName
+" must be a file name without folders or relative segments.","parameter":"fileName","received":"X160-help/example.txt","expected":"a nonempty file name without slash or backslash","nextStep":"Send only the file name, for example INV-001.pdf, without a folder path.","hint":"For usage details, call the 
+"Help.Implementation.Get
+" message type with subject 
+"Storage.Upload.Begin
+". Always read the help before calling a message type."}},{"title":"Refusal: required request data is missing","request":{"type":"Storage.Upload.Begin","data":{},"lcid":1033},"response":{"status":"Error","code":"MultipleErrors","error":"2 problems in the request. Nothing was changed.","errors":[{"code":"MissingParameter","error":"Required parameter 
+"fileName
+" is missing.","parameter":"fileName","received":"(missing)","expected":"a value for 
+"fileName
+"","nextStep":"Provide 
+"fileName
+" and send the request again."},{"code":"InvalidParameter","error":"Parameter 
+"fileName
+" must be a file name without folders or relative segments.","parameter":"fileName","expected":"a nonempty file name without slash or backslash","nextStep":"Send only the file name, for example INV-001.pdf, without a folder path."}],"hint":"For usage details, call the 
+"Help.Implementation.Get
+" message type with subject 
+"Storage.Upload.Begin
+". Always read the help before calling a message type."}}],"overview":"Opens a chunked upload and returns its uploadId. Append numbered base64 chunks, then choose Commit, CommitToRecord or CommitToDataExchange; use Abort to discard an open session."}]}

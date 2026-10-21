@@ -1,0 +1,45 @@
+{
+  "sha": "de0c3c5514ba103c6d5aaaba799831d8ce66eb53",
+  "containerId": "f0328cfb44e5",
+  "containerName": "worker6-attachments160-20261020-w1",
+  "clientLanguage": "English (United States)",
+  "requestLcids": [
+    1033,
+    1039
+  ],
+  "executed": 4,
+  "passed": 4,
+  "failed": 0,
+  "skipped": 0,
+  "checks": [
+    {
+      "type": "Storage.Upload.Begin",
+      "lcid": 1033,
+      "passed": true,
+      "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+      "screenshot": "Storage-Upload-Begin-1033.png"
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "lcid": 1039,
+      "passed": true,
+      "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+      "screenshot": "Storage-Upload-Begin-1039.png"
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1033,
+      "passed": true,
+      "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+      "screenshot": "DataExchange-Export-Run-1033.png"
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1039,
+      "passed": true,
+      "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+      "screenshot": "DataExchange-Export-Run-1039.png"
+    }
+  ],
+  "finishedAt": "2026-10-21T09:48:14.600Z"
+}
