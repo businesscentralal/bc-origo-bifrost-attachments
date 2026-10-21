@@ -5,8 +5,31 @@ still inventory and validate every remaining actual input before compilation.
 """
 import argparse
 import json
+import zipfile
+from xml.etree import ElementTree as ET
 from pathlib import Path
 from appsource_gate import GateError, file_hash, package_info, require
+
+
+def manifest_identity(path):
+    # Preparation reads identity only. Full package/resource certification belongs
+    # to the unchanged gate, including its separate cache/catalog budgets.
+    require(path.is_file() and not path.is_symlink(), 'Missing package or linked input')
+    require(40 <= path.stat().st_size <= 128 * 1024 * 1024, 'Invalid package size')
+    with path.open('rb') as stream:
+        header = stream.read(40)
+    require(header[:4] == header[36:40] == b'NAVX', 'Invalid NAVX header')
+    with zipfile.ZipFile(path) as archive:
+        require(len(archive.infolist()) <= 128000, 'Identity archive entry bound exceeded')
+        manifests = [entry for entry in archive.infolist() if entry.filename == 'NavxManifest.xml']
+        if not manifests and 'readytorunappmanifest.json' in archive.namelist():
+            return package_info(path, allow_ready_to_run=True)['identity']
+        require(len(manifests) == 1, 'Missing or ambiguous NAVX manifest')
+        require(manifests[0].file_size <= 256 * 1024, 'Identity manifest too large')
+        manifest = ET.fromstring(archive.read(manifests[0]))
+    apps = manifest.findall('{http://schemas.microsoft.com/navx/2015/manifest}App')
+    require(len(apps) == 1, 'Missing or ambiguous app identity')
+    return {key: apps[0].attrib[key.title()] for key in ('id', 'publisher', 'name')}
 
 
 def prune(root, project, symbols):
@@ -22,14 +45,14 @@ def prune(root, project, symbols):
     packages = sorted(path for path in symbols.iterdir() if path.suffix.lower() == '.app')
     require(len(packages) <= 128, 'Too many cache packages')
     # Inspect every input before deleting any; malformed or linked inputs fail closed.
-    measured = [(path, package_info(path, allow_ready_to_run=True)) for path in packages]
+    measured = [(path, manifest_identity(path)) for path in packages]
     removals = []
-    for path, info in measured:
-        identity = info['identity']
+    for path, identity in measured:
         if identity['id'].lower() != expected['id'].lower():
             continue
         require(all(identity[key] == expected[key] for key in ('publisher', 'name')),
                 'Self-app ID has unexpected publisher/name')
+        info = package_info(path)
         require(not path.is_symlink() and file_hash(path) == info['sha256'],
                 'Self-app changed after cache inspection')
         removals.append((path, info))
@@ -47,5 +70,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     try:
         print(json.dumps(prune(args.root, args.project, args.symbols)))
-    except (GateError, OSError, ValueError, KeyError) as error:
+    except (GateError, OSError, ValueError, KeyError, zipfile.BadZipFile, ET.ParseError) as error:
         parser.exit(1, f'Self-cache preparation failed: {error}\n')

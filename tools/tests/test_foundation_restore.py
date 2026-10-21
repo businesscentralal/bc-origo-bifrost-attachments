@@ -246,6 +246,19 @@ class PrecompileCache(unittest.TestCase):
         self.assertEqual('Tests.app', self.run_prune('test')['removed'][0]['file'])
         self.assertTrue((self.cache / 'Product.app').exists())
 
+    def test_dependency_resource_validation_stays_with_unchanged_gate(self):
+        # A large dependency must reach the gate's own catalog/cache policy;
+        # self-cache preparation does not apply the shipping-app entry budget.
+        dependency = self.cache / 'LargeLibrary.app'
+        fixture(dependency)
+        with zipfile.ZipFile(dependency, 'a') as archive:
+            for index in range(4100):
+                archive.writestr(f'Library/{index}.txt', b'fixture')
+        before = dependency.read_bytes()
+        fixture(self.cache / 'Self.app', self.identities['app'])
+        self.assertEqual('Self.app', self.run_prune()['removed'][0]['file'])
+        self.assertEqual(before, dependency.read_bytes())
+
     def test_foreign_cache_and_unknown_project_refused(self):
         with self.assertRaisesRegex(P.GateError, 'owned workspace'):
             P.prune(self.root, self.root / 'app', self.root)
