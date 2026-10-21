@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed
+
+- Prepare the actual AL-Go precompile cache by removing only the compiling app identity left by previous builds, before the unchanged AppSource input gate. Preserve dependencies and upgrade baselines; regression checks cover product/test separation and fail-closed cache validation (#160).
+
 ### Changed
 
 - Align the Attachments app and test app versions at `28.3.0.0`, including the test app dependency on Attachments.

@@ -50,6 +50,17 @@ ${indent}}
 # Real helper callback installed by PipelineInitialize: capture inputs BEFORE its post-build copy
 # puts the newly compiled product into the symbols folder. Forward every original
 # parameter to the genuine helper; keep its error/exit behavior and output sink.
+$python = Get-Command python3 -ErrorAction SilentlyContinue
+if (-not $python) { $python = Get-Command python -ErrorAction Stop }
+# AL-Go restores previous Apps into .packages, including the project being built.
+# Remove only that manifest identity; a product dependency stays when compiling tests.
+# Keep diagnostics off the success stream, which must contain only the output app.
+$pruneOutput = @(& $python.Source (Join-Path $env:GITHUB_WORKSPACE 'tools/prune_self_symbols.py') `
+    --root $env:GITHUB_WORKSPACE --project $CompilationParams.appProjectFolder `
+    --symbols $CompilationParams.appSymbolsFolder)
+$pruneExitCode = $LASTEXITCODE
+$pruneOutput | ForEach-Object { Write-Host $_ }
+if ($pruneExitCode -ne 0) { throw 'Actual precompile self-cache preparation failed.' }
 & (Join-Path $env:GITHUB_WORKSPACE 'tools/Assert-AppSourceBuild.ps1') -Stage BeforeCompile -CompilationParams $CompilationParams
 $compileLog = Join-Path $env:GITHUB_WORKSPACE ".buildartifacts/AppSourceGate/$env:BuildMode/current-compile.txt"
 [System.IO.File]::WriteAllText($compileLog, '')
