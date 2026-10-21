@@ -148,7 +148,7 @@
       "ruling": "Protected unreported MCP audit retention is designed licensing behavior, not a gap or PR-readiness gate. Stop all deletion probes; no HTTP/licence/counter/backend/consent writes or manual usage reporting. Record count, ID range and container once in PR body Current state. Normal usage sync or container deletion after TesterUAT+issueclosure handles eventual cleanup. Claude recordings remain pending.",
       "appliedAt": "2026-10-21T10:16:05.455329+00:00"
     },
-    "noLicenceEulaTrialCounterBackendWrites": true,
+    "noManualLicenceEulaTrialCounterBackendWrites": true,
     "container": {
       "id": "f0328cfb44e5",
       "name": "worker6-attachments160-20261020-w1",
@@ -172,10 +172,10 @@
     }
   },
   "acceptance": {
-    "AC1": "39 overviews and64actualexamples present; refreshed6staleanswers verifiedexactly. Every39bc28-w1recording remains pendingClaude underArchitect1792491812.",
-    "AC2": "Existing PipelineInitialize sourceguard passes39types;8regressions;2actualcallbackmissingchaptermutationchecks stopbeforecompile;447nativechecksincludeconformance.",
-    "AC3": "README docs.bifrost.origo.is helpaddress correct; Unreleased/Fixed entry includes10035183; sourceinventory/XLFchecked.",
-    "AC4": "Pending independent Claude exacttipdescribe_message_type/recordings, currenttip Grokclearance, eligibleapproval, Architectmerge/deployment and newpostdeployUAT."
+    "AC1": "All 39 overviews and 64 actual examples are present. Six stale refusal answers were refreshed and all 64 English request/answer pairs match the deployed candidate exactly. Sanitized bc28-w1 recordings for every type remain pending Claude under Architect 1792491812.",
+    "AC2": "The existing PipelineInitialize guard checks all 39 types. Eight regressions and two mutations of the real build callback pass; missing shared overview/examples stop before compilation. The 447 native tests include conformance.",
+    "AC3": "README help URLs use docs.bifrost.origo.is. Unreleased/Fixed names codeunit 10035183. Source inventory and is-IS XLF checks pass; public help remains English by design.",
+    "AC4": "Pending independent Claude describe_message_type and recordings at this exact head, then Grok clearance, eligible approval, Architect merge/deployment and new postdeployment Tester UAT."
   },
   "prReady": true,
   "independentReviewReady": false,
@@ -189,18 +189,18 @@
   },
   "readinessBlockers": [],
   "pendingIndependentGates": [
-    "Claude all39bc28-w1recordings and independentexacthead receipt remain separate, scopedrecordingdeferralperArchitect1792491812",
-    "CI/Grokcurrenttipclearance/eligibleapproval/Architectmerge-deploy/newTesterUAT"
+    "Claude independent exact-head verification and all 39 bc28-w1 recordings under Architect 1792491812",
+    "Current-tip CI, Grok clearance, eligible approval, Architect merge/deployment and new Tester UAT"
   ],
   "advisories": [
-    "PRgatewayraw22/23: missingdated28.3.0.0CHANGELOGheadingalreadyonmain; issueAC3requiresUnreleased. Rawfailedfield=2; onlyenumeratedfailedcheck=changelog. No suppression/exclusionintroduced.",
-    "Defaultlocalpackageunsigned; no signedDefault/AppSourcecertification claim. Testproduct keeps existing repository testfriendgrant/AS0081; Defaultstrippedboth.",
-    "Earlier dc93759had6stalesamples; fixedde0c3c5rerunallchecks. OriginalDefaultdependentTestpublish422andUIextraction/lookup/SQLreportingharnessretries retainedprivately; finalresults applyonlynamedSHA."
+    "PR gateway reports 22/23 checks; its only enumerated failure requests a dated 28.3.0.0 CHANGELOG heading. The same condition exists on main. Issue AC3 explicitly requires Unreleased. The unmodified raw summary also has failed=2, retained without rewriting.",
+    "The local Default package is unsigned; no signed Default/AppSource certification is claimed. Test product retains the repository test friend grant/AS0081; Default strips both.",
+    "The prior dc93759 replay exposed six stale samples. All checks were rerun at corrected de0c3c5. Original dependency-publication and UI/SQL reporting harness retries are retained privately; final results apply only to the named candidate."
   ],
   "standardsSnapshot": {
     "sha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
     "capturedAt": "2026-10-03T16:02:22.475Z",
     "freshSyncClaimed": false
   },
-  "at": "2026-10-21T10:16:53.927467+00:00"
+  "at": "2026-10-21T10:20:35.397665+00:00"
 }

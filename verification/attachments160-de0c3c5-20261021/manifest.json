@@ -78,8 +78,8 @@
     },
     {
       "path": "developer-evidence.json",
-      "bytes": 8541,
-      "sha256": "6cff37c0500af911d233688f7dfdebb4edcb830e4e665a3f701ec69ff0e79274"
+      "bytes": 8913,
+      "sha256": "95c5aa6c82336b3bbf41f593b73eec041649aa7f6ff4d3c8a18f06128190f9ae"
     },
     {
       "path": "gateway-layer1.json",
@@ -100,11 +100,6 @@
       "path": "localized-example-comparison.json",
       "bytes": 10626,
       "sha256": "f841acc73697737e1e2e27fb3d64d62d4ff5b7b39d9862a1b9fcfa200fbe4960"
-    },
-    {
-      "path": "manifest.json",
-      "bytes": 11956,
-      "sha256": "c4f859a670f7582f729cbecb150f57e50dc53b77e7a0f379cce17146eadb65f4"
     },
     {
       "path": "mcp-help-summary.json",
@@ -159,7 +154,7 @@
     {
       "path": "sanitization.json",
       "bytes": 371,
-      "sha256": "ecd59eb376ea432b61bd3e6f7a2c62099be0b3c57c137589a30f107e3f7dba38"
+      "sha256": "393aa18778ccd95dac29a21846830405c6342a8d8c925b511a36f473f1c254f8"
     },
     {
       "path": "source-guards/Test-BifrostPipeline.log",
