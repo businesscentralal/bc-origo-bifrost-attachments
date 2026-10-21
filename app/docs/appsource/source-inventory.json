@@ -1,12 +1,12 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "97c0304273785a93b3e7602328acd68d68a2cc7b",
+  "sourceSha": "6fcc03288c178aaa0c42732ff228f653bb1ad649",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
     "name": "Bifrost Attachments",
     "publisher": "Origo",
-    "version": "28.0.0.4",
+    "version": "28.3.0.0",
     "application": "28.3.0.0",
     "platform": "28.0.0.0",
     "runtime": "17.0",
@@ -254,10 +254,10 @@
     }
   ],
   "files": {
-    "app/app.json": "b53ad86ecfb853d3abb5f0068737507873678e381f477d1dc8f8fbdd9979578b",
+    "app/app.json": "803c7800c0b195f539f87ab108ca01f26caf6b04a644496181fbde1495edb340",
     "app/AppSourceCop.json": "3693ee0c9ff2b18b8528d8b9bc2ecb80610346762766e2d9c209e0742885f2e8",
     ".AL-Go/settings.json": "21e957eee054b6348633a22c6b0520b522f1adb9ff426283b2ce294337004db4",
-    "test/app.json": "8bdec6f3d780bf86efd6e96ae7ad2b0373643483d4bb93f563341adeb5807c26",
+    "test/app.json": "20e1c9ceb006752db0c06747aeb9f8f47c44d1a2356af414d9f34775c3192767",
     "app/assets/Logo250x250.png": "0f9185810ff29e9c77c7258d7b7bd3a51f5fcaa2bed0bcbf4288fd673fc0cc60"
   },
   "offerPlan": {
@@ -275,8 +275,8 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-20T13:16:28.021795+00:00",
-  "inventoryPreparedFromDocumentationHead": "97c0304273785a93b3e7602328acd68d68a2cc7b",
+  "refreshedAt": "2026-10-21T09:33:00.757657+00:00",
+  "inventoryPreparedFromDocumentationHead": "6fcc03288c178aaa0c42732ff228f653bb1ad649",
   "productSourceBaselineUnchanged": false,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
@@ -349,7 +349,7 @@
     "app/src/MessageTypes/Files/StorageFileListImpl.Codeunit.al": "c853d9865b3902259108778526e99895703c29aec3e85c91ac54ff8e0dd8264a",
     "app/src/MessageTypes/Files/StorageFileMoveImpl.Codeunit.al": "ff79b21cc6871a3b6c31faf42ad79490fda2718e89e082b940ed9dfd1f3f1daa",
     "app/src/MessageTypes/Help/StorageHelpGetImpl.Codeunit.al": "19fec418c07e385bc543f94ebb0b5f85b326ba2b25d3669b171df70931bdb585",
-    "app/src/MessageTypes/StorageContractParts.Codeunit.al": "9dcb6ab30901ce3c7b3024276fb4b15c31d979feec985216c09fba7a6671eb0b",
+    "app/src/MessageTypes/StorageContractParts.Codeunit.al": "9b2834a89eb48330d1c49f3ebde2c86d06775709ed4c506f4180194c5e3cbe4b",
     "app/src/MessageTypes/StorageMsgType.EnumExt.al": "0449fb27f7d41d6a22a5a7884fdca070e2a8de51d31ad88d048475ccddea95d6",
     "app/src/MessageTypes/Upload/StorageUploadAbortImpl.Codeunit.al": "2752cd4e297af7bc35a36efdd2852ffa1188799ea7c807d9bf471176992a52cf",
     "app/src/MessageTypes/Upload/StorageUploadAppendImpl.Codeunit.al": "a261300326917ad560b270b490923a2e88e1cc5e865230f76bf063a420abec16",
