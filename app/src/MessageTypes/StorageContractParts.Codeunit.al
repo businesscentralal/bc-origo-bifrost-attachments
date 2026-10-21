@@ -8,6 +8,18 @@ codeunit 10035183 "Storage Contract Parts ori"
     Access = Internal;
 
     var
+        EntityTypeLbl: Label 'Invoice or Credit Memo. Omission preserves the existing value; a new type defaults to Invoice.', Comment = 'is-IS=Invoice eða Credit Memo. Ef gildinu er sleppt helst núverandi gildi; ný gerð fær Invoice.';
+        EntityResponseLbl: Label 'The stable name Invoice or Credit Memo.', Comment = 'is-IS=Fasta heitið Invoice eða Credit Memo.';
+        SourcePathLbl: Label 'The original file path.', Comment = 'is-IS=Upprunaleg skráarslóð.';
+        TargetPathLbl: Label 'The destination file path.', Comment = 'is-IS=Áfangaslóð skrárinnar.';
+        CreatedPathLbl: Label 'The created file path.', Comment = 'is-IS=Slóð stofnuðu skrárinnar.';
+        RecordUploadPreconditionsLbl: Label 'Upload.Begin needs a file name; Append, Status, Abort and CommitToRecord need an existing upload session. A storage connection is only required when writing a file to storage, not for record-only uploads.', Comment = 'is-IS=Upload.Begin þarf skráarheiti; Append, Status, Abort og CommitToRecord þurfa fyrirliggjandi upphleðslulotu. Geymslutenging er aðeins nauðsynleg þegar skrá er skrifuð í geymslu, ekki þegar hlaðið er upp eingöngu í færslu.';
+        LinkedMoveRefusalLbl: Label 'The file is linked to an attachment and cannot be moved directly.', Comment = 'is-IS=Skráin er tengd viðhengi og ekki er hægt að færa hana beint.';
+        LinkedMoveNextLbl: Label 'Restore the attachment first, then move the file.', Comment = 'is-IS=Endurheimtu viðhengið fyrst og færðu svo skrána.';
+        EntryReferenceLbl: Label 'Data Exchange entries still reference the definition.', Comment = 'is-IS=Gagnaskiptafærslur vísa enn í skilgreininguna.';
+        EntryReferenceNextLbl: Label 'Find the entries with DataExchange.Entry.List and delete them with DataExchange.Entry.Delete before deleting the definition.', Comment = 'is-IS=Finndu færslurnar með DataExchange.Entry.List og eyddu þeim með DataExchange.Entry.Delete áður en skilgreiningunni er eytt.';
+        MappingTableLbl: Label 'A processing codeunit requires a record other than Data Exch. (table 1220).', Comment = 'is-IS=Vinnslukóðaeining krefst annarrar færslu en Data Exch. (töflu 1220).';
+        MappingTableNextLbl: Label 'Run table-typed journal mappings from their Business Central page, or select a mapping that accepts Data Exchange entries.', Comment = 'is-IS=Keyrðu bókarvarpanir sem krefjast tiltekinnar töflu frá viðeigandi Business Central síðu eða veldu vörpun sem tekur við gagnaskiptafærslum.';
         SuccessEnvelopeLbl: Label 'Every success answers status Success. The fields below belong to the data object, not to the top level.', Comment = 'is-IS=Öll svör sem heppnast hafa stöðuna Success. Reitirnir hér að neðan tilheyra hlutnum data, ekki efsta stigi svarsins.';
         ProcessWarningsLbl: Label 'Objects with a stable code and a localized message: NoMappingCodeunit or RecordIdsCapped.', Comment = 'is-IS=Hlutir með stöðugum kóða (code) og þýddum skilaboðum (message): NoMappingCodeunit eða RecordIdsCapped.';
         DocumentTypeNameLbl: Label 'The language-independent document type enum name, never its numeric ordinal.', Comment = 'is-IS=Tungumálaóháð heiti talningargildis skjalagerðar, aldrei tölugildi þess.';
@@ -224,10 +236,10 @@ codeunit 10035183 "Storage Contract Parts ori"
                 begin
                     Examples.Add(ContractMgt.Example('A request refused before any change',
                         '{"type":"Storage.Upload.Begin","data":{"fileName":"X160-help/example.txt","declaredSize":5},"lcid":1033}',
-                        '{"status":"Error","code":"InvalidParameter","error":"Parameter \"fileName\" must be a file name without folders or relative segments.","parameter":"fileName","received":"X160-help/example.txt","expected":"a nonempty file name without slash or backslash","nextStep":"Send a path inside the connection, e.g. invoices/2026/INV-001.pdf.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Begin\". Always read the help before calling a message type."}'));
+                        '{"status":"Error","code":"InvalidParameter","error":"Parameter \"fileName\" must be a file name without folders or relative segments.","parameter":"fileName","received":"X160-help/example.txt","expected":"a nonempty file name without slash or backslash","nextStep":"Send only the file name in fileName; put folders in path or folderPath.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Begin\". Always read the help before calling a message type."}'));
                     Examples.Add(ContractMgt.Example('Refusal: required request data is missing',
                         '{"type":"Storage.Upload.Begin","data":{},"lcid":1033}',
-                        '{"status":"Error","code":"MultipleErrors","error":"2 problems in the request. Nothing was changed.","errors":[{"code":"MissingParameter","error":"Required parameter \"fileName\" is missing.","parameter":"fileName","received":"(missing)","expected":"a value for \"fileName\"","nextStep":"Provide \"fileName\" and send the request again."},{"code":"InvalidParameter","error":"Parameter \"fileName\" must be a file name without folders or relative segments.","parameter":"fileName","expected":"a nonempty file name without slash or backslash","nextStep":"Send a path inside the connection, e.g. invoices/2026/INV-001.pdf."}],"hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Begin\". Always read the help before calling a message type."}'));
+                        '{"status":"Error","code":"MultipleErrors","error":"2 problems in the request. Nothing was changed.","errors":[{"code":"MissingParameter","error":"Required parameter \"fileName\" is missing.","parameter":"fileName","received":"(missing)","expected":"a value for \"fileName\"","nextStep":"Provide \"fileName\" and send the request again."},{"code":"InvalidParameter","error":"Parameter \"fileName\" must be a file name without folders or relative segments.","parameter":"fileName","expected":"a nonempty file name without slash or backslash","nextStep":"Send only the file name in fileName; put folders in path or folderPath."}],"hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Begin\". Always read the help before calling a message type."}'));
                 end;
             'Storage.Upload.Append':
                 begin
@@ -331,9 +343,9 @@ codeunit 10035183 "Storage Contract Parts ori"
                 Examples.Add(ContractMgt.Example('Inspect the response with no configured prerequisites',
                         '{"type":"Help.DataExchange.Get","data":{},"lcid":1033}',
                         '{"status":"Success","data":{"format":"markdown","markdown":"# Bifrost Attachments - Data Exchange message types\r\n\r\nRun the Business Central Data Exchange Framework (Data Exch. Def, Data Exchange Type and Data Exch. entries) without the user interface: install definitions, import files into parsed entries, apply the mappings, and export records or payment journals to files in storage.\r\n\r\n## Pipeline\r\n\r\n1. **Install or discover** a definition: `DataExchange.Definition.Import` installs the standard definition XML (`storageCode` + `path`, `contentBase64` up to 1 MB, or a chunked `uploadId`; `overwrite`, `newCode`). `DataExchange.Definition.List` and `DataExchange.Definition.Get` show what exists; `DataExchange.Definition.Export` returns the header by default; `inline: true` adds the XML, and `storageCode` + `path`/`folderPath` writes the XML to storage. Both XML destinations may '
-                    + 'be requested. Storage writes refuse an existing file by default; overwrite: true explicitly allows replacement. Linked attachment files remain protected. External writes cannot be rolled back.\r\n2. **Import** a file with a Generic Import or Payroll Import definition: `DataExchange.Import.Run` (`storageCode` + `path` of a stored file, which stays unchanged, or `contentBase64` up to 1 MB) or, for a large file, `Storage.Upload.Begin` -> `Storage.Upload.Append` -> `Storage.Upload.CommitToDataExchange` (`uploadId`, `dataExchDefCode`, optional `keepFileInStorage`). Both create a Data Exch. entry, run the definition reader and return `entryNo`, `lineCount` and `fieldCount`. A file the reader cannot read is refused and leaves no entry.\r\n3. **Inspect** the parsed fields: `DataExchange.Entry.Get` (`entryNo`, paged `fields`), `DataExchange.Entry.List` for older entries.\r\n4. **Process** the entry: `DataExchange.Entry.Process` runs the definition mappings and returns `targets[]` (table, inserted and modified '
-                    + 'counts, record SystemIds). Or send `process: true` on the import to do both in one call; the import is then committed first, and a processing error is returned in `processResult.errors` while the entry stays.\r\n5. **Export**: `DataExchange.Export.Run` runs a Generic Export definition over `tableId`/`tableName` with `tableView`, or over `recordIds`, and delivers the file to storage (`storageCode` + `path` or `folderPath`) and/or `inline` (up to 1 MB). `DataExchange.PaymentExport.Run` exports a payment journal batch (`journalTemplate`, `journalBatch`) with the payment export format of its bank account, marks the lines as exported and delivers the bank file.\r\n6. **Clean up**: `DataExchange.Entry.Delete` deletes an entry and its fields. Entries created by these types are also removed by the retention policy on Bifrost Data Exchange Entry (30 days by default).\r\n\r\nIncoming documents are'
-                    + ' the other import path: wire a Generic Import definition that maps to the intermediate table with `DataExchange.Type.Set`, then send the file with `Storage.Upload.CommitToRecord` or `Storage.Attachment.CreateLinked` (`target` IncomingDocument, `dataExchangeType`, `process`). `DataExchange.Entry.Process` refuses intermediate-table mappings and points there. Bank statements are imported with `Finance.BankReconciliation.Create`.\r\n\r\n## Which type do I need?\r\n\r\n| I want to | Message type |\r\n|---|---|\r\n| Find a definition code | `DataExchange.Definition.List` |\r\n| See how a definition maps columns to fields | `DataExchange.Definition.Get` |\r\n| Install a definition from its XML | `DataExchange.Definition.Import` |\r\n| Get a definition as XML, or only its header | `DataExchange.Definition.Export` |\r\n| Remove a definition nothing uses | `DataExchange.Definition.Delete` |\r\n| S'
+                    + 'be requested. Storage writes refuse an existing file by default; overwrite: true explicitly allows replacement. Linked attachment files remain protected. External writes cannot be rolled back.\r\n2. **Import** a file with a Generic Import or Payroll Import definition: `DataExchange.Import.Run` (`storageCode` + `path` of a stored file, which stays unchanged, or `contentBase64` up to 1 MB) or, for a large file, `Storage.Upload.Begin` -> `Storage.Upload.Append` -> `Storage.Upload.CommitToDataExchange` (`uploadId`, `dataExchDefCode`, optional `keepFileInStorage`). Both create a Data Exch. entry, run the definition reader and return `entryNo`, `lineCount` and `fieldCount`. A file the reader cannot read is refused and leaves no entry. Parsing a Payroll Import file does not imply its journal mapping can be processed here; mappings requiring journal records must run from the payroll journal page.\r\n3. **Inspect** the parsed fields: `DataExchange.Entry.Get` (`entryNo`, paged `fields`), `DataExchange.Entry.List` for older entries.\r\n4. **Process** the entry: `DataExchange.Entry.Process` runs the definition mappings and returns `targets[]` (table, inserted and modified '
+                    + 'counts, record SystemIds). Or send `process: true` on the import to do both in one call; the import is then committed first, and a processing error is returned in `processResult.errors` while the entry stays.\r\n5. **Export**: `DataExchange.Export.Run` runs a Generic Export definition over `tableId`/`tableName` with `tableView`, or over `recordIds`, and delivers the file to storage (`storageCode` + `path` or `folderPath`) and/or `inline` (up to 1 MB). `DataExchange.PaymentExport.Run` exports a payment journal batch (`journalTemplate`, `journalBatch`) with the payment export format of its bank account, marks the lines as exported and delivers the bank file.\r\n6. **Clean up**: `DataExchange.Entry.Delete` deletes an entry and its fields. Delete referencing entries before `DataExchange.Definition.Delete`; otherwise deletion is refused with PreconditionFailed. Entries created by these types are also removed by the retention policy on Bifrost Data Exchange Entry (30 days by default).\r\n\r\nIncoming documents are'
+                    + ' the other import path: wire a Generic Import definition that maps to the intermediate table with `DataExchange.Type.Set` (optional `entityType`: Invoice or Credit Memo; omission preserves an existing value), then send the file with `Storage.Upload.CommitToRecord` or `Storage.Attachment.CreateLinked` (`target` IncomingDocument, `dataExchangeType`, `process`). `DataExchange.Entry.Process` refuses intermediate-table mappings and points there. Bank statements are imported with `Finance.BankReconciliation.Create`.\r\n\r\n## Which type do I need?\r\n\r\n| I want to | Message type |\r\n|---|---|\r\n| Find a definition code | `DataExchange.Definition.List` |\r\n| See how a definition maps columns to fields | `DataExchange.Definition.Get` |\r\n| Install a definition from its XML | `DataExchange.Definition.Import` |\r\n| Get a definition as XML, or only its header | `DataExchange.Definition.Export` |\r\n| Remove a definition nothing uses | `DataExchange.Definition.Delete` |\r\n| S'
                     + 'ee which Data Exchange Types exist | `DataExchange.Type.List` |\r\n| Bind a Data Exchange Type to an import definition | `DataExchange.Type.Set` |\r\n| Import a stored file or small inline content | `DataExchange.Import.Run` |\r\n| Import a large file sent in chunks | `Storage.Upload.CommitToDataExchange` |\r\n| Write the parsed lines to the business tables | `DataExchange.Entry.Process` |\r\n| Export records to a file | `DataExchange.Export.Run` |\r\n| Create the bank payment file of a payment journal | `DataExchange.PaymentExport.Run` |\r\n| List, read or delete entries | `DataExchange.Entry.List`, `DataExchange.Entry.Get`, `DataExchange.Entry.Delete` |\r\n\r\n## Chaining\r\n\r\nEvery code a list returns is the exact value the next call expects: `code` from `DataExchange.Definition.List` or `codes[]` from `DataExchange.Definition.Import` goes into `code` of `DataExchange.Definition.Get'
                     + '`, `DataExchange.Definition.Export` and `DataExchange.Definition.Delete`, and into `dataExchDefCode` of `DataExchange.Type.Set`, `DataExchange.Import.Run`, `Storage.Upload.CommitToDataExchange`, `DataExchange.Export.Run` and `DataExchange.Entry.List`. `entryNo` from an import, an export or `DataExchange.Entry.List` goes into `DataExchange.Entry.Get`, `DataExchange.Entry.Process` and `DataExchange.Entry.Delete`. `storageCode` and `path` of an export go into `Storage.File.Get`. Codes are never trimmed, upper-cased or shortened; send them exactly as returned.\r\n\r\n## Errors\r\n\r\nA refused call answers `status = Error` with `code`, `parameter`, `received`, `expected` and `nextStep` for every problem found. A failure after a write (a reader or mapping error, a file over 1 MB with `inline`, a failed storage write) rolls the call back. Read `Help.Implementation.Get` (subject = the message t'
                     + 'ype) for the full contract of one type.\r\n\r\n## Permissions\r\n\r\nAssign `BIFROST DataExch ori` with the Foundation API baseline. This role grants table read access, including the definition read by `DataExchange.Definition.Export`; it does not grant table writes. Definition.Export is registered Inbound because its optional storage output writes an external file; the storage connector also requires its own permissions.\r\nThe write types additionally require the standard Business Central permissions of the tables they write: Data Exch. and Data Exch. Field for imports and exports, the definition tables for `DataExchange.Definition.Import` and `DataExchange.Definition.Delete`, the target tables of the mappings for processing, and Gen. Journal Line and Credit Transfer Register for payment exports. Types with `storageCode` also use the storage connection. `BIFROST Attach ori` does not gr'
@@ -683,6 +695,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                 begin
                     Parameters.Add(ContractMgt.Parameter('code', 'string', true, TypeCodeLbl));
                     Parameters.Add(ContractMgt.Parameter('dataExchDefCode', 'string', true, ImportDefinitionLbl));
+                    Parameters.Add(ContractMgt.Parameter('entityType', 'string', false, EntityTypeLbl));
                     Parameters.Add(ContractMgt.Parameter('description', 'string', false, TypeDescriptionLbl));
                 end;
             'DataExchange.Import.Run':
@@ -782,7 +795,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             'Storage.File.Get':
                 begin
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The downloaded file path.'));
-                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The file size in bytes.'));
+                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', DeliveredLengthLbl));
                     Fields.Add(ContractMgt.ResponseField('contentBase64', 'string', 'The file content encoded as base64.'));
                 end;
             'Storage.File.Exists', 'Storage.Directory.Exists':
@@ -790,20 +803,30 @@ codeunit 10035183 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The checked path.'));
                     Fields.Add(ContractMgt.ResponseField('exists', 'boolean', 'Whether the path exists.'));
                 end;
-            'Storage.File.Create', 'Storage.File.Delete', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.Directory.Create', 'Storage.Directory.Delete':
+            'Storage.File.Copy', 'Storage.File.Move':
+                begin
+                    Fields.Add(ContractMgt.ResponseField('sourcePath', 'string', SourcePathLbl));
+                    Fields.Add(ContractMgt.ResponseField('targetPath', 'string', TargetPathLbl));
+                end;
+            'Storage.File.Create':
+                begin
+                    Fields.Add(ContractMgt.ResponseField('path', 'string', CreatedPathLbl));
+                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', DeliveredLengthLbl));
+                end;
+            'Storage.File.Delete', 'Storage.Directory.Create', 'Storage.Directory.Delete':
                 Fields.Add(ContractMgt.ResponseField('path', 'string', 'The affected path.'));
             'Storage.Attachment.Offload':
                 begin
                     Fields.Add(ContractMgt.ResponseField('target', 'string', 'The attachment table.'));
                     Fields.Add(ContractMgt.ResponseField('systemId', 'string', 'The attachment SystemId.'));
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The storage path.'));
-                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The file size in bytes.'));
+                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', DeliveredLengthLbl));
                 end;
             'Storage.Attachment.Restore':
                 begin
                     Fields.Add(ContractMgt.ResponseField('target', 'string', 'The attachment table.'));
                     Fields.Add(ContractMgt.ResponseField('systemId', 'string', 'The attachment SystemId.'));
-                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The file size in bytes.'));
+                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', DeliveredLengthLbl));
                 end;
             'Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.CommitToRecord':
                 begin
@@ -812,7 +835,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                         Fields.Add(ContractMgt.ResponseField('documentType', 'string', DocumentTypeNameLbl));
                     Fields.Add(ContractMgt.ResponseField('systemId', 'string', 'The new attachment SystemId.'));
                     Fields.Add(ContractMgt.ResponseField('fileName', 'string', 'The final attachment file name.'));
-                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The file size in bytes.'));
+                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', DeliveredLengthLbl));
                     if MessageType in ['Storage.Attachment.CreateLinked', 'Storage.Upload.CommitToRecord'] then begin
                         Fields.Add(ContractMgt.ResponseField('dataExchangeType', 'string', DataExchangeTypeResponseLbl));
                         Fields.Add(ContractMgt.ResponseField('processed', 'boolean', ProcessedResponseLbl));
@@ -840,7 +863,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('uploadId', 'string', 'The committed upload session id.'));
                     Fields.Add(ContractMgt.ResponseField('storageCode', 'string', 'The storage connection.'));
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The committed file path.'));
-                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The file size in bytes.'));
+                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', DeliveredLengthLbl));
                 end;
             'Storage.Upload.Abort':
                 begin
@@ -860,6 +883,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                 end;
             'DataExchange.Type.Set':
                 begin
+                    Fields.Add(ContractMgt.ResponseField('entityType', 'string', EntityResponseLbl));
                     Fields.Add(ContractMgt.ResponseField('code', 'string', TypeCodeLbl));
                     Fields.Add(ContractMgt.ResponseField('dataExchDefCode', 'string', ImportDefinitionLbl));
                 end;
@@ -1034,8 +1058,12 @@ codeunit 10035183 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'A linked Business Central attachment prevents the delete.', 'Restore or remove the attachment first.'));
         if MessageType in ['Storage.File.Copy', 'Storage.File.Move'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The connector reports that the destination file already exists.', 'Choose a new destination file name or folder.'));
+        if MessageType = 'DataExchange.Definition.Delete' then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, EntryReferenceLbl, EntryReferenceNextLbl));
+        if MessageType in ['DataExchange.Entry.Process', 'DataExchange.Import.Run', 'Storage.Upload.CommitToDataExchange'] then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, MappingTableLbl, MappingTableNextLbl));
         if MessageType = 'Storage.File.Move' then
-            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The selected storage implementation cannot guarantee source preservation for a failed linked move.', 'Restore the attachment before moving the file, or use an implementation that supports linked moves.'));
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, LinkedMoveRefusalLbl, LinkedMoveNextLbl));
         if MessageType = 'Storage.Directory.Delete' then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The directory is not empty.', 'List its files and subdirectories, remove those entries, then retry.'));
         if MessageType in ['Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord', 'Storage.Upload.CommitToDataExchange', 'DataExchange.Definition.Import'] then
@@ -1136,7 +1164,10 @@ codeunit 10035183 "Storage Contract Parts ori"
         if IsDataExchangeType(MessageType) or (MessageType = 'Storage.Upload.CommitToDataExchange') then
             Effect.Add('preconditions', DataExchangePreconditionsLbl)
         else
-            Effect.Add('preconditions', 'The storage connection exists, is enabled and permits the requested operation.');
+            if MessageType in ['Storage.Upload.Begin', 'Storage.Upload.Append', 'Storage.Upload.Abort', 'Storage.Upload.Status', 'Storage.Upload.CommitToRecord'] then
+                Effect.Add('preconditions', RecordUploadPreconditionsLbl)
+            else
+                Effect.Add('preconditions', 'The storage connection exists, is enabled and permits the requested operation.');
     end;
 
     /// <summary>Builds related message types for one message type.</summary>

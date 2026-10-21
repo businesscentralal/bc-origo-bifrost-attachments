@@ -20,9 +20,9 @@ codeunit 10035193 "Storage Request Mgt ori"
         TransferDestinationExistsErr: Label 'The transfer destination already exists. Nothing was changed.', Comment = 'is-IS=Áfangastaður tilfærslunnar er þegar til. Engu var breytt.';
         NewTransferTargetLbl: Label 'a destination that does not already exist', Comment = 'is-IS=áfangastaður sem er ekki þegar til';
         NewTransferTargetNextStepLbl: Label 'Choose a new target path and retry the transfer.', Comment = 'is-IS=Veldu nýja áfangaslóð og reyndu tilfærsluna aftur.';
-        MoveRecoveryErr: Label 'This connector cannot guarantee a safe linked attachment move. Nothing was changed.', Comment = 'is-IS=Þetta tengi getur ekki tryggt örugga tilfærslu tengds viðhengis. Engu var breytt.';
-        MoveRecoveryNextStepLbl: Label 'Restore the attachment before moving the file, or choose a connector that guarantees source preservation and a known failure outcome.', Comment = 'is-IS=Endurheimtu viðhengið áður en skráin er færð eða veldu tengi sem tryggir varðveislu upprunaskrár og þekkta niðurstöðu við bilun.';
-        MoveRecoveryLbl: Label 'linked move recovery after remote acknowledgement loss', Comment = 'is-IS=endurheimt tengdrar tilfærslu eftir tap á staðfestingu frá fjargeymslu';
+        MoveRecoveryErr: Label 'This file is linked to an attachment and cannot be moved directly. Nothing was changed.', Comment = 'is-IS=Þessi skrá er tengd viðhengi og ekki er hægt að færa hana beint. Engu var breytt.';
+        MoveRecoveryNextStepLbl: Label 'Restore the attachment first, then move the file.', Comment = 'is-IS=Endurheimtu viðhengið fyrst og færðu svo skrána.';
+        MoveRecoveryLbl: Label 'a file that can be moved without affecting a linked attachment', Comment = 'is-IS=skrá sem má færa án þess að hafa áhrif á tengt viðhengi';
         LinkPermissionsExpectedLbl: Label 'read and write permission on every linked attachment', Comment = 'is-IS=les- og skrifheimild á öllum tengdum viðhengjum';
         LinkPermissionsNextStepLbl: Label 'Ask the administrator to grant attachment access before retrying.', Comment = 'is-IS=Biddu kerfisstjóra um að veita aðgang að viðhengjum áður en þú reynir aftur.';
         UnsafePathErr: Label 'The path ''%1'' is not allowed: no path segment may be ''.'' or ''..''.', Comment = '%1 = the rejected path||is-IS=Slóðin „%1“ er ekki leyfð: enginn hluti slóðarinnar má vera „.“ eða „..“.';

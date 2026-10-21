@@ -186,6 +186,10 @@ codeunit 10035170 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         DefinitionCode: Code[20];
         TypeCode: Code[20];
         Description: Text;
+        EntityType: Text;
+        InvalidEntityErr: Label 'Parameter "entityType" must be Invoice or Credit Memo.', Comment = 'is-IS=Færibreytan "entityType" verður að vera Invoice eða Credit Memo.';
+        EntityExpectedLbl: Label 'Invoice or Credit Memo', Locked = true;
+        EntityNextStepLbl: Label 'Send the stable name Invoice or Credit Memo, or omit entityType to preserve the existing value (Invoice for a new type).', Comment = 'is-IS=Sendu fasta heitið Invoice eða Credit Memo, eða slepptu entityType til að halda núverandi gildi (Invoice fyrir nýja gerð).';
         NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
         InvalidKindErr: Label 'The definition kind is not accepted by this operation.', Comment = 'is-IS=Þessi aðgerð tekur ekki við tegund skilgreiningarinnar.';
         ExpectedLbl: Label 'an existing Generic Import definition', Comment = 'is-IS=fyrirliggjandi skilgreining fyrir almennan innflutning (Generic Import)';
@@ -195,6 +199,9 @@ codeunit 10035170 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         Reader.ReadMutationCode(Argument, RequestJson, 'code', TypeCode);
         Reader.ReadMutationCode(Argument, RequestJson, 'dataExchDefCode', DefinitionCode);
         Reader.ReadMutationText(Argument, RequestJson, 'description', false, MaxStrLen(DataExchangeType.Description), Description);
+        if Reader.ReadMutationText(Argument, RequestJson, 'entityType', false, 20, EntityType) and RequestJson.Contains('entityType') then
+            if not (EntityType in ['Invoice', 'Credit Memo']) then
+                Argument.AddError("Bifrost Error Code ori"::InvalidParameter, InvalidEntityErr, 'entityType', EntityType, EntityExpectedLbl, EntityNextStepLbl);
         if Reader.RespondIfErrors(Argument) then
             exit;
         DataExchDef.SetLoadFields(Type);
@@ -218,9 +225,20 @@ codeunit 10035170 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         DataExchangeType.Validate("Data Exch. Def. Code", DefinitionCode);
         if RequestJson.Contains('description') then
             DataExchangeType.Description := CopyStr(Description, 1, MaxStrLen(DataExchangeType.Description));
+        if RequestJson.Contains('entityType') then
+            case EntityType of
+                'Invoice':
+                    DataExchangeType.Validate("Entity Type", DataExchangeType."Entity Type"::Invoice);
+                'Credit Memo':
+                    DataExchangeType.Validate("Entity Type", DataExchangeType."Entity Type"::"Credit Memo");
+            end;
         DataExchangeType.Modify(true);
         ResponseJson.Add('code', DataExchangeType.Code);
         ResponseJson.Add('dataExchDefCode', DataExchangeType."Data Exch. Def. Code");
+        if DataExchangeType."Entity Type" = DataExchangeType."Entity Type"::"Credit Memo" then
+            ResponseJson.Add('entityType', 'Credit Memo')
+        else
+            ResponseJson.Add('entityType', 'Invoice');
         RequestMgt.RespondSuccess(Argument, ResponseJson);
     end;
 }

@@ -8,6 +8,14 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-21) - Data Exchange UAT follow-ups (#168)
+
+- Entry.Process refuses incompatible table-typed data-handling and pre/mapping/post codeunits with localized `PreconditionFailed` before execution. Import.Run and upload processing report the same refusal in `processResult.errors`; payroll journal mappings must run from their BC page. Definition.Delete now refuses definitions referenced by entries and names Entry.List/Entry.Delete as the recovery path.
+- File.Move describes linked-file refusal in caller terms. File.Copy/Move help lists sourcePath/targetPath; File.Create documents contentLength. Record-only upload help no longer requires a storage connection, and regressions preserve the correct English/Icelandic folder-in-fileName next step already merged with #159.
+- Type.Set accepts stable `entityType` values Invoice and Credit Memo, preserves an existing value when omitted, and reports the stored value. Invalid values are rejected before mutation.
+- Changed codeunits 10035141, 10035155, 10035163, 10035165, 10035166, 10035170, 10035183 and 10035193; bilingual native regressions in 96264. Icelandic XLF and runtime help stay synchronized. Verification evidence applies only to its recorded candidate.
+
+
 ### Changed
 
 - Align the Attachments app and test app versions at `28.3.0.0`, including the test app dependency on Attachments.
