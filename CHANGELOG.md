@@ -10,7 +10,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed
 
-- Prepare the actual AL-Go precompile cache by removing only the compiling app identity left by previous builds, before the unchanged AppSource input gate. Preserve dependencies and upgrade baselines; regression checks cover product/test separation and fail-closed cache validation (#160).
+- Prepare the actual AL-Go precompile cache by removing only the compiling app identity left by previous builds, before the unchanged AppSource input gate. Preserve dependencies and move the exact upgrade baseline plus dependencies to a separate AppSourceCop baseline cache, retaining version/breaking-change checks; regressions cover product/test separation, baseline availability and fail-closed validation (#160).
 
 ### Changed
 

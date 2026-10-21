@@ -259,6 +259,37 @@ class PrecompileCache(unittest.TestCase):
         self.assertEqual('Self.app', self.run_prune()['removed'][0]['file'])
         self.assertEqual(before, dependency.read_bytes())
 
+    def test_upgrade_baseline_and_dependencies_preserved_outside_compile_cache(self):
+        previous = dict(self.identities['app'], version='28.3.0.122')
+        fixture(self.cache / 'Previous.app', previous)
+        original = (self.cache / 'Previous.app').read_bytes()
+        fixture(self.cache / 'Foundation.app')
+        catalog = self.root / 'compiler-symbols'
+        catalog.mkdir()
+        fixture(catalog / 'Microsoft.app')
+        cop = self.root / 'app/AppSourceCop.json'
+        cop.write_text(json.dumps({'Version': previous['version'], 'mandatoryAffixes': ['ori']}))
+        result = P.prune(self.root, self.root / 'app', self.cache, catalog)
+        baseline = Path(result['baseline']['path'])
+        self.assertEqual(original, (baseline / 'Baseline.app').read_bytes())
+        self.assertEqual((self.cache / 'Foundation.app').read_bytes(), (baseline / 'Foundation.app').read_bytes())
+        self.assertEqual((catalog / 'Microsoft.app').read_bytes(), (baseline / 'Microsoft.app').read_bytes())
+        settings = json.loads(cop.read_text())
+        self.assertEqual(previous['version'], settings['Version'])
+        self.assertEqual(['ori'], settings['mandatoryAffixes'])
+        self.assertEqual(str(baseline), settings['baselinePackageCachePath'])
+        self.assertFalse((self.cache / 'Previous.app').exists())
+        self.assertEqual([], P.prune(self.root, self.root / 'app', self.cache, catalog)['removed'])
+
+    def test_missing_upgrade_baseline_refuses_before_removing_self(self):
+        fixture(self.cache / 'Self.app', self.identities['app'])
+        cop = self.root / 'app/AppSourceCop.json'
+        cop.write_text(json.dumps({'Version': '28.3.0.122'}))
+        with self.assertRaisesRegex(P.GateError, 'Required upgrade baseline missing'):
+            self.run_prune()
+        self.assertTrue((self.cache / 'Self.app').exists())
+        self.assertEqual({'Version': '28.3.0.122'}, json.loads(cop.read_text()))
+
     def test_foreign_cache_and_unknown_project_refused(self):
         with self.assertRaisesRegex(P.GateError, 'owned workspace'):
             P.prune(self.root, self.root / 'app', self.root)
