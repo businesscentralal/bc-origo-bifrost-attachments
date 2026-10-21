@@ -110,6 +110,7 @@ jobs:
         run: |
           python3 -m unittest discover -s tools/tests -p test_symbol_duplicates.py -v
           python3 -m unittest discover -s tools/tests -p test_foundation_restore.py -v
+          python3 -m unittest discover -s tools/tests -p test_precompile_cache.py -v
 
   IcelandicKeywordCounts:
     runs-on: ubuntu-latest
