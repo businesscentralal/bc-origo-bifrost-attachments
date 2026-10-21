@@ -1,0 +1,15 @@
+{
+  "sha": "954fcc2cdb938e96ff67b0e470b2ea799c685dbb",
+  "owner": "worker-6",
+  "compile": "3 clean all-cop builds,0 errors/0 warnings",
+  "cacheRegressions": {
+    "executed": 16,
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0
+  },
+  "baselineCompileProof": "Real old package preserved; all3cops compare28.3.0.0baselinevs28.3.0.1fixture with0errors0warnings. Fixture is not a shipping artifact. Version and rules retained.",
+  "runtime": "deployed exact SHA/hashes; native/UI/MCP recapture stillpending",
+  "independent": "Claude all39bc28-w1recordings/currentheadreceipt pending; no green handoff",
+  "at": "2026-10-21T11:25:04.256977+00:00"
+}

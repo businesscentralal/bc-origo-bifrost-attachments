@@ -1,0 +1,14 @@
+Microsoft (R) AL Compiler version 17.0.44.19451
+Copyright (C) Microsoft Corporation. All rights reserved
+
+Compilation started for project 'Bifrost Attachments - Tests' containing '66' files at '11:20:53.969'.
+
+evidence/attachments160-worker6/final-954fcc2/compile/build-source/test/src/DataExchFixture.Codeunit.al(8,1): info AA0477: The using statements are not in a sorted order.
+evidence/attachments160-worker6/final-954fcc2/compile/build-source/test/test/DataExchPhase2Testsori.Codeunit.al(8,1): info AA0477: The using statements are not in a sorted order.
+evidence/attachments160-worker6/final-954fcc2/compile/build-source/test/test/DataExchRefusal82Testsori.Codeunit.al(8,1): info AA0477: The using statements are not in a sorted order.
+evidence/attachments160-worker6/final-954fcc2/compile/build-source/test/test/DataExchImportTests.Codeunit.al(109,9): info AA0210: The table DataExch Test Target ori does not contain a key with the field Code.
+evidence/attachments160-worker6/final-954fcc2/compile/build-source/test/test/Storage79PermTests.Codeunit.al(1252,9): info AA0210: The table Document Attachment does not contain a key with the field File Name.
+evidence/attachments160-worker6/final-954fcc2/compile/build-source/test/test/Storage79PermTests.Codeunit.al(1278,9): info AA0210: The table Document Attachment does not contain a key with the field File Name.
+
+Compilation ended at '11:21:14.673'.
+

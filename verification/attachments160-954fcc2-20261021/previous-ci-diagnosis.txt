@@ -1,0 +1,6 @@
+Run39588674212 job119184290378 at source0c25e06983df873865ff1969b742dbae6fe7b23b.
+Strict self-input gate passed after identity cleanup. Compiler then failed because the analyzer baseline defaulted to that same cache. Retain exact baseline/version/dependencies in a separate analyzer-only cache; do not remove Version or suppress AS0003.
+2026-10-21T11:04:39.2170476Z Creating AppSourceCop.json for validation
+2026-10-21T11:04:42.2269834Z {"project": "app", "removed": [{"file": "Origo_Bifrost Attachments_28.3.0.122.app", "identity": {"id": "672df32a-a0c5-4a22-b591-0efa38023e95", "publisher": "Origo", "name": "Bifrost Attachments", "version": "28.3.0.122"}, "sha256": "90f47ac7c6eff07ad9931f02781f6410b6cd0a29852a7d9edce4f1b8a25b4aea"}]}
+2026-10-21T11:05:25.6996777Z AppSource gate: before passed
+2026-10-21T11:05:38.3308183Z ##[error]AS0003 The version '28.3.0.122' of the extension with publisher 'Origo', app id '672df32a-a0c5-4a22-b591-0efa38023e95' and name 'Bifrost Attachments' could not be found in the baseline package cache folder. If you do not want to validate breaking changes, remove the property 'version' from the AppSourceCop.json. If you are using a workspace with multiple projects, use the 'baselinePackageCachePath' property in the AppSourceCop.json.

@@ -1,0 +1,32 @@
+{
+  "fixtureOnly": true,
+  "shippingArtifact": false,
+  "versionValidationRetained": "28.3.0.0 baseline compared against28.3.0.1 compilefixture",
+  "baselineSourceSha": "0c25e06983df873865ff1969b742dbae6fe7b23b",
+  "helperSha256": "b6bdfb40b2d09e074b152e6ac6d1baba8ac54550719fa735a551c6b13adc266d",
+  "exitCode": 0,
+  "errors": 0,
+  "warnings": 0,
+  "preparation": {
+    "project": "app",
+    "baseline": {
+      "version": "28.3.0.0",
+      "path": "/workspace/evidence/attachments160-worker6/baseline-repair/compile-fixture/.buildartifacts/AppSourceBaseline/app/28.3.0.0",
+      "sha256": "91e3dff2ebda4656e3d8f3524a74e6e9a88cb7e66a22ad4d253c036cb62e3b72",
+      "dependencyInputs": 16,
+      "breakingChangeValidationRetained": true
+    },
+    "removed": [
+      {
+        "file": "Origo_Bifrost Attachments_28.3.0.0.app",
+        "identity": {
+          "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
+          "publisher": "Origo",
+          "name": "Bifrost Attachments",
+          "version": "28.3.0.0"
+        },
+        "sha256": "91e3dff2ebda4656e3d8f3524a74e6e9a88cb7e66a22ad4d253c036cb62e3b72"
+      }
+    ]
+  }
+}
