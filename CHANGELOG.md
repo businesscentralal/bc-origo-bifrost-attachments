@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed
+
+- Align the Attachments app and test app versions at `28.3.0.0`, including the test app dependency on Attachments.
+
 ### Fixed (2026-10-20) - main red after consolidating #159/#160/#166/#167
 
 - `Storage Help Get Impl ori` (10035182): the #166 overwrite/ownership paragraph now follows the guide's `#` heading and introduction instead of preceding it, so Help.Storage.Get starts with its heading again (test codeunit 96213).
