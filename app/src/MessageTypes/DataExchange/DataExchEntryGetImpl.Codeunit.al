@@ -59,8 +59,10 @@ codeunit 10035161 "DataExch Entry Get Impl ori" implements "Msg Interface ori", 
 
     /// <summary>Provides the Target discovery or contract chapter.</summary>
     procedure GetTarget(var Target: JsonArray): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetTarget('DataExchange.Entry.Get', Target));
     end;
 
     /// <summary>Provides the Parameters discovery or contract chapter.</summary>
@@ -116,16 +118,20 @@ codeunit 10035161 "DataExch Entry Get Impl ori" implements "Msg Interface ori", 
 
     /// <summary>Provides the Workflow discovery or contract chapter.</summary>
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('DataExchange.Entry.Get', Workflow));
     end;
 
     /// <summary>Provides the Examples discovery or contract chapter.</summary>
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('DataExchange.Entry.Get');
+        Guide.PrependSuccessExample('DataExchange.Entry.Get', Examples);
         exit(Examples.Count() > 0);
     end;
 
@@ -140,9 +146,10 @@ codeunit 10035161 "DataExch Entry Get Impl ori" implements "Msg Interface ori", 
 
     /// <summary>Provides the Notes discovery or contract chapter.</summary>
     procedure GetNotes(var Notes: Text): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        Clear(Notes);
-        exit(false);
+        exit(Guide.GetNotes('DataExchange.Entry.Get', Notes));
     end;
 
     /// <summary>Provides the MessageDirection discovery or contract chapter.</summary>

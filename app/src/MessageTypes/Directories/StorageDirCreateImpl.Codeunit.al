@@ -59,8 +59,10 @@ codeunit 10035171 "Storage Dir Create Impl ori" implements "Msg Interface ori", 
     end;
 
     procedure GetTarget(var Target: JsonArray): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetTarget('Storage.Directory.Create', Target));
     end;
 
     procedure GetParameters(var Parameters: JsonArray): Boolean
@@ -109,15 +111,19 @@ codeunit 10035171 "Storage Dir Create Impl ori" implements "Msg Interface ori", 
     end;
 
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('Storage.Directory.Create', Workflow));
     end;
 
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('Storage.Directory.Create');
+        Guide.PrependSuccessExample('Storage.Directory.Create', Examples);
         exit(Examples.Count() > 0);
     end;
 
@@ -130,9 +136,10 @@ codeunit 10035171 "Storage Dir Create Impl ori" implements "Msg Interface ori", 
     end;
 
     procedure GetNotes(var Notes: Text): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        Clear(Notes);
-        exit(false);
+        exit(Guide.GetNotes('Storage.Directory.Create', Notes));
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"

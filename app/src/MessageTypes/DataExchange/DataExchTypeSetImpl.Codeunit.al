@@ -125,16 +125,20 @@ codeunit 10035170 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
 
     /// <summary>Describes the existing Data Exchange workflow.</summary>
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('DataExchange.Type.Set', Workflow));
     end;
 
     /// <summary>Returns recorded request and answer examples for the operation.</summary>
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('DataExchange.Type.Set');
+        Guide.PrependSuccessExample('DataExchange.Type.Set', Examples);
         exit(Examples.Count() > 0);
     end;
 
