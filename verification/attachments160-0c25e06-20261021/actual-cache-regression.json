@@ -1,0 +1,46 @@
+{
+  "helperSourceSha256": "68c648e0e7100fa7a72b90a94605edaa01936e75c9a7a1a561982306be02f110",
+  "fixtureSourceSha": "0c25e06983df873865ff1969b742dbae6fe7b23b",
+  "executed": 2,
+  "passed": 2,
+  "failed": 0,
+  "skipped": 0,
+  "checks": [
+    {
+      "project": "app",
+      "actualCompilerPackagesBefore": 17,
+      "after": 16,
+      "allOtherBytesUnchanged": true,
+      "removed": [
+        {
+          "file": "Origo_Bifrost Attachments_28.3.0.0.app",
+          "identity": {
+            "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
+            "publisher": "Origo",
+            "name": "Bifrost Attachments",
+            "version": "28.3.0.0"
+          },
+          "sha256": "4226854a6f749a922f70d32a1c1e980086d237d1b7759f1c6d08abf81657a3f2"
+        }
+      ]
+    },
+    {
+      "project": "test",
+      "actualCompilerPackagesBefore": 17,
+      "after": 16,
+      "allOtherBytesUnchanged": true,
+      "removed": [
+        {
+          "file": "Attachments.Tests.app",
+          "identity": {
+            "id": "7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+            "publisher": "Origo",
+            "name": "Bifrost Attachments - Tests",
+            "version": "28.3.0.0"
+          },
+          "sha256": "6a891d7e0952e2a5079ea156f45405c683956acf29502a3ea4e111aa025b3dfe"
+        }
+      ]
+    }
+  ]
+}

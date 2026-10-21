@@ -1,0 +1,28 @@
+{
+  "sha": "0c25e06983df873865ff1969b742dbae6fe7b23b",
+  "owner": "worker-6",
+  "at": "2026-10-21T11:01:10.041017+00:00",
+  "compile": "3 all-cop builds0errors0warnings",
+  "cacheRegressionSuite": {
+    "executed": 14,
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0
+  },
+  "symbolAliases": {
+    "executed": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0
+  },
+  "actualCache": {
+    "executed": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0
+  },
+  "runtime": "pending current-tip deployment/fullnative/UI/MCP",
+  "independent": "pendingClaudeall39bc28-w1/currentheadreceipt; thenGrokclearance",
+  "previousRunFailure": "39584201919 own stale self-app cache, strict gate unchanged",
+  "certificationRegressionDiscovery": "Unconfigured124case discovery failed9requiredfixturemissingerrors+1inheritedAPIinventorysourcehashfinding; not full AL suite. Retained private raw log, disclosed separately; no skips or assertions removed."
+}

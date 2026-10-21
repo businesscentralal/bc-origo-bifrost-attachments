@@ -1,0 +1,19 @@
+test_dropped_connection_is_retried (test_foundation_restore.ArtifactDownload.test_dropped_connection_is_retried) ... ok
+test_redirect_does_not_forward_the_token (test_foundation_restore.ArtifactDownload.test_redirect_does_not_forward_the_token) ... ok
+test_approved_package_is_not_downloaded_again (test_foundation_restore.FoundationRestore.test_approved_package_is_not_downloaded_again) ... ok
+test_symbol_folder_outside_the_standard_cache_is_restored (test_foundation_restore.FoundationRestore.test_symbol_folder_outside_the_standard_cache_is_restored) ... ok
+test_testapps_collision_is_replaced_and_other_files_stay (test_foundation_restore.FoundationRestore.test_testapps_collision_is_replaced_and_other_files_stay) ... ok
+test_unknown_hash_fails_without_download_or_replacement (test_foundation_restore.FoundationRestore.test_unknown_hash_fails_without_download_or_replacement) ... ok
+test_wrong_archive_hash_leaves_the_collision (test_foundation_restore.FoundationRestore.test_wrong_archive_hash_leaves_the_collision) ... ok
+test_corrupt_input_prevents_partial_cleanup (test_foundation_restore.PrecompileCache.test_corrupt_input_prevents_partial_cleanup) ... ok
+test_dependency_resource_validation_stays_with_unchanged_gate (test_foundation_restore.PrecompileCache.test_dependency_resource_validation_stays_with_unchanged_gate) ... ok
+test_foreign_cache_and_unknown_project_refused (test_foundation_restore.PrecompileCache.test_foreign_cache_and_unknown_project_refused) ... ok
+test_previous_self_aliases_removed_but_dependencies_and_baseline_preserved (test_foundation_restore.PrecompileCache.test_previous_self_aliases_removed_but_dependencies_and_baseline_preserved) ... ok
+test_symlink_and_identity_collision_refused (test_foundation_restore.PrecompileCache.test_symlink_and_identity_collision_refused) ... ok
+test_test_compile_keeps_product_dependency_and_removes_only_test_self (test_foundation_restore.PrecompileCache.test_test_compile_keeps_product_dependency_and_removes_only_test_self) ... ok
+test_algo_secret_json_is_base64_decoded (test_foundation_restore.WorkflowToken.test_algo_secret_json_is_base64_decoded) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.103s
+
+OK

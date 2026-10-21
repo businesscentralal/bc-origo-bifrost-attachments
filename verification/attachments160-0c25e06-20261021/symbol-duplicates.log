@@ -1,0 +1,12 @@
+test_app_cache_still_rejects_a_byte_identical_duplicate (test_symbol_duplicates.CompilerSymbolAliases.test_app_cache_still_rejects_a_byte_identical_duplicate) ... ok
+test_byte_identical_and_same_content_aliases_are_one_package (test_symbol_duplicates.CompilerSymbolAliases.test_byte_identical_and_same_content_aliases_are_one_package) ... ok
+test_catalog_copy_is_not_charged_twice_against_the_cache_expanded_bound (test_symbol_duplicates.CompilerSymbolAliases.test_catalog_copy_is_not_charged_twice_against_the_cache_expanded_bound) ... ok
+test_conflicting_content_or_version_fails_without_removing_aliases (test_symbol_duplicates.CompilerSymbolAliases.test_conflicting_content_or_version_fails_without_removing_aliases) ... ok
+test_profiled_wrapper_lifts_the_embedded_entry_bound (test_symbol_duplicates.CompilerSymbolAliases.test_profiled_wrapper_lifts_the_embedded_entry_bound) ... ok
+test_ready_to_run_and_repacked_symbol_aliases_are_one_package (test_symbol_duplicates.CompilerSymbolAliases.test_ready_to_run_and_repacked_symbol_aliases_are_one_package) ... ok
+test_translation_flags_are_not_conflicts_and_other_metadata_is (test_symbol_duplicates.CompilerSymbolAliases.test_translation_flags_are_not_conflicts_and_other_metadata_is) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.038s
+
+OK

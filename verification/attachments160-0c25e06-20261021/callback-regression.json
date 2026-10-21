@@ -1,0 +1,14 @@
+[
+  {
+    "project": "app",
+    "exitCode": 0,
+    "stdout": "{\"project\": \"app\", \"removed\": [{\"file\": \"app.app\", \"identity\": {\"id\": \"672df32a-a0c5-4a22-b591-0efa38023e95\", \"publisher\": \"Origo\", \"name\": \"Bifrost Attachments\", \"version\": \"28.3.0.0\"}, \"sha256\": \"74dc37a58b520456d8833a124700913c4a51ca9fa2853e3e39cb60a05166efef\"}]}\nGate boundary reached after preparation\nPASS callback output and cache boundaries\n",
+    "stderr": ""
+  },
+  {
+    "project": "test",
+    "exitCode": 0,
+    "stdout": "{\"project\": \"test\", \"removed\": [{\"file\": \"test.app\", \"identity\": {\"id\": \"7cdb530b-b74b-446b-9ece-80e2b911bfb3\", \"publisher\": \"Origo\", \"name\": \"Bifrost Attachments - Tests\", \"version\": \"28.3.0.0\"}, \"sha256\": \"3c5aa1c1797e154ce4e103911463b1f4e2b858e3c4af3dd34c4bb7c09a89dabf\"}]}\nGate boundary reached after preparation\nPASS callback output and cache boundaries\n",
+    "stderr": ""
+  }
+]
