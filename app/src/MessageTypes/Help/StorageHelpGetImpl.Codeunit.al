@@ -145,10 +145,11 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
     var
         Guide: TextBuilder;
     begin
-        Guide.AppendLine('Storage file writes refuse an existing destination by default. Send overwrite: true only to intentionally replace an unlinked file. Copy and Move always refuse an existing destination. CreateForRecord and CreateLinked link pre-existing storage files without acquiring deletion ownership: Restore and attachment deletion preserve those files.');
         Guide.AppendLine('# Bifrost Attachments - storage message types');
         Guide.AppendLine();
         Guide.AppendLine('Read and write files in external storage (Azure Blob Storage, Azure File Share or SharePoint) through the Business Central external file storage connectors, stage large files in chunks and keep document attachments in storage instead of the database.');
+        Guide.AppendLine();
+        Guide.AppendLine('Storage file writes refuse an existing destination by default. Send overwrite: true only to intentionally replace an unlinked file. Copy and Move always refuse an existing destination. CreateForRecord and CreateLinked link pre-existing storage files without acquiring deletion ownership: Restore and attachment deletion preserve those files.');
         Guide.AppendLine();
         Guide.AppendLine('## Getting started');
         Guide.AppendLine();

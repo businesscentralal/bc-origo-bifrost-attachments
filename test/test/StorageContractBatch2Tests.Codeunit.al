@@ -210,13 +210,16 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         AssertParameterSchema('DataExchange.Type.Set', 'dataExchDefCode', 'string', true, 3);
         AssertParameterSchema('DataExchange.Type.Set', 'description', 'string', false, 3);
         // #25/#26: Definition.Export and Export.Run deliver to storage or inline.
-        AssertParameterSchema('DataExchange.Definition.Export', 'code', 'string', true, 5);
-        AssertParameterSchema('DataExchange.Definition.Export', 'storageCode', 'string', false, 5);
-        AssertParameterSchema('DataExchange.Definition.Export', 'inline', 'boolean', false, 5);
-        AssertParameterSchema('DataExchange.Export.Run', 'dataExchDefCode', 'string', true, 11);
-        AssertParameterSchema('DataExchange.Export.Run', 'fileName', 'string', false, 11);
-        AssertParameterSchema('DataExchange.Export.Run', 'storageCode', 'string', false, 11);
-        AssertParameterSchema('DataExchange.Export.Run', 'recordIds', 'array', false, 11);
+        // #166: both also declare the optional overwrite flag for their storage write.
+        AssertParameterSchema('DataExchange.Definition.Export', 'code', 'string', true, 6);
+        AssertParameterSchema('DataExchange.Definition.Export', 'storageCode', 'string', false, 6);
+        AssertParameterSchema('DataExchange.Definition.Export', 'inline', 'boolean', false, 6);
+        AssertParameterSchema('DataExchange.Definition.Export', 'overwrite', 'boolean', false, 6);
+        AssertParameterSchema('DataExchange.Export.Run', 'dataExchDefCode', 'string', true, 12);
+        AssertParameterSchema('DataExchange.Export.Run', 'fileName', 'string', false, 12);
+        AssertParameterSchema('DataExchange.Export.Run', 'storageCode', 'string', false, 12);
+        AssertParameterSchema('DataExchange.Export.Run', 'recordIds', 'array', false, 12);
+        AssertParameterSchema('DataExchange.Export.Run', 'overwrite', 'boolean', false, 12);
         AssertParameterAbsent('DataExchange.Type.Set', 'storageCode');
     end;
 
