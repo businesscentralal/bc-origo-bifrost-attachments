@@ -65,5 +65,13 @@
     ".AL-Go/**",
     ".github/workflows/**",
     "tools/**"
-  ]
+  ],
+  "deliverToAppSource": {
+    "productId": "ae26bc25-7547-42ec-a1b7-c55e3b830569",
+    "mainAppFolder": "app",
+    "branches": [
+      "main"
+    ],
+    "continuousDelivery": false
+  }
 }
