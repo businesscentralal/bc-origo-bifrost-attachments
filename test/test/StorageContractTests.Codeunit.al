@@ -118,7 +118,7 @@ codeunit 96265 "Storage Contract Tests ori"
         FieldType: Text;
         Offenders: Text;
     begin
-        // [SCENARIO] Every response field has a name, a JSON type and a description; an object field and a list of rows describe their members.
+        // [SCENARIO] Every response field has a name, a JSON type and a description; an object field and an array of rows describe their members; a field that merely shares a row-list name but is a count (integer) needs none.
         foreach Ordinal in AppOrdinals() do begin
             Contract := Enum::"Message Type ori".FromInteger(Ordinal);
             Clear(Response);
@@ -134,7 +134,7 @@ codeunit 96265 "Storage Contract Tests ori"
                     FieldType := ReadText(Field, 'type');
                     if (FieldName = '') or (FieldType = '') or (ReadText(Field, 'description') = '') then
                         Offenders += TypeName(Ordinal) + '|field ' + FieldName + ' lacks name, type or description ';
-                    if (FieldType = 'object') or RowListFieldNames().Contains(FieldName) then
+                    if (FieldType = 'object') or ((FieldType = 'array') and RowListFieldNames().Contains(FieldName)) then
                         if not Field.Get('children', ChildrenToken) then
                             Offenders += TypeName(Ordinal) + '|field ' + FieldName + ' lacks children '
                         else
@@ -144,6 +144,48 @@ codeunit 96265 "Storage Contract Tests ori"
             end;
         end;
         LibraryAssert.AreEqual('', Offenders, 'Response chapter: ' + Offenders);
+    end;
+
+    [Test]
+    procedure DefinitionGet_LineDefsAndMappings_AreArraysWithChildren()
+    var
+        Field: JsonObject;
+        ChildrenToken: JsonToken;
+        FieldName: Text;
+    begin
+        // [SCENARIO] Get returns lineDefs and mappings as arrays of rows and must describe them; Import returns the same names as integer counts.
+        foreach FieldName in ResponseFieldNames() do begin
+            FindResponseField(Enum::"Message Type ori"::"DataExchange.Definition.Get", FieldName, Field);
+            LibraryAssert.AreEqual('array', ReadText(Field, 'type'), 'DataExchange.Definition.Get ' + FieldName + ' must be an array.');
+            LibraryAssert.IsTrue(Field.Get('children', ChildrenToken), 'DataExchange.Definition.Get ' + FieldName + ' must have children.');
+            LibraryAssert.IsTrue(ChildrenToken.AsArray().Count() > 0, 'DataExchange.Definition.Get ' + FieldName + ' has empty children.');
+            FindResponseField(Enum::"Message Type ori"::"DataExchange.Definition.Import", FieldName, Field);
+            LibraryAssert.AreEqual('integer', ReadText(Field, 'type'), 'DataExchange.Definition.Import ' + FieldName + ' must be an integer count.');
+            LibraryAssert.IsFalse(Field.Contains('children'), 'DataExchange.Definition.Import ' + FieldName + ' is a count and has no children.');
+        end;
+    end;
+
+    local procedure ResponseFieldNames() Names: List of [Text]
+    begin
+        Names.AddRange('lineDefs', 'mappings');
+    end;
+
+    local procedure FindResponseField(MessageType: Enum "Message Type ori"; FieldName: Text; var Field: JsonObject)
+    var
+        Contract: Interface "Msg Contract ori";
+        Response: JsonObject;
+        FieldsToken: JsonToken;
+        FieldToken: JsonToken;
+    begin
+        Contract := MessageType;
+        Contract.GetResponse(Response);
+        Response.Get('fields', FieldsToken);
+        foreach FieldToken in FieldsToken.AsArray() do
+            if ReadText(FieldToken.AsObject(), 'name') = FieldName then begin
+                Field := FieldToken.AsObject();
+                exit;
+            end;
+        LibraryAssert.Fail('Response field ' + FieldName + ' not found.');
     end;
 
     [Test]
