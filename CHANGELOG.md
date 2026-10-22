@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-10-21) - AppSource delivery
+
+- `.AL-Go/settings.json`: `deliverToAppSource` names the Partner Center offer for Bifrost Attachments (productId ae26bc25-7547-42ec-a1b7-c55e3b830569, main app folder `app`, branch main, no continuous delivery), so the Publish To AppSource workflow can deliver new versions to the offer.
+
 ### Changed
 
 - Align the Attachments app and test app versions at `28.3.0.0`, including the test app dependency on Attachments.
