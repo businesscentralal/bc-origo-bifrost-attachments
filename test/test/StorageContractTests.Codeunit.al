@@ -9,7 +9,7 @@ using System.TestLibraries.Utilities;
 /// error has no machine code, a direction does not match the declared effect, a response field is not
 /// described, a successful example does not match the declared response, or a discovery text is missing.
 /// </summary>
-codeunit 96264 "Storage Contract Tests ori"
+codeunit 96265 "Storage Contract Tests ori"
 {
     Subtype = Test;
     TestPermissions = Disabled;
