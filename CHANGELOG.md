@@ -1,5 +1,3 @@
-
-
 # Changelog
 
 All notable changes to Bifrost Attachments are documented here.
@@ -7,6 +5,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+
+### Fixed (2026-10-23) - Linked incoming-document Data Exchange processing (#23)
+
+- Codeunit 10035137 `Storage Attachment Subscr ori` supplies Bifröst-linked incoming-document attachment content to the base Data Exchange source hook without restoring the local BLOB or changing the remote file. Ordinary attachments and definitions with an external data-handling codeunit keep their existing path.
+- Codeunit 96237 `DataExch Phase2 Tests ori` adds bilingual linked/local CSV reader, mapping and purchase-invoice regressions.
+- The test app adds isolated persistent MCP fixture storage: table 96250 `Storage 23 Fixture File ori`, codeunit 96250 `Storage 23 Fixture Impl ori`, enumextension 96250 `Storage 23 Fixture Type ori` (value 96250 `MCP Fixture 23`), and permissionset 96250 `Storage23Fixture ori`. `test/mcp-fixtures-23.md` documents self-created fixture data and owned cleanup, without external accounts or licensing interception.
+
+### Changed (2026-10-23) - Created-document identity (#23)
+
+- Codeunit 10035136 `Storage Attachment Mgt ori` returns the actual created target record's SystemId in `createdDocument.systemId` instead of the incoming-document SystemId. Callers that previously treated this field as the incoming-document ID must use the incoming-document identity separately; the field identifies the created document.
 
 ### Fixed (2026-10-21) - Pipeline: AppSource build gate after the first AppSource release
 
