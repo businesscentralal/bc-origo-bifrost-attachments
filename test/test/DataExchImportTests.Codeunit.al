@@ -495,10 +495,10 @@ codeunit 96242 "DataExch Import Tests ori"
     [Test]
     procedure EntryProcess_DefinitionDeleted_RefusesRecordNotFound()
     var
-        Request: JsonObject;
-        Response: JsonObject;
         DataExch: Record "Data Exch.";
         DataExchDef: Record "Data Exch. Def";
+        Request: JsonObject;
+        Response: JsonObject;
         DefCode: Code[20];
         EntryNo: Integer;
     begin
