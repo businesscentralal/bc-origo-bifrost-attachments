@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "cd93f3b2c1ea745a1c28d6971884d68b6c801092",
+  "sourceSha": "bac9462c6fcb0b390c1cd1e589b8182168dcd4e0",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -275,9 +275,9 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-23T17:47:18.329866+00:00",
-  "inventoryPreparedFromDocumentationHead": "cd93f3b2c1ea745a1c28d6971884d68b6c801092",
-  "productSourceBaselineUnchanged": false,
+  "refreshedAt": "2026-10-23T18:08:38.582193+00:00",
+  "inventoryPreparedFromDocumentationHead": "bac9462c6fcb0b390c1cd1e589b8182168dcd4e0",
+  "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",
@@ -413,6 +413,8 @@
     "test/src/Storage23FixtureFile.Table.al": "dabd3db6ba8344233e6a63e4b2c1e1ea622ac1e6a49e15381ca7416f39875de7",
     "test/src/Storage23FixtureImpl.Codeunit.al": "2ab017ac0c728a6616d1a6b7dcb36c0349300b184042999c2da05c7d01811bd4",
     "test/src/Storage23FixtureType.EnumExt.al": "519fa6d1b7e514f079f4cc51c197699a4aa1ab6eae49bf0165f4f57eb2b401f2",
+    "test/src/StorageHTTPFixtureType.EnumExt.al": "e752d8f67cc2ea851beb4fe2fe9db7686a3e31e736e76859317c4b91e320fce0",
+    "test/src/StorageHttpFixture.Codeunit.al": "104243973a76c12c8ab6cfef703368f6bfafae1a968a692eb82cae4896ef7d84",
     "test/src/StorageMCPTest.PermissionSet.al": "65f19c4b73dbb786181beed02ab511bb41d213e189bf608c9b52f58ed39e2f63",
     "test/src/StorageMcpCleanup.Codeunit.al": "d6b2445a8e2ab61e004d2be2982d6442213a7bf6dd83f025efda65239918350f",
     "test/src/StorageMcpCleanupItem.Table.al": "439387a94f6388127e9ef3e1c2dfd7c99ff8b26800652ccf6d817bd0e7f9dfcb",
@@ -444,6 +446,7 @@
     "test/test/StorageDirection130Tests.Codeunit.al": "45263ea79b980368e33a1e97a7f1bcf1819421cbcfed62e7f332634d5b492a56",
     "test/test/StorageErrorResponseTests.Codeunit.al": "113625f077219e493f4ca7a83cfe77971389e7013c6bf688b09d1d150c3fcad2",
     "test/test/StorageFollow168Tests.Codeunit.al": "b8a585b16bf239b144216b782ac975198333b261ce162eafab8d5e82bee77e22",
+    "test/test/StorageHttpFixtureTests.Codeunit.al": "545ddd28462e989ee79eb0d013c770f38f443561c2c4471fc386f1da8eae9292",
     "test/test/StorageIntegrity75Testsori.Codeunit.al": "526769d329496c384d13987388041ce582ea9321922bed840fe87852459b1c22",
     "test/test/StorageInterfaceTests.Codeunit.al": "016bf1450a789210149ccb324aca63c8b35dd20f3671bbe71849b95522585918",
     "test/test/StorageLinkGuardTests.Codeunit.al": "bac0cf7f767d0ce6951328c5017fb5aaa159b7b8378026b6c46af6ac519cdd42",
