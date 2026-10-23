@@ -8,6 +8,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-23) - Restore overview (#166)
+
+- Correct the `Storage.Attachment.Restore` overview in `Storage Contract Parts ori` (codeunit 10035183): only stored files newly created by the attachment are deleted; pre-existing files and legacy links are preserved. Documentation only; restore behavior is unchanged.
+
 ### Fixed (2026-10-21) - Pipeline: AppSource build gate after the first AppSource release
 
 - Pipeline: the AppSource build gate no longer fails after the first AppSource release (previous self-app removed from the compile symbol cache; AppSourceCop baseline kept). New `tools/prune_self_symbols.py`, called from `tools/Assert-AppSourceBuild.ps1` before the gate; regression tests in `tools/tests/test_foundation_restore.py`. Port of attachments#174.
