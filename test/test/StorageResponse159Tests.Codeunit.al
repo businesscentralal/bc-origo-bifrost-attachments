@@ -756,7 +756,7 @@ codeunit 96258 "Storage Response159 Tests ori"
         AssertEnvelope(Response);
         LibraryAssert.AreEqual(ExpectedParent, Fixture.ReadText(Fixture.Data(Response), 'path'), 'The top-level path is connection-relative.');
         Entries := Fixture.ReadArray(Fixture.Data(Response), 'entries');
-        LibraryAssert.AreEqual(1, Entries.Count(), 'The fixture has one direct child of the requested type.');
+        LibraryAssert.AreEqual(1, Entries.Count(), 'The fixture has one direct child: ' + ExpectedParent + '/' + ExpectedName);
         Entries.Get(0, Token);
         Entry := Token.AsObject();
         LibraryAssert.AreEqual(ExpectedParent, Fixture.ReadText(Entry, 'parentDirectory'), 'The parent directory never includes the account base path.');

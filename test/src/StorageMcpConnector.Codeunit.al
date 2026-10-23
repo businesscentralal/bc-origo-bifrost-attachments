@@ -25,7 +25,7 @@ codeunit 96262 "Storage MCP Connector ori" implements "Storage Connector ori"
     begin
         TempFileAccountContent.Reset();
         TempFileAccountContent.DeleteAll();
-        Path := ResolvePath(StorageSetup, Path);
+        Path := ResolvePath(StorageSetup, Path).TrimEnd('/');
         Prefix := Path;
         if Prefix <> '' then
             Prefix += '/';
