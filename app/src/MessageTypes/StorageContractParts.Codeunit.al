@@ -469,9 +469,9 @@ codeunit 10035183 "Storage Contract Parts ori"
             'Storage.Attachment.CreateLinked':
                 exit('Links a file already in storage to a new or existing Incoming Document. It uses the storage connection and relative path instead of uploading another copy.');
             'Storage.Attachment.CreateForRecord':
-                exit('Creates an IncomingDocument or DocumentAttachment from inline base64, a stored file or another attachment. Choose exactly one source and identify the destination record as described in target and parameters.');
+                exit('Creates a DocumentAttachment on a Business Central record from exactly one source: inline base64, a file in storage, or another IncomingDocument or DocumentAttachment (sourceTarget with sourceSystemId). It never creates an IncomingDocument; use Storage.Attachment.CreateLinked for that.');
             'Storage.Upload.CommitToRecord':
-                exit('Assembles an upload session and creates an IncomingDocument or DocumentAttachment. No external storage is required unless keepFile is requested.');
+                exit('Assembles an upload session and creates an IncomingDocument or a DocumentAttachment (target; DocumentAttachment is the default). The content is stored in Business Central and nothing is written to external storage.');
             'DataExchange.Definition.List':
                 exit('Lists Data Exchange definitions available to the caller, including their codes and types. Select a compatible code before importing or exporting data.');
             'DataExchange.Definition.Get':
@@ -707,6 +707,54 @@ codeunit 10035183 "Storage Contract Parts ori"
                 end;
 
         end;
+        AddParameterFacts(Parameters);
+    end;
+
+    // Defaults and allowed values the code applies, added to the parameters declared above by name.
+    local procedure AddParameterFacts(var Parameters: JsonArray)
+    var
+        ParameterToken: JsonToken;
+        NameToken: JsonToken;
+        RequiredToken: JsonToken;
+        NameValue: JsonValue;
+        RequiredValue: JsonValue;
+        Parameter: JsonObject;
+        ParameterName: Text;
+        IsRequired: Boolean;
+    begin
+        foreach ParameterToken in Parameters do begin
+            Parameter := ParameterToken.AsObject();
+            Parameter.Get('name', NameToken);
+            NameValue := NameToken.AsValue();
+            ParameterName := NameValue.AsText();
+            Parameter.Get('required', RequiredToken);
+            RequiredValue := RequiredToken.AsValue();
+            IsRequired := RequiredValue.AsBoolean();
+            case ParameterName of
+                'overwrite', 'process', 'keepFileInStorage', 'includeFileContent', 'inline':
+                    Parameter.Add('default', false);
+                'includeFields':
+                    Parameter.Add('default', true);
+                'skip':
+                    Parameter.Add('default', 0);
+                'take':
+                    Parameter.Add('default', 100);
+                'target', 'sourceTarget':
+                    begin
+                        Parameter.Add('allowed', AllowedValues('IncomingDocument', 'DocumentAttachment'));
+                        if (ParameterName = 'target') and not IsRequired then
+                            Parameter.Add('default', 'DocumentAttachment');
+                    end;
+                'direction':
+                    Parameter.Add('allowed', AllowedValues('Import', 'Export'));
+            end;
+        end;
+    end;
+
+    local procedure AllowedValues(First: Text; Second: Text) Values: JsonArray
+    begin
+        Values.Add(First);
+        Values.Add(Second);
     end;
 
     local procedure SupportsStorageOverwrite(MessageType: Text): Boolean
@@ -769,15 +817,23 @@ codeunit 10035183 "Storage Contract Parts ori"
         Response.Add('payloadPath', 'data');
         case MessageType of
             'Help.Storage.Get':
-                Fields.Add(ContractMgt.ResponseField('markdown', 'string', 'The storage connector overview and message type guidance.'));
+                begin
+                    Fields.Add(ContractMgt.ResponseField('format', 'string', 'Always markdown.'));
+                    Fields.Add(ContractMgt.ResponseField('markdown', 'string', 'The storage connector overview and message type guidance.'));
+                end;
             'Help.DataExchange.Get':
-                Fields.Add(ContractMgt.ResponseField('markdown', 'string', 'The Data Exchange discovery overview and workflow guidance.'));
+                begin
+                    Fields.Add(ContractMgt.ResponseField('format', 'string', 'Always markdown.'));
+                    Fields.Add(ContractMgt.ResponseField('markdown', 'string', 'The Data Exchange discovery overview and workflow guidance.'));
+                end;
             'Storage.Account.List':
-                Fields.Add(ContractMgt.ResponseField('accounts', 'array', 'Configured storage connections without secrets. Each description is the stored Storage Setup ori.Description value, returned unchanged in every language, including app-seeded values; no translation table is used.'));
+                Fields.Add(WithChildren(ContractMgt.ResponseField('accounts', 'array', 'Configured storage connections without secrets. Each description is the text stored on the connection, returned unchanged in every language, including app-seeded values; it is not translated.'),
+                    'code:string:The storageCode to send with the other storage calls.|description:string:The stored description of the connection.|connector:string:The name of the Business Central external file storage connector.|basePath:string:The folder every relative path starts in.|enabled:boolean:Whether calls may use the connection.'));
             'Storage.File.List', 'Storage.Directory.List':
                 begin
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The requested directory path.'));
-                    Fields.Add(ContractMgt.ResponseField('entries', 'array', 'The files or directories found at the path.'));
+                    Fields.Add(WithChildren(ContractMgt.ResponseField('entries', 'array', 'The files or directories found at the path.'),
+                        'name:string:The file or directory name.|type:string:File or Directory.|parentDirectory:string:The directory that holds the entry, as the connector reports it.'));
                 end;
             'Storage.File.Get':
                 begin
@@ -790,12 +846,23 @@ codeunit 10035183 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The checked path.'));
                     Fields.Add(ContractMgt.ResponseField('exists', 'boolean', 'Whether the path exists.'));
                 end;
-            'Storage.File.Create', 'Storage.File.Delete', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.Directory.Create', 'Storage.Directory.Delete':
+            'Storage.File.Delete', 'Storage.Directory.Create', 'Storage.Directory.Delete':
                 Fields.Add(ContractMgt.ResponseField('path', 'string', 'The affected path.'));
+            'Storage.File.Create':
+                begin
+                    Fields.Add(ContractMgt.ResponseField('path', 'string', 'The path the file was written to.'));
+                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The size of the written content in bytes.'));
+                end;
+            'Storage.File.Copy', 'Storage.File.Move':
+                begin
+                    Fields.Add(ContractMgt.ResponseField('sourcePath', 'string', 'The path the file was taken from.'));
+                    Fields.Add(ContractMgt.ResponseField('targetPath', 'string', 'The path the file now has.'));
+                end;
             'Storage.Attachment.Offload':
                 begin
                     Fields.Add(ContractMgt.ResponseField('target', 'string', 'The attachment table.'));
                     Fields.Add(ContractMgt.ResponseField('systemId', 'string', 'The attachment SystemId.'));
+                    Fields.Add(ContractMgt.ResponseField('storageCode', 'string', 'The storage connection that now holds the file.'));
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The storage path.'));
                     Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The file size in bytes.'));
                 end;
@@ -807,17 +874,41 @@ codeunit 10035183 "Storage Contract Parts ori"
                 end;
             'Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.CommitToRecord':
                 begin
-                    Fields.Add(ContractMgt.ResponseField('target', 'string', 'The attachment target.'));
-                    if MessageType in ['Storage.Attachment.CreateForRecord', 'Storage.Upload.CommitToRecord'] then
+                    if MessageType = 'Storage.Attachment.CreateForRecord' then
+                        Fields.Add(ContractMgt.ResponseField('target', 'string', 'Always DocumentAttachment.'))
+                    else
+                        Fields.Add(ContractMgt.ResponseField('target', 'string', 'IncomingDocument or DocumentAttachment, the table the attachment was created in.'));
+                    if MessageType = 'Storage.Attachment.CreateLinked' then
+                        Fields.Add(ContractMgt.ResponseField('incomingDocumentEntryNo', 'integer', 'The Incoming Document the attachment belongs to.'));
+                    if MessageType = 'Storage.Upload.CommitToRecord' then
+                        Fields.Add(ContractMgt.ResponseField('incomingDocumentEntryNo', 'integer', 'The Incoming Document the attachment belongs to. Only for target IncomingDocument.'));
+                    if MessageType in ['Storage.Attachment.CreateForRecord', 'Storage.Upload.CommitToRecord'] then begin
+                        Fields.Add(ContractMgt.ResponseField('tableId', 'integer', 'The table of the host record. Only for DocumentAttachment.'));
+                        Fields.Add(ContractMgt.ResponseField('no', 'string', 'The primary key of the host record as the attachment stores it. Only for DocumentAttachment.'));
                         Fields.Add(ContractMgt.ResponseField('documentType', 'string', DocumentTypeNameLbl));
+                        Fields.Add(ContractMgt.ResponseField('attachmentId', 'integer', 'The Document Attachment ID. Only for DocumentAttachment.'));
+                    end;
+                    Fields.Add(ContractMgt.ResponseField('lineNo', 'integer', 'The line number of the host record, or of the attachment line of the Incoming Document.'));
                     Fields.Add(ContractMgt.ResponseField('systemId', 'string', 'The new attachment SystemId.'));
+                    if MessageType = 'Storage.Attachment.CreateLinked' then begin
+                        Fields.Add(ContractMgt.ResponseField('storageCode', 'string', 'The storage connection that holds the linked file.'));
+                        Fields.Add(ContractMgt.ResponseField('path', 'string', 'The storage path of the linked file.'));
+                    end;
                     Fields.Add(ContractMgt.ResponseField('fileName', 'string', 'The final attachment file name.'));
                     Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The file size in bytes.'));
+                    if MessageType in ['Storage.Attachment.CreateForRecord', 'Storage.Upload.CommitToRecord'] then
+                        Fields.Add(ContractMgt.ResponseField('offloaded', 'boolean', 'True when the content stays in storage and the attachment only links to it.'));
+                    if MessageType = 'Storage.Attachment.CreateForRecord' then begin
+                        Fields.Add(ContractMgt.ResponseField('storageCode', 'string', 'The storage connection of the source file. Only when the content came from a stored file.'));
+                        Fields.Add(ContractMgt.ResponseField('path', 'string', 'The storage path of the source file. Only when the content came from a stored file.'));
+                    end;
                     if MessageType in ['Storage.Attachment.CreateLinked', 'Storage.Upload.CommitToRecord'] then begin
                         Fields.Add(ContractMgt.ResponseField('dataExchangeType', 'string', DataExchangeTypeResponseLbl));
                         Fields.Add(ContractMgt.ResponseField('processed', 'boolean', ProcessedResponseLbl));
-                        Fields.Add(ContractMgt.ResponseField('createdDocument', 'object', CreatedDocumentResponseLbl));
-                        Fields.Add(ContractMgt.ResponseField('processErrors', 'array', ProcessErrorsResponseLbl));
+                        Fields.Add(WithChildren(ContractMgt.ResponseField('createdDocument', 'object', CreatedDocumentResponseLbl),
+                            'type:string:The type of the created document.|no:string:The number of the created document.|systemId:string:The SystemId of the created document.'));
+                        Fields.Add(WithChildren(ContractMgt.ResponseField('processErrors', 'array', ProcessErrorsResponseLbl),
+                            'code:string:The error code.|message:string:The error text.|nextStep:string:What to do about it.'));
                         Fields.Add(ContractMgt.ResponseField('incomingDocumentStatus', 'string', IncomingStatusResponseLbl));
                     end;
                 end;
@@ -834,6 +925,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('uploadId', 'string', 'The upload session id.'));
                     Fields.Add(ContractMgt.ResponseField('sequence', 'integer', 'The accepted chunk sequence.'));
                     Fields.Add(ContractMgt.ResponseField('received', 'integer', 'Bytes accumulated so far.'));
+                    Fields.Add(ContractMgt.ResponseField('chunkCount', 'integer', 'Chunks stored so far.'));
                 end;
             'Storage.Upload.Commit':
                 begin
@@ -888,16 +980,20 @@ codeunit 10035183 "Storage Contract Parts ori"
                         Fields.Add(ContractMgt.ResponseField('storageCode', 'string', 'The storage connection of the file, when it came from or went to storage.'));
                         Fields.Add(ContractMgt.ResponseField('path', 'string', 'The storage path of the file, when it came from or went to storage.'));
                         Fields.Add(ContractMgt.ResponseField('processed', 'boolean', 'True when the mappings ran without an error.'));
-                        Fields.Add(ContractMgt.ResponseField('processResult', 'object', ProcessResultLbl));
+                        Fields.Add(WithChildren(ContractMgt.ResponseField('processResult', 'object', ProcessResultLbl),
+                        'processed:boolean:True when the mappings ran without an error.|targets:array:' + TargetsLbl + '|warnings:array:' + ProcessWarningsLbl + '|errors:array:Entries with code, error and nextStep when the mappings failed; the entry stays.'));
                     end;
                 end;
             'DataExchange.Entry.Process':
                 begin
                     Fields.Add(ContractMgt.ResponseField('entryNo', 'integer', EntryNoLbl));
                     Fields.Add(ContractMgt.ResponseField('dataExchDefCode', 'string', DefinitionCodeLbl));
+                    Fields.Add(ContractMgt.ResponseField('mappingLineDef', 'string', 'The line definition that was processed alone. Only when mappingLineDef was sent.'));
                     Fields.Add(ContractMgt.ResponseField('processed', 'boolean', 'True when the mappings ran.'));
-                    Fields.Add(ContractMgt.ResponseField('targets', 'array', TargetsLbl));
-                    Fields.Add(ContractMgt.ResponseField('warnings', 'array', ProcessWarningsLbl));
+                    Fields.Add(WithChildren(ContractMgt.ResponseField('targets', 'array', TargetsLbl),
+                        'tableId:integer:The target table number.|tableName:string:The target table name.|recordsInserted:integer:Records the run inserted.|recordsModified:integer:Records the run modified.|recordIds:array:SystemIds of the touched records, at most 100.'));
+                    Fields.Add(WithChildren(ContractMgt.ResponseField('warnings', 'array', ProcessWarningsLbl),
+                        'code:string:NoMappingCodeunit or RecordIdsCapped.|message:string:The warning text.'));
                 end;
             'DataExchange.Entry.Delete':
                 begin
@@ -928,37 +1024,77 @@ codeunit 10035183 "Storage Contract Parts ori"
             'DataExchange.Type.List':
                 begin
                     Fields.Add(ContractMgt.ResponseField('count', 'integer', MatchingCountLbl));
-                    Fields.Add(ContractMgt.ResponseField('types', 'array', MatchingTypesLbl));
+                    Fields.Add(WithChildren(ContractMgt.ResponseField('types', 'array', MatchingTypesLbl),
+                        'code:string:The Data Exchange Type code.|description:string:The type description.|dataExchDefCode:string:The linked definition code.|userFeedbackCodeunit:string:The definition user feedback codeunit name, empty when none.|validationCodeunit:string:The definition validation codeunit name, empty when none.|dataHandlingCodeunit:string:The definition data handling codeunit name, empty when none.|type:string:The definition type, empty when the definition does not exist.'));
                 end;
             'DataExchange.Definition.List':
                 begin
                     Fields.Add(ContractMgt.ResponseField('count', 'integer', 'Number of matching definitions.'));
-                    Fields.Add(ContractMgt.ResponseField('definitions', 'array', 'Matching definitions.'));
+                    Fields.Add(WithChildren(ContractMgt.ResponseField('definitions', 'array', 'Matching definitions.'), DefinitionRowSpec()));
                 end;
             'DataExchange.Definition.Get':
                 begin
-                    Fields.Add(ContractMgt.ResponseField('code', 'string', 'The definition code.'));
-                    Fields.Add(ContractMgt.ResponseField('lineDefs', 'array', 'Line definitions.'));
-                    Fields.Add(ContractMgt.ResponseField('columnDefs', 'array', 'Column definitions.'));
-                    Fields.Add(ContractMgt.ResponseField('mappings', 'array', 'Field mappings.'));
+                    AddSpecFields(Fields, DefinitionRowSpec());
+                    Fields.Add(WithChildren(ContractMgt.ResponseField('lineDefs', 'array', 'Line definitions.'),
+                        'code:string:The line definition code.|name:string:The line definition name.|columnCount:integer:Number of columns.|dataLineTag:string:The data line tag.|namespace:string:The XML namespace.'));
+                    Fields.Add(WithChildren(ContractMgt.ResponseField('columnDefs', 'array', 'Column definitions.'),
+                        'lineDef:string:The line definition code.|columnNo:integer:The column number.|name:string:The column name.|dataType:string:The data type name.|dataFormat:string:The data format.|dataFormattingCulture:string:The formatting culture.|path:string:The XML path.|negativeSign:string:The negative sign identifier.|constant:string:The constant value.'));
+                    Fields.Add(WithChildren(ContractMgt.ResponseField('mappings', 'array', 'Field mappings.'),
+                        'lineDef:string:The line definition code.|tableId:integer:The target table number.|tableName:string:The target table name.|mappingCodeunit:string:The mapping codeunit name, empty when none.|preMappingCodeunit:string:The pre-mapping codeunit name, empty when none.|postMappingCodeunit:string:The post-mapping codeunit name, empty when none.|dataExchNoFieldId:integer:The field that holds the entry number.|useAsIntermediateTable:boolean:Whether the table is an intermediate table.|fieldMappings:array:One object per mapped field with columnNo, fieldId, fieldName, optional, multiplier, overwriteValue and transformationRule.'));
                 end;
             'DataExchange.Entry.List':
                 begin
                     Fields.Add(ContractMgt.ResponseField('skip', 'integer', PagingSkipLbl));
                     Fields.Add(ContractMgt.ResponseField('take', 'integer', PagingTakeLbl));
-                    Fields.Add(ContractMgt.ResponseField('count', 'integer', 'Number of matching entries.'));
-                    Fields.Add(ContractMgt.ResponseField('entries', 'array', 'Matching entries.'));
+                    Fields.Add(ContractMgt.ResponseField('count', 'integer', 'Number of matching entries before paging.'));
+                    Fields.Add(WithChildren(ContractMgt.ResponseField('entries', 'array', 'The requested page of matching entries.'), EntryRowSpec()));
                 end;
             'DataExchange.Entry.Get':
                 begin
                     Fields.Add(ContractMgt.ResponseField('skip', 'integer', PagingSkipLbl));
                     Fields.Add(ContractMgt.ResponseField('take', 'integer', PagingTakeLbl));
-                    Fields.Add(ContractMgt.ResponseField('entryNo', 'integer', 'The entry number.'));
-                    Fields.Add(ContractMgt.ResponseField('fields', 'array', 'Paged entry fields.'));
-                    Fields.Add(ContractMgt.ResponseField('contentBase64', 'string', 'Optional file content.'));
+                    AddSpecFields(Fields, EntryRowSpec());
+                    Fields.Add(WithChildren(ContractMgt.ResponseField('fields', 'array', 'Paged entry fields. Only when includeFields is true, which is the default.'),
+                        'lineNo:integer:The parsed line number.|columnNo:integer:The column number.|columnName:string:The column name from the definition, empty when the column is not defined.|value:string:The parsed value.|dataExchLineDefCode:string:The line definition code.'));
+                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The file size in bytes. Only when includeFileContent is true.'));
+                    Fields.Add(ContractMgt.ResponseField('contentBase64', 'string', 'The file content as base64. Only when includeFileContent is true.'));
                 end;
         end;
         Response.Add('fields', Fields);
+    end;
+
+    local procedure WithChildren(Field: JsonObject; Spec: Text) Result: JsonObject
+    var
+        Children: JsonArray;
+    begin
+        AddSpecFields(Children, Spec);
+        Field.Add('children', Children);
+        Result := Field;
+    end;
+
+    // A spec is name:type:description entries joined by a vertical bar; the description is the rest after the second colon.
+    local procedure AddSpecFields(var Fields: JsonArray; Spec: Text)
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Entry: Text;
+        FirstColon: Integer;
+        SecondColon: Integer;
+    begin
+        foreach Entry in Spec.Split('|') do begin
+            FirstColon := StrPos(Entry, ':');
+            SecondColon := StrPos(CopyStr(Entry, FirstColon + 1), ':') + FirstColon;
+            Fields.Add(ContractMgt.ResponseField(CopyStr(Entry, 1, FirstColon - 1), CopyStr(Entry, FirstColon + 1, SecondColon - FirstColon - 1), CopyStr(Entry, SecondColon + 1)));
+        end;
+    end;
+
+    local procedure DefinitionRowSpec(): Text
+    begin
+        exit('code:string:The definition code.|name:string:The definition name.|type:string:The definition type name.|fileType:string:The file type name.|readingWritingCodeunit:string:The reading and writing codeunit name, empty when none.|readingWritingXmlPort:string:The reading and writing XMLport name, empty when none.|extDataHandlingCodeunit:string:The external data handling codeunit name, empty when none.|lineDefCount:integer:Number of line definitions.|mappingCount:integer:Number of mappings.|usedByDataExchangeTypes:array:Codes of the Data Exchange Types that use the definition.');
+    end;
+
+    local procedure EntryRowSpec(): Text
+    begin
+        exit('entryNo:integer:The entry number.|dataExchDefCode:string:The definition code.|dataExchLineDefCode:string:The line definition code.|fileName:string:The file name stored on the entry.|createdAt:string:When the entry was created, ISO 8601 invariant, empty when unknown.|hasFileContent:boolean:Whether the entry holds its file.|fieldCount:integer:Number of parsed fields.|incomingEntryNo:integer:The Incoming Document entry number, 0 when none.|relatedRecord:string:The related record as Business Central formats it, empty when none.');
     end;
 
     local procedure AddDeliveryFields(var Fields: JsonArray; HeaderOnlyAllowed: Boolean)
@@ -1026,6 +1162,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The storageCode does not name a storage connection.', 'Use Storage.Account.List to find the storageCode.'));
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The storage connection is disabled.', 'Enable it on the Bifrost Storage Connection card, or use another storageCode.'));
         end;
+        AddAttachmentErrors(MessageType, Errors);
         if MessageType = 'Storage.Directory.Delete' then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameter, 'The path names the connection root.', 'Name a directory below the root to delete.'));
         if MessageType in ['Storage.File.Create', 'Storage.Upload.Append'] then
@@ -1038,8 +1175,12 @@ codeunit 10035183 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The selected storage implementation cannot guarantee source preservation for a failed linked move.', 'Restore the attachment before moving the file, or use an implementation that supports linked moves.'));
         if MessageType = 'Storage.Directory.Delete' then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The directory is not empty.', 'List its files and subdirectories, remove those entries, then retry.'));
+        if MessageType in ['Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.Status', 'Storage.Upload.CommitToRecord', 'Storage.Upload.CommitToDataExchange', 'DataExchange.Definition.Import'] then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'No upload session exists for the uploadId, or the session was begun by another user.', 'Send the uploadId that Storage.Upload.Begin returned, as the user who began the session, or begin a new session.'));
         if MessageType in ['Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord', 'Storage.Upload.CommitToDataExchange', 'DataExchange.Definition.Import'] then
-            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The upload session is missing, closed or incomplete.', 'Begin a new session or complete the missing chunks.'));
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The upload session is no longer open (already committed or aborted).', 'Begin a new session and send the file again.'));
+        if MessageType in ['Storage.Upload.Commit', 'Storage.Upload.CommitToRecord', 'Storage.Upload.CommitToDataExchange', 'DataExchange.Definition.Import'] then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The session has no chunks, its sequence numbers are not contiguous, or the received size differs from declaredSize.', 'Call Storage.Upload.Status, append the missing or wrong chunks, then commit again.'));
         if MessageType in ['DataExchange.Definition.Get'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The definition code does not exist.', 'Use DataExchange.Definition.List first.'));
         if MessageType in ['DataExchange.Entry.Get'] then
@@ -1054,6 +1195,45 @@ codeunit 10035183 "Storage Contract Parts ori"
                 Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, DataExchangeFailureLbl, DataExchangeFailureFixLbl))
             else
                 Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, 'The storage connector rejects or cannot complete the operation.', 'Check the path, connection and connector error details.'));
+    end;
+
+    local procedure AddAttachmentErrors(MessageType: Text; var Errors: JsonArray)
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+    begin
+        case MessageType of
+            'Storage.Attachment.Offload':
+                begin
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'No attachment with that systemId exists in the target table.', 'Check target and systemId. target is IncomingDocument or DocumentAttachment.'));
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The attachment is already offloaded, has no content to move, or the destination file already backs another attachment.', 'Restore it with Storage.Attachment.Restore first, add content to it in Business Central, or choose another folderPath.'));
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PermissionDenied, 'The caller cannot write the attachment link table.', 'Ask an administrator for the BIFROST Attach ori permission set.'));
+                end;
+            'Storage.Attachment.Restore':
+                begin
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'No attachment with that systemId exists in the target table.', 'Check target and systemId. target is IncomingDocument or DocumentAttachment.'));
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The attachment is not offloaded, so there is nothing to restore.', 'Read the Offloaded ori field of the attachment to find the offloaded ones.'));
+                end;
+            'Storage.Attachment.CreateLinked':
+                begin
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The incomingDocumentEntryNo or the dataExchangeType does not exist.', 'Omit incomingDocumentEntryNo to create a new Incoming Document, or send an existing number or Data Exchange Type code.'));
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The storage file already backs another attachment.', 'Copy the file with Storage.File.Copy and link the copy.'));
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PermissionDenied, 'The caller cannot write Incoming Document.', 'Ask an administrator for permission on Incoming Document.'));
+                end;
+            'Storage.Attachment.CreateForRecord':
+                begin
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The host record, its table, the source attachment or the stored file was not found.', 'Check tableId or tableName with recordSystemId or no, sourceSystemId, or path.'));
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The source attachment has no content, the stored file already backs another attachment, or the table has no attachment key.', 'Choose a source that holds content, copy the stored file first, or attach to a table that supports attachments.'));
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PermissionDenied, 'The caller cannot read the host table or write Document Attachment.', 'Ask an administrator for permission on the tables named in the error.'));
+                end;
+            'Storage.Upload.CommitToRecord':
+                begin
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The host record, its table, the incomingDocumentEntryNo or the dataExchangeType was not found.', 'Check the identifiers sent for the target.'));
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The table of the host record has no attachment key.', 'Attach to a table that supports attachments.'));
+                    Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PermissionDenied, 'The caller cannot read the host table or write Document Attachment or Incoming Document.', 'Ask an administrator for permission on the tables named in the error.'));
+                end;
+            'Storage.File.Move':
+                Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PermissionDenied, 'The caller cannot update the links of the attachments that the file backs.', 'Ask an administrator for read and write permission on those attachments.'));
+        end;
     end;
 
     local procedure UsesStorageCode(MessageType: Text): Boolean
@@ -1166,6 +1346,11 @@ codeunit 10035183 "Storage Contract Parts ori"
                 begin
                     Related.Add(ContractMgt.RelatedEntry('Storage.File.Exists', 'Check whether a file exists without downloading it.'));
                     Related.Add(ContractMgt.RelatedEntry('Storage.File.Create', 'Upload a file instead of downloading it.'));
+                end;
+            'Storage.File.Exists':
+                begin
+                    Related.Add(ContractMgt.RelatedEntry('Storage.File.Get', 'Download the file once you know it exists.'));
+                    Related.Add(ContractMgt.RelatedEntry('Storage.Directory.Exists', 'Check a directory instead of a file.'));
                 end;
             'Storage.File.Create':
                 Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Begin', 'Upload a file larger than the single-call limit.'));

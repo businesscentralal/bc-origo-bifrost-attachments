@@ -8,13 +8,24 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-### Fixed
+### Fixed (2026-10-21) - Pipeline: AppSource build gate after the first AppSource release
 
-- Prepare the actual AL-Go precompile cache by removing only the compiling app identity left by previous builds, before the unchanged AppSource input gate. Preserve dependencies and move the exact upgrade baseline plus dependencies to a separate AppSourceCop baseline cache, retaining version/breaking-change checks; regressions cover product/test separation, baseline availability and fail-closed validation (#160).
+- Pipeline: the AppSource build gate no longer fails after the first AppSource release (previous self-app removed from the compile symbol cache; AppSourceCop baseline kept). New `tools/prune_self_symbols.py`, called from `tools/Assert-AppSourceBuild.ps1` before the gate; regression tests in `tools/tests/test_foundation_restore.py`. Port of attachments#174.
+### Changed (2026-10-21) - AppSource delivery
+
+- `.AL-Go/settings.json`: `deliverToAppSource` names the Partner Center offer for Bifrost Attachments (productId ae26bc25-7547-42ec-a1b7-c55e3b830569, main app folder `app`, branch main, no continuous delivery), so the Publish To AppSource workflow can deliver new versions to the offer.
 
 ### Changed
 
 - Align the Attachments app and test app versions at `28.3.0.0`, including the test app dependency on Attachments.
+
+### Changed (2026-10-21) - message type contract and discovery at Foundation parity
+
+- New `Storage Contract Guide ori` (codeunit 10035199, internal): the Target, Workflow and Notes chapters and one successful request/answer pair per type. All 39 message type implementations (codeunits 10035150-10035166, 10035168-10035190) now declare Workflow and Notes, Target wherever a type acts on an existing path, upload session, attachment, definition or entry, and a successful example. Metering stays undeclared, as in Foundation.
+- `Storage Contract Parts ori` (10035183): the response chapter now matches what the code answers. Storage.File.Copy and Storage.File.Move answer `sourcePath` and `targetPath` (not `path`); Storage.File.Create also answers `contentLength`; Storage.Upload.Append also answers `chunkCount`; Storage.Attachment.Offload and Storage.Attachment.CreateLinked answer `storageCode` (CreateLinked also `incomingDocumentEntryNo`, `lineNo` and `path`); CreateForRecord and CommitToRecord list every key of both attachment targets; Entry.Process lists `mappingLineDef`; Definition.Get and Entry.Get list the definition and entry header keys; both help types list `format`. Object and list fields (`accounts`, `entries`, `definitions`, `types`, `lineDefs`, `columnDefs`, `mappings`, `fields`, `targets`, `warnings`, `processErrors`, `createdDocument`, `processResult`) describe their members as `children`.
+- `Storage Contract Parts ori`: parameters state their defaults (`overwrite`, `process`, `keepFileInStorage`, `includeFileContent`, `inline` false; `includeFields` true; `skip` 0; `take` 100; `target` DocumentAttachment for CommitToRecord) and allowed values (`target`, `sourceTarget`, `direction`). Errors now list the answers the code gives for a missing upload session (RecordNotFound, separate from the closed or incomplete session), for attachments that are missing, already offloaded or not offloaded, for host records, Incoming Documents and Data Exchange Types that are not found, and for missing table permissions. Storage.File.Exists names related types.
+- Overview text corrected: Storage.Attachment.CreateForRecord creates only a DocumentAttachment (`sourceTarget` names the source, never the destination), and Storage.Upload.CommitToRecord has no `keepFile` option and writes nothing to external storage.
+- New test codeunit 96265 `Storage Contract Tests ori`: every type must declare every required chapter, errors must carry a known code, a condition and a next step, direction must match effect, response fields and members must be described, every successful example must use declared response fields, workflow steps and related types must exist, and description, selection description and keywords must exist in English and Icelandic.
 
 ### Fixed (2026-10-20) - main red after consolidating #159/#160/#166/#167
 
