@@ -1,0 +1,213 @@
+{
+  "version": "0.2",
+  "toolInfo": {
+    "toolName": "Microsoft (R) AL Compiler",
+    "productVersion": "17.0.34",
+    "fileVersion": "17.0.34"
+  },
+  "issues": [
+    {
+      "ruleId": "AA0477",
+      "locations": [
+        {
+          "analysisTarget": [
+            {
+              "uri": "/workspace/evidence/attachments23-worker7/amendment-exact-tip/test/src/DataExchFixture.Codeunit.al",
+              "region": {
+                "startLine": 8,
+                "startColumn": 1,
+                "endLine": 8,
+                "endColumn": 38
+              }
+            }
+          ]
+        }
+      ],
+      "shortMessage": "The using statements are not in a sorted order.",
+      "fullMessage": "Using statements are not ordered alphabetically.",
+      "properties": {
+        "severity": "Info",
+        "defaultSeverity": "Info",
+        "title": "Unordered using statements",
+        "category": "Readability",
+        "helpLink": "https://learn.microsoft.com/dynamics365/business-central/dev-itpro/developer/analyzers/codecop-aa0477?wt.mc_id=d365bc_inproduct_alextension",
+        "isEnabledByDefault": "True",
+        "isSuppressedInSource": "False"
+      }
+    },
+    {
+      "ruleId": "AA0477",
+      "locations": [
+        {
+          "analysisTarget": [
+            {
+              "uri": "/workspace/evidence/attachments23-worker7/amendment-exact-tip/test/test/DataExchPhase2Testsori.Codeunit.al",
+              "region": {
+                "startLine": 5,
+                "startColumn": 1,
+                "endLine": 5,
+                "endColumn": 34
+              }
+            }
+          ]
+        }
+      ],
+      "shortMessage": "The using statements are not in a sorted order.",
+      "fullMessage": "Using statements are not ordered alphabetically.",
+      "properties": {
+        "severity": "Info",
+        "defaultSeverity": "Info",
+        "title": "Unordered using statements",
+        "category": "Readability",
+        "helpLink": "https://learn.microsoft.com/dynamics365/business-central/dev-itpro/developer/analyzers/codecop-aa0477?wt.mc_id=d365bc_inproduct_alextension",
+        "isEnabledByDefault": "True",
+        "isSuppressedInSource": "False"
+      }
+    },
+    {
+      "ruleId": "AA0477",
+      "locations": [
+        {
+          "analysisTarget": [
+            {
+              "uri": "/workspace/evidence/attachments23-worker7/amendment-exact-tip/test/test/DataExchRefusal82Testsori.Codeunit.al",
+              "region": {
+                "startLine": 8,
+                "startColumn": 1,
+                "endLine": 8,
+                "endColumn": 38
+              }
+            }
+          ]
+        }
+      ],
+      "shortMessage": "The using statements are not in a sorted order.",
+      "fullMessage": "Using statements are not ordered alphabetically.",
+      "properties": {
+        "severity": "Info",
+        "defaultSeverity": "Info",
+        "title": "Unordered using statements",
+        "category": "Readability",
+        "helpLink": "https://learn.microsoft.com/dynamics365/business-central/dev-itpro/developer/analyzers/codecop-aa0477?wt.mc_id=d365bc_inproduct_alextension",
+        "isEnabledByDefault": "True",
+        "isSuppressedInSource": "False"
+      }
+    },
+    {
+      "ruleId": "AA0210",
+      "locations": [
+        {
+          "analysisTarget": [
+            {
+              "uri": "/workspace/evidence/attachments23-worker7/amendment-exact-tip/test/test/DataExchImportTests.Codeunit.al",
+              "region": {
+                "startLine": 109,
+                "startColumn": 9,
+                "endLine": 109,
+                "endColumn": 36
+              }
+            }
+          ]
+        }
+      ],
+      "shortMessage": "The table DataExch Test Target ori does not contain a key with the field Code.",
+      "fullMessage": "Suboptimal index.",
+      "properties": {
+        "severity": "Info",
+        "defaultSeverity": "Info",
+        "title": "Avoid non-indexed fields into filtering.",
+        "category": "Design",
+        "helpLink": "https://learn.microsoft.com/dynamics365/business-central/dev-itpro/developer/analyzers/codecop-aa0210?wt.mc_id=d365bc_inproduct_alextension",
+        "isEnabledByDefault": "True",
+        "isSuppressedInSource": "False"
+      }
+    },
+    {
+      "ruleId": "AA0210",
+      "locations": [
+        {
+          "analysisTarget": [
+            {
+              "uri": "/workspace/evidence/attachments23-worker7/amendment-exact-tip/test/test/DataExchPhase2Testsori.Codeunit.al",
+              "region": {
+                "startLine": 334,
+                "startColumn": 9,
+                "endLine": 334,
+                "endColumn": 36
+              }
+            }
+          ]
+        }
+      ],
+      "shortMessage": "The table DataExch Test Target ori does not contain a key with the field Code.",
+      "fullMessage": "Suboptimal index.",
+      "properties": {
+        "severity": "Info",
+        "defaultSeverity": "Info",
+        "title": "Avoid non-indexed fields into filtering.",
+        "category": "Design",
+        "helpLink": "https://learn.microsoft.com/dynamics365/business-central/dev-itpro/developer/analyzers/codecop-aa0210?wt.mc_id=d365bc_inproduct_alextension",
+        "isEnabledByDefault": "True",
+        "isSuppressedInSource": "False"
+      }
+    },
+    {
+      "ruleId": "AA0210",
+      "locations": [
+        {
+          "analysisTarget": [
+            {
+              "uri": "/workspace/evidence/attachments23-worker7/amendment-exact-tip/test/test/Storage79PermTests.Codeunit.al",
+              "region": {
+                "startLine": 1252,
+                "startColumn": 9,
+                "endLine": 1252,
+                "endColumn": 63
+              }
+            }
+          ]
+        }
+      ],
+      "shortMessage": "The table Document Attachment does not contain a key with the field File Name.",
+      "fullMessage": "Suboptimal index.",
+      "properties": {
+        "severity": "Info",
+        "defaultSeverity": "Info",
+        "title": "Avoid non-indexed fields into filtering.",
+        "category": "Design",
+        "helpLink": "https://learn.microsoft.com/dynamics365/business-central/dev-itpro/developer/analyzers/codecop-aa0210?wt.mc_id=d365bc_inproduct_alextension",
+        "isEnabledByDefault": "True",
+        "isSuppressedInSource": "False"
+      }
+    },
+    {
+      "ruleId": "AA0210",
+      "locations": [
+        {
+          "analysisTarget": [
+            {
+              "uri": "/workspace/evidence/attachments23-worker7/amendment-exact-tip/test/test/Storage79PermTests.Codeunit.al",
+              "region": {
+                "startLine": 1278,
+                "startColumn": 9,
+                "endLine": 1278,
+                "endColumn": 59
+              }
+            }
+          ]
+        }
+      ],
+      "shortMessage": "The table Document Attachment does not contain a key with the field File Name.",
+      "fullMessage": "Suboptimal index.",
+      "properties": {
+        "severity": "Info",
+        "defaultSeverity": "Info",
+        "title": "Avoid non-indexed fields into filtering.",
+        "category": "Design",
+        "helpLink": "https://learn.microsoft.com/dynamics365/business-central/dev-itpro/developer/analyzers/codecop-aa0210?wt.mc_id=d365bc_inproduct_alextension",
+        "isEnabledByDefault": "True",
+        "isSuppressedInSource": "False"
+      }
+    }
+  ]
+}

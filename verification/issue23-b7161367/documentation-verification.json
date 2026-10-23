@@ -1,0 +1,49 @@
+{
+  "sha": "b716136745b2967f2d69d04c7cddefc3a2b8988d",
+  "verified": true,
+  "checks": [
+    "Introduced duplicate heading removed; entry under existing top Unreleased after intro",
+    "Dated Fixed/Changed entries",
+    "Seven object type/ID/name pairs checked against declarations",
+    "Fixture enum value and doc path listed",
+    "Caller-visible SystemId behavior described",
+    "All prior dated history preserved",
+    "Only CHANGELOG.md changed"
+  ],
+  "widerFinding": "Four pre-existing historical Unreleased headings retained unchanged; scope only removes PR179 introduced duplicate. Initial whole-file count assertion failed on inherited historical headings, then scoped to amended top section.",
+  "appliedLessonIds": [
+    "attachments103-5ce9f7e-changelog-section-placement",
+    "attachments118-review5515608159-worker7-changelog-ids"
+  ],
+  "standardsSnapshot": {
+    "commit": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
+    "capturedAt": "2026-10-03T16:02:22.475Z",
+    "source": "OrigoSoftwareSolutions/bc-dev-standards",
+    "files": [
+      "roles/bindings/bifrost.yaml",
+      "roles/grok-bifrost-coder-gunnar.yaml",
+      "roles/prompts/grok-bifrost-coder-gunnar.md",
+      "skills/origo-bc-al-coding-standards/SKILL.md",
+      "skills/origo-bc-al-coding-standards/references/anti-patterns.md",
+      "skills/origo-bc-al-coding-standards/references/api-design-patterns.md",
+      "skills/origo-bc-al-coding-standards/references/code-patterns.md",
+      "skills/origo-bc-al-coding-standards/references/icelandic-translation-pattern.md",
+      "skills/origo-bc-al-coding-standards/references/naming-conventions.md",
+      "skills/origo-bc-al-coding-standards/references/object-id-ranges.md",
+      "skills/origo-bc-al-coding-standards/references/permission-architecture.md",
+      "skills/origo-bc-al-coding-standards/references/review-dimensions.md",
+      "skills/origo-bc-al-coding-standards/references/security-patterns.md",
+      "skills/origo-bc-al-coding-standards/references/sift-optimization.md",
+      "skills/origo-bc-al-coding-standards/references/telemetry-patterns.md",
+      "skills/origo-bc-al-coding-standards/references/translation-not-copypaste.md",
+      "skills/origo-bc-documentation-writer/SKILL.md",
+      "skills/origo-bc-documentation-writer/references/changelog-example.md",
+      "skills/origo-bc-documentation-writer/references/html-help-pages.md",
+      "skills/origo-bc-documentation-writer/references/message-type-doc-template.md",
+      "skills/origo-bc-extension-scaffold/SKILL.md",
+      "skills/origo-bc-extension-scaffold/references/layered-customer-solution.md",
+      "skills/origo-bc-test-writer/SKILL.md"
+    ]
+  },
+  "freshStandardsSyncClaimed": false
+}

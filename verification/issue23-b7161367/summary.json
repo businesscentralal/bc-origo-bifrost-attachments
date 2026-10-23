@@ -1,0 +1,48 @@
+{
+  "sha": "b716136745b2967f2d69d04c7cddefc3a2b8988d",
+  "dirty": false,
+  "at": "2026-10-23T15:02:48.163557+00:00",
+  "foundationPath": "/workspace/evidence/attachments23-worker7/foundation.app",
+  "foundationSha256": "b95e0eccf7a4038531cea08f0441e757ac176c7c4ff06b1b8eb9d25ac0dd3a88",
+  "projects": {
+    "app": {
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "packageSha256": "d16524612e06a4d2217da0e019a67dd53119d35d844921fee6cb0627c837ab9c",
+      "args": [
+        "/workspace/tools/dotnet/dotnet",
+        "/workspace/evidence/attachments71-worker7/compiler17/extension/bin/linux/alc.dll",
+        "/project:/workspace/evidence/attachments23-worker7/amendment-exact-tip/app",
+        "/packagecachepath:/workspace/evidence/attachments23-worker7/amendment-exact-tip/symbols",
+        "/out:/workspace/evidence/attachments23-worker7/amendment-exact-tip/app.app",
+        "/SourceCommit:b716136745b2967f2d69d04c7cddefc3a2b8988d",
+        "/SourceRepositoryUrl:https://github.com/businesscentralal/bc-origo-bifrost-attachments",
+        "/errorlog:/workspace/evidence/attachments23-worker7/amendment-exact-tip/app-diagnostics.json",
+        "/analyzer:/workspace/evidence/attachments71-worker7/compiler17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.CodeCop.dll,/workspace/evidence/attachments71-worker7/compiler17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.UICop.dll,/workspace/evidence/attachments71-worker7/compiler17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.AppSourceCop.dll"
+      ]
+    },
+    "test": {
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "packageSha256": "e8b47ef94a9117de66f1683a22231cd81d474822c645b56f1713c48714d7c392",
+      "args": [
+        "/workspace/tools/dotnet/dotnet",
+        "/workspace/evidence/attachments71-worker7/compiler17/extension/bin/linux/alc.dll",
+        "/project:/workspace/evidence/attachments23-worker7/amendment-exact-tip/test",
+        "/packagecachepath:/workspace/evidence/attachments23-worker7/amendment-exact-tip/symbols",
+        "/out:/workspace/evidence/attachments23-worker7/amendment-exact-tip/test.app",
+        "/SourceCommit:b716136745b2967f2d69d04c7cddefc3a2b8988d",
+        "/SourceRepositoryUrl:https://github.com/businesscentralal/bc-origo-bifrost-attachments",
+        "/errorlog:/workspace/evidence/attachments23-worker7/amendment-exact-tip/test-diagnostics.json",
+        "/analyzer:/workspace/evidence/attachments71-worker7/compiler17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.CodeCop.dll,/workspace/evidence/attachments71-worker7/compiler17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.UICop.dll,/workspace/evidence/attachments71-worker7/compiler17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.AppSourceCop.dll"
+      ]
+    }
+  },
+  "releasedCompatibilityBaseline": {
+    "version": "28.3.0.122",
+    "sha256": "90f47ac7c6eff07ad9931f02781f6410b6cd0a29852a7d9edce4f1b8a25b4aea",
+    "releaseUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/releases/tag/28.3.0"
+  }
+}
