@@ -1,6 +1,8 @@
 namespace Origo.Bifrost.Attachments.Test;
 
 using Microsoft.EServices.EDocument;
+using Microsoft.Finance.GeneralLedger.Setup;
+using Microsoft.Finance.VAT.Setup;
 using Microsoft.Purchases.Document;
 using Microsoft.Purchases.Vendor;
 using Origo.Bifrost;
@@ -357,6 +359,9 @@ codeunit 96237 "DataExch Phase2 Tests ori"
     local procedure AssertPurchaseInvoiceProcessing(LanguageId: Integer)
     var
         Vendor: Record Vendor;
+        GeneralBusinessGroup: Record "Gen. Business Posting Group";
+        VendorPostingGroup: Record "Vendor Posting Group";
+        VatBusinessGroup: Record "VAT Business Posting Group";
         PurchaseHeader: Record "Purchase Header";
         IncomingDocument: Record "Incoming Document";
         ExchangeType: Record "Data Exchange Type";
@@ -379,9 +384,18 @@ codeunit 96237 "DataExch Phase2 Tests ori"
     begin
         // [GIVEN] Self-created vendor and a standard CSV-to-purchase-header intermediate mapping.
         Initialize();
+        GeneralBusinessGroup.Code := NewFixtureCode();
+        GeneralBusinessGroup.Insert();
+        VendorPostingGroup.Code := NewFixtureCode();
+        VendorPostingGroup.Insert();
+        VatBusinessGroup.Code := NewFixtureCode();
+        VatBusinessGroup.Insert();
         Vendor.Init();
         Vendor."No." := NewFixtureCode();
         Vendor.Name := 'BIFT-P2 owned invoice vendor';
+        Vendor."Gen. Bus. Posting Group" := GeneralBusinessGroup.Code;
+        Vendor."Vendor Posting Group" := VendorPostingGroup.Code;
+        Vendor."VAT Bus. Posting Group" := VatBusinessGroup.Code;
         Vendor.Insert(true);
         DefinitionCode := Fixture.CreateImportDefinition(0);
         ColumnDefinition.Get(DefinitionCode, 'LINES', 3);
@@ -427,7 +441,8 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Creation remains Success.');
         EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
         IncomingDocument.Get(EntryNo);
-        LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'processed'), 'Standard mapping must create the purchase invoice. ' + Format(TempArgument.GetResponseJson()));
+        DataObject := ReadData(TempArgument.GetResponseJson());
+        LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'processed'), 'Standard mapping must create the purchase invoice. ' + Format(DataObject.GetArray('processErrors')));
         DataObject := ReadData(TempArgument.GetResponseJson());
         LibraryAssert.IsTrue(DataObject.Get('createdDocument', Token), 'Return the created invoice.');
         CreatedDocument := Token.AsObject();

@@ -4,7 +4,7 @@
 
 ## Unreleased
 
-- Fix #23: feed Bifröst-linked incoming-document attachment content into the base data-exchange source hook without restoring the BLOB or changing the remote file (codeunit 10035137). Add bilingual linked/local CSV reader and mapping and purchase-invoice regressions (codeunit 96237). Return the created target record’s SystemId instead of the incoming-document SystemId (codeunit 10035135). The test app adds isolated persistent MCP fixture storage (96250) without external accounts or licensing interception.
+- Fix #23: feed Bifröst-linked incoming-document attachment content into the base data-exchange source hook without restoring the BLOB or changing the remote file (codeunit 10035137). Add bilingual linked/local CSV reader, mapping and purchase-invoice regressions (codeunit 96237). Return the created target record’s SystemId instead of the incoming-document SystemId (codeunit 10035136). The test app adds isolated persistent MCP fixture storage (96250) without external accounts or licensing interception.
 
 All notable changes to Bifrost Attachments are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
