@@ -68,6 +68,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed
 
+- Refresh six recorded refusal answers in help codeunit 10035183 after the merged validation changes: Upload.Begin, Attachment.CreateLinked, DataExchange.Export.Run, Import.Run and PaymentExport.Run (#160).
 - README documentation and context-sensitive help addresses now use `https://docs.bifrost.origo.is`, matching `app.json` (#160).
 
 ### Fixed (2026-10-20) - Icelandic discovery and upload refusals (#157)
