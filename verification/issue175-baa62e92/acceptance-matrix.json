@@ -176,16 +176,63 @@
     "runtime": "Owned Docker DisableWriteInsideTryFunctions=false; no SaaS or licensing proof",
     "incomplete": [
       "Independent Claude current-head verification/findings resolution",
-      "Hosted current-head CI Test/cleanup final result (in progress)",
       "Grok current-head clearance",
       "Eligible non-author approval",
       "Architect merge and same-SHA deployment",
       "Tester UAT and actual issue acceptance",
       "Secretary actual session ACK"
-    ]
+    ],
+    "hostedCi": {
+      "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+      "mergeRefSha": "1dce88dff2dcccc0e08e1cb6cf246a02456e5b8a",
+      "treeSha": "8ae720dd8d8dff73a29cbda6dc7aab56205ae05b",
+      "candidateSourceTreeMatches": true,
+      "runUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39989973084",
+      "runAttempt": 1,
+      "result": "success",
+      "appVersion": "28.3.2147483647.378",
+      "defaultJobUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39989973084/job/120539421440",
+      "testJobUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39989973084/job/120543722581",
+      "cleanupJobUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39989973084/job/120548947681",
+      "tests": {
+        "executed": 465,
+        "passed": 465,
+        "failed": 0,
+        "skipped": 0
+      },
+      "compilerErrors": 0,
+      "compilerWarnings": 0,
+      "testProductRepublished": true,
+      "testOnlySkipUpgrade": true,
+      "containerId": "f064ad423619",
+      "cleanup": {
+        "jobResult": "success",
+        "actualLog": "Deleted 1 of 1 containers",
+        "absenceReadback": [
+          {
+            "containerId": "f064ad423619",
+            "status": 404,
+            "absent": true,
+            "at": "2026-10-23T17:13:07.596Z"
+          },
+          {
+            "containerId": "f005fd56b922",
+            "status": 404,
+            "absent": true,
+            "at": "2026-10-23T17:13:07.786Z"
+          }
+        ]
+      },
+      "widerFindings": [
+        "Existing unsigned PR Default; no signed shipping proof",
+        "Release-tag/package-lookup workflow warnings distinct from compiler diagnostics",
+        "Optional/deferred jobs skipped; native465passed0failed0skipped"
+      ],
+      "at": "2026-10-23T17:13:07.998630+00:00"
+    }
   },
   "issueComplete": false,
   "fixesClosureMarkupUsed": false,
-  "at": "2026-10-23T17:09:20.474191+00:00",
+  "at": "2026-10-23T17:13:41.685118+00:00",
   "decisionReconciledAt": "2026-10-23T16:16:15.327290+00:00"
 }

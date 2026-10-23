@@ -1,0 +1,35 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "node_id": "C_kwDOUPMQ7NoAKGJhYTYyZTkyM2RmM2Q1MjhkYWQ2MWM0YmI3MjgzNzNmMzk5MWE1MjI",
+  "url": "https://api.github.com/repos/businesscentralal/bc-origo-bifrost-attachments/git/commits/baa62e923df3d528dad61c4bb728373f3991a522",
+  "html_url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/baa62e923df3d528dad61c4bb728373f3991a522",
+  "author": {
+    "name": "Gunnars Codex Developer[bot]",
+    "email": "337391362+gunnars-codex-developer[bot]@users.noreply.github.com",
+    "date": "2026-10-23T16:47:53Z"
+  },
+  "committer": {
+    "name": "Gunnars Codex Developer[bot]",
+    "email": "337391362+gunnars-codex-developer[bot]@users.noreply.github.com",
+    "date": "2026-10-23T16:47:53Z"
+  },
+  "tree": {
+    "sha": "8ae720dd8d8dff73a29cbda6dc7aab56205ae05b",
+    "url": "https://api.github.com/repos/businesscentralal/bc-origo-bifrost-attachments/git/trees/8ae720dd8d8dff73a29cbda6dc7aab56205ae05b"
+  },
+  "message": "chore: refresh source inventory for F1 integration",
+  "parents": [
+    {
+      "sha": "ac32ed49efc5ad05dd7e5d1fe073623ed857f297",
+      "url": "https://api.github.com/repos/businesscentralal/bc-origo-bifrost-attachments/git/commits/ac32ed49efc5ad05dd7e5d1fe073623ed857f297",
+      "html_url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/ac32ed49efc5ad05dd7e5d1fe073623ed857f297"
+    }
+  ],
+  "verification": {
+    "verified": false,
+    "reason": "unsigned",
+    "signature": null,
+    "payload": null,
+    "verified_at": null
+  }
+}

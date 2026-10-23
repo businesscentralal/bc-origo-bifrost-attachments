@@ -1,0 +1,40 @@
+{
+  "sha": "1dce88dff2dcccc0e08e1cb6cf246a02456e5b8a",
+  "node_id": "C_kwDOUPMQ7NoAKDFkY2U4OGRmZjJkY2NjYzBlMDhlMWNiNmNmMjQ2YTAyNDU2ZTViOGE",
+  "url": "https://api.github.com/repos/businesscentralal/bc-origo-bifrost-attachments/git/commits/1dce88dff2dcccc0e08e1cb6cf246a02456e5b8a",
+  "html_url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/1dce88dff2dcccc0e08e1cb6cf246a02456e5b8a",
+  "author": {
+    "name": "gunnars-codex-developer[bot]",
+    "email": "337391362+gunnars-codex-developer[bot]@users.noreply.github.com",
+    "date": "2026-10-23T16:49:29Z"
+  },
+  "committer": {
+    "name": "GitHub",
+    "email": "noreply@github.com",
+    "date": "2026-10-23T16:49:29Z"
+  },
+  "tree": {
+    "sha": "8ae720dd8d8dff73a29cbda6dc7aab56205ae05b",
+    "url": "https://api.github.com/repos/businesscentralal/bc-origo-bifrost-attachments/git/trees/8ae720dd8d8dff73a29cbda6dc7aab56205ae05b"
+  },
+  "message": "Merge baa62e923df3d528dad61c4bb728373f3991a522 into 076e26fb1865ab4a79a436d57dc8321781d1c79c",
+  "parents": [
+    {
+      "sha": "076e26fb1865ab4a79a436d57dc8321781d1c79c",
+      "url": "https://api.github.com/repos/businesscentralal/bc-origo-bifrost-attachments/git/commits/076e26fb1865ab4a79a436d57dc8321781d1c79c",
+      "html_url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/076e26fb1865ab4a79a436d57dc8321781d1c79c"
+    },
+    {
+      "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+      "url": "https://api.github.com/repos/businesscentralal/bc-origo-bifrost-attachments/git/commits/baa62e923df3d528dad61c4bb728373f3991a522",
+      "html_url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/baa62e923df3d528dad61c4bb728373f3991a522"
+    }
+  ],
+  "verification": {
+    "verified": true,
+    "reason": "valid",
+    "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJq25AZCRC1aQ7uu5UhlAAACP0QAFV8aOOON1uEsMgcMLML2YhF\nC9D17+sL76/ip/UPjF1U6Qd4Ew38KQSN2m1J8umYt9UIzcgi2UanMqz5A2B9UvVk\nee57SMiClPWvfsV0telxjB/8MFU9D/DwWd+B6Sr7ICrl75wpkuN7A1ssTyH1rw9Y\n7ZGN1DQLiDCu9FJ7y6QKcGPHoPv5dwSOae+SO4x9gvmjD3w5591uI5zUjaaku89q\nghxECeKKlTjyrFxT0S0PJALX2uUjznmtnHQIiudRjadfLt+T1N8G2+9arJxkeyUq\nOKfT4qSuFNzZB4tD9LlTAN7d6Naz28B15VNd4z3nmMoR8Ri7y+mvAcgMnN/NiAg2\n+9JP7ck/aA5540SLpzkLbcH1NS+2v/rXQQSfIH3iLXOrTUEfThh8GtyIsUxr8ref\n+SbvVPEjK0GG2Ap3Dai+fOlAlqaT2WE+41rhyqY49GXhaqR6t60bpCwjaLYmEzMu\ntjnkK8sl9axqHIRW5MHa0foh2oO+hITagxbetcI6Sx3OXvmQsSCIKiNY1yQ51ZzK\nRiXeOoZM8xUab2C2f/9BjE3gfRC2MF4GgamEIicKhJYnrGxO29Zd7PH6wBeeHmBs\ndAgKi+u8s9fA3hUE48N0mCuSXrufLJERpUmqlf8xFr1z41a5/x67jtjM+OuoBLk+\nHgsd0NAF147TLH3uq9bX\n=t9tR\n-----END PGP SIGNATURE-----\n",
+    "payload": "tree 8ae720dd8d8dff73a29cbda6dc7aab56205ae05b\nparent 076e26fb1865ab4a79a436d57dc8321781d1c79c\nparent baa62e923df3d528dad61c4bb728373f3991a522\nauthor gunnars-codex-developer[bot] <337391362+gunnars-codex-developer[bot]@users.noreply.github.com> 1792774169 +0000\ncommitter GitHub <noreply@github.com> 1792774169 +0000\n\nMerge baa62e923df3d528dad61c4bb728373f3991a522 into 076e26fb1865ab4a79a436d57dc8321781d1c79c\n",
+    "verified_at": "2026-10-23T16:49:30Z"
+  }
+}
