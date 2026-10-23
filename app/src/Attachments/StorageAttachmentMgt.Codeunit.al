@@ -69,6 +69,12 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         TableExpectedLbl: Label 'tableId or tableName', Comment = 'is-IS=tableId eða tableName';
         RecordRequiredErr: Label 'Send recordSystemId or no to say which record the attachment belongs to.', Comment = 'is-IS=Sendu recordSystemId eða no til að segja hvaða færslu viðhengið tilheyrir.';
         RecordExpectedLbl: Label 'recordSystemId or no', Comment = 'is-IS=recordSystemId eða no';
+        TableNextStepLbl: Label 'Send tableId or tableName, then retry the request.', Comment = 'is-IS=Sendu tableId eða tableName og reyndu beiðnina aftur.';
+        RecordNextStepLbl: Label 'Send recordSystemId or no for the record that will receive the attachment.', Comment = 'is-IS=Sendu recordSystemId eða no fyrir færsluna sem á að fá viðhengið.';
+        SourceNextStepLbl: Label 'Choose one source: contentBase64 (or content), storageCode with path, or sourceTarget with sourceSystemId.', Comment = 'is-IS=Veldu eina uppsprettu: contentBase64 (eða content), storageCode með path eða sourceTarget með sourceSystemId.';
+        InlineNextStepLbl: Label 'Send contentBase64 or content and remove the other key.', Comment = 'is-IS=Sendu contentBase64 eða content og fjarlægðu hinn lykilinn.';
+        TargetNextStepLbl: Label 'Send DocumentAttachment or IncomingDocument as the attachment target.', Comment = 'is-IS=Sendu DocumentAttachment eða IncomingDocument sem áfangastað viðhengis.';
+        MissingValueLbl: Label '(missing)', Comment = 'is-IS=(vantar)';
         CompositeKeyErr: Label 'Table %1 has a composite primary key, so it cannot be addressed with "no".', Comment = '%1 = table id, is-IS=Tafla %1 hefur samsettan aðallykil og því er ekki hægt að vísa í hana með "no".';
         NonCodeKeyErr: Label 'The primary key of table %1 is not a code or text field, so it cannot be addressed with "no".', Comment = '%1 = table id, is-IS=Aðallykill töflu %1 er hvorki kóða- né textareitur og því er ekki hægt að vísa í hana með "no".';
         UseRecordSystemIdLbl: Label 'Send recordSystemId instead.', Comment = 'is-IS=Sendu recordSystemId í staðinn.';
@@ -276,8 +282,8 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         RequestMgt.ReadSetup(Argument, RequestJson, StorageSetup, Connector);
         Reader.ReadPath(Argument, RequestJson, 'path', true, StoragePath);
         Reader.CheckStoragePath(Argument, StorageSetup, 'path', StoragePath, false);
-        Reader.ReadText(Argument, RequestJson, 'fileName', true, FileName);
-        CheckAttachmentFileName(Argument, FileName);
+        if Reader.ReadText(Argument, RequestJson, 'fileName', true, FileName) then
+            CheckAttachmentFileName(Argument, FileName);
         Reader.ReadText(Argument, RequestJson, 'description', false, Description);
         Reader.ReadNonNegativeInteger(Argument, RequestJson, 'incomingDocumentEntryNo', false, EntryNo);
         ReadDataExchangeRequest(Argument, RequestJson, DataExchangeTypeCode, Process, VendorNo);
@@ -711,7 +717,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
             IncomingDocumentTok:
                 Target := Target::IncomingDocument;
             else begin
-                Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(UnknownTargetErr, ParameterName, TargetText), ParameterName, TargetText, TargetExpectedLbl, '');
+                Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(UnknownTargetErr, ParameterName, TargetText), ParameterName, TargetText, TargetExpectedLbl, TargetNextStepLbl);
                 exit(false);
             end;
         end;
@@ -758,7 +764,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
 
         Reader.ReadText(Argument, RequestJson, 'no', false, NoText);
         if NoText = '' then begin
-            Argument.AddError("Bifrost Error Code ori"::MissingParameter, RecordRequiredErr, 'no', '', RecordExpectedLbl, '');
+            Argument.AddError("Bifrost Error Code ori"::MissingParameter, RecordRequiredErr, 'no', MissingValueLbl, RecordExpectedLbl, RecordNextStepLbl);
             exit(false);
         end;
         // Document Attachment's own key is a Code[20], so a longer identifier can never be stored.
@@ -804,7 +810,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         TableParameter := 'tableName';
         Reader.ReadText(Argument, RequestJson, 'tableName', false, TableName);
         if TableName = '' then begin
-            Argument.AddError("Bifrost Error Code ori"::MissingParameter, TableRequiredErr, 'tableId', '', TableExpectedLbl, '');
+            Argument.AddError("Bifrost Error Code ori"::MissingParameter, TableRequiredErr, 'tableId', MissingValueLbl, TableExpectedLbl, TableNextStepLbl);
             exit(false);
         end;
         AllObjWithCaption.SetRange("Object Type", AllObjWithCaption."Object Type"::Table);
@@ -839,7 +845,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         HasContentBase64 := RequestMgt.GetText(RequestJson, 'contentBase64') <> '';
         HasContentAlias := RequestMgt.GetText(RequestJson, 'content') <> '';
         if HasContentBase64 and HasContentAlias then begin
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, BothInlineContentErr, 'content', '', BothInlineContentExpectedLbl, '');
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, BothInlineContentErr, 'content', '', BothInlineContentExpectedLbl, InlineNextStepLbl);
             exit(false);
         end;
         HasContent := HasContentBase64 or HasContentAlias;
@@ -856,7 +862,7 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         if HasSource then
             SourceCount += 1;
         if SourceCount <> 1 then begin
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, ContentSourceErr, ContentSourceParameterTok, '', ContentSourceExpectedLbl, '');
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, ContentSourceErr, ContentSourceParameterTok, '', ContentSourceExpectedLbl, SourceNextStepLbl);
             exit(false);
         end;
 

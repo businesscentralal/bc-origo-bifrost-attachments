@@ -559,6 +559,139 @@ codeunit 96258 "Storage Response159 Tests ori"
         LibraryAssert.AreEqual('Quote', Fixture.ReadText(Fixture.Data(Response), 'documentType'), 'Return the stored document type enum name.');
     end;
 
+    /// <summary>Issue 175 ACF2_MissingFileName_SingleError: public queued response in LCID 1033.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_ACF2_MissingFileName_SingleError_1033()
+    begin
+        CheckMissingLinkedFileName(1033);
+    end;
+
+    /// <summary>Issue 175 ACF2_MissingFileName_SingleError: public queued response in LCID 1039.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_ACF2_MissingFileName_SingleError_1039()
+    begin
+        CheckMissingLinkedFileName(1039);
+    end;
+
+    /// <summary>Issue 175 ACF3_NestedProblems_HaveNextStep: public queued response in LCID 1033.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_ACF3_NestedProblems_HaveNextStep_1033()
+    begin
+        CheckRecordProblemDetails(1033);
+    end;
+
+    /// <summary>Issue 175 ACF3_NestedProblems_HaveNextStep: public queued response in LCID 1039.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_ACF3_NestedProblems_HaveNextStep_1039()
+    begin
+        CheckRecordProblemDetails(1039);
+    end;
+
+    local procedure CheckMissingLinkedFileName(LanguageId: Integer)
+    var
+        Request: JsonObject;
+        Response: JsonObject;
+        NullName: JsonValue;
+        InvalidName: JsonObject;
+    begin
+        Fixture.InitializeStorage();
+        Request.Add('storageCode', Fixture.StorageCode());
+        Request.Add('path', 'x175/source.txt');
+        Response := Dispatch("Message Type ori"::"Storage.Attachment.CreateLinked", Request, LanguageId);
+        AssertSingleMissingFileName(Response);
+        NullName.SetValueToNull();
+        Request.Add('fileName', NullName);
+        Response := Dispatch("Message Type ori"::"Storage.Attachment.CreateLinked", Request, LanguageId);
+        AssertSingleMissingFileName(Response);
+        Request.Replace('fileName', '');
+        Response := Dispatch("Message Type ori"::"Storage.Attachment.CreateLinked", Request, LanguageId);
+        AssertSingleMissingFileName(Response);
+        Request.Replace('fileName', InvalidName);
+        Response := Dispatch("Message Type ori"::"Storage.Attachment.CreateLinked", Request, LanguageId);
+        AssertProblem(Response, 'InvalidParameterFormat', 'fileName');
+        LibraryAssert.IsFalse(Response.Contains('errors'), 'An invalid JSON fileName reports only its reader error.');
+    end;
+
+    local procedure AssertSingleMissingFileName(Response: JsonObject)
+    begin
+        AssertProblem(Response, 'MissingParameter', 'fileName');
+        LibraryAssert.IsFalse(Response.Contains('errors'), 'A missing fileName is one flat MissingParameter, without a format duplicate.');
+        LibraryAssert.IsTrue(Response.Contains('received'), 'The error describes the missing value.');
+        LibraryAssert.AreNotEqual('', Fixture.ReadText(Response, 'nextStep'), 'The error gives a recovery step.');
+    end;
+
+    local procedure CheckRecordProblemDetails(LanguageId: Integer)
+    var
+        Request: JsonObject;
+        Response: JsonObject;
+        Problem: JsonObject;
+        InvalidName: JsonObject;
+    begin
+        // [SCENARIO] Missing table and source are independent, actionable problems.
+        Response := Dispatch("Message Type ori"::"Storage.Attachment.CreateForRecord", Request, LanguageId);
+        LibraryAssert.AreEqual(2, Fixture.ReadArray(Response, 'errors').Count(), 'The request has two independent problems.');
+        AssertAllNextSteps(Response);
+        Problem := FindProblem(Response, 'tableId');
+        LibraryAssert.IsTrue(Problem.Contains('received'), 'Missing tableId carries received just like the other required parameters.');
+        LibraryAssert.AreNotEqual('', Fixture.ReadText(Problem, 'received'), 'The missing table is explicitly described.');
+
+        // [SCENARIO] Invalid source target, missing source id and malformed fileName all give a next step.
+        Request.Add('sourceTarget', 'UnknownAttachment');
+        Request.Add('fileName', InvalidName);
+        Response := Dispatch("Message Type ori"::"Storage.Attachment.CreateForRecord", Request, LanguageId);
+        AssertProblem(Response, 'InvalidParameter', 'sourceTarget');
+        AssertProblem(Response, 'MissingParameter', 'sourceSystemId');
+        AssertProblem(Response, 'InvalidParameterFormat', 'fileName');
+        AssertAllNextSteps(Response);
+
+        // [SCENARIO] A missing record key and conflicting inline sources are independently actionable.
+        Clear(Request);
+        Request.Add('tableId', Database::Customer);
+        Request.Add('content', 'eA==');
+        Request.Add('contentBase64', 'eA==');
+        Response := Dispatch("Message Type ori"::"Storage.Attachment.CreateForRecord", Request, LanguageId);
+        AssertProblem(Response, 'MissingParameter', 'no');
+        AssertProblem(Response, 'InvalidParameter', 'content');
+        AssertAllNextSteps(Response);
+    end;
+
+    local procedure AssertAllNextSteps(Response: JsonObject)
+    var
+        Token: JsonToken;
+    begin
+        foreach Token in Fixture.ReadArray(Response, 'errors') do
+            LibraryAssert.AreNotEqual('', Fixture.ReadText(Token.AsObject(), 'nextStep'), 'Every nested problem must explain how to retry.');
+    end;
+
+    /// <summary>Issue 175 F4: CreateForRecord examples use declared source parameters.</summary>
+    [Test]
+    procedure Scenario_ACF4_Examples_NoTargetParameter()
+    var
+        Contract: Interface "Msg Contract ori";
+        Examples: JsonArray;
+        ExampleToken: JsonToken;
+        RequestToken: JsonToken;
+        DataToken: JsonToken;
+        Request: JsonObject;
+    begin
+        Contract := "Message Type ori"::"Storage.Attachment.CreateForRecord";
+        LibraryAssert.IsTrue(Contract.GetExamples(Examples), 'The type publishes examples.');
+        LibraryAssert.AreNotEqual(0, Examples.Count(), 'The check must exercise actual examples.');
+        foreach ExampleToken in Examples do begin
+            LibraryAssert.IsTrue(ExampleToken.AsObject().Get('request', RequestToken), 'Every example has a request.');
+            if RequestToken.IsObject() then
+                Request := RequestToken.AsObject()
+            else
+                LibraryAssert.IsTrue(Request.ReadFrom(RequestToken.AsValue().AsText()), 'The example request is JSON.');
+            LibraryAssert.IsTrue(Request.Get('data', DataToken), 'Every example carries request data.');
+            LibraryAssert.IsFalse(DataToken.AsObject().Contains('target'), 'CreateForRecord never accepts a destination target; sourceTarget selects only an existing source attachment.');
+        end;
+    end;
+
     local procedure AssertEnvelope(Response: JsonObject)
     var
         Token: JsonToken;
