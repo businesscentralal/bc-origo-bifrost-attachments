@@ -344,14 +344,14 @@ codeunit 96264 "Storage Follow168 Tests ori"
     local procedure CheckFileContract(LanguageId: Integer)
     var
         Setup: Record "Storage Setup ori";
-        File: Record "Storage MCP File ori";
+        MockState: Codeunit "Storage Mock State";
         Contract: Codeunit "Storage Contract Parts ori";
         Request: JsonObject;
         Response: JsonObject;
         SetupCode: Code[20];
         PreviousLanguage: Integer;
     begin
-        // [GIVEN] An isolated persisted test connector, not a live provider account.
+        // [GIVEN] An isolated in-memory connector, not a live provider account.
         SetupCode := CreateSetup();
         Request.Add('storageCode', SetupCode);
         Request.Add('path', 'X168.txt');
@@ -375,8 +375,7 @@ codeunit 96264 "Storage Follow168 Tests ori"
         AssertSuccess(Response);
         LibraryAssert.AreEqual('X168.txt', Fixture.ReadText(Fixture.Data(Response), 'sourcePath'), 'Actual source.');
         LibraryAssert.AreEqual('X168-copy.txt', Fixture.ReadText(Fixture.Data(Response), 'targetPath'), 'Actual destination.');
-        File.SetRange("Storage Code", SetupCode);
-        File.DeleteAll();
+        MockState.Reset();
         Setup.Get(SetupCode);
         Setup.Delete();
     end;
@@ -424,16 +423,16 @@ codeunit 96264 "Storage Follow168 Tests ori"
         AssertRefusal(Response, 'InvalidParameter');
         LibraryAssert.AreEqual('fileName', Fixture.ReadText(Response, 'parameter'), 'Correct parameter.');
         AssertLanguage(Fixture.ReadText(Response, 'nextStep'), LanguageId, 'Send only the file name', 'Sendu aðeins skráarheitið');
-        LibraryAssert.IsTrue(Fixture.ReadText(Response, 'nextStep').Contains('folderPath'), 'Name the correct folder field.');
+        AssertLanguage(Fixture.ReadText(Response, 'nextStep'), LanguageId, 'without a folder path', 'án möppuslóðar');
     end;
 
     local procedure CheckLinkedMove(LanguageId: Integer)
     var
         Setup: Record "Storage Setup ori";
-        File: Record "Storage MCP File ori";
         Attachment: Record "Incoming Document Attachment";
         Link: Record "Storage Attachment Link ori";
         IncomingDocument: Record "Incoming Document";
+        MockState: Codeunit "Storage Mock State";
         Request: JsonObject;
         Response: JsonObject;
         SetupCode: Code[20];
@@ -442,6 +441,7 @@ codeunit 96264 "Storage Follow168 Tests ori"
     begin
         // [GIVEN] A file linked to an owned attachment through a connector without linked-move support.
         SetupCode := CreateSetup();
+        MockState.RefuseLinkedMoves();
         Request.Add('storageCode', SetupCode);
         Request.Add('path', 'X168-linked.txt');
         Request.Add('contentBase64', Fixture.Encode('owned'));
@@ -465,13 +465,13 @@ codeunit 96264 "Storage Follow168 Tests ori"
         LibraryAssert.IsFalse(Fixture.ReadText(Response, 'expected').Contains('acknowledgement'), 'No connector jargon.');
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
         LibraryAssert.AreEqual('X168-linked.txt', Link."Storage Path", 'Refusal preserves link.');
-        LibraryAssert.IsTrue(File.Get(SetupCode, 'X168-linked.txt'), 'Source preserved.');
-        LibraryAssert.IsFalse(File.Get(SetupCode, 'X168-moved.txt'), 'No target.');
+        LibraryAssert.IsTrue(MockState.HasFile('X168-linked.txt'), 'Source preserved.');
+        LibraryAssert.AreEqual(Fixture.Encode('owned'), MockState.GetFileContent('X168-linked.txt'), 'Source bytes preserved.');
+        LibraryAssert.IsFalse(MockState.HasFile('X168-moved.txt'), 'No target.');
         Attachment.Delete(true);
         IncomingDocument.Get(IncomingNo);
         IncomingDocument.Delete(true);
-        File.SetRange("Storage Code", SetupCode);
-        File.DeleteAll();
+        MockState.Reset();
         Setup.Get(SetupCode);
         Setup.Delete();
     end;
@@ -479,9 +479,11 @@ codeunit 96264 "Storage Follow168 Tests ori"
     local procedure CreateSetup(): Code[20]
     var
         Setup: Record "Storage Setup ori";
+        MockState: Codeunit "Storage Mock State";
     begin
+        MockState.Reset();
         Setup.Code := Fixture.NewCode('X168');
-        Setup."Storage Type" := Setup."Storage Type"::"MCP Fixture";
+        Setup."Storage Type" := Setup."Storage Type"::Mock;
         Setup.Enabled := true;
         Setup.Insert();
         exit(Setup.Code);
