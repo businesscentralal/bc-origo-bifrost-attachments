@@ -2,6 +2,7 @@ namespace Origo.Bifrost.Attachments.Test;
 
 using Microsoft.EServices.EDocument;
 using Microsoft.Finance.GeneralLedger.Setup;
+using Microsoft.Finance.Currency;
 using Microsoft.Finance.VAT.Setup;
 using Microsoft.Purchases.Document;
 using Microsoft.Purchases.Vendor;
@@ -351,7 +352,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
     [HandlerFunctions('ProcessingMessageHandler')]
     procedure Scenario_AC06_LinkedCsv_CreatesPurchaseInvoice()
     begin
-        // Story #23, AC06 | Time: standard unposted invoice dates | Risk: base-app purchase mapping
+        // Story #23, AC06 | Time: WorkDate() for owned exchange rate and unposted invoice | Risk: base-app purchase mapping
         AssertPurchaseInvoiceProcessing(1033);
         AssertPurchaseInvoiceProcessing(1039);
     end;
@@ -359,6 +360,8 @@ codeunit 96237 "DataExch Phase2 Tests ori"
     local procedure AssertPurchaseInvoiceProcessing(LanguageId: Integer)
     var
         Vendor: Record Vendor;
+        Currency: Record Currency;
+        CurrencyRate: Record "Currency Exchange Rate";
         GeneralBusinessGroup: Record "Gen. Business Posting Group";
         VendorPostingGroup: Record "Vendor Posting Group";
         VatBusinessGroup: Record "VAT Business Posting Group";
@@ -390,6 +393,18 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         VendorPostingGroup.Insert();
         VatBusinessGroup.Code := NewFixtureCode();
         VatBusinessGroup.Insert();
+        Currency.Code := CopyStr(NewFixtureCode(), 1, MaxStrLen(Currency.Code));
+        Currency."Amount Rounding Precision" := 0.01;
+        Currency."Unit-Amount Rounding Precision" := 0.00001;
+        Currency."Invoice Rounding Precision" := 0.01;
+        Currency.Insert(true);
+        CurrencyRate."Currency Code" := Currency.Code;
+        CurrencyRate."Starting Date" := WorkDate();
+        CurrencyRate."Exchange Rate Amount" := 1;
+        CurrencyRate."Relational Exch. Rate Amount" := 1;
+        CurrencyRate."Adjustment Exch. Rate Amount" := 1;
+        CurrencyRate."Relational Adjmt Exch Rate Amt" := 1;
+        CurrencyRate.Insert(true);
         Vendor.Init();
         Vendor."No." := NewFixtureCode();
         Vendor.Name := 'BIFT-P2 owned invoice vendor';
@@ -421,8 +436,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         ExchangeType."Data Exch. Def. Code" := DefinitionCode;
         ExchangeType.Insert();
         FileName := 'phase2-invoice-' + LowerCase(Format(CreateGuid(), 0, 4)) + '.csv';
-        Csv := Format(PurchaseHeader."Document Type"::Invoice.AsInteger(), 0, 9) + ',' + Vendor."No." + ', ';
-        // Preserve a blank base-currency column: the base CSV reader omits empty fields entirely.
+        Csv := Format(PurchaseHeader."Document Type"::Invoice.AsInteger(), 0, 9) + ',' + Vendor."No." + ',' + Currency.Code;
         BeginUpload(FileName, UploadId, Path);
         AppendChunk(UploadId, 1, Csv);
         CommitUpload(TempArgument, UploadId);
@@ -449,6 +463,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         CreatedDocument := Token.AsObject();
         PurchaseHeader.Get(PurchaseHeader."Document Type"::Invoice, ReadText(CreatedDocument, 'no'));
         LibraryAssert.AreEqual(Vendor."No.", PurchaseHeader."Buy-from Vendor No.", 'The self-created vendor is used.');
+        LibraryAssert.AreEqual(Currency.Code, PurchaseHeader."Currency Code", 'The self-created currency and rate are used.');
         LibraryAssert.AreEqual(EntryNo, PurchaseHeader."Incoming Document Entry No.", 'Invoice links to the incoming document.');
         LibraryAssert.AreEqual(Format(PurchaseHeader.SystemId, 0, 4), ReadText(CreatedDocument, 'systemId'), 'Response identifies the actual purchase invoice.');
     end;
