@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-23T13:14:45.756Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "set_records",
+  "args": {
+    "table": "Incoming Document",
+    "data": [
+      {
+        "primaryKey": {
+          "EntryNo_": 177
+        },
+        "fields": {
+          "DataExchangeType": "W7P23-NOT-EXIST"
+        }
+      }
+    ],
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"status\":\"Error\",\"code\":\"PermissionDenied\",\"error\":\"Field Data Exchange Type (30) in table 130 (Incoming Document) cannot be written via Data.Records.Set.\",\"parameter\":\"data[0].fields.DataExchangeType\",\"received\":\"W7P23-NOT-EXIST\",\"expected\":\"a field the user may write (Bifrost Field Access)\",\"nextStep\":\"Storage.Upload.CommitToRecord / DataExchange.Type.Set\",\"hint\":\"For usage details, call the \\\"Help.Implementation.Get\\\" message type with subject \\\"Data.Records.Set\\\". Always read the help before calling a message type.\"}"
+      }
+    ],
+    "isError": true
+  }
+}

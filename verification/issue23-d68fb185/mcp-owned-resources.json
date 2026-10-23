@@ -1,0 +1,264 @@
+{
+  "documents": [
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188
+  ],
+  "files": [
+    "W7P23N-33-linked.csv",
+    "W7P23N-33-later.csv",
+    "W7P23N-33-error.csv",
+    "W7P23N-33-ui.csv",
+    "W7P23N-39-linked.csv",
+    "W7P23N-39-later.csv",
+    "W7P23N-39-error.csv",
+    "W7P23N-39-ui.csv"
+  ],
+  "uploads": [
+    "4E3811D2-94F0-471D-BA52-7CB7F8773491",
+    "B3F3377D-1C29-4EEC-8F0B-1B9DD51EE9AB",
+    "947717F8-DBD2-409B-81A8-B1E02BEB1EA3",
+    "B6FC3787-5A6D-4155-840E-50374E6EA2E3"
+  ],
+  "types": [
+    "W7P23NT33",
+    "W7P23NT39"
+  ],
+  "definitions": [
+    "W7P23ND33",
+    "W7P23NE33",
+    "W7P23ND39",
+    "W7P23NE39"
+  ],
+  "vendors": [
+    "W7P23NV33",
+    "W7P23NV39"
+  ],
+  "groups": [
+    {
+      "table": "Gen. Business Posting Group",
+      "code": "W7P23NG33"
+    },
+    {
+      "table": "Vendor Posting Group",
+      "code": "W7P23NP33"
+    },
+    {
+      "table": "VAT Business Posting Group",
+      "code": "W7P23NB33"
+    },
+    {
+      "table": "Gen. Business Posting Group",
+      "code": "W7P23NG39"
+    },
+    {
+      "table": "Vendor Posting Group",
+      "code": "W7P23NP39"
+    },
+    {
+      "table": "VAT Business Posting Group",
+      "code": "W7P23NB39"
+    }
+  ],
+  "currencies": [
+    "W7P23NC33",
+    "W7P23NC39"
+  ],
+  "rows": [
+    {
+      "table": "Gen. Business Posting Group",
+      "key": {
+        "Code": "W7P23NG33"
+      },
+      "id": "BDE53004-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-G-33"
+    },
+    {
+      "table": "Vendor Posting Group",
+      "key": {
+        "Code": "W7P23NP33"
+      },
+      "id": "C3E53004-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-P-33"
+    },
+    {
+      "table": "VAT Business Posting Group",
+      "key": {
+        "Code": "W7P23NB33"
+      },
+      "id": "C9E53004-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-B-33"
+    },
+    {
+      "table": "Currency",
+      "key": {
+        "Code": "W7P23NC33"
+      },
+      "id": "CFE53004-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-currency-33"
+    },
+    {
+      "table": "Currency Exchange Rate",
+      "key": {
+        "Currency Code": "W7P23NC33",
+        "Starting Date": "2020-01-01"
+      },
+      "id": "D5E53004-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-rate-33"
+    },
+    {
+      "table": "Vendor",
+      "key": {
+        "No.": "W7P23NV33"
+      },
+      "id": "F9C1DFA9-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-vendor-33"
+    },
+    {
+      "table": "Storage 23 Fixture File ori",
+      "key": {
+        "Storage Code": "W7P23",
+        "Path": "W7P23N-33-linked.csv"
+      },
+      "id": "E04A24B0-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "file-create-33-seed"
+    },
+    {
+      "table": "Storage 23 Fixture File ori",
+      "key": {
+        "Storage Code": "W7P23",
+        "Path": "W7P23N-33-later.csv"
+      },
+      "id": "F54A24B0-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "file-create-later-33-seed"
+    },
+    {
+      "table": "Storage 23 Fixture File ori",
+      "key": {
+        "Storage Code": "W7P23",
+        "Path": "W7P23N-33-error.csv"
+      },
+      "id": "094B24B0-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "file-create-error-33-seed"
+    },
+    {
+      "table": "Storage 23 Fixture File ori",
+      "key": {
+        "Storage Code": "W7P23",
+        "Path": "W7P23N-33-ui.csv"
+      },
+      "id": "666C68B6-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "file-create-ui-33-seed"
+    },
+    {
+      "table": "Gen. Business Posting Group",
+      "key": {
+        "Code": "W7P23NG39"
+      },
+      "id": "7D6C68B6-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-G-39"
+    },
+    {
+      "table": "Vendor Posting Group",
+      "key": {
+        "Code": "W7P23NP39"
+      },
+      "id": "836C68B6-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-P-39"
+    },
+    {
+      "table": "VAT Business Posting Group",
+      "key": {
+        "Code": "W7P23NB39"
+      },
+      "id": "896C68B6-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-B-39"
+    },
+    {
+      "table": "Currency",
+      "key": {
+        "Code": "W7P23NC39"
+      },
+      "id": "8F6C68B6-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-currency-39"
+    },
+    {
+      "table": "Currency Exchange Rate",
+      "key": {
+        "Currency Code": "W7P23NC39",
+        "Starting Date": "2020-01-01"
+      },
+      "id": "956C68B6-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-rate-39"
+    },
+    {
+      "table": "Vendor",
+      "key": {
+        "No.": "W7P23NV39"
+      },
+      "id": "9A6C68B6-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "seed-vendor-39"
+    },
+    {
+      "table": "Storage 23 Fixture File ori",
+      "key": {
+        "Storage Code": "W7P23",
+        "Path": "W7P23N-39-linked.csv"
+      },
+      "id": "06B27CBC-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "file-create-39-seed"
+    },
+    {
+      "table": "Storage 23 Fixture File ori",
+      "key": {
+        "Storage Code": "W7P23",
+        "Path": "W7P23N-39-later.csv"
+      },
+      "id": "1BB27CBC-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "file-create-later-39-seed"
+    },
+    {
+      "table": "Storage 23 Fixture File ori",
+      "key": {
+        "Storage Code": "W7P23",
+        "Path": "W7P23N-39-error.csv"
+      },
+      "id": "15C876C2-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "file-create-error-39-seed"
+    },
+    {
+      "table": "Storage 23 Fixture File ori",
+      "key": {
+        "Storage Code": "W7P23",
+        "Path": "W7P23N-39-ui.csv"
+      },
+      "id": "2AC876C2-E3CE-F111-B7A4-D4D4CD871D7C",
+      "label": "file-create-ui-39-seed"
+    }
+  ],
+  "uiDocuments": [
+    {
+      "entryNo": 182,
+      "lcid": 1033,
+      "description": "W7P23N UI invoice 33",
+      "path": "W7P23N-33-ui.csv",
+      "vendor": "W7P23NV33"
+    },
+    {
+      "entryNo": 188,
+      "lcid": 1039,
+      "description": "W7P23N UI invoice 39",
+      "path": "W7P23N-39-ui.csv",
+      "vendor": "W7P23NV39"
+    }
+  ]
+}

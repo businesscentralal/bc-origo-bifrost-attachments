@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-23T13:15:02.451Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "get_records",
+  "args": {
+    "table": "Storage Attachment Link ori",
+    "filter": "where(\"Storage Code\"=const(W7P23),\"Inc. Doc. Entry No.\"=const(185))",
+    "take": 100
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Storage Attachment Link ori\",\n  \"skip\": 0,\n  \"take\": 100,\n  \"count\": 1,\n  \"records\": [\n    {\n      \"id\": \"0BB27CBC-E3CE-F111-B7A4-D4D4CD871D7C\",\n      \"primaryKey\": {\n        \"TableID\": \"133\",\n        \"RecordSystemId\": \"0AB27CBC-E3CE-F111-B7A4-D4D4CD871D7C\"\n      },\n      \"fields\": {\n        \"StorageCode\": \"W7P23\",\n        \"StoragePath\": \"W7P23N-39-linked.csv\",\n        \"FileName\": \"W7P23N-39-linked.csv\",\n        \"ContentSize\": \"23\",\n        \"Inc_Doc_EntryNo_\": \"185\",\n        \"Inc_Doc_LineNo_\": \"10000\",\n        \"OffloadedAt\": \"2026-10-23T13:15:01.353Z\",\n        \"OffloadedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\",\n        \"CreatedStorageFile\": \"false\",\n        \"SystemCreatedAt\": \"2026-10-23T13:15:01.353Z\",\n        \"SystemCreatedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\",\n        \"SystemModifiedAt\": \"2026-10-23T13:15:01.353Z\",\n        \"SystemModifiedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\"\n      }\n    }\n  ],\n  \"noOfRecords\": 1\n}"
+      }
+    ]
+  }
+}

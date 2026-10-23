@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-23T13:14:49.746Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "get_records",
+  "args": {
+    "table": "Vendor Posting Group",
+    "filter": "where(\"Code\"=const(W7P23NP39))",
+    "take": 100
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Vendor Posting Group\",\n  \"skip\": 0,\n  \"take\": 100,\n  \"count\": 0,\n  \"records\": [],\n  \"noOfRecords\": 0\n}"
+      }
+    ]
+  }
+}

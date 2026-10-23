@@ -1,0 +1,134 @@
+[
+  {
+    "name": "AC01 type setup",
+    "type": "DataExchange.Type.Set",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC01 commit sets type without processing",
+    "type": "Storage.Upload.CommitToRecord",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC03 unknown type preserves open upload",
+    "type": "Storage.Upload.CommitToRecord",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC02 and AC06 commit creates actual invoice",
+    "type": "Storage.Upload.CommitToRecord",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC04 linked processing creates actual invoice",
+    "type": "Storage.Attachment.CreateLinked",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC04 transparent read retains bytes and link",
+    "type": "Incoming.Document.Get",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC04 later Incoming.Document.Process reads linked bytes",
+    "type": "Incoming.Document.Process",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC02 processing failure retains document and reports errors",
+    "type": "Storage.Attachment.CreateLinked",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC07 incoming type write guard",
+    "type": "Data.Records.Set",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC07 type write guard",
+    "type": "Data.Records.Set",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC05 export type refused before write",
+    "type": "DataExchange.Type.Set",
+    "lcid": 1033,
+    "passed": true
+  },
+  {
+    "name": "AC01 type setup",
+    "type": "DataExchange.Type.Set",
+    "lcid": 1039,
+    "passed": true
+  },
+  {
+    "name": "AC01 commit sets type without processing",
+    "type": "Storage.Upload.CommitToRecord",
+    "lcid": 1039,
+    "passed": true
+  },
+  {
+    "name": "AC03 unknown type preserves open upload",
+    "type": "Storage.Upload.CommitToRecord",
+    "lcid": 1039,
+    "passed": true
+  },
+  {
+    "name": "AC02 and AC06 commit creates actual invoice",
+    "type": "Storage.Upload.CommitToRecord",
+    "lcid": 1039,
+    "passed": true
+  },
+  {
+    "name": "AC04 linked processing creates actual invoice",
+    "type": "Storage.Attachment.CreateLinked",
+    "lcid": 1039,
+    "passed": true
+  },
+  {
+    "name": "AC04 transparent read retains bytes and link",
+    "type": "Incoming.Document.Get",
+    "lcid": 1039,
+    "passed": true
+  },
+  {
+    "name": "AC04 later Incoming.Document.Process reads linked bytes",
+    "type": "Incoming.Document.Process",
+    "lcid": 1039,
+    "passed": true
+  },
+  {
+    "name": "AC02 processing failure retains document and reports errors",
+    "type": "Storage.Attachment.CreateLinked",
+    "lcid": 1039,
+    "passed": true
+  },
+  {
+    "name": "AC07 incoming type write guard",
+    "type": "Data.Records.Set",
+    "lcid": 1039,
+    "passed": true
+  },
+  {
+    "name": "AC07 type write guard",
+    "type": "Data.Records.Set",
+    "lcid": 1039,
+    "passed": true
+  },
+  {
+    "name": "AC05 export type refused before write",
+    "type": "DataExchange.Type.Set",
+    "lcid": 1039,
+    "passed": true
+  }
+]

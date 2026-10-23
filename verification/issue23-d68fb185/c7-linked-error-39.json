@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-23T13:15:05.951Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "invoke_message_type",
+  "args": {
+    "type": "Storage.Attachment.CreateLinked",
+    "data": {
+      "storageCode": "W7P23",
+      "path": "W7P23N-39-error.csv",
+      "fileName": "W7P23N-39-error.csv",
+      "dataExchangeType": "W7P23NT39",
+      "process": true,
+      "description": "W7P23N process error 39"
+    },
+    "lcid": 1039
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"Storage.Attachment.CreateLinked\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"target\": \"IncomingDocument\",\n    \"incomingDocumentEntryNo\": 187,\n    \"lineNo\": 10000,\n    \"systemId\": \"19C876C2-E3CE-F111-B7A4-D4D4CD871D7C\",\n    \"storageCode\": \"W7P23\",\n    \"path\": \"W7P23N-39-error.csv\",\n    \"fileName\": \"W7P23N-39-error.csv\",\n    \"contentLength\": 33,\n    \"dataExchangeType\": \"W7P23NT39\",\n    \"incomingDocumentStatus\": \"Failed\",\n    \"processErrors\": [\n      {\n        \"code\": \"BusinessCentralError\",\n        \"message\": \"not-an-enum is not a valid option.\\r\\nValid options are Quote,Order,Invoice,Credit Memo,Blanket Order,Return Order.\",\n        \"nextStep\": \"Skoðaðu Incoming.Document.Get og leiðréttu gagnaskiptaskilgreininguna eða upprunaskrána og reyndu svo Incoming.Document.Process aftur.\"\n      }\n    ],\n    \"processed\": false\n  }\n}"
+      }
+    ]
+  }
+}

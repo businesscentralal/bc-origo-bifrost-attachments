@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-23T13:14:46.356Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "set_records",
+  "args": {
+    "table": "Data Exchange Type",
+    "data": [
+      {
+        "primaryKey": {
+          "Code": "W7P23NT33"
+        },
+        "fields": {
+          "Description": "must not change"
+        }
+      }
+    ],
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"status\":\"Error\",\"code\":\"PermissionDenied\",\"error\":\"Table 1213 (Data Exchange Type) cannot be written via Data.Records.Set. This is an internal table. Use DataExchange.Type.Set.\",\"parameter\":\"subject\",\"received\":\"Data Exchange Type\",\"expected\":\"a table the user may write through the generic data types\",\"nextStep\":\"DataExchange.Type.Set\",\"hint\":\"For usage details, call the \\\"Help.Implementation.Get\\\" message type with subject \\\"Data.Records.Set\\\". Always read the help before calling a message type.\"}"
+      }
+    ],
+    "isError": true
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "containerId": "f05c5afff7f6",
+  "verified": true,
+  "at": "2026-10-23T13:21:03.612679+00:00",
+  "scenarios": [
+    {
+      "lcid": 1033,
+      "action": "BC Web Client Incoming Document Create Document on own linked CSV",
+      "entryNo": 182,
+      "invoiceNo": "107220",
+      "invoiceSystemId": "B7F5050E-E4CE-F111-B7A4-D4D4CD871D7C",
+      "passed": true,
+      "languageNote": "English US",
+      "screenshot": "ui-en-after.png",
+      "readback": "ui-invoice-en.json"
+    },
+    {
+      "lcid": 1039,
+      "action": "BC Web Client Incoming Document Create Document on own linked CSV",
+      "entryNo": 188,
+      "invoiceNo": "107221",
+      "invoiceSystemId": "29166070-E4CE-F111-B7A4-D4D4CD871D7C",
+      "passed": true,
+      "languageNote": "Icelandic platform navigation/rendering; base W1 document captions remain English",
+      "screenshot": "ui-is-before.png",
+      "readback": "ui-invoice-is.json"
+    }
+  ]
+}

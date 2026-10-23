@@ -1,0 +1,113 @@
+{
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "containerId": "f05c5afff7f6",
+  "startedAt": "2026-10-23T13:04:45.630Z",
+  "finishedAt": "2026-10-23T13:06:12.444Z",
+  "fullSuite": true,
+  "ok": false,
+  "mode": "ssh",
+  "exitCode": 1,
+  "durationMs": 69354,
+  "passed": 441,
+  "failed": 17,
+  "skipped": 0,
+  "errors": 0,
+  "failures": [
+    {
+      "name": "BeginAppendCommit_TwoChunks_RoundtripsContent",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96205 Storage Upload Tests"
+    },
+    {
+      "name": "Commit_OutOfOrderChunks_AssemblesInSequence",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96205 Storage Upload Tests"
+    },
+    {
+      "name": "Append_DuplicateSequence_ReplacesChunk",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96205 Storage Upload Tests"
+    },
+    {
+      "name": "CreateLinked_FromUploadedFile_AttachesToNewIncomingDoc",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96205 Storage Upload Tests"
+    },
+    {
+      "name": "Scenario_AC02_CommittedUpload_RefusalIsIcelandic",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96205 Storage Upload Tests"
+    },
+    {
+      "name": "MissingStoragePaths_English_AreSafeAndActionable",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96212 Storage Error Response Tests"
+    },
+    {
+      "name": "MissingStoragePaths_Icelandic_AreSafeAndActionable",
+      "message": "The Uppsetning Bifr�st geymslu does not exist. Identification fields and values: K�di='W7P23'",
+      "classname": "96212 Storage Error Response Tests"
+    },
+    {
+      "name": "ExistingSource_ProviderFailure_RemainsBusinessCentralError",
+      "message": "The Uppsetning Bifr�st geymslu does not exist. Identification fields and values: K�di='W7P23'",
+      "classname": "96212 Storage Error Response Tests"
+    },
+    {
+      "name": "AC04_CreateLinked_SetsTypeOnIncomingDocument",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96237 DataExch Phase2 Tests ori"
+    },
+    {
+      "name": "AC04_CreateLinked_ProcessTrue_KeepsDocumentAndLink",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96237 DataExch Phase2 Tests ori"
+    },
+    {
+      "name": "Scenario_AC04_LinkedCsv_ProcessReadsAndMapsExactContent",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96237 DataExch Phase2 Tests ori"
+    },
+    {
+      "name": "Scenario_AC06_LinkedCsv_CreatesPurchaseInvoice",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96237 DataExch Phase2 Tests ori"
+    },
+    {
+      "name": "AC01_CommitToDataExchange_KeepFileWritesSessionPath",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96242 DataExch Import Tests ori"
+    },
+    {
+      "name": "AC01_ExportThreeCustomers_ToStorage",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96243 DataExch Export Tests ori"
+    },
+    {
+      "name": "AC02_RecordIds_InlineAndStorage",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96243 DataExch Export Tests ori"
+    },
+    {
+      "name": "AC03_ExportToStorage_ReimportUnderNewCodeEqualsOriginal",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96244 DataExch Def Xfer Tests ori"
+    },
+    {
+      "name": "DefinitionExport_BothDestinationsOverwriteSameXml",
+      "message": "The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'",
+      "classname": "96244 DataExch Def Xfer Tests ori"
+    }
+  ],
+  "ssh": {
+    "available": true,
+    "ipAddress": "48.199.222.65",
+    "port": "22",
+    "httpStatus": 200
+  },
+  "cosmoExecTestEndpoint": "none",
+  "stdoutPreview": "[MCP] bc_dev_run_tests remote start\r\n[MCP] Cosmo SSH is typically inside the BC container (not a Docker host).\r\n[MCP] Dot-sourcing C:\\Run\\Prompt.ps1\r\nImport PPI Overrides from c:\\run\\helper\\PPIOverrides\\PPIOverrides.psm1\r\nWelcome to the Business Central Container PowerShell prompt\r\n\r\nBcContainerHelper version 6.1.19\r\nSetting TrustedNuGetFeeds = \r\nBC.HelperFunctions emits usage statistics telemetry to Microsoft\r\nRunning on Windows, PowerShell 7.6.7\r\n\u001b[33;1mWARNING: The names of some imported commands from the module 'BcContainerHelper' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.\u001b[0m\r\n\u001b[33;1mWARNING: The names of some imported commands from the module 'BcContainerHelper' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.\u001b[0m\r\n[MCP] No Invoke-NavContainerTests / Run-TestsInBcContainer / Run-AlTests on SSH host - using in-container Client Services path.\r\n[MCP] Using scp-uploaded PsTestFunctions + ClientContext\r\n[MCP] Client Services URL candidates (auth=NavUserPassword): https://localhost:443/f05c5afff7f6/cs?tenant=default&company=CRONUS%20International%20Ltd. | https://localhost:443/f05c5afff7f6/cs?tenant=default | http://localhost:7046/f05c5afff7f6/cs?tenant=default&company=CRONUS%20International%20Ltd.\r\n[MCP] Enabling process-level SSL trust-any (pwsh-safe; no ICertificatePolicy)\r\n[MCP] Disable-SslVerification failed: Method invocation failed because [SslVerification] does not contain a method named 'Disable'.\r\n[MCP] Trying Client Services URL: https://localhost:443/f05c5afff7f6/cs?tenant=default&company=CRONUS%20International%20Ltd.\r\n[MCP] New-ClientContext + Run-Tests testPage=130455\r\n[MCP] Imported C:\\Run\\certificate.cer into LocalMachine\\Root\r\n[MCP] Walking InnerHandler from Microsoft.Dynamics.Framework.UI.Client.JsonHttpClient+BasicAuthHandler\r\n[MCP] SSL trust-any on System.Net.Http.HttpClientHandler (depth=2)\r\nSetting test codeunit range ''\r\n  Codeunit 96203 Storage Attachment Field Tests Success (0.64 seconds)\r\n    Testfunction Offloaded_FalseForNewIncDocAttachment Success (0.06 seconds)\r\n    Testfunction Offloaded_TrueAfterOffload_IncDoc Success (0.063 seconds)\r\n    Testfunction Offloaded_FalseAfterRestore_IncDoc Success (0.093 seconds)\r\n    Testfunction Offloaded_FalseForNewDocAttachment Success (0.04 seconds)\r\n    Testfunction Offloaded_TrueAfterOffload_DocAttach Success (0.064 seconds)\r\n    Testfunction DataRecordsGet_IncDoc_FiltersByOffloaded Success (0.146 seconds)\r\n    Testfunction DataRecordsGet_DocAttach_FiltersByOffloaded Success (0.157 seconds)\r\n    Testfunction OffloadHelp_DocumentsCandidateDiscovery Success (0.017 seconds)\r\n  Codeunit 96204 Storage Connector Tests Success (1.978 seconds)\r\n    Testfunction EveryStorageTypeHasMetadataAndHelp Success (0.033 seconds)\r\n    Testfunction EveryMessageTypeHelpExplainsUsage Success (0.02 seconds)\r\n    Testfunction HelpStorageGetReturnsOverviewMarkdown Success (0.05 seconds)\r\n    Testfunction StorageHelpUsesCurrentMcpToolNames Success (0.036 seconds)\r\n    Testfunction HelpTextContainsNoLiteralUnicodeEscapes Success (0.037 seconds)\r\n    Testfunction HelpStorageGetReportsInstalledAppVersion Success (0.01 seconds)\r\n    Testfunction MutatingOutboundStorageHelpDocumentsSideEffects Success (0.017 seconds)\r\n    Testfunction DeleteHelpDocumentsLinkedAttachmentGuards Success (0.01 seconds)\r\n    Testfunction AccountListReturnsConfiguredCode Success (0.033 seconds)\r\n    Testfunction Scenario_AC01_StoredDescription_IsVerbatimBothLanguages Success (0.037 seconds)\r\n    Testfunction FileCreateThenGetRoundtripsContent Success (0.03 seconds)\r\n    Testfunction FileExistsReflectsCreateAndDelete Success (0.083 seconds)\r\n    Testfunction FileDelete_LinkedAttachment_ReturnsError Success (0.19 seconds)\r\n    Testfunction DirectoryDelete_ContainsLinkedAttachment_ReturnsError Success (0.223 seconds)\r\n    Testfunction FileMove_LinkedAttachment_UpdatesLinkPath Success (0.184 seconds)\r\n    Testfunction CreateLinked_DuplicatePath_ReturnsError Success (0.073 seconds)\r\n    Testfunction FileListReturnsEntriesUnderPath Success (0.033 seconds)\r\n    Testfunction DirectoryCreateExistsDelete Success (0.31 seconds)\r\n    Testfunction UnknownStorageCodeReturnsError Success (0.12 seconds)\r\n    Testfunction DisabledConnectionIsRejected Success (0.037 seconds)\r\n    Testfunction MissingPathReturnsError Success (0.053 seconds)\r\n    Testfunction RelativePathSegmentIsRejected Success (0.104 seconds)\r\n    Testfunction RelativePathWithBackslashesIsRejected Success (0.03 seconds)\r\n    Testfunction CurrentDirectorySegmentIsRejected Success (0.017 seconds)\r\n    Testfunction DotsInsideAFileNameAreAccepted Success (0.027 seconds)\r\n    Testfunction GetMissingFileReturnsError Success (0.03 seconds)\r\n    Testfunction DocumentAttachmentOffloadRestoreRoundtrip Success (0.057 seconds)\r\n    Testfunction OffloadPreservesDocumentAttachmentUiBehaviour Success (0.04 seconds)\r\n    Testfunction OffloadPreservesIncomingDocumentUiBehaviour Success (0.054 seconds)\r\n  Codeunit 96205 Storage Upload Tests Failure (1.202 seconds)\r\n    Testfunction BeginAppendCommit_TwoChunks_RoundtripsContent Failure (0.277 seconds)\r\n      Error:\r\n        The Bifrost Storage Setup does not exist. Identification fields and values: Code='W7P23'\r\n      Call Stack:\r\n        Storage Attachment Mgt ori(CodeUnit 10035136).LinkMatches line 9 - Bifrost Attachments by Origo version 28.3.0.0\n        Storage Attachment Mgt ori(CodeUnit 10035136).FindLinkedStorageFile line 7 - Bifrost Attachments by Origo version 28.3.0.0\n        Storage Attachment Mgt ori(CodeUnit 10035136).IsStorageFileLinked line 4 - Bifrost Attachments by Origo version 28.3.0.0\n        Storage Request Mgt ori(CodeUnit 10035193).CollectWriteDestinationErrors line 10 - Bifrost Attachments by Origo version 28.3.0.0\n        Storage Request Mgt ori(CodeUnit 10035193).CheckWriteDestination line 4 - Bifrost Attachments by Origo version 28.3.0.0\n        Storage Upload Mgt ori(CodeUnit 10035197).CommitUpload line 32 - Bifrost Attachments by Origo version 28.3.0.0\n        Storage Upload Commit Impl ori(CodeUnit 10035188).ExecuteBifrostTask line 10 - Bifrost Attachments by Origo version 28.3.0.0\n        Message Task ori(CodeUnit 10078251).ProcessIncomingMessage line 125 - Bifrost Foundation by Origo version 28.0.8.617\n        Dispatcher ori(CodeUnit 10078252).EnqueueAndProcess line 26 - Bifrost Foundation by Origo version 28.0.8.617\n        Dispatcher ori(CodeUnit 10078252).EnqueueAndProcess line 5 - Bifrost Foundation by Origo version 28.0.8.617\n        Dispatcher ori(CodeUnit 10078252).Execute line 7 - Bifrost Foundation by Origo version 28.0.8.617\n        Dispatcher ori(CodeUnit 10078252).Execute line 2 - Bifrost Foundation by Origo version 28.0.8.617\n        Dispatcher ori(CodeUnit 10078252).Execute line 2 - Bifrost Foundation by Origo version 28.0.8.617\n        Storage Upload Tests(CodeUnit 96205).ExecuteTypeWithRequest line 17 - Bifrost Attachments - Tests by Origo version 28.3.0.0\n        Storage Upload Tests(CodeUnit 96205).ExecuteTypeWithRequest line 2 - Bifrost Attachments - Tests by Origo version 28.3.0.0\n        Storage Upload Tests(CodeUnit 96205).CommitUpload line 6 - Bifrost Attachments - Tests by Origo version 28.3.0.0\n        Storage Upload Tests(CodeUnit 96205).BeginAppendCommit_TwoChunks_RoundtripsContent line 15 - Bifrost Attachments - Tests by Origo version 28.3.0.0\n        Test Runner - Mgt(CodeUnit 130454).RunTests line 26 - Test Runner by Microsoft version 28.5.54151.56716\n        Test Runner - Isol. Codeunit(CodeUnit 130450).OnRun(Trigger) line 4 - Test Runner by Microsoft version 28.5.54151.56716\n        Test Suite Mgt.(CodeUnit 130456).RunTests line 2 - Test Runner by Micr\n…[truncated 240383 chars]",
+  "stderrPreview": "Warning: Permanently added '48.199.222.65' (ED25519) to the list of known hosts.\r\n",
+  "commandPreview": "scp -i <key> -P 22 run-tests.ps1[+pstest] sshuser@48.199.222.65:C:/Windows/Temp/origo-bc-run-tests-477f3ef491e3605e.ps1 && ssh -i <key> -p 22 sshuser@48.199.222.65 pwsh|powershell -NoProfile -File C:\\Windows\\Temp\\origo-bc-run-tests-477f3ef491e3605e.ps1  # extensionId=7cdb530b-b74b-446b-9ece-80e2b911bfb3 in-container Client Services",
+  "hint": "SSH ran in-container Client Services / PsTestFunctions (or Option B codeunit 130201) but tests did not all pass. Cosmo SSH is inside the BC container — not host BcContainerHelper. If pages 130455/130202 fail, check Test Toolkit via Get-NAVAppInfo; verify extensionId/companyName."
+}

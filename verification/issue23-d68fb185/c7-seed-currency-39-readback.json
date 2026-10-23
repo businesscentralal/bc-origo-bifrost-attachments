@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-23T13:14:52.983Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "get_records",
+  "args": {
+    "table": "Currency",
+    "filter": "where(\"Code\"=const(W7P23NC39))",
+    "take": 100
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Currency\",\n  \"skip\": 0,\n  \"take\": 100,\n  \"count\": 1,\n  \"records\": [\n    {\n      \"id\": \"8F6C68B6-E3CE-F111-B7A4-D4D4CD871D7C\",\n      \"primaryKey\": {\n        \"Code\": \"W7P23NC39\"\n      },\n      \"fields\": {\n        \"LastDateModified\": \"2026-10-23\",\n        \"LastDateAdjusted\": \"\",\n        \"ISOCode\": \"\",\n        \"ISONumericCode\": \"\",\n        \"UnrealizedGainsAcc_\": \"\",\n        \"RealizedGainsAcc_\": \"\",\n        \"UnrealizedLossesAcc_\": \"\",\n        \"RealizedLossesAcc_\": \"\",\n        \"InvoiceRoundingPrecision\": \"0.01\",\n        \"InvoiceRoundingType\": \"Nearest\",\n        \"AmountRoundingPrecision\": \"0.01\",\n        \"UnitAmountRoundingPrecision\": \"0.00001\",\n        \"Description\": \"Owned issue23 currency\",\n        \"AmountDecimalPlaces\": \"2:2\",\n        \"UnitAmountDecimalPlaces\": \"2:5\",\n        \"RealizedG_LGainsAccount\": \"\",\n        \"RealizedG_LLossesAccount\": \"\",\n        \"Appln_RoundingPrecision\": \"0\",\n        \"EMUCurrency\": \"false\",\n        \"CurrencyFactor\": \"0\",\n        \"ResidualGainsAccount\": \"\",\n        \"ResidualLossesAccount\": \"\",\n        \"Conv_LCYRndg_DebitAcc_\": \"\",\n        \"Conv_LCYRndg_CreditAcc_\": \"\",\n        \"Max_VATDifferenceAllowed\": \"0\",\n        \"VATRoundingType\": \"Nearest\",\n        \"PaymentTolerance_\": \"0\",\n        \"Max_PaymentToleranceAmount\": \"0\",\n        \"Symbol\": \"\",\n        \"LastModifiedDateTime\": \"2026-10-23T13:14:52.537Z\",\n        \"CurrencySymbolPosition\": \"Before Amount\",\n        \"SystemCreatedAt\": \"2026-10-23T13:14:52.533Z\",\n        \"SystemCreatedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\",\n        \"SystemModifiedAt\": \"2026-10-23T13:14:52.537Z\",\n        \"SystemModifiedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\"\n      }\n    }\n  ],\n  \"noOfRecords\": 1\n}"
+      }
+    ]
+  }
+}

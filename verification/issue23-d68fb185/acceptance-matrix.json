@@ -1,0 +1,12 @@
+{
+  "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/23",
+  "observedMainSha": "17ba5b8d64d078a1d180dc626391968b440ec7ed",
+  "AC01": "MCP1033/1039 verified type setup and commit without processing",
+  "AC02": "MCP1033/1039 actual invoice creation and retained processing errors verified",
+  "AC03": "MCP1033/1039 unknown type rejects before document creation and preserves Open upload",
+  "AC04": "Repaired; final full458/458 native and bilingual MCP linked immediate/later/transparent bytes; WebClient1033/1039 creates real invoices107220/107221",
+  "AC05": "MCP1033/1039 export type rejected before write",
+  "AC06": "Developer full chain verified using owned CRONUS International Ltd. W1 fixtures, all groups/vendor/currency self-created; actual invoice target IDs checked. CRONUS Kappi sandbox Tester acceptance after Architect deployment remains pending.",
+  "AC07": "MCP1033/1039 guarded incoming/type writes reject with approved message guidance",
+  "candidateSha": "d68fb185925f701690047d34164ed1ab03f34ae2"
+}

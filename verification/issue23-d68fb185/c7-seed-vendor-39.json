@@ -1,0 +1,30 @@
+{
+  "at": "2026-10-23T13:14:55.042Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "set_records",
+  "args": {
+    "table": "Vendor",
+    "data": [
+      {
+        "primaryKey": {
+          "No_": "W7P23NV39"
+        },
+        "fields": {
+          "Name": "Owned worker7 issue23 39",
+          "Gen_Bus_PostingGroup": "W7P23NG39",
+          "VendorPostingGroup": "W7P23NP39",
+          "VATBus_PostingGroup": "W7P23NB39"
+        }
+      }
+    ]
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Vendor\",\n  \"mode\": \"upsert\",\n  \"written\": 1,\n  \"records\": [\n    {\n      \"id\": \"9A6C68B6-E3CE-F111-B7A4-D4D4CD871D7C\",\n      \"primaryKey\": {\n        \"No_\": \"W7P23NV39\"\n      },\n      \"fields\": {\n        \"Name\": \"Owned worker7 issue23 39\",\n        \"Gen_Bus_PostingGroup\": \"W7P23NG39\",\n        \"VendorPostingGroup\": \"W7P23NP39\",\n        \"VATBus_PostingGroup\": \"W7P23NB39\"\n      }\n    }\n  ]\n}"
+      }
+    ]
+  }
+}

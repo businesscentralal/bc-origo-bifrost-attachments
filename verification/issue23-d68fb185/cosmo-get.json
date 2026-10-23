@@ -1,0 +1,21 @@
+{
+  "statusCode": 404,
+  "durationMs": 341,
+  "url": "https://cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com/api/alpaca/release/Container/Container/f05c5afff7f6",
+  "ok": false,
+  "body": {
+    "type": "ApiException",
+    "title": "Not Found",
+    "status": 404,
+    "detail": "Container with ID f05c5afff7f6 not found for user gunnargestsson",
+    "instance": "GET /Container/Container/f05c5afff7f6",
+    "traceId": "00-fc58904cc524bba6038f296d34fb3387-282b5689e589dd8c-00"
+  },
+  "error": "Cosmo API HTTP 404 for this path/host. Default backend is https://cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com/api/alpaca/release (Alpaca release basePath). A bare public host without /api/alpaca/release yields nginx 404 on /Container/*. Prefer parent org/repo backendUrl from Cosmo when it differs. Body: {\"type\":\"ApiException\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"Container with ID f05c5afff7f6 not found for user gunnargestsson\",\"instance\":\"GET /Container/Container/f05c5afff7f6\",\"traceId\":\"00-fc58904cc524bba6038f296d34fb3387-282b5689e589dd8c-00\"}",
+  "derivedEndpoints": {
+    "containerId": "f05c5afff7f6",
+    "restBaseUrl": "https://cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com/f05c5afff7f6rest",
+    "developerBaseUrl": "https://cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com/f05c5afff7f6dev"
+  },
+  "wiringHint": "Set devConnection.onPrem baseUrl=derivedEndpoints.restBaseUrl and developerBaseUrl=derivedEndpoints.developerBaseUrl (CRONUS IS), then use bc_dev_*."
+}

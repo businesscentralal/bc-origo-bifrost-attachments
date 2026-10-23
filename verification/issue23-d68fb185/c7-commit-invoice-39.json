@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-23T13:14:59.790Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "invoke_message_type",
+  "args": {
+    "type": "Storage.Upload.CommitToRecord",
+    "data": {
+      "uploadId": "B6FC3787-5A6D-4155-840E-50374E6EA2E3",
+      "target": "IncomingDocument",
+      "dataExchangeType": "W7P23NT39",
+      "process": true,
+      "description": "W7P23N commit invoice 39"
+    },
+    "lcid": 1039
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"Storage.Upload.CommitToRecord\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"target\": \"IncomingDocument\",\n    \"incomingDocumentEntryNo\": 184,\n    \"lineNo\": 10000,\n    \"systemId\": \"F8B17CBC-E3CE-F111-B7A4-D4D4CD871D7C\",\n    \"fileName\": \"W7P23N-39-retry.csv\",\n    \"contentLength\": 23,\n    \"offloaded\": false,\n    \"dataExchangeType\": \"W7P23NT39\",\n    \"incomingDocumentStatus\": \"Created\",\n    \"createdDocument\": {\n      \"type\": \"Purchase Invoice\",\n      \"no\": \"107217\",\n      \"systemId\": \"00B27CBC-E3CE-F111-B7A4-D4D4CD871D7C\"\n    },\n    \"processErrors\": [],\n    \"processed\": true\n  }\n}"
+      }
+    ]
+  }
+}

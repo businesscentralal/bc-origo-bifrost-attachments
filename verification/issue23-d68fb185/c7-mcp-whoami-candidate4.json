@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-23T13:14:24.378Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "invoke_message_type",
+  "args": {
+    "type": "Help.WhoAmI.Get"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"Help.WhoAmI.Get\",\n  \"status\": \"Success\",\n  \"environment\": {\n    \"name\": \"Sandbox\",\n    \"entraTenantId\": \"313E18DD-A7B6-4F44-B146-1554A8D25D8B\",\n    \"companyId\": \"244B5F59-41CD-F111-98EF-6045BDACB6F5\",\n    \"companyName\": \"CRONUS International Ltd.\",\n    \"companyDisplayName\": \"\",\n    \"isSaaS\": true,\n    \"isOnPremises\": true,\n    \"isProduction\": false,\n    \"isSandbox\": true\n  },\n  \"user\": {\n    \"userSecurityId\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\",\n    \"userName\": \"GUNNAR\",\n    \"fullName\": \"\",\n    \"contactEmail\": \"\",\n    \"authenticationEmail\": \"\"\n  },\n  \"personalization\": {\n    \"profileId\": \"BUSINESS MANAGER\",\n    \"languageId\": 1033,\n    \"localeId\": 1033,\n    \"company\": \"CRONUS International Ltd.\",\n    \"timeZone\": \"UTC\"\n  },\n  \"sessionSourceApproval\": {\n    \"approvalType\": \"Automatic\",\n    \"requiresApproval\": false\n  },\n  \"userSetup\": null,\n  \"approvalSetup\": null,\n  \"notificationSetup\": [\n    {\n      \"notificationType\": \"New Record\",\n      \"notificationMethod\": \"Email\"\n    },\n    {\n      \"notificationType\": \"Approval\",\n      \"notificationMethod\": \"Email\"\n    },\n    {\n      \"notificationType\": \"Overdue\",\n      \"notificationMethod\": \"Email\"\n    }\n  ],\n  \"resource\": null,\n  \"salesperson\": null,\n  \"employee\": null,\n  \"manager\": null,\n  \"companyInfo\": {\n    \"name\": \"CRONUS International Ltd.\",\n    \"name2\": \"\",\n    \"address\": \"5 The Ring\",\n    \"city\": \"London\",\n    \"postCode\": \"W2 8HG\",\n    \"countryRegionCode\": \"GB\",\n    \"phoneNo\": \"0666-666-6666\",\n    \"email\": \"\",\n    \"homePage\": \"\",\n    \"vatRegistrationNo\": \"777777777\",\n    \"registrationNo\": \"\"\n  },\n  \"warehouseLocations\": null,\n  \"responsibilityCenters\": null,\n  \"dueFromToOwner\": null,\n  \"customer\": null,\n  \"vendor\": null,\n  \"contact\": null,\n  \"systemPrompt\": null,\n  \"unreadNotifications\": [],\n  \"pendingApprovals\": null,\n  \"canUpdateCompanyMemory\": true,\n  \"canSendAndCancelApprovalRequests\": true\n}"
+      }
+    ]
+  }
+}

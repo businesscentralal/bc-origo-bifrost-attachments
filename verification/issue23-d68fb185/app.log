@@ -1,0 +1,9 @@
+Microsoft (R) AL Compiler version 17.0.34.45391
+Copyright (C) Microsoft Corporation. All rights reserved
+
+Compilation started for project 'Bifrost Attachments' containing '95' files at '12:57:53.334'.
+
+evidence/attachments23-worker7/candidate-7/app/src/Attachments/StorageAttachmentSubscr.Codeunit.al(6,1): info AA0477: The using statements are not in a sorted order.
+
+Compilation ended at '12:58:08.365'.
+

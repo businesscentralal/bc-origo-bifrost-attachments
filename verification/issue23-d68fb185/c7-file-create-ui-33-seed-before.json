@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-23T13:14:46.569Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "get_records",
+  "args": {
+    "table": "Storage 23 Fixture File ori",
+    "filter": "where(\"Storage Code\"=const(W7P23),\"Path\"=const(W7P23N-33-ui.csv))",
+    "take": 100
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Storage 23 Fixture File ori\",\n  \"skip\": 0,\n  \"take\": 100,\n  \"count\": 0,\n  \"records\": [],\n  \"noOfRecords\": 0\n}"
+      }
+    ]
+  }
+}

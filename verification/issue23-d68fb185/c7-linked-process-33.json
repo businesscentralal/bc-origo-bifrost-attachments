@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-23T13:14:38.702Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "invoke_message_type",
+  "args": {
+    "type": "Storage.Attachment.CreateLinked",
+    "data": {
+      "storageCode": "W7P23",
+      "path": "W7P23N-33-linked.csv",
+      "fileName": "W7P23N-33-linked.csv",
+      "dataExchangeType": "W7P23NT33",
+      "process": true,
+      "description": "W7P23N linked invoice 33"
+    },
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"Storage.Attachment.CreateLinked\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"target\": \"IncomingDocument\",\n    \"incomingDocumentEntryNo\": 179,\n    \"lineNo\": 10000,\n    \"systemId\": \"E44A24B0-E3CE-F111-B7A4-D4D4CD871D7C\",\n    \"storageCode\": \"W7P23\",\n    \"path\": \"W7P23N-33-linked.csv\",\n    \"fileName\": \"W7P23N-33-linked.csv\",\n    \"contentLength\": 23,\n    \"dataExchangeType\": \"W7P23NT33\",\n    \"incomingDocumentStatus\": \"Created\",\n    \"createdDocument\": {\n      \"type\": \"Purchase Invoice\",\n      \"no\": \"107215\",\n      \"systemId\": \"ED4A24B0-E3CE-F111-B7A4-D4D4CD871D7C\"\n    },\n    \"processErrors\": [],\n    \"processed\": true\n  }\n}"
+      }
+    ]
+  }
+}

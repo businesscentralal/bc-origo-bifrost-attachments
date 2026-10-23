@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-23T12:30:26.851016+00:00",
+  "candidateSha": "d57daf8e4a62d19cdb9d145aab1b1f80765f6249",
+  "scope": [
+    "app/src/Attachments/StorageAttachmentSubscr.Codeunit.al",
+    "app/src/Attachments/StorageAttachmentMgt.Codeunit.al",
+    "test/test/DataExchPhase2Testsori.Codeunit.al",
+    "test/src/Storage23Fixture*"
+  ],
+  "layer1RawReports": [
+    "layer1-app-r2.json",
+    "layer1-test-r2.json"
+  ],
+  "rawLayer1Ready": false,
+  "classification": {
+    "modernization": "Inherited method names trigger unbounded NAS/ADAL substring regex; no authentication or scheduling APIs added/changed. No warning suppressed.",
+    "one_statement_per_line": "Procedure parameter separators are declarations; no multiple executable statements introduced. New test table formatting expanded.",
+    "hardcoded_values": "Inherited native module GUID is an application identity, not a secret; unchanged.",
+    "read_isolation": "Inherited unrelated loops unchanged; new subscriber performs one linked-main lookup. Test fixture lists only owned small rows.",
+    "changelog": "Unreleased entry describes issue23 and exact object IDs. No invented release/version bump.",
+    "testFullScan": "Windows script falls back to full71-test-source-file scan for nested project; inherited443 doc findings retained, not attributed to this diff. All new objects/nonlocal procedures have XML summary documentation."
+  },
+  "layer2": {
+    "sourceCustody": "Architect1792756291 soleworker7; worker8#168 separate source retained",
+    "compatibility": "No public production signatures/fields removed or altered; released28.3.0.122 baseline AppSourceCop0/0 in candidate5 compile",
+    "eventBoundary": "Only unhandled no-external-handler linked main attachments handled; standard unlinked/external handling remains",
+    "transaction": "Uses existing isolated Codeunit.Run; no new Commit or permanent attachment content writes",
+    "identity": "createdDocument.SystemId obtained from actual related record, no synthetic incoming-document ID",
+    "security": "No new production permissions or external account/provider knowledge; owned test-only adapter has matching test permission set; no licensing interception",
+    "tests": "Native exact content mapping/local control and actual invoice target identity in1033/1039, pending candidate5 full result at time of note",
+    "translations": "No new production labels; generated XLF guard previously passed; exact candidate5 rerun pending",
+    "scope": "One repo issue23; no pipeline/credential/foreign-source edits"
+  },
+  "appliedLessonIds": [
+    "worker7-cosmo-1791888247-empty-suite-filter",
+    "worker9-attachments158-al17-compiler-parity-20261020"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-23T13:09:54.263Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "get_records",
+  "args": {
+    "table": "Currency Exchange Rate",
+    "filter": "where(\"Currency Code\"=const(W7P23NC33),\"Starting Date\"=const(2020-01-01))",
+    "take": 100
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Currency Exchange Rate\",\n  \"skip\": 0,\n  \"take\": 100,\n  \"count\": 1,\n  \"records\": [\n    {\n      \"id\": \"D5E53004-E3CE-F111-B7A4-D4D4CD871D7C\",\n      \"primaryKey\": {\n        \"CurrencyCode\": \"W7P23NC33\",\n        \"StartingDate\": \"2020-01-01\"\n      },\n      \"fields\": {\n        \"ExchangeRateAmount\": \"1\",\n        \"AdjustmentExch_RateAmount\": \"1\",\n        \"RelationalCurrencyCode\": \"GBP\",\n        \"RelationalExch_RateAmount\": \"1\",\n        \"FixExchangeRateAmount\": \"Currency\",\n        \"RelationalAdjmtExchRateAmt\": \"1\",\n        \"SystemCreatedAt\": \"2026-10-23T13:09:53.763Z\",\n        \"SystemCreatedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\",\n        \"SystemModifiedAt\": \"2026-10-23T13:09:53.767Z\",\n        \"SystemModifiedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\"\n      }\n    }\n  ],\n  \"noOfRecords\": 1\n}"
+      }
+    ]
+  }
+}

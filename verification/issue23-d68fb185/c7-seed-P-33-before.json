@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-23T13:14:25.122Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "get_records",
+  "args": {
+    "table": "Vendor Posting Group",
+    "filter": "where(\"Code\"=const(W7P23NP33))",
+    "take": 100
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Vendor Posting Group\",\n  \"skip\": 0,\n  \"take\": 100,\n  \"count\": 1,\n  \"records\": [\n    {\n      \"id\": \"C3E53004-E3CE-F111-B7A4-D4D4CD871D7C\",\n      \"primaryKey\": {\n        \"Code\": \"W7P23NP33\"\n      },\n      \"fields\": {\n        \"PayablesAccount\": \"\",\n        \"ServiceChargeAcc_\": \"\",\n        \"PaymentDisc_DebitAcc_\": \"\",\n        \"InvoiceRoundingAccount\": \"\",\n        \"DebitCurr_Appln_Rndg_Acc_\": \"\",\n        \"CreditCurr_Appln_Rndg_Acc_\": \"\",\n        \"DebitRoundingAccount\": \"\",\n        \"CreditRoundingAccount\": \"\",\n        \"PaymentDisc_CreditAcc_\": \"\",\n        \"PaymentToleranceDebitAcc_\": \"\",\n        \"PaymentToleranceCreditAcc_\": \"\",\n        \"Description\": \"Owned issue23 fixture\",\n        \"ViewAllAccountsonLookup\": \"false\",\n        \"WHTNonTaxable\": \"false\",\n        \"SystemCreatedAt\": \"2026-10-23T13:09:48.633Z\",\n        \"SystemCreatedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\",\n        \"SystemModifiedAt\": \"2026-10-23T13:09:48.633Z\",\n        \"SystemModifiedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\"\n      }\n    }\n  ],\n  \"noOfRecords\": 1\n}"
+      }
+    ]
+  }
+}

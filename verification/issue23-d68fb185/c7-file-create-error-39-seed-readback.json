@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-23T13:15:05.550Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "get_records",
+  "args": {
+    "table": "Storage 23 Fixture File ori",
+    "filter": "where(\"Storage Code\"=const(W7P23),\"Path\"=const(W7P23N-39-error.csv))",
+    "take": 100
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Storage 23 Fixture File ori\",\n  \"skip\": 0,\n  \"take\": 100,\n  \"count\": 1,\n  \"records\": [\n    {\n      \"id\": \"15C876C2-E3CE-F111-B7A4-D4D4CD871D7C\",\n      \"primaryKey\": {\n        \"StorageCode\": \"W7P23\",\n        \"Path\": \"W7P23N-39-error.csv\"\n      },\n      \"fields\": {\n        \"Content\": \"bm90LWFuLWVudW0sVzdQMjNOVjM5LFc3UDIzTkMzOQ0K\",\n        \"SystemCreatedAt\": \"2026-10-23T13:15:05.09Z\",\n        \"SystemCreatedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\",\n        \"SystemModifiedAt\": \"2026-10-23T13:15:05.09Z\",\n        \"SystemModifiedBy\": \"422DB2A6-B21E-4444-99E1-A5082AA0C7AC\"\n      }\n    }\n  ],\n  \"noOfRecords\": 1\n}"
+      }
+    ]
+  }
+}

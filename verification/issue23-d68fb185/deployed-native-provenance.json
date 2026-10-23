@@ -1,0 +1,21 @@
+{
+  "containerId": "f014505fe2e7",
+  "apps": [
+    {
+      "app": "Bifrost Attachments",
+      "version": "28.3.0.0",
+      "source": {
+        "RepositoryUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments",
+        "Commit": "d68fb185925f701690047d34164ed1ab03f34ae2"
+      }
+    },
+    {
+      "app": "Bifrost Attachments - Tests",
+      "version": "28.3.0.0",
+      "source": {
+        "RepositoryUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments",
+        "Commit": "d68fb185925f701690047d34164ed1ab03f34ae2"
+      }
+    }
+  ]
+}

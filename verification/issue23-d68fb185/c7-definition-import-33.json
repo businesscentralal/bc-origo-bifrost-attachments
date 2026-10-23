@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-23T13:14:30.246Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "invoke_message_type",
+  "args": {
+    "type": "DataExchange.Definition.Import",
+    "data": {
+      "contentBase64": "PHJvb3Q+PERhdGFFeGNoRGVmIENvZGU9Ilc3UDIzTkQzMyIgTmFtZT0iT3duZWQgd29ya2VyNyBpc3N1ZTIzIGludm9pY2UiIFR5cGU9IkdlbmVyaWMgSW1wb3J0IiBGaWxlVHlwZT0iVmFyaWFibGUgVGV4dCIgRmlsZUVuY29kaW5nPSJVVEYtOCIgUmVhZGluZ1dyaXRpbmdYTUxwb3J0PSIxMjIwIj48RGF0YUV4Y2hMaW5lRGVmIENvZGU9IkxJTkVTIiBOYW1lPSJJbnZvaWNlIiBDb2x1bW5Db3VudD0iMyI+PERhdGFFeGNoQ29sdW1uRGVmIENvbHVtbk5vPSIxIiBOYW1lPSJEb2N1bWVudCB0eXBlIiBTaG93PSJ0cnVlIiBEYXRhVHlwZT0iVGV4dCIvPjxEYXRhRXhjaENvbHVtbkRlZiBDb2x1bW5Obz0iMiIgTmFtZT0iVmVuZG9yIiBTaG93PSJ0cnVlIiBEYXRhVHlwZT0iVGV4dCIvPjxEYXRhRXhjaENvbHVtbkRlZiBDb2x1bW5Obz0iMyIgTmFtZT0iQ3VycmVuY3kiIFNob3c9InRydWUiIERhdGFUeXBlPSJUZXh0Ii8+PERhdGFFeGNoTWFwcGluZyBUYWJsZUlkPSIxMjE0IiBOYW1lPSJPd25lZCBpbnZvaWNlIiBVc2VBc0ludGVybWVkaWF0ZVRhYmxlPSJ0cnVlIiBNYXBwaW5nQ29kZXVuaXQ9IjEyMTQiIFBvc3RNYXBwaW5nQ29kZXVuaXQ9IjEyMTgiPjxEYXRhRXhjaEZpZWxkTWFwcGluZyBDb2x1bW5Obz0iMSIgVGFyZ2V0VGFibGVJRD0iMzgiIFRhcmdldEZpZWxkSUQ9IjEiLz48RGF0YUV4Y2hGaWVsZE1hcHBpbmcgQ29sdW1uTm89IjIiIFRhcmdldFRhYmxlSUQ9IjM4IiBUYXJnZXRGaWVsZElEPSIyIi8+PERhdGFFeGNoRmllbGRNYXBwaW5nIENvbHVtbk5vPSIzIiBUYXJnZXRUYWJsZUlEPSIzOCIgVGFyZ2V0RmllbGRJRD0iMzIiLz48L0RhdGFFeGNoTWFwcGluZz48L0RhdGFFeGNoTGluZURlZj48L0RhdGFFeGNoRGVmPjwvcm9vdD4="
+    },
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"DataExchange.Definition.Import\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"codes\": [\n      \"W7P23ND33\"\n    ],\n    \"lineDefs\": 1,\n    \"mappings\": 1,\n    \"overwritten\": []\n  }\n}"
+      }
+    ]
+  }
+}

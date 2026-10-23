@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-23T13:14:56.639Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "invoke_message_type",
+  "args": {
+    "type": "Storage.Upload.CommitToRecord",
+    "data": {
+      "uploadId": "947717F8-DBD2-409B-81A8-B1E02BEB1EA3",
+      "target": "IncomingDocument",
+      "dataExchangeType": "W7P23NT39",
+      "description": "W7P23N unprocessed 39"
+    },
+    "lcid": 1039
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"Storage.Upload.CommitToRecord\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"target\": \"IncomingDocument\",\n    \"incomingDocumentEntryNo\": 183,\n    \"lineNo\": 10000,\n    \"systemId\": \"EDB17CBC-E3CE-F111-B7A4-D4D4CD871D7C\",\n    \"fileName\": \"W7P23N-39-unprocessed.csv\",\n    \"contentLength\": 23,\n    \"offloaded\": false,\n    \"dataExchangeType\": \"W7P23NT39\",\n    \"processed\": false\n  }\n}"
+      }
+    ]
+  }
+}

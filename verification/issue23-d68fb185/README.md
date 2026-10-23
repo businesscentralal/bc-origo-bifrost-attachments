@@ -1,0 +1,13 @@
+# Attachments issue23 developer verification
+
+Subject candidate: `d68fb185925f701690047d34164ed1ab03f34ae2`, branch `fix/23-linked-data-exchange-worker7`. This evidence branch adds records only; its own commit is not the compiled product candidate.
+
+- Both apps compiled with AL17, CodeCop, UICop and AppSourceCop:0errors/0warnings, released28.3.0.122 compatibility baseline. See compile-summary.json, app.log and test.log.
+- Full configured suite:458executed/458passed/0failed/0skipped at this exact source SHA on clean owned COSMO `f014505fe2e7`. See native-full-candidate7-direct.json and deployed-native-provenance.json. An earlier final-tip native run with active MCP fixtures failed441/17 because native initialization deletes their Storage Setup; that unmodified-suite result is retained. A runner authentication failure executed0 AL tests; its diagnostic failures are not AL test counts. Clean isolation and the installed SDK with the existing resolved approved credential produced the full pass; no credential or server licensing/TryFunction setting changed.
+- MCP:22passed/0failed/0skipped,11scenarios each in1033/1039 on owned `f05c5afff7f6`; c7-* envelopes preserve exact SHA, arguments, timestamp and responses. Every fixture is self-created. SQL test connector exists only in the test extension; external-only File.Create is unsuitable for SQL writes in an on-prem TryFunction, so its BLOB rows are seeded through public Data.Records.Set. No real external-storage account or shared fixture was used.
+- Web Client: actual Create Document action on linked CSV created Purchase Invoice107220(en-US) and107221(is-IS). Readbacks confirm the corresponding owned vendors. Icelandic shell/navigation is active; the W1 base document captions remain English. See ui-summary.json and screenshots.
+- Both owned containers deleted HTTP204 and read back HTTP404. Language and ChangeLog Write Guard restored before primary deletion; all own SQL fixtures removed with the owned databases. See cleanup-summary.json and raw delete/readback records.
+
+AC01–AC07 developer matrix: acceptance-matrix.json. Exact requested CRONUS Kappi sandbox Tester/UAT verification remains postdeployment; owned W1 proof is not a claim of that UAT. No issue closure, independent Claude verification, Grok clearance, CI pass, merge or deployment is claimed here.
+
+Standards snapshot ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f was used, not freshly synchronized. gateway-classification.json retains raw checker findings and scope review; no raw all-green gateway claim or suppression. Its candidate5 code is identical to final7 except the fixture documentation; final7 compile logs are separate.

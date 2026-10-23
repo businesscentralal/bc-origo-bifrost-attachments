@@ -1,0 +1,39 @@
+{
+  "version": "0.2",
+  "toolInfo": {
+    "toolName": "Microsoft (R) AL Compiler",
+    "productVersion": "17.0.34",
+    "fileVersion": "17.0.34"
+  },
+  "issues": [
+    {
+      "ruleId": "AA0477",
+      "locations": [
+        {
+          "analysisTarget": [
+            {
+              "uri": "/workspace/evidence/attachments23-worker7/candidate-7/app/src/Attachments/StorageAttachmentSubscr.Codeunit.al",
+              "region": {
+                "startLine": 6,
+                "startColumn": 1,
+                "endLine": 6,
+                "endColumn": 17
+              }
+            }
+          ]
+        }
+      ],
+      "shortMessage": "The using statements are not in a sorted order.",
+      "fullMessage": "Using statements are not ordered alphabetically.",
+      "properties": {
+        "severity": "Info",
+        "defaultSeverity": "Info",
+        "title": "Unordered using statements",
+        "category": "Readability",
+        "helpLink": "https://learn.microsoft.com/dynamics365/business-central/dev-itpro/developer/analyzers/codecop-aa0477?wt.mc_id=d365bc_inproduct_alextension",
+        "isEnabledByDefault": "True",
+        "isSuppressedInSource": "False"
+      }
+    }
+  ]
+}

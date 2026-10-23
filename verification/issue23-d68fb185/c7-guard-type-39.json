@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-23T13:15:06.941Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "set_records",
+  "args": {
+    "table": "Data Exchange Type",
+    "data": [
+      {
+        "primaryKey": {
+          "Code": "W7P23NT39"
+        },
+        "fields": {
+          "Description": "must not change"
+        }
+      }
+    ],
+    "lcid": 1039
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"status\":\"Error\",\"code\":\"PermissionDenied\",\"error\":\"Ekki er hægt að skrifa í töflu 1213 (Data Exchange Type) með Data.Records.Set. Þetta er innri tafla. Notaðu DataExchange.Type.Set.\",\"parameter\":\"subject\",\"received\":\"Data Exchange Type\",\"expected\":\"tafla sem notandinn má skrifa í með almennu Data-gerðunum\",\"nextStep\":\"DataExchange.Type.Set\",\"hint\":\"Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \\\"Help.Implementation.Get\\\" með subject \\\"Data.Records.Set\\\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund.\"}"
+      }
+    ],
+    "isError": true
+  }
+}

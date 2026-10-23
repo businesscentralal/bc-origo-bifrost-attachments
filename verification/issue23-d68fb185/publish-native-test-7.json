@@ -1,0 +1,14 @@
+{
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "appSha256": "21433a9ff5df997100ee02d852892f90d3d4d3d3c012d7f82bad3efa9daef788",
+  "containerId": "f014505fe2e7",
+  "at": "2026-10-23T13:17:50.076Z",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"fileName\": \"test.app\",\n  \"bytes\": 219665,\n  \"statusCode\": 200,\n  \"durationMs\": 16476,\n  \"developerBaseUrl\": \"https://cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com/f014505fe2e7dev\",\n  \"body\": null,\n  \"ok\": true\n}"
+      }
+    ]
+  }
+}

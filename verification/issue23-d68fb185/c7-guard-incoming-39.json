@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-23T13:15:06.457Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "set_records",
+  "args": {
+    "table": "Incoming Document",
+    "data": [
+      {
+        "primaryKey": {
+          "EntryNo_": 183
+        },
+        "fields": {
+          "DataExchangeType": "W7P23-NOT-EXIST"
+        }
+      }
+    ],
+    "lcid": 1039
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"status\":\"Error\",\"code\":\"PermissionDenied\",\"error\":\"Ekki er hægt að skrifa í reit Data Exchange Type (30) í töflu 130 (Incoming Document) með Data.Records.Set.\",\"parameter\":\"data[0].fields.DataExchangeType\",\"received\":\"W7P23-NOT-EXIST\",\"expected\":\"reitur sem notandinn má skrifa í (Reitaaðgangur Bifröst)\",\"nextStep\":\"Storage.Upload.CommitToRecord / DataExchange.Type.Set\",\"hint\":\"Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \\\"Help.Implementation.Get\\\" með subject \\\"Data.Records.Set\\\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund.\"}"
+      }
+    ],
+    "isError": true
+  }
+}

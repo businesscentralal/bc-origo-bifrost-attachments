@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-23T13:14:56.176Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "invoke_message_type",
+  "args": {
+    "type": "Storage.Upload.Begin",
+    "data": {
+      "fileName": "W7P23N-39-unprocessed.csv"
+    },
+    "lcid": 1039
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"Storage.Upload.Begin\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"uploadId\": \"947717F8-DBD2-409B-81A8-B1E02BEB1EA3\",\n    \"storageCode\": \"\",\n    \"path\": \"\",\n    \"chunkSizeHint\": 251658240,\n    \"maxChunkBytes\": 251658240\n  }\n}"
+      }
+    ]
+  }
+}

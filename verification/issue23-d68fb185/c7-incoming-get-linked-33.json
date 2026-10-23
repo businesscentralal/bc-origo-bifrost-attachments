@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-23T13:14:39.331Z",
+  "containerId": "f05c5afff7f6",
+  "sha": "d68fb185925f701690047d34164ed1ab03f34ae2",
+  "name": "invoke_message_type",
+  "args": {
+    "type": "Incoming.Document.Get",
+    "data": {},
+    "lcid": 1033,
+    "subject": "179"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"Incoming.Document.Get\",\n  \"status\": \"Success\",\n  \"entryNo\": 179,\n  \"id\": \"E34A24B0-E3CE-F111-B7A4-D4D4CD871D7C\",\n  \"description\": \"W7P23N linked invoice 33\",\n  \"documentDate\": \"\",\n  \"dueDate\": \"\",\n  \"vendorNo\": \"\",\n  \"vendorName\": \"\",\n  \"documentStatus\": \"Created\",\n  \"dataExchangeType\": \"W7P23NT33\",\n  \"processed\": false,\n  \"posted\": false,\n  \"record\": {\n    \"tableNo\": 38,\n    \"tableName\": \"Purchase Header\",\n    \"tableCaption\": \"Purchase Header\",\n    \"recordSystemId\": \"ED4A24B0-E3CE-F111-B7A4-D4D4CD871D7C\"\n  },\n  \"error\": [],\n  \"mainAttachment\": {\n    \"lineNo\": 10000,\n    \"fileName\": \"W7P23N-33-linked.csv\",\n    \"fileContent\": \"MixXN1AyM05WMzMsVzdQMjNOQzMzDQo=\"\n  },\n  \"additionalAttachments\": []\n}"
+      }
+    ]
+  }
+}
