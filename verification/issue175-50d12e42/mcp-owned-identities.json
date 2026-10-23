@@ -1,0 +1,25 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "containerId": "f074e1d6af1d",
+  "owner": "worker-2",
+  "storageCode": "X175-W2-20261023",
+  "basePath": "x175-private-account",
+  "customerNo": "C00010",
+  "customerSystemId": "07735454-E9CE-F111-B7A4-A08D045C79E0",
+  "definitionCode": "X175D50D12E",
+  "definitionSystemId": "37A63582-E8CE-F111-B7A4-A08D045C79E0",
+  "fixtureCreation": "All three records created by this worker in owned BC Web Client; actual public-API readbacks confirmed. No existing demo customer or shared fixture used. Standard sandbox customer template is configuration, not the test record.",
+  "guardConfigurationChanged": false,
+  "forceUsed": false,
+  "historicalSetupFailures": [
+    "seed-storage.json archived under candidate-da5a055d/verification (internal table denial)",
+    "seed-customer.json (Name guard denial)",
+    "seed-customer-minimal.json (wrong No. JSON key)",
+    "seed-customer-pk.json (No_ guard denial)",
+    "read-customer-final.json (wrong read projection key; corrected read succeeded)"
+  ],
+  "cleanup": "Destroy the owned container and verify its ID absent after all checks; this removes test records, files, messages and prior native fixtures.",
+  "at": "2026-10-23T13:59:55.855911+00:00",
+  "cleanupVerified": true,
+  "cleanupEvidence": "owned-container-cleanup.json"
+}

@@ -1,0 +1,13 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "containerId": "f074e1d6af1d",
+  "verified": true,
+  "runtimeSetting": "DisableWriteInsideTryFunctions=false",
+  "protectedFieldWriteRejected": true,
+  "ownCustomerNameUnchanged": true,
+  "evidence": [
+    "mcp-guard-preserved.json",
+    "read-customer-after-alignment.json"
+  ],
+  "at": "2026-10-23T14:20:26.806222+00:00"
+}

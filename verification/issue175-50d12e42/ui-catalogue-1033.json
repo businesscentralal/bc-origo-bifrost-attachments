@@ -1,0 +1,9 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "containerId": "f074e1d6af1d",
+  "lcid": 1033,
+  "scenario": "F6b corrected ownership-aware Restore catalogue description",
+  "text": "\t\tStorage.Attachment.Restore\t\n\tRestores an offloaded attachment's file from storage back into the database. Deletes only a remote file created by that attachment; pre-existing and legacy files are preserved.\t1173\tInbound\t",
+  "verified": true,
+  "at": "2026-10-23T14:45:55.651Z"
+}

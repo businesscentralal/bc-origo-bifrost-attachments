@@ -1,0 +1,24 @@
+{
+  "sha": "d6db7292d32fa29aae28e65cc20e68c7733491d5",
+  "containerId": "f074e1d6af1d",
+  "fullSuite": true,
+  "executed": 462,
+  "passed": 460,
+  "failed": 2,
+  "skipped": 0,
+  "verified": false,
+  "failures": [
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF6a_Lists_HideAccountPath_1033",
+      "result": "Fail",
+      "failure": "Assert.AreEqual failed. Expected:<1> (Integer). Actual:<0> (Integer). The fixture has one direct child of the requested type.."
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF6a_Lists_HideAccountPath_1039",
+      "result": "Fail",
+      "failure": "Assert.AreEqual failed. Expected:<1> (Integer). Actual:<0> (Integer). The fixture has one direct child of the requested type.."
+    }
+  ]
+}

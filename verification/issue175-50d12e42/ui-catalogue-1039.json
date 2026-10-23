@@ -1,0 +1,9 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "containerId": "f074e1d6af1d",
+  "lcid": 1039,
+  "scenario": "F6b corrected ownership-aware Restore catalogue description",
+  "text": "\t\tStorage.Attachment.Restore\t\n\tEndurheimtir viðhengisskrá úr geymslu í gagnagrunninn. Eyðir aðeins skrá í geymslu sem viðhengið stofnaði; skrár sem voru til fyrir og eldri skrár eru varðveittar.\t1173\tInnsent\t",
+  "verified": true,
+  "at": "2026-10-23T14:47:14.828Z"
+}

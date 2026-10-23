@@ -1,0 +1,11 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "containerId": "f074e1d6af1d",
+  "lcid": 1039,
+  "scenario": "linked",
+  "type": "Storage.Attachment.CreateLinked",
+  "messageRow": "\t{970d222b-567c-4f80-a724-b5776c5fc7cb}\t\n\t1.0\tStorage.Attachment.CreateLinked\tBakgrunnsverkefni lokið (Error)\tOrigo-BC Cloud Events MCP\t\tIcelandic (Iceland)\t10/23/2026 2:21 PM\t10/23/2026\tCODEXW2\t10/23/2026 2:21 PM\t9 millisekúndur\ttext/json\t",
+  "displayedResponse": "{\"status\":\"Error\",\"code\":\"MissingParameter\",\"error\":\"Nauðsynlega færibreytu \n\"fileName\n\" vantar.\",\"parameter\":\"fileName\",\"received\":\"(vantar)\",\"expected\":\"gildi fyrir \n\"fileName\n\"\",\"nextStep\":\"Gefðu upp \n\"fileName\n\" og sendu beiðnina aftur.\",\"hint\":\"Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \n\"Help.Implementation.Get\n\" með subject \n\"Storage.Attachment.CreateLinked\n\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund.\"}",
+  "verified": true,
+  "at": "2026-10-23T14:46:43.997Z"
+}

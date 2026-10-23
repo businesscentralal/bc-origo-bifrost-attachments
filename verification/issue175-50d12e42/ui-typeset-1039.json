@@ -1,0 +1,11 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "containerId": "f074e1d6af1d",
+  "lcid": 1039,
+  "scenario": "typeset",
+  "type": "DataExchange.Type.Set",
+  "messageRow": "\t{b0e95977-53a5-4489-92a6-5dda99ebe0f8}\t\n\t1.0\tDataExchange.Type.Set\tBakgrunnsverkefni lokið (Error)\tOrigo-BC Cloud Events MCP\t\tIcelandic (Iceland)\t10/23/2026 2:21 PM\t10/23/2026\tCODEXW2\t10/23/2026 2:21 PM\t14 millisekúndur\ttext/json\t",
+  "displayedResponse": "{\"status\":\"Error\",\"code\":\"InvalidParameterFormat\",\"error\":\"Færibreytan \n\"code\n\" er lengri en leyfilegt hámark, 20 stafir.\",\"parameter\":\"code\",\"received\":\"XXXXXXXXXXXXXXXXXXXXX\",\"expected\":\"JSON-streng sem er mest 20 stafir\",\"nextStep\":\"Sendu \n\"code\n\" sem JSON-streng sem er mest 20 stafir og reyndu aftur.\",\"hint\":\"Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \n\"Help.Implementation.Get\n\" með subject \n\"DataExchange.Type.Set\n\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund.\"}",
+  "verified": true,
+  "at": "2026-10-23T14:46:52.433Z"
+}

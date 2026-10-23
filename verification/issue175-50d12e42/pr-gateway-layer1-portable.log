@@ -1,0 +1,675 @@
+{
+  "checks": {
+    "try_prefix_convention": {
+      "pass": false,
+      "findings": [
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "issue": "Procedure 'TryGetDocAttachExtStorFields' uses Try prefix but has no [TryFunction] attribute",
+          "line": 1523,
+          "procedure": "TryGetDocAttachExtStorFields"
+        }
+      ]
+    },
+    "caption_translation": {
+      "skipped": null,
+      "findings": [],
+      "pass": true
+    },
+    "commit_in_loop": {
+      "pass": true,
+      "findings": []
+    },
+    "data_classification": {
+      "pass": true,
+      "findings": []
+    },
+    "format_guid": {
+      "pass": true,
+      "findings": []
+    },
+    "hardcoded_values": {
+      "pass": false,
+      "findings": [
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "issue": "Hardcoded GUID",
+          "line": 1140,
+          "severity": "medium",
+          "text": "NativeModuleId := '5f2e93a0-6083-4718-b05a-7ac89be5644d';"
+        }
+      ]
+    },
+    "page_code_minimal": {
+      "pass": true,
+      "findings": []
+    },
+    "namespace": {
+      "pass": true,
+      "findings": []
+    },
+    "changelog": {
+      "pass": false,
+      "findings": [
+        "No entry for version 28.3.0.0"
+      ]
+    },
+    "read_isolation": {
+      "pass": false,
+      "findings": [
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "if Link.FindSet() then",
+          "line": 1207,
+          "variable": "Link"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "if Link.FindSet() then",
+          "line": 1207,
+          "variable": "Link"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "if Link.FindSet() then",
+          "line": 1207,
+          "variable": "Link"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "if Link.FindSet() then",
+          "line": 1207,
+          "variable": "Link"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "if ErrorMessage.FindSet() then",
+          "line": 652,
+          "variable": "ErrorMessage"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "if Link.FindSet() then",
+          "line": 1207,
+          "variable": "Link"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "if Link.FindSet() then",
+          "line": 1207,
+          "variable": "Link"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "if Link.FindSet() then",
+          "line": 1207,
+          "variable": "Link"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "if Link.FindSet() then",
+          "line": 1207,
+          "variable": "Link"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "if Link.FindSet() then",
+          "line": 1207,
+          "variable": "Link"
+        }
+      ]
+    },
+    "app_json": {
+      "pass": true,
+      "findings": []
+    },
+    "modernization": {
+      "pass": false,
+      "findings": [
+        {
+          "transition": "MOD-API-001",
+          "matched": "XMLport",
+          "file": "StorageContractParts.Codeunit.al",
+          "modern": "Standard API pages (v2.0), OData V4, OAuth2 authentication, Webhooks",
+          "area": "APIs & Integrations",
+          "severity": "block"
+        },
+        {
+          "transition": "MOD-JOBQUEUE-001",
+          "matched": "NAS",
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "modern": "Enhanced Job Queue with recurrence, Task Scheduler, external notifications on failure",
+          "area": "Job Queue & Scheduling",
+          "severity": "warn"
+        },
+        {
+          "transition": "MOD-JOBQUEUE-001",
+          "matched": "NAS",
+          "file": "StorageContractParts.Codeunit.al",
+          "modern": "Enhanced Job Queue with recurrence, Task Scheduler, external notifications on failure",
+          "area": "Job Queue & Scheduling",
+          "severity": "warn"
+        },
+        {
+          "transition": "MOD-JOBQUEUE-001",
+          "matched": "NAS",
+          "file": "StorageRequestMgt.Codeunit.al",
+          "modern": "Enhanced Job Queue with recurrence, Task Scheduler, external notifications on failure",
+          "area": "Job Queue & Scheduling",
+          "severity": "warn"
+        },
+        {
+          "transition": "MOD-PEPPOL-001",
+          "matched": "PEPPOL",
+          "file": "StorageContractParts.Codeunit.al",
+          "modern": "PEPPOL BIS 3.0 + E-Documents Framework",
+          "area": "E-Invoicing",
+          "severity": "warn"
+        }
+      ]
+    },
+    "one_statement_per_line": {
+      "pass": false,
+      "findings": [
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "procedure CreateForRecordFromBlob(var Argument: Record \"Message Argument ori\"; var TempBlob: Codeunit \"Temp Blob\"; SessionFileName: Text; var ResultData: JsonObject): Boolean",
+          "line": 459
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "procedure CreateIncomingFromBlob(var Argument: Record \"Message Argument ori\"; var TempBlob: Codeunit \"Temp Blob\"; SessionFileName: Text; var ResultData: JsonObject): Boolean",
+          "line": 499
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure ReadDataExchangeRequest(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; var DataExchangeTypeCode: Code[20]; var Process: Boolean; var VendorNo: Code[20])",
+          "line": 555
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure ApplyDataExchangeToIncomingDocument(var IncomingDocument: Record \"Incoming Document\"; DataExchangeTypeCode: Code[20]; VendorNo: Code[20])",
+          "line": 584
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure AddDataExchangeResult(var Argument: Record \"Message Argument ori\"; IncomingDocument: Record \"Incoming Document\"; DataExchangeTypeCode: Code[20]; Process: Boolean; var ResultData: JsonObject)",
+          "line": 600
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "internal procedure CollectProcessErrors(var IncomingDocument: Record \"Incoming Document\"; LastError: Text; var ProcessErrors: JsonArray)",
+          "line": 643
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "procedure ReadTarget(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; ParameterName: Text; var Target: Enum \"Storage Attachment Target ori\"): Boolean",
+          "line": 707
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure ReadRecordAddress(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; var RecordRef: RecordRef): Boolean",
+          "line": 733
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure ReadTableId(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; var TableId: Integer; var TableParameter: Text): Boolean",
+          "line": 793
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure ReadContentSource(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; var TempBlob: Codeunit \"Temp Blob\"; var StorageSetup: Record \"Storage Setup ori\"; var Connector: Interface \"Storage Connector ori\"; var StoragePath: Text; var SourceTarget: Enum \"Storage Attachment Target ori\"; var SourceSystemId: Guid; var FromStorage: Boolean): Boolean",
+          "line": 831
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure LoadContent(var Argument: Record \"Message Argument ori\"; var TempBlob: Codeunit \"Temp Blob\"; StorageSetup: Record \"Storage Setup ori\"; var Connector: Interface \"Storage Connector ori\"; StoragePath: Text; SourceTarget: Enum \"Storage Attachment Target ori\"; SourceSystemId: Guid; FromStorage: Boolean; var SourceFileName: Text): Boolean",
+          "line": 892
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure RaiseIfNoAttachmentKey(var Argument: Record \"Message Argument ori\"; DocumentAttachment: Record \"Document Attachment\"; TableId: Integer)",
+          "line": 928
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure AddDocumentAttachmentResult(DocumentAttachment: Record \"Document Attachment\"; var TempBlob: Codeunit \"Temp Blob\"; Offloaded: Boolean; var ResultData: JsonObject)",
+          "line": 936
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure AddRecordNotFound(var Argument: Record \"Message Argument ori\"; TableId: Integer; Value: Text; ParameterName: Text)",
+          "line": 950
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure RespondRecordNotFound(var Argument: Record \"Message Argument ori\"; TableId: Integer; Value: Text; ParameterName: Text)",
+          "line": 958
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure RespondPathAlreadyLinked(var Argument: Record \"Message Argument ori\"; StorageCode: Code[20]; Path: Text)",
+          "line": 966
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "procedure FetchContent(StorageCode: Code[20]; Path: Text; var TempBlob: Codeunit \"Temp Blob\")",
+          "line": 986
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "procedure CanUpdateLinksOf(StorageCode: Code[20]; SourcePath: Text; var BlockReason: Text): Boolean",
+          "line": 1037
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "procedure UpdateMovedStorageFile(StorageCode: Code[20]; SourcePath: Text; TargetPath: Text)",
+          "line": 1058
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "internal procedure CheckMovedPath(var Argument: Record \"Message Argument ori\"; StorageCode: Code[20]; SourcePath: Text; TargetPath: Text)",
+          "line": 1092
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure CheckNativePathLength(var Argument: Record \"Message Argument ori\"; TableId: Integer; StorageCode: Code[20]; Path: Text; ParameterName: Text)",
+          "line": 1130
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure NativeFieldMatches(RecRef: RecordRef; FieldNumber: Integer; FieldName: Text; ExpectedType: FieldType): Boolean",
+          "line": 1161
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure UpdateNativeMovedPath(RecSystemId: Guid; StorageCode: Code[20]; Path: Text)",
+          "line": 1171
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure FindLinkedStorageFile(StorageCode: Code[20]; Path: Text; var Link: Record \"Storage Attachment Link ori\"): Boolean",
+          "line": 1202
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure FindLinkedStoragePathInDirectory(StorageCode: Code[20]; DirectoryPath: Text; var Link: Record \"Storage Attachment Link ori\"): Boolean",
+          "line": 1215
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure LinkMatches(Link: Record \"Storage Attachment Link ori\"; StorageCode: Code[20]; Path: Text; IncludeDescendants: Boolean): Boolean",
+          "line": 1226
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure RelativeMovedPath(Link: Record \"Storage Attachment Link ori\"; StorageCode: Code[20]; TargetPath: Text): Text",
+          "line": 1249
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure ReadAttachment(Target: Enum \"Storage Attachment Target ori\"; RecSystemId: Guid; var TempBlob: Codeunit \"Temp Blob\"; var FileName: Text; var EntryNo: Integer; var LineNo: Integer): Boolean",
+          "line": 1292
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure WriteAttachment(Target: Enum \"Storage Attachment Target ori\"; RecSystemId: Guid; var TempBlob: Codeunit \"Temp Blob\"; FileName: Text)",
+          "line": 1364
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure GetConnector(StorageCode: Code[20]; var StorageSetup: Record \"Storage Setup ori\"; var Connector: Interface \"Storage Connector ori\")",
+          "line": 1395
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure BuildPath(Target: Enum \"Storage Attachment Target ori\"; TableId: Integer; RecSystemId: Guid; FileName: Text; EntryNo: Integer; FolderPath: Text): Text",
+          "line": 1434
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "internal procedure SetNativeExternalStorageFields(RecSystemId: Guid; StorageCode: Code[20]; Path: Text)",
+          "line": 1482
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure TryGetDocAttachExtStorFields(var RecRef: RecordRef; var StoredExternallyFld: FieldRef; var ExternalUploadDateFld: FieldRef; var ExternalFilePathFld: FieldRef; var StoredInternallyFld: FieldRef): Boolean",
+          "line": 1523
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "text": "local procedure TryAssignNativeExternalStorageFields(var StoredExternallyFld: FieldRef; var ExternalUploadDateFld: FieldRef; var ExternalFilePathFld: FieldRef; var StoredInternallyFld: FieldRef; Offloaded: Boolean; StorageCode: Code[20]; Path: Text)",
+          "line": 1548
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "internal procedure CollectWriteDestinationErrors(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; ParameterName: Text; var Existing: Boolean)",
+          "line": 52
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "internal procedure CheckWriteDestination(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; ParameterName: Text; var Existing: Boolean): Boolean",
+          "line": 76
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "internal procedure RespondStorageFailure(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; ParameterName: Text; EntryType: Enum \"Ext. File Storage File Type\")",
+          "line": 92
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "internal procedure PathsEqual(FirstPath: Text; SecondPath: Text; CaseSensitive: Boolean): Boolean",
+          "line": 159
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "internal procedure CheckUnlinkedDestination(var Argument: Record \"Message Argument ori\"; StorageCode: Code[20]; Path: Text; ParameterName: Text): Boolean",
+          "line": 181
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ReadSetup(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; var StorageSetup: Record \"Storage Setup ori\"; var Connector: Interface \"Storage Connector ori\"): Boolean",
+          "line": 213
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ResolveSetup(var Argument: Record \"Message Argument ori\"; StorageCode: Text; ParameterName: Text; var StorageSetup: Record \"Storage Setup ori\"; var Connector: Interface \"Storage Connector ori\"): Boolean",
+          "line": 234
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ExecuteList(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; EntryType: Enum \"Ext. File Storage File Type\")",
+          "line": 271
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ExecuteGetFile(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+          "line": 297
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ExecuteCreateFile(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; var TempBlob: Codeunit \"Temp Blob\")",
+          "line": 323
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ExecuteDeleteFile(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+          "line": 346
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ExecuteCreateDirectory(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+          "line": 367
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ExecuteDeleteDirectory(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+          "line": 382
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ExecuteCopyFile(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; SourcePath: Text; TargetPath: Text)",
+          "line": 413
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ExecuteMoveFile(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; SourcePath: Text; TargetPath: Text)",
+          "line": 433
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ExecuteFileExists(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+          "line": 471
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "procedure ExecuteDirectoryExists(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+          "line": 483
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure CheckOperationPath(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; ParameterName: Text; var Path: Text; AllowRoot: Boolean): Boolean",
+          "line": 490
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure CheckTransferPaths(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; var SourcePath: Text; var TargetPath: Text): Boolean",
+          "line": 498
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure CheckTransferDestination(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; TargetPath: Text): Boolean",
+          "line": 523
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure RespondTransfer(var Argument: Record \"Message Argument ori\"; SourcePath: Text; TargetPath: Text)",
+          "line": 548
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure RunExists(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; EntryType: Enum \"Ext. File Storage File Type\"; Path: Text)",
+          "line": 557
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "internal procedure TryReadStorageFile(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; var TempBlob: Codeunit \"Temp Blob\")",
+          "line": 612
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "internal procedure TryWriteStorageFile(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; var TempBlob: Codeunit \"Temp Blob\")",
+          "line": 623
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure TryList(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; EntryType: Enum \"Ext. File Storage File Type\"; var TempFileAccountContent: Record \"File Account Content\" temporary)",
+          "line": 643
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure TryGetFile(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; var TempBlob: Codeunit \"Temp Blob\")",
+          "line": 649
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure TryCreateFile(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; var TempBlob: Codeunit \"Temp Blob\")",
+          "line": 655
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure TryDeleteFile(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+          "line": 661
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure TryCreateDirectory(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+          "line": 667
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure TryDirectoryIsEmpty(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text; var DirectoryIsEmpty: Boolean)",
+          "line": 673
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure TryDeleteDirectory(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; Path: Text)",
+          "line": 688
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure TryCopyFile(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; SourcePath: Text; TargetPath: Text)",
+          "line": 694
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "text": "local procedure TryExists(StorageSetup: Record \"Storage Setup ori\"; Connector: Interface \"Storage Connector ori\"; EntryType: Enum \"Ext. File Storage File Type\"; Path: Text; var Exists: Boolean)",
+          "line": 700
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "procedure ReadText(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Text): Boolean",
+          "line": 71
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "procedure ReadPath(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Path: Text): Boolean",
+          "line": 100
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "procedure CheckPath(var Argument: Record \"Message Argument ori\"; ParameterName: Text; Path: Text): Boolean",
+          "line": 115
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "procedure ReadInteger(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Integer): Boolean",
+          "line": 137
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "procedure ReadBoolean(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Boolean): Boolean",
+          "line": 167
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "procedure ReadNonNegativeInteger(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Integer): Boolean",
+          "line": 197
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "procedure ReadGuid(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var Value: Guid): Boolean",
+          "line": 214
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "procedure ReadBase64Content(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; var TempBlob: Codeunit \"Temp Blob\"): Boolean",
+          "line": 240
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "internal procedure CheckTextLength(var Argument: Record \"Message Argument ori\"; ParameterName: Text; TextValue: Text; MaximumLength: Integer): Boolean",
+          "line": 304
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "internal procedure CheckAddressLength(var Argument: Record \"Message Argument ori\"; ParameterName: Text; Address: Text; Capacity: Integer): Boolean",
+          "line": 313
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "internal procedure CheckStoragePath(var Argument: Record \"Message Argument ori\"; StorageSetup: Record \"Storage Setup ori\"; ParameterName: Text; var Path: Text; AllowRoot: Boolean): Boolean",
+          "line": 345
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "internal procedure ReadMutationText(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; ParameterName: Text; Required: Boolean; MaxLength: Integer; var ParsedText: Text): Boolean",
+          "line": 403
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "internal procedure ReadMutationCode(var Argument: Record \"Message Argument ori\"; RequestJson: JsonObject; ParameterName: Text; var ParsedCode: Code[20]): Boolean",
+          "line": 449
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "internal procedure RespondIfTablePermissionDenied(var Argument: Record \"Message Argument ori\"; TableId: Integer; RequireWrite: Boolean): Boolean",
+          "line": 499
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "local procedure AcceptAbsent(var Argument: Record \"Message Argument ori\"; ParameterName: Text; Required: Boolean): Boolean",
+          "line": 527
+        },
+        {
+          "file": "StorageRequestReader.Codeunit.al",
+          "text": "local procedure AddFormatError(var Argument: Record \"Message Argument ori\"; ParameterName: Text; Received: Text; TypeName: Text; Expected: Text; NextStep: Text)",
+          "line": 535
+        }
+      ]
+    },
+    "format_evaluate_enum": {
+      "pass": true,
+      "findings": []
+    },
+    "with_statements": {
+      "pass": true,
+      "findings": []
+    },
+    "today_vs_workdate": {
+      "pass": true,
+      "findings": []
+    },
+    "global_variables": {
+      "pass": true,
+      "findings": []
+    },
+    "confirm_in_page": {
+      "pass": true,
+      "findings": []
+    },
+    "object_naming": {
+      "pass": true,
+      "findings": []
+    },
+    "set_load_fields": {
+      "findings": [
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "severity": "low",
+          "line": 652,
+          "text": "if ErrorMessage.FindSet() then"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "severity": "low",
+          "line": 1207,
+          "text": "if Link.FindSet() then"
+        },
+        {
+          "file": "StorageAttachmentMgt.Codeunit.al",
+          "severity": "low",
+          "line": 1218,
+          "text": "if Link.FindSet() then"
+        }
+      ],
+      "pass": true,
+      "advisory": "Loops without SetLoadFields - consider it only for wide tables; not a gate failure"
+    },
+    "xml_doc_comments": {
+      "pass": false,
+      "findings": [
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "line": 612,
+          "procedure": "TryReadStorageFile"
+        },
+        {
+          "file": "StorageRequestMgt.Codeunit.al",
+          "line": 623,
+          "procedure": "TryWriteStorageFile"
+        }
+      ]
+    },
+    "event_subscriber_placement": {
+      "pass": true,
+      "findings": []
+    },
+    "reserved_var_names": {
+      "pass": true,
+      "findings": []
+    }
+  },
+  "total_al_files": 95,
+  "publisher": "Origo",
+  "summary": {
+    "passed": 16,
+    "failed": 7,
+    "total": 23,
+    "ready": false
+  },
+  "files_scanned": 5,
+  "project": "Bifrost Attachments",
+  "version": "28.3.0.0",
+  "mode": "diff (vs origin/main)"
+}

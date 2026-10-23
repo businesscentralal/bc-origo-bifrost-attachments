@@ -1,0 +1,124 @@
+{
+  "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/175",
+  "owner": "Brokkr (worker-2)",
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "scope": "Actual live F1-F6 UAT follow-up story; assignment title/setup-wizard wording was stale. Single Attachments repository.",
+  "acceptance": {
+    "F1": {
+      "status": "dependent/unimplemented here",
+      "owner": "worker-6",
+      "dependencyUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/174",
+      "nextAction": "Wait for authorized PR174 merge, then normally merge main preserving both writers; refresh175-affected samples and recompile/reverify changed tip. No copied commits/rebase."
+    },
+    "F2": {
+      "status": "implemented/developer-verified",
+      "evidence": [
+        "mcp-behavior-summary.json",
+        "help-summary.json",
+        "full-suite-summary.json",
+        "ui-summary.json"
+      ],
+      "result": "Single flat MissingParameter for absent/null/empty filename; malformed object one format error. Empty help count4 with one filename problem.",
+      "mergeHold": "Gunnar H2 signoff"
+    },
+    "F3": {
+      "status": "implemented/developer-verified",
+      "evidence": [
+        "mcp-behavior-summary.json",
+        "help-summary.json",
+        "full-suite-summary.json",
+        "ui-summary.json"
+      ],
+      "result": "Every collected source/table/record/target error has actionable nextStep; missing tableId received localized.",
+      "mergeHold": "Gunnar H2 signoff"
+    },
+    "F4": {
+      "status": "implemented/developer-verified",
+      "evidence": [
+        "mcp-behavior-summary.json",
+        "help-summary.json",
+        "full-suite-summary.json"
+      ],
+      "result": "All3 examples omit undeclared target; replayed1033/1039 with own record substitutions produces no UnknownParameter. Inline examples do not need sourceTarget."
+    },
+    "F5": {
+      "status": "implemented/developer-verified",
+      "evidence": [
+        "mcp-behavior-summary.json",
+        "xlf-50d12e42.log",
+        "ui-summary.json"
+      ],
+      "result": "Type.Set1039 expected/nextStep use JSON-streng; XLF guard passes."
+    },
+    "F6a": {
+      "status": "implemented/developer-verified",
+      "evidence": [
+        "mcp-behavior-summary.json",
+        "listing-help-summary.json",
+        "full-suite-summary.json",
+        "ui-summary.json"
+      ],
+      "result": "Shared File/Directory listing serializer emits relative parent and leaf name only; root/nested provider-prefixed metadata tested, schema/CHANGELOG updated.",
+      "mergeHold": "Gunnar H2 signoff"
+    },
+    "F6b": {
+      "status": "implemented/developer-verified",
+      "evidence": [
+        "help-summary.json",
+        "ui-summary.json",
+        "full-suite-summary.json"
+      ],
+      "result": "Restore bilingual catalogue/selection descriptions preserve preexisting/legacy files."
+    }
+  },
+  "general": {
+    "compile": "All3 phases0errors0warnings CodeCop/UICop/AppSourceCop with released28.3.0.122 compatibility baseline",
+    "fullNative": {
+      "executed": 462,
+      "passed": 462,
+      "failed": 0,
+      "skipped": 0
+    },
+    "mcpBehavior": {
+      "targeted": 56,
+      "sharedReader": 78,
+      "total": 134,
+      "passed": 134,
+      "failed": 0,
+      "skipped": 0,
+      "touchedTypes": "All39 types because shared reader changed; empty request regression coverage plus targeted seeded positive/negative paths. Not134 unique message types.",
+      "createsOwnData": true
+    },
+    "help": {
+      "executed": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    },
+    "webClient": {
+      "executed": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "lcids": [
+        1033,
+        1039
+      ]
+    },
+    "ownedCleanup": "COSMO f074e1d6af1d DELETE204 then GET404; all owned data removed. Owned Chrome8446 process absent.",
+    "runtime": "DisableWriteInsideTryFunctions=false set only on owned Docker per Microsoft Online semantics. Fresh full suite/MCP/UI after alignment; unchanged field write-guard verified. No SaaS/licensing assertion.",
+    "incomplete": [
+      "F1 dependency/integration",
+      "Gunnar own H2 approval",
+      "Independent Claude current-tip verification",
+      "Grok current-tip clearance",
+      "Required eligible non-author approval",
+      "Architect merge and same-SHA deployment",
+      "Tester UAT and actual issue acceptance",
+      "Secretary actual session ACK"
+    ]
+  },
+  "issueComplete": false,
+  "fixesClosureMarkupUsed": false,
+  "at": "2026-10-23T14:50:58.784776+00:00"
+}

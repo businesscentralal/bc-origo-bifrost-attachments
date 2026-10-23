@@ -1,0 +1,11 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "containerId": "f074e1d6af1d",
+  "lcid": 1039,
+  "scenario": "record",
+  "type": "Storage.Attachment.CreateForRecord",
+  "messageRow": "\t{7e7bdbbe-5aaf-43ea-9c9d-655f0ebb0b7d}\t\n\t1.0\tStorage.Attachment.CreateForRecord\tBakgrunnsverkefni lokið (Error)\tOrigo-BC Cloud Events MCP\t\tIcelandic (Iceland)\t10/23/2026 2:21 PM\t10/23/2026\tCODEXW2\t10/23/2026 2:21 PM\t11 millisekúndur\ttext/json\t",
+  "displayedResponse": "{\"status\":\"Error\",\"code\":\"MultipleErrors\",\"error\":\"2 vandamál í beiðninni. Engu var breytt.\",\"errors\":[{\"code\":\"MissingParameter\",\"error\":\"Sendu tableId eða tableName til að segja í hvaða töflu færslan er.\",\"parameter\":\"tableId\",\"received\":\"(vantar)\",\"expected\":\"tableId eða tableName\",\"nextStep\":\"Sendu tableId eða tableName og reyndu beiðnina aftur.\"},{\"code\":\"InvalidParameter\",\"error\":\"Sendu nákvæmlega eina uppsprettu innihalds: contentBase64 (eða samheitið content), storageCode með path eða sourceTarget með sourceSystemId.\",\"parameter\":\"contentBase64, storageCode, sourceSystemId\",\"expected\":\"nákvæmlega eitt af contentBase64 (eða samheitinu content), storageCode með path, sourceTarget með sourceSystemId\",\"nextStep\":\"Veldu eina uppsprettu: contentBase64 (eða content), storageCode með path eða sourceTarget með sourceSystemId.\"}],\"hint\":\"Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \n\"Help.Implementation.Get\n\" með subject \n\"Storage.Attachment.CreateForRecord\n\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund.\"}",
+  "verified": true,
+  "at": "2026-10-23T14:46:48.733Z"
+}

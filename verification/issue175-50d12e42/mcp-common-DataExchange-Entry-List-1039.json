@@ -1,0 +1,19 @@
+{
+  "containerId": "f074e1d6af1d",
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "at": "2026-10-23T14:48:47.888Z",
+  "tool": "invoke_message_type",
+  "request": {
+    "type": "DataExchange.Entry.List",
+    "data": {},
+    "lcid": 1039
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"DataExchange.Entry.List\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"count\": 0,\n    \"skip\": 0,\n    \"take\": 100,\n    \"entries\": []\n  }\n}"
+      }
+    ]
+  }
+}

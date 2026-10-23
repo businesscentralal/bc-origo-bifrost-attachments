@@ -1,0 +1,23 @@
+{
+  "containerId": "f074e1d6af1d",
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "at": "2026-10-23T14:20:36.439Z",
+  "tool": "invoke_message_type",
+  "request": {
+    "type": "DataExchange.Type.Set",
+    "data": {
+      "code": "X175T50D12E1033",
+      "dataExchDefCode": "X175D50D12E",
+      "description": "Owned issue175 1033"
+    },
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"DataExchange.Type.Set\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"code\": \"X175T50D12E1033\",\n    \"dataExchDefCode\": \"X175D50D12E\"\n  }\n}"
+      }
+    ]
+  }
+}

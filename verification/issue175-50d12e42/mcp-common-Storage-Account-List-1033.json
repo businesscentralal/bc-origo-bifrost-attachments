@@ -1,0 +1,19 @@
+{
+  "containerId": "f074e1d6af1d",
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "at": "2026-10-23T14:47:20.919Z",
+  "tool": "invoke_message_type",
+  "request": {
+    "type": "Storage.Account.List",
+    "data": {},
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"Storage.Account.List\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"accounts\": [\n      {\n        \"code\": \"X175-W2-20261023\",\n        \"description\": \"Brokkr owned issue175 MCP fixture\",\n        \"connector\": \"\",\n        \"basePath\": \"x175-private-account\",\n        \"enabled\": true\n      }\n    ]\n  }\n}"
+      }
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "containerId": "f074e1d6af1d",
+  "languages": [
+    1033,
+    1039
+  ],
+  "executed": 10,
+  "passed": 10,
+  "failed": 0,
+  "skipped": 0,
+  "verified": true,
+  "scenarios": [
+    {
+      "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+      "containerId": "f074e1d6af1d",
+      "lcid": 1033,
+      "executed": 4,
+      "passed": 4,
+      "failed": 0,
+      "scenarios": [
+        "listing",
+        "linked",
+        "record",
+        "typeset"
+      ]
+    },
+    {
+      "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+      "containerId": "f074e1d6af1d",
+      "lcid": 1033,
+      "scenario": "F6b corrected ownership-aware Restore catalogue description",
+      "text": "\t\tStorage.Attachment.Restore\t\n\tRestores an offloaded attachment's file from storage back into the database. Deletes only a remote file created by that attachment; pre-existing and legacy files are preserved.\t1173\tInbound\t",
+      "verified": true,
+      "at": "2026-10-23T14:45:55.651Z"
+    },
+    {
+      "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+      "containerId": "f074e1d6af1d",
+      "lcid": 1039,
+      "executed": 4,
+      "passed": 4,
+      "failed": 0,
+      "scenarios": [
+        "listing",
+        "linked",
+        "record",
+        "typeset"
+      ]
+    },
+    {
+      "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+      "containerId": "f074e1d6af1d",
+      "lcid": 1039,
+      "scenario": "F6b corrected ownership-aware Restore catalogue description",
+      "text": "\t\tStorage.Attachment.Restore\t\n\tEndurheimtir vi\u00f0hengisskr\u00e1 \u00far geymslu \u00ed gagnagrunninn. Ey\u00f0ir a\u00f0eins skr\u00e1 \u00ed geymslu sem vi\u00f0hengi\u00f0 stofna\u00f0i; skr\u00e1r sem voru til fyrir og eldri skr\u00e1r eru var\u00f0veittar.\t1173\tInnsent\t",
+      "verified": true,
+      "at": "2026-10-23T14:47:14.828Z"
+    }
+  ],
+  "at": "2026-10-23T14:47:51.312436+00:00"
+}

@@ -1,0 +1,19 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "phase": "default-app",
+  "errors": 0,
+  "warnings": 0,
+  "compileCompleted": true,
+  "exitCode": 0,
+  "compiler": "18.1.43.24897",
+  "analyzers": [
+    "CodeCop",
+    "UICop",
+    "AppSourceCop"
+  ],
+  "sourceManifestStable": true,
+  "dirty": false,
+  "internalsVisibleToRemoved": true,
+  "version": "28.3.0.0",
+  "diagnostics": []
+}

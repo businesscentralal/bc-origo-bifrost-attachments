@@ -1,0 +1,19 @@
+{
+  "containerId": "f074e1d6af1d",
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "at": "2026-10-23T14:20:37.449Z",
+  "tool": "get_records",
+  "request": {
+    "table": "Data Exchange Type",
+    "filter": "WHERE(Code=CONST(X175T50D12E1033))",
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Data Exchange Type\",\n  \"skip\": 0,\n  \"take\": 50,\n  \"count\": 1,\n  \"records\": [\n    {\n      \"id\": \"D56277E4-ECCE-F111-B7A4-CFB748AA419D\",\n      \"primaryKey\": {\n        \"Code\": \"X175T50D12E1033\"\n      },\n      \"fields\": {\n        \"Description\": \"Owned issue175 1033\",\n        \"DataExch_Def_Code\": \"X175D50D12E\",\n        \"EntityType\": \"Invoice\",\n        \"SystemCreatedAt\": \"2026-10-23T14:20:36.02Z\",\n        \"SystemCreatedBy\": \"C6C68C28-19E0-4554-AA92-3ACFD26FC808\",\n        \"SystemModifiedAt\": \"2026-10-23T14:20:36.02Z\",\n        \"SystemModifiedBy\": \"C6C68C28-19E0-4554-AA92-3ACFD26FC808\"\n      }\n    }\n  ],\n  \"noOfRecords\": 1\n}"
+      }
+    ]
+  }
+}

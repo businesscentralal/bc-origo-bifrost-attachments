@@ -1,0 +1,45 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "containerId": "f074e1d6af1d",
+  "version": "28.3.0.0",
+  "foundationVersion": "28.0.8.617",
+  "provenanceConfirmedAt": "2026-10-23T13:37:41.491Z",
+  "readbacks": {
+    "default": {
+      "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+      "containerId": "f074e1d6af1d",
+      "appName": "Bifrost Attachments",
+      "version": "28.3.0.0",
+      "kind": "default",
+      "status": 200,
+      "sha256": "d19a7c5ed3cb05e538c2b36bec376a42652c103a0c9d9f5fdf14dbb793f4aa42",
+      "expectedSha256": "d19a7c5ed3cb05e538c2b36bec376a42652c103a0c9d9f5fdf14dbb793f4aa42",
+      "hashMatched": true,
+      "at": "2026-10-23T13:37:13.352Z"
+    },
+    "product": {
+      "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+      "containerId": "f074e1d6af1d",
+      "appName": "Bifrost Attachments",
+      "version": "28.3.0.0",
+      "kind": "product",
+      "status": 200,
+      "sha256": "1ef76ebe6759a403c438dba4a3fc5edb8419a3b2d55091b07e6cd4699a187e29",
+      "expectedSha256": "1ef76ebe6759a403c438dba4a3fc5edb8419a3b2d55091b07e6cd4699a187e29",
+      "hashMatched": true,
+      "at": "2026-10-23T13:37:19.464Z"
+    },
+    "test": {
+      "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+      "containerId": "f074e1d6af1d",
+      "appName": "Bifrost Attachments - Tests",
+      "version": "28.3.0.0",
+      "kind": "test",
+      "status": 200,
+      "sha256": "8975734972f067709fcb516746a43b5ecd74cffafd9034ad06898e4e38ea4d86",
+      "expectedSha256": "8975734972f067709fcb516746a43b5ecd74cffafd9034ad06898e4e38ea4d86",
+      "hashMatched": true,
+      "at": "2026-10-23T13:37:41.465Z"
+    }
+  }
+}

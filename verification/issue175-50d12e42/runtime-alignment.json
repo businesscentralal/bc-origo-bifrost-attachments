@@ -1,0 +1,25 @@
+{
+  "owner": "worker-2",
+  "containerId": "f074e1d6af1d",
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "before": "true",
+  "plannedAfter": "false",
+  "setting": "DisableWriteInsideTryFunctions",
+  "basis": "Explicit task authorization to create/configure compatible owned COSMO environment, using Microsoft documented Online-compatible TryFunction write behavior. No product/source flag, credentials, licensing/consent/trial state, HTTP permission or Bifrost field write-guard configuration changes.",
+  "documentationUrls": [
+    "https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-handling-errors-using-try-methods",
+    "https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/administration/server-instance-settings"
+  ],
+  "requiresFreshVerification": [
+    "full462native",
+    "bilingual MCP",
+    "bilingual BC Web Client",
+    "deployment byte readbacks"
+  ],
+  "startedAt": "2026-10-23T14:11:03.944532+00:00",
+  "after": "false",
+  "settingReadbackConfirmed": true,
+  "serviceRestarted": true,
+  "postRestartCompanyRead": "Get-NAVCompany follow-up exited1; HTTP readiness checked separately; do not replay Set or Restart",
+  "finishedAt": "2026-10-23T14:13:39.923028+00:00"
+}

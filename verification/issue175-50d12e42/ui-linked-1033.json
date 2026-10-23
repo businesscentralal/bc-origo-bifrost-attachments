@@ -1,0 +1,11 @@
+{
+  "sha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
+  "containerId": "f074e1d6af1d",
+  "lcid": 1033,
+  "scenario": "linked",
+  "type": "Storage.Attachment.CreateLinked",
+  "messageRow": "\t{b6d72cb3-8724-4fb3-80e1-2d05c5380938}\t\n\t1.0\tStorage.Attachment.CreateLinked\tTask completed (Error)\tOrigo-BC Cloud Events MCP\t\tEnglish (United States)\t10/23/2026 2:21 PM\t10/23/2026\tCODEXW2\t10/23/2026 2:21 PM\t12 milliseconds\ttext/json\t",
+  "displayedResponse": "{\"status\":\"Error\",\"code\":\"MissingParameter\",\"error\":\"Required parameter \n\"fileName\n\" is missing.\",\"parameter\":\"fileName\",\"received\":\"(missing)\",\"expected\":\"a value for \n\"fileName\n\"\",\"nextStep\":\"Provide \n\"fileName\n\" and send the request again.\",\"hint\":\"For usage details, call the \n\"Help.Implementation.Get\n\" message type with subject \n\"Storage.Attachment.CreateLinked\n\". Always read the help before calling a message type.\"}",
+  "verified": true,
+  "at": "2026-10-23T14:42:27.126Z"
+}
