@@ -1,0 +1,32 @@
+2026-10-23T12:15:47.9053792Z     Testfunction AC01_ProbeDenied_SkipsTakeOverWithoutError Success (0.017 seconds)
+2026-10-23T12:15:47.9063412Z     Testfunction AC01b_AccessControlWriteDenied_SkipsWithoutError Success (0.003 seconds)
+2026-10-23T12:15:47.9073067Z     Testfunction AC02_ProbeOk_RunsTakeOverWithoutError Success (0.013 seconds)
+2026-10-23T12:15:47.9082979Z     Testfunction AC03_LegacyAbsent_NoOpWithoutError Success (0.013 seconds)
+2026-10-23T12:15:47.9093056Z     Testfunction Scenario_AC01_TaggedUpgradeDenied_RetriesWithoutChangingTargets Success (0.03 seconds)
+2026-10-23T12:15:47.9102873Z     Testfunction Scenario_AC02_DeniedInstallThenPermittedUpgrade_RegrantsOnce Success (0.056 seconds)
+2026-10-23T12:15:47.9112073Z     Testfunction Scenario_AC03_LegacyAbsent_RepeatedUpgradePreservesTargets Success (0.017 seconds)
+2026-10-23T12:15:47.9121501Z     Testfunction Scenario_AC01_UntaggedDeniedUpgrade_PurgesAndRecordsTag Success (0.03 seconds)
+2026-10-23T12:15:47.9130951Z     Testfunction Scenario_AC03_TagFixture_PreservesUnrelatedTags Success (0.016 seconds)
+2026-10-23T12:15:48.1388190Z CommunicationError : An error occurred while sending the request.
+2026-10-23T12:15:48.1397629Z at <ScriptBlock>, C:\Users\runneradmin\AppData\Local\Temp\6f245cd8-d2ee-45da-845a-2a71516b4f2e\ClientContext.ps1: line 93
+2026-10-23T12:15:48.1402332Z at Run-TestsInBcContainer, C:\ProgramData\BcContainerHelper\6.1.19\BcContainerHelper\AppHandling\Run-TestsInNavContainer.ps1: line 425
+2026-10-23T12:15:48.1406941Z at <ScriptBlock>, D:\a\bc-origo-bifrost-attachments\bc-origo-bifrost-attachments\.alpaca\Scripts\Overrides\RunAlPipeline\RunTestsInBcContainer.ps1: line 14
+2026-10-23T12:15:48.1410942Z at <ScriptBlock>, C:\ProgramData\BcContainerHelper\6.1.19\BcContainerHelper\AppHandling\Run-AlPipeline.ps1: line 2984
+2026-10-23T12:15:48.1415153Z at <ScriptBlock>, C:\ProgramData\BcContainerHelper\6.1.19\BcContainerHelper\AppHandling\Run-AlPipeline.ps1: line 2912
+2026-10-23T12:15:48.1419445Z at <ScriptBlock>, C:\ProgramData\BcContainerHelper\6.1.19\BcContainerHelper\AppHandling\Run-AlPipeline.ps1: line 2854
+2026-10-23T12:15:48.1424253Z at <ScriptBlock>, C:\ProgramData\BcContainerHelper\6.1.19\BcContainerHelper\AppHandling\Run-AlPipeline.ps1: line 1496
+2026-10-23T12:15:48.1428551Z at Run-AlPipeline, C:\ProgramData\BcContainerHelper\6.1.19\BcContainerHelper\AppHandling\Run-AlPipeline.ps1: line 1481
+2026-10-23T12:15:48.1432686Z at <ScriptBlock>, D:\a\_actions\microsoft\AL-Go-Actions\v9.2\RunPipeline\RunPipeline.ps1: line 477
+2026-10-23T12:15:48.1437110Z at <ScriptBlock>, D:\a\_temp\ee1dac6a-75be-406e-9cfb-50886d593c8d.ps1: line 3
+2026-10-23T12:15:48.1441287Z at <ScriptBlock>, D:\a\_actions\microsoft\AL-Go-Actions\v9.2\Invoke-AlGoAction.ps1: line 21
+2026-10-23T12:15:48.1445824Z at <ScriptBlock>, D:\a\_temp\ee1dac6a-75be-406e-9cfb-50886d593c8d.ps1: line 2
+2026-10-23T12:15:48.1449885Z at <ScriptBlock>, <No file>: line 1
+2026-10-23T12:15:48.1471008Z Current Interaction: Microsoft.Dynamics.Framework.UI.Client.Interactions.InvokeActionInteraction
+2026-10-23T12:15:48.1488581Z Time spend: 0 seconds
+2026-10-23T12:15:48.1497239Z at AwaitState, C:\Users\runneradmin\AppData\Local\Temp\6f245cd8-d2ee-45da-845a-2a71516b4f2e\ClientContext.ps1: line 226
+2026-10-23T12:15:48.1499109Z at InvokeInteraction, C:\Users\runneradmin\AppData\Local\Temp\6f245cd8-d2ee-45da-845a-2a71516b4f2e\ClientContext.ps1: line 245
+2026-10-23T12:15:48.1500972Z at InvokeAction, C:\Users\runneradmin\AppData\Local\Temp\6f245cd8-d2ee-45da-845a-2a71516b4f2e\ClientContext.ps1: line 490
+2026-10-23T12:15:48.1502160Z at Run-Tests, C:\Users\runneradmin\AppData\Local\Temp\6f245cd8-d2ee-45da-845a-2a71516b4f2e\PsTestFunctions.ps1: line 759
+2026-10-23T12:15:48.1503852Z at Run-TestsInBcContainer, C:\ProgramData\BcContainerHelper\6.1.19\BcContainerHelper\AppHandling\Run-TestsInNavContainer.ps1: line 400
+2026-10-23T12:15:48.1505049Z at <ScriptBlock>, D:\a\bc-origo-bifrost-attachments\bc-origo-bifrost-attachments\.alpaca\Scripts\Overrides\RunAlPipeline\RunTestsInBcContainer.ps1: line 14
+2026-10-23T12:15:48.1506157Z at <ScriptBlock>, C:\ProgramData\BcContainerHelper\6.1.19\BcContainerHelper\AppHandling\Run-AlPipeline.ps1: line 2984

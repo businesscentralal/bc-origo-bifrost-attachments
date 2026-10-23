@@ -1,0 +1,16 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "readAt": "2026-10-23T12:22:28.364Z",
+  "build": {
+    "id": 39948723512,
+    "state": "completed",
+    "result": "failure",
+    "url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512"
+  },
+  "sourceGuards": {
+    "id": 39948723397,
+    "state": "completed",
+    "result": "success",
+    "url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723397"
+  }
+}

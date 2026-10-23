@@ -362,7 +362,7 @@
     "retentionAuthority": "Architect1792577401.521159"
   },
   "pendingExternal": [
-    "CI PRBuild39948723512 inprogress; SourceGuards39948723397passed",
+    "CI39948723512 failed in Test client transport after91successful functions; sourceguards passed; Architect fresh paired retry required (workerActionsguardread-only)",
     "Claude independentall39bc28-w1recordings+fullcurrentheadreceipt",
     "Grok exacttipclearance and resolutionofpr:amend; eligibleapproval",
     "Architect mergecommit/sameSHAdeployment; newTesterUAT and ownedcontainerclosure"
