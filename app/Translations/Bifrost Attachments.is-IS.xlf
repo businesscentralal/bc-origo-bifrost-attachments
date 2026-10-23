@@ -2008,9 +2008,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Att. Offload Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 242875302 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Restores an offloaded attachment's file from storage back into the database and deletes the remote copy.</source>
-          <target>Endurheimtir viðhengisskrá úr geymslu í gagnagrunninn og eyðir afritinu í geymslunni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Endurheimtir viðhengisskrá úr geymslu í gagnagrunninn og eyðir afritinu í geymslunni.</note>
+          <source>Restores an offloaded attachment's file from storage back into the database. Deletes only a remote file created by that attachment; pre-existing and legacy files are preserved.</source>
+          <target>Endurheimtir viðhengisskrá úr geymslu í gagnagrunninn. Eyðir aðeins skrá í geymslu sem viðhengið stofnaði; skrár sem voru til fyrir og eldri skrár eru varðveittar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Endurheimtir viðhengisskrá úr geymslu í gagnagrunninn. Eyðir aðeins skrá í geymslu sem viðhengið stofnaði; skrár sem voru til fyrir og eldri skrár eru varðveittar.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Att. Restore Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 242875302 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
@@ -2020,9 +2020,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Att. Restore Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 242875302 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Brings an offloaded or storage-linked attachment back into the Business Central database and deletes the remote copy in storage.</source>
-          <target>Færir viðhengi sem hefur verið flutt eða tengt við geymslu aftur í Business Central gagnagrunninn og eyðir afritinu í geymslunni.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Færir viðhengi sem hefur verið flutt eða tengt við geymslu aftur í Business Central gagnagrunninn og eyðir afritinu í geymslunni.</note>
+          <source>Brings an offloaded or storage-linked attachment back into the Business Central database. Preserves pre-existing and legacy storage files; deletes only files created by that attachment.</source>
+          <target>Færir viðhengi sem hefur verið flutt eða tengt við geymslu aftur í Business Central gagnagrunninn. Varðveitir skrár sem voru til fyrir og eldri skrár í geymslu; eyðir aðeins skrám sem viðhengið stofnaði.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Færir viðhengi sem hefur verið flutt eða tengt við geymslu aftur í Business Central gagnagrunninn. Varðveitir skrár sem voru til fyrir og eldri skrár í geymslu; eyðir aðeins skrám sem viðhengið stofnaði.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Att. Restore Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 555252258 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
@@ -2151,11 +2151,23 @@
           <note from="Developer" annotates="general" priority="2">%1 = storage code, is-IS=Geymslutengingin "%1" er óvirk.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType DisabledCodeErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 2050500474" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Send contentBase64 or content and remove the other key.</source>
+          <target>Sendu contentBase64 eða content og fjarlægðu hinn lykilinn.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu contentBase64 eða content og fjarlægðu hinn lykilinn.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType InlineNextStepLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 1053095570" size-unit="char" translate="yes" xml:space="preserve">
           <source>You do not have permission to update Bifröst storage attachment links.</source>
           <target>Þú hefur ekki heimild til að uppfæra viðhengjatengingar Bifröst geymslu.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Þú hefur ekki heimild til að uppfæra viðhengjatengingar Bifröst geymslu.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType LinkPermissionErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 2374435183" size-unit="char" translate="yes" xml:space="preserve">
+          <source>(missing)</source>
+          <target>(vantar)</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=(vantar)</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType MissingValueLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 1808156426" size-unit="char" translate="yes" xml:space="preserve">
           <source>read and write permission on every linked attachment</source>
@@ -2271,6 +2283,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=recordSystemId eða no</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType RecordExpectedLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 1688925934" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Send recordSystemId or no for the record that will receive the attachment.</source>
+          <target>Sendu recordSystemId eða no fyrir færsluna sem á að fá viðhengið.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu recordSystemId eða no fyrir færsluna sem á að fá viðhengið.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType RecordNextStepLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 1407626748" size-unit="char" translate="yes" xml:space="preserve">
           <source>at most 20 characters</source>
           <target>í mesta lagi 20 stafir</target>
@@ -2313,11 +2331,23 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Sendu allan kóðann innan 20 stafa; gildi eru aldrei stytt.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType ShortenCodeLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 4113132238" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Choose one source: contentBase64 (or content), storageCode with path, or sourceTarget with sourceSystemId.</source>
+          <target>Veldu eina uppsprettu: contentBase64 (eða content), storageCode með path eða sourceTarget með sourceSystemId.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Veldu eina uppsprettu: contentBase64 (eða content), storageCode með path eða sourceTarget með sourceSystemId.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType SourceNextStepLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 3359088070" size-unit="char" translate="yes" xml:space="preserve">
           <source>tableId or tableName</source>
           <target>tableId eða tableName</target>
           <note from="Developer" annotates="general" priority="2">is-IS=tableId eða tableName</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType TableExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 2028714643" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Send tableId or tableName, then retry the request.</source>
+          <target>Sendu tableId eða tableName og reyndu beiðnina aftur.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu tableId eða tableName og reyndu beiðnina aftur.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType TableNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 3660327726" size-unit="char" translate="yes" xml:space="preserve">
           <source>Send tableId or tableName to say which table the record is in.</source>
@@ -2330,6 +2360,12 @@
           <target>DocumentAttachment eða IncomingDocument</target>
           <note from="Developer" annotates="general" priority="2">is-IS=DocumentAttachment eða IncomingDocument</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType TargetExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - NamedType 2988089010" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Send DocumentAttachment or IncomingDocument as the attachment target.</source>
+          <target>Sendu DocumentAttachment eða IncomingDocument sem áfangastað viðhengis.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu DocumentAttachment eða IncomingDocument sem áfangastað viðhengis.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - NamedType TargetNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 4170002622 - NamedType 710944825" size-unit="char" translate="yes" xml:space="preserve">
           <source>You do not have permission to update the linked Business Central table %1.</source>
@@ -3845,8 +3881,8 @@
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - Method 1997329858 - NamedType 525792792" size-unit="char" translate="yes" xml:space="preserve">
           <source>a JSON string of at most %1 characters</source>
-          <target>JSON-strengur sem er mest %1 stafir</target>
-          <note from="Developer" annotates="general" priority="2">%1 = maximum length||is-IS=JSON-strengur sem er mest %1 stafir</note>
+          <target>JSON-streng sem er mest %1 stafir</target>
+          <note from="Developer" annotates="general" priority="2">%1 = maximum length||is-IS=JSON-streng sem er mest %1 stafir</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Reader ori - Method ReadMutationText - NamedType BoundedStringLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - Method 1997329858 - NamedType 1128910002" size-unit="char" translate="yes" xml:space="preserve">
