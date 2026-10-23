@@ -1,0 +1,13 @@
+test_complete_type_passes (test_help_chapters.HelpChapterTests.test_complete_type_passes) ... ok
+test_empty_registry_fails_closed (test_help_chapters.HelpChapterTests.test_empty_registry_fails_closed) ... ok
+test_examples_stub_cannot_claim_success (test_help_chapters.HelpChapterTests.test_examples_stub_cannot_claim_success) ... ok
+test_false_return_and_comment_do_not_supply_examples (test_help_chapters.HelpChapterTests.test_false_return_and_comment_do_not_supply_examples) ... ok
+test_missing_contract_binding_fails_closed (test_help_chapters.HelpChapterTests.test_missing_contract_binding_fails_closed) ... ok
+test_missing_overview_is_rejected (test_help_chapters.HelpChapterTests.test_missing_overview_is_rejected) ... ok
+test_new_registered_type_cannot_escape_guard (test_help_chapters.HelpChapterTests.test_new_registered_type_cannot_escape_guard) ... ok
+test_shared_overview_must_name_the_requested_type (test_help_chapters.HelpChapterTests.test_shared_overview_must_name_the_requested_type) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.008s
+
+OK
