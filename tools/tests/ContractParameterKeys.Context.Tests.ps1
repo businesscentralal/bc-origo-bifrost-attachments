@@ -241,6 +241,14 @@ codeunit 4 "Parts ori"
         Assert-Failure 'builder syntax in string cannot declare key' @('read-not-declared|key')
         Set-Fixture $declareKey "// RequestJson.Get('key', Token)`n        Message('key');"
         Assert-Failure 'comment cannot prove a read' @('declared-not-read|key', 'no-reads-seen|*')
+        Set-Fixture $declareKey $readKey '' "HintLbl: Label 'Use Invoice for a new type if needed; repeat case while foreach remains text.';"
+        Assert-Clean 'control words in label do not hide request acquisition'
+        Set-Fixture $declareKey $readKey '' "// if case for foreach while repeat are comment text"
+        Assert-Clean 'control words in comment do not hide request acquisition'
+        Set-Fixture $declareKey $readKey
+        $fixturePath = Join-Path $src 'Fixture.al'
+        (Get-Content $fixturePath -Raw).Replace('RequestJson := Argument.GetRequestJson();', 'if UnknownCondition() then RequestJson := Argument.GetRequestJson();') | Set-Content $fixturePath
+        Assert-Failure 'conditional request acquisition remains unproven' @('declared-not-read|key', 'no-reads-seen|*')
         Set-Fixture $declareKey $readKey
         Remove-Item (Join-Path $src 'Fixture.al')
         Assert-Failure 'missing registered implementation cannot pass' @('unsupported-analysis|unavailable contract or implementation source')

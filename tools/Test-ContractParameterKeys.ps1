@@ -623,10 +623,11 @@ function Get-ContextBindings($Object, [string]$Body, $InputValues, $Types) {
     }
     # Only straight-line aliases before the first control-flow statement are bound.
     # Request acquisition in an ordinary top-level assignment remains supported.
-    $control = [regex]::Match($mask, '(?i)\b(if|case|for|foreach|while|repeat)\b')
+    # Control words inside labels/comments are data, not AL statements.
+    $control = $sourceTokens | Where-Object { $_.Value -match '^(if|case|for|foreach|while|repeat)$' } | Select-Object -First 1
     foreach ($name in $assignments.Keys) {
         $a = $assignments[$name]
-        if ($a.Count -ne 1 -or $InputValues.ContainsKey($name) -or ($control.Success -and $a[0].Index -gt $control.Index)) { continue }
+        if ($a.Count -ne 1 -or $InputValues.ContainsKey($name) -or ($control -and $a[0].Index -gt $control.Index)) { continue }
         $value = Resolve-ContextValue $a[0].Groups[2].Value $values $Types
         if ($value -eq 'request' -and $Types[$name] -ne 'JsonObject') { continue }
         $values[$name] = $value
@@ -634,7 +635,7 @@ function Get-ContextBindings($Object, [string]$Body, $InputValues, $Types) {
     # Resolve alias chains in source order, never a forward reference.
     foreach ($a in @($assignments.Values | ForEach-Object { $_ } | Sort-Object Index)) {
         $name = $a.Groups[1].Value
-        if ($assignments[$name].Count -ne 1 -or $InputValues.ContainsKey($name) -or ($control.Success -and $a.Index -gt $control.Index)) { continue }
+        if ($assignments[$name].Count -ne 1 -or $InputValues.ContainsKey($name) -or ($control -and $a.Index -gt $control.Index)) { continue }
         $rhs = $a.Groups[2].Value.Trim()
         if ($assignments.ContainsKey($rhs) -and $assignments[$rhs][0].Index -gt $a.Index) { $values[$name] = '?'; continue }
         $values[$name] = Resolve-ContextValue $rhs $values $Types

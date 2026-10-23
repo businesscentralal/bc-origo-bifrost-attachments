@@ -492,6 +492,37 @@ codeunit 96242 "DataExch Import Tests ori"
         exit(Fixture.Dispatch("Message Type ori"::"Storage.Upload.CommitToDataExchange", Request));
     end;
 
+    [Test]
+    procedure EntryProcess_DefinitionDeleted_RefusesRecordNotFound()
+    var
+        DataExch: Record "Data Exch.";
+        DataExchDef: Record "Data Exch. Def";
+        Request: JsonObject;
+        Response: JsonObject;
+        DefCode: Code[20];
+        EntryNo: Integer;
+    begin
+        // [SCENARIO] The definition disappears after import; Entry.Process refuses with a structured
+        // RecordNotFound for the entry's definition instead of a raw platform error.
+        Fixture.InitializeStorage();
+        DefCode := Fixture.CreateImportDefinition(0);
+        Response := ImportInline(DefCode, Fixture.TwoLineCsv(false), true);
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'The import succeeds. ' + Fixture.ReadText(Response, 'error'));
+        DataExch.SetRange("Data Exch. Def Code", DefCode);
+        DataExch.FindFirst();
+        EntryNo := DataExch."Entry No.";
+        DefCode := DataExch."Data Exch. Def Code";
+        DataExchDef.Init();
+        DataExchDef.Code := DefCode;
+        DataExchDef.Delete();
+        Clear(Request);
+        Request.Add('entryNo', EntryNo);
+        Response := Fixture.Dispatch("Message Type ori"::"DataExchange.Entry.Process", Request);
+
+        Fixture.AssertRefusal(Response, 'RecordNotFound', 'entryNo');
+        LibraryAssert.AreEqual(1, EntryCount(DefCode), 'The entry stays for inspection.');
+    end;
+
     local procedure EntryCount(DefCode: Code[20]): Integer
     var
         DataExch: Record "Data Exch.";

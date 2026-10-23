@@ -16,6 +16,7 @@ codeunit 96201 "Storage Mock State"
         Directories: List of [Text];
         RejectNextWrite: Boolean;
         RejectAfterCopy: Boolean;
+        LinkedMoveUnsupported: Boolean;
         WriteCalls: Integer;
         DeleteCalls: Integer;
         ListCalls: Integer;
@@ -27,9 +28,23 @@ codeunit 96201 "Storage Mock State"
         Clear(Directories);
         RejectNextWrite := false;
         RejectAfterCopy := false;
+        LinkedMoveUnsupported := false;
         WriteCalls := 0;
         DeleteCalls := 0;
         ListCalls := 0;
+    end;
+
+    /// <summary>Models a connector that cannot safely move linked attachment files.</summary>
+    procedure RefuseLinkedMoves()
+    begin
+        LinkedMoveUnsupported := true;
+    end;
+
+    /// <summary>Returns whether the configured mock supports linked moves.</summary>
+    /// <returns>False only when the test explicitly configures unsupported linked moves.</returns>
+    procedure SupportsLinkedMove(): Boolean
+    begin
+        exit(not LinkedMoveUnsupported);
     end;
 
     /// <summary>Counts every DeleteDirectory call that reaches the connector.</summary>

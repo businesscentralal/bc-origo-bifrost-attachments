@@ -206,9 +206,10 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     procedure Scenario_AC02_MutationContracts_MatchShippedKeys()
     begin
         // Story #69, AC02 | Time: None | Risk: Registered interfaces must delegate to shared contracts
-        AssertParameterSchema('DataExchange.Type.Set', 'code', 'string', true, 3);
-        AssertParameterSchema('DataExchange.Type.Set', 'dataExchDefCode', 'string', true, 3);
-        AssertParameterSchema('DataExchange.Type.Set', 'description', 'string', false, 3);
+        AssertParameterSchema('DataExchange.Type.Set', 'code', 'string', true, 4);
+        AssertParameterSchema('DataExchange.Type.Set', 'dataExchDefCode', 'string', true, 4);
+        AssertParameterSchema('DataExchange.Type.Set', 'description', 'string', false, 4);
+        AssertParameterSchema('DataExchange.Type.Set', 'entityType', 'string', false, 4);
         // #25/#26: Definition.Export and Export.Run deliver to storage or inline.
         // #166: both also declare the optional overwrite flag for their storage write.
         AssertParameterSchema('DataExchange.Definition.Export', 'code', 'string', true, 6);
