@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "6fd3d0d77aa7a77f4530caa8e49af654fe55244a",
+  "sourceSha": "33cd2de54bdf3246ba7fcd28956a089ca5d4a90e",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -275,8 +275,8 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-23T13:29:24.284909+00:00",
-  "inventoryPreparedFromDocumentationHead": "6fd3d0d77aa7a77f4530caa8e49af654fe55244a",
+  "refreshedAt": "2026-10-23T13:33:02.092561+00:00",
+  "inventoryPreparedFromDocumentationHead": "33cd2de54bdf3246ba7fcd28956a089ca5d4a90e",
   "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
@@ -446,7 +446,7 @@
     "test/test/StorageNativeFieldsTests.Codeunit.al": "2d2166e138792d32cf7d3950921028e40088079a68f18f8d92965ad3c36da695",
     "test/test/StorageRefusal122Tests.Codeunit.al": "a415ddfe4abadbecbc75cc8766e06e42e2317d650375f5741affa381d93da92c",
     "test/test/StorageRefusal125Tests.Codeunit.al": "a19e022410821e216689cb8935ae0ec0b69900ce0b176cf9e00282b195d841a1",
-    "test/test/StorageResponse159Tests.Codeunit.al": "f3a560da5dae63199ba10a0a0f56b617bee1654d118d3105290ce4ad431ba11e",
+    "test/test/StorageResponse159Tests.Codeunit.al": "3a713dce81179a973f2b1a02845472117acf26d3b5b8aa9900b49a5aeb1e1b56",
     "test/test/StorageSetupPageTests.Codeunit.al": "c1a36da4664f94afe9c07b4b4daf7ccd9134da3441ecf160934e106865d8bf42",
     "test/test/StorageTakeoverProbeTests.Codeunit.al": "5f4a8d429f625b48dd1ca9425dcd1d99d2eb1818e87c4a0507298353b8d51de3",
     "test/test/StorageTakeoverTests.Codeunit.al": "5db520b3f0f7689041a08812440ac3b6d09d92325fbad29bc0597823cec4ae78",
