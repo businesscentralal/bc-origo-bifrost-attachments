@@ -127,16 +127,20 @@ codeunit 10035166 "DataExch Import Run Impl ori" implements "Msg Interface ori",
 
     /// <summary>Reports that no custom workflow chapter is supplied.</summary>
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('DataExchange.Import.Run', Workflow));
     end;
 
     /// <summary>Reports that no example chapter is supplied.</summary>
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('DataExchange.Import.Run');
+        Guide.PrependSuccessExample('DataExchange.Import.Run', Examples);
         exit(Examples.Count() > 0);
     end;
 

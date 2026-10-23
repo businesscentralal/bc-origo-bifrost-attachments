@@ -70,8 +70,10 @@ codeunit 10035187 "Storage Upload Commit DX ori" implements "Msg Interface ori",
     /// <param name="Target">Unchanged; callers must ignore this value when the procedure returns false.</param>
     /// <returns>False; this chapter is not supplied.</returns>
     procedure GetTarget(var Target: JsonArray): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetTarget('Storage.Upload.CommitToDataExchange', Target));
     end;
 
     /// <summary>Supplies the parameters chapter for this message type.</summary>
@@ -141,8 +143,10 @@ codeunit 10035187 "Storage Upload Commit DX ori" implements "Msg Interface ori",
     /// <param name="Workflow">Unchanged; callers must ignore this value when the procedure returns false.</param>
     /// <returns>False; this chapter is not supplied.</returns>
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('Storage.Upload.CommitToDataExchange', Workflow));
     end;
 
     /// <summary>Returns the recorded English examples for this message type.</summary>
@@ -151,8 +155,10 @@ codeunit 10035187 "Storage Upload Commit DX ori" implements "Msg Interface ori",
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('Storage.Upload.CommitToDataExchange');
+        Guide.PrependSuccessExample('Storage.Upload.CommitToDataExchange', Examples);
         exit(Examples.Count() > 0);
     end;
 

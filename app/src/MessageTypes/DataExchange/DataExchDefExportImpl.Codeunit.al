@@ -119,16 +119,20 @@ codeunit 10035156 "DataExch Def Export Impl ori" implements "Msg Interface ori",
 
     /// <summary>Describes the existing Data Exchange workflow.</summary>
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('DataExchange.Definition.Export', Workflow));
     end;
 
     /// <summary>Returns recorded request and answer examples for the operation.</summary>
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('DataExchange.Definition.Export');
+        Guide.PrependSuccessExample('DataExchange.Definition.Export', Examples);
         exit(Examples.Count() > 0);
     end;
 

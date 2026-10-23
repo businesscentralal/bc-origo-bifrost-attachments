@@ -149,8 +149,10 @@ codeunit 10035153 "Storage Att. Offload Impl ori" implements "Msg Interface ori"
     /// <param name="Workflow">Unchanged; callers must ignore this value when the procedure returns false.</param>
     /// <returns>False; this chapter is not supplied.</returns>
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('Storage.Attachment.Offload', Workflow));
     end;
 
     /// <summary>Returns the recorded English examples for this message type.</summary>
@@ -159,8 +161,10 @@ codeunit 10035153 "Storage Att. Offload Impl ori" implements "Msg Interface ori"
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('Storage.Attachment.Offload');
+        Guide.PrependSuccessExample('Storage.Attachment.Offload', Examples);
         exit(Examples.Count() > 0);
     end;
 
@@ -179,9 +183,10 @@ codeunit 10035153 "Storage Att. Offload Impl ori" implements "Msg Interface ori"
     /// <param name="Notes">Out: operation notes about candidate selection and one offload per record.</param>
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        Notes := 'Find candidates with Data.Records.Get on the attachment tables using the Offloaded ori field and tableView WHERE(Offloaded ori=CONST(0)). Run one offload call per record in a batch workflow.';
-        exit(true);
+        exit(Guide.GetNotes('Storage.Attachment.Offload', Notes));
     end;
 
     /// <summary>Classifies the message direction for Foundation.</summary>

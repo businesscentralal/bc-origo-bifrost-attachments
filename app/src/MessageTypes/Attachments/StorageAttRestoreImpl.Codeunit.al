@@ -148,8 +148,10 @@ codeunit 10035154 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
     /// <param name="Workflow">Unchanged; callers must ignore this value when the procedure returns false.</param>
     /// <returns>False; this chapter is not supplied.</returns>
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('Storage.Attachment.Restore', Workflow));
     end;
 
     /// <summary>Returns the recorded English examples for this message type.</summary>
@@ -158,8 +160,10 @@ codeunit 10035154 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('Storage.Attachment.Restore');
+        Guide.PrependSuccessExample('Storage.Attachment.Restore', Examples);
         exit(Examples.Count() > 0);
     end;
 
@@ -178,9 +182,10 @@ codeunit 10035154 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
     /// <param name="Notes">Out: cleared to empty.</param>
     /// <returns>False; this chapter is not supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        Clear(Notes);
-        exit(false);
+        exit(Guide.GetNotes('Storage.Attachment.Restore', Notes));
     end;
 
     /// <summary>Classifies the message direction for Foundation.</summary>
