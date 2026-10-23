@@ -4,12 +4,13 @@ The test extension adds the `MCP Fixture 23` storage type (96250), backed by the
 `Storage 23 Fixture File ori` test table. Unlike the existing session-local Mock,
 these bytes remain available between separate MCP calls. Configure a unique owned
 `Storage Setup ori` code with this type in an individually owned development
-container, then create every file with `Storage.Upload.Begin`, `Storage.Upload.Append` and
-`Storage.Upload.Commit`. The commit is a database-writing message, which permits
-this SQL-backed fixture to persist its bytes. External-only `Storage.File.Create`
-and `Storage.File.Delete` run inside a TryFunction on on-premises containers and
-cannot perform this fixture's database insert/delete; do not change the server's
-TryFunction setting to make those calls work.
+container, then seed each owned file through the public `Data.Records.Set` message
+on test table `Storage 23 Fixture File ori`: primary key `StorageCode` and `Path`,
+with base64 bytes in `Content`. Use the JSON field keys from `Help.Fields.Get`.
+This database-writing message persists the fixture before `CreateLinked` reads it.
+External-only `Storage.File.Create` and `Storage.File.Delete` run inside a
+TryFunction on on-premises containers and cannot perform this fixture's database
+insert/delete. Do not change the server's TryFunction setting for this fixture.
 
 Use it to exercise the normal production dispatcher, validation, upload, linked
 attachment read and base-app Data Exchange processing paths in LCIDs 1033/1039.
