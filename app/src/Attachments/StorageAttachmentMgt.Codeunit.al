@@ -593,10 +593,13 @@ codeunit 10035136 "Storage Attachment Mgt ori"
 
     local procedure AddDataExchangeResult(var Argument: Record "Message Argument ori"; IncomingDocument: Record "Incoming Document"; DataExchangeTypeCode: Code[20]; Process: Boolean; var ResultData: JsonObject)
     var
+        RelatedRecordRef: RecordRef;
         ProcessErrors: JsonArray;
         CreatedDocument: JsonObject;
         SavedRequest: JsonObject;
         ProcessRequest: JsonObject;
+        RelatedRecord: Variant;
+        CreatedSystemId: Guid;
         LastError: Text;
         Processed: Boolean;
         EntryNo: Integer;
@@ -619,7 +622,12 @@ codeunit 10035136 "Storage Attachment Mgt ori"
                     Processed := true;
                     CreatedDocument.Add('type', IncomingDocumentTypeName(IncomingDocument));
                     CreatedDocument.Add('no', IncomingDocument."Document No.");
-                    CreatedDocument.Add('systemId', Format(IncomingDocument.SystemId, 0, 4));
+                    if IncomingDocument.GetRecord(RelatedRecord) then begin
+                        RelatedRecordRef.GetTable(RelatedRecord);
+                        CreatedSystemId := RelatedRecordRef.Field(RelatedRecordRef.SystemIdNo()).Value;
+                        CreatedDocument.Add('systemId', Format(CreatedSystemId, 0, 4));
+                        RelatedRecordRef.Close();
+                    end;
                     ResultData.Add('createdDocument', CreatedDocument);
                 end;
             end else
