@@ -455,7 +455,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             'Storage.Attachment.Offload':
                 exit('Moves the content of an existing IncomingDocument or DocumentAttachment into storage and keeps a link so Business Central can still open it. The external file write is outside the Business Central transaction.');
             'Storage.Attachment.Restore':
-                exit('Restores an offloaded IncomingDocument or DocumentAttachment to Business Central and deletes its stored file. The external deletion cannot be rolled back with the Business Central transaction.');
+                exit('Restores an offloaded IncomingDocument or DocumentAttachment to Business Central. Deletes only a stored file newly created by that attachment; pre-existing files and legacy links are preserved. Any external deletion cannot be rolled back with the Business Central transaction.');
             'Storage.Upload.Begin':
                 exit('Opens a chunked upload and returns its uploadId. Append numbered base64 chunks, then choose Commit, CommitToRecord or CommitToDataExchange; use Abort to discard an open session.');
             'Storage.Upload.Append':
