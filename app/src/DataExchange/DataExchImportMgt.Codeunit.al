@@ -376,7 +376,15 @@ codeunit 10035141 "DataExch Import Mgt ori"
         DataExchDef: Record "Data Exch. Def";
         TargetRef: RecordRef;
     begin
-        DataExchDef.Get(DataExch."Data Exch. Def Code");
+        DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
+        DataExchDef.SetLoadFields(Code, "Data Handling Codeunit");
+        if not DataExchDef.Get(DataExch."Data Exch. Def Code") then begin
+            ErrorCode := "Bifrost Error Code ori"::RecordNotFound;
+            ErrorText := StrSubstNo(DefinitionNotFoundErr, DataExch."Data Exch. Def Code");
+            Expected := ImportDefinitionExpectedLbl;
+            NextStep := SelectImportDefinitionLbl;
+            exit(true);
+        end;
         if FindCodeunitBlocker(DataExchDef."Data Handling Codeunit", ErrorCode, ErrorText, Expected, NextStep) then
             exit(true);
         DataExchMapping.ReadIsolation := IsolationLevel::ReadCommitted;
