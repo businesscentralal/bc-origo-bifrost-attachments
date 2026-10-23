@@ -1,0 +1,172 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "repo": "businesscentralal/bc-origo-bifrost-attachments",
+  "pr": 174,
+  "branch": "fix/160-help-chapters-sourceguard-worker6",
+  "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/fix/160-help-chapters-sourceguard-worker6",
+  "immutableCommitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/fc6674e83b3c4a83650191fea8b131252c97be74",
+  "publicationEvidence": {
+    "repo": "businesscentralal/bc-origo-bifrost-attachments",
+    "branch": "fix/160-help-chapters-sourceguard-worker6",
+    "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/fix/160-help-chapters-sourceguard-worker6",
+    "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/fc6674e83b3c4a83650191fea8b131252c97be74",
+    "remoteVerifiedAt": "2026-10-23T11:48:47.148Z"
+  },
+  "owner": "worker-6",
+  "displayName": "Reginn",
+  "summary": "Current main integrated without tooling diff;177selfapp fix and six refreshed refusals retained. Developer exacttipverification complete with one disclosed MCP response transport recovery; CI/independent acceptance/review/merge/deploy/UAT remain pending.",
+  "acceptanceCriteriaVerified": false,
+  "acceptancePendingReason": "Issue160 AC1 needs independentall39realbc28-w1recordings and AC4Claude currenthead verification; not inferred from owned COSMO or historical receipts. Current CI/Grok/approval/Architect/Tester gates separate.",
+  "noSuppressions": true,
+  "compile": {
+    "app": {
+      "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "errors": 0,
+      "warnings": 0,
+      "analyzers": [
+        "CodeCop",
+        "UICop",
+        "AppSourceCop"
+      ],
+      "sha256": "dc4da8e1bbbbdb6f8f901839f5fc6b23daf9c77fb87500483b013f1b55ac26d1",
+      "evidenceUrls": [
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/candidate-compile-summary.json",
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/candidate-default-app.log",
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/deployed-provenance.json"
+      ]
+    },
+    "testProduct": {
+      "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "errors": 0,
+      "warnings": 0,
+      "analyzers": [
+        "CodeCop",
+        "UICop",
+        "AppSourceCop"
+      ],
+      "sha256": "feccaa9ef101f999974ba36eb3b4d54c2f4cf4e15c676f381cf87052e0e37c2a",
+      "evidenceUrls": [
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/candidate-compile-summary.json",
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/candidate-test-product.log",
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/deployed-provenance.json"
+      ]
+    },
+    "testApp": {
+      "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "errors": 0,
+      "warnings": 0,
+      "analyzers": [
+        "CodeCop",
+        "UICop",
+        "AppSourceCop"
+      ],
+      "sha256": "09752cb06ea5ae06c546d2e3f6633a9ebe4e3efdc7c88b0053d0d39c4fd9016c",
+      "evidenceUrls": [
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/candidate-compile-summary.json",
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/candidate-test-app.log",
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/deployed-provenance.json"
+      ]
+    }
+  },
+  "breakingBaseline": {
+    "sourceSha": "17ba5b8d64d078a1d180dc626391968b440ec7ed",
+    "role": "released-app main breaking-change baseline",
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "sha256": "0c49d1649107dfbab65912c13288fbb6b96874cbb57d30aada296e27186eed89",
+    "at": "2026-10-23T11:45:52.264815+00:00"
+  },
+  "tests": {
+    "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "fullSuite": true,
+    "total": 455,
+    "executed": 455,
+    "passed": 455,
+    "failed": 0,
+    "skipped": 0,
+    "codeunits": 32,
+    "sourceReconciled": true,
+    "evidenceUrls": [
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/native-full-suite-counts.json",
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/native-full-suite.xml"
+    ]
+  },
+  "ui": {
+    "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "verified": true,
+    "executed": 6,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "summary": "4exactnew-task help responses viewed/downloaded at requestLCIDs1033/1039;2actual clientlanguage checks1033/1039;English restored/readback.",
+    "evidenceUrls": [
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/ui-help/summary.json",
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/ui-locales/summary.json"
+    ]
+  },
+  "mcp": {
+    "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "touchedMessageTypes": [
+      "Storage.Upload.Begin",
+      "Storage.Attachment.CreateLinked",
+      "DataExchange.Export.Run",
+      "DataExchange.Import.Run",
+      "DataExchange.PaymentExport.Run"
+    ],
+    "regressionMessageTypes": 39,
+    "verified": true,
+    "createsOwnData": true,
+    "passed": 206,
+    "failed": 0,
+    "skipped": 0,
+    "functionalPassed": 128,
+    "helpBusinessChecksPassed": 78,
+    "toolTransportFailures": 1,
+    "readOnlyExistingResponseRecoveries": 1,
+    "summary": "64Englishfull-answer matches+64Icelandicstatus/code/parameter comparisons+78helpbusinesschecks.58pre-write refusals+6reads perLCID;no provider/customer/shared/financialfixtures.205structuredmessage-type tool responses,1fetchfailure after completedtask recovered byGETexistingresponse;no taskreplay,originalfailure preserved.322newaudits includes116automatichelp-on-refusal rows. Native suite covers mutations independently.",
+    "evidenceUrls": [
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/mcp-summary.json",
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/actual-recordings-1033.json",
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/actual-recordings-1039.json",
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/actual-help-captures.json",
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/help-transport-recovery.json",
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/per-type-acceptance-matrix.json"
+    ]
+  },
+  "cleanup": {
+    "verifiedOwnedBusinessCleanup": true,
+    "businessTableInstances": 16,
+    "businessRows": 0,
+    "nativeAndReadHelpersRemoved": true,
+    "languageRestored": true,
+    "sameOwnedContainer": "f0328cfb44e5",
+    "verifiedStopped": true,
+    "deleted": false,
+    "protectedAuditRetained": 2324,
+    "retentionAuthority": "Architect1792577401.521159; retain same stoppedcontainer until actualpostdeployTesterUATandissueclosure;no deletionprobes/manualusagereporting",
+    "evidenceUrls": [
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/cleanup-summary.json",
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/owned-audit-row-inventory.json",
+      "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/owned-stopped-readback.json"
+    ]
+  },
+  "acceptanceMatrixUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/acceptance-matrix.json",
+  "learning": {
+    "applied": [
+      "attachments160-de0c3c5-recorded-response-drift-20261021-worker6",
+      "attachments174-worker6-retained-test-default-republish-20261023"
+    ],
+    "summary": "Recorded refusal drift from parallel validation edits -> replay every stored answer at deployedtip ->64/64Englishmatches. Retained Test dependent compilation against no-IVT Default -> removeonlyownedTest withoutdata deletion before pairedrepublish ->exact3artifacthash/source readbacks."
+  },
+  "independentClaude": "PENDING at this head; older954receipt is historical",
+  "grokClearance": "PENDING currenthead;pr:amend preserved",
+  "hostedCI": "PRBuild39948723512inprogress;SourceGuards39948723397passed at lastread;actualcurrentstate refreshed before handoff",
+  "evidenceUrls": [
+    "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/github-candidate.json",
+    "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/integration-check.json",
+    "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/acceptance-matrix.json"
+  ],
+  "createdAt": "2026-10-23T12:19:59.588242+00:00"
+}
