@@ -3,6 +3,7 @@ namespace Origo.Bifrost.Attachments;
 using Microsoft.EServices.EDocument;
 using Microsoft.Foundation.Attachment;
 using System.Reflection;
+using System.IO;
 using System.Utilities;
 
 /// <summary>
@@ -28,6 +29,34 @@ codeunit 10035137 "Storage Attachment Subscr ori"
         if not Link.Get(Database::"Incoming Document Attachment", Sender.SystemId) then
             exit;
         AttachmentMgt.FetchContent(Link."Storage Code", Link."Storage Path", TempBlob);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Incoming Doc. with Data. Exch.", 'OnBeforeSetSourceForDataExch', '', false, false)]
+    local procedure ServeIncomingDataExchangeContent(IncomingDocument: Record "Incoming Document"; var DataExch: Record "Data Exch."; DataExchDef: Record "Data Exch. Def"; var Result: Boolean; var IsHandled: Boolean)
+    var
+        IncomingDocumentAttachment: Record "Incoming Document Attachment";
+        Link: Record "Storage Attachment Link ori";
+        TempBlob: Codeunit "Temp Blob";
+        ContentStream: InStream;
+    begin
+        // The base data-exchange runner reads Content directly instead of calling GetContent.
+        // Keep external handlers and unlinked attachments on the standard base-app path.
+        if IsHandled or (DataExchDef."Ext. Data Handling Codeunit" <> 0) then
+            exit;
+        IncomingDocumentAttachment.SetLoadFields(Name);
+        if not IncomingDocument.GetMainAttachment(IncomingDocumentAttachment) then
+            exit;
+        if not Link.Get(Database::"Incoming Document Attachment", IncomingDocumentAttachment.SystemId) then
+            exit;
+        if not IncomingDocumentAttachment.GetContent(TempBlob) then
+            exit;
+
+        TempBlob.CreateInStream(ContentStream);
+        DataExch.InsertRec(IncomingDocumentAttachment.Name, ContentStream, DataExchDef.Code);
+        DataExch.Validate("Incoming Entry No.", IncomingDocument."Entry No.");
+        DataExch.Modify(true);
+        Result := true;
+        IsHandled := true;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Document Attachment", 'OnBeforeGetAsTempBlob', '', false, false)]

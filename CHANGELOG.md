@@ -1,5 +1,3 @@
-
-
 # Changelog
 
 All notable changes to Bifrost Attachments are documented here.
@@ -12,9 +10,19 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - `Storage Attachment Mgt ori` (10035136) validates CreateLinked file names only after the required-value reader succeeds, so a missing, null or empty name reports one MissingParameter and malformed JSON reports one format error. CreateForRecord's collected table, record and source errors include actionable next steps; a missing table also carries `received`.
 - `Storage Request Reader ori` (10035194) supplies recovery guidance for object/array text values and corrects the Icelandic bounded-string wording to “JSON-streng”. `Storage Att. Restore Impl ori` (10035154) describes the existing ownership rule: only remote files created by that attachment are deleted; pre-existing and legacy files are preserved. Catalogue and selection descriptions agree in both languages.
-- **H2 contract change, pending Gunnar merge sign-off:** `Storage Request Mgt ori` (10035193) returns listing `parentDirectory` relative to the connection base path (empty at its root), and `name` as the leaf name. Provider-prefixed metadata is not exposed by Storage.File.List or the shared Storage.Directory.List serializer. The response chapter describes this boundary. Test-only persisted connector 96262 supplies adversarial provider-prefixed metadata for native and self-seeded MCP regressions.
+- **H2 contract change, Gunnar approved in issue #175 comment 6367540500:** `Storage Request Mgt ori` (10035193) returns listing `parentDirectory` relative to the connection base path (empty at its root), and `name` as the leaf name. Provider-prefixed metadata is not exposed by Storage.File.List or the shared Storage.Directory.List serializer. The response chapter describes this boundary. Test-only persisted connector 96262 supplies adversarial provider-prefixed metadata for native and self-seeded MCP regressions.
 - `Storage Contract Parts ori` (10035183) refreshes affected CreateLinked/CreateForRecord refusal answers. Inline CreateForRecord examples omit the undeclared `target` key; `sourceTarget` continues to select an existing attachment only when paired with `sourceSystemId`.
-- Bilingual native regressions in test codeunit 96258 cover missing/null/empty/malformed file names and independently collected actionable CreateForRecord errors. F1 remains dependent on retained worker-6 PR #174; F6a's account-base-path contract change requires Gunnar's H2 sign-off before merge. No issue closure, runtime acceptance or H2 approval is implied by this entry.
+- Bilingual native regressions in test codeunit 96258 cover missing/null/empty/malformed file names and independently collected actionable CreateForRecord errors. F1 incorporates retained worker-6 PR #174 after its authorized merge into main; folder-style Upload.Begin examples use the live flat-file next step. F2/F3 H2 is approved in PR #181 comment 6369323257. Current-tip verification and delivery remain tracked separately.
+
+### Fixed (2026-10-23) - Linked incoming-document Data Exchange processing (#23)
+
+- Codeunit 10035137 `Storage Attachment Subscr ori` supplies Bifröst-linked incoming-document attachment content to the base Data Exchange source hook without restoring the local BLOB or changing the remote file. Ordinary attachments and definitions with an external data-handling codeunit keep their existing path.
+- Codeunit 96237 `DataExch Phase2 Tests ori` adds bilingual linked/local CSV reader, mapping and purchase-invoice regressions.
+- The test app adds isolated persistent MCP fixture storage: table 96250 `Storage 23 Fixture File ori`, codeunit 96250 `Storage 23 Fixture Impl ori`, enumextension 96250 `Storage 23 Fixture Type ori` (value 96250 `MCP Fixture 23`), and permissionset 96250 `Storage23Fixture ori`. `test/mcp-fixtures-23.md` documents self-created fixture data and owned cleanup, without external accounts or licensing interception.
+
+### Changed (2026-10-23) - Created-document identity (#23)
+
+- Codeunit 10035136 `Storage Attachment Mgt ori` returns the actual created target record's SystemId in `createdDocument.systemId` instead of the incoming-document SystemId. Callers that previously treated this field as the incoming-document ID must use the incoming-document identity separately; the field identifies the created document.
 
 ### Fixed (2026-10-21) - Pipeline: AppSource build gate after the first AppSource release
 
@@ -68,6 +76,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed
 
+- Refresh six recorded refusal answers in help codeunit 10035183 after the merged validation changes: Upload.Begin, Attachment.CreateLinked, DataExchange.Export.Run, Import.Run and PaymentExport.Run (#160).
 - README documentation and context-sensitive help addresses now use `https://docs.bifrost.origo.is`, matching `app.json` (#160).
 
 ### Fixed (2026-10-20) - Icelandic discovery and upload refusals (#157)
