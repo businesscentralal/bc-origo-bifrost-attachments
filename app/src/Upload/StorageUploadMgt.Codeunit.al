@@ -44,6 +44,10 @@ codeunit 10035197 "Storage Upload Mgt ori"
         NoStorageCodeNextStepLbl: Label 'Use Storage.Upload.CommitToRecord to attach the file to a record, or begin a new session with a storageCode.', Comment = 'is-IS=Notaðu Storage.Upload.CommitToRecord til að hengja skrána við færslu eða byrjaðu nýja lotu með storageCode.';
         UnknownTargetErr: Label 'Parameter "target" has value "%1", which is not an attachment target.', Comment = '%1 = received value, is-IS=Færibreytan "target" hefur gildið "%1", sem er ekki viðhengjamarkmið.';
         TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Comment = 'is-IS=DocumentAttachment eða IncomingDocument';
+        MissingFileNameErr: Label 'Required parameter "%1" is missing.', Comment = '%1 = parameter name, is-IS=Nauðsynlega færibreytu "%1" vantar.';
+        MissingFileNameValueLbl: Label '(missing)', Comment = 'is-IS=(vantar)';
+        MissingFileNameExpectedLbl: Label 'a value for "%1"', Comment = '%1 = parameter name, is-IS=gildi fyrir "%1"';
+        MissingFileNameNextStepLbl: Label 'Provide "%1" and send the request again.', Comment = '%1 = parameter name, is-IS=Gefðu upp "%1" og sendu beiðnina aftur.';
 
     /// <summary>Opens a chunked upload session and returns its <c>uploadId</c>.</summary>
     /// <param name="Argument">The message argument carrying <c>fileName</c> and optional <c>storageCode</c>/<c>path</c>/<c>folderPath</c>/<c>declaredSize</c>; receives the error response.</param>
@@ -69,6 +73,10 @@ codeunit 10035197 "Storage Upload Mgt ori"
         if StorageCode <> '' then
             RequestMgt.ResolveSetup(Argument, StorageCode, 'storageCode', StorageSetup, Connector);
         Reader.ReadText(Argument, RequestJson, 'fileName', true, FileName);
+        // The shared reader reports an absent fileName, but a JSON null or an empty string reads
+        // successfully yet yields no name; guard those too so the refusal comes before any storage call.
+        if FileName = '' then
+            Argument.AddError("Bifrost Error Code ori"::MissingParameter, StrSubstNo(MissingFileNameErr, 'fileName'), 'fileName', MissingFileNameValueLbl, MissingFileNameExpectedLbl, MissingFileNameNextStepLbl);
         Reader.ReadPath(Argument, RequestJson, 'path', false, Path);
         Reader.ReadPath(Argument, RequestJson, 'folderPath', false, FolderPath);
         Reader.ReadNonNegativeInteger(Argument, RequestJson, 'declaredSize', false, DeclaredSize);
