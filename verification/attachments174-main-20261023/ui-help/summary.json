@@ -1,0 +1,57 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "containerId": "f0328cfb44e5",
+  "containerName": "worker6-attachments160-20261020-w1",
+  "clientLanguage": "English (United States)",
+  "requestLcids": [
+    1033,
+    1039
+  ],
+  "executed": 4,
+  "passed": 4,
+  "failed": 0,
+  "skipped": 0,
+  "checks": [
+    {
+      "type": "Storage.Upload.Begin",
+      "lcid": 1033,
+      "messageId": "a4de9245-4a0e-470d-a2d5-374f01a8d1bd",
+      "messageCreatedAt": "2026-10-23T12:04:18.607Z",
+      "exactCurrentTipCaptureMatched": true,
+      "passed": true,
+      "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+      "screenshot": "Storage-Upload-Begin-1033.png"
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "lcid": 1039,
+      "messageId": "a1623300-4379-405c-a5d3-04109f70ba69",
+      "messageCreatedAt": "2026-10-23T12:04:18.823Z",
+      "exactCurrentTipCaptureMatched": true,
+      "passed": true,
+      "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+      "screenshot": "Storage-Upload-Begin-1039.png"
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1033,
+      "messageId": "b04cdc0f-f5ba-47e4-8483-7baa1a6729b1",
+      "messageCreatedAt": "2026-10-23T12:07:16.847Z",
+      "exactCurrentTipCaptureMatched": true,
+      "passed": true,
+      "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+      "screenshot": "DataExchange-Export-Run-1033.png"
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1039,
+      "messageId": "f445c557-d7c1-49f1-81cb-02861b184d91",
+      "messageCreatedAt": "2026-10-23T12:07:17.063Z",
+      "exactCurrentTipCaptureMatched": true,
+      "passed": true,
+      "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+      "screenshot": "DataExchange-Export-Run-1039.png"
+    }
+  ],
+  "finishedAt": "2026-10-23T12:11:13.768Z"
+}

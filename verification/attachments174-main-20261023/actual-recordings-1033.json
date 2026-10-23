@@ -1,0 +1,2542 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "lcid": 1033,
+  "executed": 64,
+  "records": [
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:12.430Z",
+      "finishedAt": "2026-10-23T12:08:12.978Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "read",
+      "request": {
+        "type": "Help.Storage.Get",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "format": "markdown",
+          "markdown": "# Bifrost Attachments - storage message types\r\n\r\nRead and write files in external storage (Azure Blob Storage, Azure File Share or SharePoint) through the Business Central external file storage connectors, stage large files in chunks and keep document attachments in storage instead of the database.\r\n\r\nStorage file writes refuse an existing destination by default. Send overwrite: true only to intentionally replace an unlinked file. Copy and Move always refuse an existing destination. CreateForRecord and CreateLinked link pre-existing storage files without acquiring deletion ownership: Restore and attachment deletion preserve those files.\r\n\r\n## Getting started\r\n\r\n1. Call `Storage.Account.List` to see the storage connections set up on the Attachments Setup page. Each row has a `storageCode`.\r\n2. Send that `storageCode` with every other storage call. Paths are relative to the base folder of the connection and use forward slashes; `.` and `..` segments, backslashes and double slashes are refused.\r\n3. Read the full contract of one type with `Help.Implementation.Get` (subject = the message type).\r\nStorage operations use the registered Business Central External File Storage connector interface. Attachments does not select behavior from connector IDs or inspect connector-owned account tables, and it requires no minimum connector version or build: any connector registered with External File Storage works. The registered connector owns credentials, provider-specific path rules and backend errors. Attachments validates its own request syntax and storage field lengths before calling the connector.\r\nAttachment protection spans setups using the same registered account and canonical logical path. Reuse that registration for shared attachment storage and keep path spelling consistent. Separate account registrations are separate scopes, even if they reach the same physical files; the interface exposes no physical identity or case-comparison contract.\r\nStorage.File.Copy and Storage.File.Move require a destination that the connector reports as absent. An existing destination returns PreconditionFailed before a write. Linked moves require the storage implementation to guarantee source preservation on failure; the platform facade cannot provide that guarantee.\r\n\r\n## Message types\r\n\r\n| Area | Message type | Purpose |\r\n|---|---|---|\r\n| Accounts | `Storage.Account.List` | Lists the configured storage connections. |\r\n| Files | `Storage.File.List` | Lists the files in a folder. |\r\n| Files | `Storage.File.Get` | Returns the content of one file as base64. |\r\n| Files | `Storage.File.Exists` | Tells whether a file exists. |\r\n| Files | `Storage.File.Create` | Writes a file from base64 content. |\r\n| Files | `Storage.File.Copy` | Copies a file to a new path. |\r\n| Files | `Storage.File.Move` | Moves or renames a file; a linked file keeps its attachment link. |\r\n| Files | `Storage.File.Delete` | Deletes a file that no attachment uses. |\r\n| Directories | `Storage.Directory.List` | Lists the subfolders of a folder. |\r\n| Directories | `Storage.Directory.Exists` | Tells whether a folder exists. |\r\n| Directories | `Storage.Directory.Create` | Creates a folder. |\r\n| Directories | `Storage.Directory.Delete` | Deletes a folder that holds no linked file. |\r\n| Attachments | `Storage.Attachment.Offload` | Moves the content of a document attachment to storage and links it. |\r\n| Attachments | `Storage.Attachment.Restore` | Writes linked content back into the attachment. Deletes only a file newly created by that attachment; pre-existing files and legacy links are preserved. |\r\n| Attachments | `Storage.Attachment.CreateLinked` | Attaches a stored file to a new or existing incoming document. Optional `dataExchangeType`, `process` and `vendorNo`. |\r\n| Attachments | `Storage.Attachment.CreateForRecord` | Creates an attachment on a record from base64 content. |\r\n| Uploads | `Storage.Upload.Begin` | Opens a chunked upload session. |\r\n| Uploads | `Storage.Upload.Append` | Adds the next chunk to an open session. |\r\n| Uploads | `Storage.Upload.Status` | Returns the state of a session. |\r\n| Uploads | `Storage.Upload.Commit` | Assembles the chunks and writes the file to storage. |\r\n| Uploads | `Storage.Upload.CommitToRecord` | Assembles the chunks and attaches the file to a record or incoming document. IncomingDocument accepts `dataExchangeType`, `process` and `vendorNo`. |\r\n| Uploads | `Storage.Upload.CommitToDataExchange` | Assembles the chunks into a parsed Data Exch. entry of an import definition; optional `process` and `keepFileInStorage`. See `Help.DataExchange.Get`. |\r\n| Uploads | `Storage.Upload.Abort` | Discards an open session and its chunks. |\r\n\r\n## Chunked uploads\r\n\r\nUse an upload session when a file is larger than one request can carry: `Storage.Upload.Begin`, then `Storage.Upload.Append` once per chunk in order, then `Storage.Upload.Commit`, `Storage.Upload.CommitToRecord` or `Storage.Upload.CommitToDataExchange`. `Storage.Upload.Begin` returns `chunkSizeHint` and `maxChunkBytes`. Files are written under the `bifrost-uploads/` root unless the request names a folder. A session belongs to the user who opened it.\r\n\r\nTo feed an incoming document: `Storage.Upload.Begin` → `Storage.Upload.Append` → `Storage.Upload.CommitToRecord` with `target` IncomingDocument and optional `dataExchangeType`, `process` and `vendorNo`. Wire the type first with `DataExchange.Type.Set`. Processing errors stay on the incoming document as `processErrors`; the commit still returns Success. A file already in storage uses `Storage.Attachment.CreateLinked` with the same parameters.\r\n\r\n## Linked files\r\n\r\nA stored file that backs a document attachment is protected. Deleting it and writing a create, copy, move or upload commit onto its path are refused with `PreconditionFailed`; use `Storage.Attachment.Restore` to bring the content back first.\r\n\r\n## Errors\r\n\r\nA refused call answers `status = Error` with `code`, `parameter`, `received`, `expected` and `nextStep` for every problem found, so all problems can be fixed in one retry.\r\n\r\n`Storage.Directory.Delete` refuses the connection root path with `InvalidParameter` before the connector is called; name a folder below the root to delete.\r\n\r\n## Permissions\r\n\r\nAssign the `BIFROST Attach ori` permission set. The Data Exchange message types are described by `Help.DataExchange.Get` and need `BIFROST DataExch ori`.\r\n"
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:12.997Z",
+      "finishedAt": "2026-10-23T12:08:13.226Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "read",
+      "request": {
+        "type": "Storage.Account.List",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "accounts": []
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:13.250Z",
+      "finishedAt": "2026-10-23T12:08:13.699Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.List",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.List\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:13.727Z",
+      "finishedAt": "2026-10-23T12:08:14.189Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Get",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Get\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:14.215Z",
+      "finishedAt": "2026-10-23T12:08:14.653Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Create",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt",
+          "contentBase64": "SGVsbG8="
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Create\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:14.663Z",
+      "finishedAt": "2026-10-23T12:08:15.079Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.File.Create",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"storageCode\" is missing.",
+            "parameter": "storageCode",
+            "received": "(missing)",
+            "expected": "a value for \"storageCode\"",
+            "nextStep": "Provide \"storageCode\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"path\" is missing.",
+            "parameter": "path",
+            "received": "(missing)",
+            "expected": "a value for \"path\"",
+            "nextStep": "Provide \"path\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"contentBase64\" is missing.",
+            "parameter": "contentBase64",
+            "received": "(missing)",
+            "expected": "a value for \"contentBase64\"",
+            "nextStep": "Provide \"contentBase64\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Create\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:15.106Z",
+      "finishedAt": "2026-10-23T12:08:15.519Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Delete",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Delete\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:15.528Z",
+      "finishedAt": "2026-10-23T12:08:15.948Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.File.Delete",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"storageCode\" is missing.",
+            "parameter": "storageCode",
+            "received": "(missing)",
+            "expected": "a value for \"storageCode\"",
+            "nextStep": "Provide \"storageCode\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"path\" is missing.",
+            "parameter": "path",
+            "received": "(missing)",
+            "expected": "a value for \"path\"",
+            "nextStep": "Provide \"path\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Delete\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:15.971Z",
+      "finishedAt": "2026-10-23T12:08:16.418Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Copy",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "sourcePath": "X160-help/example.txt",
+          "targetPath": "X160-help/copy.txt"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Copy\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:16.425Z",
+      "finishedAt": "2026-10-23T12:08:16.868Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.File.Copy",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"storageCode\" is missing.",
+            "parameter": "storageCode",
+            "received": "(missing)",
+            "expected": "a value for \"storageCode\"",
+            "nextStep": "Provide \"storageCode\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"sourcePath\" is missing.",
+            "parameter": "sourcePath",
+            "received": "(missing)",
+            "expected": "a value for \"sourcePath\"",
+            "nextStep": "Provide \"sourcePath\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"targetPath\" is missing.",
+            "parameter": "targetPath",
+            "received": "(missing)",
+            "expected": "a value for \"targetPath\"",
+            "nextStep": "Provide \"targetPath\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Copy\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:16.892Z",
+      "finishedAt": "2026-10-23T12:08:17.340Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Move",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "sourcePath": "X160-help/example.txt",
+          "targetPath": "X160-help/moved.txt"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Move\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:17.364Z",
+      "finishedAt": "2026-10-23T12:08:17.806Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.File.Move",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"storageCode\" is missing.",
+            "parameter": "storageCode",
+            "received": "(missing)",
+            "expected": "a value for \"storageCode\"",
+            "nextStep": "Provide \"storageCode\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"sourcePath\" is missing.",
+            "parameter": "sourcePath",
+            "received": "(missing)",
+            "expected": "a value for \"sourcePath\"",
+            "nextStep": "Provide \"sourcePath\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"targetPath\" is missing.",
+            "parameter": "targetPath",
+            "received": "(missing)",
+            "expected": "a value for \"targetPath\"",
+            "nextStep": "Provide \"targetPath\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Move\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:17.833Z",
+      "finishedAt": "2026-10-23T12:08:18.263Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Exists",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Exists\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:18.284Z",
+      "finishedAt": "2026-10-23T12:08:18.764Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Directory.List",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Directory.List\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:18.785Z",
+      "finishedAt": "2026-10-23T12:08:19.244Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Directory.Create",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Directory.Create\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:19.251Z",
+      "finishedAt": "2026-10-23T12:08:19.703Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Directory.Create",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"storageCode\" is missing.",
+            "parameter": "storageCode",
+            "received": "(missing)",
+            "expected": "a value for \"storageCode\"",
+            "nextStep": "Provide \"storageCode\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"path\" is missing.",
+            "parameter": "path",
+            "received": "(missing)",
+            "expected": "a value for \"path\"",
+            "nextStep": "Provide \"path\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Directory.Create\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:19.731Z",
+      "finishedAt": "2026-10-23T12:08:20.152Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Directory.Delete",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Directory.Delete\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:20.164Z",
+      "finishedAt": "2026-10-23T12:08:20.592Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Directory.Delete",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"storageCode\" is missing.",
+            "parameter": "storageCode",
+            "received": "(missing)",
+            "expected": "a value for \"storageCode\"",
+            "nextStep": "Provide \"storageCode\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"path\" is missing.",
+            "parameter": "path",
+            "received": "(missing)",
+            "expected": "a value for \"path\"",
+            "nextStep": "Provide \"path\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Directory.Delete\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:20.615Z",
+      "finishedAt": "2026-10-23T12:08:21.044Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Directory.Exists",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Directory.Exists\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:21.069Z",
+      "finishedAt": "2026-10-23T12:08:21.497Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Attachment.Offload",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "target": "DocumentAttachment",
+          "systemId": "not-a-guid",
+          "folderPath": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "InvalidParameterFormat",
+            "error": "Parameter \"systemId\" has value \"not-a-guid\", which is not a valid GUID. Expected a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+            "parameter": "systemId",
+            "received": "not-a-guid",
+            "expected": "a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+            "nextStep": "Send the value as a GUID, as returned by the call that created it."
+          },
+          {
+            "code": "RecordNotFound",
+            "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+            "parameter": "storageCode",
+            "received": "X160-NOT-CONFIGURED",
+            "nextStep": "Call Storage.Account.List to see the configured storage codes."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.Offload\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:21.505Z",
+      "finishedAt": "2026-10-23T12:08:21.958Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Attachment.Offload",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"target\" is missing.",
+            "parameter": "target",
+            "received": "(missing)",
+            "expected": "a value for \"target\"",
+            "nextStep": "Provide \"target\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"systemId\" is missing.",
+            "parameter": "systemId",
+            "received": "(missing)",
+            "expected": "a value for \"systemId\"",
+            "nextStep": "Provide \"systemId\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"storageCode\" is missing.",
+            "parameter": "storageCode",
+            "received": "(missing)",
+            "expected": "a value for \"storageCode\"",
+            "nextStep": "Provide \"storageCode\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.Offload\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:21.980Z",
+      "finishedAt": "2026-10-23T12:08:22.420Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Attachment.Restore",
+        "data": {
+          "target": "DocumentAttachment",
+          "systemId": "not-a-guid"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"systemId\" has value \"not-a-guid\", which is not a valid GUID. Expected a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "systemId",
+        "received": "not-a-guid",
+        "expected": "a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Send the value as a GUID, as returned by the call that created it.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.Restore\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:22.428Z",
+      "finishedAt": "2026-10-23T12:08:23.097Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Attachment.Restore",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"target\" is missing.",
+            "parameter": "target",
+            "received": "(missing)",
+            "expected": "a value for \"target\"",
+            "nextStep": "Provide \"target\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"systemId\" is missing.",
+            "parameter": "systemId",
+            "received": "(missing)",
+            "expected": "a value for \"systemId\"",
+            "nextStep": "Provide \"systemId\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.Restore\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:23.122Z",
+      "finishedAt": "2026-10-23T12:08:23.660Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.Begin",
+        "data": {
+          "fileName": "X160-help/example.txt",
+          "declaredSize": 5
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameter",
+        "error": "Parameter \"fileName\" must be a file name without folders or relative segments.",
+        "parameter": "fileName",
+        "received": "X160-help/example.txt",
+        "expected": "a nonempty file name without slash or backslash",
+        "nextStep": "Send only the file name, for example INV-001.pdf, without a folder path.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Begin\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:23.670Z",
+      "finishedAt": "2026-10-23T12:08:24.104Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.Begin",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"fileName\" is missing.",
+            "parameter": "fileName",
+            "received": "(missing)",
+            "expected": "a value for \"fileName\"",
+            "nextStep": "Provide \"fileName\" and send the request again."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Parameter \"fileName\" must be a file name without folders or relative segments.",
+            "parameter": "fileName",
+            "expected": "a nonempty file name without slash or backslash",
+            "nextStep": "Send only the file name, for example INV-001.pdf, without a folder path."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Begin\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:24.130Z",
+      "finishedAt": "2026-10-23T12:08:24.570Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.Append",
+        "data": {
+          "uploadId": "not-a-guid",
+          "sequence": 1,
+          "contentBase64": "SGVsbG8="
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"uploadId\" has value \"not-a-guid\", which is not a valid GUID. Expected a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Send the value as a GUID, as returned by the call that created it.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Append\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:24.581Z",
+      "finishedAt": "2026-10-23T12:08:25.015Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.Append",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"uploadId\" is missing.",
+            "parameter": "uploadId",
+            "received": "(missing)",
+            "expected": "a value for \"uploadId\"",
+            "nextStep": "Provide \"uploadId\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"sequence\" is missing.",
+            "parameter": "sequence",
+            "received": "(missing)",
+            "expected": "a value for \"sequence\"",
+            "nextStep": "Provide \"sequence\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"contentBase64\" is missing.",
+            "parameter": "contentBase64",
+            "received": "(missing)",
+            "expected": "a value for \"contentBase64\"",
+            "nextStep": "Provide \"contentBase64\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Append\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:25.045Z",
+      "finishedAt": "2026-10-23T12:08:25.484Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.Commit",
+        "data": {
+          "uploadId": "not-a-guid"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"uploadId\" has value \"not-a-guid\", which is not a valid GUID. Expected a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Send the value as a GUID, as returned by the call that created it.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Commit\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:25.494Z",
+      "finishedAt": "2026-10-23T12:08:25.909Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.Commit",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"uploadId\" is missing.",
+        "parameter": "uploadId",
+        "received": "(missing)",
+        "expected": "a value for \"uploadId\"",
+        "nextStep": "Provide \"uploadId\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Commit\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:25.938Z",
+      "finishedAt": "2026-10-23T12:08:26.408Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.Abort",
+        "data": {
+          "uploadId": "not-a-guid"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"uploadId\" has value \"not-a-guid\", which is not a valid GUID. Expected a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Send the value as a GUID, as returned by the call that created it.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Abort\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:26.438Z",
+      "finishedAt": "2026-10-23T12:08:26.912Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.Abort",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"uploadId\" is missing.",
+        "parameter": "uploadId",
+        "received": "(missing)",
+        "expected": "a value for \"uploadId\"",
+        "nextStep": "Provide \"uploadId\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Abort\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:26.961Z",
+      "finishedAt": "2026-10-23T12:08:27.483Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.Status",
+        "data": {
+          "uploadId": "not-a-guid"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"uploadId\" has value \"not-a-guid\", which is not a valid GUID. Expected a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Send the value as a GUID, as returned by the call that created it.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.Status\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:27.512Z",
+      "finishedAt": "2026-10-23T12:08:28.089Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Attachment.CreateLinked",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt",
+          "fileName": "example.txt"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Call Storage.Account.List to see the configured storage codes.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateLinked\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:28.097Z",
+      "finishedAt": "2026-10-23T12:08:28.550Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Attachment.CreateLinked",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "5 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"storageCode\" is missing.",
+            "parameter": "storageCode",
+            "received": "(missing)",
+            "expected": "a value for \"storageCode\"",
+            "nextStep": "Provide \"storageCode\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"path\" is missing.",
+            "parameter": "path",
+            "received": "(missing)",
+            "expected": "a value for \"path\"",
+            "nextStep": "Provide \"path\" and send the request again."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Parameter \"fileName\" must be a file name without folders or relative segments.",
+            "parameter": "path",
+            "expected": "a nonempty file name without slash or backslash",
+            "nextStep": "Send a path inside the connection, e.g. invoices/2026/INV-001.pdf."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"fileName\" is missing.",
+            "parameter": "fileName",
+            "received": "(missing)",
+            "expected": "a value for \"fileName\"",
+            "nextStep": "Provide \"fileName\" and send the request again."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Parameter \"fileName\" must be a file name without folders or relative segments.",
+            "parameter": "fileName",
+            "expected": "a nonempty file name without slash or backslash",
+            "nextStep": "Send only the file name, for example INV-001.pdf, without a folder path."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateLinked\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:28.574Z",
+      "finishedAt": "2026-10-23T12:08:29.039Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Attachment.CreateForRecord",
+        "data": {
+          "target": "IncomingDocument",
+          "fileName": "example.txt",
+          "contentBase64": "not-base64!"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Send tableId or tableName to say which table the record is in.",
+            "parameter": "tableId",
+            "expected": "tableId or tableName"
+          },
+          {
+            "code": "InvalidParameterFormat",
+            "error": "Parameter \"contentBase64\" is not valid base64 content.",
+            "parameter": "contentBase64",
+            "expected": "base64 content",
+            "nextStep": "Encode the file bytes as standard base64 and send them again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateForRecord\". Always read the help before calling a message type.",
+        "warnings": [
+          {
+            "code": "UnknownParameter",
+            "message": "Parameter \"target\" is not declared by this message type and may be ignored.",
+            "parameter": "target",
+            "nextStep": "Remove this key or consult Help.Implementation.Get for the declared parameters."
+          }
+        ]
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:29.046Z",
+      "finishedAt": "2026-10-23T12:08:29.491Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Attachment.CreateForRecord",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Send tableId or tableName to say which table the record is in.",
+            "parameter": "tableId",
+            "expected": "tableId or tableName"
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Send exactly one content source: contentBase64 (or the alias content), storageCode with path, or sourceTarget with sourceSystemId.",
+            "parameter": "contentBase64, storageCode, sourceSystemId",
+            "expected": "exactly one of contentBase64 (or the alias content), storageCode with path, sourceTarget with sourceSystemId"
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateForRecord\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:29.521Z",
+      "finishedAt": "2026-10-23T12:08:30.160Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.CommitToRecord",
+        "data": {
+          "uploadId": "not-a-guid",
+          "target": "IncomingDocument"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"uploadId\" has value \"not-a-guid\", which is not a valid GUID. Expected a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Send the value as a GUID, as returned by the call that created it.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.CommitToRecord\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:30.168Z",
+      "finishedAt": "2026-10-23T12:08:31.122Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.CommitToRecord",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"uploadId\" is missing.",
+        "parameter": "uploadId",
+        "received": "(missing)",
+        "expected": "a value for \"uploadId\"",
+        "nextStep": "Provide \"uploadId\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.CommitToRecord\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:31.145Z",
+      "finishedAt": "2026-10-23T12:08:31.845Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Definition.Delete",
+        "data": {
+          "code": "X160-MISSING"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Data Exchange definition X160-MISSING was not found.",
+        "parameter": "code",
+        "received": "X160-MISSING",
+        "expected": "an existing Data Exchange definition",
+        "nextStep": "Call DataExchange.Definition.List and use the exact definition code.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Definition.Delete\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:31.856Z",
+      "finishedAt": "2026-10-23T12:08:32.318Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Definition.Delete",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Parameter \"code\" is required.",
+        "parameter": "code",
+        "received": "not supplied",
+        "expected": "a JSON string of at most 20 characters",
+        "nextStep": "Send \"code\" as a JSON string of at most 20 characters and retry.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Definition.Delete\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:32.344Z",
+      "finishedAt": "2026-10-23T12:08:33.162Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Definition.Export",
+        "data": {
+          "code": "X160-MISSING",
+          "inline": true
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No Data Exch. Def exists for code 'X160-MISSING'.",
+        "parameter": "code",
+        "received": "X160-MISSING",
+        "expected": "Use a code returned by DataExchange.Definition.List.",
+        "nextStep": "Use a code returned by DataExchange.Definition.List.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Definition.Export\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:33.176Z",
+      "finishedAt": "2026-10-23T12:08:33.900Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Definition.Export",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Missing required 'code' in the request.",
+        "parameter": "code",
+        "received": "(missing)",
+        "expected": "a JSON string",
+        "nextStep": "Provide \"code\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Definition.Export\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:33.941Z",
+      "finishedAt": "2026-10-23T12:08:34.511Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Export.Run",
+        "data": {
+          "dataExchDefCode": "X160-MISSING",
+          "tableId": 18,
+          "inline": true
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Data Exchange definition X160-MISSING was not found.",
+        "parameter": "dataExchDefCode",
+        "received": "X160-MISSING",
+        "expected": "an existing Generic Export definition",
+        "nextStep": "Call DataExchange.Definition.List with direction Export and use the exact code of a Generic Export definition.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Export.Run\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:34.520Z",
+      "finishedAt": "2026-10-23T12:08:35.067Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Export.Run",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Parameter \"dataExchDefCode\" is required.",
+            "parameter": "dataExchDefCode",
+            "received": "not supplied",
+            "expected": "a JSON string of at most 20 characters",
+            "nextStep": "Send \"dataExchDefCode\" as a JSON string of at most 20 characters and retry."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Name the records to export with tableId or tableName (and an optional tableView), or with recordIds.",
+            "parameter": "tableId",
+            "received": "(missing)",
+            "expected": "tableId or tableName, or recordIds",
+            "nextStep": "Send tableId 18 with tableView WHERE(No.=FILTER(10000..30000)), for example, or a recordIds array of SystemIds."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Choose where the file goes: storageCode with path or folderPath, or inline true.",
+            "parameter": "storageCode",
+            "received": "(missing)",
+            "expected": "storageCode, or inline true",
+            "nextStep": "Send storageCode (find it with Storage.Account.List), or inline true for a file of at most 1 MB."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Export.Run\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:35.091Z",
+      "finishedAt": "2026-10-23T12:08:35.566Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Import.Run",
+        "data": {
+          "dataExchDefCode": "X160-MISSING",
+          "contentBase64": "SGVsbG8="
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Data Exchange definition X160-MISSING was not found.",
+        "parameter": "dataExchDefCode",
+        "received": "X160-MISSING",
+        "expected": "an existing Generic Import or Payroll Import definition",
+        "nextStep": "Call DataExchange.Definition.List with direction Import and use the exact code of a Generic Import or Payroll Import definition.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Import.Run\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:35.577Z",
+      "finishedAt": "2026-10-23T12:08:36.184Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Import.Run",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Parameter \"dataExchDefCode\" is required.",
+            "parameter": "dataExchDefCode",
+            "received": "not supplied",
+            "expected": "a JSON string of at most 20 characters",
+            "nextStep": "Send \"dataExchDefCode\" as a JSON string of at most 20 characters and retry."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Send contentBase64 or storageCode with path to select the file to import.",
+            "parameter": "contentBase64",
+            "received": "(missing)",
+            "expected": "exactly one source: contentBase64, or storageCode with path",
+            "nextStep": "Send contentBase64 or storageCode with path to select the file to import."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Import.Run\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:36.213Z",
+      "finishedAt": "2026-10-23T12:08:36.434Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "read",
+      "request": {
+        "type": "Help.DataExchange.Get",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "format": "markdown",
+          "markdown": "# Bifrost Attachments - Data Exchange message types\r\n\r\nRun the Business Central Data Exchange Framework (Data Exch. Def, Data Exchange Type and Data Exch. entries) without the user interface: install definitions, import files into parsed entries, apply the mappings, and export records or payment journals to files in storage.\r\n\r\n## Pipeline\r\n\r\n1. **Install or discover** a definition: `DataExchange.Definition.Import` installs the standard definition XML (`storageCode` + `path`, `contentBase64` up to 1 MB, or a chunked `uploadId`; `overwrite`, `newCode`). `DataExchange.Definition.List` and `DataExchange.Definition.Get` show what exists; `DataExchange.Definition.Export` returns the header by default; `inline: true` adds the XML, and `storageCode` + `path`/`folderPath` writes the XML to storage. Both XML destinations may be requested. Storage writes refuse an existing file by default; overwrite: true explicitly allows replacement. Linked attachment files remain protected. External writes cannot be rolled back.\r\n2. **Import** a file with a Generic Import or Payroll Import definition: `DataExchange.Import.Run` (`storageCode` + `path` of a stored file, which stays unchanged, or `contentBase64` up to 1 MB) or, for a large file, `Storage.Upload.Begin` -> `Storage.Upload.Append` -> `Storage.Upload.CommitToDataExchange` (`uploadId`, `dataExchDefCode`, optional `keepFileInStorage`). Both create a Data Exch. entry, run the definition reader and return `entryNo`, `lineCount` and `fieldCount`. A file the reader cannot read is refused and leaves no entry.\r\n3. **Inspect** the parsed fields: `DataExchange.Entry.Get` (`entryNo`, paged `fields`), `DataExchange.Entry.List` for older entries.\r\n4. **Process** the entry: `DataExchange.Entry.Process` runs the definition mappings and returns `targets[]` (table, inserted and modified counts, record SystemIds). Or send `process: true` on the import to do both in one call; the import is then committed first, and a processing error is returned in `processResult.errors` while the entry stays.\r\n5. **Export**: `DataExchange.Export.Run` runs a Generic Export definition over `tableId`/`tableName` with `tableView`, or over `recordIds`, and delivers the file to storage (`storageCode` + `path` or `folderPath`) and/or `inline` (up to 1 MB). `DataExchange.PaymentExport.Run` exports a payment journal batch (`journalTemplate`, `journalBatch`) with the payment export format of its bank account, marks the lines as exported and delivers the bank file.\r\n6. **Clean up**: `DataExchange.Entry.Delete` deletes an entry and its fields. Entries created by these types are also removed by the retention policy on Bifrost Data Exchange Entry (30 days by default).\r\n\r\nIncoming documents are the other import path: wire a Generic Import definition that maps to the intermediate table with `DataExchange.Type.Set`, then send the file with `Storage.Upload.CommitToRecord` or `Storage.Attachment.CreateLinked` (`target` IncomingDocument, `dataExchangeType`, `process`). `DataExchange.Entry.Process` refuses intermediate-table mappings and points there. Bank statements are imported with `Finance.BankReconciliation.Create`.\r\n\r\n## Which type do I need?\r\n\r\n| I want to | Message type |\r\n|---|---|\r\n| Find a definition code | `DataExchange.Definition.List` |\r\n| See how a definition maps columns to fields | `DataExchange.Definition.Get` |\r\n| Install a definition from its XML | `DataExchange.Definition.Import` |\r\n| Get a definition as XML, or only its header | `DataExchange.Definition.Export` |\r\n| Remove a definition nothing uses | `DataExchange.Definition.Delete` |\r\n| See which Data Exchange Types exist | `DataExchange.Type.List` |\r\n| Bind a Data Exchange Type to an import definition | `DataExchange.Type.Set` |\r\n| Import a stored file or small inline content | `DataExchange.Import.Run` |\r\n| Import a large file sent in chunks | `Storage.Upload.CommitToDataExchange` |\r\n| Write the parsed lines to the business tables | `DataExchange.Entry.Process` |\r\n| Export records to a file | `DataExchange.Export.Run` |\r\n| Create the bank payment file of a payment journal | `DataExchange.PaymentExport.Run` |\r\n| List, read or delete entries | `DataExchange.Entry.List`, `DataExchange.Entry.Get`, `DataExchange.Entry.Delete` |\r\n\r\n## Chaining\r\n\r\nEvery code a list returns is the exact value the next call expects: `code` from `DataExchange.Definition.List` or `codes[]` from `DataExchange.Definition.Import` goes into `code` of `DataExchange.Definition.Get`, `DataExchange.Definition.Export` and `DataExchange.Definition.Delete`, and into `dataExchDefCode` of `DataExchange.Type.Set`, `DataExchange.Import.Run`, `Storage.Upload.CommitToDataExchange`, `DataExchange.Export.Run` and `DataExchange.Entry.List`. `entryNo` from an import, an export or `DataExchange.Entry.List` goes into `DataExchange.Entry.Get`, `DataExchange.Entry.Process` and `DataExchange.Entry.Delete`. `storageCode` and `path` of an export go into `Storage.File.Get`. Codes are never trimmed, upper-cased or shortened; send them exactly as returned.\r\n\r\n## Errors\r\n\r\nA refused call answers `status = Error` with `code`, `parameter`, `received`, `expected` and `nextStep` for every problem found. A failure after a write (a reader or mapping error, a file over 1 MB with `inline`, a failed storage write) rolls the call back. Read `Help.Implementation.Get` (subject = the message type) for the full contract of one type.\r\n\r\n## Permissions\r\n\r\nAssign `BIFROST DataExch ori` with the Foundation API baseline. This role grants table read access, including the definition read by `DataExchange.Definition.Export`; it does not grant table writes. Definition.Export is registered Inbound because its optional storage output writes an external file; the storage connector also requires its own permissions.\r\nThe write types additionally require the standard Business Central permissions of the tables they write: Data Exch. and Data Exch. Field for imports and exports, the definition tables for `DataExchange.Definition.Import` and `DataExchange.Definition.Delete`, the target tables of the mappings for processing, and Gen. Journal Line and Credit Transfer Register for payment exports. Types with `storageCode` also use the storage connection. `BIFROST Attach ori` does not grant these Data Exchange table permissions.\r\n"
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:36.459Z",
+      "finishedAt": "2026-10-23T12:08:36.816Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "read",
+      "request": {
+        "type": "DataExchange.Definition.List",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "count": 13,
+          "definitions": [
+            {
+              "code": "ECB-EXCHANGE-RATES",
+              "name": "European Central Bank Currency Exchange Rates",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 1,
+              "mappingCount": 1,
+              "usedByDataExchangeTypes": [
+                "ECB-EXCHANGE-RATES"
+              ]
+            },
+            {
+              "code": "EDOCPEPPOLCRMEMOIMP",
+              "name": "e-Doc PEPPOL - Credit Memo Import",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 3,
+              "mappingCount": 3,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "EDOCPEPPOLINVIMP",
+              "name": "e-Doc PEPPOL - Invoice Import",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 3,
+              "mappingCount": 3,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "EDOCPEPPOLSALCRMEXP",
+              "name": "e-Doc PEPPOL - Sales Credit Memo Export",
+              "type": "Generic Export",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Export Generic XML",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "E-Doc. DED PEPPOL External",
+              "lineDefCount": 18,
+              "mappingCount": 18,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "EDOCPEPPOLSALINVEXP",
+              "name": "e-Doc PEPPOL - Sales Invoice Export",
+              "type": "Generic Export",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Export Generic XML",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "E-Doc. DED PEPPOL External",
+              "lineDefCount": 17,
+              "mappingCount": 17,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "EDOCPEPPOLSRVCRMEXP",
+              "name": "e-Doc PEPPOL - Service Credit Memo Export",
+              "type": "Generic Export",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Export Generic XML",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "E-Doc. DED PEPPOL External",
+              "lineDefCount": 18,
+              "mappingCount": 18,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "EDOCPEPPOLSRVINVEXP",
+              "name": "e-Doc PEPPOL - Service Invoice Export",
+              "type": "Generic Export",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Export Generic XML",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "E-Doc. DED PEPPOL External",
+              "lineDefCount": 17,
+              "mappingCount": 17,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "OCRCREDITMEMO",
+              "name": "OCR - Credit Memo",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 1,
+              "mappingCount": 1,
+              "usedByDataExchangeTypes": [
+                "OCRCREDITMEMO"
+              ]
+            },
+            {
+              "code": "OCRINVOICE",
+              "name": "OCR - Invoice",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 2,
+              "mappingCount": 2,
+              "usedByDataExchangeTypes": [
+                "OCRINVOICE"
+              ]
+            },
+            {
+              "code": "PEPPOLCREDITMEMO",
+              "name": "PEPPOL - Credit Memo",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 2,
+              "mappingCount": 2,
+              "usedByDataExchangeTypes": [
+                "PEPPOLCREDITMEMO"
+              ]
+            },
+            {
+              "code": "PEPPOLINVOICE",
+              "name": "PEPPOL - Invoice",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 2,
+              "mappingCount": 2,
+              "usedByDataExchangeTypes": [
+                "PEPPOLINVOICE"
+              ]
+            },
+            {
+              "code": "SEPA CAMT",
+              "name": "SEPA CAMT",
+              "type": "Bank Statement Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import Bank Statement",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "Read Data Exch. from File",
+              "lineDefCount": 1,
+              "mappingCount": 2,
+              "usedByDataExchangeTypes": [
+                "SEPA CAMT"
+              ]
+            },
+            {
+              "code": "SEPA CAMT 053-08",
+              "name": "SEPA CAMT 053.001.08",
+              "type": "Bank Statement Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import Bank Statement",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "Read Data Exch. from File",
+              "lineDefCount": 1,
+              "mappingCount": 2,
+              "usedByDataExchangeTypes": [
+                "SEPA CAMT 053-08"
+              ]
+            }
+          ]
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:36.830Z",
+      "finishedAt": "2026-10-23T12:08:39.206Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Definition.Get",
+        "data": {
+          "code": "X160-MISSING"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "No Data Exch. Def exists for code 'X160-MISSING'.",
+        "parameter": "code",
+        "received": "X160-MISSING",
+        "expected": "Use a code returned by DataExchange.Definition.List.",
+        "nextStep": "Use a code returned by DataExchange.Definition.List.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Definition.Get\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:39.216Z",
+      "finishedAt": "2026-10-23T12:08:39.455Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "read",
+      "request": {
+        "type": "DataExchange.Type.List",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "count": 7,
+          "types": [
+            {
+              "code": "ECB-EXCHANGE-RATES",
+              "description": "European Central Bank Currency Exchange Rates",
+              "dataExchDefCode": "ECB-EXCHANGE-RATES",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "",
+              "type": "Generic Import"
+            },
+            {
+              "code": "OCRCREDITMEMO",
+              "description": "OCR - Credit Memo",
+              "dataExchDefCode": "OCRCREDITMEMO",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "Map DataExch To Intermediate",
+              "type": "Generic Import"
+            },
+            {
+              "code": "OCRINVOICE",
+              "description": "OCR - Invoice",
+              "dataExchDefCode": "OCRINVOICE",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "Map DataExch To Intermediate",
+              "type": "Generic Import"
+            },
+            {
+              "code": "PEPPOLCREDITMEMO",
+              "description": "PEPPOL - Credit Memo",
+              "dataExchDefCode": "PEPPOLCREDITMEMO",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "Map DataExch To Intermediate",
+              "type": "Generic Import"
+            },
+            {
+              "code": "PEPPOLINVOICE",
+              "description": "PEPPOL - Invoice",
+              "dataExchDefCode": "PEPPOLINVOICE",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "Map DataExch To Intermediate",
+              "type": "Generic Import"
+            },
+            {
+              "code": "SEPA CAMT",
+              "description": "SEPA CAMT",
+              "dataExchDefCode": "SEPA CAMT",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "",
+              "type": "Bank Statement Import"
+            },
+            {
+              "code": "SEPA CAMT 053-08",
+              "description": "SEPA CAMT 053.001.08",
+              "dataExchDefCode": "SEPA CAMT 053-08",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "",
+              "type": "Bank Statement Import"
+            }
+          ]
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:39.477Z",
+      "finishedAt": "2026-10-23T12:08:40.156Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Entry.List",
+        "data": {
+          "dataExchDefCode": "X160-MISSING",
+          "take": 1
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "count": 0,
+          "skip": 0,
+          "take": 1,
+          "entries": []
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:40.167Z",
+      "finishedAt": "2026-10-23T12:08:42.067Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Entry.Get",
+        "data": {
+          "entryNo": -1
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameter",
+        "error": "'entryNo' must be an integer.",
+        "parameter": "entryNo",
+        "received": "-1",
+        "expected": "an integer greater than 0",
+        "nextStep": "Send \"entryNo\" as an integer within the allowed range.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Entry.Get\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:42.083Z",
+      "finishedAt": "2026-10-23T12:08:44.602Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.CommitToDataExchange",
+        "data": {
+          "uploadId": "not-a-guid",
+          "dataExchDefCode": "X160-MISSING"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"uploadId\" has value \"not-a-guid\", which is not a valid GUID. Expected a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "a GUID, e.g. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Send the value as a GUID, as returned by the call that created it.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.CommitToDataExchange\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:44.613Z",
+      "finishedAt": "2026-10-23T12:08:45.534Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.CommitToDataExchange",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"uploadId\" is missing.",
+            "parameter": "uploadId",
+            "received": "(missing)",
+            "expected": "a value for \"uploadId\"",
+            "nextStep": "Provide \"uploadId\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Parameter \"dataExchDefCode\" is required.",
+            "parameter": "dataExchDefCode",
+            "received": "not supplied",
+            "expected": "a JSON string of at most 20 characters",
+            "nextStep": "Send \"dataExchDefCode\" as a JSON string of at most 20 characters and retry."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.CommitToDataExchange\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:45.547Z",
+      "finishedAt": "2026-10-23T12:08:46.220Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Entry.Process",
+        "data": {
+          "entryNo": -1
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameter",
+        "error": "Parameter \"entryNo\" must be greater than 0.",
+        "parameter": "entryNo",
+        "received": "-1",
+        "expected": "an existing entry number",
+        "nextStep": "Use an entryNo returned by DataExchange.Import.Run or DataExchange.Entry.List.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Entry.Process\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:46.228Z",
+      "finishedAt": "2026-10-23T12:08:47.040Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Entry.Process",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"entryNo\" is missing.",
+        "parameter": "entryNo",
+        "received": "(missing)",
+        "expected": "a value for \"entryNo\"",
+        "nextStep": "Provide \"entryNo\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Entry.Process\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:47.051Z",
+      "finishedAt": "2026-10-23T12:08:47.507Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Entry.Delete",
+        "data": {
+          "entryNo": -1
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameter",
+        "error": "Parameter \"entryNo\" must be greater than 0.",
+        "parameter": "entryNo",
+        "received": "-1",
+        "expected": "an existing entry number",
+        "nextStep": "Use an entryNo returned by DataExchange.Entry.List.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Entry.Delete\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:47.517Z",
+      "finishedAt": "2026-10-23T12:08:48.204Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Entry.Delete",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"entryNo\" is missing.",
+        "parameter": "entryNo",
+        "received": "(missing)",
+        "expected": "a value for \"entryNo\"",
+        "nextStep": "Provide \"entryNo\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Entry.Delete\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:48.214Z",
+      "finishedAt": "2026-10-23T12:08:49.199Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Definition.Import",
+        "data": {
+          "contentBase64": "not-base64!"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"contentBase64\" is not valid base64 content.",
+        "parameter": "contentBase64",
+        "expected": "base64 content",
+        "nextStep": "Encode the file bytes as standard base64 and send them again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Definition.Import\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:49.211Z",
+      "finishedAt": "2026-10-23T12:08:49.666Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Definition.Import",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Parameter \"storageCode\" is required.",
+            "parameter": "storageCode",
+            "received": "not supplied",
+            "expected": "a JSON string of at most 20 characters",
+            "nextStep": "Send \"storageCode\" as a JSON string of at most 20 characters and retry."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Parameter \"path\" is required.",
+            "parameter": "path",
+            "received": "not supplied",
+            "expected": "a JSON string of at most 2048 characters",
+            "nextStep": "Send \"path\" as a JSON string of at most 2048 characters and retry."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Definition.Import\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:49.676Z",
+      "finishedAt": "2026-10-23T12:08:50.141Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.PaymentExport.Run",
+        "data": {
+          "journalTemplate": "X160-MISSING",
+          "journalBatch": "X160-MISSING",
+          "inline": true
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "InvalidParameterFormat",
+            "error": "Parameter \"journalTemplate\" exceeds the maximum of 10 characters.",
+            "parameter": "journalTemplate",
+            "received": "X160-MISSING",
+            "expected": "a JSON string of at most 10 characters",
+            "nextStep": "Send \"journalTemplate\" as a JSON string of at most 10 characters and retry."
+          },
+          {
+            "code": "InvalidParameterFormat",
+            "error": "Parameter \"journalBatch\" exceeds the maximum of 10 characters.",
+            "parameter": "journalBatch",
+            "received": "X160-MISSING",
+            "expected": "a JSON string of at most 10 characters",
+            "nextStep": "Send \"journalBatch\" as a JSON string of at most 10 characters and retry."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.PaymentExport.Run\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:50.149Z",
+      "finishedAt": "2026-10-23T12:08:50.621Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.PaymentExport.Run",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Parameter \"journalTemplate\" is required.",
+            "parameter": "journalTemplate",
+            "received": "not supplied",
+            "expected": "a JSON string of at most 10 characters",
+            "nextStep": "Send \"journalTemplate\" as a JSON string of at most 10 characters and retry."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Parameter \"journalBatch\" is required.",
+            "parameter": "journalBatch",
+            "received": "not supplied",
+            "expected": "a JSON string of at most 10 characters",
+            "nextStep": "Send \"journalBatch\" as a JSON string of at most 10 characters and retry."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Choose where the file goes: storageCode with path or folderPath, or inline true.",
+            "parameter": "storageCode",
+            "received": "(missing)",
+            "expected": "storageCode, or inline true",
+            "nextStep": "Send storageCode (find it with Storage.Account.List), or inline true for a file of at most 1 MB."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.PaymentExport.Run\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:50.632Z",
+      "finishedAt": "2026-10-23T12:08:51.037Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Type.Set",
+        "data": {
+          "code": "X160-TYPE",
+          "dataExchDefCode": "X160-MISSING"
+        },
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Data Exchange definition X160-MISSING was not found.",
+        "parameter": "dataExchDefCode",
+        "received": "X160-MISSING",
+        "expected": "an existing Generic Import definition",
+        "nextStep": "Call DataExchange.Definition.List and select a definition of an accepted kind using its exact code.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Type.Set\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1033,
+      "startedAt": "2026-10-23T12:08:51.053Z",
+      "finishedAt": "2026-10-23T12:08:51.458Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Type.Set",
+        "data": {},
+        "lcid": 1033
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Parameter \"code\" is required.",
+            "parameter": "code",
+            "received": "not supplied",
+            "expected": "a JSON string of at most 20 characters",
+            "nextStep": "Send \"code\" as a JSON string of at most 20 characters and retry."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Parameter \"dataExchDefCode\" is required.",
+            "parameter": "dataExchDefCode",
+            "received": "not supplied",
+            "expected": "a JSON string of at most 20 characters",
+            "nextStep": "Send \"dataExchDefCode\" as a JSON string of at most 20 characters and retry."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Type.Set\". Always read the help before calling a message type."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    }
+  ]
+}

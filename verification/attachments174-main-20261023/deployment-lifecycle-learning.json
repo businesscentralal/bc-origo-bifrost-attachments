@@ -1,0 +1,31 @@
+{
+  "id": "attachments174-worker6-retained-test-default-republish-20261023",
+  "repo": "businesscentralal/bc-origo-bifrost-attachments",
+  "source": {
+    "kind": "actual owned COSMO deployment error and readback",
+    "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/174",
+    "evidencePath": "/workspace/evidence/attachments174-main-20261023-worker6/deployment-error-diagnosis.json"
+  },
+  "reviewedSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "category": "owned verification lifecycle",
+  "applicability": "Republishing shipping no-IVT Default into the retained exclusive worker6 verification container with its earlier Test app still published",
+  "finding": "Default publish returned422 AL0161 from recompilation of the previously installed dependent Test app; new product not installed, confirmed by old954fcc2 artifact readback",
+  "rootCause": "The prior same-task container retained the Test product and dependent Test extension; shipping Default intentionally removes IVT and makes test-only internal references inaccessible",
+  "prevention": "Before shipping Default in an owned retained test environment, inspect actual dependent test-app state, uninstall/unpublish only that owned test app without deleting extension data when required, then Default no-IVT -> Test product -> Test app. Never broaden API visibility or alter assertions to bypass this lifecycle boundary. Preserve failed response and readback; do not replay successful writes",
+  "verification": {
+    "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "sameContainer": "f0328cfb44e5",
+    "ownedTestUninstallHTTP": 204,
+    "ownedTestUnpublishHTTP": 204,
+    "publishedAppReadbackConfirmedAbsent": true,
+    "defaultTestAndTestAppPublished": true,
+    "deployedPackageHashesAndSourceMatch": true,
+    "defaultFriends": [],
+    "evidencePath": "/workspace/evidence/attachments174-main-20261023-worker6/compile/deployed-provenance.json"
+  },
+  "status": "verified owned setup correction; native and UI/MCP verification remain separate",
+  "occurrences": 1,
+  "recordedAt": "2026-10-23T12:01:38.802407+00:00",
+  "rootCauseValidatedBySuccessfulCorrectedDeployment": true,
+  "currentSourceUntouched": true
+}

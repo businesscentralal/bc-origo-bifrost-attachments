@@ -1,0 +1,481 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "containerId": "f0328cfb44e5",
+  "executed": 78,
+  "passed": 78,
+  "failed": 0,
+  "skipped": 0,
+  "full39Types": true,
+  "createsOwnData": true,
+  "dataSetup": "Only synthetic own MCP requests and resulting owned Message rows; no dependency on customer/shared/provider/financial fixtures. bc28-w1 recording remains separately pending.",
+  "checks": [
+    {
+      "type": "Help.Storage.Get",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "Help.Storage.Get",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "Storage.Account.List",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "Storage.Account.List",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "Storage.File.List",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.File.List",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.File.Get",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.File.Get",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.File.Create",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.File.Create",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.File.Delete",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.File.Delete",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.File.Copy",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.File.Copy",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.File.Move",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.File.Move",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.File.Exists",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.File.Exists",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.Directory.List",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.Directory.List",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.Directory.Create",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Directory.Create",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Directory.Delete",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Directory.Delete",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Directory.Exists",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.Directory.Exists",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.Attachment.Offload",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Attachment.Offload",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Attachment.Restore",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Attachment.Restore",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.Append",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.Append",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.Commit",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.Commit",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.Abort",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.Abort",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.Status",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.Upload.Status",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Attachment.CreateForRecord",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Attachment.CreateForRecord",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.CommitToRecord",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.CommitToRecord",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Definition.Delete",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Definition.Delete",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Definition.Export",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Definition.Export",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Import.Run",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Import.Run",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Help.DataExchange.Get",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "Help.DataExchange.Get",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "DataExchange.Definition.List",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "DataExchange.Definition.List",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "DataExchange.Definition.Get",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "DataExchange.Definition.Get",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "DataExchange.Type.List",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "DataExchange.Type.List",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "DataExchange.Entry.List",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "DataExchange.Entry.List",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 1
+    },
+    {
+      "type": "DataExchange.Entry.Get",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "DataExchange.Entry.Get",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 2
+    },
+    {
+      "type": "Storage.Upload.CommitToDataExchange",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "Storage.Upload.CommitToDataExchange",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Entry.Process",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Entry.Process",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Entry.Delete",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Entry.Delete",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Definition.Import",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Definition.Import",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.PaymentExport.Run",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.PaymentExport.Run",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "lcid": 1033,
+      "passed": true,
+      "examples": 3
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "lcid": 1039,
+      "passed": true,
+      "examples": 3
+    }
+  ]
+}

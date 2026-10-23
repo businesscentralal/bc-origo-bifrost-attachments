@@ -1,0 +1,2542 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "lcid": 1039,
+  "executed": 64,
+  "records": [
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:08:51.895Z",
+      "finishedAt": "2026-10-23T12:08:52.705Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "read",
+      "request": {
+        "type": "Help.Storage.Get",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "format": "markdown",
+          "markdown": "# Bifrost Attachments - storage message types\r\n\r\nRead and write files in external storage (Azure Blob Storage, Azure File Share or SharePoint) through the Business Central external file storage connectors, stage large files in chunks and keep document attachments in storage instead of the database.\r\n\r\nStorage file writes refuse an existing destination by default. Send overwrite: true only to intentionally replace an unlinked file. Copy and Move always refuse an existing destination. CreateForRecord and CreateLinked link pre-existing storage files without acquiring deletion ownership: Restore and attachment deletion preserve those files.\r\n\r\n## Getting started\r\n\r\n1. Call `Storage.Account.List` to see the storage connections set up on the Attachments Setup page. Each row has a `storageCode`.\r\n2. Send that `storageCode` with every other storage call. Paths are relative to the base folder of the connection and use forward slashes; `.` and `..` segments, backslashes and double slashes are refused.\r\n3. Read the full contract of one type with `Help.Implementation.Get` (subject = the message type).\r\nStorage operations use the registered Business Central External File Storage connector interface. Attachments does not select behavior from connector IDs or inspect connector-owned account tables, and it requires no minimum connector version or build: any connector registered with External File Storage works. The registered connector owns credentials, provider-specific path rules and backend errors. Attachments validates its own request syntax and storage field lengths before calling the connector.\r\nAttachment protection spans setups using the same registered account and canonical logical path. Reuse that registration for shared attachment storage and keep path spelling consistent. Separate account registrations are separate scopes, even if they reach the same physical files; the interface exposes no physical identity or case-comparison contract.\r\nStorage.File.Copy and Storage.File.Move require a destination that the connector reports as absent. An existing destination returns PreconditionFailed before a write. Linked moves require the storage implementation to guarantee source preservation on failure; the platform facade cannot provide that guarantee.\r\n\r\n## Message types\r\n\r\n| Area | Message type | Purpose |\r\n|---|---|---|\r\n| Accounts | `Storage.Account.List` | Lists the configured storage connections. |\r\n| Files | `Storage.File.List` | Lists the files in a folder. |\r\n| Files | `Storage.File.Get` | Returns the content of one file as base64. |\r\n| Files | `Storage.File.Exists` | Tells whether a file exists. |\r\n| Files | `Storage.File.Create` | Writes a file from base64 content. |\r\n| Files | `Storage.File.Copy` | Copies a file to a new path. |\r\n| Files | `Storage.File.Move` | Moves or renames a file; a linked file keeps its attachment link. |\r\n| Files | `Storage.File.Delete` | Deletes a file that no attachment uses. |\r\n| Directories | `Storage.Directory.List` | Lists the subfolders of a folder. |\r\n| Directories | `Storage.Directory.Exists` | Tells whether a folder exists. |\r\n| Directories | `Storage.Directory.Create` | Creates a folder. |\r\n| Directories | `Storage.Directory.Delete` | Deletes a folder that holds no linked file. |\r\n| Attachments | `Storage.Attachment.Offload` | Moves the content of a document attachment to storage and links it. |\r\n| Attachments | `Storage.Attachment.Restore` | Writes linked content back into the attachment. Deletes only a file newly created by that attachment; pre-existing files and legacy links are preserved. |\r\n| Attachments | `Storage.Attachment.CreateLinked` | Attaches a stored file to a new or existing incoming document. Optional `dataExchangeType`, `process` and `vendorNo`. |\r\n| Attachments | `Storage.Attachment.CreateForRecord` | Creates an attachment on a record from base64 content. |\r\n| Uploads | `Storage.Upload.Begin` | Opens a chunked upload session. |\r\n| Uploads | `Storage.Upload.Append` | Adds the next chunk to an open session. |\r\n| Uploads | `Storage.Upload.Status` | Returns the state of a session. |\r\n| Uploads | `Storage.Upload.Commit` | Assembles the chunks and writes the file to storage. |\r\n| Uploads | `Storage.Upload.CommitToRecord` | Assembles the chunks and attaches the file to a record or incoming document. IncomingDocument accepts `dataExchangeType`, `process` and `vendorNo`. |\r\n| Uploads | `Storage.Upload.CommitToDataExchange` | Assembles the chunks into a parsed Data Exch. entry of an import definition; optional `process` and `keepFileInStorage`. See `Help.DataExchange.Get`. |\r\n| Uploads | `Storage.Upload.Abort` | Discards an open session and its chunks. |\r\n\r\n## Chunked uploads\r\n\r\nUse an upload session when a file is larger than one request can carry: `Storage.Upload.Begin`, then `Storage.Upload.Append` once per chunk in order, then `Storage.Upload.Commit`, `Storage.Upload.CommitToRecord` or `Storage.Upload.CommitToDataExchange`. `Storage.Upload.Begin` returns `chunkSizeHint` and `maxChunkBytes`. Files are written under the `bifrost-uploads/` root unless the request names a folder. A session belongs to the user who opened it.\r\n\r\nTo feed an incoming document: `Storage.Upload.Begin` → `Storage.Upload.Append` → `Storage.Upload.CommitToRecord` with `target` IncomingDocument and optional `dataExchangeType`, `process` and `vendorNo`. Wire the type first with `DataExchange.Type.Set`. Processing errors stay on the incoming document as `processErrors`; the commit still returns Success. A file already in storage uses `Storage.Attachment.CreateLinked` with the same parameters.\r\n\r\n## Linked files\r\n\r\nA stored file that backs a document attachment is protected. Deleting it and writing a create, copy, move or upload commit onto its path are refused with `PreconditionFailed`; use `Storage.Attachment.Restore` to bring the content back first.\r\n\r\n## Errors\r\n\r\nA refused call answers `status = Error` with `code`, `parameter`, `received`, `expected` and `nextStep` for every problem found, so all problems can be fixed in one retry.\r\n\r\n`Storage.Directory.Delete` refuses the connection root path with `InvalidParameter` before the connector is called; name a folder below the root to delete.\r\n\r\n## Permissions\r\n\r\nAssign the `BIFROST Attach ori` permission set. The Data Exchange message types are described by `Help.DataExchange.Get` and need `BIFROST DataExch ori`.\r\n"
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:08:52.728Z",
+      "finishedAt": "2026-10-23T12:08:53.231Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "read",
+      "request": {
+        "type": "Storage.Account.List",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "accounts": []
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:08:53.254Z",
+      "finishedAt": "2026-10-23T12:08:53.829Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.List",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.List\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:08:53.857Z",
+      "finishedAt": "2026-10-23T12:08:54.485Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Get",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.Get\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:08:54.507Z",
+      "finishedAt": "2026-10-23T12:08:56.297Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Create",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt",
+          "contentBase64": "SGVsbG8="
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.Create\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:08:56.306Z",
+      "finishedAt": "2026-10-23T12:08:56.749Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.File.Create",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"storageCode\" vantar.",
+            "parameter": "storageCode",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"storageCode\"",
+            "nextStep": "Gefðu upp \"storageCode\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"path\" vantar.",
+            "parameter": "path",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"path\"",
+            "nextStep": "Gefðu upp \"path\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"contentBase64\" vantar.",
+            "parameter": "contentBase64",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"contentBase64\"",
+            "nextStep": "Gefðu upp \"contentBase64\" og sendu beiðnina aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.Create\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:08:56.772Z",
+      "finishedAt": "2026-10-23T12:08:59.250Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Delete",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.Delete\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:08:59.257Z",
+      "finishedAt": "2026-10-23T12:08:59.926Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.File.Delete",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"storageCode\" vantar.",
+            "parameter": "storageCode",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"storageCode\"",
+            "nextStep": "Gefðu upp \"storageCode\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"path\" vantar.",
+            "parameter": "path",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"path\"",
+            "nextStep": "Gefðu upp \"path\" og sendu beiðnina aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.Delete\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:08:59.952Z",
+      "finishedAt": "2026-10-23T12:09:00.804Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Copy",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "sourcePath": "X160-help/example.txt",
+          "targetPath": "X160-help/copy.txt"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.Copy\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:00.811Z",
+      "finishedAt": "2026-10-23T12:09:01.236Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.File.Copy",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"storageCode\" vantar.",
+            "parameter": "storageCode",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"storageCode\"",
+            "nextStep": "Gefðu upp \"storageCode\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"sourcePath\" vantar.",
+            "parameter": "sourcePath",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"sourcePath\"",
+            "nextStep": "Gefðu upp \"sourcePath\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"targetPath\" vantar.",
+            "parameter": "targetPath",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"targetPath\"",
+            "nextStep": "Gefðu upp \"targetPath\" og sendu beiðnina aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.Copy\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:01.254Z",
+      "finishedAt": "2026-10-23T12:09:01.919Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Move",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "sourcePath": "X160-help/example.txt",
+          "targetPath": "X160-help/moved.txt"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.Move\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:01.932Z",
+      "finishedAt": "2026-10-23T12:09:02.585Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.File.Move",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"storageCode\" vantar.",
+            "parameter": "storageCode",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"storageCode\"",
+            "nextStep": "Gefðu upp \"storageCode\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"sourcePath\" vantar.",
+            "parameter": "sourcePath",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"sourcePath\"",
+            "nextStep": "Gefðu upp \"sourcePath\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"targetPath\" vantar.",
+            "parameter": "targetPath",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"targetPath\"",
+            "nextStep": "Gefðu upp \"targetPath\" og sendu beiðnina aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.Move\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:02.604Z",
+      "finishedAt": "2026-10-23T12:09:03.018Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.File.Exists",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.File.Exists\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:03.039Z",
+      "finishedAt": "2026-10-23T12:09:03.912Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Directory.List",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Directory.List\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:03.933Z",
+      "finishedAt": "2026-10-23T12:09:04.720Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Directory.Create",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Directory.Create\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:04.728Z",
+      "finishedAt": "2026-10-23T12:09:05.142Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Directory.Create",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"storageCode\" vantar.",
+            "parameter": "storageCode",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"storageCode\"",
+            "nextStep": "Gefðu upp \"storageCode\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"path\" vantar.",
+            "parameter": "path",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"path\"",
+            "nextStep": "Gefðu upp \"path\" og sendu beiðnina aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Directory.Create\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:05.160Z",
+      "finishedAt": "2026-10-23T12:09:05.854Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Directory.Delete",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Directory.Delete\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:05.860Z",
+      "finishedAt": "2026-10-23T12:09:06.741Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Directory.Delete",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"storageCode\" vantar.",
+            "parameter": "storageCode",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"storageCode\"",
+            "nextStep": "Gefðu upp \"storageCode\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"path\" vantar.",
+            "parameter": "path",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"path\"",
+            "nextStep": "Gefðu upp \"path\" og sendu beiðnina aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Directory.Delete\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:06.765Z",
+      "finishedAt": "2026-10-23T12:09:07.203Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Directory.Exists",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Directory.Exists\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:07.239Z",
+      "finishedAt": "2026-10-23T12:09:08.020Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Attachment.Offload",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "target": "DocumentAttachment",
+          "systemId": "not-a-guid",
+          "folderPath": "X160-help"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "InvalidParameterFormat",
+            "error": "Færibreyta \"systemId\" hefur gildið \"not-a-guid\", sem er ekki í gildu sniði (GUID). Væntanlegt er GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+            "parameter": "systemId",
+            "received": "not-a-guid",
+            "expected": "GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+            "nextStep": "Sendu gildið sem GUID, eins og kallið sem stofnaði það skilaði því."
+          },
+          {
+            "code": "RecordNotFound",
+            "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+            "parameter": "storageCode",
+            "received": "X160-NOT-CONFIGURED",
+            "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Attachment.Offload\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:08.030Z",
+      "finishedAt": "2026-10-23T12:09:09.001Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Attachment.Offload",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"target\" vantar.",
+            "parameter": "target",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"target\"",
+            "nextStep": "Gefðu upp \"target\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"systemId\" vantar.",
+            "parameter": "systemId",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"systemId\"",
+            "nextStep": "Gefðu upp \"systemId\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"storageCode\" vantar.",
+            "parameter": "storageCode",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"storageCode\"",
+            "nextStep": "Gefðu upp \"storageCode\" og sendu beiðnina aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Attachment.Offload\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:09.025Z",
+      "finishedAt": "2026-10-23T12:09:09.904Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Attachment.Restore",
+        "data": {
+          "target": "DocumentAttachment",
+          "systemId": "not-a-guid"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Færibreyta \"systemId\" hefur gildið \"not-a-guid\", sem er ekki í gildu sniði (GUID). Væntanlegt er GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "systemId",
+        "received": "not-a-guid",
+        "expected": "GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Sendu gildið sem GUID, eins og kallið sem stofnaði það skilaði því.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Attachment.Restore\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:09.912Z",
+      "finishedAt": "2026-10-23T12:09:10.891Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Attachment.Restore",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"target\" vantar.",
+            "parameter": "target",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"target\"",
+            "nextStep": "Gefðu upp \"target\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"systemId\" vantar.",
+            "parameter": "systemId",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"systemId\"",
+            "nextStep": "Gefðu upp \"systemId\" og sendu beiðnina aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Attachment.Restore\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:10.910Z",
+      "finishedAt": "2026-10-23T12:09:11.904Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.Begin",
+        "data": {
+          "fileName": "X160-help/example.txt",
+          "declaredSize": 5
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameter",
+        "error": "Færibreytan \"fileName\" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.",
+        "parameter": "fileName",
+        "received": "X160-help/example.txt",
+        "expected": "skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik",
+        "nextStep": "Sendu aðeins skráarheitið, til dæmis INV-001.pdf, án möppuslóðar.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.Begin\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:11.912Z",
+      "finishedAt": "2026-10-23T12:09:13.293Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.Begin",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"fileName\" vantar.",
+            "parameter": "fileName",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"fileName\"",
+            "nextStep": "Gefðu upp \"fileName\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Færibreytan \"fileName\" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.",
+            "parameter": "fileName",
+            "expected": "skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik",
+            "nextStep": "Sendu aðeins skráarheitið, til dæmis INV-001.pdf, án möppuslóðar."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.Begin\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:13.313Z",
+      "finishedAt": "2026-10-23T12:09:13.751Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.Append",
+        "data": {
+          "uploadId": "not-a-guid",
+          "sequence": 1,
+          "contentBase64": "SGVsbG8="
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Færibreyta \"uploadId\" hefur gildið \"not-a-guid\", sem er ekki í gildu sniði (GUID). Væntanlegt er GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Sendu gildið sem GUID, eins og kallið sem stofnaði það skilaði því.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.Append\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:13.759Z",
+      "finishedAt": "2026-10-23T12:09:14.200Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.Append",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"uploadId\" vantar.",
+            "parameter": "uploadId",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"uploadId\"",
+            "nextStep": "Gefðu upp \"uploadId\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"sequence\" vantar.",
+            "parameter": "sequence",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"sequence\"",
+            "nextStep": "Gefðu upp \"sequence\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"contentBase64\" vantar.",
+            "parameter": "contentBase64",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"contentBase64\"",
+            "nextStep": "Gefðu upp \"contentBase64\" og sendu beiðnina aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.Append\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:14.233Z",
+      "finishedAt": "2026-10-23T12:09:14.654Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.Commit",
+        "data": {
+          "uploadId": "not-a-guid"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Færibreyta \"uploadId\" hefur gildið \"not-a-guid\", sem er ekki í gildu sniði (GUID). Væntanlegt er GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Sendu gildið sem GUID, eins og kallið sem stofnaði það skilaði því.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.Commit\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:14.661Z",
+      "finishedAt": "2026-10-23T12:09:15.089Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.Commit",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nauðsynlega færibreytu \"uploadId\" vantar.",
+        "parameter": "uploadId",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"uploadId\"",
+        "nextStep": "Gefðu upp \"uploadId\" og sendu beiðnina aftur.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.Commit\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:15.108Z",
+      "finishedAt": "2026-10-23T12:09:15.553Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.Abort",
+        "data": {
+          "uploadId": "not-a-guid"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Færibreyta \"uploadId\" hefur gildið \"not-a-guid\", sem er ekki í gildu sniði (GUID). Væntanlegt er GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Sendu gildið sem GUID, eins og kallið sem stofnaði það skilaði því.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.Abort\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:15.558Z",
+      "finishedAt": "2026-10-23T12:09:16.234Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.Abort",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nauðsynlega færibreytu \"uploadId\" vantar.",
+        "parameter": "uploadId",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"uploadId\"",
+        "nextStep": "Gefðu upp \"uploadId\" og sendu beiðnina aftur.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.Abort\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:16.252Z",
+      "finishedAt": "2026-10-23T12:09:16.695Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.Status",
+        "data": {
+          "uploadId": "not-a-guid"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Færibreyta \"uploadId\" hefur gildið \"not-a-guid\", sem er ekki í gildu sniði (GUID). Væntanlegt er GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Sendu gildið sem GUID, eins og kallið sem stofnaði það skilaði því.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.Status\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:16.717Z",
+      "finishedAt": "2026-10-23T12:09:17.148Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Attachment.CreateLinked",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt",
+          "fileName": "example.txt"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin geymslutenging er skilgreind fyrir storageCode \"X160-NOT-CONFIGURED\".",
+        "parameter": "storageCode",
+        "received": "X160-NOT-CONFIGURED",
+        "nextStep": "Kallaðu á Storage.Account.List til að sjá skilgreinda geymslukóða.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Attachment.CreateLinked\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:17.158Z",
+      "finishedAt": "2026-10-23T12:09:17.599Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Attachment.CreateLinked",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "5 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"storageCode\" vantar.",
+            "parameter": "storageCode",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"storageCode\"",
+            "nextStep": "Gefðu upp \"storageCode\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"path\" vantar.",
+            "parameter": "path",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"path\"",
+            "nextStep": "Gefðu upp \"path\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Færibreytan \"fileName\" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.",
+            "parameter": "path",
+            "expected": "skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik",
+            "nextStep": "Sendu slóð innan tengingarinnar, t.d. invoices/2026/INV-001.pdf."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"fileName\" vantar.",
+            "parameter": "fileName",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"fileName\"",
+            "nextStep": "Gefðu upp \"fileName\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Færibreytan \"fileName\" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.",
+            "parameter": "fileName",
+            "expected": "skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik",
+            "nextStep": "Sendu aðeins skráarheitið, til dæmis INV-001.pdf, án möppuslóðar."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Attachment.CreateLinked\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:17.624Z",
+      "finishedAt": "2026-10-23T12:09:18.080Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Attachment.CreateForRecord",
+        "data": {
+          "target": "IncomingDocument",
+          "fileName": "example.txt",
+          "contentBase64": "not-base64!"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Sendu tableId eða tableName til að segja í hvaða töflu færslan er.",
+            "parameter": "tableId",
+            "expected": "tableId eða tableName"
+          },
+          {
+            "code": "InvalidParameterFormat",
+            "error": "Færibreyta \"contentBase64\" er ekki gilt base64-innihald.",
+            "parameter": "contentBase64",
+            "expected": "base64-innihald",
+            "nextStep": "Kóðaðu bæti skrárinnar sem venjulegt base64 og sendu þau aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Attachment.CreateForRecord\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund.",
+        "warnings": [
+          {
+            "code": "UnknownParameter",
+            "message": "Viðfangið \"target\" er ekki skilgreint fyrir þessa skilaboðategund og kann að vera hunsað.",
+            "parameter": "target",
+            "nextStep": "Fjarlægðu þennan lykil eða skoðaðu Help.Implementation.Get til að sjá skilgreind viðföng."
+          }
+        ]
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:18.087Z",
+      "finishedAt": "2026-10-23T12:09:18.533Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Attachment.CreateForRecord",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Sendu tableId eða tableName til að segja í hvaða töflu færslan er.",
+            "parameter": "tableId",
+            "expected": "tableId eða tableName"
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Sendu nákvæmlega eina uppsprettu innihalds: contentBase64 (eða samheitið content), storageCode með path eða sourceTarget með sourceSystemId.",
+            "parameter": "contentBase64, storageCode, sourceSystemId",
+            "expected": "nákvæmlega eitt af contentBase64 (eða samheitinu content), storageCode með path, sourceTarget með sourceSystemId"
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Attachment.CreateForRecord\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:18.552Z",
+      "finishedAt": "2026-10-23T12:09:19.215Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.CommitToRecord",
+        "data": {
+          "uploadId": "not-a-guid",
+          "target": "IncomingDocument"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Færibreyta \"uploadId\" hefur gildið \"not-a-guid\", sem er ekki í gildu sniði (GUID). Væntanlegt er GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Sendu gildið sem GUID, eins og kallið sem stofnaði það skilaði því.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.CommitToRecord\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:19.221Z",
+      "finishedAt": "2026-10-23T12:09:19.663Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.CommitToRecord",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nauðsynlega færibreytu \"uploadId\" vantar.",
+        "parameter": "uploadId",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"uploadId\"",
+        "nextStep": "Gefðu upp \"uploadId\" og sendu beiðnina aftur.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.CommitToRecord\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:19.682Z",
+      "finishedAt": "2026-10-23T12:09:20.089Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Definition.Delete",
+        "data": {
+          "code": "X160-MISSING"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Skilgreining gagnaskipta X160-MISSING fannst ekki.",
+        "parameter": "code",
+        "received": "X160-MISSING",
+        "expected": "fyrirliggjandi skilgreining gagnaskipta",
+        "nextStep": "Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningarinnar.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Definition.Delete\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:20.096Z",
+      "finishedAt": "2026-10-23T12:09:20.553Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Definition.Delete",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Færibreytan \"code\" er nauðsynleg.",
+        "parameter": "code",
+        "received": "ekki gefið upp",
+        "expected": "JSON-strengur sem er mest 20 stafir",
+        "nextStep": "Sendu \"code\" sem JSON-strengur sem er mest 20 stafir og reyndu aftur.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Definition.Delete\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:20.574Z",
+      "finishedAt": "2026-10-23T12:09:20.994Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Definition.Export",
+        "data": {
+          "code": "X160-MISSING",
+          "inline": true
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin skilgreining gagnaskipta er til fyrir kóðann 'X160-MISSING'.",
+        "parameter": "code",
+        "received": "X160-MISSING",
+        "expected": "Notaðu kóða sem DataExchange.Definition.List skilar.",
+        "nextStep": "Notaðu kóða sem DataExchange.Definition.List skilar.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Definition.Export\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:21.002Z",
+      "finishedAt": "2026-10-23T12:09:21.809Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Definition.Export",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nauðsynlega færibreytuna 'code' vantar í beiðnina.",
+        "parameter": "code",
+        "received": "(vantar)",
+        "expected": "JSON-strengur",
+        "nextStep": "Gefðu upp \"code\" og sendu beiðnina aftur.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Definition.Export\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:21.829Z",
+      "finishedAt": "2026-10-23T12:09:22.395Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Export.Run",
+        "data": {
+          "dataExchDefCode": "X160-MISSING",
+          "tableId": 18,
+          "inline": true
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Skilgreining gagnaskipta X160-MISSING fannst ekki.",
+        "parameter": "dataExchDefCode",
+        "received": "X160-MISSING",
+        "expected": "fyrirliggjandi skilgreining fyrir almennan útflutning (Generic Export)",
+        "nextStep": "Kallaðu á DataExchange.Definition.List með direction Export og notaðu nákvæman kóða skilgreiningar fyrir almennan útflutning (Generic Export).",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Export.Run\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:22.402Z",
+      "finishedAt": "2026-10-23T12:09:22.863Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Export.Run",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Færibreytan \"dataExchDefCode\" er nauðsynleg.",
+            "parameter": "dataExchDefCode",
+            "received": "ekki gefið upp",
+            "expected": "JSON-strengur sem er mest 20 stafir",
+            "nextStep": "Sendu \"dataExchDefCode\" sem JSON-strengur sem er mest 20 stafir og reyndu aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Tilgreindu færslurnar sem á að flytja út með tableId eða tableName (og valfrjálsu tableView), eða með recordIds.",
+            "parameter": "tableId",
+            "received": "(vantar)",
+            "expected": "tableId eða tableName, eða recordIds",
+            "nextStep": "Sendu til dæmis tableId 18 með tableView WHERE(No.=FILTER(10000..30000)) eða fylkið recordIds með SystemId-gildum."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Veldu hvert skráin fer: storageCode með path eða folderPath, eða inline true.",
+            "parameter": "storageCode",
+            "received": "(vantar)",
+            "expected": "storageCode, eða inline true",
+            "nextStep": "Sendu storageCode (finndu hann með Storage.Account.List), eða inline true fyrir skrá sem er mest 1 MB."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Export.Run\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:22.884Z",
+      "finishedAt": "2026-10-23T12:09:23.334Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Import.Run",
+        "data": {
+          "dataExchDefCode": "X160-MISSING",
+          "contentBase64": "SGVsbG8="
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Skilgreining gagnaskipta X160-MISSING fannst ekki.",
+        "parameter": "dataExchDefCode",
+        "received": "X160-MISSING",
+        "expected": "fyrirliggjandi skilgreining fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import)",
+        "nextStep": "Kallaðu á DataExchange.Definition.List með direction Import og notaðu nákvæman kóða skilgreiningar fyrir almennan innflutning (Generic Import) eða launainnflutning (Payroll Import).",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Import.Run\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:23.340Z",
+      "finishedAt": "2026-10-23T12:09:23.783Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Import.Run",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Færibreytan \"dataExchDefCode\" er nauðsynleg.",
+            "parameter": "dataExchDefCode",
+            "received": "ekki gefið upp",
+            "expected": "JSON-strengur sem er mest 20 stafir",
+            "nextStep": "Sendu \"dataExchDefCode\" sem JSON-strengur sem er mest 20 stafir og reyndu aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Sendu contentBase64 eða storageCode með path til að velja skrána sem á að flytja inn.",
+            "parameter": "contentBase64",
+            "received": "(vantar)",
+            "expected": "nákvæmlega ein uppspretta: contentBase64, eða storageCode með path",
+            "nextStep": "Sendu contentBase64 eða storageCode með path til að velja skrána sem á að flytja inn."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Import.Run\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:23.805Z",
+      "finishedAt": "2026-10-23T12:09:24.019Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "read",
+      "request": {
+        "type": "Help.DataExchange.Get",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "format": "markdown",
+          "markdown": "# Bifrost Attachments - Data Exchange message types\r\n\r\nRun the Business Central Data Exchange Framework (Data Exch. Def, Data Exchange Type and Data Exch. entries) without the user interface: install definitions, import files into parsed entries, apply the mappings, and export records or payment journals to files in storage.\r\n\r\n## Pipeline\r\n\r\n1. **Install or discover** a definition: `DataExchange.Definition.Import` installs the standard definition XML (`storageCode` + `path`, `contentBase64` up to 1 MB, or a chunked `uploadId`; `overwrite`, `newCode`). `DataExchange.Definition.List` and `DataExchange.Definition.Get` show what exists; `DataExchange.Definition.Export` returns the header by default; `inline: true` adds the XML, and `storageCode` + `path`/`folderPath` writes the XML to storage. Both XML destinations may be requested. Storage writes refuse an existing file by default; overwrite: true explicitly allows replacement. Linked attachment files remain protected. External writes cannot be rolled back.\r\n2. **Import** a file with a Generic Import or Payroll Import definition: `DataExchange.Import.Run` (`storageCode` + `path` of a stored file, which stays unchanged, or `contentBase64` up to 1 MB) or, for a large file, `Storage.Upload.Begin` -> `Storage.Upload.Append` -> `Storage.Upload.CommitToDataExchange` (`uploadId`, `dataExchDefCode`, optional `keepFileInStorage`). Both create a Data Exch. entry, run the definition reader and return `entryNo`, `lineCount` and `fieldCount`. A file the reader cannot read is refused and leaves no entry.\r\n3. **Inspect** the parsed fields: `DataExchange.Entry.Get` (`entryNo`, paged `fields`), `DataExchange.Entry.List` for older entries.\r\n4. **Process** the entry: `DataExchange.Entry.Process` runs the definition mappings and returns `targets[]` (table, inserted and modified counts, record SystemIds). Or send `process: true` on the import to do both in one call; the import is then committed first, and a processing error is returned in `processResult.errors` while the entry stays.\r\n5. **Export**: `DataExchange.Export.Run` runs a Generic Export definition over `tableId`/`tableName` with `tableView`, or over `recordIds`, and delivers the file to storage (`storageCode` + `path` or `folderPath`) and/or `inline` (up to 1 MB). `DataExchange.PaymentExport.Run` exports a payment journal batch (`journalTemplate`, `journalBatch`) with the payment export format of its bank account, marks the lines as exported and delivers the bank file.\r\n6. **Clean up**: `DataExchange.Entry.Delete` deletes an entry and its fields. Entries created by these types are also removed by the retention policy on Bifrost Data Exchange Entry (30 days by default).\r\n\r\nIncoming documents are the other import path: wire a Generic Import definition that maps to the intermediate table with `DataExchange.Type.Set`, then send the file with `Storage.Upload.CommitToRecord` or `Storage.Attachment.CreateLinked` (`target` IncomingDocument, `dataExchangeType`, `process`). `DataExchange.Entry.Process` refuses intermediate-table mappings and points there. Bank statements are imported with `Finance.BankReconciliation.Create`.\r\n\r\n## Which type do I need?\r\n\r\n| I want to | Message type |\r\n|---|---|\r\n| Find a definition code | `DataExchange.Definition.List` |\r\n| See how a definition maps columns to fields | `DataExchange.Definition.Get` |\r\n| Install a definition from its XML | `DataExchange.Definition.Import` |\r\n| Get a definition as XML, or only its header | `DataExchange.Definition.Export` |\r\n| Remove a definition nothing uses | `DataExchange.Definition.Delete` |\r\n| See which Data Exchange Types exist | `DataExchange.Type.List` |\r\n| Bind a Data Exchange Type to an import definition | `DataExchange.Type.Set` |\r\n| Import a stored file or small inline content | `DataExchange.Import.Run` |\r\n| Import a large file sent in chunks | `Storage.Upload.CommitToDataExchange` |\r\n| Write the parsed lines to the business tables | `DataExchange.Entry.Process` |\r\n| Export records to a file | `DataExchange.Export.Run` |\r\n| Create the bank payment file of a payment journal | `DataExchange.PaymentExport.Run` |\r\n| List, read or delete entries | `DataExchange.Entry.List`, `DataExchange.Entry.Get`, `DataExchange.Entry.Delete` |\r\n\r\n## Chaining\r\n\r\nEvery code a list returns is the exact value the next call expects: `code` from `DataExchange.Definition.List` or `codes[]` from `DataExchange.Definition.Import` goes into `code` of `DataExchange.Definition.Get`, `DataExchange.Definition.Export` and `DataExchange.Definition.Delete`, and into `dataExchDefCode` of `DataExchange.Type.Set`, `DataExchange.Import.Run`, `Storage.Upload.CommitToDataExchange`, `DataExchange.Export.Run` and `DataExchange.Entry.List`. `entryNo` from an import, an export or `DataExchange.Entry.List` goes into `DataExchange.Entry.Get`, `DataExchange.Entry.Process` and `DataExchange.Entry.Delete`. `storageCode` and `path` of an export go into `Storage.File.Get`. Codes are never trimmed, upper-cased or shortened; send them exactly as returned.\r\n\r\n## Errors\r\n\r\nA refused call answers `status = Error` with `code`, `parameter`, `received`, `expected` and `nextStep` for every problem found. A failure after a write (a reader or mapping error, a file over 1 MB with `inline`, a failed storage write) rolls the call back. Read `Help.Implementation.Get` (subject = the message type) for the full contract of one type.\r\n\r\n## Permissions\r\n\r\nAssign `BIFROST DataExch ori` with the Foundation API baseline. This role grants table read access, including the definition read by `DataExchange.Definition.Export`; it does not grant table writes. Definition.Export is registered Inbound because its optional storage output writes an external file; the storage connector also requires its own permissions.\r\nThe write types additionally require the standard Business Central permissions of the tables they write: Data Exch. and Data Exch. Field for imports and exports, the definition tables for `DataExchange.Definition.Import` and `DataExchange.Definition.Delete`, the target tables of the mappings for processing, and Gen. Journal Line and Credit Transfer Register for payment exports. Types with `storageCode` also use the storage connection. `BIFROST Attach ori` does not grant these Data Exchange table permissions.\r\n"
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:24.027Z",
+      "finishedAt": "2026-10-23T12:09:24.273Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "read",
+      "request": {
+        "type": "DataExchange.Definition.List",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "count": 13,
+          "definitions": [
+            {
+              "code": "ECB-EXCHANGE-RATES",
+              "name": "European Central Bank Currency Exchange Rates",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 1,
+              "mappingCount": 1,
+              "usedByDataExchangeTypes": [
+                "ECB-EXCHANGE-RATES"
+              ]
+            },
+            {
+              "code": "EDOCPEPPOLCRMEMOIMP",
+              "name": "e-Doc PEPPOL - Credit Memo Import",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 3,
+              "mappingCount": 3,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "EDOCPEPPOLINVIMP",
+              "name": "e-Doc PEPPOL - Invoice Import",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 3,
+              "mappingCount": 3,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "EDOCPEPPOLSALCRMEXP",
+              "name": "e-Doc PEPPOL - Sales Credit Memo Export",
+              "type": "Generic Export",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Export Generic XML",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "E-Doc. DED PEPPOL External",
+              "lineDefCount": 18,
+              "mappingCount": 18,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "EDOCPEPPOLSALINVEXP",
+              "name": "e-Doc PEPPOL - Sales Invoice Export",
+              "type": "Generic Export",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Export Generic XML",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "E-Doc. DED PEPPOL External",
+              "lineDefCount": 17,
+              "mappingCount": 17,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "EDOCPEPPOLSRVCRMEXP",
+              "name": "e-Doc PEPPOL - Service Credit Memo Export",
+              "type": "Generic Export",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Export Generic XML",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "E-Doc. DED PEPPOL External",
+              "lineDefCount": 18,
+              "mappingCount": 18,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "EDOCPEPPOLSRVINVEXP",
+              "name": "e-Doc PEPPOL - Service Invoice Export",
+              "type": "Generic Export",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Export Generic XML",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "E-Doc. DED PEPPOL External",
+              "lineDefCount": 17,
+              "mappingCount": 17,
+              "usedByDataExchangeTypes": []
+            },
+            {
+              "code": "OCRCREDITMEMO",
+              "name": "OCR - Credit Memo",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 1,
+              "mappingCount": 1,
+              "usedByDataExchangeTypes": [
+                "OCRCREDITMEMO"
+              ]
+            },
+            {
+              "code": "OCRINVOICE",
+              "name": "OCR - Invoice",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 2,
+              "mappingCount": 2,
+              "usedByDataExchangeTypes": [
+                "OCRINVOICE"
+              ]
+            },
+            {
+              "code": "PEPPOLCREDITMEMO",
+              "name": "PEPPOL - Credit Memo",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 2,
+              "mappingCount": 2,
+              "usedByDataExchangeTypes": [
+                "PEPPOLCREDITMEMO"
+              ]
+            },
+            {
+              "code": "PEPPOLINVOICE",
+              "name": "PEPPOL - Invoice",
+              "type": "Generic Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import XML File to Data Exch.",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "",
+              "lineDefCount": 2,
+              "mappingCount": 2,
+              "usedByDataExchangeTypes": [
+                "PEPPOLINVOICE"
+              ]
+            },
+            {
+              "code": "SEPA CAMT",
+              "name": "SEPA CAMT",
+              "type": "Bank Statement Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import Bank Statement",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "Read Data Exch. from File",
+              "lineDefCount": 1,
+              "mappingCount": 2,
+              "usedByDataExchangeTypes": [
+                "SEPA CAMT"
+              ]
+            },
+            {
+              "code": "SEPA CAMT 053-08",
+              "name": "SEPA CAMT 053.001.08",
+              "type": "Bank Statement Import",
+              "fileType": "Xml",
+              "readingWritingCodeunit": "Import Bank Statement",
+              "readingWritingXmlPort": "",
+              "extDataHandlingCodeunit": "Read Data Exch. from File",
+              "lineDefCount": 1,
+              "mappingCount": 2,
+              "usedByDataExchangeTypes": [
+                "SEPA CAMT 053-08"
+              ]
+            }
+          ]
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:24.283Z",
+      "finishedAt": "2026-10-23T12:09:24.736Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Definition.Get",
+        "data": {
+          "code": "X160-MISSING"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Engin skilgreining gagnaskipta er til fyrir kóðann 'X160-MISSING'.",
+        "parameter": "code",
+        "received": "X160-MISSING",
+        "expected": "Notaðu kóða sem DataExchange.Definition.List skilar.",
+        "nextStep": "Notaðu kóða sem DataExchange.Definition.List skilar.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Definition.Get\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:24.744Z",
+      "finishedAt": "2026-10-23T12:09:24.956Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "read",
+      "request": {
+        "type": "DataExchange.Type.List",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "count": 7,
+          "types": [
+            {
+              "code": "ECB-EXCHANGE-RATES",
+              "description": "European Central Bank Currency Exchange Rates",
+              "dataExchDefCode": "ECB-EXCHANGE-RATES",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "",
+              "type": "Generic Import"
+            },
+            {
+              "code": "OCRCREDITMEMO",
+              "description": "OCR - Credit Memo",
+              "dataExchDefCode": "OCRCREDITMEMO",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "Map DataExch To Intermediate",
+              "type": "Generic Import"
+            },
+            {
+              "code": "OCRINVOICE",
+              "description": "OCR - Invoice",
+              "dataExchDefCode": "OCRINVOICE",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "Map DataExch To Intermediate",
+              "type": "Generic Import"
+            },
+            {
+              "code": "PEPPOLCREDITMEMO",
+              "description": "PEPPOL - Credit Memo",
+              "dataExchDefCode": "PEPPOLCREDITMEMO",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "Map DataExch To Intermediate",
+              "type": "Generic Import"
+            },
+            {
+              "code": "PEPPOLINVOICE",
+              "description": "PEPPOL - Invoice",
+              "dataExchDefCode": "PEPPOLINVOICE",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "Map DataExch To Intermediate",
+              "type": "Generic Import"
+            },
+            {
+              "code": "SEPA CAMT",
+              "description": "SEPA CAMT",
+              "dataExchDefCode": "SEPA CAMT",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "",
+              "type": "Bank Statement Import"
+            },
+            {
+              "code": "SEPA CAMT 053-08",
+              "description": "SEPA CAMT 053.001.08",
+              "dataExchDefCode": "SEPA CAMT 053-08",
+              "userFeedbackCodeunit": "",
+              "validationCodeunit": "",
+              "dataHandlingCodeunit": "",
+              "type": "Bank Statement Import"
+            }
+          ]
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:24.964Z",
+      "finishedAt": "2026-10-23T12:09:25.182Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Entry.List",
+        "data": {
+          "dataExchDefCode": "X160-MISSING",
+          "take": 1
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Success",
+        "data": {
+          "count": 0,
+          "skip": 0,
+          "take": 1,
+          "entries": []
+        }
+      },
+      "isRefusal": false,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:25.191Z",
+      "finishedAt": "2026-10-23T12:09:25.609Z",
+      "title": "Inspect the response with no configured prerequisites",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Entry.Get",
+        "data": {
+          "entryNo": -1
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameter",
+        "error": "'entryNo' verður að vera heiltala.",
+        "parameter": "entryNo",
+        "received": "-1",
+        "expected": "heiltala sem er stærri en 0",
+        "nextStep": "Sendu \"entryNo\" sem heiltölu innan leyfilegra marka.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Entry.Get\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:25.617Z",
+      "finishedAt": "2026-10-23T12:09:26.060Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "Storage.Upload.CommitToDataExchange",
+        "data": {
+          "uploadId": "not-a-guid",
+          "dataExchDefCode": "X160-MISSING"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Færibreyta \"uploadId\" hefur gildið \"not-a-guid\", sem er ekki í gildu sniði (GUID). Væntanlegt er GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301.",
+        "parameter": "uploadId",
+        "received": "not-a-guid",
+        "expected": "GUID, t.d. 3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+        "nextStep": "Sendu gildið sem GUID, eins og kallið sem stofnaði það skilaði því.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.CommitToDataExchange\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:26.066Z",
+      "finishedAt": "2026-10-23T12:09:26.494Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "Storage.Upload.CommitToDataExchange",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nauðsynlega færibreytu \"uploadId\" vantar.",
+            "parameter": "uploadId",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"uploadId\"",
+            "nextStep": "Gefðu upp \"uploadId\" og sendu beiðnina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Færibreytan \"dataExchDefCode\" er nauðsynleg.",
+            "parameter": "dataExchDefCode",
+            "received": "ekki gefið upp",
+            "expected": "JSON-strengur sem er mest 20 stafir",
+            "nextStep": "Sendu \"dataExchDefCode\" sem JSON-strengur sem er mest 20 stafir og reyndu aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"Storage.Upload.CommitToDataExchange\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:26.505Z",
+      "finishedAt": "2026-10-23T12:09:26.924Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Entry.Process",
+        "data": {
+          "entryNo": -1
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameter",
+        "error": "Færibreytan \"entryNo\" verður að vera stærri en 0.",
+        "parameter": "entryNo",
+        "received": "-1",
+        "expected": "númer fyrirliggjandi færslu",
+        "nextStep": "Notaðu entryNo sem DataExchange.Import.Run eða DataExchange.Entry.List skilar.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Entry.Process\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:26.933Z",
+      "finishedAt": "2026-10-23T12:09:27.398Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Entry.Process",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nauðsynlega færibreytu \"entryNo\" vantar.",
+        "parameter": "entryNo",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"entryNo\"",
+        "nextStep": "Gefðu upp \"entryNo\" og sendu beiðnina aftur.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Entry.Process\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:27.413Z",
+      "finishedAt": "2026-10-23T12:09:27.954Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Entry.Delete",
+        "data": {
+          "entryNo": -1
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameter",
+        "error": "Færibreytan \"entryNo\" verður að vera stærri en 0.",
+        "parameter": "entryNo",
+        "received": "-1",
+        "expected": "númer fyrirliggjandi færslu",
+        "nextStep": "Notaðu entryNo sem DataExchange.Entry.List skilar.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Entry.Delete\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:27.961Z",
+      "finishedAt": "2026-10-23T12:09:28.382Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Entry.Delete",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nauðsynlega færibreytu \"entryNo\" vantar.",
+        "parameter": "entryNo",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"entryNo\"",
+        "nextStep": "Gefðu upp \"entryNo\" og sendu beiðnina aftur.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Entry.Delete\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:28.391Z",
+      "finishedAt": "2026-10-23T12:09:28.866Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Definition.Import",
+        "data": {
+          "contentBase64": "not-base64!"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Færibreyta \"contentBase64\" er ekki gilt base64-innihald.",
+        "parameter": "contentBase64",
+        "expected": "base64-innihald",
+        "nextStep": "Kóðaðu bæti skrárinnar sem venjulegt base64 og sendu þau aftur.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Definition.Import\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:28.873Z",
+      "finishedAt": "2026-10-23T12:09:29.384Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Definition.Import",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Færibreytan \"storageCode\" er nauðsynleg.",
+            "parameter": "storageCode",
+            "received": "ekki gefið upp",
+            "expected": "JSON-strengur sem er mest 20 stafir",
+            "nextStep": "Sendu \"storageCode\" sem JSON-strengur sem er mest 20 stafir og reyndu aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Færibreytan \"path\" er nauðsynleg.",
+            "parameter": "path",
+            "received": "ekki gefið upp",
+            "expected": "JSON-strengur sem er mest 2048 stafir",
+            "nextStep": "Sendu \"path\" sem JSON-strengur sem er mest 2048 stafir og reyndu aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Definition.Import\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:29.392Z",
+      "finishedAt": "2026-10-23T12:09:29.856Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.PaymentExport.Run",
+        "data": {
+          "journalTemplate": "X160-MISSING",
+          "journalBatch": "X160-MISSING",
+          "inline": true
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "InvalidParameterFormat",
+            "error": "Færibreytan \"journalTemplate\" er lengri en leyfilegt hámark, 10 stafir.",
+            "parameter": "journalTemplate",
+            "received": "X160-MISSING",
+            "expected": "JSON-strengur sem er mest 10 stafir",
+            "nextStep": "Sendu \"journalTemplate\" sem JSON-strengur sem er mest 10 stafir og reyndu aftur."
+          },
+          {
+            "code": "InvalidParameterFormat",
+            "error": "Færibreytan \"journalBatch\" er lengri en leyfilegt hámark, 10 stafir.",
+            "parameter": "journalBatch",
+            "received": "X160-MISSING",
+            "expected": "JSON-strengur sem er mest 10 stafir",
+            "nextStep": "Sendu \"journalBatch\" sem JSON-strengur sem er mest 10 stafir og reyndu aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.PaymentExport.Run\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:29.864Z",
+      "finishedAt": "2026-10-23T12:09:30.360Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.PaymentExport.Run",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "3 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Færibreytan \"journalTemplate\" er nauðsynleg.",
+            "parameter": "journalTemplate",
+            "received": "ekki gefið upp",
+            "expected": "JSON-strengur sem er mest 10 stafir",
+            "nextStep": "Sendu \"journalTemplate\" sem JSON-strengur sem er mest 10 stafir og reyndu aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Færibreytan \"journalBatch\" er nauðsynleg.",
+            "parameter": "journalBatch",
+            "received": "ekki gefið upp",
+            "expected": "JSON-strengur sem er mest 10 stafir",
+            "nextStep": "Sendu \"journalBatch\" sem JSON-strengur sem er mest 10 stafir og reyndu aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Veldu hvert skráin fer: storageCode með path eða folderPath, eða inline true.",
+            "parameter": "storageCode",
+            "received": "(vantar)",
+            "expected": "storageCode, eða inline true",
+            "nextStep": "Sendu storageCode (finndu hann með Storage.Account.List), eða inline true fyrir skrá sem er mest 1 MB."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.PaymentExport.Run\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:30.369Z",
+      "finishedAt": "2026-10-23T12:09:30.794Z",
+      "title": "A request refused before any change",
+      "category": "precondition",
+      "request": {
+        "type": "DataExchange.Type.Set",
+        "data": {
+          "code": "X160-TYPE",
+          "dataExchDefCode": "X160-MISSING"
+        },
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "RecordNotFound",
+        "error": "Skilgreining gagnaskipta X160-MISSING fannst ekki.",
+        "parameter": "dataExchDefCode",
+        "received": "X160-MISSING",
+        "expected": "fyrirliggjandi skilgreining fyrir almennan innflutning (Generic Import)",
+        "nextStep": "Kallaðu á DataExchange.Definition.List og veldu skilgreiningu af leyfðri tegund með nákvæmum kóða hennar.",
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Type.Set\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    },
+    {
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "appVersion": "28.3.0.0",
+      "containerId": "f0328cfb44e5",
+      "containerName": "worker6-attachments160-20261020-w1",
+      "company": "CRONUS International Ltd.",
+      "lcid": 1039,
+      "startedAt": "2026-10-23T12:09:30.802Z",
+      "finishedAt": "2026-10-23T12:09:31.538Z",
+      "title": "Refusal: required request data is missing",
+      "category": "refusal",
+      "request": {
+        "type": "DataExchange.Type.Set",
+        "data": {},
+        "lcid": 1039
+      },
+      "response": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandamál í beiðninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Færibreytan \"code\" er nauðsynleg.",
+            "parameter": "code",
+            "received": "ekki gefið upp",
+            "expected": "JSON-strengur sem er mest 20 stafir",
+            "nextStep": "Sendu \"code\" sem JSON-strengur sem er mest 20 stafir og reyndu aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Færibreytan \"dataExchDefCode\" er nauðsynleg.",
+            "parameter": "dataExchDefCode",
+            "received": "ekki gefið upp",
+            "expected": "JSON-strengur sem er mest 20 stafir",
+            "nextStep": "Sendu \"dataExchDefCode\" sem JSON-strengur sem er mest 20 stafir og reyndu aftur."
+          }
+        ],
+        "hint": "Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \"Help.Implementation.Get\" með subject \"DataExchange.Type.Set\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund."
+      },
+      "isRefusal": true,
+      "bc28W1Recording": "pending Claude exact-head verification"
+    }
+  ]
+}

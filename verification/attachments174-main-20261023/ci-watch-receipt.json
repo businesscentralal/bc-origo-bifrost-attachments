@@ -1,0 +1,13 @@
+{
+  "file": "/team-queue/ci-watch/businesscentralal_bc-origo-bifrost-attachments-174-fc6674e83b3c4a83650191fea8b131252c97be74.json",
+  "owner": "worker-6",
+  "sourceTask": "1792753422.668589",
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "state": "pending",
+  "checkedAt": "2026-10-23T11:52:16.764Z",
+  "runUrls": [
+    "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512",
+    "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723397"
+  ],
+  "failures": []
+}

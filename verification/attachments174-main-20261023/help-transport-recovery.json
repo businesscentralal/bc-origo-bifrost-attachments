@@ -1,0 +1,13 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "containerId": "f0328cfb44e5",
+  "taskId": "8e834ed0-4dcc-4ed3-ab25-b82ac0778814",
+  "type": "Storage.Upload.Append",
+  "lcid": 1039,
+  "taskAlreadyExecuted": true,
+  "readOnlyRecoveryHTTP": 200,
+  "originalTaskNotReplayed": true,
+  "toolTransportFailures": 1,
+  "recoveredBusinessCheck": true,
+  "additionalTaskWrites": 0
+}

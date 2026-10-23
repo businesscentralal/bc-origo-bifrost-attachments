@@ -1,0 +1,551 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "types": [
+    {
+      "messageType": "DataExchange.Definition.Delete",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Definition.Export",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Definition.Get",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Definition.Import",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Definition.List",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Entry.Delete",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Entry.Get",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Entry.List",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Entry.Process",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Export.Run",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Import.Run",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.PaymentExport.Run",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Type.List",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "DataExchange.Type.Set",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Help.DataExchange.Get",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Help.Storage.Get",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Account.List",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Attachment.CreateForRecord",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Attachment.CreateLinked",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Attachment.Offload",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Attachment.Restore",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Directory.Create",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Directory.Delete",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Directory.Exists",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Directory.List",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.File.Copy",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.File.Create",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.File.Delete",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.File.Exists",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.File.Get",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.File.List",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.File.Move",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Upload.Abort",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Upload.Append",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Upload.Begin",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Upload.Commit",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Upload.CommitToDataExchange",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Upload.CommitToRecord",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 2,
+      "icelandicScenarioChecks": 2,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    },
+    {
+      "messageType": "Storage.Upload.Status",
+      "lcids": [
+        1033,
+        1039
+      ],
+      "helpChecks": 2,
+      "englishExampleChecks": 1,
+      "icelandicScenarioChecks": 1,
+      "businessFailed": 0,
+      "skipped": 0,
+      "dataSetup": "Own synthetic requests and nonexistent/invalid prerequisites; all runtime writes refused before change; no customer/shared fixtures",
+      "independentBc28W1Recording": "Pending Claude Code"
+    }
+  ]
+}

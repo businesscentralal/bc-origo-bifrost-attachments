@@ -1,0 +1,75 @@
+{
+  "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "tableInstances": 16,
+  "totalRows": 0,
+  "containerId": "f0328cfb44e5",
+  "database": "default",
+  "readOnlyQueries": true,
+  "counts": [
+    {
+      "table": "CRONUS International Ltd_$DataExch Entry Link ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "rows": 0
+    },
+    {
+      "table": "CRONUS International Ltd_$DataExch Test Target ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+      "rows": 0
+    },
+    {
+      "table": "CRONUS International Ltd_$Storage Attachment Link ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "rows": 0
+    },
+    {
+      "table": "CRONUS International Ltd_$Storage MCP Cleanup Item ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+      "rows": 0
+    },
+    {
+      "table": "CRONUS International Ltd_$Storage MCP File ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+      "rows": 0
+    },
+    {
+      "table": "CRONUS International Ltd_$Storage Setup ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "rows": 0
+    },
+    {
+      "table": "CRONUS International Ltd_$Storage Upload Chunk ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "rows": 0
+    },
+    {
+      "table": "CRONUS International Ltd_$Storage Upload Session ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "rows": 0
+    },
+    {
+      "table": "My Company$DataExch Entry Link ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "rows": 0
+    },
+    {
+      "table": "My Company$DataExch Test Target ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+      "rows": 0
+    },
+    {
+      "table": "My Company$Storage Attachment Link ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "rows": 0
+    },
+    {
+      "table": "My Company$Storage MCP Cleanup Item ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+      "rows": 0
+    },
+    {
+      "table": "My Company$Storage MCP File ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+      "rows": 0
+    },
+    {
+      "table": "My Company$Storage Setup ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "rows": 0
+    },
+    {
+      "table": "My Company$Storage Upload Chunk ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "rows": 0
+    },
+    {
+      "table": "My Company$Storage Upload Session ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+      "rows": 0
+    }
+  ],
+  "at": "2026-10-23T12:12:44.7768117Z"
+}

@@ -1,0 +1,370 @@
+{
+  "repo": "businesscentralal/bc-origo-bifrost-attachments",
+  "issue": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/160",
+  "pr": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/174",
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/fix/160-help-chapters-sourceguard-worker6",
+  "immutableCommitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/fc6674e83b3c4a83650191fea8b131252c97be74",
+  "sourceOwner": "worker-6",
+  "developerCompile": {
+    "variants": [
+      {
+        "name": "default-app",
+        "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+        "dirty": false,
+        "exitCode": 0,
+        "errors": 0,
+        "warnings": 0,
+        "analyzers": [
+          "CodeCop",
+          "UICop",
+          "AppSourceCop"
+        ],
+        "testAnalyzerConfiguration": "Repository enables all three analyzers for test apps",
+        "sha256": "dc4da8e1bbbbdb6f8f901839f5fc6b23daf9c77fb87500483b013f1b55ac26d1",
+        "finishedAt": "2026-10-23T11:47:11.573257+00:00"
+      },
+      {
+        "name": "test-product",
+        "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+        "dirty": false,
+        "exitCode": 0,
+        "errors": 0,
+        "warnings": 0,
+        "analyzers": [
+          "CodeCop",
+          "UICop",
+          "AppSourceCop"
+        ],
+        "testAnalyzerConfiguration": "Repository enables all three analyzers for test apps",
+        "sha256": "feccaa9ef101f999974ba36eb3b4d54c2f4cf4e15c676f381cf87052e0e37c2a",
+        "finishedAt": "2026-10-23T11:47:35.639726+00:00"
+      },
+      {
+        "name": "test-app",
+        "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+        "dirty": false,
+        "exitCode": 0,
+        "errors": 0,
+        "warnings": 0,
+        "analyzers": [
+          "CodeCop",
+          "UICop",
+          "AppSourceCop"
+        ],
+        "testAnalyzerConfiguration": "Repository enables all three analyzers for test apps",
+        "sha256": "09752cb06ea5ae06c546d2e3f6633a9ebe4e3efdc7c88b0053d0d39c4fd9016c",
+        "finishedAt": "2026-10-23T11:47:57.380784+00:00"
+      }
+    ],
+    "mainBaseline": {
+      "sourceSha": "17ba5b8d64d078a1d180dc626391968b440ec7ed",
+      "role": "released-app main breaking-change baseline",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "sha256": "0c49d1649107dfbab65912c13288fbb6b96874cbb57d30aada296e27186eed89",
+      "at": "2026-10-23T11:45:52.264815+00:00"
+    },
+    "deployedProvenance": [
+      {
+        "kind": "default-deployed-symbols",
+        "path": "/workspace/evidence/attachments174-main-20261023-worker6/compile/default-deployed-symbols/Origo.Bifrost_Attachments.28.3.0.0.app",
+        "sha256": "dc4da8e1bbbbdb6f8f901839f5fc6b23daf9c77fb87500483b013f1b55ac26d1",
+        "sourceCommit": "fc6674e83b3c4a83650191fea8b131252c97be74",
+        "friends": [],
+        "sha256MatchesCompiledArtifact": true
+      },
+      {
+        "kind": "test-deployed-symbols",
+        "path": "/workspace/evidence/attachments174-main-20261023-worker6/compile/test-deployed-symbols/Origo.Bifrost_Attachments.28.3.0.0.app",
+        "sha256": "feccaa9ef101f999974ba36eb3b4d54c2f4cf4e15c676f381cf87052e0e37c2a",
+        "sourceCommit": "fc6674e83b3c4a83650191fea8b131252c97be74",
+        "friends": [
+          {
+            "Id": "7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+            "Name": "Bifrost Attachments - Tests",
+            "Publisher": "Origo"
+          }
+        ],
+        "sha256MatchesCompiledArtifact": true
+      },
+      {
+        "kind": "test-deployed-symbols",
+        "path": "/workspace/evidence/attachments174-main-20261023-worker6/compile/test-deployed-symbols/Origo.Bifrost_Attachments_Tests.28.3.0.0.app",
+        "sha256": "09752cb06ea5ae06c546d2e3f6633a9ebe4e3efdc7c88b0053d0d39c4fd9016c",
+        "sourceCommit": "fc6674e83b3c4a83650191fea8b131252c97be74",
+        "friends": [],
+        "sha256MatchesCompiledArtifact": true
+      }
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC1",
+      "requirement": "All39types overview/examples with real bc28-w1 answers and write refusals",
+      "implemented": "All39chapters retained; six refreshed refusals match original GetExamples bytes; main178 enhancements preserved",
+      "developerVerification": {
+        "mcp": {
+          "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+          "containerId": "f0328cfb44e5",
+          "functional": {
+            "executed": 128,
+            "passed": 128,
+            "failed": 0,
+            "skipped": 0,
+            "englishExactAnswerComparisons": 64,
+            "icelandicStructureComparisons": 64,
+            "refusalsPerLanguage": 58,
+            "readSuccessesPerLanguage": 6
+          },
+          "helpBusinessChecks": {
+            "executed": 78,
+            "passed": 78,
+            "failed": 0,
+            "skipped": 0,
+            "types": 39,
+            "lcids": [
+              1033,
+              1039
+            ]
+          },
+          "transport": {
+            "directMessageTypeToolCalls": 206,
+            "toolFetchFailures": 1,
+            "recoveredByReadOnlyExistingResponse": 1,
+            "additionalTaskReplays": 0,
+            "recovery": {
+              "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+              "containerId": "f0328cfb44e5",
+              "taskId": "8e834ed0-4dcc-4ed3-ab25-b82ac0778814",
+              "type": "Storage.Upload.Append",
+              "lcid": 1039,
+              "taskAlreadyExecuted": true,
+              "readOnlyRecoveryHTTP": 200,
+              "originalTaskNotReplayed": true,
+              "toolTransportFailures": 1,
+              "recoveredBusinessCheck": true,
+              "additionalTaskWrites": 0
+            },
+            "structuredMessageTypeToolResponses": 205
+          },
+          "audit": {
+            "historicalBefore": 2002,
+            "after": 2324,
+            "newRows": 322,
+            "automaticHelpOnRefusalRows": 116,
+            "typeCounts": {
+              "DataExchange.Definition.Delete": 4,
+              "DataExchange.Definition.Export": 4,
+              "DataExchange.Definition.Get": 2,
+              "DataExchange.Definition.Import": 4,
+              "DataExchange.Definition.List": 2,
+              "DataExchange.Entry.Delete": 4,
+              "DataExchange.Entry.Get": 2,
+              "DataExchange.Entry.List": 2,
+              "DataExchange.Entry.Process": 4,
+              "DataExchange.Export.Run": 4,
+              "DataExchange.Import.Run": 4,
+              "DataExchange.PaymentExport.Run": 4,
+              "DataExchange.Type.List": 2,
+              "DataExchange.Type.Set": 4,
+              "Help.DataExchange.Get": 2,
+              "Help.Implementation.Get": 194,
+              "Help.Storage.Get": 2,
+              "Storage.Account.List": 2,
+              "Storage.Attachment.CreateForRecord": 4,
+              "Storage.Attachment.CreateLinked": 4,
+              "Storage.Attachment.Offload": 4,
+              "Storage.Attachment.Restore": 4,
+              "Storage.Directory.Create": 4,
+              "Storage.Directory.Delete": 4,
+              "Storage.Directory.Exists": 2,
+              "Storage.Directory.List": 2,
+              "Storage.File.Copy": 4,
+              "Storage.File.Create": 4,
+              "Storage.File.Delete": 4,
+              "Storage.File.Exists": 2,
+              "Storage.File.Get": 2,
+              "Storage.File.List": 2,
+              "Storage.File.Move": 4,
+              "Storage.Upload.Abort": 4,
+              "Storage.Upload.Append": 4,
+              "Storage.Upload.Begin": 4,
+              "Storage.Upload.Commit": 4,
+              "Storage.Upload.CommitToDataExchange": 4,
+              "Storage.Upload.CommitToRecord": 4,
+              "Storage.Upload.Status": 2
+            }
+          },
+          "createsOwnData": true,
+          "dataSetup": "Only owned synthetic requests, nonexistent X160 prerequisites and invalid inputs;58pre-write refusals+6reads perlocale; no provider/customer/shared/financial fixtures. Native suite independently covers application mutations. All business tables16instances verified0rows. MCP audit retention follows Architect1792577401; no deletion/manualusage/licence/backend writes.",
+          "bc28W1IndependentRecording": "Pending Claude Code, not claimed by owned COSMO proof",
+          "at": "2026-10-23T12:11:13.292451+00:00"
+        },
+        "ui": {
+          "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+          "containerId": "f0328cfb44e5",
+          "executed": 6,
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "help": {
+            "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+            "containerId": "f0328cfb44e5",
+            "containerName": "worker6-attachments160-20261020-w1",
+            "clientLanguage": "English (United States)",
+            "requestLcids": [
+              1033,
+              1039
+            ],
+            "executed": 4,
+            "passed": 4,
+            "failed": 0,
+            "skipped": 0,
+            "checks": [
+              {
+                "type": "Storage.Upload.Begin",
+                "lcid": 1033,
+                "messageId": "a4de9245-4a0e-470d-a2d5-374f01a8d1bd",
+                "messageCreatedAt": "2026-10-23T12:04:18.607Z",
+                "exactCurrentTipCaptureMatched": true,
+                "passed": true,
+                "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+                "screenshot": "Storage-Upload-Begin-1033.png"
+              },
+              {
+                "type": "Storage.Upload.Begin",
+                "lcid": 1039,
+                "messageId": "a1623300-4379-405c-a5d3-04109f70ba69",
+                "messageCreatedAt": "2026-10-23T12:04:18.823Z",
+                "exactCurrentTipCaptureMatched": true,
+                "passed": true,
+                "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+                "screenshot": "Storage-Upload-Begin-1039.png"
+              },
+              {
+                "type": "DataExchange.Export.Run",
+                "lcid": 1033,
+                "messageId": "b04cdc0f-f5ba-47e4-8483-7baa1a6729b1",
+                "messageCreatedAt": "2026-10-23T12:07:16.847Z",
+                "exactCurrentTipCaptureMatched": true,
+                "passed": true,
+                "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+                "screenshot": "DataExchange-Export-Run-1033.png"
+              },
+              {
+                "type": "DataExchange.Export.Run",
+                "lcid": 1039,
+                "messageId": "f445c557-d7c1-49f1-81cb-02861b184d91",
+                "messageCreatedAt": "2026-10-23T12:07:17.063Z",
+                "exactCurrentTipCaptureMatched": true,
+                "passed": true,
+                "scenario": "BC Web Client Bifrost Messages: own Help.Implementation.Get response renders English overview and recorded request/answer examples, including refusal, at the request LCID.",
+                "screenshot": "DataExchange-Export-Run-1039.png"
+              }
+            ],
+            "finishedAt": "2026-10-23T12:11:13.768Z"
+          },
+          "clientLocales": {
+            "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+            "containerId": "f0328cfb44e5",
+            "executed": 2,
+            "passed": 2,
+            "failed": 0,
+            "skipped": 0,
+            "actualClientLcids": [
+              1033,
+              1039
+            ],
+            "languageRestored": true,
+            "checks": [
+              {
+                "lcid": 1033,
+                "passed": true,
+                "caption": "Bifrost Messages"
+              },
+              {
+                "lcid": 1039,
+                "passed": true,
+                "caption": "Bifr\u00f6st skilabo\u00f0"
+              }
+            ],
+            "at": "2026-10-23T12:11:51.045Z"
+          }
+        }
+      },
+      "independentDependency": {
+        "owner": "Claude Code",
+        "action": "All39bc28-w1 recordings and exacthead verification"
+      }
+    },
+    {
+      "id": "AC2",
+      "requirement": "Missing chapter fails build",
+      "verified": {
+        "sourceGuards": 10,
+        "missingChapterMutations": 2,
+        "native": {
+          "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+          "containerId": "f0328cfb44e5",
+          "fullSuite": true,
+          "executed": 455,
+          "passed": 455,
+          "failed": 0,
+          "skipped": 0,
+          "codeunits": 32,
+          "expectedSourceMethods": 455,
+          "missing": [],
+          "extra": [],
+          "duplicates": [],
+          "xmlSha256": "a9d3eedac6332e9ede64ffd2428f7f2447e79c8119d001ee37d4eada181a2c61",
+          "failures": []
+        }
+      },
+      "pending": "Independent review only"
+    },
+    {
+      "id": "AC3",
+      "requirement": "Correct README help URL; English help; Unreleased",
+      "implemented": "Carried unchanged; generated source inventory refreshed",
+      "verified": {
+        "sourceInventory": "matches finalfc6674e",
+        "xlf": "exacttipgenerated and committed is-IS sync",
+        "uiEnglishByDesign": "exactresponse download comparisons passed bothrequestLCIDs",
+        "unreleased": "retained"
+      }
+    },
+    {
+      "id": "AC4",
+      "requirement": "Claude describe_message_type on UAT",
+      "verified": false,
+      "owner": "Claude Code",
+      "status": "Independent exact-head verification requested; historical receipts do not verify changed source"
+    }
+  ],
+  "remainingDeveloper": [
+    "React to actual new CI/Claude/Grok findings under same retained source owner; no currently unblocked source/verification work remains"
+  ],
+  "mergeAndClosureOwners": {
+    "clearance": "Grok PR Reviewer Apps",
+    "mergeDeployment": "Architect",
+    "postDeploymentUAT": "Tester",
+    "sourceAndRepairs": "Reginn(worker-6)"
+  },
+  "ownedCleanup": {
+    "businessTableInstances": 16,
+    "businessRows": 0,
+    "allOwnedHelpersRemoved": true,
+    "languageRestored": "English (United States)",
+    "sameContainerStopped": true,
+    "protectedAuditRetained": 2324,
+    "retentionAuthority": "Architect1792577401.521159"
+  },
+  "pendingExternal": [
+    "CI PRBuild39948723512 inprogress; SourceGuards39948723397passed",
+    "Claude independentall39bc28-w1recordings+fullcurrentheadreceipt",
+    "Grok exacttipclearance and resolutionofpr:amend; eligibleapproval",
+    "Architect mergecommit/sameSHAdeployment; newTesterUAT and ownedcontainerclosure"
+  ]
+}

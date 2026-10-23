@@ -1,0 +1,12 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "containerId": "f0328cfb44e5",
+  "startedAt": "2026-10-23T12:00:38.551Z",
+  "finishedAt": "2026-10-23T12:03:36.054Z",
+  "exitCode": 0,
+  "failures": [],
+  "certificateStoreWrites": false,
+  "helperOriginalSha256": "af1cf6979c8da97e42c446a21d8008eec61279c4aad75c5347f221e5bbec3fd2",
+  "helperNoStoreSha256": "356e00a1ef46538701f2f37fabb47677608721fa4ea8363c7f1634bcb7f1d53e",
+  "scope": "Full configured native AL suite; existing native runner, only certificate-import block omitted; no test filters/assertion changes"
+}

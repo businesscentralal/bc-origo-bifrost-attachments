@@ -1,0 +1,45 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "targets": [
+    {
+      "type": "Storage.Upload.Begin",
+      "lcid": 1033,
+      "id": "a4de9245-4a0e-470d-a2d5-374f01a8d1bd",
+      "time": "2026-10-23T12:04:18.607Z",
+      "captureStartedAt": "2026-10-23T12:04:18.640Z",
+      "captureFinishedAt": "2026-10-23T12:04:18.862Z",
+      "crossHostClockToleranceSeconds": 1,
+      "liveCapturePath": "/workspace/evidence/attachments160-worker6/live-contracts-fc6674e/Storage.Upload.Begin-1033.json"
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "lcid": 1039,
+      "id": "a1623300-4379-405c-a5d3-04109f70ba69",
+      "time": "2026-10-23T12:04:18.823Z",
+      "captureStartedAt": "2026-10-23T12:04:18.870Z",
+      "captureFinishedAt": "2026-10-23T12:04:19.085Z",
+      "crossHostClockToleranceSeconds": 1,
+      "liveCapturePath": "/workspace/evidence/attachments160-worker6/live-contracts-fc6674e/Storage.Upload.Begin-1039.json"
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1033,
+      "id": "b04cdc0f-f5ba-47e4-8483-7baa1a6729b1",
+      "time": "2026-10-23T12:07:16.847Z",
+      "captureStartedAt": "2026-10-23T12:07:16.889Z",
+      "captureFinishedAt": "2026-10-23T12:07:17.097Z",
+      "crossHostClockToleranceSeconds": 1,
+      "liveCapturePath": "/workspace/evidence/attachments160-worker6/live-contracts-fc6674e/DataExchange.Export.Run-1033.json"
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1039,
+      "id": "f445c557-d7c1-49f1-81cb-02861b184d91",
+      "time": "2026-10-23T12:07:17.063Z",
+      "captureStartedAt": "2026-10-23T12:07:17.104Z",
+      "captureFinishedAt": "2026-10-23T12:07:17.315Z",
+      "crossHostClockToleranceSeconds": 1,
+      "liveCapturePath": "/workspace/evidence/attachments160-worker6/live-contracts-fc6674e/DataExchange.Export.Run-1039.json"
+    }
+  ]
+}

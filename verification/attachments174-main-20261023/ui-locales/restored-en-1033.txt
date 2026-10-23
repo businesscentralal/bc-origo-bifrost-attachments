@@ -1,0 +1,115 @@
+Dynamics 365 Business Central
+
+
+
+
+GSkip to main content
+CRONUS International Ltd.
+Finance
+Cash Management
+Sales
+Purchasing
+Shopify
+All Reports
+
+Bifrost Messages:
+All
+
+
+Delete
+Edit List
+Task
+
+Request
+
+Response
+
+Export
+
+
+
+
+
+	
+Id
+	
+	
+Version
+	
+Type
+	
+Status
+	
+Source
+	
+Subject
+	
+Language
+	
+Date & Time
+	
+Date
+	
+User ID
+	
+Last Modified
+	
+Response Time
+	
+Data Content Type
+	
+		
+													
+	{b638760b-d18e-45ca-8ee1-edea94d3bbf5}	
+	1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Type.Set	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	8 milliseconds	text/json	
+	{93c18bbb-a5be-4aef-ba65-90ed08c246ea}		1.0	DataExchange.Type.Set	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	8 milliseconds	text/json	
+	{b0a773e0-08ee-4822-9fd1-adee73054393}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Type.Set	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	13 milliseconds	text/json	
+	{272c04e5-eb27-41ff-a8bf-0dac1082144e}		1.0	DataExchange.Type.Set	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	9 milliseconds	text/json	
+	{76c31b6c-da37-4564-a131-768482c11553}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.PaymentExport.Run	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	12 milliseconds	text/json	
+	{93cae2c5-4a9d-4ddf-976f-1200d8e93b48}		1.0	DataExchange.PaymentExport.Run	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	44 milliseconds	text/json	
+	{5233fdb7-5696-47e9-920f-32d4de24b67a}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.PaymentExport.Run	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	17 milliseconds	text/json	
+	{2d36d2dc-1e8d-4a45-a082-20a791d7d2d5}		1.0	DataExchange.PaymentExport.Run	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	13 milliseconds	text/json	
+	{4ebf20fd-f4f2-4b77-86a3-6f3fd53763f5}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Definition.Import	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	14 milliseconds	text/json	
+	{c6f538db-3a34-45c6-b2db-1cd412559d20}		1.0	DataExchange.Definition.Import	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	16 milliseconds	text/json	
+	{bcba74a9-e76c-4bc8-aeaf-c66ff0f4b6ac}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Definition.Import	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	16 milliseconds	text/json	
+	{89ada473-b52b-40ef-b496-f6281f46ff51}		1.0	DataExchange.Definition.Import	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	12 milliseconds	text/json	
+	{b4afc11c-2b84-456f-8ca2-a5b5c34cbee2}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Delete	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	9 milliseconds	text/json	
+	{a7b84d1b-9a43-4f3d-beae-bce13b605d28}		1.0	DataExchange.Entry.Delete	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	9 milliseconds	text/json	
+	{09b95653-2991-4d3b-84d0-9d5c53360318}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Delete	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	12 milliseconds	text/json	
+	{e4c15915-cf4b-4493-b669-26a9ffe69f92}		1.0	DataExchange.Entry.Delete	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	30 milliseconds	text/json	
+	{c67f88a1-d5d7-4256-b296-d027ad54ac3e}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Process	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	15 milliseconds	text/json	
+	{5e400481-9e3d-4c89-8bbe-c36530d2e7d5}		1.0	DataExchange.Entry.Process	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	10 milliseconds	text/json	
+	{e0f822e6-4543-4607-838c-a6c1d99cc02b}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Process	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	9 milliseconds	text/json	
+	{52669f15-98ab-400a-9181-5a8deae8b63b}		1.0	DataExchange.Entry.Process	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	8 milliseconds	text/json	
+	{a59079a6-5fba-4f71-a763-f2e1f6641657}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	Storage.Upload.CommitToDataExchange	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	11 milliseconds	text/json	
+	{9e93c811-a05d-4479-bb0c-d585506465d9}		1.0	Storage.Upload.CommitToDataExchange	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	9 milliseconds	text/json	
+	{31d13bc3-daf7-49c5-83e2-495865d3bc74}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	Storage.Upload.CommitToDataExchange	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	10 milliseconds	text/json	
+	{5a07f279-7ec4-44cf-ad35-dc878eec8647}		1.0	Storage.Upload.CommitToDataExchange	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	8 milliseconds	text/json	
+	{eb00fa91-c893-448f-8571-bf818696f4a2}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Entry.Get	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	12 milliseconds	text/json	
+	{dcb4fb72-f868-40a3-9da6-486a16e61752}		1.0	DataExchange.Entry.Get	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	9 milliseconds	text/json	
+	{31a71f00-dd2e-4bbd-ab44-26be26a443f9}		1.0	DataExchange.Entry.List	Task completed (Success)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	10 milliseconds	text/json	
+	{ff22eec2-84c1-4eb4-9495-fa9299869630}		1.0	DataExchange.Type.List	Task completed (Success)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	14 milliseconds	text/json	
+	{258d52f2-5bda-4c90-9a50-2dfdfe2bfc2d}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Definition.Get	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	12 milliseconds	text/json	
+	{2ea7e950-fd14-41be-bfc4-36dadda63908}		1.0	DataExchange.Definition.Get	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	12 milliseconds	text/json	
+	{668a2714-eced-4727-b4ab-7a4d86d63c9c}		1.0	DataExchange.Definition.List	Task completed (Success)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	21 milliseconds	text/json	
+	{56a77a48-20f7-4c04-af4f-ee82541e591e}		1.0	Help.DataExchange.Get	Task completed (Success)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	9 milliseconds	text/json	
+	{e3fbf0da-a6f3-4a52-b9d9-9da2c353be3f}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Import.Run	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	11 milliseconds	text/json	
+	{9cfa1a2e-54a1-4615-8e89-b17f0c84860b}		1.0	DataExchange.Import.Run	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	13 milliseconds	text/json	
+	{3f6fe41f-c4a9-4965-b222-bb8e62a27037}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Import.Run	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	12 milliseconds	text/json	
+	{a65c9296-c6ab-48b7-8d26-b952927377a4}		1.0	DataExchange.Import.Run	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	10 milliseconds	text/json	
+	{679cf176-c016-4b64-abe9-8f3d696a0b97}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Export.Run	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	15 milliseconds	text/json	
+	{3cee9747-9906-45f7-897f-d42540df66d8}		1.0	DataExchange.Export.Run	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	12 milliseconds	text/json	
+	{67d2c588-2cc9-426f-a861-d415dc8ee32a}		1.0	Help.Implementation.Get	Task completed (Success)	Origo-BC Cloud Events MCP	DataExchange.Export.Run	English (United States)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	11 milliseconds	text/json	
+	{8dbe040a-d29a-43f3-ab41-6fde7d593e46}		1.0	DataExchange.Export.Run	Task completed (Error)	Origo-BC Cloud Events MCP		Icelandic (Iceland)	10/23/2026 12:09 PM	10/23/2026	GUNNAR	10/23/2026 12:09 PM	12 milliseconds	text/json	
+
+Request Data
+Response Data
+Content Length
+Caller Identity
+Name
+Type
+Use the Left and Right arrow keys to adjust the size. Use the Escape key to undo or the Enter key to accept.
+
+List with title "Bifrost Messages" now has 147 items
+
+Last Modified, sorted in Descending order

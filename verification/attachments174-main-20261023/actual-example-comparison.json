@@ -1,0 +1,817 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "containerId": "f0328cfb44e5",
+  "executed": 64,
+  "passed": 64,
+  "failed": 0,
+  "skipped": 0,
+  "checks": [
+    {
+      "type": "Help.Storage.Get",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "Help.Storage.Get",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Account.List",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "Storage.Account.List",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.List",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "Storage.File.List",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Get",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "Storage.File.Get",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Create",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.File.Create",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt",
+          "contentBase64": "SGVsbG8="
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Create",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.File.Create",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Delete",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.File.Delete",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Delete",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.File.Delete",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Copy",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.File.Copy",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "sourcePath": "X160-help/example.txt",
+          "targetPath": "X160-help/copy.txt"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Copy",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.File.Copy",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Move",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.File.Move",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "sourcePath": "X160-help/example.txt",
+          "targetPath": "X160-help/moved.txt"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Move",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.File.Move",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.File.Exists",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "Storage.File.Exists",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.List",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "Storage.Directory.List",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.Create",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Directory.Create",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.Create",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Directory.Create",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.Delete",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Directory.Delete",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.Delete",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Directory.Delete",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Directory.Exists",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "Storage.Directory.Exists",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.Offload",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Attachment.Offload",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "target": "DocumentAttachment",
+          "systemId": "not-a-guid",
+          "folderPath": "X160-help"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.Offload",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Attachment.Offload",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.Restore",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Attachment.Restore",
+        "data": {
+          "target": "DocumentAttachment",
+          "systemId": "not-a-guid"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.Restore",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Attachment.Restore",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Upload.Begin",
+        "data": {
+          "fileName": "X160-help/example.txt",
+          "declaredSize": 5
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Upload.Begin",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Append",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Upload.Append",
+        "data": {
+          "uploadId": "not-a-guid",
+          "sequence": 1,
+          "contentBase64": "SGVsbG8="
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Append",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Upload.Append",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Commit",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Upload.Commit",
+        "data": {
+          "uploadId": "not-a-guid"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Commit",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Upload.Commit",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Abort",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Upload.Abort",
+        "data": {
+          "uploadId": "not-a-guid"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Abort",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Upload.Abort",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.Status",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "Storage.Upload.Status",
+        "data": {
+          "uploadId": "not-a-guid"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Attachment.CreateLinked",
+        "data": {
+          "storageCode": "X160-NOT-CONFIGURED",
+          "path": "X160-help/example.txt",
+          "fileName": "example.txt"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Attachment.CreateLinked",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.CreateForRecord",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Attachment.CreateForRecord",
+        "data": {
+          "target": "IncomingDocument",
+          "fileName": "example.txt",
+          "contentBase64": "not-base64!"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Attachment.CreateForRecord",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Attachment.CreateForRecord",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.CommitToRecord",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Upload.CommitToRecord",
+        "data": {
+          "uploadId": "not-a-guid",
+          "target": "IncomingDocument"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.CommitToRecord",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Upload.CommitToRecord",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Delete",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "DataExchange.Definition.Delete",
+        "data": {
+          "code": "X160-MISSING"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Delete",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "DataExchange.Definition.Delete",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Export",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "DataExchange.Definition.Export",
+        "data": {
+          "code": "X160-MISSING",
+          "inline": true
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Export",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "DataExchange.Definition.Export",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "DataExchange.Export.Run",
+        "data": {
+          "dataExchDefCode": "X160-MISSING",
+          "tableId": 18,
+          "inline": true
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "DataExchange.Export.Run",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Import.Run",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "DataExchange.Import.Run",
+        "data": {
+          "dataExchDefCode": "X160-MISSING",
+          "contentBase64": "SGVsbG8="
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Import.Run",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "DataExchange.Import.Run",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Help.DataExchange.Get",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "Help.DataExchange.Get",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.List",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "DataExchange.Definition.List",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Get",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "DataExchange.Definition.Get",
+        "data": {
+          "code": "X160-MISSING"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Type.List",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "DataExchange.Type.List",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.List",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "DataExchange.Entry.List",
+        "data": {
+          "dataExchDefCode": "X160-MISSING",
+          "take": 1
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.Get",
+      "title": "Inspect the response with no configured prerequisites",
+      "request": {
+        "type": "DataExchange.Entry.Get",
+        "data": {
+          "entryNo": -1
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.CommitToDataExchange",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "Storage.Upload.CommitToDataExchange",
+        "data": {
+          "uploadId": "not-a-guid",
+          "dataExchDefCode": "X160-MISSING"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "Storage.Upload.CommitToDataExchange",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "Storage.Upload.CommitToDataExchange",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.Process",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "DataExchange.Entry.Process",
+        "data": {
+          "entryNo": -1
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.Process",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "DataExchange.Entry.Process",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.Delete",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "DataExchange.Entry.Delete",
+        "data": {
+          "entryNo": -1
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Entry.Delete",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "DataExchange.Entry.Delete",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Import",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "DataExchange.Definition.Import",
+        "data": {
+          "contentBase64": "not-base64!"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Definition.Import",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "DataExchange.Definition.Import",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.PaymentExport.Run",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "DataExchange.PaymentExport.Run",
+        "data": {
+          "journalTemplate": "X160-MISSING",
+          "journalBatch": "X160-MISSING",
+          "inline": true
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.PaymentExport.Run",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "DataExchange.PaymentExport.Run",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "title": "A request refused before any change",
+      "request": {
+        "type": "DataExchange.Type.Set",
+        "data": {
+          "code": "X160-TYPE",
+          "dataExchDefCode": "X160-MISSING"
+        },
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "title": "Refusal: required request data is missing",
+      "request": {
+        "type": "DataExchange.Type.Set",
+        "data": {},
+        "lcid": 1033
+      },
+      "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "passed": true
+    }
+  ]
+}

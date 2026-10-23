@@ -1,0 +1,119 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "containerId": "f0328cfb44e5",
+  "business": {
+    "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "tableInstances": 16,
+    "totalRows": 0,
+    "containerId": "f0328cfb44e5",
+    "database": "default",
+    "readOnlyQueries": true,
+    "counts": [
+      {
+        "table": "CRONUS International Ltd_$DataExch Entry Link ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+        "rows": 0
+      },
+      {
+        "table": "CRONUS International Ltd_$DataExch Test Target ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+        "rows": 0
+      },
+      {
+        "table": "CRONUS International Ltd_$Storage Attachment Link ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+        "rows": 0
+      },
+      {
+        "table": "CRONUS International Ltd_$Storage MCP Cleanup Item ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+        "rows": 0
+      },
+      {
+        "table": "CRONUS International Ltd_$Storage MCP File ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+        "rows": 0
+      },
+      {
+        "table": "CRONUS International Ltd_$Storage Setup ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+        "rows": 0
+      },
+      {
+        "table": "CRONUS International Ltd_$Storage Upload Chunk ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+        "rows": 0
+      },
+      {
+        "table": "CRONUS International Ltd_$Storage Upload Session ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+        "rows": 0
+      },
+      {
+        "table": "My Company$DataExch Entry Link ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+        "rows": 0
+      },
+      {
+        "table": "My Company$DataExch Test Target ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+        "rows": 0
+      },
+      {
+        "table": "My Company$Storage Attachment Link ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+        "rows": 0
+      },
+      {
+        "table": "My Company$Storage MCP Cleanup Item ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+        "rows": 0
+      },
+      {
+        "table": "My Company$Storage MCP File ori$7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+        "rows": 0
+      },
+      {
+        "table": "My Company$Storage Setup ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+        "rows": 0
+      },
+      {
+        "table": "My Company$Storage Upload Chunk ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+        "rows": 0
+      },
+      {
+        "table": "My Company$Storage Upload Session ori$672df32a-a0c5-4a22-b591-0efa38023e95",
+        "rows": 0
+      }
+    ],
+    "at": "2026-10-23T12:12:44.7768117Z"
+  },
+  "nativeHelpers": {
+    "exitCode": 0,
+    "removed": true,
+    "at": "2026-10-23T12:03:37.434Z"
+  },
+  "readOnlyHelpers": {
+    "removed": true,
+    "at": "2026-10-23T12:12:46.432Z"
+  },
+  "languageRestored": true,
+  "retainedProtectedAudit": {
+    "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "containerId": "f0328cfb44e5",
+    "companyId": "04931c73-7acb-f111-98ec-6045bdacacac",
+    "count": 2324,
+    "rangeDefinition": "Lexicographically sorted GUID message IDs",
+    "idRange": {
+      "first": "004cf585-c0fe-45b1-96d3-11e2595315ab",
+      "last": "ffe9b87c-198a-4ea7-8866-d33b7da4575f"
+    },
+    "historical2002Preserved": true,
+    "newOwnedRows": 322,
+    "exclusiveOwnership": "Same individually owned worker6 issue160/PR174 COSMO; only retained owner native/UI/MCP verification",
+    "retentionAuthority": "Architect1792577401.521159: designed protected unreported usage rows; no deletion probes/manualreporting; samecontainer stopped/retained until postdeployTesterUAT+issueclosure",
+    "at": "2026-10-23T12:11:49.806970+00:00"
+  },
+  "ownedContainer": {
+    "id": "f0328cfb44e5",
+    "name": "worker6-attachments160-20261020-w1",
+    "beforeState": "Running",
+    "patchStatus": 204,
+    "afterStatus": 200,
+    "afterState": "Stopped",
+    "verifiedStopped": true,
+    "deleted": false,
+    "retentionReason": "Architect1792577401: protected unreported audit retention is designed/not a PR gate; retain same stopped container until actual postdeploy TesterUAT and issueclosure. No deletion probes/manual reporting. Business fixtures16tableinstances0rows; audit count2324.",
+    "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "at": "2026-10-23T12:12:56.510Z"
+  },
+  "at": "2026-10-23T12:15:04.424642+00:00"
+}

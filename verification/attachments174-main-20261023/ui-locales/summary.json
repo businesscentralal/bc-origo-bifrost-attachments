@@ -1,0 +1,26 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "containerId": "f0328cfb44e5",
+  "executed": 2,
+  "passed": 2,
+  "failed": 0,
+  "skipped": 0,
+  "actualClientLcids": [
+    1033,
+    1039
+  ],
+  "languageRestored": true,
+  "checks": [
+    {
+      "lcid": 1033,
+      "passed": true,
+      "caption": "Bifrost Messages"
+    },
+    {
+      "lcid": 1039,
+      "passed": true,
+      "caption": "Bifröst skilaboð"
+    }
+  ],
+  "at": "2026-10-23T12:11:51.045Z"
+}

@@ -1,0 +1,45 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "xlf": {
+    "passed": true,
+    "evidencePath": "/workspace/evidence/attachments174-main-20261023-worker6/xlf-in-sync.log",
+    "generatedByExactTipCompiler": true,
+    "committedTranslation": "app/Translations/Bifrost Attachments.is-IS.xlf"
+  },
+  "inventory": {
+    "passed": true,
+    "log": "Inventory matches fc6674e83b3c4a83650191fea8b131252c97be74 (39 message types).\n"
+  },
+  "snapshotProvenance": {
+    "commit": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
+    "capturedAt": "2026-10-03T16:02:22.475Z",
+    "source": "OrigoSoftwareSolutions/bc-dev-standards",
+    "files": [
+      "roles/bindings/bifrost.yaml",
+      "roles/grok-bifrost-coder-gunnar.yaml",
+      "roles/prompts/grok-bifrost-coder-gunnar.md",
+      "skills/origo-bc-al-coding-standards/SKILL.md",
+      "skills/origo-bc-al-coding-standards/references/anti-patterns.md",
+      "skills/origo-bc-al-coding-standards/references/api-design-patterns.md",
+      "skills/origo-bc-al-coding-standards/references/code-patterns.md",
+      "skills/origo-bc-al-coding-standards/references/icelandic-translation-pattern.md",
+      "skills/origo-bc-al-coding-standards/references/naming-conventions.md",
+      "skills/origo-bc-al-coding-standards/references/object-id-ranges.md",
+      "skills/origo-bc-al-coding-standards/references/permission-architecture.md",
+      "skills/origo-bc-al-coding-standards/references/review-dimensions.md",
+      "skills/origo-bc-al-coding-standards/references/security-patterns.md",
+      "skills/origo-bc-al-coding-standards/references/sift-optimization.md",
+      "skills/origo-bc-al-coding-standards/references/telemetry-patterns.md",
+      "skills/origo-bc-al-coding-standards/references/translation-not-copypaste.md",
+      "skills/origo-bc-documentation-writer/SKILL.md",
+      "skills/origo-bc-documentation-writer/references/changelog-example.md",
+      "skills/origo-bc-documentation-writer/references/html-help-pages.md",
+      "skills/origo-bc-documentation-writer/references/message-type-doc-template.md",
+      "skills/origo-bc-extension-scaffold/SKILL.md",
+      "skills/origo-bc-extension-scaffold/references/layered-customer-solution.md",
+      "skills/origo-bc-test-writer/SKILL.md"
+    ]
+  },
+  "freshlySynchronizedStandards": false,
+  "at": "2026-10-23T11:53:45.079020+00:00"
+}

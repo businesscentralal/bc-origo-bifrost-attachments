@@ -1,0 +1,29 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "httpStatus": 422,
+  "localCandidateCompile": "all3variants0errors0warnings; unchanged",
+  "deploymentFailed": true,
+  "dependentCompilerDiagnostics": 292,
+  "codes": [
+    "AL0161"
+  ],
+  "rootCause": "Same owned container retained installed Test app; publishing shipping no-IVT Default triggers dependent test recompilation against inaccessible internal objects. Remove only owned Test extension before Default, then republish IVT Test product and same-tip Test app. No source/API/access changes needed.",
+  "firstDiagnostic": "src/DataExchFixture.Codeunit.al(26,18): error AL0161: 'Table Origo.Bifrost.Attachments.\"Storage Upload Session ori\"' is inaccessible due to its protection level",
+  "noAutomaticRetry": true,
+  "readback": {
+    "path": "/workspace/evidence/attachments174-main-20261023-worker6/recovery-before-retry/Origo.Bifrost_Attachments.28.3.0.0.app",
+    "sha256": "21ed3cb2a98632240acc93766ab8060849152aac7b99d609518083af499754f0",
+    "source": [
+      {
+        "Commit": "954fcc2cdb938e96ff67b0e470b2ea799c685dbb"
+      }
+    ],
+    "friends": [
+      {
+        "Id": "7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+        "Name": "Bifrost Attachments - Tests",
+        "Publisher": "Origo"
+      }
+    ]
+  }
+}
