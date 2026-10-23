@@ -362,7 +362,7 @@
     "retentionAuthority": "Architect1792577401.521159"
   },
   "pendingExternal": [
-    "CI39948723512 failed in Test client transport after91successful functions; sourceguards passed; Architect fresh paired retry required (workerActionsguardread-only)",
+    "CI39948723512 attempt2 inprogress at sameSHA; freshCreate succeeded, Default running, Test dependent/pending. Attempt1 transport abort preserved; no hosted full-suite pass.",
     "Claude independentall39bc28-w1recordings+fullcurrentheadreceipt",
     "Grok exacttipclearance and resolutionofpr:amend; eligibleapproval",
     "Architect mergecommit/sameSHAdeployment; newTesterUAT and ownedcontainerclosure"

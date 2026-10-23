@@ -15,7 +15,7 @@
   },
   "owner": "worker-6",
   "displayName": "Reginn",
-  "summary": "Currentmain merged; developer compile/full455native/UI/MCP checks verified at fc6674e. HostedTest runner failed after91successful functions; fresh pairedCIretry needs authorizedArchitect operator. IndependentClaude/Grok/approval/merge/deploy/UAT pending. No greenhandoff.",
+  "summary": "Current main integrated; owned developer compile/full455native/UI/MCP verified at fc6674e. Hosted attempt1 had a Test transport abort; authorized fresh paired attempt2 is now running at same tip. Independent Claude/Grok/approval/merge/deploy/UAT remain pending; no greenhandoff.",
   "acceptanceCriteriaVerified": false,
   "acceptancePendingReason": "Issue160 AC1 needs independentall39realbc28-w1recordings and AC4Claude currenthead verification; not inferred from owned COSMO or historical receipts. Current CI/Grok/approval/Architect/Tester gates separate.",
   "noSuppressions": true,
@@ -170,12 +170,43 @@
     "observedSuccessfulTestFunctions": 91,
     "fullSuiteCompleted": false,
     "error": "CommunicationError / ClientSession State is InError",
-    "retry": "Wholeworkflow fresh pairedretry requested fromArchitect; canonicalActions mutation guard rejected worker request before mutation",
+    "retry": "Authorized operator launched full attempt2; freshcreate completed andDefault running; Test/full-suite result pending",
     "evidenceUrls": [
       "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512",
       "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512/job/120402646118"
     ],
-    "owned455SuiteRemainsSeparate": true
+    "owned455SuiteRemainsSeparate": true,
+    "attempt1": {
+      "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "runId": 39948723512,
+      "Default": "success",
+      "Test": "failure",
+      "observedSuccessfulTestFunctions": 91,
+      "fullSuiteCompleted": false,
+      "error": "CommunicationError / ClientSession State is InError",
+      "retry": "Wholeworkflow fresh pairedretry requested fromArchitect; canonicalActions mutation guard rejected worker request before mutation",
+      "evidenceUrls": [
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512",
+        "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512/job/120402646118"
+      ],
+      "owned455SuiteRemainsSeparate": true
+    },
+    "currentAttempt": {
+      "id": 39948723512,
+      "attempt": 2,
+      "state": "in_progress",
+      "result": null,
+      "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+      "actor": "gunnars-codex-developer[bot]",
+      "triggeringActor": "gunnargestsson",
+      "updatedAt": "2026-10-23T12:28:41Z",
+      "url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512",
+      "attemptUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512/attempts/2",
+      "freshCreateSucceeded": true,
+      "defaultRunning": true,
+      "testPendingDependentDefault": true,
+      "fullSuitePassClaimed": false
+    }
   },
   "evidenceUrls": [
     "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/github-candidate.json",

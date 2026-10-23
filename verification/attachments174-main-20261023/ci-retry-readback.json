@@ -1,0 +1,16 @@
+{
+  "id": 39948723512,
+  "attempt": 2,
+  "state": "in_progress",
+  "result": null,
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "actor": "gunnars-codex-developer[bot]",
+  "triggeringActor": "gunnargestsson",
+  "updatedAt": "2026-10-23T12:28:41Z",
+  "url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512",
+  "attemptUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512/attempts/2",
+  "freshCreateSucceeded": true,
+  "defaultRunning": true,
+  "testPendingDependentDefault": true,
+  "fullSuitePassClaimed": false
+}
