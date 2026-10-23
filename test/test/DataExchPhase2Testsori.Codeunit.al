@@ -253,6 +253,93 @@ codeunit 96237 "DataExch Phase2 Tests ori"
             'AC04 process returns a created document or base-app process errors.');
     end;
 
+    /// <summary>Proves linked bytes reach the base CSV reader and mapper in both supported languages.</summary>
+    [Test]
+    procedure Scenario_AC04_LinkedCsv_ProcessReadsAndMapsExactContent()
+    begin
+        // Story #23, AC04 | Time: no date dependency | Risk: base-app CSV import path
+        AssertIncomingCsvProcessing(1033, true);
+        AssertIncomingCsvProcessing(1039, true);
+    end;
+
+    /// <summary>Proves the standard unlinked attachment processing path still maps local bytes.</summary>
+    [Test]
+    procedure Scenario_AC04_LocalCsv_ProcessKeepsStandardContentPath()
+    begin
+        // Story #23, AC04 | Time: no date dependency | Risk: unlinked attachment regression
+        AssertIncomingCsvProcessing(1033, false);
+        AssertIncomingCsvProcessing(1039, false);
+    end;
+
+    local procedure AssertIncomingCsvProcessing(LanguageId: Integer; Linked: Boolean)
+    var
+        IncomingDocument: Record "Incoming Document";
+        IncomingAttachment: Record "Incoming Document Attachment";
+        ExchangeType: Record "Data Exchange Type";
+        DataExch: Record "Data Exch.";
+        Target: Record "DataExch Test Target ori";
+        Link: Record "Storage Attachment Link ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Fixture: Codeunit "DataExch Fixture ori";
+        MockState: Codeunit "Storage Mock State";
+        RequestJson: JsonObject;
+        DefinitionCode: Code[20];
+        UploadId: Text;
+        Path: Text;
+        ExpectedBase64: Text;
+        EntryNo: Integer;
+        SavedLanguage: Integer;
+    begin
+        // [GIVEN] An isolated CSV definition maps both rows through the real base-app CSV reader.
+        Initialize();
+        DefinitionCode := Fixture.CreateImportDefinition(1);
+        ExchangeType.Init();
+        ExchangeType.Code := DefinitionCode;
+        ExchangeType."Data Exch. Def. Code" := DefinitionCode;
+        ExchangeType.Insert();
+        BeginUpload('phase2-reader.csv', UploadId, Path);
+        AppendChunk(UploadId, 1, Fixture.TwoLineCsv(true));
+        SavedLanguage := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+
+        // [WHEN] The public upload/link path asks the built-in incoming-document processor to run.
+        if Linked then begin
+            CommitUpload(TempArgument, UploadId);
+            ExpectedBase64 := MockState.GetFileContent(Path);
+            RequestJson.Add('storageCode', MockCodeTok);
+            RequestJson.Add('path', Path);
+            RequestJson.Add('fileName', 'phase2-reader.csv');
+            RequestJson.Add('dataExchangeType', DefinitionCode);
+            RequestJson.Add('process', true);
+            ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
+        end else
+            ExecuteCommit(TempArgument, UploadId, DefinitionCode, true, 'BIFT-P2-reader-local');
+        GlobalLanguage(SavedLanguage);
+
+        // [THEN] Prove the bytes reached the reader and mapper, rather than accepting any processing error.
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Incoming creation must succeed.');
+        EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
+        IncomingDocument.Get(EntryNo);
+        DataExch.SetRange("Incoming Entry No.", EntryNo);
+        LibraryAssert.IsTrue(DataExch.FindFirst(), 'The real data-exchange runner must create a parsed entry.');
+        LibraryAssert.AreEqual(2, Fixture.TargetCount(DataExch."Entry No."), 'The real mapper must receive both CSV rows.');
+        Target.SetRange("Data Exch. No.", DataExch."Entry No.");
+        Target.SetRange(Code, 'A1');
+        Target.FindFirst();
+        LibraryAssert.AreEqual('Alpha', Target.Name, 'Exact first-row text reaches mapping.');
+        LibraryAssert.AreEqual(10.5, Target.Amount, 'Exact decimal reaches mapping in both languages.');
+        LibraryAssert.IsTrue(IncomingDocument.GetMainAttachment(IncomingAttachment), 'Main attachment remains.');
+        IncomingAttachment.CalcFields(Content);
+        if Linked then begin
+            LibraryAssert.IsFalse(IncomingAttachment.Content.HasValue(), 'Processing must not restore or persist the offloaded BLOB.');
+            LibraryAssert.IsTrue(Link.Get(Database::"Incoming Document Attachment", IncomingAttachment.SystemId), 'The storage link remains.');
+            LibraryAssert.AreEqual(ExpectedBase64, MockState.GetFileContent(Path), 'Processing must leave the stored bytes unchanged.');
+        end else begin
+            LibraryAssert.IsTrue(IncomingAttachment.Content.HasValue(), 'Unlinked content stays local.');
+            LibraryAssert.IsFalse(Link.Get(Database::"Incoming Document Attachment", IncomingAttachment.SystemId), 'Unlinked processing creates no storage link.');
+        end;
+    end;
+
     [Test]
     procedure AC05_TypeSet_ExportDefinition_IsRefused()
     var

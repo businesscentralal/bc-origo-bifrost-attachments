@@ -2,6 +2,10 @@
 
 # Changelog
 
+## Unreleased
+
+- Fix #23: feed Bifröst-linked incoming-document attachment content into the base data-exchange source hook without restoring the BLOB or changing the remote file (codeunit 10035137). Add bilingual linked/local CSV reader and mapping regressions (codeunit 96237).
+
 All notable changes to Bifrost Attachments are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
 Business Central release versioning (`major.minor.build.revision`).
