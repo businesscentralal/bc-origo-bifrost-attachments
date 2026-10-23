@@ -1935,6 +1935,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Færibreytan "entityType" verður að vera Invoice eða Credit Memo.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Set Impl ori - Method SetType - NamedType InvalidEntityErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 1998889092 - Method 441392062 - NamedType 3079263129" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Invoice or Credit Memo</source>
+          <target>Invoice eða Credit Memo</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Invoice eða Credit Memo</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Set Impl ori - Method SetType - NamedType EntityExpectedLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 1998889092 - Method 441392062 - NamedType 903771208" size-unit="char" translate="yes" xml:space="preserve">
           <source>Send the stable name Invoice or Credit Memo, or omit entityType to preserve the existing value (Invoice for a new type).</source>
           <target>Sendu fasta heitið Invoice eða Credit Memo, eða slepptu entityType til að halda núverandi gildi (Invoice fyrir nýja gerð).</target>

@@ -192,7 +192,7 @@ codeunit 10035170 "DataExch Type Set Impl ori" implements "Msg Interface ori", "
         Description: Text;
         EntityType: Text;
         InvalidEntityErr: Label 'Parameter "entityType" must be Invoice or Credit Memo.', Comment = 'is-IS=Færibreytan "entityType" verður að vera Invoice eða Credit Memo.';
-        EntityExpectedLbl: Label 'Invoice or Credit Memo', Locked = true;
+        EntityExpectedLbl: Label 'Invoice or Credit Memo', Comment = 'is-IS=Invoice eða Credit Memo';
         EntityNextStepLbl: Label 'Send the stable name Invoice or Credit Memo, or omit entityType to preserve the existing value (Invoice for a new type).', Comment = 'is-IS=Sendu fasta heitið Invoice eða Credit Memo, eða slepptu entityType til að halda núverandi gildi (Invoice fyrir nýja gerð).';
         NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
         InvalidKindErr: Label 'The definition kind is not accepted by this operation.', Comment = 'is-IS=Þessi aðgerð tekur ekki við tegund skilgreiningarinnar.';
