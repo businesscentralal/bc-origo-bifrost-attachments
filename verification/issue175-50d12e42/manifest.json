@@ -1,7 +1,8 @@
 {
   "codeCandidateSha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad",
   "files": {
-    "acceptance-matrix.json": "90b2272f49636df7d99f3951d9dfe57af315dad9f739f6e41d75211176055203",
+    "README.md": "b91289b99222fe56e39d2deef564d54c7c9063defcf1850622e1ae6d7ed2e5be",
+    "acceptance-matrix.json": "3a51e60efbbdad9f633f57aa385718300ab2cf6af8d4b8e4bec941790646046f",
     "artifact-provenance.json": "32462be1fe7dfd045a727f58e894e0517d014caacef61707703d96e6ae5e2a0c",
     "baseline-provenance.json": "e92408088a637d784690d5b8d6391c0ee3563ef49a5c149afd59016c45dac3ce",
     "connector-50d12e42.log": "258a6c09f1dc697530a50fb32dbc8b1b3583acd583276d21391a6a8942342595",
@@ -14,6 +15,7 @@
     "full-suite-summary.json": "60f19a6cdfe75ea283a946beaa619957cdb4d86974caab5c6f257f5b5e575244",
     "github-candidate-before-pr.json": "5591ead2781d496c48ec0aab435f069d04a67ca13753da09b2bfd57809fa90da",
     "guard-preservation-summary.json": "f2919979550a8b82641d7ffdb68ee898d3963f0f7e4043e9d1969caddebafd63",
+    "gunnar-f6a-h2-receipt.json": "0eb3109dfb7820c370140998f2ebbff64bbc037a8973b22cda2efe06c86fd857",
     "help-DataExchange-Type-Set-1033.json": "070d7891c94cdab4aca4fff04aa7f483c3aa3f43b46a5657a2f772762882e4de",
     "help-DataExchange-Type-Set-1039.json": "5a0b9c323708e21a6939e7a4937f62ad4ae84e8762876bcfb2fac66e031eed83",
     "help-Storage-Attachment-CreateForRecord-1033.json": "d000a01dfaf4352e92be3db1728ebc83b7eed3a4000bfb357666580356518586",
@@ -206,5 +208,5 @@
     "ui-typeset-1039.png": "70e8f912a25c0e3a5fa7477cb6fa8608ac0414d3c441396a4185df8b4a9d9178",
     "xlf-50d12e42.log": "e313183a073e395b647a1b77d1f8e3bc29dfb995c1a50153e3fbab741ab9b5b0"
   },
-  "generatedAt": "2026-10-23T14:51:48.460790+00:00"
+  "generatedAt": "2026-10-23T14:53:45.691738+00:00"
 }

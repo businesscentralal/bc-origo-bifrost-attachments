@@ -59,7 +59,8 @@
         "ui-summary.json"
       ],
       "result": "Shared File/Directory listing serializer emits relative parent and leaf name only; root/nested provider-prefixed metadata tested, schema/CHANGELOG updated.",
-      "mergeHold": "Gunnar H2 signoff"
+      "mergeHold": "Gunnar F6a H2 approved in authenticated GitHub comment6367540500, 2026-10-23T14:43:10Z",
+      "approvalUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/175#issuecomment-6367540500"
     },
     "F6b": {
       "status": "implemented/developer-verified",
@@ -109,7 +110,7 @@
     "runtime": "DisableWriteInsideTryFunctions=false set only on owned Docker per Microsoft Online semantics. Fresh full suite/MCP/UI after alignment; unchanged field write-guard verified. No SaaS/licensing assertion.",
     "incomplete": [
       "F1 dependency/integration",
-      "Gunnar own H2 approval",
+      "Gunnar own H2 disposition for F2/F3 answer-shape corrections; F6a explicitly approved",
       "Independent Claude current-tip verification",
       "Grok current-tip clearance",
       "Required eligible non-author approval",
@@ -120,5 +121,5 @@
   },
   "issueComplete": false,
   "fixesClosureMarkupUsed": false,
-  "at": "2026-10-23T14:50:58.784776+00:00"
+  "at": "2026-10-23T14:53:24.688333+00:00"
 }

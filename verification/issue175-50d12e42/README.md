@@ -2,7 +2,7 @@
 
 Code candidate `50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad`; this branch contains evidence only and does not change the candidate.
 
-Read [acceptance-matrix.json](acceptance-matrix.json) for each criterion. F1 remains a retained worker6 PR174 dependency. F2/F3/F6a require Gunnar H2 signoff before merge. Independent Claude/Grok verification, CI, merge, deployment and UAT are separate pending gates. This is not issue completion.
+Read [acceptance-matrix.json](acceptance-matrix.json) for each criterion. F1 remains a retained worker6 PR174 dependency. Gunnar approved F6a in issue comment6367540500; F2/F3 H2 disposition remains pending before merge. Independent Claude/Grok verification, CI, merge, deployment and UAT are separate pending gates. This is not issue completion.
 
 Current-tip results: three compile phases0errors0warnings with required cops and released28.3.0.122 baseline; full native462/462/0/0; targeted MCP56/56 plus shared-reader all39types x2languages78/78; help12/12; UI10/10 in1033/1039.
 

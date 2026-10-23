@@ -1,0 +1,13 @@
+{
+  "author": "gunnargestsson",
+  "sourceUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/175#issuecomment-6367540500",
+  "createdAt": "2026-10-23T14:43:10Z",
+  "body": "## Decision 23.10.2026 (Gunnar)\n\nRuling: \"Approve dropping the account base path (my H2)\".\n\nF6a goes ahead and this answer counts as Gunnar's H2 for the released Attachments app.\n\nRecorded from the Bifr\u00f6st decisions page, card d-20261023-attachments175-f6a.\n",
+  "scope": [
+    "F6a account base path removal"
+  ],
+  "notBroadenedTo": [
+    "F2",
+    "F3"
+  ]
+}
