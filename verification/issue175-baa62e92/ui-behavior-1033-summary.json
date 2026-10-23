@@ -1,0 +1,14 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "lcid": 1033,
+  "executed": 4,
+  "passed": 4,
+  "failed": 0,
+  "scenarios": [
+    "listing",
+    "linked",
+    "record",
+    "typeset"
+  ]
+}

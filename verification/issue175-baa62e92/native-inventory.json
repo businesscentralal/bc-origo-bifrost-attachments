@@ -1,0 +1,2796 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "expectedTotal": 465,
+  "tests": [
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Language72_Discovery_ExactEnglish",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Language72_Discovery_ExactIcelandic",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC03_MessageTypes_ResolveDistinctContracts",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC02_TypeSet_ImportDefinitionIsPersisted",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC02_TypeSet_MissingDefinitionDoesNotWrite",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC02_TypeSet_ExportDefinitionDoesNotWrite",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC02_DefinitionExport_ReturnsExistingHeader",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC03_DefinitionDelete_UnusedHeaderIsRemoved",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC03_DefinitionDelete_ReferencedHeaderIsPreserved",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC03_DefinitionDelete_MissingHeaderDoesNotWrite",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC03_ExportRun_ExportHeaderIsPersisted",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC03_ExportRun_ImportDefinitionDoesNotWrite",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96274",
+      "codeunitName": "Attachments Build Tests ori",
+      "method": "Scenario_AC03_ExportRun_MissingFileNameDoesNotWrite",
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "AC01_ImportFromStorage_CreatesDefinitionTree",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "AC02_ExistingCode_RefusedUnlessOverwrite",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "AC03_ExportToStorage_ReimportUnderNewCodeEqualsOriginal",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "ImportFromUpload_ConsumesSession",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "MalformedXml_RefusedWithoutWrite",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "NoSource_And_TwoSources_Refused",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "DefinitionExport_InlineReturnsXml",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "DefinitionExport_NoDeliveryReturnsOnlyHeader",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "DefinitionExport_BothDestinationsOverwriteSameXml",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "DefinitionExport_ContractDescribesAllModesAndEffects",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "DefinitionDelete_RefusedForPayrollImportFormat",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96244",
+      "codeunitName": "DataExch Def Xfer Tests ori",
+      "method": "DataRecordsSet_BlocksDefinitionAndEntryTables",
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "Scenario_AC03_CodeTypeRefusal_UsesAccusativeIcelandic",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "RepairedBindings_ResolveTheirOwnTargetTables",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "DefinitionListAndGet_RenderSeededDefinitionInOrder",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "TypeList_EmptyCompany_ReturnsCountZero",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "EntryGet_PagesFields_AndRefusesFileAboveOneMegabyte",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "DataRecordsSet_OnDataExch_ReturnsHint",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "NegativeSkip_AndMissingCode_ReturnErrors",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "Help_NamesTypes_AndCarriesPaginationLimits",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "EntryList_Paging_UsesFoundationDefaults",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "HelpGuides_NameEveryRegisteredType",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96213",
+      "codeunitName": "Data Exch Discovery Tests",
+      "method": "Contract_DataExchange_NamesItsOwnPermissionSetAndSubject",
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "AC01_ExportThreeCustomers_ToStorage",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "AC02_RecordIds_InlineAndStorage",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "AC03_InlineOverOneMegabyte_RollsBack",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "AC04_ImportDefinition_Refused",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "AC04_PaymentDefinition_PointsToPaymentExport",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "TableNotMappingTable_Refused",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "MissingSourceAndDelivery_CollectedTogether",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "NoMatchingRecords_PreconditionFailed",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "UnknownViewField_InvalidFilterField",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "StorageWriteFailure_RollsBackEntry",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "PaymentExport_UnknownBatch_RecordNotFound",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "PaymentExport_LowercaseName_InvalidParameterFormat",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "PaymentExport_EmptyBatch_PreconditionFailed",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96243",
+      "codeunitName": "DataExch Export Tests ori",
+      "method": "PaymentExport_NoDelivery_MissingParameter",
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "XmlInline_RefusesInBothLanguages",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "XmlStorage_RefusesInBothLanguages",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "BinaryCsvInline_RefusesInBothLanguages",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "BinaryCsvStorage_RefusesInBothLanguages",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "DefinitionInline_RefusesInBothLanguages",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "DefinitionStorage_RefusesInBothLanguages",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "UploadXml_RefusesAndKeepsChunks",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "UploadBinaryCsv_RefusesAndKeepsChunks",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "DefinitionUpload_RefusesAndKeepsChunks",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "MissingStoredFile_UsesTheOperationErrorContract",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "PostwriteReaderFailure_RetainsRollback",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96256",
+      "codeunitName": "DataExch Format Tests ori",
+      "method": "Utf16Csv_IsNotMistakenForBinary",
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "AC01_CommitToDataExchange_ParsesWithoutProcessing",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "AC01_CommitToDataExchange_KeepFileWritesSessionPath",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "AC02_ImportRun_ProcessTrue_InsertsTargets",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "AC03_ImportRunFromStorage_LeavesFileUntouched",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "AC03_ImportRunMissingStoredFile_AnswersError",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "AC04_BankStatementDefinition_PointsToBankReconciliation",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "AC04_ExportDefinition_IsRefusedForImport",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "AC05_MalformedFile_LeavesNoHalfParsedEntry",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "AC05_MalformedUpload_KeepsSessionOpen",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "AC06_EntryDelete_RefusedForIncomingDocument",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "EntryDelete_RemovesEntryFieldsAndMarker",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "EntryDelete_UnknownEntry_RecordNotFound",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "EntryProcess_WritesTargets_ThenRefusesSecondRun",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "EntryProcess_IntermediateMapping_PointsToIncomingDocument",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "ImportRun_ProcessTrueWithIntermediateMapping_KeepsEntry",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "EntryProcess_InvalidInput_RefusedBeforeWrite",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "ImportRun_InlineOverOneMegabyte_LimitExceeded",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "ImportRun_TwoSources_Refused",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96242",
+      "codeunitName": "DataExch Import Tests ori",
+      "method": "CommitToDataExchange_UnknownDefinition_SessionStaysOpen",
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "PersistedProcessingErrors_AreScopedAndBilingual",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "AC01_CommitToRecord_SetsDataExchangeType_LeavesUnprocessed",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "AC02_CommitToRecord_ProcessTrue_KeepsDocumentOnProcessErrors",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "AC03_UnknownType_RefusesBeforeWrite_SessionStaysOpen",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "AC04_CreateLinked_SetsTypeOnIncomingDocument",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "AC04_CreateLinked_ProcessTrue_KeepsDocumentAndLink",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "Scenario_AC04_LinkedCsv_ProcessReadsAndMapsExactContent",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "Scenario_AC04_LocalCsv_ProcessKeepsStandardContentPath",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "Scenario_AC06_LinkedCsv_CreatesPurchaseInvoice",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "AC05_TypeSet_ExportDefinition_IsRefused",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96237",
+      "codeunitName": "DataExch Phase2 Tests ori",
+      "method": "AC07_DataRecordsSet_BlocksIncomingTypeField_AndTypeTable",
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC03_GenericImport_ImportsInlineFile",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC03_PayrollImport_ImportsInlineFile",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC01_AbsentFields_CollectsAllThree",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_WrongTypes_CollectsAllWithoutWrite",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_NullFields_CollectsAllWithoutWrite",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_ObjectFields_CollectsAllWithoutWrite",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_EmptyFields_CollectsAllWithoutWrite",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_Lowercase_RefusesRawCode",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_MixedCase_RefusesRawCode",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_UnicodeCase_RefusesRawCode",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_LeadingSpace_RefusesRawCode",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_TrailingSpace_RefusesRawCode",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_Overlong_RefusesRawCode",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_Code20AndPath2048_AcceptsExactBounds",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_Path2049_RefusesWithoutWrite",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_Traversal_RefusesWithoutWrite",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_MalformedOrScalar_RefusesData",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC01_UnknownAndWrongKind_RefusesDefinition",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC03_DeleteUnreferenced_DeletesChildren",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC01_DeleteTypeReferenced_PreservesTree",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC01_DeleteBankReferenced_PreservesTree",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC01_DeleteMissing_ReportsCompleteError",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC03_TwoLocales_CollectsLocalizedErrors",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC04_AfterInsertFailure_RollsBack",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC04_AfterDeleteFailure_RollsBack",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC04_ChainedFailure_RollsBackEarlierImport",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_SpacesOnly_ReportsCompleteCodeError",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC03_ExportPayroll_IsRefused",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC01_DefinitionExport_RefusesBadCode",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC03_DefinitionExport_ReturnsHeader",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_ExportFileNameBounds_NeverTruncates",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_TypeSetOverlongDescription_PreservesExisting",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC01_TypeSetPayroll_DoesNotCreateType",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96226",
+      "codeunitName": "DataExch Refusal82 Tests ori",
+      "method": "Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal",
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_GrantedSetupCard_PersistsChange",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ReadOnlySetupCard_RefusesChange",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingSetupInsert_LeavesNoRow",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingSetupModify_PreservesRow",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingSetupDelete_PreservesRow",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_ActualRoles_DispatchSharedHelp",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_GrantedFilesAndDirectories_Roundtrip",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_InvalidFileInput_PreservesState",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_EmptyUpload_RefusesCommitThenAborts",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_GrantedNativeTarget_PersistsContent",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingSourceRead_CreatesNothing",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingTargetWrite_PreservesUpload",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_GrantedOffloadOpenRestore_Roundtrips",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingLinkWrite_PreservesNativeAndStorage",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_GrantedDataExchange_ReadsSeededGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ReadOnlyTypeSet_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ReadOnlyImportRun_CreatesNoEntry",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ReadOnlyExportRun_CreatesNoEntry",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ExportMissingRead_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ReadOnlyDefinitionDelete_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingEntryRead_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingColumnRead_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingDefinitionRead_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingFieldRead_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingFieldMappingRead_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingLineRead_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingMappingRead_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_MissingTypeRead_PreservesGraph",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ProcessWithoutTargetWrite_PreservesEntry",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_ProcessWithTargetWrite_WritesTargetRows",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ReadOnlyEntryDelete_PreservesEntry",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_EntryDeleteWithoutFieldWrite_PreservesEntry",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_EntryDeleteWithRowWrite_DeletesEntry",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ReadOnlyDefinitionImport_InstallsNothing",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_DefinitionImportWithDefWrite_InstallsCopy",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ReadOnlyPaymentExport_PreservesJournal",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_ReadOnlyCommitToDataExchange_PreservesUpload",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC02_CommitToDataExchangeWithoutFieldWrite_PreservesUpload",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96218",
+      "codeunitName": "Storage 79 Perm Tests ori",
+      "method": "Scenario_AC01_CommitToDataExchangeWithRowWrite_ImportsUpload",
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96208",
+      "codeunitName": "Storage App Registry Tests",
+      "method": "AppRegistry_ListsThisApp_WithItsSetupPage",
+      "source": "test/test/StorageAppRegistryTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96206",
+      "codeunitName": "Storage Attach Record Tests",
+      "method": "CreateForRecord_FromBase64_OnCustomer",
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96206",
+      "codeunitName": "Storage Attach Record Tests",
+      "method": "CreateForRecord_FromContentBase64_OnCustomer",
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96206",
+      "codeunitName": "Storage Attach Record Tests",
+      "method": "CreateForRecord_RejectsContentAndContentBase64",
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96206",
+      "codeunitName": "Storage Attach Record Tests",
+      "method": "CreateForRecordHelpDocumentsContentBase64First",
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96206",
+      "codeunitName": "Storage Attach Record Tests",
+      "method": "CreateForRecord_OnFixedAsset",
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96206",
+      "codeunitName": "Storage Attach Record Tests",
+      "method": "CreateForRecord_ByRecordSystemId",
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96206",
+      "codeunitName": "Storage Attach Record Tests",
+      "method": "CreateForRecord_CopiesFromIncomingDocument",
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96206",
+      "codeunitName": "Storage Attach Record Tests",
+      "method": "CreateForRecord_FromStorage_IsBornOffloaded",
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96206",
+      "codeunitName": "Storage Attach Record Tests",
+      "method": "CreateForRecord_RejectsTwoContentSources",
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96206",
+      "codeunitName": "Storage Attach Record Tests",
+      "method": "CreateForRecord_RejectsUnknownRecord",
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96203",
+      "codeunitName": "Storage Attachment Field Tests",
+      "method": "Offloaded_FalseForNewIncDocAttachment",
+      "source": "test/test/StorageAttachmentFieldTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96203",
+      "codeunitName": "Storage Attachment Field Tests",
+      "method": "Offloaded_TrueAfterOffload_IncDoc",
+      "source": "test/test/StorageAttachmentFieldTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96203",
+      "codeunitName": "Storage Attachment Field Tests",
+      "method": "Offloaded_FalseAfterRestore_IncDoc",
+      "source": "test/test/StorageAttachmentFieldTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96203",
+      "codeunitName": "Storage Attachment Field Tests",
+      "method": "Offloaded_FalseForNewDocAttachment",
+      "source": "test/test/StorageAttachmentFieldTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96203",
+      "codeunitName": "Storage Attachment Field Tests",
+      "method": "Offloaded_TrueAfterOffload_DocAttach",
+      "source": "test/test/StorageAttachmentFieldTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96203",
+      "codeunitName": "Storage Attachment Field Tests",
+      "method": "DataRecordsGet_IncDoc_FiltersByOffloaded",
+      "source": "test/test/StorageAttachmentFieldTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96203",
+      "codeunitName": "Storage Attachment Field Tests",
+      "method": "DataRecordsGet_DocAttach_FiltersByOffloaded",
+      "source": "test/test/StorageAttachmentFieldTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96203",
+      "codeunitName": "Storage Attachment Field Tests",
+      "method": "OffloadHelp_DocumentsCandidateDiscovery",
+      "source": "test/test/StorageAttachmentFieldTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "EveryStorageTypeHasMetadataAndHelp",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "EveryMessageTypeHelpExplainsUsage",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "HelpStorageGetReturnsOverviewMarkdown",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "StorageHelpUsesCurrentMcpToolNames",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "HelpTextContainsNoLiteralUnicodeEscapes",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "HelpStorageGetReportsInstalledAppVersion",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "MutatingOutboundStorageHelpDocumentsSideEffects",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "DeleteHelpDocumentsLinkedAttachmentGuards",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "AccountListReturnsConfiguredCode",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "Scenario_AC01_StoredDescription_IsVerbatimBothLanguages",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "FileCreateThenGetRoundtripsContent",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "FileExistsReflectsCreateAndDelete",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "FileDelete_LinkedAttachment_ReturnsError",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "DirectoryDelete_ContainsLinkedAttachment_ReturnsError",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "FileMove_LinkedAttachment_UpdatesLinkPath",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "CreateLinked_DuplicatePath_ReturnsError",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "FileListReturnsEntriesUnderPath",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "DirectoryCreateExistsDelete",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "UnknownStorageCodeReturnsError",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "DisabledConnectionIsRejected",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "MissingPathReturnsError",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "RelativePathSegmentIsRejected",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "RelativePathWithBackslashesIsRejected",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "CurrentDirectorySegmentIsRejected",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "DotsInsideAFileNameAreAccepted",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "GetMissingFileReturnsError",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "DocumentAttachmentOffloadRestoreRoundtrip",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "OffloadPreservesDocumentAttachmentUiBehaviour",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96204",
+      "codeunitName": "Storage Connector Tests",
+      "method": "OffloadPreservesIncomingDocumentUiBehaviour",
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96215",
+      "codeunitName": "Storage Contract Batch1 Tests",
+      "method": "Batch1_AllTypes_HaveRequiredContractChapters",
+      "source": "test/test/StorageContractBatch1Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96215",
+      "codeunitName": "Storage Contract Batch1 Tests",
+      "method": "Batch1_Effects_MatchOperation",
+      "source": "test/test/StorageContractBatch1Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "TypeList_Contract_DeclaresCountAndTypesOnce",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "TypeList_EmptyRequest_CountMatchesTypes",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_TypeList_SeededRows_MatchResponseContract",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Batch2_AllTypes_HaveRequiredContractChapters",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Batch2_Effects_MatchOperation",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC02_QueryContracts_DoNotRequireStorage",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC02_AttachmentContracts_DeclareAcceptedAliases",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC02_MutationContracts_MatchShippedKeys",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC02_MutationContracts_ReplaceStaleParameters",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_DefinitionList_NoStorage_ReturnsSeededRow",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_DefinitionFilters_Malformed_ReturnCompleteErrors",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_DefinitionFilters_Unknown_ReturnCompleteErrors",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_EntryGet_InvalidInputs_CollectsEveryProblem",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_EntryList_MalformedInputs_ReturnsFiveErrors",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_EntryList_ZeroTake_PreservesDefault",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_EntryList_ReversedDates_Refused",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_DefinitionGet_CodeBoundary_NoTruncation",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_DefinitionGet_MissingCode_CompleteRefusal",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96216",
+      "codeunitName": "Storage Contract Batch2 Tests",
+      "method": "Scenario_AC04_InvalidDirection_BilingualRefusals",
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96265",
+      "codeunitName": "Storage Contract Tests ori",
+      "method": "EveryType_DeclaresEveryRequiredChapter",
+      "source": "test/test/StorageContractTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96265",
+      "codeunitName": "Storage Contract Tests ori",
+      "method": "EveryType_ErrorsCarryCodeWhenAndFix",
+      "source": "test/test/StorageContractTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96265",
+      "codeunitName": "Storage Contract Tests ori",
+      "method": "EveryType_DirectionMatchesEffect",
+      "source": "test/test/StorageContractTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96265",
+      "codeunitName": "Storage Contract Tests ori",
+      "method": "EveryType_ResponseFieldsAreDescribed",
+      "source": "test/test/StorageContractTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96265",
+      "codeunitName": "Storage Contract Tests ori",
+      "method": "DefinitionGet_LineDefsAndMappings_AreArraysWithChildren",
+      "source": "test/test/StorageContractTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96265",
+      "codeunitName": "Storage Contract Tests ori",
+      "method": "EveryType_HasSuccessExampleThatMatchesTheResponse",
+      "source": "test/test/StorageContractTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96265",
+      "codeunitName": "Storage Contract Tests ori",
+      "method": "EveryType_WorkflowStepsAndRelatedTypesExist",
+      "source": "test/test/StorageContractTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96265",
+      "codeunitName": "Storage Contract Tests ori",
+      "method": "EveryType_HasDiscoveryTextsInBothLanguages",
+      "source": "test/test/StorageContractTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96229",
+      "codeunitName": "Storage Direction130 Tests ori",
+      "method": "Scenario_AC01_StorageWritesAreInbound1033",
+      "source": "test/test/StorageDirection130Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96229",
+      "codeunitName": "Storage Direction130 Tests ori",
+      "method": "Scenario_AC01_StorageWritesAreInbound1039",
+      "source": "test/test/StorageDirection130Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96229",
+      "codeunitName": "Storage Direction130 Tests ori",
+      "method": "Scenario_AC02_AllTypesMatchEffect1033",
+      "source": "test/test/StorageDirection130Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96229",
+      "codeunitName": "Storage Direction130 Tests ori",
+      "method": "Scenario_AC02_AllTypesMatchEffect1039",
+      "source": "test/test/StorageDirection130Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "FileGet_NoStorageCodeNoPath_ReportsBothMissing",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "FileGet_UnknownStorageCode_ReturnsRecordNotFoundWithNextStep",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "FileGet_DisabledConnection_ReturnsPreconditionFailed",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "FileGet_DotDotPath_ReturnsInvalidParameter",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "FileCreate_NotBase64_ReturnsInvalidParameterFormat",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "UploadAppend_ThreeBadValues_ReportsAllTogether",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "UploadAppend_FractionalSequence_ReturnsInvalidParameterFormat",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "UploadAppend_DigitStringSequence_IsAccepted",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "UploadBegin_NegativeDeclaredSize_ReturnsInvalidParameter",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "UploadBegin_Session_AdvertisesLargestChunk",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "ContentLimit_ExactlyMaximum_IsAcceptedOneByteMoreIsNot",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "UploadStatus_UnknownUploadId_ReturnsRecordNotFound",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "Offload_UnknownTargetAndNoSystemId_ReportsBoth",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "Offload_UnknownSystemId_ReturnsRecordNotFound",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "Restore_AttachmentNotOffloaded_ReturnsPreconditionFailed",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "CreateForRecord_TextTableId_ReturnsInvalidParameterFormat",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "MissingStoragePaths_English_AreSafeAndActionable",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "MissingStoragePaths_Icelandic_AreSafeAndActionable",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "ExistingSource_ProviderFailure_RemainsBusinessCentralError",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "Scenario_AC01_UploadFolder_BilingualRefusalPreservesKeys",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "Scenario_AC01_UnknownTarget_BilingualExpectedPreservesTokens",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "Scenario_AC02_UploadBegin_BilingualSuccessKeepsStoredFilename",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "DiscoveryDescription_English_UsesSourceText",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96212",
+      "codeunitName": "Storage Error Response Tests",
+      "method": "DiscoveryDescription_Icelandic_UsesTranslation",
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "SameAccount_SetupAliasProtectsLinkedFile",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "DifferentAccounts_DoNotShareLinkIdentity",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "SameAccount_PreservesOpaquePathSpelling",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "SameAccount_MovedLinkKeepsRelativeBase",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC01_SlashDeletes_PreserveLinkedContent",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC01_LegacySlashLink_RejectsCanonicalDelete",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC02_CreateLinkedTarget_PreservesBytesAndLink",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC02_TransfersToLinkedTarget_PreserveBothFiles",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC02_UploadTargetBecomesLinked_PreservesSession",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC01_SlashSourceMove_UpdatesOnlyMatchingLink",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC03_Path2047To2049_RejectsOnlyOverFieldLimit",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC03_BasePlusPathTooLong_RejectsBeforeWrite",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC03_Name249To251_RejectsBeforeSessionInsert",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC04_TraversalAndFileRoot_RejectWithoutWrites",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC01_InnerSlashVariants_RejectWithoutWrites",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC03_GeneratedOffloadTooLong_PreservesLocalBlob",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC04_ConnectorMoveFailure_RollsBackLink",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC01_SelfMoveAlias_PreservesSource",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC01_BaseRootAlias_PreservesIntendedTarget",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC02_DisabledAlias_ProtectsPhysicalDestination",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC01_AliasMove_PreservesEachRelativeRoot",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC04_AliasRootEscape_PreservesSource",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC01_CaseAndLiteralKeys_PreserveDistinctFiles",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC04_PostCopyFault_RetainsReadableSourceAndDuplicate",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96225",
+      "codeunitName": "Storage Integrity 75 Tests ori",
+      "method": "Scenario_AC03_DirectMoveOverlong_PreservesLinkAndContent",
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": "96236",
+      "codeunitName": "Storage Interface Tests ori",
+      "method": "Scenario_Interface_RestrictedActor_Roundtrips",
+      "source": "test/test/StorageInterfaceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96236",
+      "codeunitName": "Storage Interface Tests ori",
+      "method": "Scenario_Interface_Accounts_KeepDistinctBytes",
+      "source": "test/test/StorageInterfaceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96236",
+      "codeunitName": "Storage Interface Tests ori",
+      "method": "Scenario_Interface_ProviderFailure_PreservesSource",
+      "source": "test/test/StorageInterfaceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96236",
+      "codeunitName": "Storage Interface Tests ori",
+      "method": "Scenario_Interface_UnsafePath_ReachesNoWrite",
+      "source": "test/test/StorageInterfaceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96236",
+      "codeunitName": "Storage Interface Tests ori",
+      "method": "Scenario_Interface_TargetAliases_RefuseBeforeWrite",
+      "source": "test/test/StorageInterfaceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96236",
+      "codeunitName": "Storage Interface Tests ori",
+      "method": "Scenario_Interface_ExistenceFailure_RefusesTransfer",
+      "source": "test/test/StorageInterfaceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96214",
+      "codeunitName": "Storage Link Guard Tests",
+      "method": "DataRecordsSet_OnAttachmentLink_ReturnsHint",
+      "source": "test/test/StorageLinkGuardTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96214",
+      "codeunitName": "Storage Link Guard Tests",
+      "method": "DataRecordsGet_OnAttachmentLink_ReturnsRows",
+      "source": "test/test/StorageLinkGuardTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96214",
+      "codeunitName": "Storage Link Guard Tests",
+      "method": "PurgeOrphanLinks_RemovesEmptyKeys_KeepsValidRow",
+      "source": "test/test/StorageLinkGuardTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "Scenario_AC01_Descriptions_FollowBothLanguages",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "Scenario_AC01_DataExchangeSelections_AreIcelandic",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "Scenario_D7_Envelope_StaysEnglish",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "Scenario_D7_PublicHelp_StaysEnglish",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "Scenario_AC04_MessageNames_StayThreePart",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "Help_EveryType_HasTitleAndRequiredSections",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "Help_All39Types_HaveOverviewAndExamples",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "Description_EveryType_IsOneCallerFacingSentence",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "RelatedTypes_EveryHelp_NameExistingTypes",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "FilterTable_EveryType_IsZeroOrExistingTable",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "FilterTable_AttachmentTypes_NameTheirRecordTable",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "Keywords_EveryBusinessType_HasEnglishAndIcelandic",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "SelectionDescription_EveryBusinessType_IsOwnSentence",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96211",
+      "codeunitName": "Storage Msg Conformance Tests",
+      "method": "Keywords_ChunkQuery_HitsAppendNotSingleUpload",
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "NativeFields_WhenExtensionMissing_SetAndClearDoNotError",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "NativeFields_WhenPresent_SetAndClearRoundTrip",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "Scenario_AC06_MissingRecord_SetAndClearDoNotInsert",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "Scenario_AC06_AssignmentFailure_PreservesPersistedFields",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "NativeMirrorModifyFailure_PreventsExternalUpload",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "ExternalStorageModule_IsPresentInTheTestContainer",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "LinkedRead_LeavesStoredRowUnchangedAfterModify",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "LinkedRead_LeavesStoredRowUnchangedAfterModifyFalse",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "LinkedRead_TransferFieldsInsert_DoesNotPersistStoredInternally",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "LinkedRead_TransferFieldsInsert_SlashVariantPath_DoesNotPersistStoredInternally",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96217",
+      "codeunitName": "Storage Native Fields Tests",
+      "method": "MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule",
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC01_UnknownReferences_RefusedWithoutEntry1033",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC01_UnknownReferences_RefusedWithoutEntry1039",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC01_Contract_ExplainsUnvalidatedReferences",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC02_FileChild_RefusesAndPreservesContent",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC02_DirectoryChild_RefusesAndPreservesTree",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC02_BasePath_RefusesNestedFile",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC02_EmptyDirectory_DeletesOnlyTarget",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC02_Contract_ListsNonEmptyPrecondition",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_Contract_ListsStorageCodeAndRootRefusals",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC02_NonEmptyDirectory_Localizes1039",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC02_Path_DoesNotReadAccount",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC02_Path_RejectsOverlongBase",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96228",
+      "codeunitName": "Storage Refusal122 Tests ori",
+      "method": "Scenario_AC02_Path_PreservesNamesBlocksTraversal",
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96238",
+      "codeunitName": "Storage Refusal 125 Tests ori",
+      "method": "Scenario_AC01_RootPath_RefusedBeforeConnectorCall",
+      "source": "test/test/StorageRefusal125Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96238",
+      "codeunitName": "Storage Refusal 125 Tests ori",
+      "method": "Scenario_AC01_RootSpellings_RefusedWithReceivedValue",
+      "source": "test/test/StorageRefusal125Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96238",
+      "codeunitName": "Storage Refusal 125 Tests ori",
+      "method": "Scenario_AC01_RootRefusal_Localizes1039",
+      "source": "test/test/StorageRefusal125Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96238",
+      "codeunitName": "Storage Refusal 125 Tests ori",
+      "method": "Scenario_AC02_HelpErrors_ListRootRefusal",
+      "source": "test/test/StorageRefusal125Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "DefinitionCollects_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "DefinitionCollects_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "CodeLength_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "CodeLength_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "ExportConflict_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "ExportConflict_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "InvalidSourceTarget_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "InvalidSourceTarget_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "EntryDefinition_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "EntryDefinition_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "EntryMapping_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "EntryMapping_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "StoredDefinition_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "StoredDefinition_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "LinkedFileName_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "LinkedFileName_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "MissingImportSource_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "MissingImportSource_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "PaymentNoDuplicate_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "PaymentNoDuplicate_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "MissingFile_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "MissingFile_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "UniformHeader_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "UniformHeader_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "TypeSetEnvelope_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "TypeSetEnvelope_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "DocumentTypeName_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "DocumentTypeName_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "WarningObjects_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "WarningObjects_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "UploadDocumentType_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "UploadDocumentType_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "Scenario_ACF2_MissingFileName_SingleError_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "Scenario_ACF2_MissingFileName_SingleError_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "Scenario_ACF3_NestedProblems_HaveNextStep_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "Scenario_ACF3_NestedProblems_HaveNextStep_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "Scenario_ACF4_Examples_NoTargetParameter",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "Scenario_ACF6a_Lists_HideAccountPath_1033",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96258",
+      "codeunitName": "Storage Response159 Tests ori",
+      "method": "Scenario_ACF6a_Lists_HideAccountPath_1039",
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96207",
+      "codeunitName": "Storage Setup Page Tests",
+      "method": "AttachmentsSetupPage_Opens_ListsStorageConnections",
+      "source": "test/test/StorageSetupPageTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96207",
+      "codeunitName": "Storage Setup Page Tests",
+      "method": "AttachmentsSetupPage_AllSetupActions_AreEnabled",
+      "source": "test/test/StorageSetupPageTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96207",
+      "codeunitName": "Storage Setup Page Tests",
+      "method": "BifrostSetupPage_ExposesOnlyTheAppsAction",
+      "source": "test/test/StorageSetupPageTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96207",
+      "codeunitName": "Storage Setup Page Tests",
+      "method": "Purge_WithAbandonedSessions_DeletesSessionsAndChunks",
+      "source": "test/test/StorageSetupPageTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96207",
+      "codeunitName": "Storage Setup Page Tests",
+      "method": "Purge_WithoutData_ReportsZeroAndSucceeds",
+      "source": "test/test/StorageSetupPageTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96207",
+      "codeunitName": "Storage Setup Page Tests",
+      "method": "PurgeAction_OnSetupPage_PurgesAndInformsTheUser",
+      "source": "test/test/StorageSetupPageTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96207",
+      "codeunitName": "Storage Setup Page Tests",
+      "method": "Scenario_AC02_NoAccount_BilingualPageRefusal",
+      "source": "test/test/StorageSetupPageTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96207",
+      "codeunitName": "Storage Setup Page Tests",
+      "method": "Scenario_AC02_ReachableConnection_BilingualPageMessage",
+      "source": "test/test/StorageSetupPageTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96210",
+      "codeunitName": "Storage Takeover Probe Tests",
+      "method": "AC01_ProbeDenied_SkipsTakeOverWithoutError",
+      "source": "test/test/StorageTakeoverProbeTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96210",
+      "codeunitName": "Storage Takeover Probe Tests",
+      "method": "AC01b_AccessControlWriteDenied_SkipsWithoutError",
+      "source": "test/test/StorageTakeoverProbeTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96210",
+      "codeunitName": "Storage Takeover Probe Tests",
+      "method": "AC02_ProbeOk_RunsTakeOverWithoutError",
+      "source": "test/test/StorageTakeoverProbeTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96210",
+      "codeunitName": "Storage Takeover Probe Tests",
+      "method": "AC03_LegacyAbsent_NoOpWithoutError",
+      "source": "test/test/StorageTakeoverProbeTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96210",
+      "codeunitName": "Storage Takeover Probe Tests",
+      "method": "Scenario_AC01_TaggedUpgradeDenied_RetriesWithoutChangingTargets",
+      "source": "test/test/StorageTakeoverProbeTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96210",
+      "codeunitName": "Storage Takeover Probe Tests",
+      "method": "Scenario_AC02_DeniedInstallThenPermittedUpgrade_RegrantsOnce",
+      "source": "test/test/StorageTakeoverProbeTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96210",
+      "codeunitName": "Storage Takeover Probe Tests",
+      "method": "Scenario_AC03_LegacyAbsent_RepeatedUpgradePreservesTargets",
+      "source": "test/test/StorageTakeoverProbeTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96210",
+      "codeunitName": "Storage Takeover Probe Tests",
+      "method": "Scenario_AC01_UntaggedDeniedUpgrade_PurgesAndRecordsTag",
+      "source": "test/test/StorageTakeoverProbeTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96210",
+      "codeunitName": "Storage Takeover Probe Tests",
+      "method": "Scenario_AC03_TagFixture_PreservesUnrelatedTags",
+      "source": "test/test/StorageTakeoverProbeTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96209",
+      "codeunitName": "Storage Takeover Tests",
+      "method": "TakeOverAccessControl_LegacyRow_InsertsMatchingBifrostRole",
+      "source": "test/test/StorageTakeoverTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96209",
+      "codeunitName": "Storage Takeover Tests",
+      "method": "TakeOverAccessControl_ExistingBifrostRow_DoesNotDuplicate",
+      "source": "test/test/StorageTakeoverTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96209",
+      "codeunitName": "Storage Takeover Tests",
+      "method": "TakeOverAccessControl_NoLegacyRows_GrantsZeroWithoutError",
+      "source": "test/test/StorageTakeoverTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96227",
+      "codeunitName": "Storage Telemetry121 Tests ori",
+      "method": "Scenario_AC01_AC02_MirrorFailure_OnlySafeMetadata",
+      "source": "test/test/StorageTelemetry121Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96227",
+      "codeunitName": "Storage Telemetry121 Tests ori",
+      "method": "Scenario_AC03_ClearMirrorFailure_IdentifiesRestoreOperation",
+      "source": "test/test/StorageTelemetry121Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96227",
+      "codeunitName": "Storage Telemetry121 Tests ori",
+      "method": "Scenario_AC01_AC02_AC03_TakeoverDenials_OnlySafeDiagnostics",
+      "source": "test/test/StorageTelemetry121Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "BeginAppendCommit_TwoChunks_RoundtripsContent",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Commit_OutOfOrderChunks_AssemblesInSequence",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Append_DuplicateSequence_ReplacesChunk",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Commit_SizeMismatch_ReturnsError",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Commit_NoChunks_ReturnsError",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Begin_FileNameWithFolder_ReturnsErrorAndCreatesNoSession",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Begin_LeafFileNameWithFolderPath_UsesFolderPath",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "UploadBeginHelpStatesDefaultRoot",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Abort_OpenSession_RemovesSessionAndChunks",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Append_UnknownUploadId_ReturnsError",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Status_OpenSession_ReportsProgress",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "CreateLinked_FromUploadedFile_AttachesToNewIncomingDoc",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Begin_WithoutStorageCode_CreatesBufferSession",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Commit_BufferSession_ReturnsNoStorageCodeError",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "CommitToRecord_OnCustomer_RoundtripsContent",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "CommitToRecord_IncomingDocument_CreatesAttachment",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "CommitToRecord_UnknownTarget_ReturnsError",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "CommitToRecord_NoChunks_ReturnsError",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "UploadTables_AreRestrictedFromDataRecords",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "DataRecordsSet_OnStorageSetup_ReturnsError",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "UploadMessageTypes_HaveMetadataAndHelp",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Scenario_AC02_CommittedUpload_RefusalIsIcelandic",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96205",
+      "codeunitName": "Storage Upload Tests",
+      "method": "Scenario_AC02_AbortedUpload_RefusalIsIcelandic",
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "FileCreateConsent_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "FileCreateConsent_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "UploadCommitConsent_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "UploadCommitConsent_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "DefinitionExportConsent_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "DefinitionExportConsent_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "ExportRunConsent_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "ExportRunConsent_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "UploadDataExchangeConsent_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "UploadDataExchangeConsent_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "OffloadConsent_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "OffloadConsent_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "LinkedSourceSurvivesRestore_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "LinkedSourceSurvivesRestore_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "LinkedSourceSurvivesDelete_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "LinkedSourceSurvivesDelete_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "FreshOffloadDeletesOwnedFile_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "FreshOffloadDeletesOwnedFile_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "InvalidOverwriteRefused_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "InvalidOverwriteRefused_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "LinkedFileProtectedWithConsent_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "LinkedFileProtectedWithConsent_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "CommitToRecordDoesNotWriteStorage_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "CommitToRecordDoesNotWriteStorage_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "CreateLinkedSourceSurvivesRestore_1033",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    },
+    {
+      "codeunit": "96261",
+      "codeunitName": "Storage Write166 Tests ori",
+      "method": "CreateLinkedSourceSurvivesRestore_1039",
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    }
+  ]
+}

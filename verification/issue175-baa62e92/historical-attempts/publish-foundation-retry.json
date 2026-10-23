@@ -1,0 +1,19 @@
+{
+  "containerId": "f005fd56b922",
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "at": "2026-10-23T16:54:48.070Z",
+  "tool": "bc_dev_publish_app",
+  "request": {
+    "appPath": "/workspace/evidence/attachments-wizard-175-20261023/released-foundation/Origo_Bifrost Foundation_28.0.8.617.app",
+    "tenant": "default",
+    "schemaUpdateMode": "Synchronize"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"fileName\": \"Origo_Bifrost Foundation_28.0.8.617.app\",\n  \"bytes\": 2703928,\n  \"statusCode\": 200,\n  \"durationMs\": 80469,\n  \"developerBaseUrl\": \"https://cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com/f005fd56b922dev\",\n  \"body\": null,\n  \"ok\": true\n}"
+      }
+    ]
+  }
+}

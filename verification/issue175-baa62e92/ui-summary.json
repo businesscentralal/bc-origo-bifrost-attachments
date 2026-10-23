@@ -1,0 +1,100 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "languages": [
+    1033,
+    1039
+  ],
+  "executed": 12,
+  "passed": 12,
+  "failed": 0,
+  "skipped": 0,
+  "verified": true,
+  "scenarios": [
+    {
+      "lcid": 1033,
+      "scenario": "listing",
+      "evidence": "ui-listing-1033.json",
+      "screenshot": "ui-listing-1033.png",
+      "at": "2026-10-23T17:05:00.354Z"
+    },
+    {
+      "lcid": 1033,
+      "scenario": "linked",
+      "evidence": "ui-linked-1033.json",
+      "screenshot": "ui-linked-1033.png",
+      "at": "2026-10-23T17:05:04.240Z"
+    },
+    {
+      "lcid": 1033,
+      "scenario": "record",
+      "evidence": "ui-record-1033.json",
+      "screenshot": "ui-record-1033.png",
+      "at": "2026-10-23T17:05:08.206Z"
+    },
+    {
+      "lcid": 1033,
+      "scenario": "typeset",
+      "evidence": "ui-typeset-1033.json",
+      "screenshot": "ui-typeset-1033.png",
+      "at": "2026-10-23T17:05:11.842Z"
+    },
+    {
+      "lcid": 1033,
+      "scenario": "catalogue",
+      "evidence": "ui-catalogue-1033.json",
+      "screenshot": "ui-catalogue-1033.png",
+      "at": "2026-10-23T17:02:49.820Z"
+    },
+    {
+      "lcid": 1033,
+      "scenario": "f1",
+      "evidence": "ui-f1-1033.json",
+      "screenshot": "ui-f1-1033.png",
+      "at": "2026-10-23T17:02:35.677Z"
+    },
+    {
+      "lcid": 1039,
+      "scenario": "listing",
+      "evidence": "ui-listing-1039.json",
+      "screenshot": "ui-listing-1039.png",
+      "at": "2026-10-23T17:07:51.403Z"
+    },
+    {
+      "lcid": 1039,
+      "scenario": "linked",
+      "evidence": "ui-linked-1039.json",
+      "screenshot": "ui-linked-1039.png",
+      "at": "2026-10-23T17:07:55.349Z"
+    },
+    {
+      "lcid": 1039,
+      "scenario": "record",
+      "evidence": "ui-record-1039.json",
+      "screenshot": "ui-record-1039.png",
+      "at": "2026-10-23T17:07:59.269Z"
+    },
+    {
+      "lcid": 1039,
+      "scenario": "typeset",
+      "evidence": "ui-typeset-1039.json",
+      "screenshot": "ui-typeset-1039.png",
+      "at": "2026-10-23T17:08:02.907Z"
+    },
+    {
+      "lcid": 1039,
+      "scenario": "catalogue",
+      "evidence": "ui-catalogue-1039.json",
+      "screenshot": "ui-catalogue-1039.png",
+      "at": "2026-10-23T17:08:07.284Z"
+    },
+    {
+      "lcid": 1039,
+      "scenario": "f1",
+      "evidence": "ui-f1-1039.json",
+      "screenshot": "ui-f1-1039.png",
+      "at": "2026-10-23T17:08:15.002Z"
+    }
+  ],
+  "at": "2026-10-23T17:08:41.862752+00:00"
+}

@@ -1,0 +1,13 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "verified": true,
+  "runtimeSetting": "DisableWriteInsideTryFunctions=false",
+  "protectedFieldWriteRejected": true,
+  "ownCustomerNameUnchanged": true,
+  "evidence": [
+    "guard-result.json",
+    "own-customer.json"
+  ],
+  "at": "2026-10-23T17:05:41.221447+00:00"
+}

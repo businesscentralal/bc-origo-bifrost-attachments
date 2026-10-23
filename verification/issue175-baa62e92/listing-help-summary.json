@@ -1,0 +1,35 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "executed": 4,
+  "passed": 4,
+  "failed": 0,
+  "skipped": 0,
+  "rows": [
+    {
+      "type": "Storage.File.List",
+      "lcid": 1033,
+      "passed": true,
+      "evidence": "help-Storage-File-List-1033.json"
+    },
+    {
+      "type": "Storage.Directory.List",
+      "lcid": 1033,
+      "passed": true,
+      "evidence": "help-Storage-Directory-List-1033.json"
+    },
+    {
+      "type": "Storage.File.List",
+      "lcid": 1039,
+      "passed": true,
+      "evidence": "help-Storage-File-List-1039.json"
+    },
+    {
+      "type": "Storage.Directory.List",
+      "lcid": 1039,
+      "passed": true,
+      "evidence": "help-Storage-Directory-List-1039.json"
+    }
+  ],
+  "at": "2026-10-23T17:01:04.525659+00:00"
+}

@@ -1,0 +1,19 @@
+{
+  "containerId": "f005fd56b922",
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "at": "2026-10-23T17:01:56.960Z",
+  "tool": "invoke_message_type",
+  "request": {
+    "type": "DataExchange.Type.List",
+    "data": {},
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"DataExchange.Type.List\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"count\": 7,\n    \"types\": [\n      {\n        \"code\": \"ECB-EXCHANGE-RATES\",\n        \"description\": \"European Central Bank Currency Exchange Rates\",\n        \"dataExchDefCode\": \"ECB-EXCHANGE-RATES\",\n        \"userFeedbackCodeunit\": \"\",\n        \"validationCodeunit\": \"\",\n        \"dataHandlingCodeunit\": \"\",\n        \"type\": \"Generic Import\"\n      },\n      {\n        \"code\": \"OCRCREDITMEMO\",\n        \"description\": \"OCR - Credit Memo\",\n        \"dataExchDefCode\": \"OCRCREDITMEMO\",\n        \"userFeedbackCodeunit\": \"\",\n        \"validationCodeunit\": \"\",\n        \"dataHandlingCodeunit\": \"Map DataExch To Intermediate\",\n        \"type\": \"Generic Import\"\n      },\n      {\n        \"code\": \"OCRINVOICE\",\n        \"description\": \"OCR - Invoice\",\n        \"dataExchDefCode\": \"OCRINVOICE\",\n        \"userFeedbackCodeunit\": \"\",\n        \"validationCodeunit\": \"\",\n        \"dataHandlingCodeunit\": \"Map DataExch To Intermediate\",\n        \"type\": \"Generic Import\"\n      },\n      {\n        \"code\": \"PEPPOLCREDITMEMO\",\n        \"description\": \"PEPPOL - Credit Memo\",\n        \"dataExchDefCode\": \"PEPPOLCREDITMEMO\",\n        \"userFeedbackCodeunit\": \"\",\n        \"validationCodeunit\": \"\",\n        \"dataHandlingCodeunit\": \"Map DataExch To Intermediate\",\n        \"type\": \"Generic Import\"\n      },\n      {\n        \"code\": \"PEPPOLINVOICE\",\n        \"description\": \"PEPPOL - Invoice\",\n        \"dataExchDefCode\": \"PEPPOLINVOICE\",\n        \"userFeedbackCodeunit\": \"\",\n        \"validationCodeunit\": \"\",\n        \"dataHandlingCodeunit\": \"Map DataExch To Intermediate\",\n        \"type\": \"Generic Import\"\n      },\n      {\n        \"code\": \"SEPA CAMT\",\n        \"description\": \"SEPA CAMT\",\n        \"dataExchDefCode\": \"SEPA CAMT\",\n        \"userFeedbackCodeunit\": \"\",\n        \"validationCodeunit\": \"\",\n        \"dataHandlingCodeunit\": \"\",\n        \"type\": \"Bank Statement Import\"\n      },\n      {\n        \"code\": \"SEPA CAMT 053-08\",\n        \"description\": \"SEPA CAMT 053.001.08\",\n        \"dataExchDefCode\": \"SEPA CAMT 053-08\",\n        \"userFeedbackCodeunit\": \"\",\n        \"validationCodeunit\": \"\",\n        \"dataHandlingCodeunit\": \"\",\n        \"type\": \"Bank Statement Import\"\n      }\n    ]\n  }\n}"
+      }
+    ]
+  }
+}

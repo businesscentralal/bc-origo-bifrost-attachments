@@ -1,0 +1,19 @@
+{
+  "containerId": "f005fd56b922",
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "at": "2026-10-23T17:03:53.168Z",
+  "tool": "get_records",
+  "request": {
+    "table": "Data Exchange Type",
+    "filter": "WHERE(Code=CONST(X175TBAA62E1039))",
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Data Exchange Type\",\n  \"skip\": 0,\n  \"take\": 50,\n  \"count\": 1,\n  \"records\": [\n    {\n      \"id\": \"B04F07B7-03CF-F111-B7A4-DA68F0A5C24F\",\n      \"primaryKey\": {\n        \"Code\": \"X175TBAA62E1039\"\n      },\n      \"fields\": {\n        \"Description\": \"Owned issue175 1039\",\n        \"DataExch_Def_Code\": \"X175DBAA62E\",\n        \"EntityType\": \"Invoice\",\n        \"SystemCreatedAt\": \"2026-10-23T17:03:51.503Z\",\n        \"SystemCreatedBy\": \"F7D3189B-6734-4138-9D43-81CD7ACE5AD4\",\n        \"SystemModifiedAt\": \"2026-10-23T17:03:51.503Z\",\n        \"SystemModifiedBy\": \"F7D3189B-6734-4138-9D43-81CD7ACE5AD4\"\n      }\n    }\n  ],\n  \"noOfRecords\": 1\n}"
+      }
+    ]
+  }
+}

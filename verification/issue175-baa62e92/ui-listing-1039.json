@@ -1,0 +1,11 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "lcid": 1039,
+  "scenario": "listing",
+  "type": "Storage.File.List",
+  "messageRow": "\t{6bec2008-21aa-4d5f-ba07-5e0c6af374d3}\t\n\t1.0\tStorage.File.List\tBakgrunnsverkefni lokið (Success)\tOrigo-BC Cloud Events MCP\t\tIcelandic (Iceland)\t10/23/2026 5:03 PM\t10/23/2026\tCODEXW2\t10/23/2026 5:03 PM\t11 millisekúndur\ttext/json\t",
+  "displayedResponse": "{\"status\":\"Success\",\"data\":{\"path\":\"x175\",\"entries\":[{\"name\":\"source-1033.txt\",\"type\":\"File\",\"parentDirectory\":\"x175\"},{\"name\":\"source-1039.txt\",\"type\":\"File\",\"parentDirectory\":\"x175\"}]}}",
+  "verified": true,
+  "at": "2026-10-23T17:07:51.403Z"
+}

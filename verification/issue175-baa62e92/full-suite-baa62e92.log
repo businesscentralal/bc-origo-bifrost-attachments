@@ -1,0 +1,11 @@
+Candidate SHA: baa62e923df3d528dad61c4bb728373f3991a522; owned container f005fd56b922; product/test app 28.3.0.0
+Test runner : C:\Applications\TestFramework\TestRunner
+[33;1mWARNING: The names of some imported commands from the module 'ALTestRunnerInternal' include unapproved verbs that might make them less discoverable. To find the commands with unapproved verbs, run the Import-Module command again with the Verbose parameter. For a list of approved verbs, type Get-Verb.[0m
+Test app    : Bifrost Attachments - Tests 28.3.0.0 (7cdb530b-b74b-446b-9ece-80e2b911bfb3)
+Service URL : https://cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com:443/f005fd56b922/cs/?tenant=default
+Suite       : ATT175  codeunits: ''  procedures: ''  isolation: Codeunit
+Results     : C:\Run\worker2-attachments175\full-suite-baa62e92.xml
+Setting up test run: Disabled - C:\Applications\TestFramework\TestRunner\CodeCoverage
+Complete Test Setup
+
+Codeunits: 32   Tests: 465   Passed: 465   Failed: 0   Skipped:    Duration: 171 s

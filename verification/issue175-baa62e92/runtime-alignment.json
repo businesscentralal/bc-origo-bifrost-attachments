@@ -1,0 +1,16 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "owner": "worker-2",
+  "setting": "DisableWriteInsideTryFunctions",
+  "before": "true",
+  "after": "false",
+  "settingReadbackConfirmed": true,
+  "serviceRestarted": true,
+  "evidence": "runtime-alignment.log",
+  "postRestartSnapshot": "runtime-before-deploy.log",
+  "basis": "Owned Docker runtime aligned with documented Microsoft Online TryFunction write semantics; field write guard preserved, no licensing/consent/backend configuration changes",
+  "limitation": "No true SaaS/licensing proof",
+  "deploymentRetry": "Foundation initial publication interrupted by own premature restart; server restored original extensions. Readback confirmed no Bifrost app before one serial retry.",
+  "at": "2026-10-23T16:53:28.480806+00:00"
+}

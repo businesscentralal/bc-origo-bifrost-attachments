@@ -1,0 +1,10 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "lcid": 1033,
+  "scenario": "F1 folder-style Upload.Begin live refusal recovery displayed in Web Client",
+  "verified": true,
+  "displayedResponse": "{\"status\":\"Error\",\"code\":\"InvalidParameter\",\"error\":\"Parameter \n\"fileName\n\" must be a file name without folders or relative segments.\",\"parameter\":\"fileName\",\"received\":\"X160-help/example.txt\",\"expected\":\"a nonempty file name without slash or backslash\",\"nextStep\":\"Send only the file name, for example INV-001.pdf, without a folder path.\",\"hint\":\"For usage details, call the \n\"Help.Implementation.Get\n\" message type with subject \n\"Storage.Upload.Begin\n\". Always read the help before calling a message type.\"}",
+  "messageRow": "\t{b21cd01b-7439-4d99-a97e-4ae181c93223}\t\n\t1.0\tStorage.Upload.Begin\tTask completed (Error)\tOrigo-BC Cloud Events MCP\t\tEnglish (United States)\t10/23/2026 4:59 PM\t10/23/2026\tCODEXW2\t10/23/2026 4:59 PM\t12 milliseconds\ttext/json\t",
+  "at": "2026-10-23T17:02:35.677Z"
+}

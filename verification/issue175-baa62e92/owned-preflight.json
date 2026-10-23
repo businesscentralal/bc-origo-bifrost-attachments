@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-23T16:53:19.087Z",
+  "containerId": "f005fd56b922",
+  "status": 200,
+  "companies": [
+    {
+      "name": "CRONUS International Ltd.",
+      "id": "244b5f59-41cd-f111-98ef-6045bdacb6f5"
+    },
+    {
+      "name": "My Company",
+      "id": "9d0aab79-42cd-f111-98e8-3833c5d21f99"
+    }
+  ]
+}

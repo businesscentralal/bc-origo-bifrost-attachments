@@ -1,0 +1,71 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "version": "28.3.0.0",
+  "foundationVersion": "28.0.8.617",
+  "artifacts": {
+    "default-app.app": "81f47136317f82d58f41b37c5b0d5b031895b304f1dea91e5315a0a9948e5097",
+    "test-product.app": "8a988821f9c7d80bcb7ee32667c61932ca5700373b12c346294e8c696d2fd4a8",
+    "test-app.app": "99c714b5e7701965b8b01f275ecb24ec64b7665a6032b312c08f549ac9211085"
+  },
+  "compile": {
+    "default-app": {
+      "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+      "phase": "default-app",
+      "errors": 0,
+      "warnings": 0,
+      "compileCompleted": true,
+      "exitCode": 0,
+      "compiler": "18.1.43.24897",
+      "analyzers": [
+        "CodeCop",
+        "UICop",
+        "AppSourceCop"
+      ],
+      "sourceManifestStable": true,
+      "dirty": false,
+      "internalsVisibleToRemoved": true,
+      "version": "28.3.0.0",
+      "diagnostics": []
+    },
+    "test-product": {
+      "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+      "phase": "test-product",
+      "errors": 0,
+      "warnings": 0,
+      "compileCompleted": true,
+      "exitCode": 0,
+      "compiler": "18.1.43.24897",
+      "analyzers": [
+        "CodeCop",
+        "UICop",
+        "AppSourceCop"
+      ],
+      "sourceManifestStable": true,
+      "dirty": false,
+      "internalsVisibleToRemoved": false,
+      "version": "28.3.0.0",
+      "diagnostics": []
+    },
+    "test-app": {
+      "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+      "phase": "test-app",
+      "errors": 0,
+      "warnings": 0,
+      "compileCompleted": true,
+      "exitCode": 0,
+      "compiler": "18.1.43.24897",
+      "analyzers": [
+        "CodeCop",
+        "UICop",
+        "AppSourceCop"
+      ],
+      "sourceManifestStable": true,
+      "dirty": false,
+      "internalsVisibleToRemoved": false,
+      "version": "28.3.0.0",
+      "diagnostics": []
+    }
+  },
+  "containerId": "f005fd56b922",
+  "createdAt": "2026-10-23T16:49:08.382929+00:00"
+}

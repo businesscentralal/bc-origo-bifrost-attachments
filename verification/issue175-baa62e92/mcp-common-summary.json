@@ -1,0 +1,677 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "scope": "Shared-reader regression calls for all39types with self-supplied empty request data; targeted seeded positive paths are separate. No dependency on customer/shared fixtures.",
+  "executed": 78,
+  "passed": 78,
+  "failed": 0,
+  "skipped": 0,
+  "messageTypes": [
+    "Help.Storage.Get",
+    "Storage.Account.List",
+    "Storage.File.List",
+    "Storage.File.Get",
+    "Storage.File.Create",
+    "Storage.File.Delete",
+    "Storage.File.Copy",
+    "Storage.File.Move",
+    "Storage.File.Exists",
+    "Storage.Directory.List",
+    "Storage.Directory.Create",
+    "Storage.Directory.Delete",
+    "Storage.Directory.Exists",
+    "Storage.Attachment.Offload",
+    "Storage.Attachment.Restore",
+    "Storage.Upload.Begin",
+    "Storage.Upload.Append",
+    "Storage.Upload.Commit",
+    "Storage.Upload.Abort",
+    "Storage.Upload.Status",
+    "Storage.Attachment.CreateLinked",
+    "Storage.Attachment.CreateForRecord",
+    "Storage.Upload.CommitToRecord",
+    "Help.DataExchange.Get",
+    "DataExchange.Definition.List",
+    "DataExchange.Definition.Get",
+    "DataExchange.Type.List",
+    "DataExchange.Entry.List",
+    "DataExchange.Entry.Get",
+    "DataExchange.Type.Set",
+    "Storage.Upload.CommitToDataExchange",
+    "DataExchange.Entry.Process",
+    "DataExchange.Export.Run",
+    "DataExchange.Entry.Delete",
+    "DataExchange.Definition.Export",
+    "DataExchange.Import.Run",
+    "DataExchange.Definition.Delete",
+    "DataExchange.Definition.Import",
+    "DataExchange.PaymentExport.Run"
+  ],
+  "rows": [
+    {
+      "type": "Help.Storage.Get",
+      "lcid": 1033,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-Help-Storage-Get-1033.json"
+    },
+    {
+      "type": "Storage.Account.List",
+      "lcid": 1033,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-Storage-Account-List-1033.json"
+    },
+    {
+      "type": "Storage.File.List",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-List-1033.json"
+    },
+    {
+      "type": "Storage.File.Get",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Get-1033.json"
+    },
+    {
+      "type": "Storage.File.Create",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Create-1033.json"
+    },
+    {
+      "type": "Storage.File.Delete",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Delete-1033.json"
+    },
+    {
+      "type": "Storage.File.Copy",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Copy-1033.json"
+    },
+    {
+      "type": "Storage.File.Move",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Move-1033.json"
+    },
+    {
+      "type": "Storage.File.Exists",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Exists-1033.json"
+    },
+    {
+      "type": "Storage.Directory.List",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Directory-List-1033.json"
+    },
+    {
+      "type": "Storage.Directory.Create",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Directory-Create-1033.json"
+    },
+    {
+      "type": "Storage.Directory.Delete",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Directory-Delete-1033.json"
+    },
+    {
+      "type": "Storage.Directory.Exists",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Directory-Exists-1033.json"
+    },
+    {
+      "type": "Storage.Attachment.Offload",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Attachment-Offload-1033.json"
+    },
+    {
+      "type": "Storage.Attachment.Restore",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Attachment-Restore-1033.json"
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-Begin-1033.json"
+    },
+    {
+      "type": "Storage.Upload.Append",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-Append-1033.json"
+    },
+    {
+      "type": "Storage.Upload.Commit",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-Commit-1033.json"
+    },
+    {
+      "type": "Storage.Upload.Abort",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-Abort-1033.json"
+    },
+    {
+      "type": "Storage.Upload.Status",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-Status-1033.json"
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Attachment-CreateLinked-1033.json"
+    },
+    {
+      "type": "Storage.Attachment.CreateForRecord",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Attachment-CreateForRecord-1033.json"
+    },
+    {
+      "type": "Storage.Upload.CommitToRecord",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-CommitToRecord-1033.json"
+    },
+    {
+      "type": "Help.DataExchange.Get",
+      "lcid": 1033,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-Help-DataExchange-Get-1033.json"
+    },
+    {
+      "type": "DataExchange.Definition.List",
+      "lcid": 1033,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-DataExchange-Definition-List-1033.json"
+    },
+    {
+      "type": "DataExchange.Definition.Get",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Definition-Get-1033.json"
+    },
+    {
+      "type": "DataExchange.Type.List",
+      "lcid": 1033,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-DataExchange-Type-List-1033.json"
+    },
+    {
+      "type": "DataExchange.Entry.List",
+      "lcid": 1033,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-DataExchange-Entry-List-1033.json"
+    },
+    {
+      "type": "DataExchange.Entry.Get",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Entry-Get-1033.json"
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Type-Set-1033.json"
+    },
+    {
+      "type": "Storage.Upload.CommitToDataExchange",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-CommitToDataExchange-1033.json"
+    },
+    {
+      "type": "DataExchange.Entry.Process",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Entry-Process-1033.json"
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Export-Run-1033.json"
+    },
+    {
+      "type": "DataExchange.Entry.Delete",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Entry-Delete-1033.json"
+    },
+    {
+      "type": "DataExchange.Definition.Export",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Definition-Export-1033.json"
+    },
+    {
+      "type": "DataExchange.Import.Run",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Import-Run-1033.json"
+    },
+    {
+      "type": "DataExchange.Definition.Delete",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Definition-Delete-1033.json"
+    },
+    {
+      "type": "DataExchange.Definition.Import",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Definition-Import-1033.json"
+    },
+    {
+      "type": "DataExchange.PaymentExport.Run",
+      "lcid": 1033,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-PaymentExport-Run-1033.json"
+    },
+    {
+      "type": "Help.Storage.Get",
+      "lcid": 1039,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-Help-Storage-Get-1039.json"
+    },
+    {
+      "type": "Storage.Account.List",
+      "lcid": 1039,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-Storage-Account-List-1039.json"
+    },
+    {
+      "type": "Storage.File.List",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-List-1039.json"
+    },
+    {
+      "type": "Storage.File.Get",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Get-1039.json"
+    },
+    {
+      "type": "Storage.File.Create",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Create-1039.json"
+    },
+    {
+      "type": "Storage.File.Delete",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Delete-1039.json"
+    },
+    {
+      "type": "Storage.File.Copy",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Copy-1039.json"
+    },
+    {
+      "type": "Storage.File.Move",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Move-1039.json"
+    },
+    {
+      "type": "Storage.File.Exists",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-File-Exists-1039.json"
+    },
+    {
+      "type": "Storage.Directory.List",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Directory-List-1039.json"
+    },
+    {
+      "type": "Storage.Directory.Create",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Directory-Create-1039.json"
+    },
+    {
+      "type": "Storage.Directory.Delete",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Directory-Delete-1039.json"
+    },
+    {
+      "type": "Storage.Directory.Exists",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Directory-Exists-1039.json"
+    },
+    {
+      "type": "Storage.Attachment.Offload",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Attachment-Offload-1039.json"
+    },
+    {
+      "type": "Storage.Attachment.Restore",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Attachment-Restore-1039.json"
+    },
+    {
+      "type": "Storage.Upload.Begin",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-Begin-1039.json"
+    },
+    {
+      "type": "Storage.Upload.Append",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-Append-1039.json"
+    },
+    {
+      "type": "Storage.Upload.Commit",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-Commit-1039.json"
+    },
+    {
+      "type": "Storage.Upload.Abort",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-Abort-1039.json"
+    },
+    {
+      "type": "Storage.Upload.Status",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-Status-1039.json"
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Attachment-CreateLinked-1039.json"
+    },
+    {
+      "type": "Storage.Attachment.CreateForRecord",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Attachment-CreateForRecord-1039.json"
+    },
+    {
+      "type": "Storage.Upload.CommitToRecord",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-CommitToRecord-1039.json"
+    },
+    {
+      "type": "Help.DataExchange.Get",
+      "lcid": 1039,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-Help-DataExchange-Get-1039.json"
+    },
+    {
+      "type": "DataExchange.Definition.List",
+      "lcid": 1039,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-DataExchange-Definition-List-1039.json"
+    },
+    {
+      "type": "DataExchange.Definition.Get",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Definition-Get-1039.json"
+    },
+    {
+      "type": "DataExchange.Type.List",
+      "lcid": 1039,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-DataExchange-Type-List-1039.json"
+    },
+    {
+      "type": "DataExchange.Entry.List",
+      "lcid": 1039,
+      "passed": true,
+      "code": null,
+      "returnedStatus": "Success",
+      "evidence": "mcp-common-DataExchange-Entry-List-1039.json"
+    },
+    {
+      "type": "DataExchange.Entry.Get",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Entry-Get-1039.json"
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Type-Set-1039.json"
+    },
+    {
+      "type": "Storage.Upload.CommitToDataExchange",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-Storage-Upload-CommitToDataExchange-1039.json"
+    },
+    {
+      "type": "DataExchange.Entry.Process",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Entry-Process-1039.json"
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Export-Run-1039.json"
+    },
+    {
+      "type": "DataExchange.Entry.Delete",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Entry-Delete-1039.json"
+    },
+    {
+      "type": "DataExchange.Definition.Export",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Definition-Export-1039.json"
+    },
+    {
+      "type": "DataExchange.Import.Run",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Import-Run-1039.json"
+    },
+    {
+      "type": "DataExchange.Definition.Delete",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MissingParameter",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Definition-Delete-1039.json"
+    },
+    {
+      "type": "DataExchange.Definition.Import",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-Definition-Import-1039.json"
+    },
+    {
+      "type": "DataExchange.PaymentExport.Run",
+      "lcid": 1039,
+      "passed": true,
+      "code": "MultipleErrors",
+      "returnedStatus": "Error",
+      "evidence": "mcp-common-DataExchange-PaymentExport-Run-1039.json"
+    }
+  ],
+  "parsedAt": "2026-10-23T17:03:10.011554+00:00"
+}

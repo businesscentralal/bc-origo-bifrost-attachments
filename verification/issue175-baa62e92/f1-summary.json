@@ -1,0 +1,27 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "executed": 2,
+  "passed": 2,
+  "failed": 0,
+  "skipped": 0,
+  "createsOwnData": true,
+  "dataSetup": "Worker-owned request identities only; refused before storage/session creation; no external fixture. Owned environment destruction removes metered messages.",
+  "rows": [
+    {
+      "lcid": 1033,
+      "scenario": "F1 English-by-design help recording matches live English recovery; Icelandic live recovery localized with same code/parameter/received",
+      "passed": true,
+      "evidence": "f1-live-1033.json",
+      "helpEvidence": "f1-help-1033.json"
+    },
+    {
+      "lcid": 1039,
+      "scenario": "F1 English-by-design help recording matches live English recovery; Icelandic live recovery localized with same code/parameter/received",
+      "passed": true,
+      "evidence": "f1-live-1039.json",
+      "helpEvidence": "f1-help-1039.json"
+    }
+  ],
+  "at": "2026-10-23T17:00:11.214292+00:00"
+}

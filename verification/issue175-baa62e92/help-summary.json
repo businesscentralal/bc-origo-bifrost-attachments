@@ -1,0 +1,60 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "kind": "live bilingual help chapter checks only; behavior is separate",
+  "executed": 8,
+  "passed": 8,
+  "failed": 0,
+  "skipped": 0,
+  "rows": [
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "lcid": 1033,
+      "passed": true,
+      "evidence": "help-Storage-Attachment-CreateLinked-1033.json"
+    },
+    {
+      "type": "Storage.Attachment.CreateForRecord",
+      "lcid": 1033,
+      "passed": true,
+      "evidence": "help-Storage-Attachment-CreateForRecord-1033.json"
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "lcid": 1033,
+      "passed": true,
+      "evidence": "help-DataExchange-Type-Set-1033.json"
+    },
+    {
+      "type": "Storage.Attachment.Restore",
+      "lcid": 1033,
+      "passed": true,
+      "evidence": "help-Storage-Attachment-Restore-1033.json"
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "lcid": 1039,
+      "passed": true,
+      "evidence": "help-Storage-Attachment-CreateLinked-1039.json"
+    },
+    {
+      "type": "Storage.Attachment.CreateForRecord",
+      "lcid": 1039,
+      "passed": true,
+      "evidence": "help-Storage-Attachment-CreateForRecord-1039.json"
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "lcid": 1039,
+      "passed": true,
+      "evidence": "help-DataExchange-Type-Set-1039.json"
+    },
+    {
+      "type": "Storage.Attachment.Restore",
+      "lcid": 1039,
+      "passed": true,
+      "evidence": "help-Storage-Attachment-Restore-1039.json"
+    }
+  ],
+  "parsedAt": "2026-10-23T17:00:36.075820+00:00"
+}

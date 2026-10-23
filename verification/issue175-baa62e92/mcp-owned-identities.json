@@ -1,0 +1,11 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "storageCode": "X175-W2-20261023",
+  "customerNo": "C00010",
+  "definitionCode": "X175DBAA62E",
+  "dataSetup": "All three records newly created through BC Web Client in own container; no generic protected-field writes or existing customer/shared fixture selected. See UI seed records/screenshots.",
+  "createdThrough": "BC Web Client",
+  "cleanup": "Destroy owned f005fd56b922 and independently verify absence at completion",
+  "at": "2026-10-23T17:01:36.635156+00:00"
+}

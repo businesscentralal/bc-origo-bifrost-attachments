@@ -1,0 +1,19 @@
+{
+  "containerId": "f005fd56b922",
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "at": "2026-10-23T16:52:28.776Z",
+  "tool": "bc_dev_publish_app",
+  "request": {
+    "appPath": "/workspace/evidence/attachments-wizard-175-20261023/released-foundation/Origo_Bifrost Foundation_28.0.8.617.app",
+    "tenant": "default",
+    "schemaUpdateMode": "Synchronize"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"fileName\": \"Origo_Bifrost Foundation_28.0.8.617.app\",\n  \"bytes\": 2703928,\n  \"statusCode\": 422,\n  \"durationMs\": 29829,\n  \"developerBaseUrl\": \"https://cosmo-alpaca-enterprise.westeurope.cloudapp.azure.com/f005fd56b922dev\",\n  \"body\": {\n    \"Message\": \"Publishing failed due to 'The operation has been canceled because the session has been stopped. Please retry later.\\r\\n\\r\\nThe session was stopped because the server is shutting down.'. The original extensions have been restored.\\r\\n\\r\\n\",\n    \"ErrorType\": \"InvalidOperation\"\n  },\n  \"ok\": false,\n  \"error\": {\n    \"Message\": \"Publishing failed due to 'The operation has been canceled because the session has been stopped. Please retry later.\\r\\n\\r\\nThe session was stopped because the server is shutting down.'. The original extensions have been restored.\\r\\n\\r\\n\",\n    \"ErrorType\": \"InvalidOperation\"\n  }\n}"
+      }
+    ]
+  }
+}

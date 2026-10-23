@@ -1,0 +1,1 @@
+Attachments uses the connector abstraction without concrete provider dispatch, metadata access or dependencies.

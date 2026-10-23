@@ -1,0 +1,23 @@
+{
+  "containerId": "f005fd56b922",
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "at": "2026-10-23T17:05:15.923Z",
+  "tool": "get_records",
+  "request": {
+    "table": "Customer",
+    "filter": "WHERE(No.=CONST(C00010))",
+    "fields": [
+      "No.",
+      "Name"
+    ],
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"table\": \"Customer\",\n  \"skip\": 0,\n  \"take\": 50,\n  \"count\": 1,\n  \"records\": [\n    {\n      \"id\": \"E0C7B13D-03CF-F111-B7A4-DA68F0A5C24F\",\n      \"primaryKey\": {\n        \"No_\": \"C00010\"\n      },\n      \"fields\": {\n        \"Name\": \"Brokkr owned issue175 baa62e92\"\n      }\n    }\n  ],\n  \"noOfRecords\": 1\n}"
+      }
+    ]
+  }
+}

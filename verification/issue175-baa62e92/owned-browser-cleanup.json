@@ -1,0 +1,9 @@
+{
+  "owner": "worker-2",
+  "pid": 28630,
+  "profilePath": "/home/node/.codex/attachments175-f1-worker2-browser-profile",
+  "signal": "SIGTERM to owned browser process group",
+  "state": "absent",
+  "verified": true,
+  "at": "2026-10-23T17:08:56.410Z"
+}

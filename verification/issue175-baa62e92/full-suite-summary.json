@@ -1,0 +1,2854 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "fullSuite": true,
+  "executed": 465,
+  "passed": 465,
+  "failed": 0,
+  "skipped": 0,
+  "missing": [],
+  "unexpected": [],
+  "duplicates": 0,
+  "xmlSha256": "230c6710db0c3746489954ef8b0df835efc560233d91706a831ca48c7c721b93",
+  "issue175Tests": [
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF2_MissingFileName_SingleError_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF2_MissingFileName_SingleError_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF3_NestedProblems_HaveNextStep_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF3_NestedProblems_HaveNextStep_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF4_Examples_NoTargetParameter",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF6a_Lists_HideAccountPath_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF6a_Lists_HideAccountPath_1039",
+      "result": "Pass",
+      "failure": null
+    }
+  ],
+  "tests": [
+    {
+      "codeunit": "96203",
+      "method": "Offloaded_FalseForNewIncDocAttachment",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96203",
+      "method": "Offloaded_TrueAfterOffload_IncDoc",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96203",
+      "method": "Offloaded_FalseAfterRestore_IncDoc",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96203",
+      "method": "Offloaded_FalseForNewDocAttachment",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96203",
+      "method": "Offloaded_TrueAfterOffload_DocAttach",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96203",
+      "method": "DataRecordsGet_IncDoc_FiltersByOffloaded",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96203",
+      "method": "DataRecordsGet_DocAttach_FiltersByOffloaded",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96203",
+      "method": "OffloadHelp_DocumentsCandidateDiscovery",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "EveryStorageTypeHasMetadataAndHelp",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "EveryMessageTypeHelpExplainsUsage",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "HelpStorageGetReturnsOverviewMarkdown",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "StorageHelpUsesCurrentMcpToolNames",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "HelpTextContainsNoLiteralUnicodeEscapes",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "HelpStorageGetReportsInstalledAppVersion",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "MutatingOutboundStorageHelpDocumentsSideEffects",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "DeleteHelpDocumentsLinkedAttachmentGuards",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "AccountListReturnsConfiguredCode",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "Scenario_AC01_StoredDescription_IsVerbatimBothLanguages",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "FileCreateThenGetRoundtripsContent",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "FileExistsReflectsCreateAndDelete",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "FileDelete_LinkedAttachment_ReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "DirectoryDelete_ContainsLinkedAttachment_ReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "FileMove_LinkedAttachment_UpdatesLinkPath",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "CreateLinked_DuplicatePath_ReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "FileListReturnsEntriesUnderPath",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "DirectoryCreateExistsDelete",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "UnknownStorageCodeReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "DisabledConnectionIsRejected",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "MissingPathReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "RelativePathSegmentIsRejected",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "RelativePathWithBackslashesIsRejected",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "CurrentDirectorySegmentIsRejected",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "DotsInsideAFileNameAreAccepted",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "GetMissingFileReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "DocumentAttachmentOffloadRestoreRoundtrip",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "OffloadPreservesDocumentAttachmentUiBehaviour",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96204",
+      "method": "OffloadPreservesIncomingDocumentUiBehaviour",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "BeginAppendCommit_TwoChunks_RoundtripsContent",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Commit_OutOfOrderChunks_AssemblesInSequence",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Append_DuplicateSequence_ReplacesChunk",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Commit_SizeMismatch_ReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Commit_NoChunks_ReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Begin_FileNameWithFolder_ReturnsErrorAndCreatesNoSession",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Begin_LeafFileNameWithFolderPath_UsesFolderPath",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "UploadBeginHelpStatesDefaultRoot",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Abort_OpenSession_RemovesSessionAndChunks",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Append_UnknownUploadId_ReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Status_OpenSession_ReportsProgress",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "CreateLinked_FromUploadedFile_AttachesToNewIncomingDoc",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Begin_WithoutStorageCode_CreatesBufferSession",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Commit_BufferSession_ReturnsNoStorageCodeError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "CommitToRecord_OnCustomer_RoundtripsContent",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "CommitToRecord_IncomingDocument_CreatesAttachment",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "CommitToRecord_UnknownTarget_ReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "CommitToRecord_NoChunks_ReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "UploadTables_AreRestrictedFromDataRecords",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "DataRecordsSet_OnStorageSetup_ReturnsError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "UploadMessageTypes_HaveMetadataAndHelp",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Scenario_AC02_CommittedUpload_RefusalIsIcelandic",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96205",
+      "method": "Scenario_AC02_AbortedUpload_RefusalIsIcelandic",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96206",
+      "method": "CreateForRecord_FromBase64_OnCustomer",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96206",
+      "method": "CreateForRecord_FromContentBase64_OnCustomer",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96206",
+      "method": "CreateForRecord_RejectsContentAndContentBase64",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96206",
+      "method": "CreateForRecordHelpDocumentsContentBase64First",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96206",
+      "method": "CreateForRecord_OnFixedAsset",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96206",
+      "method": "CreateForRecord_ByRecordSystemId",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96206",
+      "method": "CreateForRecord_CopiesFromIncomingDocument",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96206",
+      "method": "CreateForRecord_FromStorage_IsBornOffloaded",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96206",
+      "method": "CreateForRecord_RejectsTwoContentSources",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96206",
+      "method": "CreateForRecord_RejectsUnknownRecord",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96207",
+      "method": "AttachmentsSetupPage_Opens_ListsStorageConnections",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96207",
+      "method": "AttachmentsSetupPage_AllSetupActions_AreEnabled",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96207",
+      "method": "BifrostSetupPage_ExposesOnlyTheAppsAction",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96207",
+      "method": "Purge_WithAbandonedSessions_DeletesSessionsAndChunks",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96207",
+      "method": "Purge_WithoutData_ReportsZeroAndSucceeds",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96207",
+      "method": "PurgeAction_OnSetupPage_PurgesAndInformsTheUser",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96207",
+      "method": "Scenario_AC02_NoAccount_BilingualPageRefusal",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96207",
+      "method": "Scenario_AC02_ReachableConnection_BilingualPageMessage",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96208",
+      "method": "AppRegistry_ListsThisApp_WithItsSetupPage",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96209",
+      "method": "TakeOverAccessControl_LegacyRow_InsertsMatchingBifrostRole",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96209",
+      "method": "TakeOverAccessControl_ExistingBifrostRow_DoesNotDuplicate",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96209",
+      "method": "TakeOverAccessControl_NoLegacyRows_GrantsZeroWithoutError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96210",
+      "method": "AC01_ProbeDenied_SkipsTakeOverWithoutError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96210",
+      "method": "AC01b_AccessControlWriteDenied_SkipsWithoutError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96210",
+      "method": "AC02_ProbeOk_RunsTakeOverWithoutError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96210",
+      "method": "AC03_LegacyAbsent_NoOpWithoutError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96210",
+      "method": "Scenario_AC01_TaggedUpgradeDenied_RetriesWithoutChangingTargets",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96210",
+      "method": "Scenario_AC02_DeniedInstallThenPermittedUpgrade_RegrantsOnce",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96210",
+      "method": "Scenario_AC03_LegacyAbsent_RepeatedUpgradePreservesTargets",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96210",
+      "method": "Scenario_AC01_UntaggedDeniedUpgrade_PurgesAndRecordsTag",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96210",
+      "method": "Scenario_AC03_TagFixture_PreservesUnrelatedTags",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "Scenario_AC01_Descriptions_FollowBothLanguages",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "Scenario_AC01_DataExchangeSelections_AreIcelandic",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "Scenario_D7_Envelope_StaysEnglish",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "Scenario_D7_PublicHelp_StaysEnglish",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "Scenario_AC04_MessageNames_StayThreePart",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "Help_EveryType_HasTitleAndRequiredSections",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "Help_All39Types_HaveOverviewAndExamples",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "Description_EveryType_IsOneCallerFacingSentence",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "RelatedTypes_EveryHelp_NameExistingTypes",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "FilterTable_EveryType_IsZeroOrExistingTable",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "FilterTable_AttachmentTypes_NameTheirRecordTable",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "Keywords_EveryBusinessType_HasEnglishAndIcelandic",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "SelectionDescription_EveryBusinessType_IsOwnSentence",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96211",
+      "method": "Keywords_ChunkQuery_HitsAppendNotSingleUpload",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "FileGet_NoStorageCodeNoPath_ReportsBothMissing",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "FileGet_UnknownStorageCode_ReturnsRecordNotFoundWithNextStep",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "FileGet_DisabledConnection_ReturnsPreconditionFailed",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "FileGet_DotDotPath_ReturnsInvalidParameter",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "FileCreate_NotBase64_ReturnsInvalidParameterFormat",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "UploadAppend_ThreeBadValues_ReportsAllTogether",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "UploadAppend_FractionalSequence_ReturnsInvalidParameterFormat",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "UploadAppend_DigitStringSequence_IsAccepted",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "UploadBegin_NegativeDeclaredSize_ReturnsInvalidParameter",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "UploadBegin_Session_AdvertisesLargestChunk",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "ContentLimit_ExactlyMaximum_IsAcceptedOneByteMoreIsNot",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "UploadStatus_UnknownUploadId_ReturnsRecordNotFound",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "Offload_UnknownTargetAndNoSystemId_ReportsBoth",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "Offload_UnknownSystemId_ReturnsRecordNotFound",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "Restore_AttachmentNotOffloaded_ReturnsPreconditionFailed",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "CreateForRecord_TextTableId_ReturnsInvalidParameterFormat",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "MissingStoragePaths_English_AreSafeAndActionable",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "MissingStoragePaths_Icelandic_AreSafeAndActionable",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "ExistingSource_ProviderFailure_RemainsBusinessCentralError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "Scenario_AC01_UploadFolder_BilingualRefusalPreservesKeys",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "Scenario_AC01_UnknownTarget_BilingualExpectedPreservesTokens",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "Scenario_AC02_UploadBegin_BilingualSuccessKeepsStoredFilename",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "DiscoveryDescription_English_UsesSourceText",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96212",
+      "method": "DiscoveryDescription_Icelandic_UsesTranslation",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "Scenario_AC03_CodeTypeRefusal_UsesAccusativeIcelandic",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "RepairedBindings_ResolveTheirOwnTargetTables",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "DefinitionListAndGet_RenderSeededDefinitionInOrder",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "TypeList_EmptyCompany_ReturnsCountZero",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "EntryGet_PagesFields_AndRefusesFileAboveOneMegabyte",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "DataRecordsSet_OnDataExch_ReturnsHint",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "NegativeSkip_AndMissingCode_ReturnErrors",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "Help_NamesTypes_AndCarriesPaginationLimits",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "EntryList_Paging_UsesFoundationDefaults",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "HelpGuides_NameEveryRegisteredType",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96213",
+      "method": "Contract_DataExchange_NamesItsOwnPermissionSetAndSubject",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96214",
+      "method": "DataRecordsSet_OnAttachmentLink_ReturnsHint",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96214",
+      "method": "DataRecordsGet_OnAttachmentLink_ReturnsRows",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96214",
+      "method": "PurgeOrphanLinks_RemovesEmptyKeys_KeepsValidRow",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96215",
+      "method": "Batch1_AllTypes_HaveRequiredContractChapters",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96215",
+      "method": "Batch1_Effects_MatchOperation",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "TypeList_Contract_DeclaresCountAndTypesOnce",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "TypeList_EmptyRequest_CountMatchesTypes",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_TypeList_SeededRows_MatchResponseContract",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Batch2_AllTypes_HaveRequiredContractChapters",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Batch2_Effects_MatchOperation",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC02_QueryContracts_DoNotRequireStorage",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC02_AttachmentContracts_DeclareAcceptedAliases",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC02_MutationContracts_MatchShippedKeys",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC02_MutationContracts_ReplaceStaleParameters",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_DefinitionList_NoStorage_ReturnsSeededRow",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_DefinitionFilters_Malformed_ReturnCompleteErrors",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_DefinitionFilters_Unknown_ReturnCompleteErrors",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_EntryGet_InvalidInputs_CollectsEveryProblem",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_EntryList_MalformedInputs_ReturnsFiveErrors",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_EntryList_ZeroTake_PreservesDefault",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_EntryList_ReversedDates_Refused",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_DefinitionGet_CodeBoundary_NoTruncation",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_DefinitionGet_MissingCode_CompleteRefusal",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96216",
+      "method": "Scenario_AC04_InvalidDirection_BilingualRefusals",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "NativeFields_WhenExtensionMissing_SetAndClearDoNotError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "NativeFields_WhenPresent_SetAndClearRoundTrip",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "Scenario_AC06_MissingRecord_SetAndClearDoNotInsert",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "Scenario_AC06_AssignmentFailure_PreservesPersistedFields",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "NativeMirrorModifyFailure_PreventsExternalUpload",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "ExternalStorageModule_IsPresentInTheTestContainer",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "LinkedRead_LeavesStoredRowUnchangedAfterModify",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "LinkedRead_LeavesStoredRowUnchangedAfterModifyFalse",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "LinkedRead_TransferFieldsInsert_DoesNotPersistStoredInternally",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "LinkedRead_TransferFieldsInsert_SlashVariantPath_DoesNotPersistStoredInternally",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96217",
+      "method": "MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_GrantedSetupCard_PersistsChange",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ReadOnlySetupCard_RefusesChange",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingSetupInsert_LeavesNoRow",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingSetupModify_PreservesRow",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingSetupDelete_PreservesRow",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_ActualRoles_DispatchSharedHelp",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_GrantedFilesAndDirectories_Roundtrip",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_InvalidFileInput_PreservesState",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_EmptyUpload_RefusesCommitThenAborts",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_GrantedNativeTarget_PersistsContent",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingSourceRead_CreatesNothing",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingTargetWrite_PreservesUpload",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_GrantedOffloadOpenRestore_Roundtrips",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingLinkWrite_PreservesNativeAndStorage",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_GrantedDataExchange_ReadsSeededGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ReadOnlyTypeSet_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ReadOnlyImportRun_CreatesNoEntry",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ReadOnlyExportRun_CreatesNoEntry",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ExportMissingRead_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ReadOnlyDefinitionDelete_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingEntryRead_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingColumnRead_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingDefinitionRead_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingFieldRead_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingFieldMappingRead_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingLineRead_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingMappingRead_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_MissingTypeRead_PreservesGraph",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ProcessWithoutTargetWrite_PreservesEntry",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_ProcessWithTargetWrite_WritesTargetRows",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ReadOnlyEntryDelete_PreservesEntry",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_EntryDeleteWithoutFieldWrite_PreservesEntry",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_EntryDeleteWithRowWrite_DeletesEntry",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ReadOnlyDefinitionImport_InstallsNothing",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_DefinitionImportWithDefWrite_InstallsCopy",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ReadOnlyPaymentExport_PreservesJournal",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_ReadOnlyCommitToDataExchange_PreservesUpload",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC02_CommitToDataExchangeWithoutFieldWrite_PreservesUpload",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96218",
+      "method": "Scenario_AC01_CommitToDataExchangeWithRowWrite_ImportsUpload",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "SameAccount_SetupAliasProtectsLinkedFile",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "DifferentAccounts_DoNotShareLinkIdentity",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "SameAccount_PreservesOpaquePathSpelling",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "SameAccount_MovedLinkKeepsRelativeBase",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC01_SlashDeletes_PreserveLinkedContent",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC01_LegacySlashLink_RejectsCanonicalDelete",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC02_CreateLinkedTarget_PreservesBytesAndLink",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC02_TransfersToLinkedTarget_PreserveBothFiles",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC02_UploadTargetBecomesLinked_PreservesSession",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC01_SlashSourceMove_UpdatesOnlyMatchingLink",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC03_Path2047To2049_RejectsOnlyOverFieldLimit",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC03_BasePlusPathTooLong_RejectsBeforeWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC03_Name249To251_RejectsBeforeSessionInsert",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC04_TraversalAndFileRoot_RejectWithoutWrites",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC01_InnerSlashVariants_RejectWithoutWrites",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC03_GeneratedOffloadTooLong_PreservesLocalBlob",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC04_ConnectorMoveFailure_RollsBackLink",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC01_SelfMoveAlias_PreservesSource",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC01_BaseRootAlias_PreservesIntendedTarget",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC02_DisabledAlias_ProtectsPhysicalDestination",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC01_AliasMove_PreservesEachRelativeRoot",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC04_AliasRootEscape_PreservesSource",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC01_CaseAndLiteralKeys_PreserveDistinctFiles",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC04_PostCopyFault_RetainsReadableSourceAndDuplicate",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96225",
+      "method": "Scenario_AC03_DirectMoveOverlong_PreservesLinkAndContent",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC03_GenericImport_ImportsInlineFile",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC03_PayrollImport_ImportsInlineFile",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC01_AbsentFields_CollectsAllThree",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_WrongTypes_CollectsAllWithoutWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_NullFields_CollectsAllWithoutWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_ObjectFields_CollectsAllWithoutWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_EmptyFields_CollectsAllWithoutWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_Lowercase_RefusesRawCode",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_MixedCase_RefusesRawCode",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_UnicodeCase_RefusesRawCode",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_LeadingSpace_RefusesRawCode",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_TrailingSpace_RefusesRawCode",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_Overlong_RefusesRawCode",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_Code20AndPath2048_AcceptsExactBounds",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_Path2049_RefusesWithoutWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_Traversal_RefusesWithoutWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_MalformedOrScalar_RefusesData",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC01_UnknownAndWrongKind_RefusesDefinition",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC03_DeleteUnreferenced_DeletesChildren",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC01_DeleteTypeReferenced_PreservesTree",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC01_DeleteBankReferenced_PreservesTree",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC01_DeleteMissing_ReportsCompleteError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC03_TwoLocales_CollectsLocalizedErrors",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC04_AfterInsertFailure_RollsBack",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC04_AfterDeleteFailure_RollsBack",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC04_ChainedFailure_RollsBackEarlierImport",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_SpacesOnly_ReportsCompleteCodeError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC03_ExportPayroll_IsRefused",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC01_DefinitionExport_RefusesBadCode",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC03_DefinitionExport_ReturnsHeader",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_ExportFileNameBounds_NeverTruncates",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_TypeSetOverlongDescription_PreservesExisting",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC01_TypeSetPayroll_DoesNotCreateType",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96226",
+      "method": "Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96227",
+      "method": "Scenario_AC01_AC02_MirrorFailure_OnlySafeMetadata",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96227",
+      "method": "Scenario_AC03_ClearMirrorFailure_IdentifiesRestoreOperation",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96227",
+      "method": "Scenario_AC01_AC02_AC03_TakeoverDenials_OnlySafeDiagnostics",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC01_UnknownReferences_RefusedWithoutEntry1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC01_UnknownReferences_RefusedWithoutEntry1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC01_Contract_ExplainsUnvalidatedReferences",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC02_FileChild_RefusesAndPreservesContent",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC02_DirectoryChild_RefusesAndPreservesTree",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC02_BasePath_RefusesNestedFile",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC02_EmptyDirectory_DeletesOnlyTarget",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC02_Contract_ListsNonEmptyPrecondition",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_Contract_ListsStorageCodeAndRootRefusals",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC02_NonEmptyDirectory_Localizes1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC02_Path_DoesNotReadAccount",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC02_Path_RejectsOverlongBase",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96228",
+      "method": "Scenario_AC02_Path_PreservesNamesBlocksTraversal",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96229",
+      "method": "Scenario_AC01_StorageWritesAreInbound1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96229",
+      "method": "Scenario_AC01_StorageWritesAreInbound1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96229",
+      "method": "Scenario_AC02_AllTypesMatchEffect1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96229",
+      "method": "Scenario_AC02_AllTypesMatchEffect1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96236",
+      "method": "Scenario_Interface_RestrictedActor_Roundtrips",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96236",
+      "method": "Scenario_Interface_Accounts_KeepDistinctBytes",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96236",
+      "method": "Scenario_Interface_ProviderFailure_PreservesSource",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96236",
+      "method": "Scenario_Interface_UnsafePath_ReachesNoWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96236",
+      "method": "Scenario_Interface_TargetAliases_RefuseBeforeWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96236",
+      "method": "Scenario_Interface_ExistenceFailure_RefusesTransfer",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "PersistedProcessingErrors_AreScopedAndBilingual",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "AC01_CommitToRecord_SetsDataExchangeType_LeavesUnprocessed",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "AC02_CommitToRecord_ProcessTrue_KeepsDocumentOnProcessErrors",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "AC03_UnknownType_RefusesBeforeWrite_SessionStaysOpen",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "AC04_CreateLinked_SetsTypeOnIncomingDocument",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "AC04_CreateLinked_ProcessTrue_KeepsDocumentAndLink",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "Scenario_AC04_LinkedCsv_ProcessReadsAndMapsExactContent",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "Scenario_AC04_LocalCsv_ProcessKeepsStandardContentPath",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "Scenario_AC06_LinkedCsv_CreatesPurchaseInvoice",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "AC05_TypeSet_ExportDefinition_IsRefused",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96237",
+      "method": "AC07_DataRecordsSet_BlocksIncomingTypeField_AndTypeTable",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96238",
+      "method": "Scenario_AC01_RootPath_RefusedBeforeConnectorCall",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96238",
+      "method": "Scenario_AC01_RootSpellings_RefusedWithReceivedValue",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96238",
+      "method": "Scenario_AC01_RootRefusal_Localizes1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96238",
+      "method": "Scenario_AC02_HelpErrors_ListRootRefusal",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "AC01_CommitToDataExchange_ParsesWithoutProcessing",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "AC01_CommitToDataExchange_KeepFileWritesSessionPath",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "AC02_ImportRun_ProcessTrue_InsertsTargets",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "AC03_ImportRunFromStorage_LeavesFileUntouched",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "AC03_ImportRunMissingStoredFile_AnswersError",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "AC04_BankStatementDefinition_PointsToBankReconciliation",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "AC04_ExportDefinition_IsRefusedForImport",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "AC05_MalformedFile_LeavesNoHalfParsedEntry",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "AC05_MalformedUpload_KeepsSessionOpen",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "AC06_EntryDelete_RefusedForIncomingDocument",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "EntryDelete_RemovesEntryFieldsAndMarker",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "EntryDelete_UnknownEntry_RecordNotFound",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "EntryProcess_WritesTargets_ThenRefusesSecondRun",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "EntryProcess_IntermediateMapping_PointsToIncomingDocument",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "ImportRun_ProcessTrueWithIntermediateMapping_KeepsEntry",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "EntryProcess_InvalidInput_RefusedBeforeWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "ImportRun_InlineOverOneMegabyte_LimitExceeded",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "ImportRun_TwoSources_Refused",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96242",
+      "method": "CommitToDataExchange_UnknownDefinition_SessionStaysOpen",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "AC01_ExportThreeCustomers_ToStorage",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "AC02_RecordIds_InlineAndStorage",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "AC03_InlineOverOneMegabyte_RollsBack",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "AC04_ImportDefinition_Refused",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "AC04_PaymentDefinition_PointsToPaymentExport",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "TableNotMappingTable_Refused",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "MissingSourceAndDelivery_CollectedTogether",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "NoMatchingRecords_PreconditionFailed",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "UnknownViewField_InvalidFilterField",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "StorageWriteFailure_RollsBackEntry",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "PaymentExport_UnknownBatch_RecordNotFound",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "PaymentExport_LowercaseName_InvalidParameterFormat",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "PaymentExport_EmptyBatch_PreconditionFailed",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96243",
+      "method": "PaymentExport_NoDelivery_MissingParameter",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "AC01_ImportFromStorage_CreatesDefinitionTree",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "AC02_ExistingCode_RefusedUnlessOverwrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "AC03_ExportToStorage_ReimportUnderNewCodeEqualsOriginal",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "ImportFromUpload_ConsumesSession",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "MalformedXml_RefusedWithoutWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "NoSource_And_TwoSources_Refused",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "DefinitionExport_InlineReturnsXml",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "DefinitionExport_NoDeliveryReturnsOnlyHeader",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "DefinitionExport_BothDestinationsOverwriteSameXml",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "DefinitionExport_ContractDescribesAllModesAndEffects",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "DefinitionDelete_RefusedForPayrollImportFormat",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96244",
+      "method": "DataRecordsSet_BlocksDefinitionAndEntryTables",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "XmlInline_RefusesInBothLanguages",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "XmlStorage_RefusesInBothLanguages",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "BinaryCsvInline_RefusesInBothLanguages",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "BinaryCsvStorage_RefusesInBothLanguages",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "DefinitionInline_RefusesInBothLanguages",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "DefinitionStorage_RefusesInBothLanguages",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "UploadXml_RefusesAndKeepsChunks",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "UploadBinaryCsv_RefusesAndKeepsChunks",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "DefinitionUpload_RefusesAndKeepsChunks",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "MissingStoredFile_UsesTheOperationErrorContract",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "PostwriteReaderFailure_RetainsRollback",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96256",
+      "method": "Utf16Csv_IsNotMistakenForBinary",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "DefinitionCollects_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "DefinitionCollects_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "CodeLength_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "CodeLength_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "ExportConflict_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "ExportConflict_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "InvalidSourceTarget_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "InvalidSourceTarget_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "EntryDefinition_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "EntryDefinition_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "EntryMapping_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "EntryMapping_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "StoredDefinition_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "StoredDefinition_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "LinkedFileName_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "LinkedFileName_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "MissingImportSource_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "MissingImportSource_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "PaymentNoDuplicate_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "PaymentNoDuplicate_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "MissingFile_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "MissingFile_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "UniformHeader_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "UniformHeader_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "TypeSetEnvelope_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "TypeSetEnvelope_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "DocumentTypeName_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "DocumentTypeName_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "WarningObjects_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "WarningObjects_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "UploadDocumentType_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "UploadDocumentType_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF2_MissingFileName_SingleError_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF2_MissingFileName_SingleError_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF3_NestedProblems_HaveNextStep_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF3_NestedProblems_HaveNextStep_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF4_Examples_NoTargetParameter",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF6a_Lists_HideAccountPath_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96258",
+      "method": "Scenario_ACF6a_Lists_HideAccountPath_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "FileCreateConsent_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "FileCreateConsent_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "UploadCommitConsent_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "UploadCommitConsent_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "DefinitionExportConsent_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "DefinitionExportConsent_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "ExportRunConsent_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "ExportRunConsent_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "UploadDataExchangeConsent_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "UploadDataExchangeConsent_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "OffloadConsent_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "OffloadConsent_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "LinkedSourceSurvivesRestore_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "LinkedSourceSurvivesRestore_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "LinkedSourceSurvivesDelete_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "LinkedSourceSurvivesDelete_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "FreshOffloadDeletesOwnedFile_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "FreshOffloadDeletesOwnedFile_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "InvalidOverwriteRefused_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "InvalidOverwriteRefused_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "LinkedFileProtectedWithConsent_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "LinkedFileProtectedWithConsent_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "CommitToRecordDoesNotWriteStorage_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "CommitToRecordDoesNotWriteStorage_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "CreateLinkedSourceSurvivesRestore_1033",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96261",
+      "method": "CreateLinkedSourceSurvivesRestore_1039",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96265",
+      "method": "EveryType_DeclaresEveryRequiredChapter",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96265",
+      "method": "EveryType_ErrorsCarryCodeWhenAndFix",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96265",
+      "method": "EveryType_DirectionMatchesEffect",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96265",
+      "method": "EveryType_ResponseFieldsAreDescribed",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96265",
+      "method": "DefinitionGet_LineDefsAndMappings_AreArraysWithChildren",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96265",
+      "method": "EveryType_HasSuccessExampleThatMatchesTheResponse",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96265",
+      "method": "EveryType_WorkflowStepsAndRelatedTypesExist",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96265",
+      "method": "EveryType_HasDiscoveryTextsInBothLanguages",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Language72_Discovery_ExactEnglish",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Language72_Discovery_ExactIcelandic",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC03_MessageTypes_ResolveDistinctContracts",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC02_TypeSet_ImportDefinitionIsPersisted",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC02_TypeSet_MissingDefinitionDoesNotWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC02_TypeSet_ExportDefinitionDoesNotWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC02_DefinitionExport_ReturnsExistingHeader",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC03_DefinitionDelete_UnusedHeaderIsRemoved",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC03_DefinitionDelete_ReferencedHeaderIsPreserved",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC03_DefinitionDelete_MissingHeaderDoesNotWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC03_ExportRun_ExportHeaderIsPersisted",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC03_ExportRun_ImportDefinitionDoesNotWrite",
+      "result": "Pass",
+      "failure": null
+    },
+    {
+      "codeunit": "96274",
+      "method": "Scenario_AC03_ExportRun_MissingFileNameDoesNotWrite",
+      "result": "Pass",
+      "failure": null
+    }
+  ],
+  "runStartedAt": "2026-10-23T16:55:56.729Z",
+  "earliestAssemblyAt": "2026-10-23T16:57:17+00:00",
+  "runtimeSetting": "DisableWriteInsideTryFunctions=false",
+  "parsedAt": "2026-10-23T16:58:58.936880+00:00",
+  "verified": true
+}

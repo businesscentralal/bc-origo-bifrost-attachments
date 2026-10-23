@@ -1,0 +1,191 @@
+{
+  "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/175",
+  "owner": "Brokkr (worker-2)",
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "scope": "Actual live F1-F6 UAT follow-up story; assignment title/setup-wizard wording was stale. Single Attachments repository.",
+  "acceptance": {
+    "F1": {
+      "status": "implemented/developer-verified; independent verification and delivery pending",
+      "owner": "worker-2",
+      "dependencyUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/174",
+      "integration": "PR174 merged into main076e26f; normal mergeac32ed4, inventory commitbaa62e9. English help recording retains flat filename nextStep, live bilingual comparison pending.",
+      "result": "PR174 integrated normally after authorized merge; English help recovery equals live1033; live1039 recovery localized with same code/parameter/received; chapters and Web Client checked in both locales.",
+      "evidence": [
+        "f1-summary.json",
+        "f1-help-1033.json",
+        "f1-help-1039.json",
+        "ui-f1-1033.json",
+        "ui-f1-1039.json",
+        "full-suite-summary.json"
+      ]
+    },
+    "F2": {
+      "status": "implemented/developer-verified; independent verification and delivery pending",
+      "evidence": [
+        "mcp-behavior-summary.json",
+        "help-summary.json",
+        "full-suite-summary.json",
+        "ui-summary.json"
+      ],
+      "result": "Single flat MissingParameter for absent/null/empty filename; malformed object one format error. Empty help count4 with one filename problem.",
+      "mergeHold": "Gunnar H2 approved in comment6369323257; approval does not replace remaining delivery gates",
+      "approvalUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/181#issuecomment-6369323257",
+      "previousVerifiedSha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad"
+    },
+    "F3": {
+      "status": "implemented/developer-verified; independent verification and delivery pending",
+      "evidence": [
+        "mcp-behavior-summary.json",
+        "help-summary.json",
+        "full-suite-summary.json",
+        "ui-summary.json"
+      ],
+      "result": "Every collected source/table/record/target error has actionable nextStep; missing tableId received localized.",
+      "mergeHold": "Gunnar H2 approved in comment6369323257; approval does not replace remaining delivery gates",
+      "approvalUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/181#issuecomment-6369323257",
+      "previousVerifiedSha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad"
+    },
+    "F4": {
+      "status": "implemented/developer-verified; independent verification and delivery pending",
+      "evidence": [
+        "mcp-behavior-summary.json",
+        "help-summary.json",
+        "full-suite-summary.json"
+      ],
+      "result": "All3 examples omit undeclared target; replayed1033/1039 with own record substitutions produces no UnknownParameter. Inline examples do not need sourceTarget.",
+      "previousVerifiedSha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad"
+    },
+    "F5": {
+      "status": "implemented/developer-verified; independent verification and delivery pending",
+      "evidence": [
+        "mcp-behavior-summary.json",
+        "xlf.log",
+        "ui-summary.json"
+      ],
+      "result": "Type.Set1039 expected/nextStep use JSON-streng; XLF guard passes.",
+      "previousVerifiedSha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad"
+    },
+    "F6a": {
+      "status": "implemented/developer-verified; independent verification and delivery pending",
+      "evidence": [
+        "mcp-behavior-summary.json",
+        "listing-help-summary.json",
+        "full-suite-summary.json",
+        "ui-summary.json"
+      ],
+      "result": "Shared File/Directory listing serializer emits relative parent and leaf name only; root/nested provider-prefixed metadata tested, schema/CHANGELOG updated.",
+      "mergeHold": "Gunnar F6a H2 approved in authenticated GitHub comment6367540500, 2026-10-23T14:43:10Z",
+      "approvalUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/175#issuecomment-6367540500",
+      "previousVerifiedSha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad"
+    },
+    "F6b": {
+      "status": "implemented/developer-verified; independent verification and delivery pending",
+      "evidence": [
+        "help-summary.json",
+        "ui-summary.json",
+        "full-suite-summary.json"
+      ],
+      "result": "Restore bilingual catalogue/selection descriptions preserve preexisting/legacy files.",
+      "previousVerifiedSha": "50d12e421ef8bc59148c4eb01ed5fa200ce2d1ad"
+    }
+  },
+  "general": {
+    "compile": "All3 phases0errors0warnings CodeCop/UICop/AppSourceCop with released28.3.0.122 compatibility baseline",
+    "fullNative": {
+      "executed": 465,
+      "passed": 465,
+      "failed": 0,
+      "skipped": 0
+    },
+    "mcpBehavior": {
+      "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+      "containerId": "f005fd56b922",
+      "executed": 136,
+      "passed": 136,
+      "failed": 0,
+      "skipped": 0,
+      "createsOwnData": true,
+      "touchedMessageTypes": [
+        "Help.Storage.Get",
+        "Storage.Account.List",
+        "Storage.File.List",
+        "Storage.File.Get",
+        "Storage.File.Create",
+        "Storage.File.Delete",
+        "Storage.File.Copy",
+        "Storage.File.Move",
+        "Storage.File.Exists",
+        "Storage.Directory.List",
+        "Storage.Directory.Create",
+        "Storage.Directory.Delete",
+        "Storage.Directory.Exists",
+        "Storage.Attachment.Offload",
+        "Storage.Attachment.Restore",
+        "Storage.Upload.Begin",
+        "Storage.Upload.Append",
+        "Storage.Upload.Commit",
+        "Storage.Upload.Abort",
+        "Storage.Upload.Status",
+        "Storage.Attachment.CreateLinked",
+        "Storage.Attachment.CreateForRecord",
+        "Storage.Upload.CommitToRecord",
+        "Help.DataExchange.Get",
+        "DataExchange.Definition.List",
+        "DataExchange.Definition.Get",
+        "DataExchange.Type.List",
+        "DataExchange.Entry.List",
+        "DataExchange.Entry.Get",
+        "DataExchange.Type.Set",
+        "Storage.Upload.CommitToDataExchange",
+        "DataExchange.Entry.Process",
+        "DataExchange.Export.Run",
+        "DataExchange.Entry.Delete",
+        "DataExchange.Definition.Export",
+        "DataExchange.Import.Run",
+        "DataExchange.Definition.Delete",
+        "DataExchange.Definition.Import",
+        "DataExchange.PaymentExport.Run"
+      ],
+      "scope": "78 all39types shared-reader calls +56targeted seeded scenario assertions +2F1 bilingual help/live refusal comparisons. Help fetches are14 separate checks; guard control is additional and not folded into scenario counts.",
+      "components": {
+        "sharedReader": 78,
+        "targeted": 56,
+        "F1": 2
+      },
+      "fixtureSetup": "mcp-owned-identities.json",
+      "cleanupVerified": true
+    },
+    "help": {
+      "executed": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "components": "8 main help +4listing chapters +2F1 help fetches"
+    },
+    "webClient": {
+      "executed": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "languages": [
+        1033,
+        1039
+      ]
+    },
+    "ownedCleanup": "COSMO f005fd56b922 DELETE204 then GET404 at17:08:43Z; browser28630 absent; all worker-created data removed.",
+    "runtime": "Owned Docker DisableWriteInsideTryFunctions=false; no SaaS or licensing proof",
+    "incomplete": [
+      "Independent Claude current-head verification/findings resolution",
+      "Hosted current-head CI Test/cleanup final result (in progress)",
+      "Grok current-head clearance",
+      "Eligible non-author approval",
+      "Architect merge and same-SHA deployment",
+      "Tester UAT and actual issue acceptance",
+      "Secretary actual session ACK"
+    ]
+  },
+  "issueComplete": false,
+  "fixesClosureMarkupUsed": false,
+  "at": "2026-10-23T17:09:20.474191+00:00",
+  "decisionReconciledAt": "2026-10-23T16:16:15.327290+00:00"
+}

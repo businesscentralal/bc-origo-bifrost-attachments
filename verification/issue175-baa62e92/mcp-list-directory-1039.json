@@ -1,0 +1,22 @@
+{
+  "containerId": "f005fd56b922",
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "at": "2026-10-23T17:03:47.506Z",
+  "tool": "invoke_message_type",
+  "request": {
+    "type": "Storage.Directory.List",
+    "data": {
+      "storageCode": "X175-W2-20261023",
+      "path": ""
+    },
+    "lcid": 1039
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"company\": \"CRONUS International Ltd.\",\n  \"messageType\": \"Storage.Directory.List\",\n  \"status\": \"Success\",\n  \"data\": {\n    \"path\": \"\",\n    \"entries\": [\n      {\n        \"name\": \"x175\",\n        \"type\": \"Directory\",\n        \"parentDirectory\": \"\"\n      }\n    ]\n  }\n}"
+      }
+    ]
+  }
+}

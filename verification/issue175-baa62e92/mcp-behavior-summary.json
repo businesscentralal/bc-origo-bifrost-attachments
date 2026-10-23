@@ -1,0 +1,1076 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "executed": 56,
+  "passed": 56,
+  "failed": 0,
+  "skipped": 0,
+  "rows": [
+    {
+      "scenario": "mcp-file-create-root-1033",
+      "passed": true,
+      "detail": {
+        "path": "root-1033.txt",
+        "contentLength": 19
+      },
+      "evidence": "mcp-file-create-root-1033.json"
+    },
+    {
+      "scenario": "mcp-file-create-source-1033",
+      "passed": true,
+      "detail": {
+        "path": "x175/source-1033.txt",
+        "contentLength": 19
+      },
+      "evidence": "mcp-file-create-source-1033.json"
+    },
+    {
+      "scenario": "mcp-list-root-1033",
+      "passed": true,
+      "detail": {
+        "path": "",
+        "entries": [
+          {
+            "name": "root-1033.txt",
+            "type": "File",
+            "parentDirectory": ""
+          }
+        ]
+      },
+      "evidence": "mcp-list-root-1033.json"
+    },
+    {
+      "scenario": "mcp-list-nested-1033",
+      "passed": true,
+      "detail": {
+        "path": "x175",
+        "entries": [
+          {
+            "name": "source-1033.txt",
+            "type": "File",
+            "parentDirectory": "x175"
+          }
+        ]
+      },
+      "evidence": "mcp-list-nested-1033.json"
+    },
+    {
+      "scenario": "mcp-list-directory-1033",
+      "passed": true,
+      "detail": {
+        "path": "",
+        "entries": [
+          {
+            "name": "x175",
+            "type": "Directory",
+            "parentDirectory": ""
+          }
+        ]
+      },
+      "evidence": "mcp-list-directory-1033.json"
+    },
+    {
+      "scenario": "mcp-linked-success-1033",
+      "passed": true,
+      "detail": {
+        "target": "IncomingDocument",
+        "incomingDocumentEntryNo": 53,
+        "lineNo": 10000,
+        "systemId": "ACA78DAA-03CF-F111-B7A4-DA68F0A5C24F",
+        "storageCode": "X175-W2-20261023",
+        "path": "x175/source-1033.txt",
+        "fileName": "source-1033.txt",
+        "contentLength": 19,
+        "processed": false
+      },
+      "evidence": "mcp-linked-success-1033.json"
+    },
+    {
+      "scenario": "mcp-restore-preexisting-1033",
+      "passed": true,
+      "detail": {
+        "target": "IncomingDocument",
+        "systemId": "ACA78DAA-03CF-F111-B7A4-DA68F0A5C24F",
+        "contentLength": 19
+      },
+      "evidence": "mcp-restore-preexisting-1033.json"
+    },
+    {
+      "scenario": "mcp-preserved-source-1033",
+      "passed": true,
+      "detail": {
+        "path": "x175/source-1033.txt",
+        "contentLength": 19,
+        "contentBase64": "b3duZWQgaXNzdWUxNzUgMTAzMw=="
+      },
+      "evidence": "mcp-preserved-source-1033.json"
+    },
+    {
+      "scenario": "mcp-record-sourceTarget-1033",
+      "passed": true,
+      "detail": {
+        "target": "DocumentAttachment",
+        "tableId": 18,
+        "no": "C00010",
+        "documentType": "Quote",
+        "lineNo": 0,
+        "attachmentId": 43,
+        "systemId": "B2A78DAA-03CF-F111-B7A4-DA68F0A5C24F",
+        "fileName": "source-1033.txt",
+        "contentLength": 19,
+        "offloaded": false
+      },
+      "evidence": "mcp-record-sourceTarget-1033.json"
+    },
+    {
+      "scenario": "mcp-typeset-success-1033",
+      "passed": true,
+      "detail": {
+        "code": "X175TBAA62E1033",
+        "dataExchDefCode": "X175DBAA62E"
+      },
+      "evidence": "mcp-typeset-success-1033.json"
+    },
+    {
+      "scenario": "mcp-typeset-readback-1033",
+      "passed": true,
+      "detail": {
+        "company": "CRONUS International Ltd.",
+        "table": "Data Exchange Type",
+        "skip": 0,
+        "take": 50,
+        "count": 1,
+        "records": [
+          {
+            "id": "B4A78DAA-03CF-F111-B7A4-DA68F0A5C24F",
+            "primaryKey": {
+              "Code": "X175TBAA62E1033"
+            },
+            "fields": {
+              "Description": "Owned issue175 1033",
+              "DataExch_Def_Code": "X175DBAA62E",
+              "EntityType": "Invoice",
+              "SystemCreatedAt": "2026-10-23T17:03:38.19Z",
+              "SystemCreatedBy": "F7D3189B-6734-4138-9D43-81CD7ACE5AD4",
+              "SystemModifiedAt": "2026-10-23T17:03:38.19Z",
+              "SystemModifiedBy": "F7D3189B-6734-4138-9D43-81CD7ACE5AD4"
+            }
+          }
+        ],
+        "noOfRecords": 1
+      },
+      "evidence": "mcp-typeset-readback-1033.json"
+    },
+    {
+      "scenario": "mcp-negative-Storage-File-List-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"storageCode\" is missing.",
+        "parameter": "storageCode",
+        "received": "(missing)",
+        "expected": "a value for \"storageCode\"",
+        "nextStep": "Provide \"storageCode\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.List\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-negative-Storage-File-List-1033.json"
+    },
+    {
+      "scenario": "mcp-negative-Storage-Directory-List-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"storageCode\" is missing.",
+        "parameter": "storageCode",
+        "received": "(missing)",
+        "expected": "a value for \"storageCode\"",
+        "nextStep": "Provide \"storageCode\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Directory.List\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-negative-Storage-Directory-List-1033.json"
+    },
+    {
+      "scenario": "mcp-negative-Storage-Attachment-Restore-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"target\" is missing.",
+            "parameter": "target",
+            "received": "(missing)",
+            "expected": "a value for \"target\"",
+            "nextStep": "Provide \"target\" and send the request again."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"systemId\" is missing.",
+            "parameter": "systemId",
+            "received": "(missing)",
+            "expected": "a value for \"systemId\"",
+            "nextStep": "Provide \"systemId\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.Restore\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-negative-Storage-Attachment-Restore-1033.json"
+    },
+    {
+      "scenario": "mcp-file-create-root-1039",
+      "passed": true,
+      "detail": {
+        "path": "root-1039.txt",
+        "contentLength": 19
+      },
+      "evidence": "mcp-file-create-root-1039.json"
+    },
+    {
+      "scenario": "mcp-file-create-source-1039",
+      "passed": true,
+      "detail": {
+        "path": "x175/source-1039.txt",
+        "contentLength": 19
+      },
+      "evidence": "mcp-file-create-source-1039.json"
+    },
+    {
+      "scenario": "mcp-list-root-1039",
+      "passed": true,
+      "detail": {
+        "path": "",
+        "entries": [
+          {
+            "name": "root-1033.txt",
+            "type": "File",
+            "parentDirectory": ""
+          },
+          {
+            "name": "root-1039.txt",
+            "type": "File",
+            "parentDirectory": ""
+          }
+        ]
+      },
+      "evidence": "mcp-list-root-1039.json"
+    },
+    {
+      "scenario": "mcp-list-nested-1039",
+      "passed": true,
+      "detail": {
+        "path": "x175",
+        "entries": [
+          {
+            "name": "source-1033.txt",
+            "type": "File",
+            "parentDirectory": "x175"
+          },
+          {
+            "name": "source-1039.txt",
+            "type": "File",
+            "parentDirectory": "x175"
+          }
+        ]
+      },
+      "evidence": "mcp-list-nested-1039.json"
+    },
+    {
+      "scenario": "mcp-list-directory-1039",
+      "passed": true,
+      "detail": {
+        "path": "",
+        "entries": [
+          {
+            "name": "x175",
+            "type": "Directory",
+            "parentDirectory": ""
+          }
+        ]
+      },
+      "evidence": "mcp-list-directory-1039.json"
+    },
+    {
+      "scenario": "mcp-linked-success-1039",
+      "passed": true,
+      "detail": {
+        "target": "IncomingDocument",
+        "incomingDocumentEntryNo": 54,
+        "lineNo": 10000,
+        "systemId": "05DEADB0-03CF-F111-B7A4-DA68F0A5C24F",
+        "storageCode": "X175-W2-20261023",
+        "path": "x175/source-1039.txt",
+        "fileName": "source-1039.txt",
+        "contentLength": 19,
+        "processed": false
+      },
+      "evidence": "mcp-linked-success-1039.json"
+    },
+    {
+      "scenario": "mcp-restore-preexisting-1039",
+      "passed": true,
+      "detail": {
+        "target": "IncomingDocument",
+        "systemId": "05DEADB0-03CF-F111-B7A4-DA68F0A5C24F",
+        "contentLength": 19
+      },
+      "evidence": "mcp-restore-preexisting-1039.json"
+    },
+    {
+      "scenario": "mcp-preserved-source-1039",
+      "passed": true,
+      "detail": {
+        "path": "x175/source-1039.txt",
+        "contentLength": 19,
+        "contentBase64": "b3duZWQgaXNzdWUxNzUgMTAzOQ=="
+      },
+      "evidence": "mcp-preserved-source-1039.json"
+    },
+    {
+      "scenario": "mcp-record-sourceTarget-1039",
+      "passed": true,
+      "detail": {
+        "target": "DocumentAttachment",
+        "tableId": 18,
+        "no": "C00010",
+        "documentType": "Quote",
+        "lineNo": 0,
+        "attachmentId": 44,
+        "systemId": "AE4F07B7-03CF-F111-B7A4-DA68F0A5C24F",
+        "fileName": "source-1039.txt",
+        "contentLength": 19,
+        "offloaded": false
+      },
+      "evidence": "mcp-record-sourceTarget-1039.json"
+    },
+    {
+      "scenario": "mcp-typeset-success-1039",
+      "passed": true,
+      "detail": {
+        "code": "X175TBAA62E1039",
+        "dataExchDefCode": "X175DBAA62E"
+      },
+      "evidence": "mcp-typeset-success-1039.json"
+    },
+    {
+      "scenario": "mcp-typeset-readback-1039",
+      "passed": true,
+      "detail": {
+        "company": "CRONUS International Ltd.",
+        "table": "Data Exchange Type",
+        "skip": 0,
+        "take": 50,
+        "count": 1,
+        "records": [
+          {
+            "id": "B04F07B7-03CF-F111-B7A4-DA68F0A5C24F",
+            "primaryKey": {
+              "Code": "X175TBAA62E1039"
+            },
+            "fields": {
+              "Description": "Owned issue175 1039",
+              "DataExch_Def_Code": "X175DBAA62E",
+              "EntityType": "Invoice",
+              "SystemCreatedAt": "2026-10-23T17:03:51.503Z",
+              "SystemCreatedBy": "F7D3189B-6734-4138-9D43-81CD7ACE5AD4",
+              "SystemModifiedAt": "2026-10-23T17:03:51.503Z",
+              "SystemModifiedBy": "F7D3189B-6734-4138-9D43-81CD7ACE5AD4"
+            }
+          }
+        ],
+        "noOfRecords": 1
+      },
+      "evidence": "mcp-typeset-readback-1039.json"
+    },
+    {
+      "scenario": "mcp-negative-Storage-File-List-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nau\u00f0synlega f\u00e6ribreytu \"storageCode\" vantar.",
+        "parameter": "storageCode",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"storageCode\"",
+        "nextStep": "Gef\u00f0u upp \"storageCode\" og sendu bei\u00f0nina aftur.",
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.File.List\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-negative-Storage-File-List-1039.json"
+    },
+    {
+      "scenario": "mcp-negative-Storage-Directory-List-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nau\u00f0synlega f\u00e6ribreytu \"storageCode\" vantar.",
+        "parameter": "storageCode",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"storageCode\"",
+        "nextStep": "Gef\u00f0u upp \"storageCode\" og sendu bei\u00f0nina aftur.",
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Directory.List\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-negative-Storage-Directory-List-1039.json"
+    },
+    {
+      "scenario": "mcp-negative-Storage-Attachment-Restore-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandam\u00e1l \u00ed bei\u00f0ninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Nau\u00f0synlega f\u00e6ribreytu \"target\" vantar.",
+            "parameter": "target",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"target\"",
+            "nextStep": "Gef\u00f0u upp \"target\" og sendu bei\u00f0nina aftur."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nau\u00f0synlega f\u00e6ribreytu \"systemId\" vantar.",
+            "parameter": "systemId",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"systemId\"",
+            "nextStep": "Gef\u00f0u upp \"systemId\" og sendu bei\u00f0nina aftur."
+          }
+        ],
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.Restore\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-negative-Storage-Attachment-Restore-1039.json"
+    },
+    {
+      "scenario": "mcp-linked-absent-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"fileName\" is missing.",
+        "parameter": "fileName",
+        "received": "(missing)",
+        "expected": "a value for \"fileName\"",
+        "nextStep": "Provide \"fileName\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateLinked\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-linked-absent-1033.json"
+    },
+    {
+      "scenario": "mcp-linked-null-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"fileName\" is missing.",
+        "parameter": "fileName",
+        "received": "(missing)",
+        "expected": "a value for \"fileName\"",
+        "nextStep": "Provide \"fileName\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateLinked\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-linked-null-1033.json"
+    },
+    {
+      "scenario": "mcp-linked-empty-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"fileName\" is missing.",
+        "parameter": "fileName",
+        "received": "(missing)",
+        "expected": "a value for \"fileName\"",
+        "nextStep": "Provide \"fileName\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateLinked\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-linked-empty-1033.json"
+    },
+    {
+      "scenario": "mcp-linked-object-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"fileName\" must be a single value, not a JSON object or array.",
+        "parameter": "fileName",
+        "received": "{}",
+        "expected": "a JSON string",
+        "nextStep": "Provide \"fileName\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateLinked\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-linked-object-1033.json"
+    },
+    {
+      "scenario": "mcp-record-empty-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Send tableId or tableName to say which table the record is in.",
+            "parameter": "tableId",
+            "received": "(missing)",
+            "expected": "tableId or tableName",
+            "nextStep": "Send tableId or tableName, then retry the request."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Send exactly one content source: contentBase64 (or the alias content), storageCode with path, or sourceTarget with sourceSystemId.",
+            "parameter": "contentBase64, storageCode, sourceSystemId",
+            "expected": "exactly one of contentBase64 (or the alias content), storageCode with path, sourceTarget with sourceSystemId",
+            "nextStep": "Choose one source: contentBase64 (or content), storageCode with path, or sourceTarget with sourceSystemId."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateForRecord\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-record-empty-1033.json"
+    },
+    {
+      "scenario": "mcp-record-source-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "4 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Send tableId or tableName to say which table the record is in.",
+            "parameter": "tableId",
+            "received": "(missing)",
+            "expected": "tableId or tableName",
+            "nextStep": "Send tableId or tableName, then retry the request."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Parameter \"sourceTarget\" has value \"UnknownAttachment\", which is not an attachment target.",
+            "parameter": "sourceTarget",
+            "received": "UnknownAttachment",
+            "expected": "DocumentAttachment or IncomingDocument",
+            "nextStep": "Send DocumentAttachment or IncomingDocument as the attachment target."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Required parameter \"sourceSystemId\" is missing.",
+            "parameter": "sourceSystemId",
+            "received": "(missing)",
+            "expected": "a value for \"sourceSystemId\"",
+            "nextStep": "Provide \"sourceSystemId\" and send the request again."
+          },
+          {
+            "code": "InvalidParameterFormat",
+            "error": "Parameter \"fileName\" must be a single value, not a JSON object or array.",
+            "parameter": "fileName",
+            "received": "{}",
+            "expected": "a JSON string",
+            "nextStep": "Provide \"fileName\" and send the request again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateForRecord\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-record-source-1033.json"
+    },
+    {
+      "scenario": "mcp-record-conflict-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Send recordSystemId or no to say which record the attachment belongs to.",
+            "parameter": "no",
+            "received": "(missing)",
+            "expected": "recordSystemId or no",
+            "nextStep": "Send recordSystemId or no for the record that will receive the attachment."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Supply contentBase64 or content, not both.",
+            "parameter": "content",
+            "expected": "contentBase64 or content, not both",
+            "nextStep": "Send contentBase64 or content and remove the other key."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateForRecord\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-record-conflict-1033.json"
+    },
+    {
+      "scenario": "mcp-typeset-overlong-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"code\" exceeds the maximum of 20 characters.",
+        "parameter": "code",
+        "received": "XXXXXXXXXXXXXXXXXXXXX",
+        "expected": "a JSON string of at most 20 characters",
+        "nextStep": "Send \"code\" as a JSON string of at most 20 characters and retry.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Type.Set\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-typeset-overlong-1033.json"
+    },
+    {
+      "scenario": "mcp-record-example-1033-0",
+      "passed": true,
+      "detail": {
+        "company": "CRONUS International Ltd.",
+        "messageType": "Storage.Attachment.CreateForRecord",
+        "status": "Success",
+        "data": {
+          "target": "DocumentAttachment",
+          "tableId": 18,
+          "no": "C00010",
+          "documentType": "Quote",
+          "lineNo": 0,
+          "attachmentId": 45,
+          "systemId": "5E88FEBC-03CF-F111-B7A4-DA68F0A5C24F",
+          "fileName": "x175-1033-example.txt",
+          "contentLength": 5,
+          "offloaded": false
+        }
+      },
+      "evidence": "mcp-record-example-1033-0.json"
+    },
+    {
+      "scenario": "mcp-record-example-1033-1",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Send tableId or tableName to say which table the record is in.",
+            "parameter": "tableId",
+            "received": "(missing)",
+            "expected": "tableId or tableName",
+            "nextStep": "Send tableId or tableName, then retry the request."
+          },
+          {
+            "code": "InvalidParameterFormat",
+            "error": "Parameter \"contentBase64\" is not valid base64 content.",
+            "parameter": "contentBase64",
+            "expected": "base64 content",
+            "nextStep": "Encode the file bytes as standard base64 and send them again."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateForRecord\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-record-example-1033-1.json"
+    },
+    {
+      "scenario": "mcp-record-example-1033-2",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Send tableId or tableName to say which table the record is in.",
+            "parameter": "tableId",
+            "received": "(missing)",
+            "expected": "tableId or tableName",
+            "nextStep": "Send tableId or tableName, then retry the request."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Send exactly one content source: contentBase64 (or the alias content), storageCode with path, or sourceTarget with sourceSystemId.",
+            "parameter": "contentBase64, storageCode, sourceSystemId",
+            "expected": "exactly one of contentBase64 (or the alias content), storageCode with path, sourceTarget with sourceSystemId",
+            "nextStep": "Choose one source: contentBase64 (or content), storageCode with path, or sourceTarget with sourceSystemId."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateForRecord\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-record-example-1033-2.json"
+    },
+    {
+      "scenario": "mcp-linked-absent-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nau\u00f0synlega f\u00e6ribreytu \"fileName\" vantar.",
+        "parameter": "fileName",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"fileName\"",
+        "nextStep": "Gef\u00f0u upp \"fileName\" og sendu bei\u00f0nina aftur.",
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateLinked\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-linked-absent-1039.json"
+    },
+    {
+      "scenario": "mcp-linked-null-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nau\u00f0synlega f\u00e6ribreytu \"fileName\" vantar.",
+        "parameter": "fileName",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"fileName\"",
+        "nextStep": "Gef\u00f0u upp \"fileName\" og sendu bei\u00f0nina aftur.",
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateLinked\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-linked-null-1039.json"
+    },
+    {
+      "scenario": "mcp-linked-empty-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nau\u00f0synlega f\u00e6ribreytu \"fileName\" vantar.",
+        "parameter": "fileName",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"fileName\"",
+        "nextStep": "Gef\u00f0u upp \"fileName\" og sendu bei\u00f0nina aftur.",
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateLinked\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-linked-empty-1039.json"
+    },
+    {
+      "scenario": "mcp-linked-object-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "F\u00e6ribreyta \"fileName\" ver\u00f0ur a\u00f0 vera eitt gildi, ekki JSON-hlutur e\u00f0a fylki.",
+        "parameter": "fileName",
+        "received": "{}",
+        "expected": "JSON-strengur",
+        "nextStep": "Gef\u00f0u upp \"fileName\" og sendu bei\u00f0nina aftur.",
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateLinked\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-linked-object-1039.json"
+    },
+    {
+      "scenario": "mcp-record-empty-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandam\u00e1l \u00ed bei\u00f0ninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Sendu tableId e\u00f0a tableName til a\u00f0 segja \u00ed hva\u00f0a t\u00f6flu f\u00e6rslan er.",
+            "parameter": "tableId",
+            "received": "(vantar)",
+            "expected": "tableId e\u00f0a tableName",
+            "nextStep": "Sendu tableId e\u00f0a tableName og reyndu bei\u00f0nina aftur."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Sendu n\u00e1kv\u00e6mlega eina uppsprettu innihalds: contentBase64 (e\u00f0a samheiti\u00f0 content), storageCode me\u00f0 path e\u00f0a sourceTarget me\u00f0 sourceSystemId.",
+            "parameter": "contentBase64, storageCode, sourceSystemId",
+            "expected": "n\u00e1kv\u00e6mlega eitt af contentBase64 (e\u00f0a samheitinu content), storageCode me\u00f0 path, sourceTarget me\u00f0 sourceSystemId",
+            "nextStep": "Veldu eina uppsprettu: contentBase64 (e\u00f0a content), storageCode me\u00f0 path e\u00f0a sourceTarget me\u00f0 sourceSystemId."
+          }
+        ],
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateForRecord\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-record-empty-1039.json"
+    },
+    {
+      "scenario": "mcp-record-source-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "4 vandam\u00e1l \u00ed bei\u00f0ninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Sendu tableId e\u00f0a tableName til a\u00f0 segja \u00ed hva\u00f0a t\u00f6flu f\u00e6rslan er.",
+            "parameter": "tableId",
+            "received": "(vantar)",
+            "expected": "tableId e\u00f0a tableName",
+            "nextStep": "Sendu tableId e\u00f0a tableName og reyndu bei\u00f0nina aftur."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "F\u00e6ribreyta \"sourceTarget\" hefur gildi\u00f0 \"UnknownAttachment\", sem er ekki vi\u00f0hengjamarkmi\u00f0.",
+            "parameter": "sourceTarget",
+            "received": "UnknownAttachment",
+            "expected": "DocumentAttachment e\u00f0a IncomingDocument",
+            "nextStep": "Sendu DocumentAttachment e\u00f0a IncomingDocument sem \u00e1fangasta\u00f0 vi\u00f0hengis."
+          },
+          {
+            "code": "MissingParameter",
+            "error": "Nau\u00f0synlega f\u00e6ribreytu \"sourceSystemId\" vantar.",
+            "parameter": "sourceSystemId",
+            "received": "(vantar)",
+            "expected": "gildi fyrir \"sourceSystemId\"",
+            "nextStep": "Gef\u00f0u upp \"sourceSystemId\" og sendu bei\u00f0nina aftur."
+          },
+          {
+            "code": "InvalidParameterFormat",
+            "error": "F\u00e6ribreyta \"fileName\" ver\u00f0ur a\u00f0 vera eitt gildi, ekki JSON-hlutur e\u00f0a fylki.",
+            "parameter": "fileName",
+            "received": "{}",
+            "expected": "JSON-strengur",
+            "nextStep": "Gef\u00f0u upp \"fileName\" og sendu bei\u00f0nina aftur."
+          }
+        ],
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateForRecord\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-record-source-1039.json"
+    },
+    {
+      "scenario": "mcp-record-conflict-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandam\u00e1l \u00ed bei\u00f0ninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Sendu recordSystemId e\u00f0a no til a\u00f0 segja hva\u00f0a f\u00e6rslu vi\u00f0hengi\u00f0 tilheyrir.",
+            "parameter": "no",
+            "received": "(vantar)",
+            "expected": "recordSystemId e\u00f0a no",
+            "nextStep": "Sendu recordSystemId e\u00f0a no fyrir f\u00e6rsluna sem \u00e1 a\u00f0 f\u00e1 vi\u00f0hengi\u00f0."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Gef\u00f0u upp contentBase64 e\u00f0a content, ekki b\u00e6\u00f0i.",
+            "parameter": "content",
+            "expected": "contentBase64 e\u00f0a content, ekki b\u00e6\u00f0i",
+            "nextStep": "Sendu contentBase64 e\u00f0a content og fjarl\u00e6g\u00f0u hinn lykilinn."
+          }
+        ],
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateForRecord\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-record-conflict-1039.json"
+    },
+    {
+      "scenario": "mcp-typeset-overlong-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "F\u00e6ribreytan \"code\" er lengri en leyfilegt h\u00e1mark, 20 stafir.",
+        "parameter": "code",
+        "received": "XXXXXXXXXXXXXXXXXXXXX",
+        "expected": "JSON-streng sem er mest 20 stafir",
+        "nextStep": "Sendu \"code\" sem JSON-streng sem er mest 20 stafir og reyndu aftur.",
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"DataExchange.Type.Set\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-typeset-overlong-1039.json"
+    },
+    {
+      "scenario": "mcp-record-example-1039-0",
+      "passed": true,
+      "detail": {
+        "company": "CRONUS International Ltd.",
+        "messageType": "Storage.Attachment.CreateForRecord",
+        "status": "Success",
+        "data": {
+          "target": "DocumentAttachment",
+          "tableId": 18,
+          "no": "C00010",
+          "documentType": "Quote",
+          "lineNo": 0,
+          "attachmentId": 46,
+          "systemId": "5707AEC9-03CF-F111-B7A4-DA68F0A5C24F",
+          "fileName": "x175-1039-example.txt",
+          "contentLength": 5,
+          "offloaded": false
+        }
+      },
+      "evidence": "mcp-record-example-1039-0.json"
+    },
+    {
+      "scenario": "mcp-record-example-1039-1",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandam\u00e1l \u00ed bei\u00f0ninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Sendu tableId e\u00f0a tableName til a\u00f0 segja \u00ed hva\u00f0a t\u00f6flu f\u00e6rslan er.",
+            "parameter": "tableId",
+            "received": "(vantar)",
+            "expected": "tableId e\u00f0a tableName",
+            "nextStep": "Sendu tableId e\u00f0a tableName og reyndu bei\u00f0nina aftur."
+          },
+          {
+            "code": "InvalidParameterFormat",
+            "error": "F\u00e6ribreyta \"contentBase64\" er ekki gilt base64-innihald.",
+            "parameter": "contentBase64",
+            "expected": "base64-innihald",
+            "nextStep": "K\u00f3\u00f0a\u00f0u b\u00e6ti skr\u00e1rinnar sem venjulegt base64 og sendu \u00feau aftur."
+          }
+        ],
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateForRecord\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-record-example-1039-1.json"
+    },
+    {
+      "scenario": "mcp-record-example-1039-2",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandam\u00e1l \u00ed bei\u00f0ninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Sendu tableId e\u00f0a tableName til a\u00f0 segja \u00ed hva\u00f0a t\u00f6flu f\u00e6rslan er.",
+            "parameter": "tableId",
+            "received": "(vantar)",
+            "expected": "tableId e\u00f0a tableName",
+            "nextStep": "Sendu tableId e\u00f0a tableName og reyndu bei\u00f0nina aftur."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Sendu n\u00e1kv\u00e6mlega eina uppsprettu innihalds: contentBase64 (e\u00f0a samheiti\u00f0 content), storageCode me\u00f0 path e\u00f0a sourceTarget me\u00f0 sourceSystemId.",
+            "parameter": "contentBase64, storageCode, sourceSystemId",
+            "expected": "n\u00e1kv\u00e6mlega eitt af contentBase64 (e\u00f0a samheitinu content), storageCode me\u00f0 path, sourceTarget me\u00f0 sourceSystemId",
+            "nextStep": "Veldu eina uppsprettu: contentBase64 (e\u00f0a content), storageCode me\u00f0 path e\u00f0a sourceTarget me\u00f0 sourceSystemId."
+          }
+        ],
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateForRecord\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-record-example-1039-2.json"
+    },
+    {
+      "scenario": "mcp-ui-linked-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Required parameter \"fileName\" is missing.",
+        "parameter": "fileName",
+        "received": "(missing)",
+        "expected": "a value for \"fileName\"",
+        "nextStep": "Provide \"fileName\" and send the request again.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateLinked\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-ui-linked-1033.json"
+    },
+    {
+      "scenario": "mcp-ui-record-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 problems in the request. Nothing was changed.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Send tableId or tableName to say which table the record is in.",
+            "parameter": "tableId",
+            "received": "(missing)",
+            "expected": "tableId or tableName",
+            "nextStep": "Send tableId or tableName, then retry the request."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Send exactly one content source: contentBase64 (or the alias content), storageCode with path, or sourceTarget with sourceSystemId.",
+            "parameter": "contentBase64, storageCode, sourceSystemId",
+            "expected": "exactly one of contentBase64 (or the alias content), storageCode with path, sourceTarget with sourceSystemId",
+            "nextStep": "Choose one source: contentBase64 (or content), storageCode with path, or sourceTarget with sourceSystemId."
+          }
+        ],
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateForRecord\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-ui-record-1033.json"
+    },
+    {
+      "scenario": "mcp-ui-typeset-1033",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "Parameter \"code\" exceeds the maximum of 20 characters.",
+        "parameter": "code",
+        "received": "XXXXXXXXXXXXXXXXXXXXX",
+        "expected": "a JSON string of at most 20 characters",
+        "nextStep": "Send \"code\" as a JSON string of at most 20 characters and retry.",
+        "hint": "For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Type.Set\". Always read the help before calling a message type."
+      },
+      "evidence": "mcp-ui-typeset-1033.json"
+    },
+    {
+      "scenario": "mcp-ui-linked-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MissingParameter",
+        "error": "Nau\u00f0synlega f\u00e6ribreytu \"fileName\" vantar.",
+        "parameter": "fileName",
+        "received": "(vantar)",
+        "expected": "gildi fyrir \"fileName\"",
+        "nextStep": "Gef\u00f0u upp \"fileName\" og sendu bei\u00f0nina aftur.",
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateLinked\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-ui-linked-1039.json"
+    },
+    {
+      "scenario": "mcp-ui-record-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "MultipleErrors",
+        "error": "2 vandam\u00e1l \u00ed bei\u00f0ninni. Engu var breytt.",
+        "errors": [
+          {
+            "code": "MissingParameter",
+            "error": "Sendu tableId e\u00f0a tableName til a\u00f0 segja \u00ed hva\u00f0a t\u00f6flu f\u00e6rslan er.",
+            "parameter": "tableId",
+            "received": "(vantar)",
+            "expected": "tableId e\u00f0a tableName",
+            "nextStep": "Sendu tableId e\u00f0a tableName og reyndu bei\u00f0nina aftur."
+          },
+          {
+            "code": "InvalidParameter",
+            "error": "Sendu n\u00e1kv\u00e6mlega eina uppsprettu innihalds: contentBase64 (e\u00f0a samheiti\u00f0 content), storageCode me\u00f0 path e\u00f0a sourceTarget me\u00f0 sourceSystemId.",
+            "parameter": "contentBase64, storageCode, sourceSystemId",
+            "expected": "n\u00e1kv\u00e6mlega eitt af contentBase64 (e\u00f0a samheitinu content), storageCode me\u00f0 path, sourceTarget me\u00f0 sourceSystemId",
+            "nextStep": "Veldu eina uppsprettu: contentBase64 (e\u00f0a content), storageCode me\u00f0 path e\u00f0a sourceTarget me\u00f0 sourceSystemId."
+          }
+        ],
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"Storage.Attachment.CreateForRecord\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-ui-record-1039.json"
+    },
+    {
+      "scenario": "mcp-ui-typeset-1039",
+      "passed": true,
+      "detail": {
+        "status": "Error",
+        "code": "InvalidParameterFormat",
+        "error": "F\u00e6ribreytan \"code\" er lengri en leyfilegt h\u00e1mark, 20 stafir.",
+        "parameter": "code",
+        "received": "XXXXXXXXXXXXXXXXXXXXX",
+        "expected": "JSON-streng sem er mest 20 stafir",
+        "nextStep": "Sendu \"code\" sem JSON-streng sem er mest 20 stafir og reyndu aftur.",
+        "hint": "Til a\u00f0 sj\u00e1 notkunaruppl\u00fdsingar skaltu kalla \u00e1 skilabo\u00f0ategundina \"Help.Implementation.Get\" me\u00f0 subject \"DataExchange.Type.Set\". Lestu alltaf hj\u00e1lpina \u00e1\u00f0ur en \u00fe\u00fa kallar \u00e1 skilabo\u00f0ategund."
+      },
+      "evidence": "mcp-ui-typeset-1039.json"
+    }
+  ],
+  "createsOwnData": true,
+  "fixtureSetup": "/workspace/evidence/attachments-wizard-175-20261023/session-1643/mcp-owned-identities.json",
+  "cleanupVerified": true,
+  "parsedAt": "2026-10-23T17:04:33.190932+00:00"
+}

@@ -1,0 +1,8 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "startedAt": "2026-10-23T16:55:56.729Z",
+  "source": "actual ssh-run.cjs start receipt",
+  "logPath": "/workspace/evidence/attachments-wizard-175-20261023/session-1643/full-suite-baa62e92.log",
+  "runtimeSetting": "DisableWriteInsideTryFunctions=false"
+}

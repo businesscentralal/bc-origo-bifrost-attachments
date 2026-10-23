@@ -1,0 +1,10 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "lcid": 1039,
+  "scenario": "F1 folder-style Upload.Begin live refusal recovery displayed in Web Client",
+  "verified": true,
+  "displayedResponse": "{\"status\":\"Error\",\"code\":\"InvalidParameter\",\"error\":\"Færibreytan \n\"fileName\n\" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.\",\"parameter\":\"fileName\",\"received\":\"X160-help/example.txt\",\"expected\":\"skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik\",\"nextStep\":\"Sendu aðeins skráarheitið, til dæmis INV-001.pdf, án möppuslóðar.\",\"hint\":\"Til að sjá notkunarupplýsingar skaltu kalla á skilaboðategundina \n\"Help.Implementation.Get\n\" með subject \n\"Storage.Upload.Begin\n\". Lestu alltaf hjálpina áður en þú kallar á skilaboðategund.\"}",
+  "messageRow": "\t{e45bc291-cfb0-40d3-b019-d66cba19d209}\t\n\t1.0\tStorage.Upload.Begin\tBakgrunnsverkefni lokið (Error)\tOrigo-BC Cloud Events MCP\t\tIcelandic (Iceland)\t10/23/2026 5:00 PM\t10/23/2026\tCODEXW2\t10/23/2026 5:00 PM\t96 millisekúndur\ttext/json\t",
+  "at": "2026-10-23T17:08:15.002Z"
+}

@@ -1,0 +1,596 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<assemblies>
+  <assembly name="Storage Attachment Field Tests" x-code-unit="96203" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:17" total="8" passed="8" failed="0" time="3.803">
+    <collection name="Storage Attachment Field Tests" total="8" passed="8" failed="0" skipped="0" time="3.803">
+      <test name="Storage Attachment Field Tests:Offloaded_FalseForNewIncDocAttachment" method="Offloaded_FalseForNewIncDocAttachment" time="1.406" result="Pass" />
+      <test name="Storage Attachment Field Tests:Offloaded_TrueAfterOffload_IncDoc" method="Offloaded_TrueAfterOffload_IncDoc" time="0.87" result="Pass" />
+      <test name="Storage Attachment Field Tests:Offloaded_FalseAfterRestore_IncDoc" method="Offloaded_FalseAfterRestore_IncDoc" time="0.093" result="Pass" />
+      <test name="Storage Attachment Field Tests:Offloaded_FalseForNewDocAttachment" method="Offloaded_FalseForNewDocAttachment" time="0.167" result="Pass" />
+      <test name="Storage Attachment Field Tests:Offloaded_TrueAfterOffload_DocAttach" method="Offloaded_TrueAfterOffload_DocAttach" time="0.104" result="Pass" />
+      <test name="Storage Attachment Field Tests:DataRecordsGet_IncDoc_FiltersByOffloaded" method="DataRecordsGet_IncDoc_FiltersByOffloaded" time="0.537" result="Pass" />
+      <test name="Storage Attachment Field Tests:DataRecordsGet_DocAttach_FiltersByOffloaded" method="DataRecordsGet_DocAttach_FiltersByOffloaded" time="0.336" result="Pass" />
+      <test name="Storage Attachment Field Tests:OffloadHelp_DocumentsCandidateDiscovery" method="OffloadHelp_DocumentsCandidateDiscovery" time="0.13" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Connector Tests" x-code-unit="96204" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:22" total="29" passed="29" failed="0" time="2.517">
+    <collection name="Storage Connector Tests" total="29" passed="29" failed="0" skipped="0" time="2.517">
+      <test name="Storage Connector Tests:EveryStorageTypeHasMetadataAndHelp" method="EveryStorageTypeHasMetadataAndHelp" time="0.233" result="Pass" />
+      <test name="Storage Connector Tests:EveryMessageTypeHelpExplainsUsage" method="EveryMessageTypeHelpExplainsUsage" time="0.02" result="Pass" />
+      <test name="Storage Connector Tests:HelpStorageGetReturnsOverviewMarkdown" method="HelpStorageGetReturnsOverviewMarkdown" time="0.01" result="Pass" />
+      <test name="Storage Connector Tests:StorageHelpUsesCurrentMcpToolNames" method="StorageHelpUsesCurrentMcpToolNames" time="0.177" result="Pass" />
+      <test name="Storage Connector Tests:HelpTextContainsNoLiteralUnicodeEscapes" method="HelpTextContainsNoLiteralUnicodeEscapes" time="0.033" result="Pass" />
+      <test name="Storage Connector Tests:HelpStorageGetReportsInstalledAppVersion" method="HelpStorageGetReportsInstalledAppVersion" time="0.01" result="Pass" />
+      <test name="Storage Connector Tests:MutatingOutboundStorageHelpDocumentsSideEffects" method="MutatingOutboundStorageHelpDocumentsSideEffects" time="0.013" result="Pass" />
+      <test name="Storage Connector Tests:DeleteHelpDocumentsLinkedAttachmentGuards" method="DeleteHelpDocumentsLinkedAttachmentGuards" time="0.013" result="Pass" />
+      <test name="Storage Connector Tests:AccountListReturnsConfiguredCode" method="AccountListReturnsConfiguredCode" time="0.046" result="Pass" />
+      <test name="Storage Connector Tests:Scenario_AC01_StoredDescription_IsVerbatimBothLanguages" method="Scenario_AC01_StoredDescription_IsVerbatimBothLanguages" time="0.037" result="Pass" />
+      <test name="Storage Connector Tests:FileCreateThenGetRoundtripsContent" method="FileCreateThenGetRoundtripsContent" time="0.05" result="Pass" />
+      <test name="Storage Connector Tests:FileExistsReflectsCreateAndDelete" method="FileExistsReflectsCreateAndDelete" time="0.047" result="Pass" />
+      <test name="Storage Connector Tests:FileDelete_LinkedAttachment_ReturnsError" method="FileDelete_LinkedAttachment_ReturnsError" time="0.18" result="Pass" />
+      <test name="Storage Connector Tests:DirectoryDelete_ContainsLinkedAttachment_ReturnsError" method="DirectoryDelete_ContainsLinkedAttachment_ReturnsError" time="0.076" result="Pass" />
+      <test name="Storage Connector Tests:FileMove_LinkedAttachment_UpdatesLinkPath" method="FileMove_LinkedAttachment_UpdatesLinkPath" time="0.097" result="Pass" />
+      <test name="Storage Connector Tests:CreateLinked_DuplicatePath_ReturnsError" method="CreateLinked_DuplicatePath_ReturnsError" time="0.056" result="Pass" />
+      <test name="Storage Connector Tests:FileListReturnsEntriesUnderPath" method="FileListReturnsEntriesUnderPath" time="0.08" result="Pass" />
+      <test name="Storage Connector Tests:DirectoryCreateExistsDelete" method="DirectoryCreateExistsDelete" time="0.036" result="Pass" />
+      <test name="Storage Connector Tests:UnknownStorageCodeReturnsError" method="UnknownStorageCodeReturnsError" time="0.017" result="Pass" />
+      <test name="Storage Connector Tests:DisabledConnectionIsRejected" method="DisabledConnectionIsRejected" time="0.024" result="Pass" />
+      <test name="Storage Connector Tests:MissingPathReturnsError" method="MissingPathReturnsError" time="0.013" result="Pass" />
+      <test name="Storage Connector Tests:RelativePathSegmentIsRejected" method="RelativePathSegmentIsRejected" time="0.017" result="Pass" />
+      <test name="Storage Connector Tests:RelativePathWithBackslashesIsRejected" method="RelativePathWithBackslashesIsRejected" time="0.016" result="Pass" />
+      <test name="Storage Connector Tests:CurrentDirectorySegmentIsRejected" method="CurrentDirectorySegmentIsRejected" time="0.026" result="Pass" />
+      <test name="Storage Connector Tests:DotsInsideAFileNameAreAccepted" method="DotsInsideAFileNameAreAccepted" time="0.024" result="Pass" />
+      <test name="Storage Connector Tests:GetMissingFileReturnsError" method="GetMissingFileReturnsError" time="0.04" result="Pass" />
+      <test name="Storage Connector Tests:DocumentAttachmentOffloadRestoreRoundtrip" method="DocumentAttachmentOffloadRestoreRoundtrip" time="0.81" result="Pass" />
+      <test name="Storage Connector Tests:OffloadPreservesDocumentAttachmentUiBehaviour" method="OffloadPreservesDocumentAttachmentUiBehaviour" time="0.046" result="Pass" />
+      <test name="Storage Connector Tests:OffloadPreservesIncomingDocumentUiBehaviour" method="OffloadPreservesIncomingDocumentUiBehaviour" time="0.037" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Upload Tests" x-code-unit="96205" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:26" total="23" passed="23" failed="0" time="2.317">
+    <collection name="Storage Upload Tests" total="23" passed="23" failed="0" skipped="0" time="2.317">
+      <test name="Storage Upload Tests:BeginAppendCommit_TwoChunks_RoundtripsContent" method="BeginAppendCommit_TwoChunks_RoundtripsContent" time="0.16" result="Pass" />
+      <test name="Storage Upload Tests:Commit_OutOfOrderChunks_AssemblesInSequence" method="Commit_OutOfOrderChunks_AssemblesInSequence" time="0.06" result="Pass" />
+      <test name="Storage Upload Tests:Append_DuplicateSequence_ReplacesChunk" method="Append_DuplicateSequence_ReplacesChunk" time="0.047" result="Pass" />
+      <test name="Storage Upload Tests:Commit_SizeMismatch_ReturnsError" method="Commit_SizeMismatch_ReturnsError" time="0.03" result="Pass" />
+      <test name="Storage Upload Tests:Commit_NoChunks_ReturnsError" method="Commit_NoChunks_ReturnsError" time="0.023" result="Pass" />
+      <test name="Storage Upload Tests:Begin_FileNameWithFolder_ReturnsErrorAndCreatesNoSession" method="Begin_FileNameWithFolder_ReturnsErrorAndCreatesNoSession" time="0.03" result="Pass" />
+      <test name="Storage Upload Tests:Begin_LeafFileNameWithFolderPath_UsesFolderPath" method="Begin_LeafFileNameWithFolderPath_UsesFolderPath" time="0.017" result="Pass" />
+      <test name="Storage Upload Tests:UploadBeginHelpStatesDefaultRoot" method="UploadBeginHelpStatesDefaultRoot" time="0.016" result="Pass" />
+      <test name="Storage Upload Tests:Abort_OpenSession_RemovesSessionAndChunks" method="Abort_OpenSession_RemovesSessionAndChunks" time="0.05" result="Pass" />
+      <test name="Storage Upload Tests:Append_UnknownUploadId_ReturnsError" method="Append_UnknownUploadId_ReturnsError" time="0.027" result="Pass" />
+      <test name="Storage Upload Tests:Status_OpenSession_ReportsProgress" method="Status_OpenSession_ReportsProgress" time="0.037" result="Pass" />
+      <test name="Storage Upload Tests:CreateLinked_FromUploadedFile_AttachesToNewIncomingDoc" method="CreateLinked_FromUploadedFile_AttachesToNewIncomingDoc" time="0.06" result="Pass" />
+      <test name="Storage Upload Tests:Begin_WithoutStorageCode_CreatesBufferSession" method="Begin_WithoutStorageCode_CreatesBufferSession" time="0.013" result="Pass" />
+      <test name="Storage Upload Tests:Commit_BufferSession_ReturnsNoStorageCodeError" method="Commit_BufferSession_ReturnsNoStorageCodeError" time="0.033" result="Pass" />
+      <test name="Storage Upload Tests:CommitToRecord_OnCustomer_RoundtripsContent" method="CommitToRecord_OnCustomer_RoundtripsContent" time="1.153" result="Pass" />
+      <test name="Storage Upload Tests:CommitToRecord_IncomingDocument_CreatesAttachment" method="CommitToRecord_IncomingDocument_CreatesAttachment" time="0.04" result="Pass" />
+      <test name="Storage Upload Tests:CommitToRecord_UnknownTarget_ReturnsError" method="CommitToRecord_UnknownTarget_ReturnsError" time="0.027" result="Pass" />
+      <test name="Storage Upload Tests:CommitToRecord_NoChunks_ReturnsError" method="CommitToRecord_NoChunks_ReturnsError" time="0.024" result="Pass" />
+      <test name="Storage Upload Tests:UploadTables_AreRestrictedFromDataRecords" method="UploadTables_AreRestrictedFromDataRecords" time="0.017" result="Pass" />
+      <test name="Storage Upload Tests:DataRecordsSet_OnStorageSetup_ReturnsError" method="DataRecordsSet_OnStorageSetup_ReturnsError" time="0.074" result="Pass" />
+      <test name="Storage Upload Tests:UploadMessageTypes_HaveMetadataAndHelp" method="UploadMessageTypes_HaveMetadataAndHelp" time="0.02" result="Pass" />
+      <test name="Storage Upload Tests:Scenario_AC02_CommittedUpload_RefusalIsIcelandic" method="Scenario_AC02_CommittedUpload_RefusalIsIcelandic" time="0.133" result="Pass" />
+      <test name="Storage Upload Tests:Scenario_AC02_AbortedUpload_RefusalIsIcelandic" method="Scenario_AC02_AbortedUpload_RefusalIsIcelandic" time="0.033" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Attach Record Tests" x-code-unit="96206" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:30" total="10" passed="10" failed="0" time="0.36">
+    <collection name="Storage Attach Record Tests" total="10" passed="10" failed="0" skipped="0" time="0.36">
+      <test name="Storage Attach Record Tests:CreateForRecord_FromBase64_OnCustomer" method="CreateForRecord_FromBase64_OnCustomer" time="0.08" result="Pass" />
+      <test name="Storage Attach Record Tests:CreateForRecord_FromContentBase64_OnCustomer" method="CreateForRecord_FromContentBase64_OnCustomer" time="0.024" result="Pass" />
+      <test name="Storage Attach Record Tests:CreateForRecord_RejectsContentAndContentBase64" method="CreateForRecord_RejectsContentAndContentBase64" time="0.02" result="Pass" />
+      <test name="Storage Attach Record Tests:CreateForRecordHelpDocumentsContentBase64First" method="CreateForRecordHelpDocumentsContentBase64First" time="0.01" result="Pass" />
+      <test name="Storage Attach Record Tests:CreateForRecord_OnFixedAsset" method="CreateForRecord_OnFixedAsset" time="0.024" result="Pass" />
+      <test name="Storage Attach Record Tests:CreateForRecord_ByRecordSystemId" method="CreateForRecord_ByRecordSystemId" time="0.02" result="Pass" />
+      <test name="Storage Attach Record Tests:CreateForRecord_CopiesFromIncomingDocument" method="CreateForRecord_CopiesFromIncomingDocument" time="0.033" result="Pass" />
+      <test name="Storage Attach Record Tests:CreateForRecord_FromStorage_IsBornOffloaded" method="CreateForRecord_FromStorage_IsBornOffloaded" time="0.04" result="Pass" />
+      <test name="Storage Attach Record Tests:CreateForRecord_RejectsTwoContentSources" method="CreateForRecord_RejectsTwoContentSources" time="0.016" result="Pass" />
+      <test name="Storage Attach Record Tests:CreateForRecord_RejectsUnknownRecord" method="CreateForRecord_RejectsUnknownRecord" time="0.02" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Setup Page Tests" x-code-unit="96207" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:32" total="8" passed="8" failed="0" time="4.557">
+    <collection name="Storage Setup Page Tests" total="8" passed="8" failed="0" skipped="0" time="4.557">
+      <test name="Storage Setup Page Tests:AttachmentsSetupPage_Opens_ListsStorageConnections" method="AttachmentsSetupPage_Opens_ListsStorageConnections" time="1.11" result="Pass" />
+      <test name="Storage Setup Page Tests:AttachmentsSetupPage_AllSetupActions_AreEnabled" method="AttachmentsSetupPage_AllSetupActions_AreEnabled" time="0.09" result="Pass" />
+      <test name="Storage Setup Page Tests:BifrostSetupPage_ExposesOnlyTheAppsAction" method="BifrostSetupPage_ExposesOnlyTheAppsAction" time="3.05" result="Pass" />
+      <test name="Storage Setup Page Tests:Purge_WithAbandonedSessions_DeletesSessionsAndChunks" method="Purge_WithAbandonedSessions_DeletesSessionsAndChunks" time="0.027" result="Pass" />
+      <test name="Storage Setup Page Tests:Purge_WithoutData_ReportsZeroAndSucceeds" method="Purge_WithoutData_ReportsZeroAndSucceeds" time="0.013" result="Pass" />
+      <test name="Storage Setup Page Tests:PurgeAction_OnSetupPage_PurgesAndInformsTheUser" method="PurgeAction_OnSetupPage_PurgesAndInformsTheUser" time="0.09" result="Pass" />
+      <test name="Storage Setup Page Tests:Scenario_AC02_NoAccount_BilingualPageRefusal" method="Scenario_AC02_NoAccount_BilingualPageRefusal" time="0.063" result="Pass" />
+      <test name="Storage Setup Page Tests:Scenario_AC02_ReachableConnection_BilingualPageMessage" method="Scenario_AC02_ReachableConnection_BilingualPageMessage" time="0.047" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage App Registry Tests" x-code-unit="96208" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:38" total="1" passed="1" failed="0" time="0.026">
+    <collection name="Storage App Registry Tests" total="1" passed="1" failed="0" skipped="0" time="0.026">
+      <test name="Storage App Registry Tests:AppRegistry_ListsThisApp_WithItsSetupPage" method="AppRegistry_ListsThisApp_WithItsSetupPage" time="0.02" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Takeover Tests" x-code-unit="96209" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:39" total="3" passed="3" failed="0" time="0.313">
+    <collection name="Storage Takeover Tests" total="3" passed="3" failed="0" skipped="0" time="0.313">
+      <test name="Storage Takeover Tests:TakeOverAccessControl_LegacyRow_InsertsMatchingBifrostRole" method="TakeOverAccessControl_LegacyRow_InsertsMatchingBifrostRole" time="0.247" result="Pass" />
+      <test name="Storage Takeover Tests:TakeOverAccessControl_ExistingBifrostRow_DoesNotDuplicate" method="TakeOverAccessControl_ExistingBifrostRow_DoesNotDuplicate" time="0.037" result="Pass" />
+      <test name="Storage Takeover Tests:TakeOverAccessControl_NoLegacyRows_GrantsZeroWithoutError" method="TakeOverAccessControl_NoLegacyRows_GrantsZeroWithoutError" time="0.01" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Takeover Probe Tests" x-code-unit="96210" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:40" total="9" passed="9" failed="0" time="0.317">
+    <collection name="Storage Takeover Probe Tests" total="9" passed="9" failed="0" skipped="0" time="0.317">
+      <test name="Storage Takeover Probe Tests:AC01_ProbeDenied_SkipsTakeOverWithoutError" method="AC01_ProbeDenied_SkipsTakeOverWithoutError" time="0.02" result="Pass" />
+      <test name="Storage Takeover Probe Tests:AC01b_AccessControlWriteDenied_SkipsWithoutError" method="AC01b_AccessControlWriteDenied_SkipsWithoutError" time="0.014" result="Pass" />
+      <test name="Storage Takeover Probe Tests:AC02_ProbeOk_RunsTakeOverWithoutError" method="AC02_ProbeOk_RunsTakeOverWithoutError" time="0.017" result="Pass" />
+      <test name="Storage Takeover Probe Tests:AC03_LegacyAbsent_NoOpWithoutError" method="AC03_LegacyAbsent_NoOpWithoutError" time="0.02" result="Pass" />
+      <test name="Storage Takeover Probe Tests:Scenario_AC01_TaggedUpgradeDenied_RetriesWithoutChangingTargets" method="Scenario_AC01_TaggedUpgradeDenied_RetriesWithoutChangingTargets" time="0.03" result="Pass" />
+      <test name="Storage Takeover Probe Tests:Scenario_AC02_DeniedInstallThenPermittedUpgrade_RegrantsOnce" method="Scenario_AC02_DeniedInstallThenPermittedUpgrade_RegrantsOnce" time="0.044" result="Pass" />
+      <test name="Storage Takeover Probe Tests:Scenario_AC03_LegacyAbsent_RepeatedUpgradePreservesTargets" method="Scenario_AC03_LegacyAbsent_RepeatedUpgradePreservesTargets" time="0.023" result="Pass" />
+      <test name="Storage Takeover Probe Tests:Scenario_AC01_UntaggedDeniedUpgrade_PurgesAndRecordsTag" method="Scenario_AC01_UntaggedDeniedUpgrade_PurgesAndRecordsTag" time="0.036" result="Pass" />
+      <test name="Storage Takeover Probe Tests:Scenario_AC03_TagFixture_PreservesUnrelatedTags" method="Scenario_AC03_TagFixture_PreservesUnrelatedTags" time="0.02" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Msg Conformance Tests" x-code-unit="96211" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:42" total="14" passed="14" failed="0" time="0.433">
+    <collection name="Storage Msg Conformance Tests" total="14" passed="14" failed="0" skipped="0" time="0.433">
+      <test name="Storage Msg Conformance Tests:Scenario_AC01_Descriptions_FollowBothLanguages" method="Scenario_AC01_Descriptions_FollowBothLanguages" time="0.017" result="Pass" />
+      <test name="Storage Msg Conformance Tests:Scenario_AC01_DataExchangeSelections_AreIcelandic" method="Scenario_AC01_DataExchangeSelections_AreIcelandic" time="0.014" result="Pass" />
+      <test name="Storage Msg Conformance Tests:Scenario_D7_Envelope_StaysEnglish" method="Scenario_D7_Envelope_StaysEnglish" time="0.01" result="Pass" />
+      <test name="Storage Msg Conformance Tests:Scenario_D7_PublicHelp_StaysEnglish" method="Scenario_D7_PublicHelp_StaysEnglish" time="0.054" result="Pass" />
+      <test name="Storage Msg Conformance Tests:Scenario_AC04_MessageNames_StayThreePart" method="Scenario_AC04_MessageNames_StayThreePart" time="0.007" result="Pass" />
+      <test name="Storage Msg Conformance Tests:Help_EveryType_HasTitleAndRequiredSections" method="Help_EveryType_HasTitleAndRequiredSections" time="0.02" result="Pass" />
+      <test name="Storage Msg Conformance Tests:Help_All39Types_HaveOverviewAndExamples" method="Help_All39Types_HaveOverviewAndExamples" time="0.113" result="Pass" />
+      <test name="Storage Msg Conformance Tests:Description_EveryType_IsOneCallerFacingSentence" method="Description_EveryType_IsOneCallerFacingSentence" time="0.01" result="Pass" />
+      <test name="Storage Msg Conformance Tests:RelatedTypes_EveryHelp_NameExistingTypes" method="RelatedTypes_EveryHelp_NameExistingTypes" time="0.02" result="Pass" />
+      <test name="Storage Msg Conformance Tests:FilterTable_EveryType_IsZeroOrExistingTable" method="FilterTable_EveryType_IsZeroOrExistingTable" time="0.01" result="Pass" />
+      <test name="Storage Msg Conformance Tests:FilterTable_AttachmentTypes_NameTheirRecordTable" method="FilterTable_AttachmentTypes_NameTheirRecordTable" time="0.013" result="Pass" />
+      <test name="Storage Msg Conformance Tests:Keywords_EveryBusinessType_HasEnglishAndIcelandic" method="Keywords_EveryBusinessType_HasEnglishAndIcelandic" time="0.024" result="Pass" />
+      <test name="Storage Msg Conformance Tests:SelectionDescription_EveryBusinessType_IsOwnSentence" method="SelectionDescription_EveryBusinessType_IsOwnSentence" time="0.027" result="Pass" />
+      <test name="Storage Msg Conformance Tests:Keywords_ChunkQuery_HitsAppendNotSingleUpload" method="Keywords_ChunkQuery_HitsAppendNotSingleUpload" time="0.01" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Error Response Tests" x-code-unit="96212" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:43" total="24" passed="24" failed="0" time="1.163">
+    <collection name="Storage Error Response Tests" total="24" passed="24" failed="0" skipped="0" time="1.163">
+      <test name="Storage Error Response Tests:FileGet_NoStorageCodeNoPath_ReportsBothMissing" method="FileGet_NoStorageCodeNoPath_ReportsBothMissing" time="0.04" result="Pass" />
+      <test name="Storage Error Response Tests:FileGet_UnknownStorageCode_ReturnsRecordNotFoundWithNextStep" method="FileGet_UnknownStorageCode_ReturnsRecordNotFoundWithNextStep" time="0.024" result="Pass" />
+      <test name="Storage Error Response Tests:FileGet_DisabledConnection_ReturnsPreconditionFailed" method="FileGet_DisabledConnection_ReturnsPreconditionFailed" time="0.017" result="Pass" />
+      <test name="Storage Error Response Tests:FileGet_DotDotPath_ReturnsInvalidParameter" method="FileGet_DotDotPath_ReturnsInvalidParameter" time="0.02" result="Pass" />
+      <test name="Storage Error Response Tests:FileCreate_NotBase64_ReturnsInvalidParameterFormat" method="FileCreate_NotBase64_ReturnsInvalidParameterFormat" time="0.03" result="Pass" />
+      <test name="Storage Error Response Tests:UploadAppend_ThreeBadValues_ReportsAllTogether" method="UploadAppend_ThreeBadValues_ReportsAllTogether" time="0.017" result="Pass" />
+      <test name="Storage Error Response Tests:UploadAppend_FractionalSequence_ReturnsInvalidParameterFormat" method="UploadAppend_FractionalSequence_ReturnsInvalidParameterFormat" time="0.023" result="Pass" />
+      <test name="Storage Error Response Tests:UploadAppend_DigitStringSequence_IsAccepted" method="UploadAppend_DigitStringSequence_IsAccepted" time="0.024" result="Pass" />
+      <test name="Storage Error Response Tests:UploadBegin_NegativeDeclaredSize_ReturnsInvalidParameter" method="UploadBegin_NegativeDeclaredSize_ReturnsInvalidParameter" time="0.013" result="Pass" />
+      <test name="Storage Error Response Tests:UploadBegin_Session_AdvertisesLargestChunk" method="UploadBegin_Session_AdvertisesLargestChunk" time="0.016" result="Pass" />
+      <test name="Storage Error Response Tests:ContentLimit_ExactlyMaximum_IsAcceptedOneByteMoreIsNot" method="ContentLimit_ExactlyMaximum_IsAcceptedOneByteMoreIsNot" time="0.01" result="Pass" />
+      <test name="Storage Error Response Tests:UploadStatus_UnknownUploadId_ReturnsRecordNotFound" method="UploadStatus_UnknownUploadId_ReturnsRecordNotFound" time="0.013" result="Pass" />
+      <test name="Storage Error Response Tests:Offload_UnknownTargetAndNoSystemId_ReportsBoth" method="Offload_UnknownTargetAndNoSystemId_ReportsBoth" time="0.016" result="Pass" />
+      <test name="Storage Error Response Tests:Offload_UnknownSystemId_ReturnsRecordNotFound" method="Offload_UnknownSystemId_ReturnsRecordNotFound" time="0.017" result="Pass" />
+      <test name="Storage Error Response Tests:Restore_AttachmentNotOffloaded_ReturnsPreconditionFailed" method="Restore_AttachmentNotOffloaded_ReturnsPreconditionFailed" time="0.027" result="Pass" />
+      <test name="Storage Error Response Tests:CreateForRecord_TextTableId_ReturnsInvalidParameterFormat" method="CreateForRecord_TextTableId_ReturnsInvalidParameterFormat" time="0.016" result="Pass" />
+      <test name="Storage Error Response Tests:MissingStoragePaths_English_AreSafeAndActionable" method="MissingStoragePaths_English_AreSafeAndActionable" time="0.464" result="Pass" />
+      <test name="Storage Error Response Tests:MissingStoragePaths_Icelandic_AreSafeAndActionable" method="MissingStoragePaths_Icelandic_AreSafeAndActionable" time="0.076" result="Pass" />
+      <test name="Storage Error Response Tests:ExistingSource_ProviderFailure_RemainsBusinessCentralError" method="ExistingSource_ProviderFailure_RemainsBusinessCentralError" time="0.026" result="Pass" />
+      <test name="Storage Error Response Tests:Scenario_AC01_UploadFolder_BilingualRefusalPreservesKeys" method="Scenario_AC01_UploadFolder_BilingualRefusalPreservesKeys" time="0.037" result="Pass" />
+      <test name="Storage Error Response Tests:Scenario_AC01_UnknownTarget_BilingualExpectedPreservesTokens" method="Scenario_AC01_UnknownTarget_BilingualExpectedPreservesTokens" time="0.024" result="Pass" />
+      <test name="Storage Error Response Tests:Scenario_AC02_UploadBegin_BilingualSuccessKeepsStoredFilename" method="Scenario_AC02_UploadBegin_BilingualSuccessKeepsStoredFilename" time="0.027" result="Pass" />
+      <test name="Storage Error Response Tests:DiscoveryDescription_English_UsesSourceText" method="DiscoveryDescription_English_UsesSourceText" time="0.01" result="Pass" />
+      <test name="Storage Error Response Tests:DiscoveryDescription_Icelandic_UsesTranslation" method="DiscoveryDescription_Icelandic_UsesTranslation" time="0.006" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Data Exch Discovery Tests" x-code-unit="96213" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:46" total="11" passed="11" failed="0" time="0.79">
+    <collection name="Data Exch Discovery Tests" total="11" passed="11" failed="0" skipped="0" time="0.79">
+      <test name="Data Exch Discovery Tests:Scenario_AC03_CodeTypeRefusal_UsesAccusativeIcelandic" method="Scenario_AC03_CodeTypeRefusal_UsesAccusativeIcelandic" time="0.057" result="Pass" />
+      <test name="Data Exch Discovery Tests:RepairedBindings_ResolveTheirOwnTargetTables" method="RepairedBindings_ResolveTheirOwnTargetTables" time="0.007" result="Pass" />
+      <test name="Data Exch Discovery Tests:DefinitionListAndGet_RenderSeededDefinitionInOrder" method="DefinitionListAndGet_RenderSeededDefinitionInOrder" time="0.17" result="Pass" />
+      <test name="Data Exch Discovery Tests:TypeList_EmptyCompany_ReturnsCountZero" method="TypeList_EmptyCompany_ReturnsCountZero" time="0.027" result="Pass" />
+      <test name="Data Exch Discovery Tests:EntryGet_PagesFields_AndRefusesFileAboveOneMegabyte" method="EntryGet_PagesFields_AndRefusesFileAboveOneMegabyte" time="0.306" result="Pass" />
+      <test name="Data Exch Discovery Tests:DataRecordsSet_OnDataExch_ReturnsHint" method="DataRecordsSet_OnDataExch_ReturnsHint" time="0.017" result="Pass" />
+      <test name="Data Exch Discovery Tests:NegativeSkip_AndMissingCode_ReturnErrors" method="NegativeSkip_AndMissingCode_ReturnErrors" time="0.02" result="Pass" />
+      <test name="Data Exch Discovery Tests:Help_NamesTypes_AndCarriesPaginationLimits" method="Help_NamesTypes_AndCarriesPaginationLimits" time="0.007" result="Pass" />
+      <test name="Data Exch Discovery Tests:EntryList_Paging_UsesFoundationDefaults" method="EntryList_Paging_UsesFoundationDefaults" time="0.036" result="Pass" />
+      <test name="Data Exch Discovery Tests:HelpGuides_NameEveryRegisteredType" method="HelpGuides_NameEveryRegisteredType" time="0.027" result="Pass" />
+      <test name="Data Exch Discovery Tests:Contract_DataExchange_NamesItsOwnPermissionSetAndSubject" method="Contract_DataExchange_NamesItsOwnPermissionSetAndSubject" time="0.017" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Link Guard Tests" x-code-unit="96214" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:48" total="3" passed="3" failed="0" time="0.107">
+    <collection name="Storage Link Guard Tests" total="3" passed="3" failed="0" skipped="0" time="0.107">
+      <test name="Storage Link Guard Tests:DataRecordsSet_OnAttachmentLink_ReturnsHint" method="DataRecordsSet_OnAttachmentLink_ReturnsHint" time="0.03" result="Pass" />
+      <test name="Storage Link Guard Tests:DataRecordsGet_OnAttachmentLink_ReturnsRows" method="DataRecordsGet_OnAttachmentLink_ReturnsRows" time="0.03" result="Pass" />
+      <test name="Storage Link Guard Tests:PurgeOrphanLinks_RemovesEmptyKeys_KeepsValidRow" method="PurgeOrphanLinks_RemovesEmptyKeys_KeepsValidRow" time="0.02" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Contract Batch1 Tests" x-code-unit="96215" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:49" total="2" passed="2" failed="0" time="0.05">
+    <collection name="Storage Contract Batch1 Tests" total="2" passed="2" failed="0" skipped="0" time="0.05">
+      <test name="Storage Contract Batch1 Tests:Batch1_AllTypes_HaveRequiredContractChapters" method="Batch1_AllTypes_HaveRequiredContractChapters" time="0.017" result="Pass" />
+      <test name="Storage Contract Batch1 Tests:Batch1_Effects_MatchOperation" method="Batch1_Effects_MatchOperation" time="0.016" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Contract Batch2 Tests" x-code-unit="96216" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:50" total="19" passed="19" failed="0" time="0.597">
+    <collection name="Storage Contract Batch2 Tests" total="19" passed="19" failed="0" skipped="0" time="0.597">
+      <test name="Storage Contract Batch2 Tests:TypeList_Contract_DeclaresCountAndTypesOnce" method="TypeList_Contract_DeclaresCountAndTypesOnce" time="0.014" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:TypeList_EmptyRequest_CountMatchesTypes" method="TypeList_EmptyRequest_CountMatchesTypes" time="0.056" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_TypeList_SeededRows_MatchResponseContract" method="Scenario_AC04_TypeList_SeededRows_MatchResponseContract" time="0.037" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Batch2_AllTypes_HaveRequiredContractChapters" method="Batch2_AllTypes_HaveRequiredContractChapters" time="0.02" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Batch2_Effects_MatchOperation" method="Batch2_Effects_MatchOperation" time="0.02" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC02_QueryContracts_DoNotRequireStorage" method="Scenario_AC02_QueryContracts_DoNotRequireStorage" time="0.017" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC02_AttachmentContracts_DeclareAcceptedAliases" method="Scenario_AC02_AttachmentContracts_DeclareAcceptedAliases" time="0.01" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC02_MutationContracts_MatchShippedKeys" method="Scenario_AC02_MutationContracts_MatchShippedKeys" time="0.023" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC02_MutationContracts_ReplaceStaleParameters" method="Scenario_AC02_MutationContracts_ReplaceStaleParameters" time="0.013" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_DefinitionList_NoStorage_ReturnsSeededRow" method="Scenario_AC04_DefinitionList_NoStorage_ReturnsSeededRow" time="0.046" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_DefinitionFilters_Malformed_ReturnCompleteErrors" method="Scenario_AC04_DefinitionFilters_Malformed_ReturnCompleteErrors" time="0.023" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_DefinitionFilters_Unknown_ReturnCompleteErrors" method="Scenario_AC04_DefinitionFilters_Unknown_ReturnCompleteErrors" time="0.017" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_EntryGet_InvalidInputs_CollectsEveryProblem" method="Scenario_AC04_EntryGet_InvalidInputs_CollectsEveryProblem" time="0.027" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_EntryList_MalformedInputs_ReturnsFiveErrors" method="Scenario_AC04_EntryList_MalformedInputs_ReturnsFiveErrors" time="0.017" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_EntryList_ZeroTake_PreservesDefault" method="Scenario_AC04_EntryList_ZeroTake_PreservesDefault" time="0.016" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_EntryList_ReversedDates_Refused" method="Scenario_AC04_EntryList_ReversedDates_Refused" time="0.013" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_DefinitionGet_CodeBoundary_NoTruncation" method="Scenario_AC04_DefinitionGet_CodeBoundary_NoTruncation" time="0.027" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_DefinitionGet_MissingCode_CompleteRefusal" method="Scenario_AC04_DefinitionGet_MissingCode_CompleteRefusal" time="0.017" result="Pass" />
+      <test name="Storage Contract Batch2 Tests:Scenario_AC04_InvalidDirection_BilingualRefusals" method="Scenario_AC04_InvalidDirection_BilingualRefusals" time="0.02" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Native Fields Tests" x-code-unit="96217" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:52" total="11" passed="11" failed="0" time="0.383">
+    <collection name="Storage Native Fields Tests" total="11" passed="11" failed="0" skipped="0" time="0.383">
+      <test name="Storage Native Fields Tests:NativeFields_WhenExtensionMissing_SetAndClearDoNotError" method="NativeFields_WhenExtensionMissing_SetAndClearDoNotError" time="0.006" result="Pass" />
+      <test name="Storage Native Fields Tests:NativeFields_WhenPresent_SetAndClearRoundTrip" method="NativeFields_WhenPresent_SetAndClearRoundTrip" time="0.027" result="Pass" />
+      <test name="Storage Native Fields Tests:Scenario_AC06_MissingRecord_SetAndClearDoNotInsert" method="Scenario_AC06_MissingRecord_SetAndClearDoNotInsert" time="0.01" result="Pass" />
+      <test name="Storage Native Fields Tests:Scenario_AC06_AssignmentFailure_PreservesPersistedFields" method="Scenario_AC06_AssignmentFailure_PreservesPersistedFields" time="0.016" result="Pass" />
+      <test name="Storage Native Fields Tests:NativeMirrorModifyFailure_PreventsExternalUpload" method="NativeMirrorModifyFailure_PreventsExternalUpload" time="0.043" result="Pass" />
+      <test name="Storage Native Fields Tests:ExternalStorageModule_IsPresentInTheTestContainer" method="ExternalStorageModule_IsPresentInTheTestContainer" time="0.006" result="Pass" />
+      <test name="Storage Native Fields Tests:LinkedRead_LeavesStoredRowUnchangedAfterModify" method="LinkedRead_LeavesStoredRowUnchangedAfterModify" time="0.07" result="Pass" />
+      <test name="Storage Native Fields Tests:LinkedRead_LeavesStoredRowUnchangedAfterModifyFalse" method="LinkedRead_LeavesStoredRowUnchangedAfterModifyFalse" time="0.027" result="Pass" />
+      <test name="Storage Native Fields Tests:LinkedRead_TransferFieldsInsert_DoesNotPersistStoredInternally" method="LinkedRead_TransferFieldsInsert_DoesNotPersistStoredInternally" time="0.037" result="Pass" />
+      <test name="Storage Native Fields Tests:LinkedRead_TransferFieldsInsert_SlashVariantPath_DoesNotPersistStoredInternally" method="LinkedRead_TransferFieldsInsert_SlashVariantPath_DoesNotPersistStoredInternally" time="0.027" result="Pass" />
+      <test name="Storage Native Fields Tests:MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule" method="MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule" time="0.02" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage 79 Perm Tests ori" x-code-unit="96218" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:57:54" total="41" passed="41" failed="0" time="5.726">
+    <collection name="Storage 79 Perm Tests ori" total="41" passed="41" failed="0" skipped="0" time="5.726">
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_GrantedSetupCard_PersistsChange" method="Scenario_AC01_GrantedSetupCard_PersistsChange" time="1.614" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ReadOnlySetupCard_RefusesChange" method="Scenario_AC02_ReadOnlySetupCard_RefusesChange" time="0.084" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingSetupInsert_LeavesNoRow" method="Scenario_AC02_MissingSetupInsert_LeavesNoRow" time="0.037" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingSetupModify_PreservesRow" method="Scenario_AC02_MissingSetupModify_PreservesRow" time="0.026" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingSetupDelete_PreservesRow" method="Scenario_AC02_MissingSetupDelete_PreservesRow" time="0.023" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_ActualRoles_DispatchSharedHelp" method="Scenario_AC01_ActualRoles_DispatchSharedHelp" time="0.083" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow" method="Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow" time="0.037" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_GrantedFilesAndDirectories_Roundtrip" method="Scenario_AC01_GrantedFilesAndDirectories_Roundtrip" time="0.096" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_InvalidFileInput_PreservesState" method="Scenario_AC02_InvalidFileInput_PreservesState" time="0.027" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks" method="Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks" time="0.07" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_EmptyUpload_RefusesCommitThenAborts" method="Scenario_AC02_EmptyUpload_RefusesCommitThenAborts" time="0.08" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_GrantedNativeTarget_PersistsContent" method="Scenario_AC01_GrantedNativeTarget_PersistsContent" time="0.103" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingSourceRead_CreatesNothing" method="Scenario_AC02_MissingSourceRead_CreatesNothing" time="0.033" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingTargetWrite_PreservesUpload" method="Scenario_AC02_MissingTargetWrite_PreservesUpload" time="0.066" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_GrantedOffloadOpenRestore_Roundtrips" method="Scenario_AC01_GrantedOffloadOpenRestore_Roundtrips" time="0.07" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingLinkWrite_PreservesNativeAndStorage" method="Scenario_AC02_MissingLinkWrite_PreservesNativeAndStorage" time="0.053" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_GrantedDataExchange_ReadsSeededGraph" method="Scenario_AC01_GrantedDataExchange_ReadsSeededGraph" time="0.153" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ReadOnlyTypeSet_PreservesGraph" method="Scenario_AC02_ReadOnlyTypeSet_PreservesGraph" time="0.04" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ReadOnlyImportRun_CreatesNoEntry" method="Scenario_AC02_ReadOnlyImportRun_CreatesNoEntry" time="0.047" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ReadOnlyExportRun_CreatesNoEntry" method="Scenario_AC02_ReadOnlyExportRun_CreatesNoEntry" time="0.067" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ExportMissingRead_PreservesGraph" method="Scenario_AC02_ExportMissingRead_PreservesGraph" time="0.043" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ReadOnlyDefinitionDelete_PreservesGraph" method="Scenario_AC02_ReadOnlyDefinitionDelete_PreservesGraph" time="0.05" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingEntryRead_PreservesGraph" method="Scenario_AC02_MissingEntryRead_PreservesGraph" time="0.056" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingColumnRead_PreservesGraph" method="Scenario_AC02_MissingColumnRead_PreservesGraph" time="0.053" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingDefinitionRead_PreservesGraph" method="Scenario_AC02_MissingDefinitionRead_PreservesGraph" time="0.04" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingFieldRead_PreservesGraph" method="Scenario_AC02_MissingFieldRead_PreservesGraph" time="0.06" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingFieldMappingRead_PreservesGraph" method="Scenario_AC02_MissingFieldMappingRead_PreservesGraph" time="0.06" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingLineRead_PreservesGraph" method="Scenario_AC02_MissingLineRead_PreservesGraph" time="0.057" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingMappingRead_PreservesGraph" method="Scenario_AC02_MissingMappingRead_PreservesGraph" time="0.047" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_MissingTypeRead_PreservesGraph" method="Scenario_AC02_MissingTypeRead_PreservesGraph" time="0.05" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ProcessWithoutTargetWrite_PreservesEntry" method="Scenario_AC02_ProcessWithoutTargetWrite_PreservesEntry" time="0.08" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_ProcessWithTargetWrite_WritesTargetRows" method="Scenario_AC01_ProcessWithTargetWrite_WritesTargetRows" time="0.38" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ReadOnlyEntryDelete_PreservesEntry" method="Scenario_AC02_ReadOnlyEntryDelete_PreservesEntry" time="0.05" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_EntryDeleteWithoutFieldWrite_PreservesEntry" method="Scenario_AC02_EntryDeleteWithoutFieldWrite_PreservesEntry" time="0.056" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_EntryDeleteWithRowWrite_DeletesEntry" method="Scenario_AC01_EntryDeleteWithRowWrite_DeletesEntry" time="0.06" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ReadOnlyDefinitionImport_InstallsNothing" method="Scenario_AC02_ReadOnlyDefinitionImport_InstallsNothing" time="0.563" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_DefinitionImportWithDefWrite_InstallsCopy" method="Scenario_AC01_DefinitionImportWithDefWrite_InstallsCopy" time="0.203" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ReadOnlyPaymentExport_PreservesJournal" method="Scenario_AC02_ReadOnlyPaymentExport_PreservesJournal" time="0.367" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_ReadOnlyCommitToDataExchange_PreservesUpload" method="Scenario_AC02_ReadOnlyCommitToDataExchange_PreservesUpload" time="0.12" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC02_CommitToDataExchangeWithoutFieldWrite_PreservesUpload" method="Scenario_AC02_CommitToDataExchangeWithoutFieldWrite_PreservesUpload" time="0.097" result="Pass" />
+      <test name="Storage 79 Perm Tests ori:Scenario_AC01_CommitToDataExchangeWithRowWrite_ImportsUpload" method="Scenario_AC01_CommitToDataExchangeWithRowWrite_ImportsUpload" time="0.106" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Integrity 75 Tests ori" x-code-unit="96225" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:01" total="25" passed="25" failed="0" time="1.683">
+    <collection name="Storage Integrity 75 Tests ori" total="25" passed="25" failed="0" skipped="0" time="1.683">
+      <test name="Storage Integrity 75 Tests ori:SameAccount_SetupAliasProtectsLinkedFile" method="SameAccount_SetupAliasProtectsLinkedFile" time="0.09" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:DifferentAccounts_DoNotShareLinkIdentity" method="DifferentAccounts_DoNotShareLinkIdentity" time="0.046" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:SameAccount_PreservesOpaquePathSpelling" method="SameAccount_PreservesOpaquePathSpelling" time="0.043" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:SameAccount_MovedLinkKeepsRelativeBase" method="SameAccount_MovedLinkKeepsRelativeBase" time="0.08" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC01_SlashDeletes_PreserveLinkedContent" method="Scenario_AC01_SlashDeletes_PreserveLinkedContent" time="0.087" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC01_LegacySlashLink_RejectsCanonicalDelete" method="Scenario_AC01_LegacySlashLink_RejectsCanonicalDelete" time="0.05" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC02_CreateLinkedTarget_PreservesBytesAndLink" method="Scenario_AC02_CreateLinkedTarget_PreservesBytesAndLink" time="0.047" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC02_TransfersToLinkedTarget_PreserveBothFiles" method="Scenario_AC02_TransfersToLinkedTarget_PreserveBothFiles" time="0.06" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC02_UploadTargetBecomesLinked_PreservesSession" method="Scenario_AC02_UploadTargetBecomesLinked_PreservesSession" time="0.07" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC01_SlashSourceMove_UpdatesOnlyMatchingLink" method="Scenario_AC01_SlashSourceMove_UpdatesOnlyMatchingLink" time="0.073" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC03_Path2047To2049_RejectsOnlyOverFieldLimit" method="Scenario_AC03_Path2047To2049_RejectsOnlyOverFieldLimit" time="0.056" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC03_BasePlusPathTooLong_RejectsBeforeWrite" method="Scenario_AC03_BasePlusPathTooLong_RejectsBeforeWrite" time="0.017" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC03_Name249To251_RejectsBeforeSessionInsert" method="Scenario_AC03_Name249To251_RejectsBeforeSessionInsert" time="0.03" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC04_TraversalAndFileRoot_RejectWithoutWrites" method="Scenario_AC04_TraversalAndFileRoot_RejectWithoutWrites" time="0.023" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC01_InnerSlashVariants_RejectWithoutWrites" method="Scenario_AC01_InnerSlashVariants_RejectWithoutWrites" time="0.063" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC03_GeneratedOffloadTooLong_PreservesLocalBlob" method="Scenario_AC03_GeneratedOffloadTooLong_PreservesLocalBlob" time="0.063" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC04_ConnectorMoveFailure_RollsBackLink" method="Scenario_AC04_ConnectorMoveFailure_RollsBackLink" time="0.053" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC01_SelfMoveAlias_PreservesSource" method="Scenario_AC01_SelfMoveAlias_PreservesSource" time="0.047" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC01_BaseRootAlias_PreservesIntendedTarget" method="Scenario_AC01_BaseRootAlias_PreservesIntendedTarget" time="0.064" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC02_DisabledAlias_ProtectsPhysicalDestination" method="Scenario_AC02_DisabledAlias_ProtectsPhysicalDestination" time="0.063" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC01_AliasMove_PreservesEachRelativeRoot" method="Scenario_AC01_AliasMove_PreservesEachRelativeRoot" time="0.067" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC04_AliasRootEscape_PreservesSource" method="Scenario_AC04_AliasRootEscape_PreservesSource" time="0.057" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC01_CaseAndLiteralKeys_PreserveDistinctFiles" method="Scenario_AC01_CaseAndLiteralKeys_PreserveDistinctFiles" time="0.12" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC04_PostCopyFault_RetainsReadableSourceAndDuplicate" method="Scenario_AC04_PostCopyFault_RetainsReadableSourceAndDuplicate" time="0.083" result="Pass" />
+      <test name="Storage Integrity 75 Tests ori:Scenario_AC03_DirectMoveOverlong_PreservesLinkAndContent" method="Scenario_AC03_DirectMoveOverlong_PreservesLinkAndContent" time="0.05" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="DataExch Refusal82 Tests ori" x-code-unit="96226" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:05" total="40" passed="40" failed="0" time="3.816">
+    <collection name="DataExch Refusal82 Tests ori" total="40" passed="40" failed="0" skipped="0" time="3.816">
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC03_GenericImport_ImportsInlineFile" method="Scenario_AC03_GenericImport_ImportsInlineFile" time="2.21" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC03_PayrollImport_ImportsInlineFile" method="Scenario_AC03_PayrollImport_ImportsInlineFile" time="0.024" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC01_AbsentFields_CollectsAllThree" method="Scenario_AC01_AbsentFields_CollectsAllThree" time="0.02" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_WrongTypes_CollectsAllWithoutWrite" method="Scenario_AC02_WrongTypes_CollectsAllWithoutWrite" time="0.02" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_NullFields_CollectsAllWithoutWrite" method="Scenario_AC02_NullFields_CollectsAllWithoutWrite" time="0.02" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_ObjectFields_CollectsAllWithoutWrite" method="Scenario_AC02_ObjectFields_CollectsAllWithoutWrite" time="0.02" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_EmptyFields_CollectsAllWithoutWrite" method="Scenario_AC02_EmptyFields_CollectsAllWithoutWrite" time="0.014" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_Lowercase_RefusesRawCode" method="Scenario_AC02_Lowercase_RefusesRawCode" time="0.026" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_MixedCase_RefusesRawCode" method="Scenario_AC02_MixedCase_RefusesRawCode" time="0.023" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_UnicodeCase_RefusesRawCode" method="Scenario_AC02_UnicodeCase_RefusesRawCode" time="0.027" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_LeadingSpace_RefusesRawCode" method="Scenario_AC02_LeadingSpace_RefusesRawCode" time="0.023" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_TrailingSpace_RefusesRawCode" method="Scenario_AC02_TrailingSpace_RefusesRawCode" time="0.027" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_Overlong_RefusesRawCode" method="Scenario_AC02_Overlong_RefusesRawCode" time="0.026" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_Code20AndPath2048_AcceptsExactBounds" method="Scenario_AC02_Code20AndPath2048_AcceptsExactBounds" time="0.02" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_Path2049_RefusesWithoutWrite" method="Scenario_AC02_Path2049_RefusesWithoutWrite" time="0.016" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_Traversal_RefusesWithoutWrite" method="Scenario_AC02_Traversal_RefusesWithoutWrite" time="0.037" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_MalformedOrScalar_RefusesData" method="Scenario_AC02_MalformedOrScalar_RefusesData" time="0.093" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC01_UnknownAndWrongKind_RefusesDefinition" method="Scenario_AC01_UnknownAndWrongKind_RefusesDefinition" time="0.033" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC03_DeleteUnreferenced_DeletesChildren" method="Scenario_AC03_DeleteUnreferenced_DeletesChildren" time="0.24" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC01_DeleteTypeReferenced_PreservesTree" method="Scenario_AC01_DeleteTypeReferenced_PreservesTree" time="0.02" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC01_DeleteBankReferenced_PreservesTree" method="Scenario_AC01_DeleteBankReferenced_PreservesTree" time="0.024" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC01_DeleteMissing_ReportsCompleteError" method="Scenario_AC01_DeleteMissing_ReportsCompleteError" time="0.017" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC03_TwoLocales_CollectsLocalizedErrors" method="Scenario_AC03_TwoLocales_CollectsLocalizedErrors" time="0.043" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC04_AfterInsertFailure_RollsBack" method="Scenario_AC04_AfterInsertFailure_RollsBack" time="0.043" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC04_AfterDeleteFailure_RollsBack" method="Scenario_AC04_AfterDeleteFailure_RollsBack" time="0.04" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC04_ChainedFailure_RollsBackEarlierImport" method="Scenario_AC04_ChainedFailure_RollsBackEarlierImport" time="0.034" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey" method="Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey" time="0.03" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_SpacesOnly_ReportsCompleteCodeError" method="Scenario_AC02_SpacesOnly_ReportsCompleteCodeError" time="0.02" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC03_ExportPayroll_IsRefused" method="Scenario_AC03_ExportPayroll_IsRefused" time="0.02" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite" method="Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite" time="0.023" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite" method="Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite" time="0.026" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC01_DefinitionExport_RefusesBadCode" method="Scenario_AC01_DefinitionExport_RefusesBadCode" time="0.033" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC03_DefinitionExport_ReturnsHeader" method="Scenario_AC03_DefinitionExport_ReturnsHeader" time="0.013" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_ExportFileNameBounds_NeverTruncates" method="Scenario_AC02_ExportFileNameBounds_NeverTruncates" time="0.03" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription" method="Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription" time="0.04" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_TypeSetOverlongDescription_PreservesExisting" method="Scenario_AC02_TypeSetOverlongDescription_PreservesExisting" time="0.033" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite" method="Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite" time="0.02" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC01_TypeSetPayroll_DoesNotCreateType" method="Scenario_AC01_TypeSetPayroll_DoesNotCreateType" time="0.013" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert" method="Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert" time="0.03" result="Pass" />
+      <test name="DataExch Refusal82 Tests ori:Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal" method="Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal" time="0.037" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Telemetry121 Tests ori" x-code-unit="96227" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:11" total="3" passed="3" failed="0" time="0.043">
+    <collection name="Storage Telemetry121 Tests ori" total="3" passed="3" failed="0" skipped="0" time="0.043">
+      <test name="Storage Telemetry121 Tests ori:Scenario_AC01_AC02_MirrorFailure_OnlySafeMetadata" method="Scenario_AC01_AC02_MirrorFailure_OnlySafeMetadata" time="0.007" result="Pass" />
+      <test name="Storage Telemetry121 Tests ori:Scenario_AC03_ClearMirrorFailure_IdentifiesRestoreOperation" method="Scenario_AC03_ClearMirrorFailure_IdentifiesRestoreOperation" time="0.01" result="Pass" />
+      <test name="Storage Telemetry121 Tests ori:Scenario_AC01_AC02_AC03_TakeoverDenials_OnlySafeDiagnostics" method="Scenario_AC01_AC02_AC03_TakeoverDenials_OnlySafeDiagnostics" time="0.007" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Refusal122 Tests ori" x-code-unit="96228" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:13" total="13" passed="13" failed="0" time="0.33">
+    <collection name="Storage Refusal122 Tests ori" total="13" passed="13" failed="0" skipped="0" time="0.33">
+      <test name="Storage Refusal122 Tests ori:Scenario_AC01_UnknownReferences_RefusedWithoutEntry1033" method="Scenario_AC01_UnknownReferences_RefusedWithoutEntry1033" time="0.054" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC01_UnknownReferences_RefusedWithoutEntry1039" method="Scenario_AC01_UnknownReferences_RefusedWithoutEntry1039" time="0.024" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC01_Contract_ExplainsUnvalidatedReferences" method="Scenario_AC01_Contract_ExplainsUnvalidatedReferences" time="0.01" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC02_FileChild_RefusesAndPreservesContent" method="Scenario_AC02_FileChild_RefusesAndPreservesContent" time="0.026" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC02_DirectoryChild_RefusesAndPreservesTree" method="Scenario_AC02_DirectoryChild_RefusesAndPreservesTree" time="0.014" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC02_BasePath_RefusesNestedFile" method="Scenario_AC02_BasePath_RefusesNestedFile" time="0.01" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC02_EmptyDirectory_DeletesOnlyTarget" method="Scenario_AC02_EmptyDirectory_DeletesOnlyTarget" time="0.01" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC02_Contract_ListsNonEmptyPrecondition" method="Scenario_AC02_Contract_ListsNonEmptyPrecondition" time="0.006" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_Contract_ListsStorageCodeAndRootRefusals" method="Scenario_Contract_ListsStorageCodeAndRootRefusals" time="0.013" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC02_NonEmptyDirectory_Localizes1039" method="Scenario_AC02_NonEmptyDirectory_Localizes1039" time="0.013" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC02_Path_DoesNotReadAccount" method="Scenario_AC02_Path_DoesNotReadAccount" time="0.006" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC02_Path_RejectsOverlongBase" method="Scenario_AC02_Path_RejectsOverlongBase" time="0.01" result="Pass" />
+      <test name="Storage Refusal122 Tests ori:Scenario_AC02_Path_PreservesNamesBlocksTraversal" method="Scenario_AC02_Path_PreservesNamesBlocksTraversal" time="0.01" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Direction130 Tests ori" x-code-unit="96229" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:15" total="4" passed="4" failed="0" time="0.174">
+    <collection name="Storage Direction130 Tests ori" total="4" passed="4" failed="0" skipped="0" time="0.174">
+      <test name="Storage Direction130 Tests ori:Scenario_AC01_StorageWritesAreInbound1033" method="Scenario_AC01_StorageWritesAreInbound1033" time="0.043" result="Pass" />
+      <test name="Storage Direction130 Tests ori:Scenario_AC01_StorageWritesAreInbound1039" method="Scenario_AC01_StorageWritesAreInbound1039" time="0.03" result="Pass" />
+      <test name="Storage Direction130 Tests ori:Scenario_AC02_AllTypesMatchEffect1033" method="Scenario_AC02_AllTypesMatchEffect1033" time="0.034" result="Pass" />
+      <test name="Storage Direction130 Tests ori:Scenario_AC02_AllTypesMatchEffect1039" method="Scenario_AC02_AllTypesMatchEffect1039" time="0.044" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Interface Tests ori" x-code-unit="96236" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:16" total="6" passed="6" failed="0" time="1.073">
+    <collection name="Storage Interface Tests ori" total="6" passed="6" failed="0" skipped="0" time="1.073">
+      <test name="Storage Interface Tests ori:Scenario_Interface_RestrictedActor_Roundtrips" method="Scenario_Interface_RestrictedActor_Roundtrips" time="0.716" result="Pass" />
+      <test name="Storage Interface Tests ori:Scenario_Interface_Accounts_KeepDistinctBytes" method="Scenario_Interface_Accounts_KeepDistinctBytes" time="0.014" result="Pass" />
+      <test name="Storage Interface Tests ori:Scenario_Interface_ProviderFailure_PreservesSource" method="Scenario_Interface_ProviderFailure_PreservesSource" time="0.05" result="Pass" />
+      <test name="Storage Interface Tests ori:Scenario_Interface_UnsafePath_ReachesNoWrite" method="Scenario_Interface_UnsafePath_ReachesNoWrite" time="0.024" result="Pass" />
+      <test name="Storage Interface Tests ori:Scenario_Interface_TargetAliases_RefuseBeforeWrite" method="Scenario_Interface_TargetAliases_RefuseBeforeWrite" time="0.18" result="Pass" />
+      <test name="Storage Interface Tests ori:Scenario_Interface_ExistenceFailure_RefusesTransfer" method="Scenario_Interface_ExistenceFailure_RefusesTransfer" time="0.04" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="DataExch Phase2 Tests ori" x-code-unit="96237" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:19" total="11" passed="11" failed="0" time="6.057">
+    <collection name="DataExch Phase2 Tests ori" total="11" passed="11" failed="0" skipped="0" time="6.057">
+      <test name="DataExch Phase2 Tests ori:PersistedProcessingErrors_AreScopedAndBilingual" method="PersistedProcessingErrors_AreScopedAndBilingual" time="0.353" result="Pass" />
+      <test name="DataExch Phase2 Tests ori:AC01_CommitToRecord_SetsDataExchangeType_LeavesUnprocessed" method="AC01_CommitToRecord_SetsDataExchangeType_LeavesUnprocessed" time="0.11" result="Pass" />
+      <test name="DataExch Phase2 Tests ori:AC02_CommitToRecord_ProcessTrue_KeepsDocumentOnProcessErrors" method="AC02_CommitToRecord_ProcessTrue_KeepsDocumentOnProcessErrors" time="0.417" result="Pass" />
+      <test name="DataExch Phase2 Tests ori:AC03_UnknownType_RefusesBeforeWrite_SessionStaysOpen" method="AC03_UnknownType_RefusesBeforeWrite_SessionStaysOpen" time="0.043" result="Pass" />
+      <test name="DataExch Phase2 Tests ori:AC04_CreateLinked_SetsTypeOnIncomingDocument" method="AC04_CreateLinked_SetsTypeOnIncomingDocument" time="0.08" result="Pass" />
+      <test name="DataExch Phase2 Tests ori:AC04_CreateLinked_ProcessTrue_KeepsDocumentAndLink" method="AC04_CreateLinked_ProcessTrue_KeepsDocumentAndLink" time="0.1" result="Pass" />
+      <test name="DataExch Phase2 Tests ori:Scenario_AC04_LinkedCsv_ProcessReadsAndMapsExactContent" method="Scenario_AC04_LinkedCsv_ProcessReadsAndMapsExactContent" time="0.436" result="Pass" />
+      <test name="DataExch Phase2 Tests ori:Scenario_AC04_LocalCsv_ProcessKeepsStandardContentPath" method="Scenario_AC04_LocalCsv_ProcessKeepsStandardContentPath" time="0.207" result="Pass" />
+      <test name="DataExch Phase2 Tests ori:Scenario_AC06_LinkedCsv_CreatesPurchaseInvoice" method="Scenario_AC06_LinkedCsv_CreatesPurchaseInvoice" time="4.134" result="Pass" />
+      <test name="DataExch Phase2 Tests ori:AC05_TypeSet_ExportDefinition_IsRefused" method="AC05_TypeSet_ExportDefinition_IsRefused" time="0.023" result="Pass" />
+      <test name="DataExch Phase2 Tests ori:AC07_DataRecordsSet_BlocksIncomingTypeField_AndTypeTable" method="AC07_DataRecordsSet_BlocksIncomingTypeField_AndTypeTable" time="0.07" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Refusal 125 Tests ori" x-code-unit="96238" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:26" total="4" passed="4" failed="0" time="0.123">
+    <collection name="Storage Refusal 125 Tests ori" total="4" passed="4" failed="0" skipped="0" time="0.123">
+      <test name="Storage Refusal 125 Tests ori:Scenario_AC01_RootPath_RefusedBeforeConnectorCall" method="Scenario_AC01_RootPath_RefusedBeforeConnectorCall" time="0.05" result="Pass" />
+      <test name="Storage Refusal 125 Tests ori:Scenario_AC01_RootSpellings_RefusedWithReceivedValue" method="Scenario_AC01_RootSpellings_RefusedWithReceivedValue" time="0.017" result="Pass" />
+      <test name="Storage Refusal 125 Tests ori:Scenario_AC01_RootRefusal_Localizes1039" method="Scenario_AC01_RootRefusal_Localizes1039" time="0.014" result="Pass" />
+      <test name="Storage Refusal 125 Tests ori:Scenario_AC02_HelpErrors_ListRootRefusal" method="Scenario_AC02_HelpErrors_ListRootRefusal" time="0.014" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="DataExch Import Tests ori" x-code-unit="96242" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:28" total="19" passed="19" failed="0" time="1.047">
+    <collection name="DataExch Import Tests ori" total="19" passed="19" failed="0" skipped="0" time="1.047">
+      <test name="DataExch Import Tests ori:AC01_CommitToDataExchange_ParsesWithoutProcessing" method="AC01_CommitToDataExchange_ParsesWithoutProcessing" time="0.076" result="Pass" />
+      <test name="DataExch Import Tests ori:AC01_CommitToDataExchange_KeepFileWritesSessionPath" method="AC01_CommitToDataExchange_KeepFileWritesSessionPath" time="0.05" result="Pass" />
+      <test name="DataExch Import Tests ori:AC02_ImportRun_ProcessTrue_InsertsTargets" method="AC02_ImportRun_ProcessTrue_InsertsTargets" time="0.06" result="Pass" />
+      <test name="DataExch Import Tests ori:AC03_ImportRunFromStorage_LeavesFileUntouched" method="AC03_ImportRunFromStorage_LeavesFileUntouched" time="0.04" result="Pass" />
+      <test name="DataExch Import Tests ori:AC03_ImportRunMissingStoredFile_AnswersError" method="AC03_ImportRunMissingStoredFile_AnswersError" time="0.027" result="Pass" />
+      <test name="DataExch Import Tests ori:AC04_BankStatementDefinition_PointsToBankReconciliation" method="AC04_BankStatementDefinition_PointsToBankReconciliation" time="0.02" result="Pass" />
+      <test name="DataExch Import Tests ori:AC04_ExportDefinition_IsRefusedForImport" method="AC04_ExportDefinition_IsRefusedForImport" time="0.02" result="Pass" />
+      <test name="DataExch Import Tests ori:AC05_MalformedFile_LeavesNoHalfParsedEntry" method="AC05_MalformedFile_LeavesNoHalfParsedEntry" time="0.03" result="Pass" />
+      <test name="DataExch Import Tests ori:AC05_MalformedUpload_KeepsSessionOpen" method="AC05_MalformedUpload_KeepsSessionOpen" time="0.04" result="Pass" />
+      <test name="DataExch Import Tests ori:AC06_EntryDelete_RefusedForIncomingDocument" method="AC06_EntryDelete_RefusedForIncomingDocument" time="0.05" result="Pass" />
+      <test name="DataExch Import Tests ori:EntryDelete_RemovesEntryFieldsAndMarker" method="EntryDelete_RemovesEntryFieldsAndMarker" time="0.054" result="Pass" />
+      <test name="DataExch Import Tests ori:EntryDelete_UnknownEntry_RecordNotFound" method="EntryDelete_UnknownEntry_RecordNotFound" time="0.017" result="Pass" />
+      <test name="DataExch Import Tests ori:EntryProcess_WritesTargets_ThenRefusesSecondRun" method="EntryProcess_WritesTargets_ThenRefusesSecondRun" time="0.056" result="Pass" />
+      <test name="DataExch Import Tests ori:EntryProcess_IntermediateMapping_PointsToIncomingDocument" method="EntryProcess_IntermediateMapping_PointsToIncomingDocument" time="0.036" result="Pass" />
+      <test name="DataExch Import Tests ori:ImportRun_ProcessTrueWithIntermediateMapping_KeepsEntry" method="ImportRun_ProcessTrueWithIntermediateMapping_KeepsEntry" time="0.05" result="Pass" />
+      <test name="DataExch Import Tests ori:EntryProcess_InvalidInput_RefusedBeforeWrite" method="EntryProcess_InvalidInput_RefusedBeforeWrite" time="0.027" result="Pass" />
+      <test name="DataExch Import Tests ori:ImportRun_InlineOverOneMegabyte_LimitExceeded" method="ImportRun_InlineOverOneMegabyte_LimitExceeded" time="0.196" result="Pass" />
+      <test name="DataExch Import Tests ori:ImportRun_TwoSources_Refused" method="ImportRun_TwoSources_Refused" time="0.024" result="Pass" />
+      <test name="DataExch Import Tests ori:CommitToDataExchange_UnknownDefinition_SessionStaysOpen" method="CommitToDataExchange_UnknownDefinition_SessionStaysOpen" time="0.024" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="DataExch Export Tests ori" x-code-unit="96243" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:30" total="14" passed="14" failed="0" time="0.924">
+    <collection name="DataExch Export Tests ori" total="14" passed="14" failed="0" skipped="0" time="0.924">
+      <test name="DataExch Export Tests ori:AC01_ExportThreeCustomers_ToStorage" method="AC01_ExportThreeCustomers_ToStorage" time="0.456" result="Pass" />
+      <test name="DataExch Export Tests ori:AC02_RecordIds_InlineAndStorage" method="AC02_RecordIds_InlineAndStorage" time="0.053" result="Pass" />
+      <test name="DataExch Export Tests ori:AC03_InlineOverOneMegabyte_RollsBack" method="AC03_InlineOverOneMegabyte_RollsBack" time="0.07" result="Pass" />
+      <test name="DataExch Export Tests ori:AC04_ImportDefinition_Refused" method="AC04_ImportDefinition_Refused" time="0.017" result="Pass" />
+      <test name="DataExch Export Tests ori:AC04_PaymentDefinition_PointsToPaymentExport" method="AC04_PaymentDefinition_PointsToPaymentExport" time="0.013" result="Pass" />
+      <test name="DataExch Export Tests ori:TableNotMappingTable_Refused" method="TableNotMappingTable_Refused" time="0.02" result="Pass" />
+      <test name="DataExch Export Tests ori:MissingSourceAndDelivery_CollectedTogether" method="MissingSourceAndDelivery_CollectedTogether" time="0.017" result="Pass" />
+      <test name="DataExch Export Tests ori:NoMatchingRecords_PreconditionFailed" method="NoMatchingRecords_PreconditionFailed" time="0.017" result="Pass" />
+      <test name="DataExch Export Tests ori:UnknownViewField_InvalidFilterField" method="UnknownViewField_InvalidFilterField" time="0.033" result="Pass" />
+      <test name="DataExch Export Tests ori:StorageWriteFailure_RollsBackEntry" method="StorageWriteFailure_RollsBackEntry" time="0.047" result="Pass" />
+      <test name="DataExch Export Tests ori:PaymentExport_UnknownBatch_RecordNotFound" method="PaymentExport_UnknownBatch_RecordNotFound" time="0.014" result="Pass" />
+      <test name="DataExch Export Tests ori:PaymentExport_LowercaseName_InvalidParameterFormat" method="PaymentExport_LowercaseName_InvalidParameterFormat" time="0.02" result="Pass" />
+      <test name="DataExch Export Tests ori:PaymentExport_EmptyBatch_PreconditionFailed" method="PaymentExport_EmptyBatch_PreconditionFailed" time="0.03" result="Pass" />
+      <test name="DataExch Export Tests ori:PaymentExport_NoDelivery_MissingParameter" method="PaymentExport_NoDelivery_MissingParameter" time="0.014" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="DataExch Def Xfer Tests ori" x-code-unit="96244" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:33" total="12" passed="12" failed="0" time="0.526">
+    <collection name="DataExch Def Xfer Tests ori" total="12" passed="12" failed="0" skipped="0" time="0.526">
+      <test name="DataExch Def Xfer Tests ori:AC01_ImportFromStorage_CreatesDefinitionTree" method="AC01_ImportFromStorage_CreatesDefinitionTree" time="0.08" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:AC02_ExistingCode_RefusedUnlessOverwrite" method="AC02_ExistingCode_RefusedUnlessOverwrite" time="0.064" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:AC03_ExportToStorage_ReimportUnderNewCodeEqualsOriginal" method="AC03_ExportToStorage_ReimportUnderNewCodeEqualsOriginal" time="0.05" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:ImportFromUpload_ConsumesSession" method="ImportFromUpload_ConsumesSession" time="0.077" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:MalformedXml_RefusedWithoutWrite" method="MalformedXml_RefusedWithoutWrite" time="0.03" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:NoSource_And_TwoSources_Refused" method="NoSource_And_TwoSources_Refused" time="0.016" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:DefinitionExport_InlineReturnsXml" method="DefinitionExport_InlineReturnsXml" time="0.033" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:DefinitionExport_NoDeliveryReturnsOnlyHeader" method="DefinitionExport_NoDeliveryReturnsOnlyHeader" time="0.02" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:DefinitionExport_BothDestinationsOverwriteSameXml" method="DefinitionExport_BothDestinationsOverwriteSameXml" time="0.026" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:DefinitionExport_ContractDescribesAllModesAndEffects" method="DefinitionExport_ContractDescribesAllModesAndEffects" time="0.013" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:DefinitionDelete_RefusedForPayrollImportFormat" method="DefinitionDelete_RefusedForPayrollImportFormat" time="0.03" result="Pass" />
+      <test name="DataExch Def Xfer Tests ori:DataRecordsSet_BlocksDefinitionAndEntryTables" method="DataRecordsSet_BlocksDefinitionAndEntryTables" time="0.007" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="DataExch Format Tests ori" x-code-unit="96256" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:35" total="12" passed="12" failed="0" time="1.016">
+    <collection name="DataExch Format Tests ori" total="12" passed="12" failed="0" skipped="0" time="1.016">
+      <test name="DataExch Format Tests ori:XmlInline_RefusesInBothLanguages" method="XmlInline_RefusesInBothLanguages" time="0.12" result="Pass" />
+      <test name="DataExch Format Tests ori:XmlStorage_RefusesInBothLanguages" method="XmlStorage_RefusesInBothLanguages" time="0.067" result="Pass" />
+      <test name="DataExch Format Tests ori:BinaryCsvInline_RefusesInBothLanguages" method="BinaryCsvInline_RefusesInBothLanguages" time="0.05" result="Pass" />
+      <test name="DataExch Format Tests ori:BinaryCsvStorage_RefusesInBothLanguages" method="BinaryCsvStorage_RefusesInBothLanguages" time="0.053" result="Pass" />
+      <test name="DataExch Format Tests ori:DefinitionInline_RefusesInBothLanguages" method="DefinitionInline_RefusesInBothLanguages" time="0.033" result="Pass" />
+      <test name="DataExch Format Tests ori:DefinitionStorage_RefusesInBothLanguages" method="DefinitionStorage_RefusesInBothLanguages" time="0.027" result="Pass" />
+      <test name="DataExch Format Tests ori:UploadXml_RefusesAndKeepsChunks" method="UploadXml_RefusesAndKeepsChunks" time="0.103" result="Pass" />
+      <test name="DataExch Format Tests ori:UploadBinaryCsv_RefusesAndKeepsChunks" method="UploadBinaryCsv_RefusesAndKeepsChunks" time="0.097" result="Pass" />
+      <test name="DataExch Format Tests ori:DefinitionUpload_RefusesAndKeepsChunks" method="DefinitionUpload_RefusesAndKeepsChunks" time="0.106" result="Pass" />
+      <test name="DataExch Format Tests ori:MissingStoredFile_UsesTheOperationErrorContract" method="MissingStoredFile_UsesTheOperationErrorContract" time="0.147" result="Pass" />
+      <test name="DataExch Format Tests ori:PostwriteReaderFailure_RetainsRollback" method="PostwriteReaderFailure_RetainsRollback" time="0.104" result="Pass" />
+      <test name="DataExch Format Tests ori:Utf16Csv_IsNotMistakenForBinary" method="Utf16Csv_IsNotMistakenForBinary" time="0.017" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Response159 Tests ori" x-code-unit="96258" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:38" total="39" passed="39" failed="0" time="1.7">
+    <collection name="Storage Response159 Tests ori" total="39" passed="39" failed="0" skipped="0" time="1.7">
+      <test name="Storage Response159 Tests ori:DefinitionCollects_1033" method="DefinitionCollects_1033" time="0.057" result="Pass" />
+      <test name="Storage Response159 Tests ori:DefinitionCollects_1039" method="DefinitionCollects_1039" time="0.02" result="Pass" />
+      <test name="Storage Response159 Tests ori:CodeLength_1033" method="CodeLength_1033" time="0.024" result="Pass" />
+      <test name="Storage Response159 Tests ori:CodeLength_1039" method="CodeLength_1039" time="0.024" result="Pass" />
+      <test name="Storage Response159 Tests ori:ExportConflict_1033" method="ExportConflict_1033" time="0.02" result="Pass" />
+      <test name="Storage Response159 Tests ori:ExportConflict_1039" method="ExportConflict_1039" time="0.02" result="Pass" />
+      <test name="Storage Response159 Tests ori:InvalidSourceTarget_1033" method="InvalidSourceTarget_1033" time="0.02" result="Pass" />
+      <test name="Storage Response159 Tests ori:InvalidSourceTarget_1039" method="InvalidSourceTarget_1039" time="0.02" result="Pass" />
+      <test name="Storage Response159 Tests ori:EntryDefinition_1033" method="EntryDefinition_1033" time="0.03" result="Pass" />
+      <test name="Storage Response159 Tests ori:EntryDefinition_1039" method="EntryDefinition_1039" time="0.024" result="Pass" />
+      <test name="Storage Response159 Tests ori:EntryMapping_1033" method="EntryMapping_1033" time="0.027" result="Pass" />
+      <test name="Storage Response159 Tests ori:EntryMapping_1039" method="EntryMapping_1039" time="0.023" result="Pass" />
+      <test name="Storage Response159 Tests ori:StoredDefinition_1033" method="StoredDefinition_1033" time="0.036" result="Pass" />
+      <test name="Storage Response159 Tests ori:StoredDefinition_1039" method="StoredDefinition_1039" time="0.037" result="Pass" />
+      <test name="Storage Response159 Tests ori:LinkedFileName_1033" method="LinkedFileName_1033" time="0.057" result="Pass" />
+      <test name="Storage Response159 Tests ori:LinkedFileName_1039" method="LinkedFileName_1039" time="0.033" result="Pass" />
+      <test name="Storage Response159 Tests ori:MissingImportSource_1033" method="MissingImportSource_1033" time="0.02" result="Pass" />
+      <test name="Storage Response159 Tests ori:MissingImportSource_1039" method="MissingImportSource_1039" time="0.054" result="Pass" />
+      <test name="Storage Response159 Tests ori:PaymentNoDuplicate_1033" method="PaymentNoDuplicate_1033" time="0.03" result="Pass" />
+      <test name="Storage Response159 Tests ori:PaymentNoDuplicate_1039" method="PaymentNoDuplicate_1039" time="0.014" result="Pass" />
+      <test name="Storage Response159 Tests ori:MissingFile_1033" method="MissingFile_1033" time="0.046" result="Pass" />
+      <test name="Storage Response159 Tests ori:MissingFile_1039" method="MissingFile_1039" time="0.033" result="Pass" />
+      <test name="Storage Response159 Tests ori:UniformHeader_1033" method="UniformHeader_1033" time="0.05" result="Pass" />
+      <test name="Storage Response159 Tests ori:UniformHeader_1039" method="UniformHeader_1039" time="0.037" result="Pass" />
+      <test name="Storage Response159 Tests ori:TypeSetEnvelope_1033" method="TypeSetEnvelope_1033" time="0.023" result="Pass" />
+      <test name="Storage Response159 Tests ori:TypeSetEnvelope_1039" method="TypeSetEnvelope_1039" time="0.023" result="Pass" />
+      <test name="Storage Response159 Tests ori:DocumentTypeName_1033" method="DocumentTypeName_1033" time="0.026" result="Pass" />
+      <test name="Storage Response159 Tests ori:DocumentTypeName_1039" method="DocumentTypeName_1039" time="0.027" result="Pass" />
+      <test name="Storage Response159 Tests ori:WarningObjects_1033" method="WarningObjects_1033" time="0.03" result="Pass" />
+      <test name="Storage Response159 Tests ori:WarningObjects_1039" method="WarningObjects_1039" time="0.027" result="Pass" />
+      <test name="Storage Response159 Tests ori:UploadDocumentType_1033" method="UploadDocumentType_1033" time="0.074" result="Pass" />
+      <test name="Storage Response159 Tests ori:UploadDocumentType_1039" method="UploadDocumentType_1039" time="0.043" result="Pass" />
+      <test name="Storage Response159 Tests ori:Scenario_ACF2_MissingFileName_SingleError_1033" method="Scenario_ACF2_MissingFileName_SingleError_1033" time="0.06" result="Pass" />
+      <test name="Storage Response159 Tests ori:Scenario_ACF2_MissingFileName_SingleError_1039" method="Scenario_ACF2_MissingFileName_SingleError_1039" time="0.04" result="Pass" />
+      <test name="Storage Response159 Tests ori:Scenario_ACF3_NestedProblems_HaveNextStep_1033" method="Scenario_ACF3_NestedProblems_HaveNextStep_1033" time="0.05" result="Pass" />
+      <test name="Storage Response159 Tests ori:Scenario_ACF3_NestedProblems_HaveNextStep_1039" method="Scenario_ACF3_NestedProblems_HaveNextStep_1039" time="0.03" result="Pass" />
+      <test name="Storage Response159 Tests ori:Scenario_ACF4_Examples_NoTargetParameter" method="Scenario_ACF4_Examples_NoTargetParameter" time="0.01" result="Pass" />
+      <test name="Storage Response159 Tests ori:Scenario_ACF6a_Lists_HideAccountPath_1033" method="Scenario_ACF6a_Lists_HideAccountPath_1033" time="0.084" result="Pass" />
+      <test name="Storage Response159 Tests ori:Scenario_ACF6a_Lists_HideAccountPath_1039" method="Scenario_ACF6a_Lists_HideAccountPath_1039" time="0.056" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Write166 Tests ori" x-code-unit="96261" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:41" total="26" passed="26" failed="0" time="1.603">
+    <collection name="Storage Write166 Tests ori" total="26" passed="26" failed="0" skipped="0" time="1.603">
+      <test name="Storage Write166 Tests ori:FileCreateConsent_1033" method="FileCreateConsent_1033" time="0.054" result="Pass" />
+      <test name="Storage Write166 Tests ori:FileCreateConsent_1039" method="FileCreateConsent_1039" time="0.03" result="Pass" />
+      <test name="Storage Write166 Tests ori:UploadCommitConsent_1033" method="UploadCommitConsent_1033" time="0.07" result="Pass" />
+      <test name="Storage Write166 Tests ori:UploadCommitConsent_1039" method="UploadCommitConsent_1039" time="0.05" result="Pass" />
+      <test name="Storage Write166 Tests ori:DefinitionExportConsent_1033" method="DefinitionExportConsent_1033" time="0.057" result="Pass" />
+      <test name="Storage Write166 Tests ori:DefinitionExportConsent_1039" method="DefinitionExportConsent_1039" time="0.047" result="Pass" />
+      <test name="Storage Write166 Tests ori:ExportRunConsent_1033" method="ExportRunConsent_1033" time="0.067" result="Pass" />
+      <test name="Storage Write166 Tests ori:ExportRunConsent_1039" method="ExportRunConsent_1039" time="0.047" result="Pass" />
+      <test name="Storage Write166 Tests ori:UploadDataExchangeConsent_1033" method="UploadDataExchangeConsent_1033" time="0.06" result="Pass" />
+      <test name="Storage Write166 Tests ori:UploadDataExchangeConsent_1039" method="UploadDataExchangeConsent_1039" time="0.06" result="Pass" />
+      <test name="Storage Write166 Tests ori:OffloadConsent_1033" method="OffloadConsent_1033" time="0.09" result="Pass" />
+      <test name="Storage Write166 Tests ori:OffloadConsent_1039" method="OffloadConsent_1039" time="0.05" result="Pass" />
+      <test name="Storage Write166 Tests ori:LinkedSourceSurvivesRestore_1033" method="LinkedSourceSurvivesRestore_1033" time="0.064" result="Pass" />
+      <test name="Storage Write166 Tests ori:LinkedSourceSurvivesRestore_1039" method="LinkedSourceSurvivesRestore_1039" time="0.063" result="Pass" />
+      <test name="Storage Write166 Tests ori:LinkedSourceSurvivesDelete_1033" method="LinkedSourceSurvivesDelete_1033" time="0.05" result="Pass" />
+      <test name="Storage Write166 Tests ori:LinkedSourceSurvivesDelete_1039" method="LinkedSourceSurvivesDelete_1039" time="0.037" result="Pass" />
+      <test name="Storage Write166 Tests ori:FreshOffloadDeletesOwnedFile_1033" method="FreshOffloadDeletesOwnedFile_1033" time="0.057" result="Pass" />
+      <test name="Storage Write166 Tests ori:FreshOffloadDeletesOwnedFile_1039" method="FreshOffloadDeletesOwnedFile_1039" time="0.05" result="Pass" />
+      <test name="Storage Write166 Tests ori:InvalidOverwriteRefused_1033" method="InvalidOverwriteRefused_1033" time="0.024" result="Pass" />
+      <test name="Storage Write166 Tests ori:InvalidOverwriteRefused_1039" method="InvalidOverwriteRefused_1039" time="0.023" result="Pass" />
+      <test name="Storage Write166 Tests ori:LinkedFileProtectedWithConsent_1033" method="LinkedFileProtectedWithConsent_1033" time="0.04" result="Pass" />
+      <test name="Storage Write166 Tests ori:LinkedFileProtectedWithConsent_1039" method="LinkedFileProtectedWithConsent_1039" time="0.07" result="Pass" />
+      <test name="Storage Write166 Tests ori:CommitToRecordDoesNotWriteStorage_1033" method="CommitToRecordDoesNotWriteStorage_1033" time="0.057" result="Pass" />
+      <test name="Storage Write166 Tests ori:CommitToRecordDoesNotWriteStorage_1039" method="CommitToRecordDoesNotWriteStorage_1039" time="0.07" result="Pass" />
+      <test name="Storage Write166 Tests ori:CreateLinkedSourceSurvivesRestore_1033" method="CreateLinkedSourceSurvivesRestore_1033" time="0.054" result="Pass" />
+      <test name="Storage Write166 Tests ori:CreateLinkedSourceSurvivesRestore_1039" method="CreateLinkedSourceSurvivesRestore_1039" time="0.05" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Storage Contract Tests ori" x-code-unit="96265" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:45" total="8" passed="8" failed="0" time="0.236">
+    <collection name="Storage Contract Tests ori" total="8" passed="8" failed="0" skipped="0" time="0.236">
+      <test name="Storage Contract Tests ori:EveryType_DeclaresEveryRequiredChapter" method="EveryType_DeclaresEveryRequiredChapter" time="0.04" result="Pass" />
+      <test name="Storage Contract Tests ori:EveryType_ErrorsCarryCodeWhenAndFix" method="EveryType_ErrorsCarryCodeWhenAndFix" time="0.016" result="Pass" />
+      <test name="Storage Contract Tests ori:EveryType_DirectionMatchesEffect" method="EveryType_DirectionMatchesEffect" time="0.013" result="Pass" />
+      <test name="Storage Contract Tests ori:EveryType_ResponseFieldsAreDescribed" method="EveryType_ResponseFieldsAreDescribed" time="0.017" result="Pass" />
+      <test name="Storage Contract Tests ori:DefinitionGet_LineDefsAndMappings_AreArraysWithChildren" method="DefinitionGet_LineDefsAndMappings_AreArraysWithChildren" time="0.017" result="Pass" />
+      <test name="Storage Contract Tests ori:EveryType_HasSuccessExampleThatMatchesTheResponse" method="EveryType_HasSuccessExampleThatMatchesTheResponse" time="0.04" result="Pass" />
+      <test name="Storage Contract Tests ori:EveryType_WorkflowStepsAndRelatedTypesExist" method="EveryType_WorkflowStepsAndRelatedTypesExist" time="0.017" result="Pass" />
+      <test name="Storage Contract Tests ori:EveryType_HasDiscoveryTextsInBothLanguages" method="EveryType_HasDiscoveryTextsInBothLanguages" time="0.02" result="Pass" />
+    </collection>
+  </assembly>
+  <assembly name="Attachments Build Tests ori" x-code-unit="96274" test-framework="PS Test Runner" run-date="2026-10-23" run-time="16:58:47" total="13" passed="13" failed="0" time="0.476">
+    <collection name="Attachments Build Tests ori" total="13" passed="13" failed="0" skipped="0" time="0.476">
+      <test name="Attachments Build Tests ori:Language72_Discovery_ExactEnglish" method="Language72_Discovery_ExactEnglish" time="0.01" result="Pass" />
+      <test name="Attachments Build Tests ori:Language72_Discovery_ExactIcelandic" method="Language72_Discovery_ExactIcelandic" time="0.013" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC03_MessageTypes_ResolveDistinctContracts" method="Scenario_AC03_MessageTypes_ResolveDistinctContracts" time="0.013" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC02_TypeSet_ImportDefinitionIsPersisted" method="Scenario_AC02_TypeSet_ImportDefinitionIsPersisted" time="0.043" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC02_TypeSet_MissingDefinitionDoesNotWrite" method="Scenario_AC02_TypeSet_MissingDefinitionDoesNotWrite" time="0.017" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC02_TypeSet_ExportDefinitionDoesNotWrite" method="Scenario_AC02_TypeSet_ExportDefinitionDoesNotWrite" time="0.016" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC02_DefinitionExport_ReturnsExistingHeader" method="Scenario_AC02_DefinitionExport_ReturnsExistingHeader" time="0.02" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC03_DefinitionDelete_UnusedHeaderIsRemoved" method="Scenario_AC03_DefinitionDelete_UnusedHeaderIsRemoved" time="0.02" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC03_DefinitionDelete_ReferencedHeaderIsPreserved" method="Scenario_AC03_DefinitionDelete_ReferencedHeaderIsPreserved" time="0.027" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC03_DefinitionDelete_MissingHeaderDoesNotWrite" method="Scenario_AC03_DefinitionDelete_MissingHeaderDoesNotWrite" time="0.017" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC03_ExportRun_ExportHeaderIsPersisted" method="Scenario_AC03_ExportRun_ExportHeaderIsPersisted" time="0.05" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC03_ExportRun_ImportDefinitionDoesNotWrite" method="Scenario_AC03_ExportRun_ImportDefinitionDoesNotWrite" time="0.026" result="Pass" />
+      <test name="Attachments Build Tests ori:Scenario_AC03_ExportRun_MissingFileNameDoesNotWrite" method="Scenario_AC03_ExportRun_MissingFileNameDoesNotWrite" time="0.02" result="Pass" />
+    </collection>
+  </assembly>
+</assemblies>

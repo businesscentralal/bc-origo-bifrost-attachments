@@ -1,0 +1,11 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "lcid": 1033,
+  "scenario": "typeset",
+  "type": "DataExchange.Type.Set",
+  "messageRow": "\t{2b15521d-8dd2-4611-9b59-282da62fa8d2}\t\n\t1.0\tDataExchange.Type.Set\tTask completed (Error)\tOrigo-BC Cloud Events MCP\t\tEnglish (United States)\t10/23/2026 5:04 PM\t10/23/2026\tCODEXW2\t10/23/2026 5:04 PM\t10 milliseconds\ttext/json\t",
+  "displayedResponse": "{\"status\":\"Error\",\"code\":\"InvalidParameterFormat\",\"error\":\"Parameter \n\"code\n\" exceeds the maximum of 20 characters.\",\"parameter\":\"code\",\"received\":\"XXXXXXXXXXXXXXXXXXXXX\",\"expected\":\"a JSON string of at most 20 characters\",\"nextStep\":\"Send \n\"code\n\" as a JSON string of at most 20 characters and retry.\",\"hint\":\"For usage details, call the \n\"Help.Implementation.Get\n\" message type with subject \n\"DataExchange.Type.Set\n\". Always read the help before calling a message type.\"}",
+  "verified": true,
+  "at": "2026-10-23T17:05:11.842Z"
+}

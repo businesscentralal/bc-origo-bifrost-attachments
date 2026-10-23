@@ -1,0 +1,11 @@
+{
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "containerId": "f005fd56b922",
+  "lcid": 1033,
+  "scenario": "record",
+  "type": "Storage.Attachment.CreateForRecord",
+  "messageRow": "\t{7a0aea5d-e926-4cae-b6fb-ba1fdce75c91}\t\n\t1.0\tStorage.Attachment.CreateForRecord\tTask completed (Error)\tOrigo-BC Cloud Events MCP\t\tEnglish (United States)\t10/23/2026 5:04 PM\t10/23/2026\tCODEXW2\t10/23/2026 5:04 PM\t16 milliseconds\ttext/json\t",
+  "displayedResponse": "{\"status\":\"Error\",\"code\":\"MultipleErrors\",\"error\":\"2 problems in the request. Nothing was changed.\",\"errors\":[{\"code\":\"MissingParameter\",\"error\":\"Send tableId or tableName to say which table the record is in.\",\"parameter\":\"tableId\",\"received\":\"(missing)\",\"expected\":\"tableId or tableName\",\"nextStep\":\"Send tableId or tableName, then retry the request.\"},{\"code\":\"InvalidParameter\",\"error\":\"Send exactly one content source: contentBase64 (or the alias content), storageCode with path, or sourceTarget with sourceSystemId.\",\"parameter\":\"contentBase64, storageCode, sourceSystemId\",\"expected\":\"exactly one of contentBase64 (or the alias content), storageCode with path, sourceTarget with sourceSystemId\",\"nextStep\":\"Choose one source: contentBase64 (or content), storageCode with path, or sourceTarget with sourceSystemId.\"}],\"hint\":\"For usage details, call the \n\"Help.Implementation.Get\n\" message type with subject \n\"Storage.Attachment.CreateForRecord\n\". Always read the help before calling a message type.\"}",
+  "verified": true,
+  "at": "2026-10-23T17:05:08.206Z"
+}

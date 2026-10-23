@@ -1,0 +1,19 @@
+{
+  "verified": true,
+  "containers": [
+    {
+      "containerId": "f005fd56b922",
+      "name": "brokkr-worker2-attachments175-f1-w1-20261023",
+      "owner": "worker-2",
+      "deleteSubmitted": true,
+      "startedAt": "2026-10-23T17:08:42.174Z",
+      "verified": true,
+      "deleteStatus": 204,
+      "absentReadback": {
+        "status": 404,
+        "at": "2026-10-23T17:08:43.015Z"
+      }
+    }
+  ],
+  "at": "2026-10-23T17:08:43.019Z"
+}

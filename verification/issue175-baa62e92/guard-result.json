@@ -1,0 +1,29 @@
+{
+  "containerId": "f005fd56b922",
+  "sha": "baa62e923df3d528dad61c4bb728373f3991a522",
+  "at": "2026-10-23T17:05:14.704Z",
+  "tool": "set_records",
+  "request": {
+    "table": "Customer",
+    "data": [
+      {
+        "primaryKey": {
+          "No_": "C00010"
+        },
+        "fields": {
+          "Name": "GUARD TEST MUST NOT CHANGE OWN CUSTOMER"
+        }
+      }
+    ],
+    "lcid": 1033
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"status\":\"Error\",\"code\":\"BlockedByWriteGuard\",\"error\":\"Field \\\"No., Name\\\" in table 18 must be included in the change log write guard setup to be updated via Bifrost.\",\"parameter\":\"data[0].primaryKey.No_\",\"expected\":\"a field the change log write guard allows\",\"nextStep\":\"Add the field to the change log write guard setup, or send force true when the guard mode is Via force and you hold the force permission.\",\"hint\":\"For usage details, call the \\\"Help.Implementation.Get\\\" message type with subject \\\"Data.Records.Set\\\". Always read the help before calling a message type.\",\"blockedFields\":[{\"fieldNo\":1,\"fieldName\":\"No.\",\"fieldCaption\":\"No.\"},{\"fieldNo\":2,\"fieldName\":\"Name\",\"fieldCaption\":\"Name\"}],\"guardMode\":\"Blocked\",\"forceAvailable\":false}"
+      }
+    ],
+    "isError": true
+  }
+}
