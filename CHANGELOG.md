@@ -6,6 +6,14 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-23) - UAT follow-ups from #175 (external acceptance remains tracked)
+
+- `Storage Attachment Mgt ori` (10035136) validates CreateLinked file names only after the required-value reader succeeds, so a missing, null or empty name reports one MissingParameter and malformed JSON reports one format error. CreateForRecord's collected table, record and source errors include actionable next steps; a missing table also carries `received`.
+- `Storage Request Reader ori` (10035194) supplies recovery guidance for object/array text values and corrects the Icelandic bounded-string wording to “JSON-streng”. `Storage Att. Restore Impl ori` (10035154) describes the existing ownership rule: only remote files created by that attachment are deleted; pre-existing and legacy files are preserved. Catalogue and selection descriptions agree in both languages.
+- **H2 contract change, Gunnar approved in issue #175 comment 6367540500:** `Storage Request Mgt ori` (10035193) returns listing `parentDirectory` relative to the connection base path (empty at its root), and `name` as the leaf name. Provider-prefixed metadata is not exposed by Storage.File.List or the shared Storage.Directory.List serializer. The response chapter describes this boundary. Test-only persisted connector 96262 supplies adversarial provider-prefixed metadata for native and self-seeded MCP regressions.
+- `Storage Contract Parts ori` (10035183) refreshes affected CreateLinked/CreateForRecord refusal answers. Inline CreateForRecord examples omit the undeclared `target` key; `sourceTarget` continues to select an existing attachment only when paired with `sourceSystemId`.
+- Bilingual native regressions in test codeunit 96258 cover missing/null/empty/malformed file names and independently collected actionable CreateForRecord errors. F1 incorporates retained worker-6 PR #174 after its authorized merge into main; folder-style Upload.Begin examples use the live flat-file next step. F2/F3 H2 is approved in PR #181 comment 6369323257. Current-tip verification and delivery remain tracked separately.
+
 ### Fixed (2026-10-23) - Linked incoming-document Data Exchange processing (#23)
 
 - Codeunit 10035137 `Storage Attachment Subscr ori` supplies Bifröst-linked incoming-document attachment content to the base Data Exchange source hook without restoring the local BLOB or changing the remote file. Ordinary attachments and definitions with an external data-handling codeunit keep their existing path.
