@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "63424c904e55d5a331c56a6d671ccf723016a6c5",
+  "sourceSha": "cd93f3b2c1ea745a1c28d6971884d68b6c801092",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -275,8 +275,8 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-23T17:36:55.047740+00:00",
-  "inventoryPreparedFromDocumentationHead": "63424c904e55d5a331c56a6d671ccf723016a6c5",
+  "refreshedAt": "2026-10-23T17:47:18.329866+00:00",
+  "inventoryPreparedFromDocumentationHead": "cd93f3b2c1ea745a1c28d6971884d68b6c801092",
   "productSourceBaselineUnchanged": false,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
@@ -336,7 +336,7 @@
     "app/src/MessageTypes/DataExchange/DataExchPipelineMsgType.EnumExt.al": "53ef3e5113ac91a19051f0da8f5de1eda5e1579b3d7609ba7a730959e6132054",
     "app/src/MessageTypes/DataExchange/DataExchTypeListImpl.Codeunit.al": "76772386737d3f4ece51f00324a1e33c927cab9625a8e24d8be303f5975f7a18",
     "app/src/MessageTypes/DataExchange/DataExchTypeSetEnumExt.EnumExt.al": "ecf772a0bb97da9d9281721e4a799f294d2a6cb8c9f30c232dc4c8abce16f1ea",
-    "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al": "c58c7493d11db690ec333a9f4daf9fcc1cb6780e017336fa8a32d4d448a1bac7",
+    "app/src/MessageTypes/DataExchange/DataExchTypeSetImpl.Codeunit.al": "31434dcb491514726f7c5c86045375a3b93c3a941603db9205742dd395db6326",
     "app/src/MessageTypes/Directories/StorageDirCreateImpl.Codeunit.al": "9bcec1feaf5e54924a2ee7c7c8cd23c2896cca03331565fdd384e0cfd8f09e74",
     "app/src/MessageTypes/Directories/StorageDirDeleteImpl.Codeunit.al": "39c713c97145b0546338f803e9a5a307520fbfb66e05604a4d566ff852784e18",
     "app/src/MessageTypes/Directories/StorageDirExistsImpl.Codeunit.al": "85f8bbe72e4b1468331ecac8aaa567cdb6a9bf0d018db3a049bca0ae2a9c7e0a",
