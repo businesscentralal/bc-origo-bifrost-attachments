@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "ac32ed49efc5ad05dd7e5d1fe073623ed857f297",
+  "sourceSha": "10a8b397d5c8cdd3aa61703144dda9139064b058",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -276,7 +276,7 @@
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
   "refreshedAt": "2026-10-23T19:00:00+00:00",
-  "inventoryPreparedFromDocumentationHead": "ac32ed49efc5ad05dd7e5d1fe073623ed857f297",
+  "inventoryPreparedFromDocumentationHead": "10a8b397d5c8cdd3aa61703144dda9139064b058",
   "productSourceBaselineUnchanged": false,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
