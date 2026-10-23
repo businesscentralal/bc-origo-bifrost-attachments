@@ -282,7 +282,7 @@ codeunit 10035193 "Storage Request Mgt ori"
         end;
         if TempFileAccountContent.FindSet() then
             repeat
-                EntriesArray.Add(EntryToJson(TempFileAccountContent));
+                EntriesArray.Add(EntryToJson(TempFileAccountContent, Path));
             until TempFileAccountContent.Next() = 0;
         DataObject.Add('path', Path);
         DataObject.Add('entries', EntriesArray);
@@ -581,11 +581,16 @@ codeunit 10035193 "Storage Request Mgt ori"
         Argument."Content Type" := 'text/json';
     end;
 
-    local procedure EntryToJson(var TempFileAccountContent: Record "File Account Content" temporary) EntryObject: JsonObject
+    local procedure EntryToJson(var TempFileAccountContent: Record "File Account Content" temporary; RelativeParentPath: Text) EntryObject: JsonObject
+    var
+        NameParts: List of [Text];
     begin
-        EntryObject.Add('name', TempFileAccountContent.Name);
+        // Provider metadata can contain the account base path. Only the caller's
+        // relative directory and the entry's leaf name belong in the wire contract.
+        NameParts := ConvertStr(TempFileAccountContent.Name, '\', '/').TrimEnd('/').Split('/');
+        EntryObject.Add('name', NameParts.Get(NameParts.Count()));
         EntryObject.Add('type', EntryTypeName(TempFileAccountContent."Type"));
-        EntryObject.Add('parentDirectory', TempFileAccountContent."Parent Directory");
+        EntryObject.Add('parentDirectory', RelativeParentPath);
     end;
 
     local procedure EntryTypeName(EntryType: Enum "Ext. File Storage File Type"): Text

@@ -831,7 +831,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                 begin
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The requested directory path.'));
                     Fields.Add(WithChildren(ContractMgt.ResponseField('entries', 'array', 'The files or directories found at the path.'),
-                        'name:string:The file or directory name.|type:string:File or Directory.|parentDirectory:string:The directory that holds the entry, as the connector reports it.'));
+                        'name:string:The file or directory name.|type:string:File or Directory.|parentDirectory:string:The directory relative to the storage connection base path; empty for the connection root. Provider account paths are never returned.'));
                 end;
             'Storage.File.Get':
                 begin

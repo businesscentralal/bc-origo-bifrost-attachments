@@ -16,8 +16,41 @@ codeunit 96262 "Storage MCP Connector ori" implements "Storage Connector ori"
     end;
 
     procedure ListEntries(StorageSetup: Record "Storage Setup ori"; Path: Text; EntryType: Enum "Ext. File Storage File Type"; var TempFileAccountContent: Record "File Account Content" temporary)
+    var
+        File: Record "Storage MCP File ori";
+        Segments: List of [Text];
+        Prefix: Text;
+        RelativePath: Text;
+        EntryPath: Text;
     begin
-        Error(UnsupportedErr);
+        TempFileAccountContent.Reset();
+        TempFileAccountContent.DeleteAll();
+        Path := ResolvePath(StorageSetup, Path);
+        Prefix := Path;
+        if Prefix <> '' then
+            Prefix += '/';
+        File.SetRange("Storage Code", StorageSetup.Code);
+        if File.FindSet() then
+            repeat
+                if File.Path.StartsWith(Prefix) then begin
+                    RelativePath := CopyStr(File.Path, StrLen(Prefix) + 1);
+                    Segments := RelativePath.Split('/');
+                    Clear(EntryPath);
+                    if (EntryType = EntryType::File) and (Segments.Count() = 1) and (RelativePath <> '') then
+                        EntryPath := File.Path;
+                    if (EntryType = EntryType::Directory) and (Segments.Count() > 1) then
+                        EntryPath := Prefix + Segments.Get(1);
+                    if EntryPath <> '' then begin
+                        TempFileAccountContent.Init();
+                        TempFileAccountContent."Type" := EntryType;
+                        // Deliberately return provider-prefixed names as well as parents:
+                        // the public serializer must keep both private.
+                        TempFileAccountContent.Name := CopyStr(EntryPath, 1, MaxStrLen(TempFileAccountContent.Name));
+                        TempFileAccountContent."Parent Directory" := CopyStr(Path, 1, MaxStrLen(TempFileAccountContent."Parent Directory"));
+                        if TempFileAccountContent.Insert() then;
+                    end;
+                end;
+            until File.Next() = 0;
     end;
 
     procedure GetFile(StorageSetup: Record "Storage Setup ori"; Path: Text; var TempBlob: Codeunit "Temp Blob")

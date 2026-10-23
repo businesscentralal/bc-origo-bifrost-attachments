@@ -692,6 +692,79 @@ codeunit 96258 "Storage Response159 Tests ori"
         end;
     end;
 
+    /// <summary>Issue 175 F6a: account-prefixed provider metadata stays private in LCID 1033.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_ACF6a_Lists_HideAccountPath_1033()
+    begin
+        CheckListingPrivacy(1033);
+    end;
+
+    /// <summary>Issue 175 F6a: account-prefixed provider metadata stays private in LCID 1039.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure Scenario_ACF6a_Lists_HideAccountPath_1039()
+    begin
+        CheckListingPrivacy(1039);
+    end;
+
+    local procedure CheckListingPrivacy(LanguageId: Integer)
+    var
+        StorageSetup: Record "Storage Setup ori";
+        File: Record "Storage MCP File ori";
+        StorageCode: Code[20];
+    begin
+        // [GIVEN] This test owns a connector, its account base and two explicit provider files.
+        StorageCode := CopyStr('X175LIST' + Format(LanguageId, 0, 9), 1, MaxStrLen(StorageCode));
+        StorageSetup.Init();
+        StorageSetup.Code := StorageCode;
+        StorageSetup.Description := 'Owned issue 175 listing fixture';
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"MCP Fixture";
+        StorageSetup."Base Path" := 'x175-private-account';
+        StorageSetup.Enabled := true;
+        StorageSetup.Insert();
+        File.Init();
+        File."Storage Code" := StorageCode;
+        File.Path := 'x175-private-account/root.txt';
+        File.Insert();
+        File.Path := 'x175-private-account/nested/child.txt';
+        File.Insert();
+
+        // [WHEN/THEN] Both root and nested file listings expose only connection-relative metadata.
+        AssertPrivateListing("Message Type ori"::"Storage.File.List", StorageCode, '', '', 'root.txt', LanguageId);
+        AssertPrivateListing("Message Type ori"::"Storage.File.List", StorageCode, '/nested/', 'nested', 'child.txt', LanguageId);
+        // The same serializer serves directories; infer this directory from the self-created nested file.
+        AssertPrivateListing("Message Type ori"::"Storage.Directory.List", StorageCode, '', '', 'nested', LanguageId);
+
+        File.SetRange("Storage Code", StorageCode);
+        File.DeleteAll();
+        StorageSetup.Delete();
+    end;
+
+    local procedure AssertPrivateListing(MessageType: Enum "Message Type ori"; StorageCode: Code[20]; RequestPath: Text; ExpectedParent: Text; ExpectedName: Text; LanguageId: Integer)
+    var
+        Request: JsonObject;
+        Response: JsonObject;
+        Entry: JsonObject;
+        Entries: JsonArray;
+        Token: JsonToken;
+        ResponseText: Text;
+    begin
+        Request.Add('storageCode', StorageCode);
+        Request.Add('path', RequestPath);
+        Response := Dispatch(MessageType, Request, LanguageId);
+        AssertEnvelope(Response);
+        LibraryAssert.AreEqual(ExpectedParent, Fixture.ReadText(Fixture.Data(Response), 'path'), 'The top-level path is connection-relative.');
+        Entries := Fixture.ReadArray(Fixture.Data(Response), 'entries');
+        LibraryAssert.AreEqual(1, Entries.Count(), 'The fixture has one direct child of the requested type.');
+        Entries.Get(0, Token);
+        Entry := Token.AsObject();
+        LibraryAssert.AreEqual(ExpectedParent, Fixture.ReadText(Entry, 'parentDirectory'), 'The parent directory never includes the account base path.');
+        LibraryAssert.AreEqual(ExpectedName, Fixture.ReadText(Entry, 'name'), 'Only the leaf entry name is public.');
+        Response.WriteTo(ResponseText);
+        LibraryAssert.IsFalse(ResponseText.Contains('x175-private-account'), 'No field may expose the provider account prefix.');
+    end;
+
     local procedure AssertEnvelope(Response: JsonObject)
     var
         Token: JsonToken;
