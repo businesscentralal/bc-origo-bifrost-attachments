@@ -1,0 +1,136 @@
+{
+  "context": {
+    "checkoutSha": "0b20d78feaa328a34d7147228689b15642fdfba1",
+    "sourceCommit": "0b20d78feaa328a34d7147228689b15642fdfba1",
+    "run": "39948723512",
+    "project": ".",
+    "buildUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512",
+    "job": "BuildALGoProject",
+    "attempt": "2",
+    "mode": "Test"
+  },
+  "stage": "finalize",
+  "stateSha256": "3f0c78385d177d784fa0b59574e0f70d230f1d915594da3d44d184e19414c194",
+  "outputs": [
+    {
+      "file": ".buildartifacts\\Apps\\Origo_Bifrost Attachments_28.3.2147483647.372.app",
+      "identity": {
+        "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
+        "publisher": "Origo",
+        "name": "Bifrost Attachments",
+        "version": "28.3.2147483647.372"
+      },
+      "friends": [
+        {
+          "id": "7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+          "publisher": "Origo",
+          "name": "Bifrost Attachments - Tests"
+        }
+      ],
+      "dependencies": [
+        {
+          "id": "7505e808-6e52-4b96-a328-82573391297a",
+          "publisher": "Origo",
+          "name": "Bifrost Foundation",
+          "version": "28.0.3.530"
+        }
+      ],
+      "application": "28.3.0.0",
+      "platform": "28.0.0.0",
+      "propagateDependencies": false,
+      "sourceCommit": "0b20d78feaa328a34d7147228689b15642fdfba1",
+      "compilerVersion": "17.0.42.60745",
+      "buildUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512",
+      "sha256": "7b3079f9ec33247e0f65b4644f4e756c60e36130bb7666f37d83b2ccc5560a26",
+      "contentSha256": "27f1eaa191809f9878a186eb4b0bde4d99efd7ce0bd5410d595469caaa9c426b",
+      "symbolReferenceSha256": "587845cd266c4c102610f6dd1e92140ed5ad6f9ed50a201fe91fcbd29907c049",
+      "compilerManifestSha256": "6997fa2908ee16d9402db39aece4ed137299809d070d49671191611186f73e08",
+      "bytes": 441068,
+      "expandedBytes": 2697238,
+      "entryCount": 106,
+      "resourceProfile": "generic",
+      "signatureTailBytes": 0
+    },
+    {
+      "file": ".buildartifacts\\TestApps\\Origo_Bifrost Attachments - Tests_28.3.2147483647.372.app",
+      "identity": {
+        "id": "7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+        "publisher": "Origo",
+        "name": "Bifrost Attachments - Tests",
+        "version": "28.3.2147483647.372"
+      },
+      "friends": [],
+      "dependencies": [
+        {
+          "id": "7505e808-6e52-4b96-a328-82573391297a",
+          "publisher": "Origo",
+          "name": "Bifrost Foundation",
+          "version": "28.0.3.530"
+        },
+        {
+          "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
+          "publisher": "Origo",
+          "name": "Bifrost Attachments",
+          "version": "28.3.0.0"
+        },
+        {
+          "id": "5d86850b-0d76-4eca-bd7b-951ad998e997",
+          "publisher": "Microsoft",
+          "name": "Tests-TestLibraries",
+          "version": "1.0.0.0"
+        },
+        {
+          "id": "d852d5d2-a39d-4179-baeb-f99a19e32510",
+          "publisher": "Microsoft",
+          "name": "Application Test Library",
+          "version": "1.0.0.0"
+        },
+        {
+          "id": "dd0be2ea-f733-4d65-bb34-a28f4624fb14",
+          "publisher": "Microsoft",
+          "name": "Library Assert",
+          "version": "1.0.0.0"
+        },
+        {
+          "id": "23de40a6-dfe8-4f80-80db-d70f83ce8caf",
+          "publisher": "Microsoft",
+          "name": "Test Runner",
+          "version": "1.0.0.0"
+        },
+        {
+          "id": "e7320ebb-08b3-4406-b1ec-b4927d3e280b",
+          "publisher": "Microsoft",
+          "name": "Any",
+          "version": "1.0.0.0"
+        },
+        {
+          "id": "5095f467-0a01-4b99-99d1-9ff1237d286f",
+          "publisher": "Microsoft",
+          "name": "Library Variable Storage",
+          "version": "1.0.0.0"
+        },
+        {
+          "id": "40860557-a18d-42ad-aecb-22b7dd80dc80",
+          "publisher": "Microsoft",
+          "name": "Permissions Mock",
+          "version": "1.0.0.0"
+        }
+      ],
+      "application": "28.3.0.0",
+      "platform": "28.0.0.0",
+      "propagateDependencies": false,
+      "sourceCommit": "0b20d78feaa328a34d7147228689b15642fdfba1",
+      "compilerVersion": "17.0.42.60745",
+      "buildUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512",
+      "sha256": "22978bbf77d8a061ead3e6d37414a9171f7de3d044e9a8d7432da6f016e7764f",
+      "contentSha256": "b01c2d17194a20fa592c9117698e9a42a4b38d679b37fc94fc79ac6e7e2a89be",
+      "symbolReferenceSha256": "08bc733fbccf0a85d1dbe125069fd70dd48f5658797a5c7de2def4c102bec022",
+      "compilerManifestSha256": "7b3e67991f4f7d28547c1d3ecfb94acccdf79c4baa13b0b65c0a2476b4de3723",
+      "bytes": 213927,
+      "expandedBytes": 1059678,
+      "entryCount": 75,
+      "resourceProfile": "generic",
+      "signatureTailBytes": 0
+    }
+  ]
+}

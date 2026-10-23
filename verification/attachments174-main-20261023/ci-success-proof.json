@@ -1,0 +1,30 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "runId": 39948723512,
+  "attempt": 2,
+  "result": "success",
+  "url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39948723512/attempts/2",
+  "fullSuite": true,
+  "executed": 455,
+  "passed": 455,
+  "failed": 0,
+  "skipped": 0,
+  "testResultsArtifactId": 12502541861,
+  "junitSha256": "aa48d00291a40d65f7377e7acb30ca16628d8ed7c6e1a7b05259a8f1abd1ce03",
+  "checkoutSourceCommit": "0b20d78feaa328a34d7147228689b15642fdfba1",
+  "candidateTreeSha": "182a0546ecd15c81d36a6a37229153403f2dc70b",
+  "checkoutTreeSha": "182a0546ecd15c81d36a6a37229153403f2dc70b",
+  "checkoutTreeMatchesCandidate": true,
+  "checkoutParents": [
+    "17ba5b8d64d078a1d180dc626391968b440ec7ed",
+    "fc6674e83b3c4a83650191fea8b131252c97be74"
+  ],
+  "artifactVersion": "28.3.2147483647.372",
+  "note": "Hosted artifacts stamp GitHub PR merge checkout0b20d78; GitHub readback proves its entire tree equals full candidatefc6674e. Owned artifacts separately stamp fullfc6674e at28.3.0.0. No older deployment used as proof.",
+  "at": "2026-10-23T12:56:04.974878+00:00",
+  "sourceMethodsReconciled": true,
+  "sourceMethodCount": 455,
+  "missing": [],
+  "extra": [],
+  "duplicates": []
+}
