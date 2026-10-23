@@ -139,7 +139,6 @@ codeunit 96205 "Storage Upload Tests"
         BeginReq: JsonObject;
         Response: JsonObject;
         ErrorToken: JsonToken;
-        Errors: JsonArray;
     begin
         // [SCENARIO] #183 — a Storage.Upload.Begin without fileName is refused before any storage call.
         Initialize();
