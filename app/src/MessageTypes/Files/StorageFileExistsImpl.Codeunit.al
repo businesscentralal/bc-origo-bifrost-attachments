@@ -59,8 +59,10 @@ codeunit 10035178 "Storage File Exists Impl ori" implements "Msg Interface ori",
     end;
 
     procedure GetTarget(var Target: JsonArray): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetTarget('Storage.File.Exists', Target));
     end;
 
     procedure GetParameters(var Parameters: JsonArray): Boolean
@@ -109,15 +111,19 @@ codeunit 10035178 "Storage File Exists Impl ori" implements "Msg Interface ori",
     end;
 
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('Storage.File.Exists', Workflow));
     end;
 
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('Storage.File.Exists');
+        Guide.PrependSuccessExample('Storage.File.Exists', Examples);
         exit(Examples.Count() > 0);
     end;
 
@@ -130,9 +136,10 @@ codeunit 10035178 "Storage File Exists Impl ori" implements "Msg Interface ori",
     end;
 
     procedure GetNotes(var Notes: Text): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        Clear(Notes);
-        exit(false);
+        exit(Guide.GetNotes('Storage.File.Exists', Notes));
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"

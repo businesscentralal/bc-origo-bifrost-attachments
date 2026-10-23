@@ -61,8 +61,10 @@ codeunit 10035150 "Storage Account List Impl ori" implements "Msg Interface ori"
     end;
 
     procedure GetTarget(var Target: JsonArray): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetTarget('Storage.Account.List', Target));
     end;
 
     procedure GetParameters(var Parameters: JsonArray): Boolean
@@ -111,15 +113,19 @@ codeunit 10035150 "Storage Account List Impl ori" implements "Msg Interface ori"
     end;
 
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('Storage.Account.List', Workflow));
     end;
 
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('Storage.Account.List');
+        Guide.PrependSuccessExample('Storage.Account.List', Examples);
         exit(Examples.Count() > 0);
     end;
 
@@ -132,9 +138,10 @@ codeunit 10035150 "Storage Account List Impl ori" implements "Msg Interface ori"
     end;
 
     procedure GetNotes(var Notes: Text): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        Clear(Notes);
-        exit(false);
+        exit(Guide.GetNotes('Storage.Account.List', Notes));
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"

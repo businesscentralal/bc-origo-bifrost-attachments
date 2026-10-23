@@ -71,8 +71,10 @@ codeunit 10035186 "Storage Upload Begin Impl ori" implements "Msg Interface ori"
     /// <param name="Target">Unchanged; callers must ignore this value when the procedure returns false.</param>
     /// <returns>False; this chapter is not supplied.</returns>
     procedure GetTarget(var Target: JsonArray): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetTarget('Storage.Upload.Begin', Target));
     end;
 
     /// <summary>Supplies the parameters chapter for this message type.</summary>
@@ -142,8 +144,10 @@ codeunit 10035186 "Storage Upload Begin Impl ori" implements "Msg Interface ori"
     /// <param name="Workflow">Unchanged; callers must ignore this value when the procedure returns false.</param>
     /// <returns>False; this chapter is not supplied.</returns>
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('Storage.Upload.Begin', Workflow));
     end;
 
     /// <summary>Returns the recorded English examples for this message type.</summary>
@@ -152,8 +156,10 @@ codeunit 10035186 "Storage Upload Begin Impl ori" implements "Msg Interface ori"
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('Storage.Upload.Begin');
+        Guide.PrependSuccessExample('Storage.Upload.Begin', Examples);
         exit(Examples.Count() > 0);
     end;
 
@@ -172,9 +178,10 @@ codeunit 10035186 "Storage Upload Begin Impl ori" implements "Msg Interface ori"
     /// <param name="Notes">Out: operation notes about the upload root and file-name/directory parameters.</param>
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        Notes := 'The default root is bifrost-uploads/. fileName must be a file name without folders; use path or folderPath for directories.';
-        exit(true);
+        exit(Guide.GetNotes('Storage.Upload.Begin', Notes));
     end;
 
     /// <summary>Classifies the message direction for Foundation.</summary>

@@ -51,8 +51,10 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
     end;
 
     procedure GetTarget(var Target: JsonArray): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetTarget('Help.Storage.Get', Target));
     end;
 
     procedure GetParameters(var Parameters: JsonArray): Boolean
@@ -98,15 +100,19 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
     end;
 
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('Help.Storage.Get', Workflow));
     end;
 
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('Help.Storage.Get');
+        Guide.PrependSuccessExample('Help.Storage.Get', Examples);
         exit(Examples.Count() > 0);
     end;
 
@@ -119,9 +125,10 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
     end;
 
     procedure GetNotes(var Notes: Text): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        Clear(Notes);
-        exit(false);
+        exit(Guide.GetNotes('Help.Storage.Get', Notes));
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"

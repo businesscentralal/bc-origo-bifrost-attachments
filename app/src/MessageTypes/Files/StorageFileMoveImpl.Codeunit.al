@@ -59,8 +59,10 @@ codeunit 10035181 "Storage File Move Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetTarget(var Target: JsonArray): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetTarget('Storage.File.Move', Target));
     end;
 
     procedure GetParameters(var Parameters: JsonArray): Boolean
@@ -109,15 +111,19 @@ codeunit 10035181 "Storage File Move Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetWorkflow(var Workflow: JsonObject): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        exit(false);
+        exit(Guide.GetWorkflow('Storage.File.Move', Workflow));
     end;
 
     procedure GetExamples(var Examples: JsonArray): Boolean
     var
         ContractParts: Codeunit "Storage Contract Parts ori";
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
         Examples := ContractParts.GetExamples('Storage.File.Move');
+        Guide.PrependSuccessExample('Storage.File.Move', Examples);
         exit(Examples.Count() > 0);
     end;
 
@@ -130,9 +136,10 @@ codeunit 10035181 "Storage File Move Impl ori" implements "Msg Interface ori", "
     end;
 
     procedure GetNotes(var Notes: Text): Boolean
+    var
+        Guide: Codeunit "Storage Contract Guide ori";
     begin
-        Clear(Notes);
-        exit(false);
+        exit(Guide.GetNotes('Storage.File.Move', Notes));
     end;
 
     procedure GetMessageDirection(): Enum "Msg Direction ori"
