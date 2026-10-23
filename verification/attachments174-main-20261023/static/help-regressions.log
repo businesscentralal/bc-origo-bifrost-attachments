@@ -8,6 +8,6 @@ test_new_registered_type_cannot_escape_guard (test_help_chapters.HelpChapterTest
 test_shared_overview_must_name_the_requested_type (test_help_chapters.HelpChapterTests.test_shared_overview_must_name_the_requested_type) ... ok
 
 ----------------------------------------------------------------------
-Ran 8 tests in 0.008s
+Ran 8 tests in 0.012s
 
 OK

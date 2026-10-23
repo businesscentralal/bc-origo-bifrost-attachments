@@ -1,0 +1,16 @@
+{
+  "task": "1792753422.668589",
+  "appliedAt": "2026-10-23T11:46:15.762195+00:00",
+  "status": "applied-in-scope",
+  "rules": [
+    "slack-1791836634.601669",
+    "slack-1791888247.883129",
+    "direct-user-github-publication",
+    "grotta-routine-fact-validation-20261022"
+  ],
+  "evidence": "/workspace/evidence/attachments174-main-20261023-worker6",
+  "lessonIds": [
+    "attachments160-de0c3c5-recorded-response-drift-20261021-worker6"
+  ],
+  "application": "Deterministic GitHub head/test-source-count parsing; owned branch and COSMO reuse; main177 files hash equality; all examples procedure equality; newtip compile and full verification. Explicit cloud assignment retained. Unrelated78 custody routing preserved for root; no78 work replayed."
+}

@@ -1,5 +1,7 @@
 {
   "selfAppFixByteIdenticalToMain": true,
   "mainSha": "17ba5b8d64d078a1d180dc626391968b440ec7ed",
-  "sixRefreshedAnswersRetained": true
+  "sixRefreshedAnswersRetained": true,
+  "candidateSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "toolsDiffAgainstMain": ""
 }

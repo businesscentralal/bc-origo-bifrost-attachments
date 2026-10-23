@@ -1,0 +1,40 @@
+{
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "priorCount": 447,
+  "configuredCount": 455,
+  "added": [
+    {
+      "id": 96265,
+      "method": "DefinitionGet_LineDefsAndMappings_AreArraysWithChildren"
+    },
+    {
+      "id": 96265,
+      "method": "EveryType_DeclaresEveryRequiredChapter"
+    },
+    {
+      "id": 96265,
+      "method": "EveryType_DirectionMatchesEffect"
+    },
+    {
+      "id": 96265,
+      "method": "EveryType_ErrorsCarryCodeWhenAndFix"
+    },
+    {
+      "id": 96265,
+      "method": "EveryType_HasDiscoveryTextsInBothLanguages"
+    },
+    {
+      "id": 96265,
+      "method": "EveryType_HasSuccessExampleThatMatchesTheResponse"
+    },
+    {
+      "id": 96265,
+      "method": "EveryType_ResponseFieldsAreDescribed"
+    },
+    {
+      "id": 96265,
+      "method": "EveryType_WorkflowStepsAndRelatedTypesExist"
+    }
+  ],
+  "removed": []
+}
