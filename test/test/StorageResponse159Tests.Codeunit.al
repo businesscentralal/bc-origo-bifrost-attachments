@@ -715,7 +715,7 @@ codeunit 96258 "Storage Response159 Tests ori"
         StorageCode: Code[20];
     begin
         // [GIVEN] This test owns a connector, its account base and two explicit provider files.
-        StorageCode := CopyStr('X175LIST' + Format(LanguageId, 0, 9), 1, MaxStrLen(StorageCode));
+        StorageCode := Fixture.NewCode('X175L');
         StorageSetup.Init();
         StorageSetup.Code := StorageCode;
         StorageSetup.Description := 'Owned issue 175 listing fixture';
