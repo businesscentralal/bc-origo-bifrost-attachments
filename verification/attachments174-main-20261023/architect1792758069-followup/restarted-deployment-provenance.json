@@ -1,0 +1,16 @@
+[
+  {
+    "app": "Bifrost Attachments",
+    "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "artifactSha256": "feccaa9ef101f999974ba36eb3b4d54c2f4cf4e15c676f381cf87052e0e37c2a",
+    "deployedByteMatch": true,
+    "at": "2026-10-23T12:45:04.279495+00:00"
+  },
+  {
+    "app": "Bifrost Attachments - Tests",
+    "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "artifactSha256": "09752cb06ea5ae06c546d2e3f6633a9ebe4e3efdc7c88b0053d0d39c4fd9016c",
+    "deployedByteMatch": true,
+    "at": "2026-10-23T12:45:05.227967+00:00"
+  }
+]

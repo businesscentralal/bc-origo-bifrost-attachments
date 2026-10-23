@@ -1,0 +1,13 @@
+{
+  "id": "f0328cfb44e5",
+  "name": "worker6-attachments160-20261020-w1",
+  "beforeState": "Running",
+  "patchStatus": 204,
+  "afterStatus": 200,
+  "afterState": "Stopped",
+  "verifiedStopped": true,
+  "deleted": false,
+  "retentionReason": "Architect1792577401: protected unreported audit retention is designed/not a PR gate; retain same stopped container until actual postdeploy TesterUAT and issueclosure. No deletion probes/manual reporting. Business fixtures16tableinstances0rows; audit count2324.",
+  "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "at": "2026-10-23T12:49:55.482Z"
+}

@@ -1,0 +1,40 @@
+{
+  "source": "1792758069.030529",
+  "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+  "owner": "worker-6",
+  "startedAt": "2026-10-23T12:41:23.076397+00:00",
+  "status": "verified-after-restart",
+  "replayedArtifactPublishes": 0,
+  "replayedMcpTasks": 0,
+  "updatedAt": "2026-10-23T12:49:55.497728+00:00",
+  "native": {
+    "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "containerId": "f0328cfb44e5",
+    "fullSuite": true,
+    "executed": 455,
+    "passed": 455,
+    "failed": 0,
+    "skipped": 0,
+    "codeunits": 32,
+    "expectedSourceMethods": 455,
+    "missing": [],
+    "extra": [],
+    "duplicates": [],
+    "xmlSha256": "fdb6cc14cfeda8ef32a910d456c4fd5d409da439d361e3576f5e6ee0265d2725",
+    "failures": []
+  },
+  "ownedStop": {
+    "id": "f0328cfb44e5",
+    "name": "worker6-attachments160-20261020-w1",
+    "beforeState": "Running",
+    "patchStatus": 204,
+    "afterStatus": 200,
+    "afterState": "Stopped",
+    "verifiedStopped": true,
+    "deleted": false,
+    "retentionReason": "Architect1792577401: protected unreported audit retention is designed/not a PR gate; retain same stopped container until actual postdeploy TesterUAT and issueclosure. No deletion probes/manual reporting. Business fixtures16tableinstances0rows; audit count2324.",
+    "sourceSha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "at": "2026-10-23T12:49:55.482Z"
+  },
+  "finishedAt": "2026-10-23T12:49:55.497708+00:00"
+}

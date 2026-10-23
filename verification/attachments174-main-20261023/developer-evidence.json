@@ -213,5 +213,25 @@
     "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/integration-check.json",
     "https://github.com/businesscentralal/bc-origo-bifrost-attachments/blob/a6d40c019955f3e83c3d85e360fbdde00da77bd0/verification/attachments174-main-20261023/acceptance-matrix.json"
   ],
-  "createdAt": "2026-10-23T12:19:59.588242+00:00"
+  "createdAt": "2026-10-23T12:19:59.588242+00:00",
+  "architect1792758069Followup": {
+    "sha": "fc6674e83b3c4a83650191fea8b131252c97be74",
+    "sameOwnedContainer": "f0328cfb44e5",
+    "freshRestart": true,
+    "deployedSourceAndBytesMatch": true,
+    "dependencyPreflight": "Foundation28.0.7.606;Attachments/Test28.3.0.0",
+    "repeatFullSuite": {
+      "executed": 455,
+      "passed": 455,
+      "failed": 0,
+      "skipped": 0,
+      "codeunits": 32
+    },
+    "noSourceChange": true,
+    "noArtifactRepublish": true,
+    "noMcpTaskReplay": true,
+    "protectedAudit2324Preserved": true,
+    "verifiedStoppedAgain": true,
+    "actualFinishedAt": "2026-10-23T12:49:55.497708+00:00"
+  }
 }
