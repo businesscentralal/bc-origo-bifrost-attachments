@@ -421,7 +421,8 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         ExchangeType."Data Exch. Def. Code" := DefinitionCode;
         ExchangeType.Insert();
         FileName := 'phase2-invoice-' + LowerCase(Format(CreateGuid(), 0, 4)) + '.csv';
-        Csv := Format(PurchaseHeader."Document Type"::Invoice.AsInteger(), 0, 9) + ',' + Vendor."No." + ',';
+        Csv := Format(PurchaseHeader."Document Type"::Invoice.AsInteger(), 0, 9) + ',' + Vendor."No." + ', ';
+        // Preserve a blank base-currency column: the base CSV reader omits empty fields entirely.
         BeginUpload(FileName, UploadId, Path);
         AppendChunk(UploadId, 1, Csv);
         CommitUpload(TempArgument, UploadId);
