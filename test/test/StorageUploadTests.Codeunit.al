@@ -167,15 +167,13 @@ codeunit 96205 "Storage Upload Tests"
         TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
         Response: JsonObject;
-        NullValue: JsonValue;
     begin
         // [SCENARIO] #183 — a JSON null and an empty-string fileName are refused the same way as an absent one.
         Initialize();
 
         // [WHEN] fileName is JSON null
-        NullValue := JsonValue::CreateNull();
         BeginReq.Add('storageCode', MockCodeTok);
-        BeginReq.Add('fileName', NullValue);
+        BeginReq.Add('fileName', Json::Null);
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
         Response := TempArgument.GetResponseJson();
         LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'A JSON null fileName must be refused.');
