@@ -5,7 +5,6 @@ using Microsoft.Foundation.Attachment;
 using Microsoft.Sales.Customer;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
-using System.Json;
 using System.Text;
 
 /// <summary>
