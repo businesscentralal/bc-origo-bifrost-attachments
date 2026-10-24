@@ -167,22 +167,25 @@ codeunit 96205 "Storage Upload Tests"
         TempArgument: Record "Message Argument ori" temporary;
         BeginReq: JsonObject;
         Response: JsonObject;
+        NullValue: JsonValue;
     begin
         // [SCENARIO] #183 — a JSON null and an empty-string fileName are refused the same way as an absent one.
         Initialize();
 
         // [WHEN] fileName is JSON null
+        NullValue := JsonValue::CreateNull();
         BeginReq.Add('storageCode', MockCodeTok);
-        BeginReq.Add('fileName', JsonValue::Null);
+        BeginReq.Add('fileName', NullValue);
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
         Response := TempArgument.GetResponseJson();
         LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'A JSON null fileName must be refused.');
         LibraryAssert.AreEqual('MissingParameter', ReadText(Response, 'code'), 'A JSON null fileName must be a MissingParameter.');
         LibraryAssert.AreEqual('fileName', ReadText(Response, 'parameter'), 'The refusal must name fileName.');
+        AssertSingleError(Response);
 
         // [WHEN] fileName is an empty string
         Clear(TempArgument);
-        BeginReq := BeginReq.Clone();
+        BeginReq := BeginReq.Clone().AsObject();
         BeginReq.Remove('fileName');
         BeginReq.Add('fileName', '');
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
@@ -191,6 +194,7 @@ codeunit 96205 "Storage Upload Tests"
         LibraryAssert.AreEqual('MissingParameter', ReadText(Response, 'code'), 'An empty fileName must be a MissingParameter.');
         LibraryAssert.AreEqual('fileName', ReadText(Response, 'parameter'), 'The refusal must name fileName.');
         LibraryAssert.IsTrue(ReadText(Response, 'error').Contains('Required parameter "fileName" is missing.'), 'The error must say fileName is missing.');
+        AssertSingleError(Response);
 
         // [THEN] No session rows remain for either refused form
         Session.Reset();
@@ -941,5 +945,15 @@ codeunit 96205 "Storage Upload Tests"
         LibraryAssert.AreEqual(ExpectedCode, ReadText(ResponseJson, 'code'), StrSubstNo(WrongCodeErr, ExpectedCode));
         if ExpectedParameter <> '' then
             LibraryAssert.AreEqual(ExpectedParameter, ReadText(ResponseJson, 'parameter'), StrSubstNo(WrongParameterErr, ExpectedParameter));
+    end;
+
+    /// <summary>A single missing value must yield one top-level error, not an errors array with two entries.</summary>
+    local procedure AssertSingleError(Response: JsonObject)
+    var
+        Token: JsonToken;
+    begin
+        if Response.Get('errors', Token) then
+            LibraryAssert.AreEqual(1, Token.AsArray().Count(), 'A single missing value must yield a single error.');
+        LibraryAssert.AreNotEqual('MultipleErrors', ReadText(Response, 'code'), 'A single missing value must not be reported as multiple errors.');
     end;
 }
