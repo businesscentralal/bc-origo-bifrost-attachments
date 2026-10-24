@@ -101,10 +101,12 @@ codeunit 96200 "Storage Mock Impl" implements "Storage Connector ori", "Storage 
     end;
 
     /// <summary>Reports whether every failed move preserves the source with a known outcome.</summary>
-    /// <returns>True because injected failures preserve the source; an extra target copy may remain for explicit cleanup.</returns>
+    /// <returns>The configured mock capability; injected failures preserve the source when supported.</returns>
     procedure SupportsLinkedMove(): Boolean
+    var
+        MockState: Codeunit "Storage Mock State";
     begin
-        exit(true);
+        exit(MockState.SupportsLinkedMove());
     end;
 
     procedure MoveFile(StorageSetup: Record "Storage Setup ori"; SourcePath: Text; TargetPath: Text)

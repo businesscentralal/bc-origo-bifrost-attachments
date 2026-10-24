@@ -157,7 +157,7 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     /// <summary>Explains operation restrictions.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Does not delete a definition that a Data Exchange Type, a Bank Export/Import Setup (which bank accounts use as payment export, statement import or positive pay format), the payroll import format of the General Ledger Setup or a currency exchange rate service still uses.', Comment = 'is-IS=Eyðir ekki skilgreiningu sem gerð gagnaskipta, uppsetning bankaútflutnings eða bankainnflutnings (sem bankareikningar nota sem snið fyrir greiðsluútflutning, innflutning yfirlita eða jákvæða greiðslustaðfestingu), snið launainnflutnings í fjárhagsgrunni eða gengisþjónusta notar enn.';
+        NotesLbl: Label 'Does not delete a definition while Data Exchange entries reference it; delete those entries with DataExchange.Entry.Delete first. Does not delete a definition that a Data Exchange Type, a Bank Export/Import Setup (which bank accounts use as payment export, statement import or positive pay format), the payroll import format of the General Ledger Setup or a currency exchange rate service still uses.', Comment = 'is-IS=Eyðir ekki skilgreiningu meðan gagnaskiptafærslur vísa í hana; eyddu þeim fyrst með DataExchange.Entry.Delete. Eyðir ekki skilgreiningu sem gerð gagnaskipta, uppsetning bankaútflutnings eða bankainnflutnings (sem bankareikningar nota sem snið fyrir greiðsluútflutning, innflutning yfirlita eða jákvæða greiðslustaðfestingu), snið launainnflutnings í fjárhagsgrunni eða gengisþjónusta notar enn.';
     begin
         Notes := NotesLbl;
         exit(true);
@@ -190,12 +190,16 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     var
         DataExchDef: Record "Data Exch. Def";
         DataExchType: Record "Data Exchange Type";
+        DataExch: Record "Data Exch.";
         BankExportImportSetup: Record "Bank Export/Import Setup";
         Reader: Codeunit "Storage Request Reader ori";
         RequestMgt: Codeunit "Storage Request Mgt ori";
         RequestJson: JsonObject;
         ResponseJson: JsonObject;
         DefCode: Code[20];
+        EntriesExistErr: Label 'Data Exchange entries still use definition %1. The definition was not deleted.', Comment = '%1 = definition code||is-IS=Gagnaskiptafærslur nota enn skilgreiningu %1. Skilgreiningunni var ekki eytt.';
+        NoEntriesLbl: Label 'a definition with no Data Exchange entries', Comment = 'is-IS=skilgreining án gagnaskiptafærslna';
+        DeleteEntriesLbl: Label 'Use DataExchange.Entry.List to find the entries and DataExchange.Entry.Delete to delete them before retrying.', Comment = 'is-IS=Notaðu DataExchange.Entry.List til að finna færslurnar og DataExchange.Entry.Delete til að eyða þeim áður en þú reynir aftur.';
         NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
         UsedErr: Label 'Data Exchange definition %1 is referenced and cannot be deleted.', Comment = '%1 = definition code||is-IS=Vísað er í skilgreiningu gagnaskipta %1 og ekki er hægt að eyða henni.';
         DefinitionExpectedLbl: Label 'an existing Data Exchange definition', Comment = 'is-IS=fyrirliggjandi skilgreining gagnaskipta';
@@ -222,6 +226,12 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
             Reader.RespondIfErrors(Argument);
             exit;
         end;
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch.", false) then
+            exit;
+        DataExch.ReadIsolation := IsolationLevel::UpdLock;
+        DataExch.SetRange("Data Exch. Def Code", DefCode);
+        if not DataExch.IsEmpty() then
+            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(EntriesExistErr, DefCode), 'code', DefCode, NoEntriesLbl, DeleteEntriesLbl);
         DataExchType.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExchType.SetRange("Data Exch. Def. Code", DefCode);
         BankExportImportSetup.ReadIsolation := IsolationLevel::ReadCommitted;

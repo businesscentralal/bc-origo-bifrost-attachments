@@ -20,6 +20,22 @@ Business Central release versioning (`major.minor.build.revision`).
 - `Storage Contract Parts ori` (10035183) refreshes the recorded `Storage.Upload.Begin` missing-data example to the single MissingParameter answer.
 - Native refusals and allowed regressions in test codeunit 96205 cover absent, null and empty file names, the single-error shape and the no-session assertion.
 
+
+### Fixed (2026-10-23) - Data Exchange follow-up: preflight definition existence (#168)
+
+- Entry.Process preflight now checks the entry's Data Exchange definition before evaluating codeunit blockers; a deleted or unreadable definition returns the structured `RecordNotFound` answer for the entry instead of a raw platform error. Regression in test codeunit 96242.
+
+
+### Fixed (2026-10-21) - Data Exchange UAT follow-ups (#168)
+
+- Entry.Process refuses incompatible table-typed data-handling and pre/mapping/post codeunits with localized `PreconditionFailed` before execution. Import.Run and upload processing report the same refusal in `processResult.errors`; payroll journal mappings must run from their BC page. Definition.Delete now refuses definitions referenced by entries and names Entry.List/Entry.Delete as the recovery path.
+- File.Move describes linked-file refusal in caller terms. File.Copy/Move help lists sourcePath/targetPath; File.Create documents contentLength. Record-only upload help no longer requires a storage connection, and regressions preserve the correct English/Icelandic folder-in-fileName next step already merged with #159.
+- Type.Set accepts stable `entityType` values Invoice and Credit Memo, preserves an existing value when omitted, and reports the stored value. Invalid values are rejected before mutation.
+- The contract parameter guard ignores control words inside labels and comments while still refusing unproven conditional request reads. Type.Set's expected-value hint is translated while preserving its stable wire values.
+- Test-only codeunit/enumextension 96266 adds an owned-container loopback file fixture for cross-session MCP copy checks without database writes inside TryFunctions. It accepts only isolated W8168 codes and file names; it is not a production storage provider. Test codeunit 96267 (`Storage HTTP Fixture Tests ori`) covers the 96266 fixture isolation rules; it uses no persisted fixture data and creates nothing to clean up.
+- Changed codeunits 10035141, 10035155, 10035163, 10035165, 10035166, 10035170, 10035183 and 10035193; bilingual native regressions in 96264, mock capability in 96200/96201, and contract/rollback fixture alignment in 96216/96226. Icelandic XLF and runtime help stay synchronized. Verification evidence applies only to its recorded candidate.
+
+
 ### Fixed (2026-10-23) - Linked incoming-document Data Exchange processing (#23)
 
 - Codeunit 10035137 `Storage Attachment Subscr ori` supplies Bifröst-linked incoming-document attachment content to the base Data Exchange source hook without restoring the local BLOB or changing the remote file. Ordinary attachments and definitions with an external data-handling codeunit keep their existing path.
