@@ -14,6 +14,12 @@ Business Central release versioning (`major.minor.build.revision`).
 - `Storage Contract Parts ori` (10035183) refreshes affected CreateLinked/CreateForRecord refusal answers. Inline CreateForRecord examples omit the undeclared `target` key; `sourceTarget` continues to select an existing attachment only when paired with `sourceSystemId`.
 - Bilingual native regressions in test codeunit 96258 cover missing/null/empty/malformed file names and independently collected actionable CreateForRecord errors. F1 incorporates retained worker-6 PR #174 after its authorized merge into main; folder-style Upload.Begin examples use the live flat-file next step. F2/F3 H2 is approved in PR #181 comment 6369323257. Current-tip verification and delivery remain tracked separately.
 
+### Fixed (2026-10-23) - Upload.Begin missing/empty fileName validation (#183)
+
+- `Storage Upload Mgt ori` (10035197) refuses `Storage.Upload.Begin` when `fileName` is JSON null or an empty string with one stable MissingParameter before any storage call, matching the existing absent-parameter refusal (`Storage Request Reader ori` 10035194 already reports an absent fileName).
+- `Storage Contract Parts ori` (10035183) refreshes the recorded `Storage.Upload.Begin` missing-data example to the single MissingParameter answer.
+- Native refusals and allowed regressions in test codeunit 96205 cover absent, null and empty file names, the single-error shape and the no-session assertion.
+
 
 ### Fixed (2026-10-23) - Data Exchange follow-up: preflight definition existence (#168)
 

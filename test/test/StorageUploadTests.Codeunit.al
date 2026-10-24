@@ -132,6 +132,74 @@ codeunit 96205 "Storage Upload Tests"
     end;
 
     [Test]
+    procedure Begin_WithoutFileName_RefusedBeforeStorage()
+    var
+        Session: Record "Storage Upload Session ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        BeginReq: JsonObject;
+        Response: JsonObject;
+        ErrorToken: JsonToken;
+    begin
+        // [SCENARIO] #183 — a Storage.Upload.Begin without fileName is refused before any storage call.
+        Initialize();
+
+        // [WHEN] The request carries a storageCode but no fileName
+        BeginReq.Add('storageCode', MockCodeTok);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        Response := TempArgument.GetResponseJson();
+
+        // [THEN] It answers one MissingParameter naming fileName, with the stable recovery next step
+        LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'A missing fileName must be refused.');
+        LibraryAssert.AreEqual('MissingParameter', ReadText(Response, 'code'), 'The refusal must be a MissingParameter.');
+        LibraryAssert.AreEqual('fileName', ReadText(Response, 'parameter'), 'The refusal must name fileName.');
+        LibraryAssert.IsTrue(ReadText(Response, 'error').Contains('Required parameter "fileName" is missing.'), 'The error must say fileName is missing.');
+        LibraryAssert.IsTrue(ReadText(Response, 'nextStep').Contains('Provide "fileName" and send the request again.'), 'The refusal must carry the recovery next step.');
+        if Response.Get('errors', ErrorToken) then
+            LibraryAssert.AreEqual(1, ErrorToken.AsArray().Count(), 'A single missing value must yield a single error.');
+        Session.Reset();
+        LibraryAssert.AreEqual(0, Session.Count(), 'A refused begin must not create an upload session.');
+    end;
+
+    [Test]
+    procedure Begin_NullOrEmptyFileName_RefusedBeforeStorage()
+    var
+        Session: Record "Storage Upload Session ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        BeginReq: JsonObject;
+        Response: JsonObject;
+        NullName: JsonValue;
+    begin
+        // [SCENARIO] #183 — a JSON null and an empty-string fileName are refused the same way as an absent one.
+        Initialize();
+
+        // [WHEN] fileName is JSON null
+        BeginReq.Add('storageCode', MockCodeTok);
+        NullName.SetValueToNull();
+        BeginReq.Add('fileName', NullName);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        Response := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'A JSON null fileName must be refused.');
+        LibraryAssert.AreEqual('MissingParameter', ReadText(Response, 'code'), 'A JSON null fileName must be a MissingParameter.');
+        LibraryAssert.AreEqual('fileName', ReadText(Response, 'parameter'), 'The refusal must name fileName.');
+        AssertSingleError(Response);
+
+        // [WHEN] fileName is an empty string
+        Clear(TempArgument);
+        BeginReq.Replace('fileName', '');
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Begin", BeginReq);
+        Response := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Error', ReadText(Response, 'status'), 'An empty fileName must be refused.');
+        LibraryAssert.AreEqual('MissingParameter', ReadText(Response, 'code'), 'An empty fileName must be a MissingParameter.');
+        LibraryAssert.AreEqual('fileName', ReadText(Response, 'parameter'), 'The refusal must name fileName.');
+        LibraryAssert.IsTrue(ReadText(Response, 'error').Contains('Required parameter "fileName" is missing.'), 'The error must say fileName is missing.');
+        AssertSingleError(Response);
+
+        // [THEN] No session rows remain for either refused form
+        Session.Reset();
+        LibraryAssert.AreEqual(0, Session.Count(), 'Neither refused form may create an upload session.');
+    end;
+
+    [Test]
     procedure Begin_FileNameWithFolder_ReturnsErrorAndCreatesNoSession()
     var
         Session: Record "Storage Upload Session ori";
@@ -875,5 +943,15 @@ codeunit 96205 "Storage Upload Tests"
         LibraryAssert.AreEqual(ExpectedCode, ReadText(ResponseJson, 'code'), StrSubstNo(WrongCodeErr, ExpectedCode));
         if ExpectedParameter <> '' then
             LibraryAssert.AreEqual(ExpectedParameter, ReadText(ResponseJson, 'parameter'), StrSubstNo(WrongParameterErr, ExpectedParameter));
+    end;
+
+    /// <summary>A single missing value must yield one top-level error, not an errors array with two entries.</summary>
+    local procedure AssertSingleError(Response: JsonObject)
+    var
+        Token: JsonToken;
+    begin
+        if Response.Get('errors', Token) then
+            LibraryAssert.AreEqual(1, Token.AsArray().Count(), 'A single missing value must yield a single error.');
+        LibraryAssert.AreNotEqual('MultipleErrors', ReadText(Response, 'code'), 'A single missing value must not be reported as multiple errors.');
     end;
 }
