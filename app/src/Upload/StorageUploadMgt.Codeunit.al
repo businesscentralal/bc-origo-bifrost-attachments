@@ -74,7 +74,7 @@ codeunit 10035197 "Storage Upload Mgt ori"
         Reader.ReadPath(Argument, RequestJson, 'path', false, Path);
         Reader.ReadPath(Argument, RequestJson, 'folderPath', false, FolderPath);
         Reader.ReadNonNegativeInteger(Argument, RequestJson, 'declaredSize', false, DeclaredSize);
-        if StorageCode <> '' and FileName <> '' then begin
+        if (StorageCode <> '') and (FileName <> '') then begin
             Path := ResolveTargetPath(Path, FolderPath, FileName);
             Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
         end;
