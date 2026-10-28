@@ -258,9 +258,6 @@ codeunit 96258 "Storage Response159 Tests ori"
         Fixture.InitializeStorage();
         Request.Add('storageCode', Fixture.StorageCode());
         Request.Add('path', 'x159/input.txt');
-        Request.Add('target', 'DocumentAttachment');
-        Request.Add('tableId', Database::Customer);
-        Request.Add('no', 'X159');
         Request.Add('fileName', 'folder/file.txt');
         Response := Dispatch("Message Type ori"::"Storage.Attachment.CreateLinked", Request, LanguageId);
         Detail := FindProblem(Response, 'fileName');

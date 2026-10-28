@@ -6,6 +6,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-28) - Foundation-compatible test contracts (#188)
+
+- Test codeunit 96258 sends only declared CreateLinked keys when checking bilingual invalid-fileName guidance, so Foundation's unknown-parameter validation does not mask the intended refusal.
+- Test codeunit 96216 retains exact own-parameter counts, types, requiredness and duplicate checks while allowing Foundation's single integer `expectedCount` on irreversible registered contracts. Repeated direct `GetParameters` calls are compared with the direct contract, independently of Foundation's appended metadata.
+
 ### Fixed (2026-10-23) - UAT follow-ups from #175 (external acceptance remains tracked)
 
 - `Storage Attachment Mgt ori` (10035136) validates CreateLinked file names only after the required-value reader succeeds, so a missing, null or empty name reports one MissingParameter and malformed JSON reports one format error. CreateForRecord's collected table, record and source errors include actionable next steps; a missing table also carries `received`.
