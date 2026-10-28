@@ -245,9 +245,9 @@ codeunit 96216 "Storage Contract Batch2 Tests"
             Clear(Parameters);
             Parameters.Add('stale metadata');
             LibraryAssert.IsTrue(Contract.GetParameters(Parameters), TypeName + ' supplies parameters.');
-            LibraryAssert.AreEqual(ContractParameters(TypeName).Count(), Parameters.Count(), TypeName + ' replaces stale output.');
+            LibraryAssert.AreEqual(OwnContractParameters(TypeName).Count(), Parameters.Count(), TypeName + ' replaces stale output.');
             LibraryAssert.IsTrue(Contract.GetParameters(Parameters), TypeName + ' repeated parameter read.');
-            LibraryAssert.AreEqual(ContractParameters(TypeName).Count(), Parameters.Count(), TypeName + ' does not append duplicates.');
+            LibraryAssert.AreEqual(OwnContractParameters(TypeName).Count(), Parameters.Count(), TypeName + ' does not append duplicates.');
             foreach Token in Parameters do
                 LibraryAssert.IsTrue(Token.IsObject(), TypeName + ' removes stale scalar values.');
         end;
@@ -505,6 +505,31 @@ codeunit 96216 "Storage Contract Batch2 Tests"
             Parameters := Token.AsArray();
     end;
 
+    local procedure OwnContractParameters(TypeName: Text) Parameters: JsonArray
+    var
+        Contract: Interface "Msg Contract ori";
+        MessageType: Enum "Message Type ori";
+    begin
+        MessageType := Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName));
+        Contract := MessageType;
+        LibraryAssert.IsTrue(Contract.GetParameters(Parameters), TypeName + ' supplies its own parameters.');
+    end;
+
+    local procedure AssertRegisteredParameterCount(TypeName: Text; Parameters: JsonArray; ExpectedOwnCount: Integer)
+    var
+        Token: JsonToken;
+        ConfirmationCount: Integer;
+    begin
+        foreach Token in Parameters do
+            if JsonText(Token.AsObject(), 'name') = 'expectedCount' then begin
+                ConfirmationCount += 1;
+                AssertEffect(TypeName, 'irreversible');
+                LibraryAssert.AreEqual('integer', JsonText(Token.AsObject(), 'type'), 'Foundation confirmation is an integer.');
+            end;
+        LibraryAssert.IsTrue(ConfirmationCount <= 1, TypeName + ' must not duplicate expectedCount.');
+        LibraryAssert.AreEqual(ExpectedOwnCount + ConfirmationCount, Parameters.Count(), TypeName + ' exact registered parameter count including optional Foundation confirmation.');
+    end;
+
     local procedure AssertParameter(TypeName: Text; ParameterName: Text; Required: Boolean)
     var
         Parameters: JsonArray;
@@ -534,7 +559,9 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Matches: Integer;
     begin
         Parameters := ContractParameters(TypeName);
-        LibraryAssert.AreEqual(ExpectedCount, Parameters.Count(), TypeName + ' exact parameter count.');
+        // #188: Foundation may append its confirmation parameter to irreversible contracts.
+        LibraryAssert.AreEqual(ExpectedCount, OwnContractParameters(TypeName).Count(), TypeName + ' exact own parameter count.');
+        AssertRegisteredParameterCount(TypeName, Parameters, ExpectedCount);
         AssertParameter(TypeName, ParameterName, Required);
         foreach Token in Parameters do begin
             Entry := Token.AsObject();
