@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "bd2db93805d84189cc29aa13d4f42f5cdbcd8d80",
+  "sourceSha": "6248f2bc8cfc3aa902a0f8e2651089dfc5c2d173",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -256,8 +256,8 @@
   "files": {
     "app/app.json": "df2fd12bfcc2ddffb520084d896bca7f3a1073112064d45d6af8ba5651c1d6a9",
     "app/AppSourceCop.json": "3693ee0c9ff2b18b8528d8b9bc2ecb80610346762766e2d9c209e0742885f2e8",
-    ".AL-Go/settings.json": "a7a719e2adcb3ca74fcf88aeab533dc7af564abf709a9932cc11d21a9e67d58a",
-    "test/app.json": "fecf71073af0a3963536260bc5df2d2470e0ac2b1c117f294825cc3305591f1f",
+    ".AL-Go/settings.json": "6ab06ff6b8dffe4e46e542fe4f159414d4daa112360835b6e7ad27e0584dd68f",
+    "test/app.json": "e87caa4bca7d4776a6eacab0a48a4d21ea92767cca993d5b1b914af16c495ac5",
     "app/assets/Logo250x250.png": "0f9185810ff29e9c77c7258d7b7bd3a51f5fcaa2bed0bcbf4288fd673fc0cc60"
   },
   "offerPlan": {
@@ -275,8 +275,8 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-28T17:35:22.276616+00:00",
-  "inventoryPreparedFromDocumentationHead": "bd2db93805d84189cc29aa13d4f42f5cdbcd8d80",
+  "refreshedAt": "2026-10-28T17:39:01.549334+00:00",
+  "inventoryPreparedFromDocumentationHead": "6248f2bc8cfc3aa902a0f8e2651089dfc5c2d173",
   "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
