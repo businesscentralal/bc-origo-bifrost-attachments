@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "3a731d346717e3fbaa1be165a8e7546acdbd11b0",
+  "sourceSha": "b8d94f6c2e8a302533f6dd9a763269e1c15486e7",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -275,8 +275,8 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-28T16:16:37.165235+00:00",
-  "inventoryPreparedFromDocumentationHead": "3a731d346717e3fbaa1be165a8e7546acdbd11b0",
+  "refreshedAt": "2026-10-28T17:19:57.625814+00:00",
+  "inventoryPreparedFromDocumentationHead": "b8d94f6c2e8a302533f6dd9a763269e1c15486e7",
   "productSourceBaselineUnchanged": false,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
@@ -362,7 +362,7 @@
     "app/src/Permissions/BIFROSTAttach.PermissionSet.al": "c7480d4d7b9f81beae252037fc57dba4f2f477d73864a6ea75bfc7555c8ae8b9",
     "app/src/Permissions/BIFROSTDataExch.PermissionSet.al": "0cdac1a1f56e675083ad24f05936f824899f4a49a2b6ec1dee99e19c7748aabe",
     "app/src/Permissions/StorageFull.PermissionSetExt.al": "ac139d88c56e5d75c37fe8bab3af0aa82148647cbdb38b316839784353cabaed",
-    "app/src/Setup/AttachmentsRegistration.Codeunit.al": "7fa86a7f259053c66e3b8352361ff8097ad706700d0b4d519022b71595628400",
+    "app/src/Setup/AttachmentsRegistration.Codeunit.al": "9e4d83a1d870b4f76c968d0bc771c62af177872cdb5a94807501b51a5408b687",
     "app/src/Setup/AttachmentsSetup.Page.al": "f3bbba8e6068910faa2c55c92b0deee6b63f6fa5d5fcd4305a79e87136deba10",
     "app/src/Setup/SetupExt.PageExt.al": "6d1f321abfacba96db3caa6d246b6a8760f37ffb06a04b57d2a13857c2ad91b6",
     "app/src/Setup/StorageAccountLookup.Page.al": "8730792a02f1fb275a4d361722660087ce9e070d3a641bba37f876ba714858ac",
@@ -409,6 +409,7 @@
     "test/src/Permissions/Storage79Test.PermissionSet.al": "f6fd8f608c19e7843d7607a98df122a7c8cc56080401ab6577d63992f37f09f2",
     "test/src/Permissions/Storage79Type.PermissionSet.al": "e93c2b73c967197d5e00237414bd5ffc354c91082ec2107379a36e85bc5e62a7",
     "test/src/Permissions/StorageIface.PermissionSet.al": "302babe0ec98dd98f80a8979d7feba604a6be55db45d354bea19c6e7dd06f248",
+    "test/src/Permissions/StorageSetupP.PermissionSet.al": "12fec4c03f4c92df3736f2a39ae0c8823a0a803da991ff7ff7fd6b3858c192ac",
     "test/src/Storage23Fixture.PermissionSet.al": "e9792ed9c03d1184925c5dd0c7bf14da86d9b7790ab5dc2df5b699df52514dc9",
     "test/src/Storage23FixtureFile.Table.al": "dabd3db6ba8344233e6a63e4b2c1e1ea622ac1e6a49e15381ca7416f39875de7",
     "test/src/Storage23FixtureImpl.Codeunit.al": "2ab017ac0c728a6616d1a6b7dcb36c0349300b184042999c2da05c7d01811bd4",
@@ -454,6 +455,7 @@
     "test/test/StorageNativeFieldsTests.Codeunit.al": "2d2166e138792d32cf7d3950921028e40088079a68f18f8d92965ad3c36da695",
     "test/test/StorageRefusal122Tests.Codeunit.al": "a415ddfe4abadbecbc75cc8766e06e42e2317d650375f5741affa381d93da92c",
     "test/test/StorageRefusal125Tests.Codeunit.al": "a19e022410821e216689cb8935ae0ec0b69900ce0b176cf9e00282b195d841a1",
+    "test/test/StorageRegistrationTests.Codeunit.al": "866d3abe70b6e37356976f9daabf9026286236bc355823423171612b3b4bbc86",
     "test/test/StorageResponse159Tests.Codeunit.al": "b0728bd22d304cac7da8285306b0325653d17745fe61f290e0d38e1d0b19b17f",
     "test/test/StorageSetupPageTests.Codeunit.al": "c1a36da4664f94afe9c07b4b4daf7ccd9134da3441ecf160934e106865d8bf42",
     "test/test/StorageTakeoverProbeTests.Codeunit.al": "5f4a8d429f625b48dd1ca9425dcd1d99d2eb1818e87c4a0507298353b8d51de3",
