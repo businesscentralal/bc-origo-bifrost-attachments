@@ -6,6 +6,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-10-28) - Licence-admin setup with Attachments installed (#190)
+
+- Codeunit 10035191 `Attachments Registration ori` supplies inherent Execute permission so Foundation can build the app registry when a restricted licence administrator opens Bifröst Setup.
+- Test codeunit 96268 `Storage Registration Tests ori` opens the real setup page under the exact licence-admin role in English and Icelandic, checks the Attachments registry target, and checks read-only setup and storage permissions. Test permission set 96268 supplies only the platform read baseline; it grants no Attachments Execute permission and performs no Sync, consent, trial or licensing-state writes.
+
 ### Fixed (2026-10-23) - UAT follow-ups from #175 (external acceptance remains tracked)
 
 - `Storage Attachment Mgt ori` (10035136) validates CreateLinked file names only after the required-value reader succeeds, so a missing, null or empty name reports one MissingParameter and malformed JSON reports one format error. CreateForRecord's collected table, record and source errors include actionable next steps; a missing table also carries `received`.
