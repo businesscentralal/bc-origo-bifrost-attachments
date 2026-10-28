@@ -1,12 +1,14 @@
 {
   "candidateSha": "459ce05715126048e85a7a72220331f8abb143e3",
   "issue": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/190",
-  "recordedAt": "2026-10-28T17:44:57.937123+00:00",
+  "recordedAt": "2026-10-28T17:50:30.576114+00:00",
   "owner": "Litr (worker-9)",
   "status": "Developer verification passed; independent Claude, CI, Grok and delivery pending",
   "files": {
-    "acceptance-matrix.json": "bcdefb7aaaacc8e05ce319da2d14c07f9dc36599ad83ca98c1e5b5caa36cda4f",
-    "cleanup-summary.json": "79d32891b38255e30940e0ac545ed30bcd2e53a2acea0ab8520e82d6f554b96e",
+    "acceptance-matrix.json": "bc58ca083e54df4d51154c4b4dc49df337b27ee2a0a0478600a389f7532fb1c8",
+    "cleanup-summary.json": "7662a35357db88f4e6271d895557cdc536d988304dc6d520f78bae9ced3500b2",
+    "container-retained-state.json": "b2aafbd7877b7f3d8739ee823276f33b70c5d2cab97582c2f9c8c2e692cf3c54",
+    "container-stop-receipt.json": "0d34ba8dc9e2cb12de07f9809ec96cdb6f8a249871ffb0ebf46762d5d41342ea",
     "deployment-provenance.json": "00c22e421746d80473768079819b23a6a7330fa1c4558a120d8abd89f20ddb14",
     "foundation-provenance.json": "a21929d2727e06a91e0970d4da3bf73d4db9ec1d6edbf18f16e01e8db544227e",
     "full-suite-summary.json": "7bd607b898d14dd1574de6146e9e34f8170362b6ae8100f65a52db4e01438de9",

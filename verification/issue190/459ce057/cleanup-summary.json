@@ -7,6 +7,7 @@
   "mcpFixtures": "None; no message type changed",
   "externalFixturesCreated": 0,
   "externalCleanupRequired": false,
-  "containerState": "Running retained for amendments until Tester postdeploy UAT and issue closure; owned deletion remains pending",
-  "browserClosed": true
+  "containerState": "Stopped and retained; actual readback container-retained-state.json. Deletion pending Tester postdeploy UAT and issue closure.",
+  "browserClosed": true,
+  "stateEvidence": "container-retained-state.json"
 }

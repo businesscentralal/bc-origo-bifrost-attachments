@@ -28,5 +28,6 @@
     "touchedMessageTypes": [],
     "notApplicableReason": "Only inherent Execute on the app-registration subscriber and test-only objects changed. No message implementation, contract, discovery or dispatch behavior changed."
   },
-  "delivery": "Not delivered; PR preparation; Claude/Grok/CI/approval/Architect merge-deploy/Tester UAT/owned container closure pending."
+  "delivery": "Draft PR191 published; CI and independent Claude/Grok/approval/Architect merge-deploy/Tester UAT/owned container closure pending. Litr retains source.",
+  "prUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/191"
 }
