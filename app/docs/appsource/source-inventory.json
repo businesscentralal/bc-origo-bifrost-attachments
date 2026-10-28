@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "b8d94f6c2e8a302533f6dd9a763269e1c15486e7",
+  "sourceSha": "bd2db93805d84189cc29aa13d4f42f5cdbcd8d80",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -275,9 +275,9 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-28T17:19:57.625814+00:00",
-  "inventoryPreparedFromDocumentationHead": "b8d94f6c2e8a302533f6dd9a763269e1c15486e7",
-  "productSourceBaselineUnchanged": false,
+  "refreshedAt": "2026-10-28T17:35:22.276616+00:00",
+  "inventoryPreparedFromDocumentationHead": "bd2db93805d84189cc29aa13d4f42f5cdbcd8d80",
+  "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",

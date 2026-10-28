@@ -98,9 +98,9 @@ def collect(packet_path, appsourcecop_path):
         require(candidate.get('sourceCommit') == source, 'Candidate source mismatch')
         require(nonempty(candidate.get('buildUrl')), 'Missing candidate build provenance')
         foundation = candidate.get('foundation', {})
-        require(foundation.get('appId') == FOUNDATION_ID and foundation.get('version') == '28.0.3.530'
+        require(foundation.get('appId') == FOUNDATION_ID and foundation.get('version') == '28.0.10.632'
                 and hex_id(foundation.get('sha256'), 64) and foundation.get('friends') == [],
-                'Current candidate requires genuine Foundation 28.0.3.530 identity/hash and no friends')
+                'Current candidate requires genuine Foundation 28.0.10.632 identity/hash and no friends')
     rows = expected_rows(markets)
     seen = set()
     files = set()
