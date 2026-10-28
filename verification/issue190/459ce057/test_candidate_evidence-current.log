@@ -1,0 +1,20 @@
+test_claimed_actual_inventory_still_requires_review (test_candidate_evidence.CollectorTests.test_claimed_actual_inventory_still_requires_review) ... ok
+test_default_friends_refused (test_candidate_evidence.CollectorTests.test_default_friends_refused) ... ok
+test_duplicate_json_keys_refused (test_candidate_evidence.CollectorTests.test_duplicate_json_keys_refused) ... ok
+test_duplicate_rows_refused (test_candidate_evidence.CollectorTests.test_duplicate_rows_refused) ... ok
+test_fixture_matrix_never_certifies (test_candidate_evidence.CollectorTests.test_fixture_matrix_never_certifies) ... ok
+test_inconsistent_and_boolean_counts_refused (test_candidate_evidence.CollectorTests.test_inconsistent_and_boolean_counts_refused) ... ok
+test_market_or_provider_omission_refused (test_candidate_evidence.CollectorTests.test_market_or_provider_omission_refused) ... ok
+test_missing_candidate_is_blocked (test_candidate_evidence.CollectorTests.test_missing_candidate_is_blocked) ... ok
+test_old_foundation_cannot_be_renamed_as_current (test_candidate_evidence.CollectorTests.test_old_foundation_cannot_be_renamed_as_current) ... ok
+test_oversized_receipt_refused (test_candidate_evidence.CollectorTests.test_oversized_receipt_refused) ... ok
+test_path_escape_refused (test_candidate_evidence.CollectorTests.test_path_escape_refused) ... ok
+test_skipped_runtime_is_incomplete (test_candidate_evidence.CollectorTests.test_skipped_runtime_is_incomplete) ... ok
+test_stale_source_and_candidate_refused (test_candidate_evidence.CollectorTests.test_stale_source_and_candidate_refused) ... ok
+test_symlink_escape_refused (test_candidate_evidence.CollectorTests.test_symlink_escape_refused) ... ok
+test_tampered_raw_bytes_refused (test_candidate_evidence.CollectorTests.test_tampered_raw_bytes_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.210s
+
+OK

@@ -1,0 +1,13 @@
+test_clean_per_type_allocation_and_enum_boundaries (test_build_inputs.BuildInputsTests.test_clean_per_type_allocation_and_enum_boundaries) ... ok
+test_comments_strings_and_quoted_identifiers_do_not_create_objects (test_build_inputs.BuildInputsTests.test_comments_strings_and_quoted_identifiers_do_not_create_objects) ... ok
+test_duplicate_codeunit_is_rejected_without_any_symbol_package (test_build_inputs.BuildInputsTests.test_duplicate_codeunit_is_rejected_without_any_symbol_package) ... ok
+test_duplicate_enum_ordinal_across_extensions_is_rejected (test_build_inputs.BuildInputsTests.test_duplicate_enum_ordinal_across_extensions_is_rejected) ... ok
+test_foundation_floor_and_identity_are_checked (test_build_inputs.BuildInputsTests.test_foundation_floor_and_identity_are_checked) ... ok
+test_same_ordinal_on_unrelated_enums_is_valid (test_build_inputs.BuildInputsTests.test_same_ordinal_on_unrelated_enums_is_valid) ... ok
+test_self_dependency_is_rejected (test_build_inputs.BuildInputsTests.test_self_dependency_is_rejected) ... ok
+test_unallocated_object_and_enum_value_are_rejected (test_build_inputs.BuildInputsTests.test_unallocated_object_and_enum_value_are_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.006s
+
+OK

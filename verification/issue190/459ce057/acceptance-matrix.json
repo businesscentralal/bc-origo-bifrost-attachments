@@ -1,0 +1,32 @@
+{
+  "issue": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/190",
+  "sha": "459ce05715126048e85a7a72220331f8abb143e3",
+  "owner": "worker-9",
+  "criteria": [
+    {
+      "id": "AC01",
+      "status": "verified-source",
+      "evidence": "main a765892a74257d3aa180981a194ad265b882ca9f app/src/Setup/AttachmentsRegistration.Codeunit.al lacks InherentPermissions"
+    },
+    {
+      "id": "AC02",
+      "status": "implemented-compiled-published",
+      "evidence": "InherentPermissions=X on10035191; both apps exact-tip0errors0warnings"
+    },
+    {
+      "id": "AC03",
+      "status": "verified-native-2pass-0fail-0skip",
+      "evidence": "Native focused2/2 and browser-run2/2, LCIDs1033/1039; full-suite492/492 includes both methods."
+    },
+    {
+      "id": "AC04",
+      "status": "developer-verified-independent-and-CI-pending",
+      "evidence": "Full492/492, fresh2/2, browser-run2/2 LCIDs1033/1039 on Foundation28.0.10.632; app/test0errors0warnings; release compatibility0/0;108/108 tooling. CI now pins required632 with real artifact provenance. Independent Claude98677 and CI remain pending."
+    }
+  ],
+  "mcp": {
+    "touchedMessageTypes": [],
+    "notApplicableReason": "Only inherent Execute on the app-registration subscriber and test-only objects changed. No message implementation, contract, discovery or dispatch behavior changed."
+  },
+  "delivery": "Not delivered; PR preparation; Claude/Grok/CI/approval/Architect merge-deploy/Tester UAT/owned container closure pending."
+}

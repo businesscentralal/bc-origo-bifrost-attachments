@@ -1,0 +1,52 @@
+{
+  "sha": "459ce05715126048e85a7a72220331f8abb143e3",
+  "at": "2026-10-28T17:41:41.476112+00:00",
+  "suites": [
+    {
+      "suite": "test_foundation_staging.py",
+      "executed": 22,
+      "passed": 22,
+      "exitCode": 0,
+      "log": "test_foundation_staging-current.log"
+    },
+    {
+      "suite": "test_appsource_gate.py",
+      "executed": 46,
+      "passed": 46,
+      "exitCode": 0,
+      "log": "test_appsource_gate-current.log"
+    },
+    {
+      "suite": "test_build_inputs.py",
+      "executed": 8,
+      "passed": 8,
+      "exitCode": 0,
+      "log": "test_build_inputs-current.log"
+    },
+    {
+      "suite": "test_foundation_restore.py",
+      "executed": 16,
+      "passed": 16,
+      "exitCode": 0,
+      "log": "test_foundation_restore-current.log"
+    },
+    {
+      "suite": "test_candidate_evidence.py",
+      "executed": 15,
+      "passed": 15,
+      "exitCode": 0,
+      "log": "test_candidate_evidence-current.log"
+    },
+    {
+      "suite": "test_symbol_policy.SymbolPolicy.test_genuine_foundation_candidate_and_wrong_hash_source_version_friend_tail",
+      "executed": 1,
+      "passed": 1,
+      "exitCode": 0,
+      "log": "test_symbol_policy-candidate-current.log"
+    }
+  ],
+  "executed": 108,
+  "passed": 108,
+  "allPassed": true,
+  "skipped": 0
+}

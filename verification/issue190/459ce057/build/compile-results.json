@@ -1,0 +1,44 @@
+{
+  "startedAt": "2026-10-28T17:39:59.416346+00:00",
+  "finishedAt": "2026-10-28T17:40:24.075152+00:00",
+  "sha": "459ce05715126048e85a7a72220331f8abb143e3",
+  "cleanAtStart": true,
+  "cleanAtEnd": true,
+  "exactTip": true,
+  "results": [
+    {
+      "part": "app",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": [
+        "/workspace/tools/dotnet10/dotnet",
+        "/workspace/evidence/attachments158-worker9/al17/extension/bin/linux/alc.dll",
+        "/project:/workspace/attachments190-worker9/app",
+        "/packagecachepath:/workspace/evidence/attachments190-worker9/build/symbols",
+        "/out:/workspace/evidence/attachments190-worker9/build/app.app",
+        "/analyzer:/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.CodeCop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.UICop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.AppSourceCop.dll"
+      ],
+      "packageExists": true,
+      "sha": "459ce05715126048e85a7a72220331f8abb143e3",
+      "packageSha256": "d5e9197d75157d8f3c668e9cd63f00c90b447b211bc6886958826d9c02adc076"
+    },
+    {
+      "part": "test",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": [
+        "/workspace/tools/dotnet10/dotnet",
+        "/workspace/evidence/attachments158-worker9/al17/extension/bin/linux/alc.dll",
+        "/project:/workspace/attachments190-worker9/test",
+        "/packagecachepath:/workspace/evidence/attachments190-worker9/build/symbols",
+        "/out:/workspace/evidence/attachments190-worker9/build/test.app",
+        "/analyzer:/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.CodeCop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.UICop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.AppSourceCop.dll"
+      ],
+      "packageExists": true,
+      "sha": "459ce05715126048e85a7a72220331f8abb143e3",
+      "packageSha256": "51da20969374437e63b9dffce2e44953b39104e9812dde7cf6854216a686b2a9"
+    }
+  ]
+}

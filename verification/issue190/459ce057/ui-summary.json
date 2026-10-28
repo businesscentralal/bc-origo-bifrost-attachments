@@ -1,0 +1,23 @@
+{
+  "sha": "459ce05715126048e85a7a72220331f8abb143e3",
+  "containerId": "f082aa1fe153",
+  "foundationVersion": "28.0.10.632",
+  "clientLanguage": 1033,
+  "scenarioLanguages": [
+    1033,
+    1039
+  ],
+  "executed": 2,
+  "passed": 2,
+  "failed": 0,
+  "skipped": 0,
+  "scenario": "BC Web Client AL Test Tool Run Selected Tests for96268; actual Setup.OpenView under exact licence-admin role. Checks registry setup target, noneditable setup, visible Sync, denied storage-write permission.",
+  "evidence": [
+    "ui-459ce057-registration-webclient-passed.png",
+    "ui-459ce057-registration-webclient-passed.txt",
+    "ui-459ce057-registration-webclient-details.png",
+    "ui-459ce057-registration-webclient-details.txt"
+  ],
+  "browserClosed": true,
+  "at": "2026-10-28T17:44:49.028811+00:00"
+}

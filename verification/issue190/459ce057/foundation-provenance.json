@@ -1,0 +1,38 @@
+{
+  "Apps": {
+    "identity": {
+      "id": "7505e808-6e52-4b96-a328-82573391297a",
+      "publisher": "Origo",
+      "name": "Bifrost Foundation",
+      "version": "28.0.10.632"
+    },
+    "sha256": "3a9ca4f48568ff5b99d2a9f352bdd752e81cae28a91d606fc2f184465b1ce220",
+    "sourceCommit": "130955cdc524cf7da3f162d1aeb10777fde55ab1",
+    "buildUrl": "https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/40668907792",
+    "compilerVersion": "18.1.44.47295",
+    "friends": [],
+    "signatureTailBytes": 12137,
+    "artifactId": 12808162029
+  },
+  "TestApps": {
+    "identity": {
+      "id": "7505e808-6e52-4b96-a328-82573391297a",
+      "publisher": "Origo",
+      "name": "Bifrost Foundation",
+      "version": "28.0.10.632"
+    },
+    "sha256": "356dfc06533573b2d2351243f603ab6e4744f1a0dee933cff1c7d5b6cb4c40a2",
+    "sourceCommit": "130955cdc524cf7da3f162d1aeb10777fde55ab1",
+    "buildUrl": "https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/40668907792",
+    "compilerVersion": "18.1.44.47295",
+    "friends": [
+      {
+        "id": "9db1a0c9-c503-4793-a9e4-bcda3d3f3c94",
+        "publisher": "Origo",
+        "name": "Bifrost Foundation - Tests"
+      }
+    ],
+    "signatureTailBytes": 0,
+    "artifactId": 12809697604
+  }
+}

@@ -1,0 +1,826 @@
+- form "AL Test Tool":
+  - main:
+    - button "Back"
+    - heading "AL Test Tool" [level=1]
+    - text: Saved
+    - button "Not bookmarked": 
+    - button "This page will close in this window and it will open in a pop-up window.": 
+    - button "Toggle wide layout": 
+    - button "Suite Name"
+    - button "Choose a value for Suite Name"
+    - combobox "Suite Name": DEFAULT
+    - button "Test Runner Codeunit"
+    - button "Review or update the value for Test Runner Codeunit"
+    - button "Test Runner Codeunit 130450 - Test Runner - Isol. Codeunit": 130450 - Test Runner - Isol. Codeunit
+    - button "Code Coverage Tracking"
+    - combobox "Code Coverage Tracking":
+      - option "Disabled" [selected]
+      - option "Per Run"
+      - option "Per Codeunit"
+      - option "Per Test"
+    - button "Code Coverage Track All Sessions"
+    - checkbox "Code Coverage Track All Sessions"
+    - menubar:
+      - menuitem "Manage"
+      - menuitem "Run Tests"
+      - menuitem "Run Selected Tests"
+      - menuitem "Get Test Codeunits"
+      - menuitem "Get Test Codeunits by Range"
+      - menuitem "Show the rest": 
+      - menuitem "Share": 
+      - menuitemcheckbox "Toggle filter": 
+      - menuitem "List layout selected"
+    - treegrid "AL Test Tool":
+      - rowgroup:
+        - row "Error Toggle Expand / Collapse All Line Type Open menu for Line Type More Options Codeunit ID Open menu for Codeunit ID Name Open menu for Name Data Input Open menu for Data Input Run Open menu for Run Result Open menu for Result Error Message Open menu for Error Message Duration Open menu for Duration":
+          - columnheader "Error"
+          - columnheader "Toggle Expand / Collapse All Line Type Open menu for Line Type":
+            - button "Toggle Expand / Collapse All"
+            - text: Line Type
+            - button "Open menu for Line Type"
+          - columnheader "More Options"
+          - columnheader "Codeunit ID Open menu for Codeunit ID":
+            - text: Codeunit ID
+            - button "Open menu for Codeunit ID"
+          - columnheader "Name Open menu for Name":
+            - text: Name
+            - button "Open menu for Name"
+          - columnheader "Data Input Open menu for Data Input":
+            - text: Data Input
+            - button "Open menu for Data Input"
+          - columnheader "Run Open menu for Run":
+            - text: Run
+            - button "Open menu for Run"
+          - columnheader "Result Open menu for Result":
+            - text: Result
+            - button "Open menu for Result"
+          - columnheader "Error Message Open menu for Error Message":
+            - text: Error Message
+            - button "Open menu for Error Message"
+          - columnheader "Duration Open menu for Duration":
+            - text: Duration
+            - button "Open menu for Duration"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96204 Name Storage Connector Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96204":
+          - button "Codeunit ID 96204": "96204"
+        - gridcell "Name Storage Connector Tests":
+          - textbox "Name Storage Connector Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96205 Name Storage Upload Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96205":
+          - button "Codeunit ID 96205": "96205"
+        - gridcell "Name Storage Upload Tests":
+          - textbox "Name Storage Upload Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96206 Name Storage Attach Record Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96206":
+          - button "Codeunit ID 96206": "96206"
+        - gridcell "Name Storage Attach Record Tests":
+          - textbox "Name Storage Attach Record Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96207 Name Storage Setup Page Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96207":
+          - button "Codeunit ID 96207": "96207"
+        - gridcell "Name Storage Setup Page Tests":
+          - textbox "Name Storage Setup Page Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96208 Name Storage App Registry Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96208":
+          - button "Codeunit ID 96208": "96208"
+        - gridcell "Name Storage App Registry Tests":
+          - textbox "Name Storage App Registry Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96209 Name Storage Takeover Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96209":
+          - button "Codeunit ID 96209": "96209"
+        - gridcell "Name Storage Takeover Tests":
+          - textbox "Name Storage Takeover Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96210 Name Storage Takeover Probe Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96210":
+          - button "Codeunit ID 96210": "96210"
+        - gridcell "Name Storage Takeover Probe Tests":
+          - textbox "Name Storage Takeover Probe Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96211 Name Storage Msg Conformance Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96211":
+          - button "Codeunit ID 96211": "96211"
+        - gridcell "Name Storage Msg Conformance Tests":
+          - textbox "Name Storage Msg Conformance Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96212 Name Storage Error Response Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96212":
+          - button "Codeunit ID 96212": "96212"
+        - gridcell "Name Storage Error Response Tests":
+          - textbox "Name Storage Error Response Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96213 Name Data Exch Discovery Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96213":
+          - button "Codeunit ID 96213": "96213"
+        - gridcell "Name Data Exch Discovery Tests":
+          - textbox "Name Data Exch Discovery Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96214 Name Storage Link Guard Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96214":
+          - button "Codeunit ID 96214": "96214"
+        - gridcell "Name Storage Link Guard Tests":
+          - textbox "Name Storage Link Guard Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96215 Name Storage Contract Batch1 Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96215":
+          - button "Codeunit ID 96215": "96215"
+        - gridcell "Name Storage Contract Batch1 Tests":
+          - textbox "Name Storage Contract Batch1 Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96216 Name Storage Contract Batch2 Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96216":
+          - button "Codeunit ID 96216": "96216"
+        - gridcell "Name Storage Contract Batch2 Tests":
+          - textbox "Name Storage Contract Batch2 Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96217 Name Storage Native Fields Tests Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96217":
+          - button "Codeunit ID 96217": "96217"
+        - gridcell "Name Storage Native Fields Tests":
+          - textbox "Name Storage Native Fields Tests"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96218 Name Storage 79 Perm Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96218":
+          - button "Codeunit ID 96218": "96218"
+        - gridcell "Name Storage 79 Perm Tests ori":
+          - textbox "Name Storage 79 Perm Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96225 Name Storage Integrity 75 Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96225":
+          - button "Codeunit ID 96225": "96225"
+        - gridcell "Name Storage Integrity 75 Tests ori":
+          - textbox "Name Storage Integrity 75 Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96226 Name DataExch Refusal82 Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96226":
+          - button "Codeunit ID 96226": "96226"
+        - gridcell "Name DataExch Refusal82 Tests ori":
+          - textbox "Name DataExch Refusal82 Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96227 Name Storage Telemetry121 Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96227":
+          - button "Codeunit ID 96227": "96227"
+        - gridcell "Name Storage Telemetry121 Tests ori":
+          - textbox "Name Storage Telemetry121 Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96228 Name Storage Refusal122 Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96228":
+          - button "Codeunit ID 96228": "96228"
+        - gridcell "Name Storage Refusal122 Tests ori":
+          - textbox "Name Storage Refusal122 Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96229 Name Storage Direction130 Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96229":
+          - button "Codeunit ID 96229": "96229"
+        - gridcell "Name Storage Direction130 Tests ori":
+          - textbox "Name Storage Direction130 Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96236 Name Storage Interface Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96236":
+          - button "Codeunit ID 96236": "96236"
+        - gridcell "Name Storage Interface Tests ori":
+          - textbox "Name Storage Interface Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96237 Name DataExch Phase2 Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96237":
+          - button "Codeunit ID 96237": "96237"
+        - gridcell "Name DataExch Phase2 Tests ori":
+          - textbox "Name DataExch Phase2 Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96238 Name Storage Refusal 125 Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96238":
+          - button "Codeunit ID 96238": "96238"
+        - gridcell "Name Storage Refusal 125 Tests ori":
+          - textbox "Name Storage Refusal 125 Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96242 Name DataExch Import Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96242":
+          - button "Codeunit ID 96242": "96242"
+        - gridcell "Name DataExch Import Tests ori":
+          - textbox "Name DataExch Import Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96243 Name DataExch Export Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96243":
+          - button "Codeunit ID 96243": "96243"
+        - gridcell "Name DataExch Export Tests ori":
+          - textbox "Name DataExch Export Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96244 Name DataExch Def Xfer Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96244":
+          - button "Codeunit ID 96244": "96244"
+        - gridcell "Name DataExch Def Xfer Tests ori":
+          - textbox "Name DataExch Def Xfer Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96256 Name DataExch Format Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96256":
+          - button "Codeunit ID 96256": "96256"
+        - gridcell "Name DataExch Format Tests ori":
+          - textbox "Name DataExch Format Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96258 Name Storage Response159 Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96258":
+          - button "Codeunit ID 96258": "96258"
+        - gridcell "Name Storage Response159 Tests ori":
+          - textbox "Name Storage Response159 Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96261 Name Storage Write166 Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96261":
+          - button "Codeunit ID 96261": "96261"
+        - gridcell "Name Storage Write166 Tests ori":
+          - textbox "Name Storage Write166 Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96264 Name Storage Follow168 Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96264":
+          - button "Codeunit ID 96264": "96264"
+        - gridcell "Name Storage Follow168 Tests ori":
+          - textbox "Name Storage Follow168 Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96265 Name Storage Contract Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96265":
+          - button "Codeunit ID 96265": "96265"
+        - gridcell "Name Storage Contract Tests ori":
+          - textbox "Name Storage Contract Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96267 Name Storage HTTP Fixture Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96267":
+          - button "Codeunit ID 96267": "96267"
+        - gridcell "Name Storage HTTP Fixture Tests ori":
+          - textbox "Name Storage HTTP Fixture Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+      - row "Expand / Collapse row Line Type Codeunit ID 96268 Name Data Input (Blank) Run Result Success Error Message (Blank) Duration 250 milliseconds" [expanded] [level=1] [selected]:
+        - rowheader
+        - gridcell "Expand / Collapse row Line Type":
+          - button "Expand / Collapse row" [expanded]
+          - textbox "Line Type"
+        - gridcell:
+          - button "Show more options"
+        - gridcell "Codeunit ID 96268":
+          - button "Codeunit ID 96268": "96268"
+        - gridcell "Name":
+          - textbox "Name"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run":
+          - checkbox "Run" [checked]
+        - gridcell "Result Success":
+          - textbox "Result Success"
+        - gridcell "Error Message (Blank)":
+          - button "Error Message (Blank)"
+        - gridcell "Duration 250 milliseconds":
+          - textbox "Duration 250 milliseconds"
+      - row "Function Show more options Codeunit ID 96268 Name LicenceAdmin_OpensSetup_English Data Input (Blank) Run (Blank) Result Success Error Message Duration 140 milliseconds" [level=2]:
+        - rowheader
+        - gridcell "Function":
+          - textbox "Function"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96268":
+          - button "Codeunit ID 96268": "96268"
+        - gridcell "Name LicenceAdmin_OpensSetup_English":
+          - textbox "Name LicenceAdmin_OpensSetup_English"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result Success":
+          - textbox "Result Success"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration 140 milliseconds":
+          - textbox "Duration 140 milliseconds"
+      - row "Function Show more options Codeunit ID 96268 Name LicenceAdmin_OpensSetup_Icelandic Data Input (Blank) Run (Blank) Result Success Error Message Duration 90 milliseconds" [level=2]:
+        - rowheader
+        - gridcell "Function":
+          - textbox "Function"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96268":
+          - button "Codeunit ID 96268": "96268"
+        - gridcell "Name LicenceAdmin_OpensSetup_Icelandic":
+          - textbox "Name LicenceAdmin_OpensSetup_Icelandic"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result Success":
+          - textbox "Result Success"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration 90 milliseconds":
+          - textbox "Duration 90 milliseconds"
+      - row "Expand / Collapse row Codeunit Show more options Codeunit ID 96274 Name Attachments Build Tests ori Data Input (Blank) Run (Blank) Result (Blank) Error Message Duration (Blank)" [level=1]:
+        - rowheader
+        - gridcell "Expand / Collapse row Codeunit":
+          - button "Expand / Collapse row"
+          - textbox "Codeunit"
+        - gridcell "Show more options":
+          - button "Show more options"
+        - gridcell "Codeunit ID 96274":
+          - button "Codeunit ID 96274": "96274"
+        - gridcell "Name Attachments Build Tests ori":
+          - textbox "Name Attachments Build Tests ori"
+        - gridcell "Data Input (Blank)":
+          - textbox "Data Input (Blank)"
+        - gridcell "Run (Blank)":
+          - checkbox "Run (Blank)" [checked]
+        - gridcell "Result (Blank)":
+          - textbox "Result (Blank)"
+        - gridcell "Error Message":
+          - button "Error Message"
+        - gridcell "Duration (Blank)":
+          - textbox "Duration (Blank)"
+    - button "Successful Tests"
+    - textbox "Successful Tests 2"
+    - button "Failed Tests"
+    - textbox "Failed Tests 0"
+    - button "Skipped Tests"
+    - textbox "Skipped Tests 0"
+    - button "Tests not Executed"
+    - textbox "Tests not Executed 490"
+- text: Use the Left and Right arrow keys to adjust the size. Use the Escape key to undo or the Enter key to accept.
+- paragraph: List with title "AL Test Tool" now has 37 items

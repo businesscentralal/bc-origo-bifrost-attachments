@@ -1,0 +1,12 @@
+{
+  "sha": "459ce05715126048e85a7a72220331f8abb143e3",
+  "containerId": "f082aa1fe153",
+  "isolatedEvaluationCompany": "CRONUS International Ltd.",
+  "newRegressionFixtures": "Temporary app registry; setup preparation occurs under AL Codeunit isolation runner130450, then exact-role action. No Sync, backend, consent, trial, licence or quota writes.",
+  "nativeRunner": "AL Test Tool130451 records Test Runner130450 - Test Runner - Isol. Codeunit",
+  "mcpFixtures": "None; no message type changed",
+  "externalFixturesCreated": 0,
+  "externalCleanupRequired": false,
+  "containerState": "Running retained for amendments until Tester postdeploy UAT and issue closure; owned deletion remains pending",
+  "browserClosed": true
+}

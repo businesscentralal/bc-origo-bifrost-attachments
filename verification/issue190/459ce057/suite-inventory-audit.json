@@ -1,0 +1,12 @@
+{
+  "sha": "459ce05715126048e85a7a72220331f8abb143e3",
+  "expected": 492,
+  "executed": 492,
+  "unique": 492,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "missing": [],
+  "extra": [],
+  "junitSha256": "ace02e0aafc16df7a3a090ba81b9340a1803877dac2763081e8744b4bd4482ce"
+}

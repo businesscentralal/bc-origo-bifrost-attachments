@@ -1,0 +1,27 @@
+test_actual_candidate_staging_retains_signed_apps_and_excludes_only_exact_test_collision (test_foundation_staging.Candidate632.test_actual_candidate_staging_retains_signed_apps_and_excludes_only_exact_test_collision) ... ok
+test_test_candidate_cannot_be_swapped_into_apps_or_mutated_after_staging (test_foundation_staging.Candidate632.test_test_candidate_cannot_be_swapped_into_apps_or_mutated_after_staging) ... ok
+test_wrong_candidate_source_archive_swap_and_wrong_profile_fail_closed (test_foundation_staging.Candidate632.test_wrong_candidate_source_archive_swap_and_wrong_profile_fail_closed) ... ok
+test_all_source_artifact_provenance_negative_fields (test_foundation_staging.Staging.test_all_source_artifact_provenance_negative_fields) ... ok
+test_archive_traversal_and_duplicate_layout_refused (test_foundation_staging.Staging.test_archive_traversal_and_duplicate_layout_refused) ... ok
+test_both_download_orders_and_modes_preserve_signed_pin_and_genuine_dependencies (test_foundation_staging.Staging.test_both_download_orders_and_modes_preserve_signed_pin_and_genuine_dependencies) ... ok
+test_bounded_paths_counts_and_nonlocal_input_fail_closed (test_foundation_staging.Staging.test_bounded_paths_counts_and_nonlocal_input_fail_closed) ... ok
+test_cli_rejection_nonzero_and_no_secret_console_dump (test_foundation_staging.Staging.test_cli_rejection_nonzero_and_no_secret_console_dump) ... ok
+test_duplicate_apps_candidate (test_foundation_staging.Staging.test_duplicate_apps_candidate) ... ok
+test_existing_stage_is_not_deleted (test_foundation_staging.Staging.test_existing_stage_is_not_deleted) ... ok
+test_genuine_wrong_identity_and_remaining_duplicate (test_foundation_staging.Staging.test_genuine_wrong_identity_and_remaining_duplicate) ... ok
+test_later_array_substitution_omission_and_reordering (test_foundation_staging.Staging.test_later_array_substitution_omission_and_reordering) ... ok
+test_later_package_mutation_and_symbol_substitution (test_foundation_staging.Staging.test_later_package_mutation_and_symbol_substitution) ... ok
+test_missing_and_changed_archive (test_foundation_staging.Staging.test_missing_and_changed_archive) ... ok
+test_missing_stale_and_mutated_receipt (test_foundation_staging.Staging.test_missing_stale_and_mutated_receipt) ... ok
+test_missing_testapps_collision_and_duplicate_collision (test_foundation_staging.Staging.test_missing_testapps_collision_and_duplicate_collision) ... ok
+test_missing_unknown_artifact_and_mode (test_foundation_staging.Staging.test_missing_unknown_artifact_and_mode) ... ok
+test_mutation_fixtures_cannot_change_retained_compiler_packages (test_foundation_staging.Staging.test_mutation_fixtures_cannot_change_retained_compiler_packages) ... ok
+test_original_beforecompile_failure_retains_receipt (test_foundation_staging.Staging.test_original_beforecompile_failure_retains_receipt) ... ok
+test_parenthesized_test_library_keeps_helper_skip_run_policy (test_foundation_staging.Staging.test_parenthesized_test_library_keeps_helper_skip_run_policy) ... ok
+test_rejected_receipt_is_allowlisted_and_preserves_actual_disk_hash (test_foundation_staging.Staging.test_rejected_receipt_is_allowlisted_and_preserves_actual_disk_hash) ... ok
+test_wrong_testapps_bytes_and_apps_friend_bearing_bytes (test_foundation_staging.Staging.test_wrong_testapps_bytes_and_apps_friend_bearing_bytes) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 13.423s
+
+OK
