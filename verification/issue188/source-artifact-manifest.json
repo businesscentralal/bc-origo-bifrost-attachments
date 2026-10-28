@@ -1,0 +1,42 @@
+{
+  "sourceSha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+  "baseSha": "a765892a74257d3aa180981a194ad265b882ca9f",
+  "sourceAppVersion": "28.3.2.0",
+  "privateArtifactVersion": "28.3.2.188",
+  "privateManifestTransforms": [
+    "Set private app/test version28.3.2.188",
+    "Set test dependency on private product28.3.2.188",
+    "Set AppSourceCop baseline to released28.3.1.131 in private staging only"
+  ],
+  "changedFiles": {
+    "CHANGELOG.md": "ee92d65a8e1f9cacbe22e61f56b832402376bf73852d59300edf4d392546e901",
+    "app/docs/appsource/source-inventory.json": "c77eb090bb3fd8684bae6e6663ecc69dba75d22211ad8f9ddf85f80d9755b530",
+    "test/test/StorageContractBatch2Tests.Codeunit.al": "fe80fd28742663c8f0c615ff8312a642862008858af53e6647fd9ab86f12a391",
+    "test/test/StorageResponse159Tests.Codeunit.al": "b0728bd22d304cac7da8285306b0325653d17745fe61f290e0d38e1d0b19b17f"
+  },
+  "productALChanged": false,
+  "compilerInputSymbols": {
+    "Microsoft.Any.28.5.0.0.app": "79dc4d600346abbec74f39511387edbc6b129b1ce226009ac2ec020b310c20a8",
+    "Microsoft.Application.28.5.0.0.app": "729b0b4c1c7ae2cc0ef65865875a40b9f139763db1b7b1243ae3ae9d9fb3db5d",
+    "Microsoft.Application_Test_Library.28.5.0.0.app": "f639b6f7486198f5c9cf051f5200dcd1fdb7eac9045bc918533adaa2af1195d7",
+    "Microsoft.Base_Application.28.5.0.0.app": "4e312a008aa3a81576cb34dd8f6acf7f27942ae1891e74f00f3d9a426b28561f",
+    "Microsoft.Business_Foundation.28.5.0.0.app": "f9d410587edc81b503686ca899543247d86e8cf37d28cf0941bf07e837559a77",
+    "Microsoft.Library_Assert.28.5.0.0.app": "8a8bb1c6df6b66a16cd599dd5878ad4af82d7ee59a0e8792a240e23bc8782b61",
+    "Microsoft.Library_Variable_Storage.28.5.0.0.app": "cfc4db2ff20912a7cdd9150b9c463ad1d41d3eda944e05366cedea6de78dceab",
+    "Microsoft.Permissions_Mock.28.5.0.0.app": "9508f3354e4b6efe56e8c15666d68520b71c7bd70337f48bb5971ad288e7c938",
+    "Microsoft.System.28.0.0.0.app": "03fee91bae7614a9ac831e724fd8223cd66552589101d05cfb21f1b3e8d9baf0",
+    "Microsoft.System_Application.28.5.0.0.app": "3291c38a294e5783eb2df93e9aaedf7692e6a9e78dea15c5aa89a2764ee53310",
+    "Microsoft.System_Application_Test_Library.28.5.0.0.app": "faa3a72f03021ce8f56d36295e577533f0a6d171d07895e30ef94702ce1a997c",
+    "Microsoft.Tests_TestLibraries.28.5.0.0.app": "637bc93c18b73b579e8d0bc7fa0aaba30600b80ec53c4a035879a93fc5329140",
+    "Microsoft.Test_Runner.28.5.0.0.app": "42490de2066c2a07068f4f5978c50b1207d9cba825497c1a9b21f8245f8a7d8c",
+    "Microsoft_Business Foundation Test Libraries.app": "0cca55968920cd85edde743be092f219298ee339688dea9636ef29de048e6ec9",
+    "Origo_Attachments.app": "8d5849cf2412c410c0767399ed61594f801e0be629262e059a51dcfdfdb582c4",
+    "Origo_Bifrost Attachments_28.3.1.131.app": "f1f2d71056fbf5b669e21480dea68c473b187fba04fd3001326196fbee6e5b06",
+    "Origo_Bifrost Foundation_28.0.10.632.app": "356dfc06533573b2d2351243f603ab6e4744f1a0dee933cff1c7d5b6cb4c40a2"
+  },
+  "artifactHashes": {
+    "Attachments-shipping.app": "8fa227813f13be9dfd6d113b1b29a7781024a0750ab87749492bda2e610d6f23",
+    "Attachments.app": "8d5849cf2412c410c0767399ed61594f801e0be629262e059a51dcfdfdb582c4",
+    "AttachmentsTests.app": "eb638f0ce142dd05708abde5835af497c0b311fac4631f0e58595b21c6d2330f"
+  }
+}

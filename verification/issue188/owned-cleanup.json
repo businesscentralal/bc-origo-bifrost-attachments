@@ -1,0 +1,16 @@
+{
+  "sha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+  "containerId": "f0ec033ee63d",
+  "displayName": "alviss-worker4-attachments188-20261028",
+  "startedAt": "2026-10-28T16:31:11.022Z",
+  "externalFixtureRecordsCreated": 0,
+  "externalFixtureRecordsRemaining": 0,
+  "nativeDataCleanup": "All native/UI/task data confined to own disposable CRONUS environment; whole owned environment deletion removes it.",
+  "deleteAttempted": true,
+  "beforeStatus": 200,
+  "ownershipVerified": true,
+  "deleteStatus": 204,
+  "afterStatus": 404,
+  "verified": true,
+  "finishedAt": "2026-10-28T16:31:11.389Z"
+}

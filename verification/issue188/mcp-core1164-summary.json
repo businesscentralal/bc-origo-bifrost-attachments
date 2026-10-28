@@ -1,0 +1,188 @@
+{
+  "sha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+  "variant": "core1164",
+  "containerId": "f0ec033ee63d",
+  "startedAt": "2026-10-28T16:29:42.072Z",
+  "touchedProductionMessageTypes": [],
+  "notApplicableReason": "Only test payloads/assertions and provenance metadata changed; all product AL and contracts are byte-identical to main. Additional compatibility smoke checks below do not claim production changes.",
+  "createsOwnData": true,
+  "dataSetup": {
+    "method": "Self-constructed contract selections and invalid filename requests with task-unique nonexistent storage codes; no pre-existing customer/shared fixtures and no business mutations.",
+    "recordsCreated": 0
+  },
+  "scenarios": [
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "lcid": 1033,
+      "scenario": "Actual registered contract has exact own keys plus Foundation confirmation only where declared",
+      "names": [
+        "storageCode",
+        "path",
+        "fileName",
+        "incomingDocumentEntryNo",
+        "description",
+        "dataExchangeType",
+        "process",
+        "vendorNo"
+      ],
+      "result": "passed"
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "lcid": 1033,
+      "scenario": "Actual registered contract has exact own keys plus Foundation confirmation only where declared",
+      "names": [
+        "code",
+        "dataExchDefCode",
+        "entityType",
+        "description"
+      ],
+      "result": "passed"
+    },
+    {
+      "type": "DataExchange.Definition.Export",
+      "lcid": 1033,
+      "scenario": "Actual registered contract has exact own keys plus Foundation confirmation only where declared",
+      "names": [
+        "overwrite",
+        "code",
+        "storageCode",
+        "path",
+        "folderPath",
+        "inline",
+        "expectedCount"
+      ],
+      "result": "passed"
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1033,
+      "scenario": "Actual registered contract has exact own keys plus Foundation confirmation only where declared",
+      "names": [
+        "overwrite",
+        "dataExchDefCode",
+        "fileName",
+        "tableId",
+        "tableName",
+        "tableView",
+        "recordIds",
+        "lineDef",
+        "storageCode",
+        "path",
+        "folderPath",
+        "inline"
+      ],
+      "result": "passed"
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "lcid": 1033,
+      "scenario": "Self-constructed invalid filename reaches intended collected refusal; nonexistent own storage is separately refused before execution",
+      "data": {
+        "storageCode": "A188-core1164-1033",
+        "path": "a188/input.txt",
+        "fileName": "folder/file.txt"
+      },
+      "detail": {
+        "code": "InvalidParameter",
+        "error": "Parameter \"fileName\" must be a file name without folders or relative segments.",
+        "parameter": "fileName",
+        "received": "folder/file.txt",
+        "expected": "a nonempty file name without slash or backslash",
+        "nextStep": "Send only the file name, for example INV-001.pdf, without a folder path."
+      },
+      "result": "passed"
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "lcid": 1039,
+      "scenario": "Actual registered contract has exact own keys plus Foundation confirmation only where declared",
+      "names": [
+        "storageCode",
+        "path",
+        "fileName",
+        "incomingDocumentEntryNo",
+        "description",
+        "dataExchangeType",
+        "process",
+        "vendorNo"
+      ],
+      "result": "passed"
+    },
+    {
+      "type": "DataExchange.Type.Set",
+      "lcid": 1039,
+      "scenario": "Actual registered contract has exact own keys plus Foundation confirmation only where declared",
+      "names": [
+        "code",
+        "dataExchDefCode",
+        "entityType",
+        "description"
+      ],
+      "result": "passed"
+    },
+    {
+      "type": "DataExchange.Definition.Export",
+      "lcid": 1039,
+      "scenario": "Actual registered contract has exact own keys plus Foundation confirmation only where declared",
+      "names": [
+        "overwrite",
+        "code",
+        "storageCode",
+        "path",
+        "folderPath",
+        "inline",
+        "expectedCount"
+      ],
+      "result": "passed"
+    },
+    {
+      "type": "DataExchange.Export.Run",
+      "lcid": 1039,
+      "scenario": "Actual registered contract has exact own keys plus Foundation confirmation only where declared",
+      "names": [
+        "overwrite",
+        "dataExchDefCode",
+        "fileName",
+        "tableId",
+        "tableName",
+        "tableView",
+        "recordIds",
+        "lineDef",
+        "storageCode",
+        "path",
+        "folderPath",
+        "inline"
+      ],
+      "result": "passed"
+    },
+    {
+      "type": "Storage.Attachment.CreateLinked",
+      "lcid": 1039,
+      "scenario": "Self-constructed invalid filename reaches intended collected refusal; nonexistent own storage is separately refused before execution",
+      "data": {
+        "storageCode": "A188-core1164-1039",
+        "path": "a188/input.txt",
+        "fileName": "folder/file.txt"
+      },
+      "detail": {
+        "code": "InvalidParameter",
+        "error": "Færibreytan \"fileName\" verður að vera skráarheiti án mappa eða afstæðra slóðarhluta.",
+        "parameter": "fileName",
+        "received": "folder/file.txt",
+        "expected": "skráarheiti sem er ekki tómt og inniheldur hvorki skástrik né bakskástrik",
+        "nextStep": "Sendu aðeins skráarheitið, til dæmis INV-001.pdf, án möppuslóðar."
+      },
+      "result": "passed"
+    }
+  ],
+  "passed": 10,
+  "failed": 0,
+  "skipped": 0,
+  "cleanup": {
+    "businessRecordsCreated": 0,
+    "businessRecordsRemaining": 0,
+    "reason": "Only contract reads and pre-execution invalid request payloads. No storage/file/customer fixture created; transport task records reside solely in owned ephemeral environment."
+  },
+  "finishedAt": "2026-10-28T16:29:46.607Z"
+}

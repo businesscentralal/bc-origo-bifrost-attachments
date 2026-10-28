@@ -1,0 +1,176 @@
+{
+  "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/188",
+  "sourceOwner": "worker-4",
+  "candidateSha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+  "criteria": {
+    "AC01": {
+      "implemented": true,
+      "alreadyPresent": "Existing fileName InvalidParameter and actionable bilingual nextStep assertions preserved",
+      "change": "Removed target/tableId/no only from CheckLinkedFileName",
+      "verified": true,
+      "pending": [],
+      "evidence": {
+        "sha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+        "foundation": "28.0.10.632",
+        "fullSuite": {
+          "executed": 490,
+          "passed": 490,
+          "failed": 0,
+          "skipped": 0
+        },
+        "mcp": 2,
+        "ui": {
+          "lcids": [
+            1033,
+            1039
+          ],
+          "testsPerLanguage": 39,
+          "status": "39/39 passed in each actual WebClient1033/1039; language restored1033"
+        }
+      }
+    },
+    "AC02": {
+      "implemented": true,
+      "change": "Exact own count + at most one integer expectedCount only on irreversible registered contract; reentrant direct getter tested against direct contract count",
+      "verified": true,
+      "pending": [],
+      "foundation632": {
+        "verified": true,
+        "fullSuitePassed": 490,
+        "mcp": "Exact registered own keys verified both languages"
+      },
+      "core1164": {
+        "dependencySha": "e4a4b2c6deed754b527f6588ee1c0c08e3b7e7df",
+        "version": "28.0.2147483647.1841",
+        "executed": 490,
+        "passed": 490,
+        "failed": 0,
+        "skipped": 0,
+        "sha": "276c1ddd882761da197487dd4e78acc8ac55192c"
+      },
+      "additionalMcp": {
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0,
+        "lcids": [
+          1033,
+          1039
+        ]
+      },
+      "webClient": {
+        "passedPerLanguage": 19,
+        "failed": 0,
+        "skipped": 0,
+        "lcids": [
+          1033,
+          1039
+        ],
+        "cleanup": "Language restored1033; owned container deletion204/readback404"
+      }
+    },
+    "AC03": {
+      "implemented": "CHANGELOG and source inventory updated",
+      "verified": false,
+      "pending": [
+        "Claude Code exact-head full suite on bc28-w1"
+      ],
+      "developerVerified": true,
+      "independentClaudeVerified": false
+    }
+  },
+  "delivery": {
+    "developerCompile": {
+      "app": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "testApp": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "shippingNoIVT": {
+        "errors": 0,
+        "warnings": 0,
+        "signed": false
+      }
+    },
+    "publication": {
+      "repo": "businesscentralal/bc-origo-bifrost-attachments",
+      "branch": "fix/188-test-contract-compatibility-worker4",
+      "sha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+      "branchUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/tree/fix/188-test-contract-compatibility-worker4",
+      "commitUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/276c1ddd882761da197487dd4e78acc8ac55192c",
+      "remoteVerifiedAt": "2026-10-28T16:18:00.340Z"
+    },
+    "claude": "pending",
+    "grok": "pending",
+    "approval": "pending eligible nonauthor",
+    "mergeDeploy": "Architect only, pending",
+    "uat": "Tester after same-SHA green deployment, pending",
+    "ownedCleanup": {
+      "sha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+      "containerId": "f0ec033ee63d",
+      "displayName": "alviss-worker4-attachments188-20261028",
+      "startedAt": "2026-10-28T16:31:11.022Z",
+      "externalFixtureRecordsCreated": 0,
+      "externalFixtureRecordsRemaining": 0,
+      "nativeDataCleanup": "All native/UI/task data confined to own disposable CRONUS environment; whole owned environment deletion removes it.",
+      "deleteAttempted": true,
+      "beforeStatus": 200,
+      "ownershipVerified": true,
+      "deleteStatus": 204,
+      "afterStatus": 404,
+      "verified": true,
+      "finishedAt": "2026-10-28T16:31:11.389Z"
+    },
+    "developerVerification": {
+      "fullSuites": [
+        {
+          "foundation": "28.0.10.632",
+          "executed": 490,
+          "passed": 490,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "foundation": "core1164 e4a4b2c6 /28.0.2147483647.1841",
+          "executed": 490,
+          "passed": 490,
+          "failed": 0,
+          "skipped": 0
+        }
+      ],
+      "mcp": {
+        "executed": 20,
+        "passed": 20,
+        "failed": 0,
+        "skipped": 0
+      },
+      "ui": {
+        "responseTestsPerLanguage": 39,
+        "contractTestsPerLanguage": 19,
+        "lcids": [
+          1033,
+          1039
+        ],
+        "scenarioRuns": 4,
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "touchedProductionMessageTypes": [],
+      "mcpNotApplicableReason": "No product AL or message contract changed; additional self-constructed compatibility checks nevertheless executed."
+    }
+  },
+  "widerFindings": [
+    {
+      "baselineSha": "a765892a74257d3aa180981a194ad265b882ca9f",
+      "candidateSha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+      "baselineErrors": 59,
+      "candidateErrors": 59,
+      "identical": true,
+      "introduced": 0,
+      "disposition": "Wider existing API-surface metadata drift; report to Architect for follow-up assignment. No product source changed in this issue."
+    }
+  ]
+}

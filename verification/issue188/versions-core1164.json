@@ -1,0 +1,49 @@
+{
+  "at": "2026-10-28T16:28:36.816Z",
+  "containerId": "f0ec033ee63d",
+  "httpStatus": 200,
+  "apps": [
+    {
+      "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
+      "name": "Bifrost Attachments",
+      "publisher": "Origo",
+      "version": "28.3.2.188",
+      "isInstalled": true
+    },
+    {
+      "id": "7cdb530b-b74b-446b-9ece-80e2b911bfb3",
+      "name": "Bifrost Attachments - Tests",
+      "publisher": "Origo",
+      "version": "28.3.2.188",
+      "isInstalled": true
+    },
+    {
+      "id": "7505e808-6e52-4b96-a328-82573391297a",
+      "name": "Bifrost Foundation",
+      "publisher": "Origo",
+      "version": "28.0.2147483647.1841",
+      "isInstalled": true
+    },
+    {
+      "id": "dd0be2ea-f733-4d65-bb34-a28f4624fb14",
+      "name": "Library Assert",
+      "publisher": "Microsoft",
+      "version": "28.5.54151.56992",
+      "isInstalled": true
+    },
+    {
+      "id": "5095f467-0a01-4b99-99d1-9ff1237d286f",
+      "name": "Library Variable Storage",
+      "publisher": "Microsoft",
+      "version": "28.5.54151.56992",
+      "isInstalled": true
+    },
+    {
+      "id": "23de40a6-dfe8-4f80-80db-d70f83ce8caf",
+      "name": "Test Runner",
+      "publisher": "Microsoft",
+      "version": "28.5.54151.56992",
+      "isInstalled": true
+    }
+  ]
+}

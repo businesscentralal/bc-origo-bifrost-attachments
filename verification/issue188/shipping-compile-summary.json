@@ -1,0 +1,14 @@
+{
+  "sha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+  "exitCode": 0,
+  "errors": 0,
+  "warnings": 0,
+  "internalsVisibleTo": 0,
+  "artifactSha256": "8fa227813f13be9dfd6d113b1b29a7781024a0750ab87749492bda2e610d6f23",
+  "signed": false,
+  "privateManifestTransforms": [
+    "Remove internalsVisibleTo",
+    "Remove existing AS0081 suppression"
+  ],
+  "baseline": "Released Attachments28.3.1.131"
+}

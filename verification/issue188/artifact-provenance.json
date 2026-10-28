@@ -1,0 +1,37 @@
+{
+  "sha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+  "appVersion": "28.3.2.188",
+  "containerId": "f0ec033ee63d",
+  "dependency": {
+    "release": "https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/releases/tag/28.0.10",
+    "sourceSha": "130955cdc524cf7da3f162d1aeb10777fde55ab1",
+    "assetId": 684711931,
+    "assetName": "bc-origo-bifrost-core-main-TestApps-1.0.10.632.zip",
+    "version": "28.0.10.632",
+    "sha256": "67e70551b8384829adf96ed9af67dd4d1e8e772ef040ceeae8177ba0b3e2eb98",
+    "digestVerified": true
+  },
+  "baseline": {
+    "release": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/releases/tag/28.3.1",
+    "sourceSha": "eb5f40a8d70078de98c47ee552a21208b4590cd8",
+    "assetId": 675003480,
+    "assetName": "bc-origo-bifrost-attachments-main-Apps-1.0.1.131.zip",
+    "version": "28.3.1.131",
+    "sha256": "b09882a0f205d79f539f5f3772a9488fb4c4a7c8722c99ffb59f9518fcfeae88",
+    "digestVerified": true
+  },
+  "artifacts": [
+    {
+      "name": "Foundation632",
+      "sha256": "356dfc06533573b2d2351243f603ab6e4744f1a0dee933cff1c7d5b6cb4c40a2"
+    },
+    {
+      "name": "Attachments",
+      "sha256": "8d5849cf2412c410c0767399ed61594f801e0be629262e059a51dcfdfdb582c4"
+    },
+    {
+      "name": "AttachmentsTests",
+      "sha256": "eb638f0ce142dd05708abde5835af497c0b311fac4631f0e58595b21c6d2330f"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "sha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+  "containerId": "f0ec033ee63d",
+  "appVersion": "28.3.2.188",
+  "startedAt": "2026-10-28T16:30:04.645Z",
+  "scenarios": [
+    {
+      "lcid": 1033,
+      "suite": "A188CEN",
+      "codeunit": 96216,
+      "executed": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "scenario": "Real Web Client runs all19contract regressions including exact own counts, Foundation expectedCount and reentrant parameter reads; explicit payload LCIDs cover1033/1039",
+      "evidence": "ui-contract-core1164-1033-results.json"
+    },
+    {
+      "lcid": 1039,
+      "suite": "A188CIS",
+      "codeunit": 96216,
+      "executed": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "scenario": "Real Web Client runs all19contract regressions including exact own counts, Foundation expectedCount and reentrant parameter reads; explicit payload LCIDs cover1033/1039",
+      "evidence": "ui-contract-core1164-1039-results.json"
+    }
+  ],
+  "passed": 2,
+  "failed": 0,
+  "skipped": 0,
+  "cleanup": {
+    "businessFixtureRecordsCreatedByBrowserHarness": 0,
+    "nativeFixtures": "Self-seeded by isolated AL tests; rollback readback recorded separately",
+    "languageRestored": true,
+    "restorationEvidence": "language-restoration.json"
+  },
+  "finishedAt": "2026-10-28T16:31:10.520Z"
+}

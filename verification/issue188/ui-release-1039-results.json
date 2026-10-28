@@ -1,0 +1,246 @@
+{
+  "name": "Storage Response159 Tests ori",
+  "codeUnit": 96258,
+  "codeunitName": "Storage Response159 Tests ori",
+  "applicationID": "{7CDB530B-B74B-446B-9ECE-80E2B911BFB3}",
+  "applicationName": "Bifrost Attachments - Tests",
+  "startTime": "2026-10-28T16:26:37.5070000Z",
+  "finishTime": "2026-10-28T16:26:39.4100000Z",
+  "result": 2,
+  "testResults": [
+    {
+      "method": "DefinitionCollects_1033",
+      "startTime": "2026-10-28T16:26:37.5170000Z",
+      "finishTime": "2026-10-28T16:26:37.7030000Z",
+      "result": 2
+    },
+    {
+      "method": "DefinitionCollects_1039",
+      "startTime": "2026-10-28T16:26:37.7170000Z",
+      "finishTime": "2026-10-28T16:26:37.7430000Z",
+      "result": 2
+    },
+    {
+      "method": "CodeLength_1033",
+      "startTime": "2026-10-28T16:26:37.7500000Z",
+      "finishTime": "2026-10-28T16:26:37.8000000Z",
+      "result": 2
+    },
+    {
+      "method": "CodeLength_1039",
+      "startTime": "2026-10-28T16:26:37.8130000Z",
+      "finishTime": "2026-10-28T16:26:37.8530000Z",
+      "result": 2
+    },
+    {
+      "method": "ExportConflict_1033",
+      "startTime": "2026-10-28T16:26:37.8670000Z",
+      "finishTime": "2026-10-28T16:26:37.9030000Z",
+      "result": 2
+    },
+    {
+      "method": "ExportConflict_1039",
+      "startTime": "2026-10-28T16:26:37.9130000Z",
+      "finishTime": "2026-10-28T16:26:37.9430000Z",
+      "result": 2
+    },
+    {
+      "method": "InvalidSourceTarget_1033",
+      "startTime": "2026-10-28T16:26:37.9570000Z",
+      "finishTime": "2026-10-28T16:26:37.9930000Z",
+      "result": 2
+    },
+    {
+      "method": "InvalidSourceTarget_1039",
+      "startTime": "2026-10-28T16:26:38.0270000Z",
+      "finishTime": "2026-10-28T16:26:38.0630000Z",
+      "result": 2
+    },
+    {
+      "method": "EntryDefinition_1033",
+      "startTime": "2026-10-28T16:26:38.0730000Z",
+      "finishTime": "2026-10-28T16:26:38.1070000Z",
+      "result": 2
+    },
+    {
+      "method": "EntryDefinition_1039",
+      "startTime": "2026-10-28T16:26:38.1130000Z",
+      "finishTime": "2026-10-28T16:26:38.1370000Z",
+      "result": 2
+    },
+    {
+      "method": "EntryMapping_1033",
+      "startTime": "2026-10-28T16:26:38.1470000Z",
+      "finishTime": "2026-10-28T16:26:38.1730000Z",
+      "result": 2
+    },
+    {
+      "method": "EntryMapping_1039",
+      "startTime": "2026-10-28T16:26:38.1800000Z",
+      "finishTime": "2026-10-28T16:26:38.2070000Z",
+      "result": 2
+    },
+    {
+      "method": "StoredDefinition_1033",
+      "startTime": "2026-10-28T16:26:38.2130000Z",
+      "finishTime": "2026-10-28T16:26:38.2530000Z",
+      "result": 2
+    },
+    {
+      "method": "StoredDefinition_1039",
+      "startTime": "2026-10-28T16:26:38.2630000Z",
+      "finishTime": "2026-10-28T16:26:38.2870000Z",
+      "result": 2
+    },
+    {
+      "method": "LinkedFileName_1033",
+      "startTime": "2026-10-28T16:26:38.2930000Z",
+      "finishTime": "2026-10-28T16:26:38.3270000Z",
+      "result": 2
+    },
+    {
+      "method": "LinkedFileName_1039",
+      "startTime": "2026-10-28T16:26:38.3370000Z",
+      "finishTime": "2026-10-28T16:26:38.3700000Z",
+      "result": 2
+    },
+    {
+      "method": "MissingImportSource_1033",
+      "startTime": "2026-10-28T16:26:38.3770000Z",
+      "finishTime": "2026-10-28T16:26:38.3970000Z",
+      "result": 2
+    },
+    {
+      "method": "MissingImportSource_1039",
+      "startTime": "2026-10-28T16:26:38.4030000Z",
+      "finishTime": "2026-10-28T16:26:38.4200000Z",
+      "result": 2
+    },
+    {
+      "method": "PaymentNoDuplicate_1033",
+      "startTime": "2026-10-28T16:26:38.4270000Z",
+      "finishTime": "2026-10-28T16:26:38.4430000Z",
+      "result": 2
+    },
+    {
+      "method": "PaymentNoDuplicate_1039",
+      "startTime": "2026-10-28T16:26:38.4500000Z",
+      "finishTime": "2026-10-28T16:26:38.4670000Z",
+      "result": 2
+    },
+    {
+      "method": "MissingFile_1033",
+      "startTime": "2026-10-28T16:26:38.4730000Z",
+      "finishTime": "2026-10-28T16:26:38.5100000Z",
+      "result": 2
+    },
+    {
+      "method": "MissingFile_1039",
+      "startTime": "2026-10-28T16:26:38.5170000Z",
+      "finishTime": "2026-10-28T16:26:38.5430000Z",
+      "result": 2
+    },
+    {
+      "method": "UniformHeader_1033",
+      "startTime": "2026-10-28T16:26:38.5500000Z",
+      "finishTime": "2026-10-28T16:26:38.6130000Z",
+      "result": 2
+    },
+    {
+      "method": "UniformHeader_1039",
+      "startTime": "2026-10-28T16:26:38.6200000Z",
+      "finishTime": "2026-10-28T16:26:38.6630000Z",
+      "result": 2
+    },
+    {
+      "method": "TypeSetEnvelope_1033",
+      "startTime": "2026-10-28T16:26:38.6700000Z",
+      "finishTime": "2026-10-28T16:26:38.6900000Z",
+      "result": 2
+    },
+    {
+      "method": "TypeSetEnvelope_1039",
+      "startTime": "2026-10-28T16:26:38.6970000Z",
+      "finishTime": "2026-10-28T16:26:38.7130000Z",
+      "result": 2
+    },
+    {
+      "method": "DocumentTypeName_1033",
+      "startTime": "2026-10-28T16:26:38.7200000Z",
+      "finishTime": "2026-10-28T16:26:38.7470000Z",
+      "result": 2
+    },
+    {
+      "method": "DocumentTypeName_1039",
+      "startTime": "2026-10-28T16:26:38.7530000Z",
+      "finishTime": "2026-10-28T16:26:38.7730000Z",
+      "result": 2
+    },
+    {
+      "method": "WarningObjects_1033",
+      "startTime": "2026-10-28T16:26:38.7830000Z",
+      "finishTime": "2026-10-28T16:26:38.8230000Z",
+      "result": 2
+    },
+    {
+      "method": "WarningObjects_1039",
+      "startTime": "2026-10-28T16:26:38.8270000Z",
+      "finishTime": "2026-10-28T16:26:38.8600000Z",
+      "result": 2
+    },
+    {
+      "method": "UploadDocumentType_1033",
+      "startTime": "2026-10-28T16:26:38.8670000Z",
+      "finishTime": "2026-10-28T16:26:38.9230000Z",
+      "result": 2
+    },
+    {
+      "method": "UploadDocumentType_1039",
+      "startTime": "2026-10-28T16:26:38.9330000Z",
+      "finishTime": "2026-10-28T16:26:38.9830000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_ACF2_MissingFileName_SingleError_1033",
+      "startTime": "2026-10-28T16:26:38.9900000Z",
+      "finishTime": "2026-10-28T16:26:39.0500000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_ACF2_MissingFileName_SingleError_1039",
+      "startTime": "2026-10-28T16:26:39.0570000Z",
+      "finishTime": "2026-10-28T16:26:39.1070000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_ACF3_NestedProblems_HaveNextStep_1033",
+      "startTime": "2026-10-28T16:26:39.1330000Z",
+      "finishTime": "2026-10-28T16:26:39.1970000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_ACF3_NestedProblems_HaveNextStep_1039",
+      "startTime": "2026-10-28T16:26:39.2030000Z",
+      "finishTime": "2026-10-28T16:26:39.2670000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_ACF4_Examples_NoTargetParameter",
+      "startTime": "2026-10-28T16:26:39.2900000Z",
+      "finishTime": "2026-10-28T16:26:39.2970000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_ACF6a_Lists_HideAccountPath_1033",
+      "startTime": "2026-10-28T16:26:39.3230000Z",
+      "finishTime": "2026-10-28T16:26:39.3700000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_ACF6a_Lists_HideAccountPath_1039",
+      "startTime": "2026-10-28T16:26:39.3770000Z",
+      "finishTime": "2026-10-28T16:26:39.4100000Z",
+      "result": 2
+    }
+  ]
+}

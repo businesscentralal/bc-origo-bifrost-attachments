@@ -1,0 +1,9 @@
+{
+  "baselineSha": "a765892a74257d3aa180981a194ad265b882ca9f",
+  "candidateSha": "276c1ddd882761da197487dd4e78acc8ac55192c",
+  "baselineErrors": 59,
+  "candidateErrors": 59,
+  "identical": true,
+  "introduced": 0,
+  "disposition": "Wider existing API-surface metadata drift; report to Architect for follow-up assignment. No product source changed in this issue."
+}

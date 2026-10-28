@@ -1,0 +1,176 @@
+{
+  "testCodeunits": 34,
+  "totalDeclaredTests": 490,
+  "codeunits": [
+    {
+      "file": "test/test/AttachmentsBuildTestsori.Codeunit.al",
+      "codeunit": 96274,
+      "tests": 13
+    },
+    {
+      "file": "test/test/DataExchDefXferTests.Codeunit.al",
+      "codeunit": 96244,
+      "tests": 12
+    },
+    {
+      "file": "test/test/DataExchDiscoveryTests.Codeunit.al",
+      "codeunit": 96213,
+      "tests": 11
+    },
+    {
+      "file": "test/test/DataExchExportTests.Codeunit.al",
+      "codeunit": 96243,
+      "tests": 14
+    },
+    {
+      "file": "test/test/DataExchFormatTests.Codeunit.al",
+      "codeunit": 96256,
+      "tests": 12
+    },
+    {
+      "file": "test/test/DataExchImportTests.Codeunit.al",
+      "codeunit": 96242,
+      "tests": 20
+    },
+    {
+      "file": "test/test/DataExchPhase2Testsori.Codeunit.al",
+      "codeunit": 96237,
+      "tests": 11
+    },
+    {
+      "file": "test/test/DataExchRefusal82Testsori.Codeunit.al",
+      "codeunit": 96226,
+      "tests": 40
+    },
+    {
+      "file": "test/test/Storage79PermTests.Codeunit.al",
+      "codeunit": 96218,
+      "tests": 41
+    },
+    {
+      "file": "test/test/StorageAppRegistryTests.Codeunit.al",
+      "codeunit": 96208,
+      "tests": 1
+    },
+    {
+      "file": "test/test/StorageAttachmentFieldTests.Codeunit.al",
+      "codeunit": 96203,
+      "tests": 8
+    },
+    {
+      "file": "test/test/StorageAttachRecordTests.Codeunit.al",
+      "codeunit": 96206,
+      "tests": 10
+    },
+    {
+      "file": "test/test/StorageConnectorTests.Codeunit.al",
+      "codeunit": 96204,
+      "tests": 29
+    },
+    {
+      "file": "test/test/StorageContractBatch1Tests.Codeunit.al",
+      "codeunit": 96215,
+      "tests": 2
+    },
+    {
+      "file": "test/test/StorageContractBatch2Tests.Codeunit.al",
+      "codeunit": 96216,
+      "tests": 19
+    },
+    {
+      "file": "test/test/StorageContractTests.Codeunit.al",
+      "codeunit": 96265,
+      "tests": 8
+    },
+    {
+      "file": "test/test/StorageDirection130Tests.Codeunit.al",
+      "codeunit": 96229,
+      "tests": 4
+    },
+    {
+      "file": "test/test/StorageErrorResponseTests.Codeunit.al",
+      "codeunit": 96212,
+      "tests": 24
+    },
+    {
+      "file": "test/test/StorageFollow168Tests.Codeunit.al",
+      "codeunit": 96264,
+      "tests": 18
+    },
+    {
+      "file": "test/test/StorageHttpFixtureTests.Codeunit.al",
+      "codeunit": 96267,
+      "tests": 4
+    },
+    {
+      "file": "test/test/StorageIntegrity75Testsori.Codeunit.al",
+      "codeunit": 96225,
+      "tests": 25
+    },
+    {
+      "file": "test/test/StorageInterfaceTests.Codeunit.al",
+      "codeunit": 96236,
+      "tests": 6
+    },
+    {
+      "file": "test/test/StorageLinkGuardTests.Codeunit.al",
+      "codeunit": 96214,
+      "tests": 3
+    },
+    {
+      "file": "test/test/StorageMsgConformanceTests.Codeunit.al",
+      "codeunit": 96211,
+      "tests": 14
+    },
+    {
+      "file": "test/test/StorageNativeFieldsTests.Codeunit.al",
+      "codeunit": 96217,
+      "tests": 11
+    },
+    {
+      "file": "test/test/StorageRefusal122Tests.Codeunit.al",
+      "codeunit": 96228,
+      "tests": 13
+    },
+    {
+      "file": "test/test/StorageRefusal125Tests.Codeunit.al",
+      "codeunit": 96238,
+      "tests": 4
+    },
+    {
+      "file": "test/test/StorageResponse159Tests.Codeunit.al",
+      "codeunit": 96258,
+      "tests": 39
+    },
+    {
+      "file": "test/test/StorageSetupPageTests.Codeunit.al",
+      "codeunit": 96207,
+      "tests": 8
+    },
+    {
+      "file": "test/test/StorageTakeoverProbeTests.Codeunit.al",
+      "codeunit": 96210,
+      "tests": 9
+    },
+    {
+      "file": "test/test/StorageTakeoverTests.Codeunit.al",
+      "codeunit": 96209,
+      "tests": 3
+    },
+    {
+      "file": "test/test/StorageTelemetry121Tests.Codeunit.al",
+      "codeunit": 96227,
+      "tests": 3
+    },
+    {
+      "file": "test/test/StorageUploadTests.Codeunit.al",
+      "codeunit": 96205,
+      "tests": 25
+    },
+    {
+      "file": "test/test/StorageWrite166Tests.Codeunit.al",
+      "codeunit": 96261,
+      "tests": 26
+    }
+  ]
+}

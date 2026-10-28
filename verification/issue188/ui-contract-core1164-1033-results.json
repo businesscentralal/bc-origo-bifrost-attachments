@@ -1,0 +1,126 @@
+{
+  "name": "Storage Contract Batch2 Tests",
+  "codeUnit": 96216,
+  "codeunitName": "Storage Contract Batch2 Tests",
+  "applicationID": "{7CDB530B-B74B-446B-9ECE-80E2B911BFB3}",
+  "applicationName": "Bifrost Attachments - Tests",
+  "startTime": "2026-10-28T16:30:26.3970000Z",
+  "finishTime": "2026-10-28T16:30:26.9170000Z",
+  "result": 2,
+  "testResults": [
+    {
+      "method": "TypeList_Contract_DeclaresCountAndTypesOnce",
+      "startTime": "2026-10-28T16:30:26.4070000Z",
+      "finishTime": "2026-10-28T16:30:26.4130000Z",
+      "result": 2
+    },
+    {
+      "method": "TypeList_EmptyRequest_CountMatchesTypes",
+      "startTime": "2026-10-28T16:30:26.4270000Z",
+      "finishTime": "2026-10-28T16:30:26.4500000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_TypeList_SeededRows_MatchResponseContract",
+      "startTime": "2026-10-28T16:30:26.4600000Z",
+      "finishTime": "2026-10-28T16:30:26.4830000Z",
+      "result": 2
+    },
+    {
+      "method": "Batch2_AllTypes_HaveRequiredContractChapters",
+      "startTime": "2026-10-28T16:30:26.4900000Z",
+      "finishTime": "2026-10-28T16:30:26.5070000Z",
+      "result": 2
+    },
+    {
+      "method": "Batch2_Effects_MatchOperation",
+      "startTime": "2026-10-28T16:30:26.5130000Z",
+      "finishTime": "2026-10-28T16:30:26.5300000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC02_QueryContracts_DoNotRequireStorage",
+      "startTime": "2026-10-28T16:30:26.5370000Z",
+      "finishTime": "2026-10-28T16:30:26.5470000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC02_AttachmentContracts_DeclareAcceptedAliases",
+      "startTime": "2026-10-28T16:30:26.5500000Z",
+      "finishTime": "2026-10-28T16:30:26.5600000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC02_MutationContracts_MatchShippedKeys",
+      "startTime": "2026-10-28T16:30:26.5700000Z",
+      "finishTime": "2026-10-28T16:30:26.6000000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC02_MutationContracts_ReplaceStaleParameters",
+      "startTime": "2026-10-28T16:30:26.6100000Z",
+      "finishTime": "2026-10-28T16:30:26.6200000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_DefinitionList_NoStorage_ReturnsSeededRow",
+      "startTime": "2026-10-28T16:30:26.6270000Z",
+      "finishTime": "2026-10-28T16:30:26.6630000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_DefinitionFilters_Malformed_ReturnCompleteErrors",
+      "startTime": "2026-10-28T16:30:26.6700000Z",
+      "finishTime": "2026-10-28T16:30:26.6870000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_DefinitionFilters_Unknown_ReturnCompleteErrors",
+      "startTime": "2026-10-28T16:30:26.6970000Z",
+      "finishTime": "2026-10-28T16:30:26.7170000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_EntryGet_InvalidInputs_CollectsEveryProblem",
+      "startTime": "2026-10-28T16:30:26.7230000Z",
+      "finishTime": "2026-10-28T16:30:26.7670000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_EntryList_MalformedInputs_ReturnsFiveErrors",
+      "startTime": "2026-10-28T16:30:26.7730000Z",
+      "finishTime": "2026-10-28T16:30:26.7900000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_EntryList_ZeroTake_PreservesDefault",
+      "startTime": "2026-10-28T16:30:26.7970000Z",
+      "finishTime": "2026-10-28T16:30:26.8100000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_EntryList_ReversedDates_Refused",
+      "startTime": "2026-10-28T16:30:26.8170000Z",
+      "finishTime": "2026-10-28T16:30:26.8300000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_DefinitionGet_CodeBoundary_NoTruncation",
+      "startTime": "2026-10-28T16:30:26.8370000Z",
+      "finishTime": "2026-10-28T16:30:26.8630000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_DefinitionGet_MissingCode_CompleteRefusal",
+      "startTime": "2026-10-28T16:30:26.8700000Z",
+      "finishTime": "2026-10-28T16:30:26.8870000Z",
+      "result": 2
+    },
+    {
+      "method": "Scenario_AC04_InvalidDirection_BilingualRefusals",
+      "startTime": "2026-10-28T16:30:26.8970000Z",
+      "finishTime": "2026-10-28T16:30:26.9170000Z",
+      "result": 2
+    }
+  ]
+}
