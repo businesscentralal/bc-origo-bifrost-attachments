@@ -1,0 +1,44 @@
+{
+  "startedAt": "2026-10-29T07:17:19.424500+00:00",
+  "finishedAt": "2026-10-29T07:17:45.298934+00:00",
+  "sha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+  "cleanAtStart": true,
+  "cleanAtEnd": true,
+  "exactTip": true,
+  "results": [
+    {
+      "part": "app",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": [
+        "/workspace/tools/dotnet10/dotnet",
+        "/workspace/evidence/attachments158-worker9/al17/extension/bin/linux/alc.dll",
+        "/project:/workspace/attachments190-worker9/app",
+        "/packagecachepath:/workspace/evidence/attachments190-worker9/amend-20261029/build/symbols",
+        "/out:/workspace/evidence/attachments190-worker9/amend-20261029/build/app.app",
+        "/analyzer:/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.CodeCop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.UICop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.AppSourceCop.dll"
+      ],
+      "packageExists": true,
+      "sha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+      "packageSha256": "236e08af45207c64c45d738abc06c15e178f51fc1eebc54ce27ed405fa97c477"
+    },
+    {
+      "part": "test",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": [
+        "/workspace/tools/dotnet10/dotnet",
+        "/workspace/evidence/attachments158-worker9/al17/extension/bin/linux/alc.dll",
+        "/project:/workspace/attachments190-worker9/test",
+        "/packagecachepath:/workspace/evidence/attachments190-worker9/amend-20261029/build/symbols",
+        "/out:/workspace/evidence/attachments190-worker9/amend-20261029/build/test.app",
+        "/analyzer:/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.CodeCop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.UICop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.AppSourceCop.dll"
+      ],
+      "packageExists": true,
+      "sha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+      "packageSha256": "d1725e429903e5836771b7985f0eda830271aa2158fc69349bd89e5f1a9eb4bb"
+    }
+  ]
+}

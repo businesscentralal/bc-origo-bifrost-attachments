@@ -1,0 +1,16 @@
+{
+  "candidateSha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+  "recordedAt": "2026-10-29T07:19:13.295840+00:00",
+  "status": "Compiled verification candidate; new-tip runtime pending",
+  "files": {
+    "github-candidate.json": "8ba6a614ba910cd7196d0f6ff086378524e32f2a6f8dac3b8a85f7c952379260",
+    "build/compile-results.json": "d0a06a38c201af56dce1716e3d36a6aba002f21eab872fcb0c65fb037a7c1bbb",
+    "build/app-compile.log": "db6c0c81e9fe774e442f788f14d63723d034cc177793aed16c8bb53a24c942e0",
+    "build/test-compile.log": "20e72fd7c54a42db8dca9de506afb3281ddaadbf3daeb406873a6ecfed122803",
+    "baseline/compatibility.json": "7c9b436b99666e262b167753e8c510a9e0940cc3fa8b80e9b15365e7760c437c",
+    "baseline/compatibility.log": "d03308e70930a22fd08ada23b28e9c022e32ea0459e6836acd7cb2c0cb24f481",
+    "inventory-check.log": "b4ad7a0bfa92d2ba8094453fde678cbeffc7aeb482a98c937e9ae2d26cc82cbf",
+    "xlf-check.log": "e313183a073e395b647a1b77d1f8e3bc29dfb995c1a50153e3fbab741ab9b5b0",
+    "acceptance-matrix.json": "437d83df41f95c18e8c2e3f016c5dccf63a3109eadb03eb322505c0171307a74"
+  }
+}
