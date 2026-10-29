@@ -1,6 +1,6 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "6248f2bc8cfc3aa902a0f8e2651089dfc5c2d173",
+  "sourceSha": "cdf1611a36f9c327e386d28cad07e8c4ddca23d3",
   "standardsSha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
@@ -275,9 +275,9 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-10-28T17:39:01.549334+00:00",
-  "inventoryPreparedFromDocumentationHead": "6248f2bc8cfc3aa902a0f8e2651089dfc5c2d173",
-  "productSourceBaselineUnchanged": true,
+  "refreshedAt": "2026-10-29T07:16:27.978443+00:00",
+  "inventoryPreparedFromDocumentationHead": "cdf1611a36f9c327e386d28cad07e8c4ddca23d3",
+  "productSourceBaselineUnchanged": false,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",
@@ -362,7 +362,7 @@
     "app/src/Permissions/BIFROSTAttach.PermissionSet.al": "c7480d4d7b9f81beae252037fc57dba4f2f477d73864a6ea75bfc7555c8ae8b9",
     "app/src/Permissions/BIFROSTDataExch.PermissionSet.al": "0cdac1a1f56e675083ad24f05936f824899f4a49a2b6ec1dee99e19c7748aabe",
     "app/src/Permissions/StorageFull.PermissionSetExt.al": "ac139d88c56e5d75c37fe8bab3af0aa82148647cbdb38b316839784353cabaed",
-    "app/src/Setup/AttachmentsRegistration.Codeunit.al": "9e4d83a1d870b4f76c968d0bc771c62af177872cdb5a94807501b51a5408b687",
+    "app/src/Setup/AttachmentsRegistration.Codeunit.al": "a570cd5ebdcfa10c349e1b0683d6210cb4b585e7e3ce76eb55265629ee301107",
     "app/src/Setup/AttachmentsSetup.Page.al": "f3bbba8e6068910faa2c55c92b0deee6b63f6fa5d5fcd4305a79e87136deba10",
     "app/src/Setup/SetupExt.PageExt.al": "6d1f321abfacba96db3caa6d246b6a8760f37ffb06a04b57d2a13857c2ad91b6",
     "app/src/Setup/StorageAccountLookup.Page.al": "8730792a02f1fb275a4d361722660087ce9e070d3a641bba37f876ba714858ac",
