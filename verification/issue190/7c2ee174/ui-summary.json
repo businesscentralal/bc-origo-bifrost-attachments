@@ -1,0 +1,26 @@
+{
+  "sha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+  "containerId": "f082aa1fe153",
+  "foundationVersion": "28.0.10.632",
+  "clientLanguage": 1033,
+  "scenarioLanguages": [
+    1033,
+    1039
+  ],
+  "executed": 2,
+  "passed": 2,
+  "failed": 0,
+  "skipped": 0,
+  "scenario": "BC Web Client AL Test Tool Run Selected Tests on96268. Actual Setup.OpenView under exact licence-admin role; registry setup target, noneditable setup, Sync visibility, denied storage writes. No Sync invoked.",
+  "evidence": [
+    "ui-7c2ee174-registration-webclient-run.png",
+    "ui-7c2ee174-registration-webclient-run.txt",
+    "ui-7c2ee174-registration-webclient-passed.png",
+    "ui-7c2ee174-registration-webclient-passed.txt",
+    "ui-7c2ee174-registration-webclient-details.png",
+    "ui-7c2ee174-registration-webclient-details.txt"
+  ],
+  "countNote": "Browser action executed only2selected methods. Aggregate492 in page footer includes previously completed native tests; not claimed as492browser executions.",
+  "browserClosed": true,
+  "at": "2026-10-29T07:52:18.290726+00:00"
+}

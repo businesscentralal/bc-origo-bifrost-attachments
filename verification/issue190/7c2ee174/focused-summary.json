@@ -1,0 +1,15 @@
+{
+  "sha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+  "executed": 2,
+  "passed": 2,
+  "failed": 0,
+  "skipped": 0,
+  "errors": 0,
+  "languages": [
+    1033,
+    1039
+  ],
+  "containerId": "f082aa1fe153",
+  "junit": "focused-suite.xml",
+  "runnerDelay": "Invocation waited for SSH enable/readiness and connection recovery; observed no test rows before completed run. No deployment was replayed; no AL failure asserted."
+}

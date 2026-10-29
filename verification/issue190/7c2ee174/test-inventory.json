@@ -1,0 +1,217 @@
+{
+  "sha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+  "codeunits": 35,
+  "expectedMethods": 492,
+  "rows": [
+    {
+      "codeunit": 96274,
+      "name": "Attachments Build Tests ori",
+      "tests": 13,
+      "source": "test/test/AttachmentsBuildTestsori.Codeunit.al"
+    },
+    {
+      "codeunit": 96244,
+      "name": "DataExch Def Xfer Tests ori",
+      "tests": 12,
+      "source": "test/test/DataExchDefXferTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96213,
+      "name": "Data Exch Discovery Tests",
+      "tests": 11,
+      "source": "test/test/DataExchDiscoveryTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96243,
+      "name": "DataExch Export Tests ori",
+      "tests": 14,
+      "source": "test/test/DataExchExportTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96256,
+      "name": "DataExch Format Tests ori",
+      "tests": 12,
+      "source": "test/test/DataExchFormatTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96242,
+      "name": "DataExch Import Tests ori",
+      "tests": 20,
+      "source": "test/test/DataExchImportTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96237,
+      "name": "DataExch Phase2 Tests ori",
+      "tests": 11,
+      "source": "test/test/DataExchPhase2Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": 96226,
+      "name": "DataExch Refusal82 Tests ori",
+      "tests": 40,
+      "source": "test/test/DataExchRefusal82Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": 96218,
+      "name": "Storage 79 Perm Tests ori",
+      "tests": 41,
+      "source": "test/test/Storage79PermTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96208,
+      "name": "Storage App Registry Tests",
+      "tests": 1,
+      "source": "test/test/StorageAppRegistryTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96203,
+      "name": "Storage Attachment Field Tests",
+      "tests": 8,
+      "source": "test/test/StorageAttachmentFieldTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96206,
+      "name": "Storage Attach Record Tests",
+      "tests": 10,
+      "source": "test/test/StorageAttachRecordTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96204,
+      "name": "Storage Connector Tests",
+      "tests": 29,
+      "source": "test/test/StorageConnectorTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96215,
+      "name": "Storage Contract Batch1 Tests",
+      "tests": 2,
+      "source": "test/test/StorageContractBatch1Tests.Codeunit.al"
+    },
+    {
+      "codeunit": 96216,
+      "name": "Storage Contract Batch2 Tests",
+      "tests": 19,
+      "source": "test/test/StorageContractBatch2Tests.Codeunit.al"
+    },
+    {
+      "codeunit": 96265,
+      "name": "Storage Contract Tests ori",
+      "tests": 8,
+      "source": "test/test/StorageContractTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96229,
+      "name": "Storage Direction130 Tests ori",
+      "tests": 4,
+      "source": "test/test/StorageDirection130Tests.Codeunit.al"
+    },
+    {
+      "codeunit": 96212,
+      "name": "Storage Error Response Tests",
+      "tests": 24,
+      "source": "test/test/StorageErrorResponseTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96264,
+      "name": "Storage Follow168 Tests ori",
+      "tests": 18,
+      "source": "test/test/StorageFollow168Tests.Codeunit.al"
+    },
+    {
+      "codeunit": 96267,
+      "name": "Storage HTTP Fixture Tests ori",
+      "tests": 4,
+      "source": "test/test/StorageHttpFixtureTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96225,
+      "name": "Storage Integrity 75 Tests ori",
+      "tests": 25,
+      "source": "test/test/StorageIntegrity75Testsori.Codeunit.al"
+    },
+    {
+      "codeunit": 96236,
+      "name": "Storage Interface Tests ori",
+      "tests": 6,
+      "source": "test/test/StorageInterfaceTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96214,
+      "name": "Storage Link Guard Tests",
+      "tests": 3,
+      "source": "test/test/StorageLinkGuardTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96211,
+      "name": "Storage Msg Conformance Tests",
+      "tests": 14,
+      "source": "test/test/StorageMsgConformanceTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96217,
+      "name": "Storage Native Fields Tests",
+      "tests": 11,
+      "source": "test/test/StorageNativeFieldsTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96228,
+      "name": "Storage Refusal122 Tests ori",
+      "tests": 13,
+      "source": "test/test/StorageRefusal122Tests.Codeunit.al"
+    },
+    {
+      "codeunit": 96238,
+      "name": "Storage Refusal 125 Tests ori",
+      "tests": 4,
+      "source": "test/test/StorageRefusal125Tests.Codeunit.al"
+    },
+    {
+      "codeunit": 96268,
+      "name": "Storage Registration Tests ori",
+      "tests": 2,
+      "source": "test/test/StorageRegistrationTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96258,
+      "name": "Storage Response159 Tests ori",
+      "tests": 39,
+      "source": "test/test/StorageResponse159Tests.Codeunit.al"
+    },
+    {
+      "codeunit": 96207,
+      "name": "Storage Setup Page Tests",
+      "tests": 8,
+      "source": "test/test/StorageSetupPageTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96210,
+      "name": "Storage Takeover Probe Tests",
+      "tests": 9,
+      "source": "test/test/StorageTakeoverProbeTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96209,
+      "name": "Storage Takeover Tests",
+      "tests": 3,
+      "source": "test/test/StorageTakeoverTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96227,
+      "name": "Storage Telemetry121 Tests ori",
+      "tests": 3,
+      "source": "test/test/StorageTelemetry121Tests.Codeunit.al"
+    },
+    {
+      "codeunit": 96205,
+      "name": "Storage Upload Tests",
+      "tests": 25,
+      "source": "test/test/StorageUploadTests.Codeunit.al"
+    },
+    {
+      "codeunit": 96261,
+      "name": "Storage Write166 Tests ori",
+      "tests": 26,
+      "source": "test/test/StorageWrite166Tests.Codeunit.al"
+    }
+  ]
+}

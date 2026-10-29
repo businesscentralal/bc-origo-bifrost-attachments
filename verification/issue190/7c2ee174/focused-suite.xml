@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="96268 Storage Registration Tests ori" timestamp="2026-10-29T07:43:45" hostname="f082aa1fe153-business-central-6646645cdc-nnfrq" time="5.863" tests="0" failures="0" errors="0" skipped="0" total="2">
+    <testcase classname="96268 Storage Registration Tests ori" name="LicenceAdmin_OpensSetup_English" time="5.666" />
+    <testcase classname="96268 Storage Registration Tests ori" name="LicenceAdmin_OpensSetup_Icelandic" time="0.197" />
+  </testsuite>
+</testsuites>

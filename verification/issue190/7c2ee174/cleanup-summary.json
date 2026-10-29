@@ -1,0 +1,14 @@
+{
+  "sha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+  "containerId": "f082aa1fe153",
+  "isolatedEvaluationCompany": "CRONUS International Ltd.",
+  "newRegressionFixtures": "Temporary registry and setup under Codeunit isolation130450; exact role only for Setup.OpenView checks. No Sync/consent/trial/licence/quota/backend writes in regression.",
+  "mcpFixtures": "None; no touched message type",
+  "externalFixturesCreated": 0,
+  "externalCleanupRequired": false,
+  "browserClosed": true,
+  "containerState": "Stopped and retained; actual readback container-retained-state.json. Deletion remains pending Tester postdeploy UAT and issue closure.",
+  "stateEvidence": "container-retained-state.json",
+  "ciContainer": "f0b6a46877b4",
+  "ciContainerDeletionVerifiedFromLog": true
+}

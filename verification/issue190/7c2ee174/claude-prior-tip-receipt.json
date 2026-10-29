@@ -1,0 +1,24 @@
+{
+  "url": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/pull/191#issuecomment-6490435265",
+  "createdAt": "2026-10-29T07:13:54Z",
+  "updatedAt": "2026-10-29T07:13:59Z",
+  "reviewedSha": "459ce05715126048e85a7a72220331f8abb143e3",
+  "currentSha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+  "currentTipVerified": false,
+  "native": {
+    "passed": 441,
+    "failed": 0,
+    "skipped": 51,
+    "total": 492
+  },
+  "foundation98677": {
+    "passed": 16,
+    "failed": 0
+  },
+  "registration96268": {
+    "passed": 2,
+    "failed": 0
+  },
+  "status": "Prior-tip evidence only; current-head re-verification requested",
+  "widerFinding": "Five codeunits abort on bc28-w1; Claude reports baseline reproduction and51unverified. No waiver inferred."
+}

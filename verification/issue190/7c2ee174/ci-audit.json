@@ -1,0 +1,55 @@
+{
+  "recordedAt": "2026-10-29T07:53:12.366089+00:00",
+  "candidateSha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+  "runId": 40834648423,
+  "runUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/40834648423",
+  "conclusion": "success",
+  "checkoutSha": "1d5f20335c4b474f877d815ebcfd21ace7e6ffb7",
+  "checkoutTree": "f19a1a1c848929e5e77aa6c8f80dc0535bfce45f",
+  "candidateTree": "f19a1a1c848929e5e77aa6c8f80dc0535bfce45f",
+  "exactTreeMatch": true,
+  "compile": [
+    {
+      "mode": "Default",
+      "errors": 0,
+      "warnings": 0,
+      "artifactId": 12880443104
+    },
+    {
+      "mode": "Test",
+      "errors": 0,
+      "warnings": 0,
+      "artifactId": 12881296932
+    }
+  ],
+  "tests": {
+    "executed": 492,
+    "passed": 492,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "unique": 492,
+    "sourceAndOwnedSuiteMatch": true,
+    "artifactId": 12881256943,
+    "junitSha256": "0d8018d4d38c4e0d56c20f0b5946b5f551dc0811a6c2bdd8c316fe5703979ae3"
+  },
+  "registrationTests": [
+    {
+      "classname": "96268 Storage Registration Tests ori",
+      "name": "LicenceAdmin_OpensSetup_English",
+      "time": "0.266"
+    },
+    {
+      "classname": "96268 Storage Registration Tests ori",
+      "name": "LicenceAdmin_OpensSetup_Icelandic",
+      "time": "0.08"
+    }
+  ],
+  "appVersion": "28.3.2147483647.396",
+  "foundationVersion": "28.0.10.632",
+  "ciContainer": "f0b6a46877b4",
+  "ciCleanup": "Logs confirm deleted1of1; separate owned developer container is stopping for retention.",
+  "defaultFriends": [],
+  "defaultSignatureTailBytes": 0,
+  "signingDisposition": "Unsigned PR Default by existing main-only signing setting. Claude prior-tip comment calls it by design; Architect disposition still pending. No signed proof claimed."
+}

@@ -1,0 +1,705 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="96203 Storage Attachment Field Tests" timestamp="2026-10-29T07:46:21" hostname="runnervmdaln5" time="7.977" tests="8" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96203 Storage Attachment Field Tests" name="Offloaded_FalseForNewIncDocAttachment" time="5.723" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="Offloaded_TrueAfterOffload_IncDoc" time="0.84" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="Offloaded_FalseAfterRestore_IncDoc" time="0.08" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="Offloaded_FalseForNewDocAttachment" time="0.184" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="Offloaded_TrueAfterOffload_DocAttach" time="0.106" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="DataRecordsGet_IncDoc_FiltersByOffloaded" time="0.54" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="DataRecordsGet_DocAttach_FiltersByOffloaded" time="0.367" />
+    <testcase classname="96203 Storage Attachment Field Tests" name="OffloadHelp_DocumentsCandidateDiscovery" time="0.137" />
+  </testsuite>
+  <testsuite name="96204 Storage Connector Tests" timestamp="2026-10-29T07:46:24" hostname="runnervmdaln5" time="2.339" tests="29" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96204 Storage Connector Tests" name="EveryStorageTypeHasMetadataAndHelp" time="0.2" />
+    <testcase classname="96204 Storage Connector Tests" name="EveryMessageTypeHelpExplainsUsage" time="0.024" />
+    <testcase classname="96204 Storage Connector Tests" name="HelpStorageGetReturnsOverviewMarkdown" time="0.013" />
+    <testcase classname="96204 Storage Connector Tests" name="StorageHelpUsesCurrentMcpToolNames" time="0.203" />
+    <testcase classname="96204 Storage Connector Tests" name="HelpTextContainsNoLiteralUnicodeEscapes" time="0.03" />
+    <testcase classname="96204 Storage Connector Tests" name="HelpStorageGetReportsInstalledAppVersion" time="0.006" />
+    <testcase classname="96204 Storage Connector Tests" name="MutatingOutboundStorageHelpDocumentsSideEffects" time="0.017" />
+    <testcase classname="96204 Storage Connector Tests" name="DeleteHelpDocumentsLinkedAttachmentGuards" time="0.01" />
+    <testcase classname="96204 Storage Connector Tests" name="AccountListReturnsConfiguredCode" time="0.04" />
+    <testcase classname="96204 Storage Connector Tests" name="Scenario_AC01_StoredDescription_IsVerbatimBothLanguages" time="0.044" />
+    <testcase classname="96204 Storage Connector Tests" name="FileCreateThenGetRoundtripsContent" time="0.06" />
+    <testcase classname="96204 Storage Connector Tests" name="FileExistsReflectsCreateAndDelete" time="0.047" />
+    <testcase classname="96204 Storage Connector Tests" name="FileDelete_LinkedAttachment_ReturnsError" time="0.11" />
+    <testcase classname="96204 Storage Connector Tests" name="DirectoryDelete_ContainsLinkedAttachment_ReturnsError" time="0.074" />
+    <testcase classname="96204 Storage Connector Tests" name="FileMove_LinkedAttachment_UpdatesLinkPath" time="0.097" />
+    <testcase classname="96204 Storage Connector Tests" name="CreateLinked_DuplicatePath_ReturnsError" time="0.05" />
+    <testcase classname="96204 Storage Connector Tests" name="FileListReturnsEntriesUnderPath" time="0.08" />
+    <testcase classname="96204 Storage Connector Tests" name="DirectoryCreateExistsDelete" time="0.037" />
+    <testcase classname="96204 Storage Connector Tests" name="UnknownStorageCodeReturnsError" time="0.02" />
+    <testcase classname="96204 Storage Connector Tests" name="DisabledConnectionIsRejected" time="0.024" />
+    <testcase classname="96204 Storage Connector Tests" name="MissingPathReturnsError" time="0.017" />
+    <testcase classname="96204 Storage Connector Tests" name="RelativePathSegmentIsRejected" time="0.02" />
+    <testcase classname="96204 Storage Connector Tests" name="RelativePathWithBackslashesIsRejected" time="0.02" />
+    <testcase classname="96204 Storage Connector Tests" name="CurrentDirectorySegmentIsRejected" time="0.02" />
+    <testcase classname="96204 Storage Connector Tests" name="DotsInsideAFileNameAreAccepted" time="0.013" />
+    <testcase classname="96204 Storage Connector Tests" name="GetMissingFileReturnsError" time="0.027" />
+    <testcase classname="96204 Storage Connector Tests" name="DocumentAttachmentOffloadRestoreRoundtrip" time="0.963" />
+    <testcase classname="96204 Storage Connector Tests" name="OffloadPreservesDocumentAttachmentUiBehaviour" time="0.043" />
+    <testcase classname="96204 Storage Connector Tests" name="OffloadPreservesIncomingDocumentUiBehaviour" time="0.03" />
+  </testsuite>
+  <testsuite name="96205 Storage Upload Tests" timestamp="2026-10-29T07:46:28" hostname="runnervmdaln5" time="2.622" tests="25" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96205 Storage Upload Tests" name="BeginAppendCommit_TwoChunks_RoundtripsContent" time="0.173" />
+    <testcase classname="96205 Storage Upload Tests" name="Commit_OutOfOrderChunks_AssemblesInSequence" time="0.053" />
+    <testcase classname="96205 Storage Upload Tests" name="Append_DuplicateSequence_ReplacesChunk" time="0.056" />
+    <testcase classname="96205 Storage Upload Tests" name="Commit_SizeMismatch_ReturnsError" time="0.04" />
+    <testcase classname="96205 Storage Upload Tests" name="Commit_NoChunks_ReturnsError" time="0.037" />
+    <testcase classname="96205 Storage Upload Tests" name="Begin_WithoutFileName_RefusedBeforeStorage" time="0.02" />
+    <testcase classname="96205 Storage Upload Tests" name="Begin_NullOrEmptyFileName_RefusedBeforeStorage" time="0.037" />
+    <testcase classname="96205 Storage Upload Tests" name="Begin_FileNameWithFolder_ReturnsErrorAndCreatesNoSession" time="0.034" />
+    <testcase classname="96205 Storage Upload Tests" name="Begin_LeafFileNameWithFolderPath_UsesFolderPath" time="0.013" />
+    <testcase classname="96205 Storage Upload Tests" name="UploadBeginHelpStatesDefaultRoot" time="0.01" />
+    <testcase classname="96205 Storage Upload Tests" name="Abort_OpenSession_RemovesSessionAndChunks" time="0.047" />
+    <testcase classname="96205 Storage Upload Tests" name="Append_UnknownUploadId_ReturnsError" time="0.017" />
+    <testcase classname="96205 Storage Upload Tests" name="Status_OpenSession_ReportsProgress" time="0.033" />
+    <testcase classname="96205 Storage Upload Tests" name="CreateLinked_FromUploadedFile_AttachesToNewIncomingDoc" time="0.06" />
+    <testcase classname="96205 Storage Upload Tests" name="Begin_WithoutStorageCode_CreatesBufferSession" time="0.017" />
+    <testcase classname="96205 Storage Upload Tests" name="Commit_BufferSession_ReturnsNoStorageCodeError" time="0.03" />
+    <testcase classname="96205 Storage Upload Tests" name="CommitToRecord_OnCustomer_RoundtripsContent" time="1.57" />
+    <testcase classname="96205 Storage Upload Tests" name="CommitToRecord_IncomingDocument_CreatesAttachment" time="0.044" />
+    <testcase classname="96205 Storage Upload Tests" name="CommitToRecord_UnknownTarget_ReturnsError" time="0.03" />
+    <testcase classname="96205 Storage Upload Tests" name="CommitToRecord_NoChunks_ReturnsError" time="0.024" />
+    <testcase classname="96205 Storage Upload Tests" name="UploadTables_AreRestrictedFromDataRecords" time="0.017" />
+    <testcase classname="96205 Storage Upload Tests" name="DataRecordsSet_OnStorageSetup_ReturnsError" time="0.07" />
+    <testcase classname="96205 Storage Upload Tests" name="UploadMessageTypes_HaveMetadataAndHelp" time="0.017" />
+    <testcase classname="96205 Storage Upload Tests" name="Scenario_AC02_CommittedUpload_RefusalIsIcelandic" time="0.146" />
+    <testcase classname="96205 Storage Upload Tests" name="Scenario_AC02_AbortedUpload_RefusalIsIcelandic" time="0.027" />
+  </testsuite>
+  <testsuite name="96206 Storage Attach Record Tests" timestamp="2026-10-29T07:46:28" hostname="runnervmdaln5" time="0.382" tests="10" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_FromBase64_OnCustomer" time="0.117" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_FromContentBase64_OnCustomer" time="0.054" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_RejectsContentAndContentBase64" time="0.034" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecordHelpDocumentsContentBase64First" time="0.007" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_OnFixedAsset" time="0.027" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_ByRecordSystemId" time="0.023" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_CopiesFromIncomingDocument" time="0.04" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_FromStorage_IsBornOffloaded" time="0.04" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_RejectsTwoContentSources" time="0.02" />
+    <testcase classname="96206 Storage Attach Record Tests" name="CreateForRecord_RejectsUnknownRecord" time="0.02" />
+  </testsuite>
+  <testsuite name="96207 Storage Setup Page Tests" timestamp="2026-10-29T07:46:39" hostname="runnervmdaln5" time="10.264" tests="8" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96207 Storage Setup Page Tests" name="AttachmentsSetupPage_Opens_ListsStorageConnections" time="1.257" />
+    <testcase classname="96207 Storage Setup Page Tests" name="AttachmentsSetupPage_AllSetupActions_AreEnabled" time="0.096" />
+    <testcase classname="96207 Storage Setup Page Tests" name="BifrostSetupPage_ExposesOnlyTheAppsAction" time="8.674" />
+    <testcase classname="96207 Storage Setup Page Tests" name="Purge_WithAbandonedSessions_DeletesSessionsAndChunks" time="0.024" />
+    <testcase classname="96207 Storage Setup Page Tests" name="Purge_WithoutData_ReportsZeroAndSucceeds" time="0.01" />
+    <testcase classname="96207 Storage Setup Page Tests" name="PurgeAction_OnSetupPage_PurgesAndInformsTheUser" time="0.09" />
+    <testcase classname="96207 Storage Setup Page Tests" name="Scenario_AC02_NoAccount_BilingualPageRefusal" time="0.063" />
+    <testcase classname="96207 Storage Setup Page Tests" name="Scenario_AC02_ReachableConnection_BilingualPageMessage" time="0.05" />
+  </testsuite>
+  <testsuite name="96208 Storage App Registry Tests" timestamp="2026-10-29T07:46:40" hostname="runnervmdaln5" time="0.013" tests="1" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96208 Storage App Registry Tests" name="AppRegistry_ListsThisApp_WithItsSetupPage" time="0.013" />
+  </testsuite>
+  <testsuite name="96209 Storage Takeover Tests" timestamp="2026-10-29T07:46:40" hostname="runnervmdaln5" time="0.267" tests="3" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96209 Storage Takeover Tests" name="TakeOverAccessControl_LegacyRow_InsertsMatchingBifrostRole" time="0.234" />
+    <testcase classname="96209 Storage Takeover Tests" name="TakeOverAccessControl_ExistingBifrostRow_DoesNotDuplicate" time="0.026" />
+    <testcase classname="96209 Storage Takeover Tests" name="TakeOverAccessControl_NoLegacyRows_GrantsZeroWithoutError" time="0.007" />
+  </testsuite>
+  <testsuite name="96210 Storage Takeover Probe Tests" timestamp="2026-10-29T07:46:41" hostname="runnervmdaln5" time="0.169" tests="9" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96210 Storage Takeover Probe Tests" name="AC01_ProbeDenied_SkipsTakeOverWithoutError" time="0.017" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="AC01b_AccessControlWriteDenied_SkipsWithoutError" time="0.007" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="AC02_ProbeOk_RunsTakeOverWithoutError" time="0.01" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="AC03_LegacyAbsent_NoOpWithoutError" time="0.01" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="Scenario_AC01_TaggedUpgradeDenied_RetriesWithoutChangingTargets" time="0.03" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="Scenario_AC02_DeniedInstallThenPermittedUpgrade_RegrantsOnce" time="0.04" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="Scenario_AC03_LegacyAbsent_RepeatedUpgradePreservesTargets" time="0.013" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="Scenario_AC01_UntaggedDeniedUpgrade_PurgesAndRecordsTag" time="0.026" />
+    <testcase classname="96210 Storage Takeover Probe Tests" name="Scenario_AC03_TagFixture_PreservesUnrelatedTags" time="0.016" />
+  </testsuite>
+  <testsuite name="96211 Storage Msg Conformance Tests" timestamp="2026-10-29T07:46:43" hostname="runnervmdaln5" time="0.296" tests="14" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Scenario_AC01_Descriptions_FollowBothLanguages" time="0.013" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Scenario_AC01_DataExchangeSelections_AreIcelandic" time="0.01" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Scenario_D7_Envelope_StaysEnglish" time="0.007" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Scenario_D7_PublicHelp_StaysEnglish" time="0.05" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Scenario_AC04_MessageNames_StayThreePart" time="0.007" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Help_EveryType_HasTitleAndRequiredSections" time="0.02" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Help_All39Types_HaveOverviewAndExamples" time="0.11" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Description_EveryType_IsOneCallerFacingSentence" time="0.004" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="RelatedTypes_EveryHelp_NameExistingTypes" time="0.02" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="FilterTable_EveryType_IsZeroOrExistingTable" time="0.006" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="FilterTable_AttachmentTypes_NameTheirRecordTable" time="0.006" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Keywords_EveryBusinessType_HasEnglishAndIcelandic" time="0.02" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="SelectionDescription_EveryBusinessType_IsOwnSentence" time="0.02" />
+    <testcase classname="96211 Storage Msg Conformance Tests" name="Keywords_ChunkQuery_HitsAppendNotSingleUpload" time="0.003" />
+  </testsuite>
+  <testsuite name="96212 Storage Error Response Tests" timestamp="2026-10-29T07:46:44" hostname="runnervmdaln5" time="0.868" tests="24" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96212 Storage Error Response Tests" name="FileGet_NoStorageCodeNoPath_ReportsBothMissing" time="0.027" />
+    <testcase classname="96212 Storage Error Response Tests" name="FileGet_UnknownStorageCode_ReturnsRecordNotFoundWithNextStep" time="0.02" />
+    <testcase classname="96212 Storage Error Response Tests" name="FileGet_DisabledConnection_ReturnsPreconditionFailed" time="0.013" />
+    <testcase classname="96212 Storage Error Response Tests" name="FileGet_DotDotPath_ReturnsInvalidParameter" time="0.013" />
+    <testcase classname="96212 Storage Error Response Tests" name="FileCreate_NotBase64_ReturnsInvalidParameterFormat" time="0.026" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadAppend_ThreeBadValues_ReportsAllTogether" time="0.016" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadAppend_FractionalSequence_ReturnsInvalidParameterFormat" time="0.023" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadAppend_DigitStringSequence_IsAccepted" time="0.02" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadBegin_NegativeDeclaredSize_ReturnsInvalidParameter" time="0.013" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadBegin_Session_AdvertisesLargestChunk" time="0.013" />
+    <testcase classname="96212 Storage Error Response Tests" name="ContentLimit_ExactlyMaximum_IsAcceptedOneByteMoreIsNot" time="0.01" />
+    <testcase classname="96212 Storage Error Response Tests" name="UploadStatus_UnknownUploadId_ReturnsRecordNotFound" time="0.016" />
+    <testcase classname="96212 Storage Error Response Tests" name="Offload_UnknownTargetAndNoSystemId_ReportsBoth" time="0.01" />
+    <testcase classname="96212 Storage Error Response Tests" name="Offload_UnknownSystemId_ReturnsRecordNotFound" time="0.017" />
+    <testcase classname="96212 Storage Error Response Tests" name="Restore_AttachmentNotOffloaded_ReturnsPreconditionFailed" time="0.03" />
+    <testcase classname="96212 Storage Error Response Tests" name="CreateForRecord_TextTableId_ReturnsInvalidParameterFormat" time="0.013" />
+    <testcase classname="96212 Storage Error Response Tests" name="MissingStoragePaths_English_AreSafeAndActionable" time="0.433" />
+    <testcase classname="96212 Storage Error Response Tests" name="MissingStoragePaths_Icelandic_AreSafeAndActionable" time="0.064" />
+    <testcase classname="96212 Storage Error Response Tests" name="ExistingSource_ProviderFailure_RemainsBusinessCentralError" time="0.02" />
+    <testcase classname="96212 Storage Error Response Tests" name="Scenario_AC01_UploadFolder_BilingualRefusalPreservesKeys" time="0.02" />
+    <testcase classname="96212 Storage Error Response Tests" name="Scenario_AC01_UnknownTarget_BilingualExpectedPreservesTokens" time="0.023" />
+    <testcase classname="96212 Storage Error Response Tests" name="Scenario_AC02_UploadBegin_BilingualSuccessKeepsStoredFilename" time="0.02" />
+    <testcase classname="96212 Storage Error Response Tests" name="DiscoveryDescription_English_UsesSourceText" time="0.004" />
+    <testcase classname="96212 Storage Error Response Tests" name="DiscoveryDescription_Icelandic_UsesTranslation" time="0.004" />
+  </testsuite>
+  <testsuite name="96213 Data Exch Discovery Tests" timestamp="2026-10-29T07:46:45" hostname="runnervmdaln5" time="0.617" tests="11" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96213 Data Exch Discovery Tests" name="Scenario_AC03_CodeTypeRefusal_UsesAccusativeIcelandic" time="0.04" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="RepairedBindings_ResolveTheirOwnTargetTables" time="0.007" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="DefinitionListAndGet_RenderSeededDefinitionInOrder" time="0.164" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="TypeList_EmptyCompany_ReturnsCountZero" time="0.024" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="EntryGet_PagesFields_AndRefusesFileAboveOneMegabyte" time="0.27" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="DataRecordsSet_OnDataExch_ReturnsHint" time="0.013" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="NegativeSkip_AndMissingCode_ReturnErrors" time="0.017" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="Help_NamesTypes_AndCarriesPaginationLimits" time="0.01" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="EntryList_Paging_UsesFoundationDefaults" time="0.033" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="HelpGuides_NameEveryRegisteredType" time="0.026" />
+    <testcase classname="96213 Data Exch Discovery Tests" name="Contract_DataExchange_NamesItsOwnPermissionSetAndSubject" time="0.013" />
+  </testsuite>
+  <testsuite name="96214 Storage Link Guard Tests" timestamp="2026-10-29T07:46:45" hostname="runnervmdaln5" time="0.071" tests="3" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96214 Storage Link Guard Tests" name="DataRecordsSet_OnAttachmentLink_ReturnsHint" time="0.033" />
+    <testcase classname="96214 Storage Link Guard Tests" name="DataRecordsGet_OnAttachmentLink_ReturnsRows" time="0.024" />
+    <testcase classname="96214 Storage Link Guard Tests" name="PurgeOrphanLinks_RemovesEmptyKeys_KeepsValidRow" time="0.014" />
+  </testsuite>
+  <testsuite name="96215 Storage Contract Batch1 Tests" timestamp="2026-10-29T07:46:46" hostname="runnervmdaln5" time="0.026" tests="2" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96215 Storage Contract Batch1 Tests" name="Batch1_AllTypes_HaveRequiredContractChapters" time="0.013" />
+    <testcase classname="96215 Storage Contract Batch1 Tests" name="Batch1_Effects_MatchOperation" time="0.013" />
+  </testsuite>
+  <testsuite name="96216 Storage Contract Batch2 Tests" timestamp="2026-10-29T07:46:46" hostname="runnervmdaln5" time="0.361" tests="19" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="TypeList_Contract_DeclaresCountAndTypesOnce" time="0.007" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="TypeList_EmptyRequest_CountMatchesTypes" time="0.053" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_TypeList_SeededRows_MatchResponseContract" time="0.026" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Batch2_AllTypes_HaveRequiredContractChapters" time="0.02" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Batch2_Effects_MatchOperation" time="0.01" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC02_QueryContracts_DoNotRequireStorage" time="0.014" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC02_AttachmentContracts_DeclareAcceptedAliases" time="0.01" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC02_MutationContracts_MatchShippedKeys" time="0.026" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC02_MutationContracts_ReplaceStaleParameters" time="0.006" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_DefinitionList_NoStorage_ReturnsSeededRow" time="0.036" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_DefinitionFilters_Malformed_ReturnCompleteErrors" time="0.016" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_DefinitionFilters_Unknown_ReturnCompleteErrors" time="0.016" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_EntryGet_InvalidInputs_CollectsEveryProblem" time="0.027" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_EntryList_MalformedInputs_ReturnsFiveErrors" time="0.014" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_EntryList_ZeroTake_PreservesDefault" time="0.014" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_EntryList_ReversedDates_Refused" time="0.013" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_DefinitionGet_CodeBoundary_NoTruncation" time="0.026" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_DefinitionGet_MissingCode_CompleteRefusal" time="0.01" />
+    <testcase classname="96216 Storage Contract Batch2 Tests" name="Scenario_AC04_InvalidDirection_BilingualRefusals" time="0.017" />
+  </testsuite>
+  <testsuite name="96217 Storage Native Fields Tests" timestamp="2026-10-29T07:46:47" hostname="runnervmdaln5" time="0.26" tests="11" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96217 Storage Native Fields Tests" name="NativeFields_WhenExtensionMissing_SetAndClearDoNotError" time="0.016" />
+    <testcase classname="96217 Storage Native Fields Tests" name="NativeFields_WhenPresent_SetAndClearRoundTrip" time="0.023" />
+    <testcase classname="96217 Storage Native Fields Tests" name="Scenario_AC06_MissingRecord_SetAndClearDoNotInsert" time="0.006" />
+    <testcase classname="96217 Storage Native Fields Tests" name="Scenario_AC06_AssignmentFailure_PreservesPersistedFields" time="0.02" />
+    <testcase classname="96217 Storage Native Fields Tests" name="NativeMirrorModifyFailure_PreventsExternalUpload" time="0.047" />
+    <testcase classname="96217 Storage Native Fields Tests" name="ExternalStorageModule_IsPresentInTheTestContainer" time="0.004" />
+    <testcase classname="96217 Storage Native Fields Tests" name="LinkedRead_LeavesStoredRowUnchangedAfterModify" time="0.053" />
+    <testcase classname="96217 Storage Native Fields Tests" name="LinkedRead_LeavesStoredRowUnchangedAfterModifyFalse" time="0.023" />
+    <testcase classname="96217 Storage Native Fields Tests" name="LinkedRead_TransferFieldsInsert_DoesNotPersistStoredInternally" time="0.03" />
+    <testcase classname="96217 Storage Native Fields Tests" name="LinkedRead_TransferFieldsInsert_SlashVariantPath_DoesNotPersistStoredInternally" time="0.024" />
+    <testcase classname="96217 Storage Native Fields Tests" name="MicrosoftOffloadWithoutLink_StaysWithMicrosoftModule" time="0.014" />
+  </testsuite>
+  <testsuite name="96218 Storage 79 Perm Tests ori" timestamp="2026-10-29T07:46:53" hostname="runnervmdaln5" time="5.072" tests="41" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedSetupCard_PersistsChange" time="1.723" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlySetupCard_RefusesChange" time="0.064" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingSetupInsert_LeavesNoRow" time="0.027" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingSetupModify_PreservesRow" time="0.023" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingSetupDelete_PreservesRow" time="0.02" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_ActualRoles_DispatchSharedHelp" time="0.073" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedAccountList_ReturnsConfiguredRow" time="0.03" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedFilesAndDirectories_Roundtrip" time="0.1" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_InvalidFileInput_PreservesState" time="0.023" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedUpload_StoresBytesAndClearsChunks" time="0.056" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_EmptyUpload_RefusesCommitThenAborts" time="0.056" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedNativeTarget_PersistsContent" time="0.08" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingSourceRead_CreatesNothing" time="0.03" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingTargetWrite_PreservesUpload" time="0.063" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedOffloadOpenRestore_Roundtrips" time="0.09" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingLinkWrite_PreservesNativeAndStorage" time="0.05" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_GrantedDataExchange_ReadsSeededGraph" time="0.177" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyTypeSet_PreservesGraph" time="0.046" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyImportRun_CreatesNoEntry" time="0.053" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyExportRun_CreatesNoEntry" time="0.073" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ExportMissingRead_PreservesGraph" time="0.046" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyDefinitionDelete_PreservesGraph" time="0.046" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingEntryRead_PreservesGraph" time="0.05" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingColumnRead_PreservesGraph" time="0.047" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingDefinitionRead_PreservesGraph" time="0.037" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingFieldRead_PreservesGraph" time="0.06" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingFieldMappingRead_PreservesGraph" time="0.06" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingLineRead_PreservesGraph" time="0.05" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingMappingRead_PreservesGraph" time="0.046" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_MissingTypeRead_PreservesGraph" time="0.046" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ProcessWithoutTargetWrite_PreservesEntry" time="0.066" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_ProcessWithTargetWrite_WritesTargetRows" time="0.293" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyEntryDelete_PreservesEntry" time="0.05" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_EntryDeleteWithoutFieldWrite_PreservesEntry" time="0.06" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_EntryDeleteWithRowWrite_DeletesEntry" time="0.07" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyDefinitionImport_InstallsNothing" time="0.493" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_DefinitionImportWithDefWrite_InstallsCopy" time="0.167" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyPaymentExport_PreservesJournal" time="0.324" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_ReadOnlyCommitToDataExchange_PreservesUpload" time="0.074" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC02_CommitToDataExchangeWithoutFieldWrite_PreservesUpload" time="0.06" />
+    <testcase classname="96218 Storage 79 Perm Tests ori" name="Scenario_AC01_CommitToDataExchangeWithRowWrite_ImportsUpload" time="0.07" />
+  </testsuite>
+  <testsuite name="96225 Storage Integrity 75 Tests ori" timestamp="2026-10-29T07:46:55" hostname="runnervmdaln5" time="1.135" tests="25" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="SameAccount_SetupAliasProtectsLinkedFile" time="0.067" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="DifferentAccounts_DoNotShareLinkIdentity" time="0.034" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="SameAccount_PreservesOpaquePathSpelling" time="0.03" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="SameAccount_MovedLinkKeepsRelativeBase" time="0.07" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_SlashDeletes_PreserveLinkedContent" time="0.073" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_LegacySlashLink_RejectsCanonicalDelete" time="0.04" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC02_CreateLinkedTarget_PreservesBytesAndLink" time="0.043" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC02_TransfersToLinkedTarget_PreserveBothFiles" time="0.056" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC02_UploadTargetBecomesLinked_PreservesSession" time="0.056" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_SlashSourceMove_UpdatesOnlyMatchingLink" time="0.063" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_Path2047To2049_RejectsOnlyOverFieldLimit" time="0.046" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_BasePlusPathTooLong_RejectsBeforeWrite" time="0.017" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_Name249To251_RejectsBeforeSessionInsert" time="0.027" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC04_TraversalAndFileRoot_RejectWithoutWrites" time="0.023" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_InnerSlashVariants_RejectWithoutWrites" time="0.046" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_GeneratedOffloadTooLong_PreservesLocalBlob" time="0.057" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC04_ConnectorMoveFailure_RollsBackLink" time="0.04" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_SelfMoveAlias_PreservesSource" time="0.024" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_BaseRootAlias_PreservesIntendedTarget" time="0.034" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC02_DisabledAlias_ProtectsPhysicalDestination" time="0.04" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_AliasMove_PreservesEachRelativeRoot" time="0.047" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC04_AliasRootEscape_PreservesSource" time="0.044" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC01_CaseAndLiteralKeys_PreserveDistinctFiles" time="0.057" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC04_PostCopyFault_RetainsReadableSourceAndDuplicate" time="0.064" />
+    <testcase classname="96225 Storage Integrity 75 Tests ori" name="Scenario_AC03_DirectMoveOverlong_PreservesLinkAndContent" time="0.037" />
+  </testsuite>
+  <testsuite name="96226 DataExch Refusal82 Tests ori" timestamp="2026-10-29T07:46:58" hostname="runnervmdaln5" time="2.606" tests="40" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_GenericImport_ImportsInlineFile" time="1.55" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_PayrollImport_ImportsInlineFile" time="0.026" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_AbsentFields_CollectsAllThree" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_WrongTypes_CollectsAllWithoutWrite" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_NullFields_CollectsAllWithoutWrite" time="0.01" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_ObjectFields_CollectsAllWithoutWrite" time="0.014" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_EmptyFields_CollectsAllWithoutWrite" time="0.014" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_Lowercase_RefusesRawCode" time="0.023" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_MixedCase_RefusesRawCode" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_UnicodeCase_RefusesRawCode" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_LeadingSpace_RefusesRawCode" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_TrailingSpace_RefusesRawCode" time="0.017" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_Overlong_RefusesRawCode" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_Code20AndPath2048_AcceptsExactBounds" time="0.016" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_Path2049_RefusesWithoutWrite" time="0.016" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_Traversal_RefusesWithoutWrite" time="0.03" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_MalformedOrScalar_RefusesData" time="0.077" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_UnknownAndWrongKind_RefusesDefinition" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_DeleteUnreferenced_DeletesChildren" time="0.213" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_DeleteTypeReferenced_PreservesTree" time="0.016" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_DeleteBankReferenced_PreservesTree" time="0.03" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_DeleteMissing_ReportsCompleteError" time="0.01" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_TwoLocales_CollectsLocalizedErrors" time="0.033" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_AfterInsertFailure_RollsBack" time="0.027" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_AfterDeleteFailure_RollsBack" time="0.026" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_ChainedFailure_RollsBackEarlierImport" time="0.04" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_SpacesOnly_ReportsCompleteCodeError" time="0.013" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_ExportPayroll_IsRefused" time="0.016" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_ExportWrongTypes_CollectsWithoutWrite" time="0.013" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_ExportMissingOrWrongKind_DoesNotWrite" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_DefinitionExport_RefusesBadCode" time="0.027" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_DefinitionExport_ReturnsHeader" time="0.014" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_ExportFileNameBounds_NeverTruncates" time="0.027" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC03_TypeSet_CreateUpdatePreservesOmittedDescription" time="0.037" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_TypeSetOverlongDescription_PreservesExisting" time="0.02" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC02_TypeSetWrongTypes_CollectsWithoutWrite" time="0.013" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC01_TypeSetPayroll_DoesNotCreateType" time="0.013" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_TypeSetAfterModifyFailure_RollsBackInsert" time="0.024" />
+    <testcase classname="96226 DataExch Refusal82 Tests ori" name="Scenario_AC04_TypeSetAfterModifyFailure_RestoresOriginal" time="0.027" />
+  </testsuite>
+  <testsuite name="96227 Storage Telemetry121 Tests ori" timestamp="2026-10-29T07:46:59" hostname="runnervmdaln5" time="0.02" tests="3" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96227 Storage Telemetry121 Tests ori" name="Scenario_AC01_AC02_MirrorFailure_OnlySafeMetadata" time="0.007" />
+    <testcase classname="96227 Storage Telemetry121 Tests ori" name="Scenario_AC03_ClearMirrorFailure_IdentifiesRestoreOperation" time="0.003" />
+    <testcase classname="96227 Storage Telemetry121 Tests ori" name="Scenario_AC01_AC02_AC03_TakeoverDenials_OnlySafeDiagnostics" time="0.01" />
+  </testsuite>
+  <testsuite name="96228 Storage Refusal122 Tests ori" timestamp="2026-10-29T07:46:59" hostname="runnervmdaln5" time="0.134" tests="13" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC01_UnknownReferences_RefusedWithoutEntry1033" time="0.036" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC01_UnknownReferences_RefusedWithoutEntry1039" time="0.013" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC01_Contract_ExplainsUnvalidatedReferences" time="0.006" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_FileChild_RefusesAndPreservesContent" time="0.013" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_DirectoryChild_RefusesAndPreservesTree" time="0.007" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_BasePath_RefusesNestedFile" time="0.017" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_EmptyDirectory_DeletesOnlyTarget" time="0.003" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_Contract_ListsNonEmptyPrecondition" time="0.003" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_Contract_ListsStorageCodeAndRootRefusals" time="0.006" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_NonEmptyDirectory_Localizes1039" time="0.006" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_Path_DoesNotReadAccount" time="0.01" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_Path_RejectsOverlongBase" time="0.007" />
+    <testcase classname="96228 Storage Refusal122 Tests ori" name="Scenario_AC02_Path_PreservesNamesBlocksTraversal" time="0.007" />
+  </testsuite>
+  <testsuite name="96229 Storage Direction130 Tests ori" timestamp="2026-10-29T07:47:00" hostname="runnervmdaln5" time="0.096" tests="4" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96229 Storage Direction130 Tests ori" name="Scenario_AC01_StorageWritesAreInbound1033" time="0.036" />
+    <testcase classname="96229 Storage Direction130 Tests ori" name="Scenario_AC01_StorageWritesAreInbound1039" time="0.02" />
+    <testcase classname="96229 Storage Direction130 Tests ori" name="Scenario_AC02_AllTypesMatchEffect1033" time="0.02" />
+    <testcase classname="96229 Storage Direction130 Tests ori" name="Scenario_AC02_AllTypesMatchEffect1039" time="0.02" />
+  </testsuite>
+  <testsuite name="96236 Storage Interface Tests ori" timestamp="2026-10-29T07:47:01" hostname="runnervmdaln5" time="0.656" tests="6" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96236 Storage Interface Tests ori" name="Scenario_Interface_RestrictedActor_Roundtrips" time="0.456" />
+    <testcase classname="96236 Storage Interface Tests ori" name="Scenario_Interface_Accounts_KeepDistinctBytes" time="0.01" />
+    <testcase classname="96236 Storage Interface Tests ori" name="Scenario_Interface_ProviderFailure_PreservesSource" time="0.03" />
+    <testcase classname="96236 Storage Interface Tests ori" name="Scenario_Interface_UnsafePath_ReachesNoWrite" time="0.017" />
+    <testcase classname="96236 Storage Interface Tests ori" name="Scenario_Interface_TargetAliases_RefuseBeforeWrite" time="0.123" />
+    <testcase classname="96236 Storage Interface Tests ori" name="Scenario_Interface_ExistenceFailure_RefusesTransfer" time="0.02" />
+  </testsuite>
+  <testsuite name="96237 DataExch Phase2 Tests ori" timestamp="2026-10-29T07:47:06" hostname="runnervmdaln5" time="5.298" tests="11" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="PersistedProcessingErrors_AreScopedAndBilingual" time="0.263" />
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="AC01_CommitToRecord_SetsDataExchangeType_LeavesUnprocessed" time="0.066" />
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="AC02_CommitToRecord_ProcessTrue_KeepsDocumentOnProcessErrors" time="0.314" />
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="AC03_UnknownType_RefusesBeforeWrite_SessionStaysOpen" time="0.03" />
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="AC04_CreateLinked_SetsTypeOnIncomingDocument" time="0.066" />
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="AC04_CreateLinked_ProcessTrue_KeepsDocumentAndLink" time="0.073" />
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="Scenario_AC04_LinkedCsv_ProcessReadsAndMapsExactContent" time="0.396" />
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="Scenario_AC04_LocalCsv_ProcessKeepsStandardContentPath" time="0.163" />
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="Scenario_AC06_LinkedCsv_CreatesPurchaseInvoice" time="3.85" />
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="AC05_TypeSet_ExportDefinition_IsRefused" time="0.02" />
+    <testcase classname="96237 DataExch Phase2 Tests ori" name="AC07_DataRecordsSet_BlocksIncomingTypeField_AndTypeTable" time="0.057" />
+  </testsuite>
+  <testsuite name="96238 Storage Refusal 125 Tests ori" timestamp="2026-10-29T07:47:07" hostname="runnervmdaln5" time="0.098" tests="4" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96238 Storage Refusal 125 Tests ori" name="Scenario_AC01_RootPath_RefusedBeforeConnectorCall" time="0.047" />
+    <testcase classname="96238 Storage Refusal 125 Tests ori" name="Scenario_AC01_RootSpellings_RefusedWithReceivedValue" time="0.017" />
+    <testcase classname="96238 Storage Refusal 125 Tests ori" name="Scenario_AC01_RootRefusal_Localizes1039" time="0.017" />
+    <testcase classname="96238 Storage Refusal 125 Tests ori" name="Scenario_AC02_HelpErrors_ListRootRefusal" time="0.017" />
+  </testsuite>
+  <testsuite name="96242 DataExch Import Tests ori" timestamp="2026-10-29T07:47:09" hostname="runnervmdaln5" time="1.793" tests="20" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96242 DataExch Import Tests ori" name="AC01_CommitToDataExchange_ParsesWithoutProcessing" time="0.094" />
+    <testcase classname="96242 DataExch Import Tests ori" name="AC01_CommitToDataExchange_KeepFileWritesSessionPath" time="0.07" />
+    <testcase classname="96242 DataExch Import Tests ori" name="AC02_ImportRun_ProcessTrue_InsertsTargets" time="0.14" />
+    <testcase classname="96242 DataExch Import Tests ori" name="AC03_ImportRunFromStorage_LeavesFileUntouched" time="0.047" />
+    <testcase classname="96242 DataExch Import Tests ori" name="AC03_ImportRunMissingStoredFile_AnswersError" time="0.036" />
+    <testcase classname="96242 DataExch Import Tests ori" name="AC04_BankStatementDefinition_PointsToBankReconciliation" time="0.043" />
+    <testcase classname="96242 DataExch Import Tests ori" name="AC04_ExportDefinition_IsRefusedForImport" time="0.03" />
+    <testcase classname="96242 DataExch Import Tests ori" name="AC05_MalformedFile_LeavesNoHalfParsedEntry" time="0.034" />
+    <testcase classname="96242 DataExch Import Tests ori" name="AC05_MalformedUpload_KeepsSessionOpen" time="0.07" />
+    <testcase classname="96242 DataExch Import Tests ori" name="AC06_EntryDelete_RefusedForIncomingDocument" time="0.053" />
+    <testcase classname="96242 DataExch Import Tests ori" name="EntryDelete_RemovesEntryFieldsAndMarker" time="0.06" />
+    <testcase classname="96242 DataExch Import Tests ori" name="EntryDelete_UnknownEntry_RecordNotFound" time="0.014" />
+    <testcase classname="96242 DataExch Import Tests ori" name="EntryProcess_WritesTargets_ThenRefusesSecondRun" time="0.117" />
+    <testcase classname="96242 DataExch Import Tests ori" name="EntryProcess_IntermediateMapping_PointsToIncomingDocument" time="0.064" />
+    <testcase classname="96242 DataExch Import Tests ori" name="ImportRun_ProcessTrueWithIntermediateMapping_KeepsEntry" time="0.054" />
+    <testcase classname="96242 DataExch Import Tests ori" name="EntryProcess_InvalidInput_RefusedBeforeWrite" time="0.026" />
+    <testcase classname="96242 DataExch Import Tests ori" name="ImportRun_InlineOverOneMegabyte_LimitExceeded" time="0.74" />
+    <testcase classname="96242 DataExch Import Tests ori" name="ImportRun_TwoSources_Refused" time="0.02" />
+    <testcase classname="96242 DataExch Import Tests ori" name="CommitToDataExchange_UnknownDefinition_SessionStaysOpen" time="0.027" />
+    <testcase classname="96242 DataExch Import Tests ori" name="EntryProcess_DefinitionDeleted_RefusesRecordNotFound" time="0.054" />
+  </testsuite>
+  <testsuite name="96243 DataExch Export Tests ori" timestamp="2026-10-29T07:47:11" hostname="runnervmdaln5" time="1.024" tests="14" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96243 DataExch Export Tests ori" name="AC01_ExportThreeCustomers_ToStorage" time="0.553" />
+    <testcase classname="96243 DataExch Export Tests ori" name="AC02_RecordIds_InlineAndStorage" time="0.066" />
+    <testcase classname="96243 DataExch Export Tests ori" name="AC03_InlineOverOneMegabyte_RollsBack" time="0.103" />
+    <testcase classname="96243 DataExch Export Tests ori" name="AC04_ImportDefinition_Refused" time="0.034" />
+    <testcase classname="96243 DataExch Export Tests ori" name="AC04_PaymentDefinition_PointsToPaymentExport" time="0.017" />
+    <testcase classname="96243 DataExch Export Tests ori" name="TableNotMappingTable_Refused" time="0.02" />
+    <testcase classname="96243 DataExch Export Tests ori" name="MissingSourceAndDelivery_CollectedTogether" time="0.02" />
+    <testcase classname="96243 DataExch Export Tests ori" name="NoMatchingRecords_PreconditionFailed" time="0.024" />
+    <testcase classname="96243 DataExch Export Tests ori" name="UnknownViewField_InvalidFilterField" time="0.033" />
+    <testcase classname="96243 DataExch Export Tests ori" name="StorageWriteFailure_RollsBackEntry" time="0.06" />
+    <testcase classname="96243 DataExch Export Tests ori" name="PaymentExport_UnknownBatch_RecordNotFound" time="0.024" />
+    <testcase classname="96243 DataExch Export Tests ori" name="PaymentExport_LowercaseName_InvalidParameterFormat" time="0.02" />
+    <testcase classname="96243 DataExch Export Tests ori" name="PaymentExport_EmptyBatch_PreconditionFailed" time="0.03" />
+    <testcase classname="96243 DataExch Export Tests ori" name="PaymentExport_NoDelivery_MissingParameter" time="0.02" />
+  </testsuite>
+  <testsuite name="96244 DataExch Def Xfer Tests ori" timestamp="2026-10-29T07:47:12" hostname="runnervmdaln5" time="0.556" tests="12" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="AC01_ImportFromStorage_CreatesDefinitionTree" time="0.08" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="AC02_ExistingCode_RefusedUnlessOverwrite" time="0.09" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="AC03_ExportToStorage_ReimportUnderNewCodeEqualsOriginal" time="0.07" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="ImportFromUpload_ConsumesSession" time="0.09" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="MalformedXml_RefusedWithoutWrite" time="0.033" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="NoSource_And_TwoSources_Refused" time="0.026" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="DefinitionExport_InlineReturnsXml" time="0.037" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="DefinitionExport_NoDeliveryReturnsOnlyHeader" time="0.047" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="DefinitionExport_BothDestinationsOverwriteSameXml" time="0.034" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="DefinitionExport_ContractDescribesAllModesAndEffects" time="0.007" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="DefinitionDelete_RefusedForPayrollImportFormat" time="0.036" />
+    <testcase classname="96244 DataExch Def Xfer Tests ori" name="DataRecordsSet_BlocksDefinitionAndEntryTables" time="0.006" />
+  </testsuite>
+  <testsuite name="96256 DataExch Format Tests ori" timestamp="2026-10-29T07:47:13" hostname="runnervmdaln5" time="0.899" tests="12" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96256 DataExch Format Tests ori" name="XmlInline_RefusesInBothLanguages" time="0.126" />
+    <testcase classname="96256 DataExch Format Tests ori" name="XmlStorage_RefusesInBothLanguages" time="0.076" />
+    <testcase classname="96256 DataExch Format Tests ori" name="BinaryCsvInline_RefusesInBothLanguages" time="0.06" />
+    <testcase classname="96256 DataExch Format Tests ori" name="BinaryCsvStorage_RefusesInBothLanguages" time="0.06" />
+    <testcase classname="96256 DataExch Format Tests ori" name="DefinitionInline_RefusesInBothLanguages" time="0.03" />
+    <testcase classname="96256 DataExch Format Tests ori" name="DefinitionStorage_RefusesInBothLanguages" time="0.027" />
+    <testcase classname="96256 DataExch Format Tests ori" name="UploadXml_RefusesAndKeepsChunks" time="0.103" />
+    <testcase classname="96256 DataExch Format Tests ori" name="UploadBinaryCsv_RefusesAndKeepsChunks" time="0.09" />
+    <testcase classname="96256 DataExch Format Tests ori" name="DefinitionUpload_RefusesAndKeepsChunks" time="0.094" />
+    <testcase classname="96256 DataExch Format Tests ori" name="MissingStoredFile_UsesTheOperationErrorContract" time="0.117" />
+    <testcase classname="96256 DataExch Format Tests ori" name="PostwriteReaderFailure_RetainsRollback" time="0.1" />
+    <testcase classname="96256 DataExch Format Tests ori" name="Utf16Csv_IsNotMistakenForBinary" time="0.016" />
+  </testsuite>
+  <testsuite name="96258 Storage Response159 Tests ori" timestamp="2026-10-29T07:47:15" hostname="runnervmdaln5" time="0.877" tests="39" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96258 Storage Response159 Tests ori" name="DefinitionCollects_1033" time="0.046" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="DefinitionCollects_1039" time="0.017" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="CodeLength_1033" time="0.017" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="CodeLength_1039" time="0.017" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="ExportConflict_1033" time="0.016" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="ExportConflict_1039" time="0.01" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="InvalidSourceTarget_1033" time="0.014" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="InvalidSourceTarget_1039" time="0.013" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="EntryDefinition_1033" time="0.02" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="EntryDefinition_1039" time="0.027" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="EntryMapping_1033" time="0.023" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="EntryMapping_1039" time="0.017" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="StoredDefinition_1033" time="0.017" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="StoredDefinition_1039" time="0.017" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="LinkedFileName_1033" time="0.013" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="LinkedFileName_1039" time="0.01" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="MissingImportSource_1033" time="0.014" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="MissingImportSource_1039" time="0.01" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="PaymentNoDuplicate_1033" time="0.01" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="PaymentNoDuplicate_1039" time="0.013" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="MissingFile_1033" time="0.02" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="MissingFile_1039" time="0.017" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="UniformHeader_1033" time="0.04" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="UniformHeader_1039" time="0.033" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="TypeSetEnvelope_1033" time="0.016" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="TypeSetEnvelope_1039" time="0.017" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="DocumentTypeName_1033" time="0.02" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="DocumentTypeName_1039" time="0.016" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="WarningObjects_1033" time="0.033" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="WarningObjects_1039" time="0.02" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="UploadDocumentType_1033" time="0.037" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="UploadDocumentType_1039" time="0.037" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="Scenario_ACF2_MissingFileName_SingleError_1033" time="0.033" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="Scenario_ACF2_MissingFileName_SingleError_1039" time="0.03" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="Scenario_ACF3_NestedProblems_HaveNextStep_1033" time="0.033" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="Scenario_ACF3_NestedProblems_HaveNextStep_1039" time="0.03" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="Scenario_ACF4_Examples_NoTargetParameter" time="0.007" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="Scenario_ACF6a_Lists_HideAccountPath_1033" time="0.067" />
+    <testcase classname="96258 Storage Response159 Tests ori" name="Scenario_ACF6a_Lists_HideAccountPath_1039" time="0.03" />
+  </testsuite>
+  <testsuite name="96261 Storage Write166 Tests ori" timestamp="2026-10-29T07:47:16" hostname="runnervmdaln5" time="0.975" tests="26" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96261 Storage Write166 Tests ori" name="FileCreateConsent_1033" time="0.04" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="FileCreateConsent_1039" time="0.027" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="UploadCommitConsent_1033" time="0.044" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="UploadCommitConsent_1039" time="0.033" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="DefinitionExportConsent_1033" time="0.04" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="DefinitionExportConsent_1039" time="0.037" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="ExportRunConsent_1033" time="0.05" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="ExportRunConsent_1039" time="0.047" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="UploadDataExchangeConsent_1033" time="0.054" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="UploadDataExchangeConsent_1039" time="0.054" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="OffloadConsent_1033" time="0.06" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="OffloadConsent_1039" time="0.04" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="LinkedSourceSurvivesRestore_1033" time="0.033" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="LinkedSourceSurvivesRestore_1039" time="0.03" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="LinkedSourceSurvivesDelete_1033" time="0.027" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="LinkedSourceSurvivesDelete_1039" time="0.023" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="FreshOffloadDeletesOwnedFile_1033" time="0.037" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="FreshOffloadDeletesOwnedFile_1039" time="0.037" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="InvalidOverwriteRefused_1033" time="0.023" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="InvalidOverwriteRefused_1039" time="0.023" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="LinkedFileProtectedWithConsent_1033" time="0.037" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="LinkedFileProtectedWithConsent_1039" time="0.037" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="CommitToRecordDoesNotWriteStorage_1033" time="0.044" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="CommitToRecordDoesNotWriteStorage_1039" time="0.037" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="CreateLinkedSourceSurvivesRestore_1033" time="0.034" />
+    <testcase classname="96261 Storage Write166 Tests ori" name="CreateLinkedSourceSurvivesRestore_1039" time="0.027" />
+  </testsuite>
+  <testsuite name="96264 Storage Follow168 Tests ori" timestamp="2026-10-29T07:47:18" hostname="runnervmdaln5" time="0.869" tests="18" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_MappingPreflight_1033" time="0.18" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_MappingPreflight_1039" time="0.116" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_ImportMapping_1033" time="0.05" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_ImportMapping_1039" time="0.037" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_DefinitionEntries_1033" time="0.05" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_DefinitionEntries_1039" time="0.043" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_EntityType_1033" time="0.06" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_EntityType_1039" time="0.047" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_InvalidEntity_1033" time="0.034" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_InvalidEntity_1039" time="0.03" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_FileContract_1033" time="0.023" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_FileContract_1039" time="0.016" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_UploadContract_1033" time="0.023" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_UploadContract_1039" time="0.024" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_FolderFileName_1033" time="0.017" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_FolderFileName_1039" time="0.01" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_LinkedMove_1033" time="0.073" />
+    <testcase classname="96264 Storage Follow168 Tests ori" name="Scenario_AC01_LinkedMove_1039" time="0.036" />
+  </testsuite>
+  <testsuite name="96265 Storage Contract Tests ori" timestamp="2026-10-29T07:47:18" hostname="runnervmdaln5" time="0.133" tests="8" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96265 Storage Contract Tests ori" name="EveryType_DeclaresEveryRequiredChapter" time="0.03" />
+    <testcase classname="96265 Storage Contract Tests ori" name="EveryType_ErrorsCarryCodeWhenAndFix" time="0.013" />
+    <testcase classname="96265 Storage Contract Tests ori" name="EveryType_DirectionMatchesEffect" time="0.01" />
+    <testcase classname="96265 Storage Contract Tests ori" name="EveryType_ResponseFieldsAreDescribed" time="0.013" />
+    <testcase classname="96265 Storage Contract Tests ori" name="DefinitionGet_LineDefsAndMappings_AreArraysWithChildren" time="0.01" />
+    <testcase classname="96265 Storage Contract Tests ori" name="EveryType_HasSuccessExampleThatMatchesTheResponse" time="0.027" />
+    <testcase classname="96265 Storage Contract Tests ori" name="EveryType_WorkflowStepsAndRelatedTypesExist" time="0.01" />
+    <testcase classname="96265 Storage Contract Tests ori" name="EveryType_HasDiscoveryTextsInBothLanguages" time="0.02" />
+  </testsuite>
+  <testsuite name="96267 Storage HTTP Fixture Tests ori" timestamp="2026-10-29T07:47:18" hostname="runnervmdaln5" time="0.055" tests="4" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96267 Storage HTTP Fixture Tests ori" name="ForeignStorageRejected" time="0.034" />
+    <testcase classname="96267 Storage HTTP Fixture Tests ori" name="TraversalRejected" time="0.007" />
+    <testcase classname="96267 Storage HTTP Fixture Tests ori" name="QueryStringRejected" time="0.007" />
+    <testcase classname="96267 Storage HTTP Fixture Tests ori" name="BasePathRejected" time="0.007" />
+  </testsuite>
+  <testsuite name="96268 Storage Registration Tests ori" timestamp="2026-10-29T07:47:19" hostname="runnervmdaln5" time="0.346" tests="2" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96268 Storage Registration Tests ori" name="LicenceAdmin_OpensSetup_English" time="0.266" />
+    <testcase classname="96268 Storage Registration Tests ori" name="LicenceAdmin_OpensSetup_Icelandic" time="0.08" />
+  </testsuite>
+  <testsuite name="96274 Attachments Build Tests ori" timestamp="2026-10-29T07:47:20" hostname="runnervmdaln5" time="0.204" tests="13" errors="0" failures="0" skipped="0">
+    <properties>
+      <property name="extensionid" value="7cdb530b-b74b-446b-9ece-80e2b911bfb3" />
+      <property name="appName" value="Bifrost Attachments - Tests" />
+    </properties>
+    <testcase classname="96274 Attachments Build Tests ori" name="Language72_Discovery_ExactEnglish" time="0.007" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Language72_Discovery_ExactIcelandic" time="0.013" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_MessageTypes_ResolveDistinctContracts" time="0.01" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC02_TypeSet_ImportDefinitionIsPersisted" time="0.027" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC02_TypeSet_MissingDefinitionDoesNotWrite" time="0.017" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC02_TypeSet_ExportDefinitionDoesNotWrite" time="0.013" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC02_DefinitionExport_ReturnsExistingHeader" time="0.014" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_DefinitionDelete_UnusedHeaderIsRemoved" time="0.013" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_DefinitionDelete_ReferencedHeaderIsPreserved" time="0.013" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_DefinitionDelete_MissingHeaderDoesNotWrite" time="0.016" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_ExportRun_ExportHeaderIsPersisted" time="0.033" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_ExportRun_ImportDefinitionDoesNotWrite" time="0.014" />
+    <testcase classname="96274 Attachments Build Tests ori" name="Scenario_AC03_ExportRun_MissingFileNameDoesNotWrite" time="0.014" />
+  </testsuite>
+</testsuites>

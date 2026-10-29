@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-29T07:52:49.449Z",
+  "containerId": "f082aa1fe153",
+  "displayName": "worker9-attachments190-20261028-w1",
+  "status": {
+    "state": "Stopped",
+    "imageBuilding": false,
+    "imageBuildError": false
+  },
+  "retained": true,
+  "deleted": false,
+  "deletionTrigger": "Tester postdeploy UAT and issue closure; same resource for amendments"
+}

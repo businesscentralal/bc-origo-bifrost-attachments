@@ -3,16 +3,15 @@
   "issueUrl": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/190",
   "AC01": "Confirmed missing inherent Execute flags on main subscriber10035191",
   "AC02": "Both InherentPermissions=X and InherentEntitlements=X implemented; exact-tip app/test compile0errors0warnings with CodeCop/UICop/AppSourceCop; released28.3.1.131 comparison0errors0warnings",
-  "AC03": "Existing96268 tests open real Setup TestPage under exact licence-admin permissions in1033/1039 and assert registration/read-only setup/Sync visibility/no storage writes; new-tip execution pending owned container startup",
-  "AC04": "Full492 configured tests pending on new tip; Foundation632 installed in retained owned container, provenance readback pending startup. Claude bc28-w1 including98677 pending; CHANGELOG updated",
+  "AC03": "Current-tip fresh native96268 2executed/2passed/0failed/0skipped; browser-selected96268 2executed/2passed/0failed/0skipped,1033/1039. Actual Setup.TestPage under exact role. No separately provisioned restricted browser identity is claimed.",
+  "AC04": "Owned full492executed/492passed/0failed/0skipped; all source identities reconciled. CI40834648423 also492/492 with0errors/0warnings on identical candidate tree. Current-head independent Claude98677 and Architect signing disposition remain pending.",
   "messageTypes": [],
   "mcpNotApplicableReason": "Only registration codeunit Execute entitlement, CHANGELOG and derived source inventory amended; no message type implementation, contract or dispatcher changed. No MCP pass claimed.",
   "pending": [
-    "Owned native full suite and fresh96268",
-    "BC Web Client96268 scenarios1033/1039",
-    "Claude bc28-w1/98677 independent receipt",
-    "Current CI, Architect signing disposition, Grok clearance/approval",
-    "Architect merge/deploy, Tester UAT, owned container deletion"
+    "Claude independent current-headbc28-w1 including98677; prior-tip441pass/51unverified cannot establish current acceptance",
+    "Architect disposition of unsigned PR Default under existing main-only signing design",
+    "Guarded Grok clearance/eligible approval after gates; undraft",
+    "Architect merge/deploy; Tester UAT and owned container deletion"
   ],
   "licenceBoundary": "Docker reduced permissions do not independently prove SaaS entitlements; no licensing bypass or backend writes."
 }

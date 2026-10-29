@@ -1,0 +1,32 @@
+{
+  "sha": "7c2ee174c0811ccd5c07e8b547fd047be12877c1",
+  "at": "2026-10-29T07:23:10.931537+00:00",
+  "changedProductObject": 10035191,
+  "inherentPermissions": "X",
+  "inherentEntitlements": "X",
+  "newPermissionSetGrants": false,
+  "changedMessageTypes": [],
+  "testCodeunit": 96268,
+  "scenarioLanguages": [
+    1033,
+    1039
+  ],
+  "nativeFixture": "Temporary registry; codeunit-isolated setup initialization, exact-role Setup.OpenView; no RefreshLicense invocation",
+  "testInstaller": "Only configured suite setup; no consent/trial/licence/backend writes",
+  "sourceHashes": {
+    "app/src/Setup/AttachmentsRegistration.Codeunit.al": "a570cd5ebdcfa10c349e1b0683d6210cb4b585e7e3ce76eb55265629ee301107",
+    "test/test/StorageRegistrationTests.Codeunit.al": "866d3abe70b6e37356976f9daabf9026286236bc355823423171612b3b4bbc86",
+    "test/src/StorageTestInstall.Codeunit.al": "3a72bdf8261731920e852d227ca8ab33d9a6ae0f82ca55da154dbca9bf7369ec"
+  },
+  "verificationLimit": "Reduced native permissions cannot independently prove actual SaaS entitlement enforcement; Claude bc28-w1 verification required",
+  "standardsSnapshot": {
+    "sha": "ac05e88ab51ed4c9bbfb843508fc2484afe5ec8f",
+    "capturedAt": "2026-10-03T16:02:22.475Z",
+    "freshlySynchronized": false
+  },
+  "appliedLessonIds": [
+    "core971-1791836782-inherent-properties",
+    "core1161-worker10-b2833377-cold-permission-helper",
+    "core1189-review5683415926-missing-independent-receipt-worker8"
+  ]
+}
