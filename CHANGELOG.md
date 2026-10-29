@@ -9,7 +9,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Fixed (2026-10-28) - Licence-admin setup with Attachments installed (#190)
 
 - Pin test/CI Foundation inputs to released 28.0.10.632 for the restricted licence-admin setup regression (#190), retaining signed Apps and exact TestApps collision checks. Product minimum dependency stays unchanged.
-- Codeunit 10035191 `Attachments Registration ori` supplies inherent Execute permission so Foundation can build the app registry when a restricted licence administrator opens Bifröst Setup.
+- Codeunit 10035191 `Attachments Registration ori` supplies inherent Execute permission and entitlement so Foundation can build the app registry when a restricted licence administrator opens Bifröst Setup.
 - Test codeunit 96268 `Storage Registration Tests ori` opens the real setup page under the exact licence-admin role in English and Icelandic, checks the Attachments registry target, and checks read-only setup and storage permissions. Test permission set 96268 supplies only the platform read baseline; it grants no Attachments Execute permission and performs no Sync, consent, trial or licensing-state writes.
 
 ### Fixed (2026-10-28) - Foundation-compatible test contracts (#188)
