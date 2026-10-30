@@ -125,15 +125,13 @@ codeunit 10035183 "Storage Contract Parts ori"
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        if MessageType = 'Storage.Upload.CommitToStaging' then begin
-            Examples.Add(ContractMgt.Example('Missing uploadId is refused before any write',
-                '{"type":"Storage.Upload.CommitToStaging","data":{},"lcid":1033}',
-                '{"status":"Error","code":"MissingParameter","parameter":"uploadId","error":"Required parameter \"uploadId\" is missing.","nextStep":"Provide \"uploadId\" and send the request again."}'));
-            exit;
-        end;
         // Recorded from the owned COSMO W1 runtime. Exact source/version and
         // per-example bc28-w1 verification status are retained with the PR evidence.
         case MessageType of
+            'Storage.Upload.CommitToStaging':
+                Examples.Add(ContractMgt.Example('Missing uploadId is refused before any write',
+                    '{"type":"Storage.Upload.CommitToStaging","data":{},"lcid":1033}',
+                    '{"status":"Error","code":"MissingParameter","parameter":"uploadId","error":"Required parameter \"uploadId\" is missing.","nextStep":"Provide \"uploadId\" and send the request again."}'));
             'Help.Storage.Get':
                 Examples.Add(ContractMgt.Example('Inspect the response with no configured prerequisites',
                         '{"type":"Help.Storage.Get","data":{},"lcid":1033}',
