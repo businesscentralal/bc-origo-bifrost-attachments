@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Added
+- `Storage.Upload.CommitToStaging` assembles an owned upload into one Foundation staging row, returning `stagingId` for a consuming app without external storage (#192). Uses public Foundation Create/Take/Exists and preserves creator isolation, retryable chunks and existing commit types. Objects: codeunit 10035200, enum value 10035174, upload manager 10035197 and help/contracts 10035182–10035183 and 10035199.
+
+
 ### Fixed (2026-10-28) - Licence-admin setup with Attachments installed (#190)
 
 - Pin test/CI Foundation inputs to released 28.0.10.632 for the restricted licence-admin setup regression (#190), retaining signed Apps and exact TestApps collision checks. Product minimum dependency stays unchanged.

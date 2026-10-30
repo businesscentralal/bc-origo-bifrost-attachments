@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="en-US" original="Bifrost Attachments">
+    <body>
+      <group id="body">
+        <trans-unit id="Codeunit 2218127053 - NamedType 2314489078" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Optional MIME type; empty when not supplied.</source>
+          <target>Optional MIME type; empty when not supplied.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjáls MIME-gerð; tómt ef ekki gefið upp.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType StagingContentTypeLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 1912563672" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Creates exactly one Foundation staging row, commits the upload session and releases its chunks within the caller transaction. No external storage write. A failure rolls back all writes.</source>
+          <target>Creates exactly one Foundation staging row, commits the upload session and releases its chunks within the caller transaction. No external storage write. A failure rolls back all writes.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Stofnar nákvæmlega eina bráðabirgðafærslu í Bifröst-grunni, staðfestir upphleðslulotuna og losar búta hennar innan færslunnar. Engin skrif í ytri geymslu. Villa afturkallar allar skrifanir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType StagingEffectLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 1071129990" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Optional replacement leaf file name; defaults to the session file name.</source>
+          <target>Optional replacement leaf file name; defaults to the session file name.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Valfrjálst skráarheiti án möppuslóðar; sjálfgefið er skráarheiti lotunnar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType StagingFileNameLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 3235510250" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Foundation staging row id without braces. Pass it to a consuming message type as the same user in the same company.</source>
+          <target>Foundation staging row id without braces. Pass it to a consuming message type as the same user in the same company.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Auðkenni bráðabirgðafærslu í Bifröst-grunni án slaufusviga. Sendu það til móttökugerðar sem sami notandi í sama fyrirtæki.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType StagingIdLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 1409827274" size-unit="char" translate="yes" xml:space="preserve">
+          <source>How to hand the stagingId to a consuming message type.</source>
+          <target>How to hand the stagingId to a consuming message type.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Hvernig afhenda á stagingId til móttökugerðar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType StagingNextStepLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 2101585504" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The upload session belongs to the caller, is open and contains all chunks with the declared size. No storage connection is needed.</source>
+          <target>The upload session belongs to the caller, is open and contains all chunks with the declared size. No storage connection is needed.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Upphleðslulotan tilheyrir notandanum, er opin og inniheldur alla búta með uppgefinni stærð. Engin geymslutenging er nauðsynleg.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType StagingPreconditionsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2218127053 - NamedType 1135951783" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The open upload session id returned by Storage.Upload.Begin. Only its creator can commit it.</source>
+          <target>The open upload session id returned by Storage.Upload.Begin. Only its creator can commit it.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Auðkenni opinnar upphleðslulotu sem Storage.Upload.Begin skilaði. Aðeins stofnandi hennar getur staðfest hana.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType StagingUploadIdLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 987128476 - Method 3466005949 - NamedType 680257497" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Pass stagingId to the consuming message type as the same user in the same company. Its take consumes the staged file.</source>
+          <target>Pass stagingId to the consuming message type as the same user in the same company. Its take consumes the staged file.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu stagingId til móttökugerðar sem sami notandi í sama fyrirtæki. Take-aðgerð hennar eyðir bráðabirgðaskránni við móttöku.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - Method CommitToStaging - NamedType NextStepLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3906095545 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Assembles uploaded chunks into a Foundation staging row and returns its stagingId.</source>
+          <target>Assembles uploaded chunks into a Foundation staging row and returns its stagingId.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar upphlaðna búta í bráðabirgðafærslu í Bifröst-grunni og skilar stagingId hennar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Staging ori - Method GetDescription - NamedType DescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3906095545 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>stage upload, chunked binary upload, staging id, hand off large file</source>
+          <target>stage upload, chunked binary upload, staging id, hand off large file</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=geyma upphleðslu tímabundið, tvíundarupphleðsla í bútum, bráðabirgðaauðkenni, afhenda stóra skrá</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Staging ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3906095545 - Method 3650283039 - NamedType 2344026547" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Pass stagingId to a consuming message type as the same user in the same company. Take consumes the row; unconsumed rows follow Foundation retention. Foreign ids are indistinguishable from unknown ids. A failed commit rolls back every write and preserves the open session and chunks for retry.</source>
+          <target>Pass stagingId to a consuming message type as the same user in the same company. Take consumes the row; unconsumed rows follow Foundation retention. Foreign ids are indistinguishable from unknown ids. A failed commit rolls back every write and preserves the open session and chunks for retry.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu stagingId til móttökugerðar sem sami notandi í sama fyrirtæki. Take eyðir færslunni við móttöku; ónotaðar færslur fylgja varðveislureglum Bifröst-grunns. Auðkenni annarra notenda eru óaðgreinanleg frá óþekktum auðkennum. Misheppnuð staðfesting afturkallar allar skrifanir og varðveitir opna lotu og búta fyrir endurtekningu.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Staging ori - Method GetNotes - NamedType NotesLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3906095545 - Method 2340569551 - NamedType 3593894611" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Assembles an open upload into one Foundation staging row. Returns stagingId and size, commits the session and releases its chunks. No storage connection is required.</source>
+          <target>Assembles an open upload into one Foundation staging row. Returns stagingId and size, commits the session and releases its chunks. No storage connection is required.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar opna upphleðslu í eina bráðabirgðafærslu í Bifröst-grunni. Skilar stagingId og size, staðfestir lotuna og losar bútana. Engin geymslutenging er nauðsynleg.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Staging ori - Method GetOverview - NamedType OverviewLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3906095545 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Hands a complete upload to a consuming message type by stagingId without external storage or an attachment.</source>
+          <target>Hands a complete upload to a consuming message type by stagingId without external storage or an attachment.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Afhendir fullbúna upphleðslu til móttökugerðar með stagingId án ytri geymslu eða viðhengis.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Staging ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

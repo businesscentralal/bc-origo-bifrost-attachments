@@ -213,7 +213,7 @@ codeunit 96211 "Storage Msg Conformance Tests"
     end;
 
     [Test]
-    procedure Help_All39Types_HaveOverviewAndExamples()
+    procedure Help_AllTypes_HaveOverviewAndExamples()
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
         MessageType: Enum "Message Type ori";
@@ -235,7 +235,7 @@ codeunit 96211 "Storage Msg Conformance Tests"
         // #160 AC1/AC2: check actual aggregated chapters, including all ten newer types.
         // Time: no date dependency. Risk: a stub can return true without supplying content.
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            if (Ordinal >= 10035135) and (Ordinal <= 10035173) then begin
+            if (Ordinal >= 10035135) and (Ordinal <= 10035174) then begin
                 Count += 1;
                 MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
                 Clear(Contract);
@@ -279,7 +279,7 @@ codeunit 96211 "Storage Msg Conformance Tests"
                             Offenders += TypeName(Ordinal) + '|write refusal missing ';
                 end;
             end;
-        LibraryAssert.AreEqual(39, Count, 'All 39 Attachments message types must be checked.');
+        LibraryAssert.AreEqual(40, Count, 'All 40 Attachments message types must be checked.');
         LibraryAssert.AreEqual('', Offenders, 'First-call help chapters: ' + Offenders);
     end;
 
@@ -488,9 +488,9 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Ordinal: Integer;
     begin
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            if ((Ordinal >= FirstOrdinal) and (Ordinal <= LastOrdinal)) or ((Ordinal >= 10035158) and (Ordinal <= 10035163)) then
+            if ((Ordinal >= FirstOrdinal) and (Ordinal <= LastOrdinal)) or ((Ordinal >= 10035158) and (Ordinal <= 10035163)) or (Ordinal = 10035174) then
                 Ordinals.Add(Ordinal);
-        LibraryAssert.AreEqual(29, Ordinals.Count(), 'Bifröst Attachments declares 29 message types.');
+        LibraryAssert.AreEqual(30, Ordinals.Count(), 'Bifröst Attachments declares 30 message types.');
     end;
 
     local procedure TypeName(Ordinal: Integer): Text
