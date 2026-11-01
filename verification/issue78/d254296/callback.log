@@ -1,0 +1,8 @@
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+/usr/bin/python3: can't open file '/tmp/attachments78-callback-04cf1a17-6914-4233-9c9d-0029b063ce24/tools/prune_self_symbols.py': [Errno 2] No such file or directory
+Exception: /tmp/attachments78-callback-04cf1a17-6914-4233-9c9d-0029b063ce24/tools/Assert-AppSourceBuild.ps1:208
+Line |
+ 208 |  … de -ne 0) { throw 'Actual precompile cache/baseline preparation faile …
+     |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Actual precompile cache/baseline preparation failed.

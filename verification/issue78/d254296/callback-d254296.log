@@ -1,0 +1,152 @@
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: post passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+unexpected extra output
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+appsource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+native-refusal
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: post passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+unexpected extra output
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+appsource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+native-refusal
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: post passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+unexpected extra output
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+appsource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+native-refusal
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: post passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+unexpected extra output
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+appsource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+native-refusal
+restore-refused
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+prune-refused
+{"action": "absent", "restored": []}
+restore-status-must-not-return
+{"removed": [], "baselineCopied": []}
+prune-status-must-not-return
+AppSource gate: before passed
+compiler-line-one
+compiler-line-two
+Callback regressions: 32 passed, 0 failed; actual PowerShell callback/collector and native Python, controlled compiler/verifier. No AL/runtime certification.

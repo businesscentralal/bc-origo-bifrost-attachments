@@ -1,0 +1,17 @@
+{
+  "shippingSha": "fc07fdefff0964d357e23306a50a69c08b2ebe84",
+  "containerId": "f082aa1fe153",
+  "recordedAt": "2026-11-01T23:37:38.033Z",
+  "noCertificateStoreChanges": true,
+  "timestampSubject": "CN=DigiCert SHA256 RSA4096 Timestamp Responder 2026 1, O=\"DigiCert, Inc.\", C=US",
+  "signerSubject": "CN=Origo hf, O=Origo hf, L=Reykjav�k, C=IS",
+  "tamperStatus": "HashMismatch",
+  "tamperMessage": "The contents of file C:\\Windows\\Temp\\litr78-signature-95e7296efc88.app.tampered.app might have been changed by an unauthorized user or process, because the hash of the file does not match the hash stored in the digital signature. The script cannot run on the specified system. For more information, run Get-Help about_Signing.",
+  "message": "Signature verified.",
+  "cleanupVerified": true,
+  "status": "Valid",
+  "signatureType": "Authenticode",
+  "tamperExecuted": true,
+  "signerThumbprint": "2AD5FF188D0B22858A2813817A929BCC1EC03E4A",
+  "sha256": "a2aa2a42e81b5162e2ffb6380e390795592329b779ed5f37b0cbed1705934a53"
+}

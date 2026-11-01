@@ -1,0 +1,55 @@
+{
+  "issue": "https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/78",
+  "owner": "worker-9",
+  "candidateSha": "d254296ae84e9042227e3143a517f0661a17defa",
+  "shippingBaselineSha": "fc07fdefff0964d357e23306a50a69c08b2ebe84",
+  "recordedAt": "2026-11-01T23:25:00.333737+00:00",
+  "issueComplete": false,
+  "criteria": [
+    {
+      "id": "AC01",
+      "status": "current-main actual CI verified; candidate local compile verified; candidate CI pending",
+      "evidence": [
+        "current-main-ac-audit.json",
+        "build/compile-results.json",
+        "build/default-compile-summary.json"
+      ],
+      "summary": "Current main3 clean spans; Default/Test effective CodeCop/UICop/test analyzers enabled, failOn warning. Candidate Default product/Test product/test app each0errors0warnings with3cops."
+    },
+    {
+      "id": "AC02",
+      "status": "Default134 exact-artifact no-IVT/signature trust and tamper verified; future artifact requires own verification",
+      "evidence": [
+        "current-main-ac-audit.json",
+        "windows-trust-request.json",
+        "windows-signature-result.json"
+      ],
+      "summary": "Owned Windows verified exact signed Default134 SHA256 a2aa2a42e81b5162e2ffb6380e390795592329b779ed5f37b0cbed1705934a53: Valid, tampered copy HashMismatch, temporary files cleaned, no trust-store changes. PR149 manual deferral unchanged."
+    },
+    {
+      "id": "AC03",
+      "status": "current-main actual Pipeline integration verified; callback regression repaired and locally verified",
+      "evidence": [
+        "current-main-ac-audit.json",
+        "callback.log",
+        "callback-d254296.log",
+        "tool-tests-summary.json",
+        "pipeline-guard.log",
+        "shared-container-guard.log"
+      ],
+      "summary": "Existing native helper addition broke callback fixture before assertions. Repair provides controlled pruner plus failure guard;32callback+108Python cases pass;2pipeline guard scripts pass. These are tooling checks, not product runtime."
+    },
+    {
+      "id": "AC04",
+      "status": "historical infrastructure integration authorized/merged; new repair CI/independent verification pending",
+      "evidence": [
+        "pr147.json",
+        "pr149.json",
+        "pr161.json",
+        "jobs.json",
+        "candidate-publication.json"
+      ],
+      "summary": "PR147 Gunnar-approved integration and PR149 Signed deferral already merged. PR161 preparation merged; no retroactive independent verification claimed. Candidate must complete owned native/UI before new repair PR/handoff; Architect retains merge/UAT."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "sha": "d254296ae84e9042227e3143a517f0661a17defa",
+  "part": "Default product",
+  "exitCode": 0,
+  "errors": 0,
+  "warnings": 0,
+  "analyzers": [
+    "CodeCop",
+    "UICop",
+    "AppSourceCop"
+  ],
+  "transform": "Existing Default pipeline transformation removes IVT and AS0081 from isolated manifest; repository unmodified",
+  "sha256": "ae608d1cc52271818ca03f3d2346fe8be38786e39211092176a536a5c547ccc6"
+}

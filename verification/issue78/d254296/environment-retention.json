@@ -1,0 +1,16 @@
+{
+  "containerId": "f082aa1fe153",
+  "displayName": "worker9-attachments190-20261028-w1",
+  "status": {
+    "state": "Stopped",
+    "imageBuilding": false,
+    "imageBuildError": false
+  },
+  "recordedAt": "2026-11-01T23:40:00.088Z",
+  "httpStatus": 200,
+  "owner": "worker-9",
+  "stopRequested": true,
+  "stopHttpStatus": 204,
+  "retained": true,
+  "reason": "Retain owned environment for amendments and Tester acceptance; no deletion of original worker6 resource"
+}

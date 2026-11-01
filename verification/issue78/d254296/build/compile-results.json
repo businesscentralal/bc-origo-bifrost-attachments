@@ -1,0 +1,50 @@
+{
+  "startedAt": "2026-11-01T23:18:46.841578+00:00",
+  "finishedAt": "2026-11-01T23:19:12.431185+00:00",
+  "sha": "d254296ae84e9042227e3143a517f0661a17defa",
+  "cleanAtStart": true,
+  "cleanAtEnd": true,
+  "exactTip": true,
+  "results": [
+    {
+      "part": "app",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": [
+        "/workspace/tools/dotnet10/dotnet",
+        "/workspace/evidence/attachments158-worker9/al17/extension/bin/linux/alc.dll",
+        "/project:/workspace/attachments78-worker9/app",
+        "/packagecachepath:/workspace/evidence/tasks/issue-intake-businesscentralal_bc-origo-bifrost-attachments-c9fb847813b4b3de/build/symbols",
+        "/out:/workspace/evidence/tasks/issue-intake-businesscentralal_bc-origo-bifrost-attachments-c9fb847813b4b3de/build/app.app",
+        "/sourceCommit:d254296ae84e9042227e3143a517f0661a17defa",
+        "/buildBy:worker-9-owned-verification",
+        "/buildUrl:https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/d254296ae84e9042227e3143a517f0661a17defa",
+        "/analyzer:/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.CodeCop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.UICop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.AppSourceCop.dll"
+      ],
+      "packageExists": true,
+      "sha": "d254296ae84e9042227e3143a517f0661a17defa",
+      "packageSha256": "21b9889b6c757bfe5d21d087e9d7321bd78d4b7a3b56d75dcc294faa3201461c"
+    },
+    {
+      "part": "test",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": [
+        "/workspace/tools/dotnet10/dotnet",
+        "/workspace/evidence/attachments158-worker9/al17/extension/bin/linux/alc.dll",
+        "/project:/workspace/attachments78-worker9/test",
+        "/packagecachepath:/workspace/evidence/tasks/issue-intake-businesscentralal_bc-origo-bifrost-attachments-c9fb847813b4b3de/build/symbols",
+        "/out:/workspace/evidence/tasks/issue-intake-businesscentralal_bc-origo-bifrost-attachments-c9fb847813b4b3de/build/test.app",
+        "/sourceCommit:d254296ae84e9042227e3143a517f0661a17defa",
+        "/buildBy:worker-9-owned-verification",
+        "/buildUrl:https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/d254296ae84e9042227e3143a517f0661a17defa",
+        "/analyzer:/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.CodeCop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.UICop.dll,/workspace/evidence/attachments158-worker9/al17/extension/bin/Analyzers/Microsoft.Dynamics.Nav.AppSourceCop.dll"
+      ],
+      "packageExists": true,
+      "sha": "d254296ae84e9042227e3143a517f0661a17defa",
+      "packageSha256": "7640c0d6a78b2f69621950784b0df767fd0cc2c4d4c778e7a0ee09607d69c34e"
+    }
+  ]
+}

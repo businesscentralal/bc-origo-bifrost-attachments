@@ -1,0 +1,20 @@
+{
+  "candidateSha": "d254296ae84e9042227e3143a517f0661a17defa",
+  "containerId": "f082aa1fe153",
+  "recordedAt": "2026-11-01T23:39:31.563Z",
+  "counts": [
+    {
+      "exists": false,
+      "path": "C:\\Windows\\Temp\\origo-bc-run-tests-5ea5a19e8dfabfc4.ps1"
+    },
+    {
+      "exists": false,
+      "path": "C:\\Windows\\Temp\\origo-bc-pstest-5ea5a19e8dfabfc4-PsTestFunctions.ps1"
+    },
+    {
+      "exists": false,
+      "path": "C:\\Windows\\Temp\\origo-bc-pstest-5ea5a19e8dfabfc4-ClientContext.ps1"
+    }
+  ],
+  "query": "Test-Path for this execution remote test helpers only"
+}

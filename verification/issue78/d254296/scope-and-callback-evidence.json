@@ -1,0 +1,22 @@
+{
+  "sha": "d254296ae84e9042227e3143a517f0661a17defa",
+  "baselineSha": "fc07fdefff0964d357e23306a50a69c08b2ebe84",
+  "recordedAt": "2026-11-01T23:34:02.136802+00:00",
+  "changedFiles": [
+    "CHANGELOG.md",
+    "tools/Test-AppSourceCallback.ps1"
+  ],
+  "alSourceChanged": false,
+  "xlfChanged": false,
+  "publicApiChanged": false,
+  "pipelineConfigurationChanged": false,
+  "messageTypesTouched": [],
+  "reason": "git diff names limited to CHANGELOG and isolated compiler callback regression script",
+  "callbackScriptSha256": "01a2a247491f7f856e02d534905fbfda23ab0e6d553f291795d66161d39907a6",
+  "callbackExecuted": 32,
+  "callbackPassed": 32,
+  "callbackFailed": 0,
+  "callbackSkipped": 0,
+  "baselineFailure": "Native prune_self_symbols.py fixture absent; suite aborted before assertions",
+  "currentResultLog": "callback-d254296.log"
+}

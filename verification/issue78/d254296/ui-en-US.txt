@@ -1,0 +1,33 @@
+
+
+
+
+
+
+
+Bifrost Attachments Setup
+Storage Setup Wizard
+Bifrost Storage Setup
+Storage Setup
+Purge Upload Sessions
+Setup Wizard
+Storage Connections
+Storage Connections
+		
+Code
+	
+	
+Description
+	
+Connector
+	
+File Account Name
+	
+Enabled
+	
+			
+					
+(There is nothing to show in this view)
+Use the Left and Right arrow keys to adjust the size. Use the Escape key to undo or the Enter key to accept.
+
+Code, sorted in Ascending order

@@ -1,0 +1,17 @@
+{
+  "sha": "d254296ae84e9042227e3143a517f0661a17defa",
+  "recordedAt": "2026-11-01T23:40:17.011843+00:00",
+  "containerId": "f082aa1fe153",
+  "fixtureTablesChecked": 18,
+  "rowsBefore": 0,
+  "rowsAfter": 0,
+  "fixtureCleanupVerified": true,
+  "nativeTestIsolation": "Native AL transaction-isolated self-created fixtures; full suite492 passed",
+  "ui": "Read-only Setup in LCIDs1033/1039; own container user language restored1033",
+  "remoteTestHelpersAbsent": 3,
+  "signatureTemporaryCopiesAbsent": true,
+  "environmentState": "Stopped",
+  "environmentRetained": true,
+  "retentionReason": "Retain owned environment for amendments and Tester acceptance; no deletion of original worker6 resource",
+  "foreignResource": "f0e01dedefcf remains stopped and untouched"
+}

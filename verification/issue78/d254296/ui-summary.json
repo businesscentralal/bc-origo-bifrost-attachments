@@ -1,0 +1,24 @@
+{
+  "sha": "d254296ae84e9042227e3143a517f0661a17defa",
+  "containerId": "f082aa1fe153",
+  "recordedAt": "2026-11-01T23:39:19.154Z",
+  "executed": 2,
+  "passed": 2,
+  "failed": 0,
+  "skipped": 0,
+  "languages": [
+    1033,
+    1039
+  ],
+  "scenario": "Actual localized Attachments Setup captions and storage connection grid in English and Icelandic; read-only product scenario",
+  "languageSelection": "BC My Settings, then restored English (United States)",
+  "restorationVerified": true,
+  "priorAttempt": "URL language parameters did not change persisted UI language; failed expectation retained in ui-first-attempt.json",
+  "evidence": [
+    "ui-en-US.txt",
+    "ui-en-US.png",
+    "ui-is-IS-verified.txt",
+    "ui-is-IS-verified.png",
+    "ui-en-US-restored.txt"
+  ]
+}
