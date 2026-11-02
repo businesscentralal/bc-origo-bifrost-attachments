@@ -11,7 +11,7 @@ and safely.
 extension that exposes the standard BC **External File Storage** facade — Azure Blob Storage,
 Azure File Share and SharePoint — as **23 Bifröst message types**, so any external caller can
 read and write cloud storage through the same Queue → Task → Data pattern that Bifröst
-Foundation uses for everything else. Foundation dependency floor is **28.0.3.530** (the Foundation package CI is pinned to) (`app/app.json` and `test/app.json`).
+Foundation uses for everything else. The product Foundation dependency floor remains **28.0.3.530** (`app/app.json`). The test app requires **28.0.10.632**, and CI pins that released Foundation package so licence-admin setup regressions run with its permissions.
 
 On top of raw file access it adds three things the base platform does not have on the wire:
 **chunked uploads** (a large file delivered as a sequence of small base64 chunks), **attachment

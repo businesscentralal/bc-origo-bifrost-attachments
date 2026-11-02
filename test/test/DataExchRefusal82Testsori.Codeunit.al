@@ -578,20 +578,26 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         DataExchDef: Record "Data Exch. Def";
         Faults: Codeunit "DataExch Refusal82 Tests ori";
         DefinitionCode: Code[20];
+        DeleteDefinitionCode: Code[20];
     begin
         // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
         // [GIVEN] A committed definition and a failure only on the later delete.
         DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
+        // #168 refuses deletion of a referenced definition. Fail on a separate unreferenced
+        // definition so this still proves rollback after a real later database write.
+        DeleteDefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
         Commit();
-        Faults.ConfigureFailure(DefinitionCode, false, true);
+        Faults.ConfigureFailure(DeleteDefinitionCode, false, true);
         BindSubscription(Faults);
         // [WHEN] Two real default OmitCommit dispatches execute in one caller chain.
-        asserterror ImportThenDelete(DefinitionCode);
+        asserterror ImportThenDelete(DefinitionCode, DeleteDefinitionCode);
         LibraryAssert.ExpectedError('X82 postwrite failure');
         UnbindSubscription(Faults);
         // [THEN] The earlier successful import was not implicitly committed.
         LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'An earlier chained write must roll back.');
-        LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'The failed delete must roll back.');
+        LibraryAssert.IsTrue(DataExchDef.Get(DeleteDefinitionCode), 'The failed delete must roll back.');
+        DataExchDef.Delete(true);
+        LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'The import definition survives.');
         DataExchDef.Delete(true);
         Commit();
     end;
@@ -956,14 +962,14 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
             Error(FailureErr);
     end;
 
-    local procedure ImportThenDelete(DefinitionCode: Code[20])
+    local procedure ImportThenDelete(DefinitionCode: Code[20]; DeleteDefinitionCode: Code[20])
     var
         Response: JsonObject;
     begin
         Response := DispatchImportInline(DefinitionCode, 'X82,Row');
         AssertText(Response, 'status', 'Success');
         LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'First call must actually write before the later failure.');
-        FailOnReturnedResponse(DispatchDelete(DefinitionCode));
+        FailOnReturnedResponse(DispatchDelete(DeleteDefinitionCode));
     end;
 
     local procedure CreateDefinition(DefinitionType: Enum "Data Exchange Definition Type"): Code[20]

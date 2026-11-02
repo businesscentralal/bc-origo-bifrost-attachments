@@ -3,6 +3,7 @@ namespace Origo.Bifrost.Attachments;
 using Microsoft.EServices.EDocument;
 using Origo.Bifrost;
 using System.IO;
+using System.Reflection;
 using System.Utilities;
 
 /// <summary>
@@ -372,10 +373,22 @@ codeunit 10035141 "DataExch Import Mgt ori"
     procedure FindProcessBlocker(DataExch: Record "Data Exch."; LineDefCode: Code[20]; var ErrorCode: Enum "Bifrost Error Code ori"; var ErrorText: Text; var Expected: Text; var NextStep: Text): Boolean
     var
         DataExchMapping: Record "Data Exch. Mapping";
+        DataExchDef: Record "Data Exch. Def";
         TargetRef: RecordRef;
     begin
+        DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
+        DataExchDef.SetLoadFields(Code, "Data Handling Codeunit");
+        if not DataExchDef.Get(DataExch."Data Exch. Def Code") then begin
+            ErrorCode := "Bifrost Error Code ori"::RecordNotFound;
+            ErrorText := StrSubstNo(DefinitionNotFoundErr, DataExch."Data Exch. Def Code");
+            Expected := ImportDefinitionExpectedLbl;
+            NextStep := SelectImportDefinitionLbl;
+            exit(true);
+        end;
+        if FindCodeunitBlocker(DataExchDef."Data Handling Codeunit", ErrorCode, ErrorText, Expected, NextStep) then
+            exit(true);
         DataExchMapping.ReadIsolation := IsolationLevel::ReadCommitted;
-        DataExchMapping.SetLoadFields("Data Exch. Def Code", "Data Exch. Line Def Code", "Table ID", "Use as Intermediate Table");
+        DataExchMapping.SetLoadFields("Data Exch. Def Code", "Data Exch. Line Def Code", "Table ID", "Use as Intermediate Table", "Pre-Mapping Codeunit", "Mapping Codeunit", "Post-Mapping Codeunit");
         DataExchMapping.SetRange("Data Exch. Def Code", DataExch."Data Exch. Def Code");
         if LineDefCode <> '' then
             DataExchMapping.SetRange("Data Exch. Line Def Code", LineDefCode);
@@ -398,6 +411,11 @@ codeunit 10035141 "DataExch Import Mgt ori"
                 NextStep := IntermediateNextStepLbl;
                 exit(true);
             end;
+            if FindCodeunitBlocker(DataExchMapping."Pre-Mapping Codeunit", ErrorCode, ErrorText, Expected, NextStep) or
+               FindCodeunitBlocker(DataExchMapping."Mapping Codeunit", ErrorCode, ErrorText, Expected, NextStep) or
+               FindCodeunitBlocker(DataExchMapping."Post-Mapping Codeunit", ErrorCode, ErrorText, Expected, NextStep)
+            then
+                exit(true);
             TargetRef.Open(DataExchMapping."Table ID");
             if not (TargetRef.ReadPermission() and TargetRef.WritePermission()) then begin
                 ErrorCode := "Bifrost Error Code ori"::PermissionDenied;
@@ -410,6 +428,25 @@ codeunit 10035141 "DataExch Import Mgt ori"
             TargetRef.Close();
         until DataExchMapping.Next() = 0;
         exit(false);
+    end;
+
+    local procedure FindCodeunitBlocker(CodeunitId: Integer; var ErrorCode: Enum "Bifrost Error Code ori"; var ErrorText: Text; var Expected: Text; var NextStep: Text): Boolean
+    var
+        CodeunitMetadata: Record "CodeUnit Metadata";
+        IncompatibleErr: Label 'Codeunit %1 cannot process a Data Exchange entry. Nothing was changed.', Comment = '%1 = codeunit id||is-IS=Kóðaeining %1 getur ekki unnið gagnaskiptafærslu. Engu var breytt.';
+        ExpectedLbl: Label 'a codeunit that accepts Data Exch. (table 1220) or has no table requirement', Comment = 'is-IS=kóðaeining sem tekur við Data Exch. (tafla 1220) eða krefst engrar töflu';
+        NextStepLbl: Label 'Use the Business Central page for this import, such as the payroll journal, or choose a mapping that accepts Data Exchange entries.', Comment = 'is-IS=Notaðu Business Central síðuna fyrir þennan innflutning, svo sem launabókina, eða veldu vörpun sem tekur við gagnaskiptafærslum.';
+    begin
+        if CodeunitId = 0 then
+            exit(false);
+        if CodeunitMetadata.Get(CodeunitId) then
+            if CodeunitMetadata.TableNo in [0, Database::"Data Exch."] then
+                exit(false);
+        ErrorCode := "Bifrost Error Code ori"::PreconditionFailed;
+        ErrorText := StrSubstNo(IncompatibleErr, CodeunitId);
+        Expected := ExpectedLbl;
+        NextStep := NextStepLbl;
+        exit(true);
     end;
 
     /// <summary>

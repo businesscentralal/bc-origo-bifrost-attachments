@@ -505,3 +505,11 @@ for #81. Formal scenarios follow exact-candidate internal QA; these planning fil
 AppSource readiness. Published product/help documentation remains with its established owners.
 
 The internal submission workspace is approved with conditions for #81. Its inventory keeps Foundation 28.0.2.523 as historical input only; the current candidate (main `304a1c2`, package 28.0.0.109) requires Foundation 28.0.3.530, and named owners still hold the missing evidence. Formal scenarios and the dry-run remain held for immutable #80 QA and explicit release.
+
+### Data Exchange processing and cleanup
+
+`DataExchange.Entry.Process` accepts processing codeunits with no table requirement or with
+`Data Exch.` (table 1220). Journal-specific mappings, including payroll mappings, must run
+from their Business Central page. Delete entries through `DataExchange.Entry.Delete` before
+deleting their definition. `DataExchange.Type.Set` accepts optional `entityType` values
+`Invoice` and `Credit Memo`; omission preserves an existing value and defaults a new type to Invoice.

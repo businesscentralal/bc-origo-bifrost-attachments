@@ -1,6 +1,11 @@
 namespace Origo.Bifrost.Attachments.Test;
 
 using Microsoft.EServices.EDocument;
+using Microsoft.Finance.GeneralLedger.Setup;
+using Microsoft.Finance.Currency;
+using Microsoft.Finance.VAT.Setup;
+using Microsoft.Purchases.Document;
+using Microsoft.Purchases.Vendor;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
@@ -251,6 +256,236 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         LibraryAssert.IsTrue(
             DataObject.Contains('createdDocument') or (ProcessErrors.Count() > 0),
             'AC04 process returns a created document or base-app process errors.');
+    end;
+
+    /// <summary>Proves linked bytes reach the base CSV reader and mapper in both supported languages.</summary>
+    [Test]
+    procedure Scenario_AC04_LinkedCsv_ProcessReadsAndMapsExactContent()
+    begin
+        // Story #23, AC04 | Time: no date dependency | Risk: base-app CSV import path
+        AssertIncomingCsvProcessing(1033, true);
+        AssertIncomingCsvProcessing(1039, true);
+    end;
+
+    /// <summary>Proves the standard unlinked attachment processing path still maps local bytes.</summary>
+    [Test]
+    procedure Scenario_AC04_LocalCsv_ProcessKeepsStandardContentPath()
+    begin
+        // Story #23, AC04 | Time: no date dependency | Risk: unlinked attachment regression
+        AssertIncomingCsvProcessing(1033, false);
+        AssertIncomingCsvProcessing(1039, false);
+    end;
+
+    local procedure AssertIncomingCsvProcessing(LanguageId: Integer; Linked: Boolean)
+    var
+        IncomingDocument: Record "Incoming Document";
+        IncomingAttachment: Record "Incoming Document Attachment";
+        ExchangeType: Record "Data Exchange Type";
+        DataExch: Record "Data Exch.";
+        Target: Record "DataExch Test Target ori";
+        Link: Record "Storage Attachment Link ori";
+        TempArgument: Record "Message Argument ori" temporary;
+        Fixture: Codeunit "DataExch Fixture ori";
+        MockState: Codeunit "Storage Mock State";
+        RequestJson: JsonObject;
+        DefinitionCode: Code[20];
+        UploadId: Text;
+        Path: Text;
+        ExpectedBase64: Text;
+        FileName: Text;
+        EntryNo: Integer;
+        SavedLanguage: Integer;
+    begin
+        // [GIVEN] An isolated CSV definition maps both rows through the real base-app CSV reader.
+        Initialize();
+        DefinitionCode := Fixture.CreateImportDefinition(1);
+        ExchangeType.Init();
+        ExchangeType.Code := DefinitionCode;
+        ExchangeType."Data Exch. Def. Code" := DefinitionCode;
+        ExchangeType.Insert();
+        FileName := 'phase2-reader-' + LowerCase(Format(CreateGuid(), 0, 4)) + '.csv';
+        BeginUpload(FileName, UploadId, Path);
+        AppendChunk(UploadId, 1, Fixture.TwoLineCsv(true));
+        SavedLanguage := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+
+        // [WHEN] The public upload/link path asks the built-in incoming-document processor to run.
+        if Linked then begin
+            CommitUpload(TempArgument, UploadId);
+            ExpectedBase64 := MockState.GetFileContent(Path);
+            RequestJson.Add('storageCode', MockCodeTok);
+            RequestJson.Add('path', Path);
+            RequestJson.Add('fileName', FileName);
+            RequestJson.Add('dataExchangeType', DefinitionCode);
+            RequestJson.Add('process', true);
+            ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
+        end else
+            ExecuteCommit(TempArgument, UploadId, DefinitionCode, true, 'BIFT-P2-reader-local');
+        GlobalLanguage(SavedLanguage);
+
+        // [THEN] Prove the bytes reached the reader and mapper, rather than accepting any processing error.
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Incoming creation must succeed.');
+        EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
+        IncomingDocument.Get(EntryNo);
+        DataExch.SetRange("Incoming Entry No.", EntryNo);
+        LibraryAssert.IsTrue(DataExch.FindFirst(), 'The real data-exchange runner must create a parsed entry.');
+        LibraryAssert.AreEqual(2, Fixture.TargetCount(DataExch."Entry No."), 'The real mapper must receive both CSV rows.');
+        Target.SetRange("Data Exch. No.", DataExch."Entry No.");
+        Target.SetRange(Code, 'A1');
+        Target.FindFirst();
+        LibraryAssert.AreEqual('Alpha', Target.Name, 'Exact first-row text reaches mapping.');
+        LibraryAssert.AreEqual(10.5, Target.Amount, 'Exact decimal reaches mapping in both languages.');
+        LibraryAssert.IsTrue(IncomingDocument.GetMainAttachment(IncomingAttachment), 'Main attachment remains.');
+        IncomingAttachment.CalcFields(Content);
+        if Linked then begin
+            LibraryAssert.IsFalse(IncomingAttachment.Content.HasValue(), 'Processing must not restore or persist the offloaded BLOB.');
+            LibraryAssert.IsTrue(Link.Get(Database::"Incoming Document Attachment", IncomingAttachment.SystemId), 'The storage link remains.');
+            LibraryAssert.AreEqual(ExpectedBase64, MockState.GetFileContent(Path), 'Processing must leave the stored bytes unchanged.');
+        end else begin
+            LibraryAssert.IsTrue(IncomingAttachment.Content.HasValue(), 'Unlinked content stays local.');
+            LibraryAssert.IsFalse(Link.Get(Database::"Incoming Document Attachment", IncomingAttachment.SystemId), 'Unlinked processing creates no storage link.');
+        end;
+    end;
+
+    /// <summary>Creates an unposted invoice through standard intermediate mapping from a linked CSV in both languages.</summary>
+    [Test]
+    [HandlerFunctions('ProcessingMessageHandler')]
+    procedure Scenario_AC06_LinkedCsv_CreatesPurchaseInvoice()
+    begin
+        // Story #23, AC06 | Time: WorkDate() for owned exchange rate and unposted invoice | Risk: base-app purchase mapping
+        AssertPurchaseInvoiceProcessing(1033);
+        AssertPurchaseInvoiceProcessing(1039);
+    end;
+
+    local procedure AssertPurchaseInvoiceProcessing(LanguageId: Integer)
+    var
+        Vendor: Record Vendor;
+        Currency: Record Currency;
+        CurrencyRate: Record "Currency Exchange Rate";
+        GeneralBusinessGroup: Record "Gen. Business Posting Group";
+        VendorPostingGroup: Record "Vendor Posting Group";
+        VatBusinessGroup: Record "VAT Business Posting Group";
+        PurchaseHeader: Record "Purchase Header";
+        IncomingDocument: Record "Incoming Document";
+        ExchangeType: Record "Data Exchange Type";
+        ColumnDefinition: Record "Data Exch. Column Def";
+        Mapping: Record "Data Exch. Mapping";
+        FieldMapping: Record "Data Exch. Field Mapping";
+        TempArgument: Record "Message Argument ori" temporary;
+        Fixture: Codeunit "DataExch Fixture ori";
+        RequestJson: JsonObject;
+        CreatedDocument: JsonObject;
+        DataObject: JsonObject;
+        Token: JsonToken;
+        DefinitionCode: Code[20];
+        UploadId: Text;
+        Path: Text;
+        FileName: Text;
+        Csv: Text;
+        EntryNo: Integer;
+        SavedLanguage: Integer;
+    begin
+        // [GIVEN] Self-created vendor and a standard CSV-to-purchase-header intermediate mapping.
+        Initialize();
+        GeneralBusinessGroup.Code := NewFixtureCode();
+        GeneralBusinessGroup.Insert();
+        VendorPostingGroup.Code := NewFixtureCode();
+        VendorPostingGroup.Insert();
+        VatBusinessGroup.Code := NewFixtureCode();
+        VatBusinessGroup.Insert();
+        Currency.Code := CopyStr(NewFixtureCode(), 1, MaxStrLen(Currency.Code));
+        Currency."Amount Rounding Precision" := 0.01;
+        Currency."Unit-Amount Rounding Precision" := 0.00001;
+        Currency."Invoice Rounding Precision" := 0.01;
+        Currency.Insert(true);
+        CurrencyRate."Currency Code" := Currency.Code;
+        CurrencyRate."Starting Date" := WorkDate();
+        CurrencyRate."Exchange Rate Amount" := 1;
+        CurrencyRate."Relational Exch. Rate Amount" := 1;
+        CurrencyRate."Adjustment Exch. Rate Amount" := 1;
+        CurrencyRate."Relational Adjmt Exch Rate Amt" := 1;
+        CurrencyRate.Insert(true);
+        Vendor.Init();
+        Vendor."No." := NewFixtureCode();
+        Vendor.Name := 'BIFT-P2 owned invoice vendor';
+        Vendor."Gen. Bus. Posting Group" := GeneralBusinessGroup.Code;
+        Vendor."Vendor Posting Group" := VendorPostingGroup.Code;
+        Vendor."VAT Bus. Posting Group" := VatBusinessGroup.Code;
+        Vendor.Insert(true);
+        DefinitionCode := Fixture.CreateImportDefinition(0);
+        ColumnDefinition.Get(DefinitionCode, 'LINES', 3);
+        ColumnDefinition."Data Type" := ColumnDefinition."Data Type"::Text;
+        ColumnDefinition.Modify();
+        Mapping.SetRange("Data Exch. Def Code", DefinitionCode);
+        Mapping.DeleteAll();
+        FieldMapping.SetRange("Data Exch. Def Code", DefinitionCode);
+        FieldMapping.DeleteAll();
+        Mapping.Init();
+        Mapping."Data Exch. Def Code" := DefinitionCode;
+        Mapping."Data Exch. Line Def Code" := 'LINES';
+        Mapping."Table ID" := Database::"Intermediate Data Import";
+        Mapping."Use as Intermediate Table" := true;
+        Mapping."Mapping Codeunit" := Codeunit::"Map DataExch To Intermediate";
+        Mapping."Post-Mapping Codeunit" := Codeunit::"Map Incoming Doc to Purch Doc";
+        Mapping.Insert();
+        AddPurchaseFieldMapping(DefinitionCode, 1, PurchaseHeader.FieldNo("Document Type"));
+        AddPurchaseFieldMapping(DefinitionCode, 2, PurchaseHeader.FieldNo("Buy-from Vendor No."));
+        AddPurchaseFieldMapping(DefinitionCode, 3, PurchaseHeader.FieldNo("Currency Code"));
+        ExchangeType.Init();
+        ExchangeType.Code := DefinitionCode;
+        ExchangeType."Data Exch. Def. Code" := DefinitionCode;
+        ExchangeType.Insert();
+        FileName := 'phase2-invoice-' + LowerCase(Format(CreateGuid(), 0, 4)) + '.csv';
+        Csv := Format(PurchaseHeader."Document Type"::Invoice.AsInteger(), 0, 9) + ',' + Vendor."No." + ',' + Currency.Code;
+        BeginUpload(FileName, UploadId, Path);
+        AppendChunk(UploadId, 1, Csv);
+        CommitUpload(TempArgument, UploadId);
+        RequestJson.Add('storageCode', MockCodeTok);
+        RequestJson.Add('path', Path);
+        RequestJson.Add('fileName', FileName);
+        RequestJson.Add('dataExchangeType', DefinitionCode);
+        RequestJson.Add('process', true);
+
+        // [WHEN] The real message runs the built-in incoming-document processing chain.
+        SavedLanguage := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
+        GlobalLanguage(SavedLanguage);
+
+        // [THEN] Read the actual unposted invoice; response identifiers must identify that invoice.
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Creation remains Success.');
+        EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
+        IncomingDocument.Get(EntryNo);
+        DataObject := ReadData(TempArgument.GetResponseJson());
+        LibraryAssert.IsTrue(ReadDataBool(TempArgument, 'processed'), 'Standard mapping must create the purchase invoice. ' + Format(DataObject.GetArray('processErrors')));
+        DataObject := ReadData(TempArgument.GetResponseJson());
+        LibraryAssert.IsTrue(DataObject.Get('createdDocument', Token), 'Return the created invoice.');
+        CreatedDocument := Token.AsObject();
+        PurchaseHeader.Get(PurchaseHeader."Document Type"::Invoice, ReadText(CreatedDocument, 'no'));
+        LibraryAssert.AreEqual(Vendor."No.", PurchaseHeader."Buy-from Vendor No.", 'The self-created vendor is used.');
+        LibraryAssert.AreEqual(Currency.Code, PurchaseHeader."Currency Code", 'The self-created currency and rate are used.');
+        LibraryAssert.AreEqual(EntryNo, PurchaseHeader."Incoming Document Entry No.", 'Invoice links to the incoming document.');
+        LibraryAssert.AreEqual(Format(PurchaseHeader.SystemId, 0, 4), ReadText(CreatedDocument, 'systemId'), 'Response identifies the actual purchase invoice.');
+    end;
+
+    local procedure AddPurchaseFieldMapping(DefinitionCode: Code[20]; ColumnNo: Integer; TargetFieldId: Integer)
+    var
+        FieldMapping: Record "Data Exch. Field Mapping";
+    begin
+        FieldMapping.Init();
+        FieldMapping."Data Exch. Def Code" := DefinitionCode;
+        FieldMapping."Data Exch. Line Def Code" := 'LINES';
+        FieldMapping."Table ID" := Database::"Intermediate Data Import";
+        FieldMapping."Column No." := ColumnNo;
+        FieldMapping."Target Table ID" := Database::"Purchase Header";
+        FieldMapping."Target Field ID" := TargetFieldId;
+        FieldMapping.Insert();
+    end;
+
+    /// <summary>Handles the standard base-app document-created notification during native processing.</summary>
+    [MessageHandler]
+    procedure ProcessingMessageHandler(Message: Text[1024])
+    begin
     end;
 
     [Test]

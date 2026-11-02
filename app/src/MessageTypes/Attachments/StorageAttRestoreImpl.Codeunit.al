@@ -6,7 +6,7 @@ using Origo.Bifrost;
 /// <summary>
 /// Implementation of the <c>Storage.Attachment.Restore</c> message type. Brings an offloaded
 /// attachment's file back into the Business Central database from its storage connection and
-/// deletes the remote copy, reversing <c>Storage.Attachment.Offload</c>.
+/// deletes only a remote file created by that attachment, reversing <c>Storage.Attachment.Offload</c>.
 /// </summary>
 codeunit 10035154 "Storage Att. Restore Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
@@ -33,7 +33,7 @@ codeunit 10035154 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
     /// <returns>The description label in the current language.</returns>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Restores an offloaded attachment''s file from storage back into the database and deletes the remote copy.', Comment = 'is-IS=Endurheimtir viðhengisskrá úr geymslu í gagnagrunninn og eyðir afritinu í geymslunni.';
+        DescriptionLbl: Label 'Restores an offloaded attachment''s file from storage back into the database. Deletes only a remote file created by that attachment; pre-existing and legacy files are preserved.', Comment = 'is-IS=Endurheimtir viðhengisskrá úr geymslu í gagnagrunninn. Eyðir aðeins skrá í geymslu sem viðhengið stofnaði; skrár sem voru til fyrir og eldri skrár eru varðveittar.';
     begin
         exit(DescriptionLbl);
     end;
@@ -54,7 +54,7 @@ codeunit 10035154 "Storage Att. Restore Impl ori" implements "Msg Interface ori"
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Brings an offloaded or storage-linked attachment back into the Business Central database and deletes the remote copy in storage.', Comment = 'is-IS=Færir viðhengi sem hefur verið flutt eða tengt við geymslu aftur í Business Central gagnagrunninn og eyðir afritinu í geymslunni.';
+        SelectionDescriptionLbl: Label 'Brings an offloaded or storage-linked attachment back into the Business Central database. Preserves pre-existing and legacy storage files; deletes only files created by that attachment.', Comment = 'is-IS=Færir viðhengi sem hefur verið flutt eða tengt við geymslu aftur í Business Central gagnagrunninn. Varðveitir skrár sem voru til fyrir og eldri skrár í geymslu; eyðir aðeins skrám sem viðhengið stofnaði.';
     begin
         exit(SelectionDescriptionLbl);
     end;

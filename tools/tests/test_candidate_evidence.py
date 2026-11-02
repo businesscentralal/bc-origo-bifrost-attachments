@@ -19,7 +19,7 @@ class CollectorTests(unittest.TestCase):
         markets = json.loads(self.config.read_text())['supportedCountries']
         self.candidate = dict(appId=APP_ID, publisher='Origo', friends=[], version='28.0.0.4',
                               sha256='1'*64, contentSha256='2'*64, sourceCommit='a'*40, buildUrl='fixture://not-a-run',
-                              foundation=dict(appId=FOUNDATION_ID, version='28.0.3.530', sha256='3'*64, friends=[]))
+                              foundation=dict(appId=FOUNDATION_ID, version='28.0.10.632', sha256='3'*64, friends=[]))
         self.packet = dict(schema=1, sourceCommit='a'*40, markets=markets, providers=list(PROVIDERS),
                            candidate=copy.deepcopy(self.candidate), receipts=[])
         self.raw = self.write('raw.txt', b'controlled fixture, not runtime')

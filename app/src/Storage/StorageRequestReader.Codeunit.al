@@ -76,7 +76,7 @@ codeunit 10035194 "Storage Request Reader ori"
         if not RequestJson.Get(ParameterName, Token) then
             exit(AcceptAbsent(Argument, ParameterName, Required));
         if not Token.IsValue() then begin
-            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(NotAValueErr, ParameterName), ParameterName, TokenText(Token), TextExpectedLbl, '');
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(NotAValueErr, ParameterName), ParameterName, TokenText(Token), TextExpectedLbl, StrSubstNo(ProvideParameterLbl, ParameterName));
             exit(false);
         end;
         if Token.AsValue().IsNull() then
@@ -409,7 +409,7 @@ codeunit 10035194 "Storage Request Reader ori"
         RequiredErr: Label 'Parameter "%1" is required.', Comment = '%1 = parameter name||is-IS=Færibreytan "%1" er nauðsynleg.';
         InvalidTextErr: Label 'Parameter "%1" must be a JSON string.', Comment = '%1 = parameter name||is-IS=Færibreytan "%1" verður að vera JSON-strengur.';
         TooLongErr: Label 'Parameter "%1" exceeds the maximum of %2 characters.', Comment = '%1 = parameter name, %2 = maximum length||is-IS=Færibreytan "%1" er lengri en leyfilegt hámark, %2 stafir.';
-        BoundedStringLbl: Label 'a JSON string of at most %1 characters', Comment = '%1 = maximum length||is-IS=JSON-strengur sem er mest %1 stafir';
+        BoundedStringLbl: Label 'a JSON string of at most %1 characters', Comment = '%1 = maximum length||is-IS=JSON-streng sem er mest %1 stafir';
         MissingLbl: Label 'not supplied', Comment = 'is-IS=ekki gefið upp';
         SendTextLbl: Label 'Send "%1" as %2 and retry.', Comment = '%1 = parameter name, %2 = expected format||is-IS=Sendu "%1" sem %2 og reyndu aftur.';
     begin

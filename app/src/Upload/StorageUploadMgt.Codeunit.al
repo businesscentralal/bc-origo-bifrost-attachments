@@ -44,7 +44,6 @@ codeunit 10035197 "Storage Upload Mgt ori"
         NoStorageCodeNextStepLbl: Label 'Use Storage.Upload.CommitToRecord to attach the file to a record, or begin a new session with a storageCode.', Comment = 'is-IS=Notaðu Storage.Upload.CommitToRecord til að hengja skrána við færslu eða byrjaðu nýja lotu með storageCode.';
         UnknownTargetErr: Label 'Parameter "target" has value "%1", which is not an attachment target.', Comment = '%1 = received value, is-IS=Færibreytan "target" hefur gildið "%1", sem er ekki viðhengjamarkmið.';
         TargetExpectedLbl: Label 'DocumentAttachment or IncomingDocument', Comment = 'is-IS=DocumentAttachment eða IncomingDocument';
-
     /// <summary>Opens a chunked upload session and returns its <c>uploadId</c>.</summary>
     /// <param name="Argument">The message argument carrying <c>fileName</c> and optional <c>storageCode</c>/<c>path</c>/<c>folderPath</c>/<c>declaredSize</c>; receives the error response.</param>
     /// <param name="ResultData">Out: the success payload describing the new session.</param>
@@ -68,12 +67,14 @@ codeunit 10035197 "Storage Upload Mgt ori"
         Reader.ReadText(Argument, RequestJson, 'storageCode', false, StorageCode);
         if StorageCode <> '' then
             RequestMgt.ResolveSetup(Argument, StorageCode, 'storageCode', StorageSetup, Connector);
-        Reader.ReadText(Argument, RequestJson, 'fileName', true, FileName);
+        // The shared reader already reports an absent fileName, a JSON null and an empty string
+        // as a single MissingParameter; only validate and resolve the name when it is usable.
+        if Reader.ReadText(Argument, RequestJson, 'fileName', true, FileName) then
+            Reader.CheckFileName(Argument, FileName);
         Reader.ReadPath(Argument, RequestJson, 'path', false, Path);
         Reader.ReadPath(Argument, RequestJson, 'folderPath', false, FolderPath);
         Reader.ReadNonNegativeInteger(Argument, RequestJson, 'declaredSize', false, DeclaredSize);
-        Reader.CheckFileName(Argument, FileName);
-        if StorageCode <> '' then begin
+        if (StorageCode <> '') and (FileName <> '') then begin
             Path := ResolveTargetPath(Path, FolderPath, FileName);
             Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
         end;
