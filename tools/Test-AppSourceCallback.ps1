@@ -16,6 +16,10 @@ try {
     Copy-Item (Join-Path $source 'tools/Assert-AppSourceBuild.ps1') (Join-Path $fixture 'tools/Assert-AppSourceBuild.ps1')
     $restoreStub = "print('{""action"": ""absent"", ""restored"": []}')`nprint('restore-status-must-not-return')"
     [IO.File]::WriteAllText((Join-Path $fixture 'tools/stage_foundation_inputs.py'), $restoreStub)
+    # Exercise the native preparation boundary without mutating real compiler
+    # symbols. Its status output must not pollute the callback's package return.
+    $pruneStub = "print('{""removed"": [], ""baselineCopied"": []}')`nprint('prune-status-must-not-return')"
+    [IO.File]::WriteAllText((Join-Path $fixture 'tools/prune_self_symbols.py'), $pruneStub)
     $env:GITHUB_WORKSPACE = $fixture
     $env:GITHUB_RUN_ID = 'fixture'; $env:GITHUB_RUN_ATTEMPT = '1'; $env:GITHUB_JOB = 'callback-fixture'; $env:GITHUB_SHA = 'a' * 40
     $env:Settings = @{enableCodeCop=$true;enableUICop=$true;enableCodeAnalyzersOnTestApps=$true;failOn='warning';workspaceCompilation=@{enabled=$false};type='AppSource App'} | ConvertTo-Json
@@ -95,6 +99,15 @@ try {
     catch { $refused = $_.Exception.Message -ceq 'Foundation candidate restore failed.' }
     Assert-Contract ($refused -and $script:compilerCalls -eq $callsBefore) 'Foundation restore failure reached the compiler'
     [IO.File]::WriteAllText((Join-Path $fixture 'tools/stage_foundation_inputs.py'), $restoreStub)
+    $count++
+    [IO.File]::WriteAllText((Join-Path $fixture 'tools/prune_self_symbols.py'), "import sys`nprint('prune-refused', file=sys.stderr)`nsys.exit(5)")
+    $callsBefore = $script:compilerCalls
+    $refused = $false
+    try { Invoke-Command -ScriptBlock $callback -ArgumentList $parameters | Out-Null }
+    catch { $refused = $_.Exception.Message -ceq 'Actual precompile cache/baseline preparation failed.' }
+    Assert-Contract ($refused -and $script:compilerCalls -eq $callsBefore) 'Symbol preparation failure reached the compiler'
+    Assert-Contract (-not (Test-Path (Join-Path $fixture '.buildartifacts/AppSourceGate/request.json'))) 'Symbol preparation failure left a gate request'
+    [IO.File]::WriteAllText((Join-Path $fixture 'tools/prune_self_symbols.py'), $pruneStub)
     $count++
     New-Item -ItemType Directory -Path (Join-Path $fixture '.AL-Go') -Force | Out-Null
     Copy-Item (Join-Path $source '.AL-Go/CompileAppWithBcCompilerFolder.ps1') (Join-Path $fixture '.AL-Go/CompileAppWithBcCompilerFolder.ps1')
