@@ -169,10 +169,11 @@ codeunit 96275 "Storage TypeDel199 Tests ori"
         Request: JsonObject;
         Response: JsonObject;
     begin
+        // Foundation's counted-confirmation gate runs first, so the missing code is reported once the count is confirmed.
+        Request.Add('expectedCount', 1);
         Response := Dispatch("Message Type ori"::"DataExchange.Type.Delete", Request, LanguageId);
         AssertRefusal(Response, 'MissingParameter');
         Request.Add('code', Fixture.NewCode('X199N'));
-        Request.Add('expectedCount', 1);
         Response := Dispatch("Message Type ori"::"DataExchange.Type.Delete", Request, LanguageId);
         AssertRefusal(Response, 'RecordNotFound');
         AssertLanguage(Fixture.ReadText(Response, 'error'), LanguageId, 'was not found', 'fannst ekki');

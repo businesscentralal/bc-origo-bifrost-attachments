@@ -1893,6 +1893,72 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Keyrir útflutning einnar greiðslubókarkeyrslu (SEPA-millifærslu eða greiðsluútflutningssniðs gagnaskipta), setur bankaskrána í geymslu og merkir línurnar sem útfluttar.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Pay Export Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 1909207179 - NamedType 3351274" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Data Exchange Type %1 was not found.</source>
+          <target>Gerð gagnaskipta %1 fannst ekki.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = type code||is-IS=Gerð gagnaskipta %1 fannst ekki.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method DeleteType - NamedType NotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 1909207179 - NamedType 3894911200" size-unit="char" translate="yes" xml:space="preserve">
+          <source>an existing Data Exchange Type</source>
+          <target>fyrirliggjandi gerð gagnaskipta</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=fyrirliggjandi gerð gagnaskipta</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method DeleteType - NamedType TypeExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 1909207179 - NamedType 2301322878" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Call DataExchange.Type.List and use the exact type code.</source>
+          <target>Kallaðu á DataExchange.Type.List og notaðu nákvæman kóða gerðarinnar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á DataExchange.Type.List og notaðu nákvæman kóða gerðarinnar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method DeleteType - NamedType SelectTypeLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 1909207179 - NamedType 360469590" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Data Exchange Type %1 is used by %2 incoming document(s) and cannot be deleted.</source>
+          <target>Gerð gagnaskipta %1 er notuð af %2 innkomnum skjölum og ekki er hægt að eyða henni.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = type code, %2 = number of incoming documents||is-IS=Gerð gagnaskipta %1 er notuð af %2 innkomnum skjölum og ekki er hægt að eyða henni.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method DeleteType - NamedType UsedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 1909207179 - NamedType 3577973356" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a Data Exchange Type that no incoming document uses</source>
+          <target>gerð gagnaskipta sem ekkert innkomið skjal notar</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=gerð gagnaskipta sem ekkert innkomið skjal notar</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method DeleteType - NamedType UnusedExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 1909207179 - NamedType 3454199820" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Change the Data Exchange Type on the incoming documents that use it, or delete those documents, then retry. The linked definition is not touched.</source>
+          <target>Breyttu gerð gagnaskipta á innkomnu skjölunum sem nota hana, eða eyddu þeim skjölum, og reyndu aftur. Tengda skilgreiningin er ekki snert.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Breyttu gerð gagnaskipta á innkomnu skjölunum sem nota hana, eða eyddu þeim skjölum, og reyndu aftur. Tengda skilgreiningin er ekki snert.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method DeleteType - NamedType ClearReferenceLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Deletes a Data Exchange Type that no incoming document uses.</source>
+          <target>Eyðir gerð gagnaskipta sem engin innkomin skjöl nota.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir gerð gagnaskipta sem engin innkomin skjöl nota.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>delete data exchange type</source>
+          <target>eyða gerð gagnaskipta</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=eyða gerð gagnaskipta</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 3650283039 - NamedType 2344026547" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Irreversible: send expectedCount 1 (the preview names the type). Does not delete a type that an incoming document still uses; clear or change that reference first. Never deletes the linked Data Exchange definition; use DataExchange.Definition.Delete afterwards.</source>
+          <target>Óafturkræft: sendu expectedCount 1 (forskoðunin nefnir gerðina). Eyðir ekki gerð sem innkomið skjal notar enn; hreinsaðu eða breyttu þeirri tilvísun fyrst. Eyðir aldrei tengdu skilgreiningunni; notaðu DataExchange.Definition.Delete á eftir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Óafturkræft: sendu expectedCount 1 (forskoðunin nefnir gerðina). Eyðir ekki gerð sem innkomið skjal notar enn; hreinsaðu eða breyttu þeirri tilvísun fyrst. Eyðir aldrei tengdu skilgreiningunni; notaðu DataExchange.Definition.Delete á eftir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method GetNotes - NamedType NotesLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 2340569551 - NamedType 3593894611" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Deletes one Data Exchange Type after a counted confirmation and a reference check. The linked definition is kept.</source>
+          <target>Eyðir einni gerð gagnaskipta eftir talda staðfestingu og athugun á tilvísunum. Tengda skilgreiningin er áfram.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir einni gerð gagnaskipta eftir talda staðfestingu og athugun á tilvísunum. Tengda skilgreiningin er áfram.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method GetOverview - NamedType OverviewLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3767795981 - Method 79446908 - NamedType 895773054" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Deletes one Data Exchange Type after a counted confirmation. Refuses a type that an incoming document uses. Never deletes the linked definition.</source>
+          <target>Eyðir einni gerð gagnaskipta eftir talda staðfestingu. Hafnar gerð sem innkomið skjal notar. Eyðir aldrei tengdu skilgreiningunni.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir einni gerð gagnaskipta eftir talda staðfestingu. Hafnar gerð sem innkomið skjal notar. Eyðir aldrei tengdu skilgreiningunni.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method GetSelectionDescription - NamedType SelectionLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2801241356 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lists Data Exchange Types and the definition type each one resolves to.</source>
           <target>Listar gerðir gagnaskipta og gerð skilgreiningar sem hver þeirra vísar í.</target>
