@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-02) - DataExchange.Type.List returns entityType (#198)
+
+- `Data Exchange Query ori` (10035138, `ListTypes`) adds the additive `entityType` field to every `DataExchange.Type.List` row, as the stable English name `Invoice` or `Credit Memo` accepted and returned by `DataExchange.Type.Set` (the table field is never empty). The Type.List response contract in `Storage Contract Parts ori` (10035183) documents the field. Test codeunit 96213 covers both values. No breaking change.
+
 ### Fixed (2026-11-01) - Compiler callback regression fixture (#78)
 
 - Supply the native symbol-preparation fixture used by the compiler callback, preserve its single-package return assertion, and verify preparation failures stop compilation. This repairs tooling coverage; no AL objects or message contracts change.
