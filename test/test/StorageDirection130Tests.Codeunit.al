@@ -119,8 +119,8 @@ codeunit 96229 "Storage Direction130 Tests ori"
             Problems += 'storage write count ' + Format(StorageWrites) + '; ';
         if NamedWrites <> 6 then
             Problems += 'named storage write count ' + Format(NamedWrites) + '; ';
-        // #24, #25 and #26 added five types.
-        if (not StorageWritesOnly) and (Checked <> 39) then
+        // #24, #25 and #26 added five types; #199 added DataExchange.Type.Delete.
+        if (not StorageWritesOnly) and (Checked <> 40) then
             Problems += 'attachments type count ' + Format(Checked) + '; ';
     end;
 
