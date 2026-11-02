@@ -104,8 +104,8 @@ codeunit 10035183 "Storage Contract Parts ori"
         DataExchangeTypeParamLbl: Label 'Optional Data Exchange Type code for IncomingDocument. The type must already exist.', Comment = 'is-IS=Valfrjáls kóði gerðar gagnaskipta fyrir IncomingDocument. Gerðin verður að vera til.';
         ProcessParamLbl: Label 'When true, run CreateDocumentWithDataExchange after the incoming document is created. Default false. The upload still succeeds when processing reports errors.', Comment = 'is-IS=Þegar true er CreateDocumentWithDataExchange keyrt eftir að skjalið í innleið er stofnað. Sjálfgefið false. Upphleðslan heppnast samt þó vinnslan skili villum.';
         VendorNoParamLbl: Label 'Optional vendor number for a new incoming document.', Comment = 'is-IS=Valfrjálst lánardrottinsnúmer fyrir nýtt skjal í innleið.';
-        DataExchangeTypeResponseLbl: Label 'The Data Exchange Type applied to the incoming document.', Comment = 'is-IS=Gerð gagnaskipta sem var sett á skjalið í innleið.';
-        ProcessedResponseLbl: Label 'True when CreateDocumentWithDataExchange created a document.', Comment = 'is-IS=Satt þegar CreateDocumentWithDataExchange stofnaði skjal.';
+        DataExchangeTypeResponseLbl: Label 'The Data Exchange Type the incoming document has after processing. Same value as appliedDataExchangeType.', Comment = 'is-IS=Gerð gagnaskipta sem skjalið í innleið hefur eftir úrvinnslu. Sama gildi og appliedDataExchangeType.';
+        ProcessedResponseLbl: Label 'True when CreateDocumentWithDataExchange created a document. This is not the Processed field of the incoming document, which Business Central sets only when the document is posted.', Comment = 'is-IS=Satt þegar CreateDocumentWithDataExchange stofnaði skjal. Þetta er ekki Processed-reitur skjalsins í innleið, sem Business Central setur aðeins þegar skjalið er bókað.';
         CreatedDocumentResponseLbl: Label 'The created document type, number and systemId when processing succeeded.', Comment = 'is-IS=Gerð, númer og systemId stofnaðs skjals þegar vinnsla tókst.';
         IncomingStatusResponseLbl: Label 'Stable incoming document status name after processing, for example Failed or Created.', Comment = 'is-IS=Fast stöðuheiti skjals í innleið eftir úrvinnslu, til dæmis Failed eða Created.';
         ProcessErrorsResponseLbl: Label 'Processing errors as objects containing code, message and nextStep; an empty array means no processing errors were reported.', Comment = 'is-IS=Úrvinnsluvillur sem hlutir með code, message og nextStep; tómt fylki þýðir að engar úrvinnsluvillur voru tilkynntar.';
@@ -914,6 +914,8 @@ codeunit 10035183 "Storage Contract Parts ori"
                         Fields.Add(ContractMgt.ResponseField('path', 'string', 'The storage path of the source file. Only when the content came from a stored file.'));
                     end;
                     if MessageType in ['Storage.Attachment.CreateLinked', 'Storage.Upload.CommitToRecord'] then begin
+                        Fields.Add(ContractMgt.ResponseField('requestedDataExchangeType', 'string', 'The Data Exchange Type code sent in the request. Omitted when the request had none.'));
+                        Fields.Add(ContractMgt.ResponseField('appliedDataExchangeType', 'string', 'The Data Exchange Type the incoming document actually has and was processed with. Business Central can replace the requested type with a better match when the attachment is added.'));
                         Fields.Add(ContractMgt.ResponseField('dataExchangeType', 'string', DataExchangeTypeResponseLbl));
                         Fields.Add(ContractMgt.ResponseField('processed', 'boolean', ProcessedResponseLbl));
                         Fields.Add(WithChildren(ContractMgt.ResponseField('createdDocument', 'object', CreatedDocumentResponseLbl),

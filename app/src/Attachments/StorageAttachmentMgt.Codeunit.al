@@ -607,11 +607,10 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         RelatedRecord: Variant;
         CreatedSystemId: Guid;
         LastError: Text;
+        AppliedDataExchangeTypeCode: Code[20];
         Processed: Boolean;
         EntryNo: Integer;
     begin
-        if DataExchangeTypeCode <> '' then
-            ResultData.Add('dataExchangeType', DataExchangeTypeCode);
         EntryNo := IncomingDocument."Entry No.";
         if Process then begin
             Commit();
@@ -640,6 +639,16 @@ codeunit 10035136 "Storage Attachment Mgt ori"
                 if LastError <> '' then
                     AddProcessError(ProcessErrors, LastError);
             ResultData.Add('processErrors', ProcessErrors);
+        end;
+        // Business Central's Data Exch. Type Selector can replace the requested type when an attachment is
+        // inserted, so the applied type is read from the document after the attachment and any processing.
+        if IncomingDocument.Get(EntryNo) then
+            AppliedDataExchangeTypeCode := IncomingDocument."Data Exchange Type";
+        if DataExchangeTypeCode <> '' then
+            ResultData.Add('requestedDataExchangeType', DataExchangeTypeCode);
+        if AppliedDataExchangeTypeCode <> '' then begin
+            ResultData.Add('appliedDataExchangeType', AppliedDataExchangeTypeCode);
+            ResultData.Add('dataExchangeType', AppliedDataExchangeTypeCode);
         end;
         ResultData.Add('processed', Processed);
     end;

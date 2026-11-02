@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-02) - CommitToRecord and CreateLinked report the applied Data Exchange Type (#197)
+
+- Codeunit 10035136 `Storage Attachment Mgt ori` (`CreateLinked`, `Upload.CommitToRecord` with an IncomingDocument target) now answers `requestedDataExchangeType` (the code sent) and `appliedDataExchangeType` (the type the Incoming Document has after Business Central's auto-detection and processing). `dataExchangeType` stays and carries the applied type. The message-type contract and help document the auto-detection and that `processed` is not Business Central's own Processed field.
+
 ### Fixed (2026-11-01) - Compiler callback regression fixture (#78)
 
 - Supply the native symbol-preparation fixture used by the compiler callback, preserve its single-package return assertion, and verify preparation failures stop compilation. This repairs tooling coverage; no AL objects or message contracts change.

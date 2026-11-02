@@ -2518,9 +2518,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangeTypeParamLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1610349590" size-unit="char" translate="yes" xml:space="preserve">
-          <source>The Data Exchange Type applied to the incoming document.</source>
-          <target>Gerð gagnaskipta sem var sett á skjalið í innleið.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Gerð gagnaskipta sem var sett á skjalið í innleið.</note>
+          <source>The Data Exchange Type the incoming document has after processing. Same value as appliedDataExchangeType.</source>
+          <target>Gerð gagnaskipta sem skjalið í innleið hefur eftir úrvinnslu. Sama gildi og appliedDataExchangeType.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Gerð gagnaskipta sem skjalið í innleið hefur eftir úrvinnslu. Sama gildi og appliedDataExchangeType.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType DataExchangeTypeResponseLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 1754493333" size-unit="char" translate="yes" xml:space="preserve">
@@ -2872,9 +2872,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType PaymentFileNameLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3813134445" size-unit="char" translate="yes" xml:space="preserve">
-          <source>True when CreateDocumentWithDataExchange created a document.</source>
-          <target>Satt þegar CreateDocumentWithDataExchange stofnaði skjal.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Satt þegar CreateDocumentWithDataExchange stofnaði skjal.</note>
+          <source>True when CreateDocumentWithDataExchange created a document. This is not the Processed field of the incoming document, which Business Central sets only when the document is posted.</source>
+          <target>Satt þegar CreateDocumentWithDataExchange stofnaði skjal. Þetta er ekki Processed-reitur skjalsins í innleið, sem Business Central setur aðeins þegar skjalið er bókað.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Satt þegar CreateDocumentWithDataExchange stofnaði skjal. Þetta er ekki Processed-reitur skjalsins í innleið, sem Business Central setur aðeins þegar skjalið er bókað.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Contract Parts ori - NamedType ProcessedResponseLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2218127053 - NamedType 3514665411" size-unit="char" translate="yes" xml:space="preserve">
