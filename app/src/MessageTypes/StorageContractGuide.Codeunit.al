@@ -200,6 +200,13 @@ codeunit 10035199 "Storage Contract Guide ori"
                     Steps.Add(ContractMgt.WorkflowStep('DataExchange.Type.List', 'Check the result.'));
                     Explanation := 'A type is what Incoming Documents use to find their import definition.';
                 end;
+            'DataExchange.Type.Delete':
+                begin
+                    Steps.Add(ContractMgt.WorkflowStep('DataExchange.Type.List', 'Find the type and check the code.'));
+                    Steps.Add(ContractMgt.WorkflowStep('DataExchange.Type.Delete', 'Send the code with expectedCount 1 (without it the call previews and deletes nothing).'));
+                    Steps.Add(ContractMgt.WorkflowStep('DataExchange.Definition.Delete', 'Delete the definition afterwards if nothing else uses it.'));
+                    Explanation := 'Deleting a type never deletes its definition; the definition keeps its own reference checks.';
+                end;
             'DataExchange.Definition.Import', 'DataExchange.Definition.Export', 'DataExchange.Definition.Delete':
                 begin
                     Steps.Add(ContractMgt.WorkflowStep('DataExchange.Definition.Export', 'Write an existing definition as XML.'));
@@ -469,6 +476,8 @@ codeunit 10035199 "Storage Contract Guide ori"
                 Pair(MessageType, '"code":"INVOICES","dataExchDefCode":"INVOICES","description":"Invoice import"', '{"code":"INVOICES","dataExchDefCode":"INVOICES"}', RequestText, ResponseText);
             'DataExchange.Definition.Delete':
                 Pair(MessageType, '"code":"INVOICES"', '{"code":"INVOICES"}', RequestText, ResponseText);
+            'DataExchange.Type.Delete':
+                Pair(MessageType, '"code":"INVOICES","expectedCount":1', '{"code":"INVOICES"}', RequestText, ResponseText);
             'DataExchange.Definition.Export':
                 Pair(MessageType, '"code":"INVOICES"', '{"code":"INVOICES","name":"Invoice import","type":"Generic Import"}', RequestText, ResponseText);
             'DataExchange.Definition.Import':

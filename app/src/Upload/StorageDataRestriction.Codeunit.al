@@ -32,7 +32,7 @@ using System.IO;
 /// for audits. Legitimate rows are written by the attachment message types named in the
 /// write hint.
 ///
-/// <c>Data Exchange Type</c> rows are write-restricted and point at <c>DataExchange.Type.Set</c>.
+/// <c>Data Exchange Type</c> rows are write-restricted and point at <c>DataExchange.Type.Set</c> / <c>DataExchange.Type.Delete</c>.
 /// <c>Incoming Document."Data Exchange Type"</c> is field-restricted and points at
 /// <c>Storage.Upload.CommitToRecord / DataExchange.Type.Set</c>. The rest of Incoming Document
 /// stays writable through the generic data types.
@@ -44,7 +44,7 @@ codeunit 10035195 "Storage Data Restriction ori"
     var
         DataExchWriteHintTxt: Label 'DataExchange.Import.Run / Storage.Upload.CommitToDataExchange', Locked = true;
         LinkWriteHintTxt: Label 'Storage.Attachment.Offload / Storage.Attachment.CreateLinked / Storage.Attachment.CreateForRecord', Locked = true;
-        TypeSetHintTxt: Label 'DataExchange.Type.Set', Locked = true;
+        TypeSetHintTxt: Label 'DataExchange.Type.Set / DataExchange.Type.Delete', Locked = true;
         IncomingTypeFieldHintTxt: Label 'Storage.Upload.CommitToRecord / DataExchange.Type.Set', Locked = true;
         DefinitionWriteHintTxt: Label 'DataExchange.Definition.Import / DataExchange.Definition.Delete', Locked = true;
         EntryLinkWriteHintTxt: Label 'DataExchange.Entry.Delete', Locked = true;

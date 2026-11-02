@@ -175,6 +175,7 @@ codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
         Guide.AppendLine('| Remove a definition nothing uses | `DataExchange.Definition.Delete` |');
         Guide.AppendLine('| See which Data Exchange Types exist | `DataExchange.Type.List` |');
         Guide.AppendLine('| Bind a Data Exchange Type to an import definition | `DataExchange.Type.Set` |');
+        Guide.AppendLine('| Remove a Data Exchange Type no incoming document uses (send `expectedCount` 1; the definition is kept) | `DataExchange.Type.Delete` |');
         Guide.AppendLine('| Import a stored file or small inline content | `DataExchange.Import.Run` |');
         Guide.AppendLine('| Import a large file sent in chunks | `Storage.Upload.CommitToDataExchange` |');
         Guide.AppendLine('| Write the parsed lines to the business tables | `DataExchange.Entry.Process` |');

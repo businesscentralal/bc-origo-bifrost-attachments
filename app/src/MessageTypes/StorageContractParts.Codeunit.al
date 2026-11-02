@@ -300,6 +300,15 @@ codeunit 10035183 "Storage Contract Parts ori"
                         '{"type":"Storage.Upload.CommitToRecord","data":{},"lcid":1033}',
                         '{"status":"Error","code":"MissingParameter","error":"Required parameter \"uploadId\" is missing.","parameter":"uploadId","received":"(missing)","expected":"a value for \"uploadId\"","nextStep":"Provide \"uploadId\" and send the request again.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Upload.CommitToRecord\". Always read the help before calling a message type."}'));
                 end;
+            'DataExchange.Type.Delete':
+                begin
+                    Examples.Add(ContractMgt.Example('A request refused before any change',
+                        '{"type":"DataExchange.Type.Delete","data":{"code":"X199-MISSING"},"lcid":1033}',
+                        '{"status":"Error","code":"RecordNotFound","error":"Data Exchange Type X199-MISSING was not found.","parameter":"code","received":"X199-MISSING","expected":"an existing Data Exchange Type","nextStep":"Call DataExchange.Type.List and use the exact type code.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Type.Delete\". Always read the help before retrying."}'));
+                    Examples.Add(ContractMgt.Example('Refusal: required request data is missing',
+                        '{"type":"DataExchange.Type.Delete","data":{},"lcid":1033}',
+                        '{"status":"Error","code":"MissingParameter","error":"Parameter \"code\" is required.","parameter":"code","received":"not supplied","expected":"a JSON string of at most 20 characters","nextStep":"Send \"code\" as a JSON string of at most 20 characters and retry.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Type.Delete\". Always read the help before retrying."}'));
+                end;
             'DataExchange.Definition.Delete':
                 begin
                     Examples.Add(ContractMgt.Example('A request refused before any change',
@@ -638,6 +647,8 @@ codeunit 10035183 "Storage Contract Parts ori"
                 end;
             'DataExchange.Definition.Get', 'DataExchange.Definition.Delete':
                 Parameters.Add(ContractMgt.Parameter('code', 'string', true, DefinitionCodeLbl));
+            'DataExchange.Type.Delete':
+                Parameters.Add(ContractMgt.Parameter('code', 'string', true, TypeCodeLbl));
             'DataExchange.Definition.Export':
                 begin
                     Parameters.Add(ContractMgt.Parameter('code', 'string', true, DefinitionCodeLbl));
@@ -803,7 +814,7 @@ codeunit 10035183 "Storage Contract Parts ori"
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
         case MessageType of
-            'DataExchange.Type.Set':
+            'DataExchange.Type.Set', 'DataExchange.Type.Delete':
                 Target.Add(ContractMgt.TargetEntry('data.code', 'Data Exchange Type', TypeCodeLbl));
             'DataExchange.Definition.Delete', 'DataExchange.Definition.Export':
                 Target.Add(ContractMgt.TargetEntry('data.code', 'Data Exch. Def', DefinitionCodeLbl));
@@ -969,6 +980,8 @@ codeunit 10035183 "Storage Contract Parts ori"
                 end;
             'DataExchange.Definition.Delete':
                 Fields.Add(ContractMgt.ResponseField('code', 'string', DefinitionCodeLbl));
+            'DataExchange.Type.Delete':
+                Fields.Add(ContractMgt.ResponseField('code', 'string', TypeCodeLbl));
             'DataExchange.Definition.Export':
                 begin
                     Fields.Add(ContractMgt.ResponseField('code', 'string', DefinitionCodeLbl));
@@ -1183,6 +1196,10 @@ codeunit 10035183 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'A linked Business Central attachment prevents the delete.', 'Restore or remove the attachment first.'));
         if MessageType in ['Storage.File.Copy', 'Storage.File.Move'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The connector reports that the destination file already exists.', 'Choose a new destination file name or folder.'));
+        if MessageType = 'DataExchange.Type.Delete' then begin
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The Data Exchange Type does not exist.', 'Call DataExchange.Type.List and use the exact type code.'));
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'An incoming document still uses the Data Exchange Type. Nothing is deleted.', 'Change the Data Exchange Type on those incoming documents, then retry.'));
+        end;
         if MessageType = 'DataExchange.Definition.Delete' then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, EntryReferenceLbl, EntryReferenceNextLbl));
         if MessageType in ['DataExchange.Entry.Process', 'DataExchange.Import.Run', 'Storage.Upload.CommitToDataExchange'] then
@@ -1271,6 +1288,11 @@ codeunit 10035183 "Storage Contract Parts ori"
                 begin
                     Effect.Add('effect', 'write');
                     Effect.Add('changes', DataExchangeChangesLbl);
+                end;
+            MessageType = 'DataExchange.Type.Delete':
+                begin
+                    Effect.Add('effect', 'irreversible');
+                    Effect.Add('changes', 'Deletes one Data Exchange Type row. The delete cannot be undone and needs expectedCount 1. The linked Data Exchange definition and all incoming documents are unchanged.');
                 end;
             MessageType = 'DataExchange.Definition.Export':
                 begin
