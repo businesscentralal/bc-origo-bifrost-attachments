@@ -245,7 +245,7 @@
     {
       "name": "DataExchange.Type.Delete",
       "ordinal": 10035174,
-      "source": "app/src/MessageTypes/DataExchange/DataExchTypeDeleteEnumExt.EnumExt.al"
+      "source": "app/src/MessageTypes/DataExchange/DataExchTypeDelEnumExt.EnumExt.al"
     },
     {
       "name": "DataExchange.Definition.Import",
