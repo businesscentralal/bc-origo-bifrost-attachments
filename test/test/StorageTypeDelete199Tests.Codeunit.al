@@ -7,7 +7,7 @@ using System.IO;
 using System.TestLibraries.Utilities;
 
 /// <summary>Issue 199: DataExchange.Type.Delete through the public dispatcher with explicit caller LCIDs.</summary>
-codeunit 96275 "Storage Type Delete199 Tests ori"
+codeunit 96275 "Storage TypeDel199 Tests ori"
 {
     Subtype = Test;
     TestPermissions = Disabled;
