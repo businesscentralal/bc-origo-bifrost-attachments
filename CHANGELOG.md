@@ -9,6 +9,9 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Added
 - `Storage.Upload.CommitToStaging` assembles an owned upload into one Foundation staging row, returning `stagingId` for a consuming app without external storage (#192). Uses public Foundation Create/Take/Exists and preserves creator isolation, retryable chunks and existing commit types. Objects: codeunit 10035200, enum value 10035174, upload manager 10035197 and help/contracts 10035182–10035183 and 10035199.
 
+### Fixed (2026-11-01) - Compiler callback regression fixture (#78)
+
+- Supply the native symbol-preparation fixture used by the compiler callback, preserve its single-package return assertion, and verify preparation failures stop compilation. This repairs tooling coverage; no AL objects or message contracts change.
 
 ### Fixed (2026-10-28) - Licence-admin setup with Attachments installed (#190)
 
