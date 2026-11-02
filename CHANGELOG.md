@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-01) - Compiler callback regression fixture (#78)
+
+- Supply the native symbol-preparation fixture used by the compiler callback, preserve its single-package return assertion, and verify preparation failures stop compilation. This repairs tooling coverage; no AL objects or message contracts change.
+
 ### Fixed (2026-10-28) - Licence-admin setup with Attachments installed (#190)
 
 - Pin test/CI Foundation inputs to released 28.0.10.632 for the restricted licence-admin setup regression (#190), retaining signed Apps and exact TestApps collision checks. Product minimum dependency stays unchanged.
