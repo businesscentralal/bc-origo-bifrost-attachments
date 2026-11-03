@@ -148,7 +148,7 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     /// <summary>Summarizes the operation.</summary>
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Deletes one Data Exchange definition after checking references.', Comment = 'is-IS=Eyðir einni skilgreiningu gagnaskipta eftir að tilvísanir hafa verið athugaðar.';
+        OverviewLbl: Label 'Deletes one Data Exchange definition after checking references.', Locked = true;
     begin
         Overview := OverviewLbl;
         exit(true);
@@ -157,7 +157,7 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     /// <summary>Explains operation restrictions.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Does not delete a definition while Data Exchange entries reference it; delete those entries with DataExchange.Entry.Delete first. Does not delete a definition that a Data Exchange Type, a Bank Export/Import Setup (which bank accounts use as payment export, statement import or positive pay format), the payroll import format of the General Ledger Setup or a currency exchange rate service still uses.', Comment = 'is-IS=Eyðir ekki skilgreiningu meðan gagnaskiptafærslur vísa í hana; eyddu þeim fyrst með DataExchange.Entry.Delete. Eyðir ekki skilgreiningu sem gerð gagnaskipta, uppsetning bankaútflutnings eða bankainnflutnings (sem bankareikningar nota sem snið fyrir greiðsluútflutning, innflutning yfirlita eða jákvæða greiðslustaðfestingu), snið launainnflutnings í fjárhagsgrunni eða gengisþjónusta notar enn.';
+        NotesLbl: Label 'Does not delete a definition while Data Exchange entries reference it; delete those entries with DataExchange.Entry.Delete first. Does not delete a definition that a Data Exchange Type, a Bank Export/Import Setup (which bank accounts use as payment export, statement import or positive pay format), the payroll import format of the General Ledger Setup or a currency exchange rate service still uses.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);

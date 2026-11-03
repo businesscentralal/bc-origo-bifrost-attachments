@@ -6,6 +6,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-03) - Help chapters are English at every lcid (#196)
+
+- Following Gunnar's decision 02.11.2026 (help chapters are English in every app), every label of codeunit 10035183 `Storage Contract Parts ori` (envelope, target, parameters, response, errors, effect, related, examples) and the `OverviewLbl`/`NotesLbl` labels of codeunits `DataExch Def Delete Impl ori`, `DataExch Def Install Impl ori`, `DataExch Entry Delete Impl ori`, `DataExch Entry Proc Impl ori`, `DataExch Export Run Impl ori`, `DataExch Import Run Impl ori`, `DataExch Pay Export Impl ori`, `Storage Help Get Impl ori` and `Storage Upload Commit DX ori` are now `Locked = true`. `effect.changes` of `DataExchange.Entry.Delete`, `Import.Run`, `Entry.Process` and `Definition.Import` (`DataExchangeChangesLbl`) therefore reads English at lcid 1033 and 1039.
+- Catalogue `description`, `selectionDescription` and keywords, and every refusal and error message, stay translated. The 128 now-locked trans-units are removed from `Bifrost Attachments.is-IS.xlf`.
+- Test codeunit 96211 `Storage Msg Conformance Tests` adds `Scenario_196_DataExchangeChanges_IsEnglishAtBothLcids` and `Scenario_196_HelpChapters_HaveNoIcelandicTextAtLcid1039`, which read every chapter of every Attachments type directly from its implementation and from Foundation's aggregation at 1039 and assert no Icelandic letter. The Icelandic Foundation fragments (Retryable row, conventions) are not rendered by Attachments; they come from Foundation if present.
+
 ### Added (2026-11-02) - DataExchange.Type.Delete (#199)
 
 - New message type `DataExchange.Type.Delete` (enum value 10035174, codeunit 10035200 `DataExch Type Delete Impl ori`, enum extension 10035201) deletes one Data Exchange Type by `code`. The contract declares an irreversible effect, so Foundation's counted-confirmation gate applies (`expectedCount` 1; without it the call is previewed with ConfirmationRequired and nothing is deleted).
