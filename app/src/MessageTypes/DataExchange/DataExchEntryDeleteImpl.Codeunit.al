@@ -174,7 +174,7 @@ codeunit 10035160 "DataExch Entry Delete Impl ori" implements "Msg Interface ori
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Deletes the entry, its Data Exch. Field rows and the Bifröst marker. Records already written by processing are not touched.', Comment = 'is-IS=Eyðir færslunni, gagnaskiptareitum hennar og Bifröst-merkinu. Færslum sem vinnslan hefur þegar skrifað er ekki breytt.';
+        OverviewLbl: Label 'Deletes the entry, its Data Exch. Field rows and the Bifröst marker. Records already written by processing are not touched.', Locked = true;
     begin
         Overview := OverviewLbl;
         exit(true);
@@ -185,7 +185,7 @@ codeunit 10035160 "DataExch Entry Delete Impl ori" implements "Msg Interface ori
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'An entry that an incoming document uses is refused; delete or process the incoming document instead. Entries created by Bifröst are also removed by the retention policy for Bifrost Data Exchange Entry after 30 days by default.', Comment = 'is-IS=Færslu sem skjal í innleið notar er hafnað; eyddu eða vinndu skjalið í innleið í staðinn. Færslum sem Bifröst stofnaði er einnig eytt með varðveislureglu fyrir gagnaskiptafærslur Bifröst, sjálfgefið eftir 30 daga.';
+        NotesLbl: Label 'An entry that an incoming document uses is refused; delete or process the incoming document instead. Entries created by Bifröst are also removed by the retention policy for Bifrost Data Exchange Entry after 30 days by default.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);
