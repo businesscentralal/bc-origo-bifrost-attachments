@@ -78,7 +78,7 @@ codeunit 10035183 "Storage Contract Parts ori"
         DeliveredPathLbl: Label 'The storage path the file was written to, when storageCode was sent.', Locked = true;
         DefinitionCodeLbl: Label 'The complete Data Exchange definition code, at most 20 characters.', Locked = true;
         UploadResponseStorageLbl: Label 'The session storage connection code; empty for a record-only upload.', Locked = true;
-        ChunkSizeHintLbl: Label 'The recommended raw chunk size in bytes.', Locked = true;
+        ChunkSizeLbl: Label 'The recommended raw chunk size in bytes.', Locked = true;
         UploadFileNameLbl: Label 'The session file name.', Locked = true;
         UploadPathLbl: Label 'The session storage path.', Locked = true;
         DeclaredSizeLbl: Label 'The declared file size in bytes.', Locked = true;
@@ -927,7 +927,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                 begin
                     Fields.Add(ContractMgt.ResponseField('uploadId', 'string', 'The upload session id.'));
                     Fields.Add(ContractMgt.ResponseField('storageCode', 'string', UploadResponseStorageLbl));
-                    Fields.Add(ContractMgt.ResponseField('chunkSizeHint', 'integer', ChunkSizeHintLbl));
+                    Fields.Add(ContractMgt.ResponseField('chunkSizeHint', 'integer', ChunkSizeLbl));
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The destination path.'));
                     Fields.Add(ContractMgt.ResponseField('maxChunkBytes', 'integer', 'The maximum raw chunk size.'));
                 end;
