@@ -1061,7 +1061,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                 begin
                     Fields.Add(ContractMgt.ResponseField('count', 'integer', MatchingCountLbl));
                     Fields.Add(WithChildren(ContractMgt.ResponseField('types', 'array', MatchingTypesLbl),
-                        'code:string:The Data Exchange Type code.|description:string:The type description.|dataExchDefCode:string:The linked definition code.|userFeedbackCodeunit:string:The definition user feedback codeunit name, empty when none.|validationCodeunit:string:The definition validation codeunit name, empty when none.|dataHandlingCodeunit:string:The definition data handling codeunit name, empty when none.|type:string:The definition type, empty when the definition does not exist.'));
+                        'code:string:The Data Exchange Type code.|description:string:The type description.|dataExchDefCode:string:The linked definition code.|userFeedbackCodeunit:string:The definition user feedback codeunit name, empty when none.|validationCodeunit:string:The definition validation codeunit name, empty when none.|dataHandlingCodeunit:string:The definition data handling codeunit name, empty when none.|type:string:The definition type, empty when the definition does not exist.|entityType:string:The entity type the Data Exchange Type applies to, as the stable English name Invoice or Credit Memo accepted by DataExchange.Type.Set.'));
                 end;
             'DataExchange.Definition.List':
                 begin
