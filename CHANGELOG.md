@@ -10,6 +10,12 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - `Data Exchange Query ori` (10035138, `ListTypes`) adds the additive `entityType` field to every `DataExchange.Type.List` row, as the stable English name `Invoice` or `Credit Memo` accepted and returned by `DataExchange.Type.Set` (the table field is never empty). The Type.List response contract in `Storage Contract Parts ori` (10035183) documents the field. Test codeunit 96213 covers both values. No breaking change.
 
+### Fixed (2026-11-03) - Help chapters are English at every lcid (#196)
+
+- Following Gunnar's decision 02.11.2026 (help chapters are English in every app), every label of codeunit 10035183 `Storage Contract Parts ori` (envelope, target, parameters, response, errors, effect, related, examples) and the `OverviewLbl`/`NotesLbl` labels of codeunits `DataExch Def Delete Impl ori`, `DataExch Def Install Impl ori`, `DataExch Entry Delete Impl ori`, `DataExch Entry Proc Impl ori`, `DataExch Export Run Impl ori`, `DataExch Import Run Impl ori`, `DataExch Pay Export Impl ori`, `Storage Help Get Impl ori` and `Storage Upload Commit DX ori` are now `Locked = true`. `effect.changes` of `DataExchange.Entry.Delete`, `Import.Run`, `Entry.Process` and `Definition.Import` (`DataExchangeChangesLbl`) therefore reads English at lcid 1033 and 1039.
+- Catalogue `description`, `selectionDescription` and keywords, and every refusal and error message, stay translated. The 128 now-locked trans-units are removed from `Bifrost Attachments.is-IS.xlf`.
+- Test codeunit 96211 `Storage Msg Conformance Tests` adds `Scenario_196_DataExchangeChanges_IsEnglishAtBothLcids` and `Scenario_196_HelpChapters_HaveNoIcelandicTextAtLcid1039`, which read every chapter of every Attachments type directly from its implementation and from Foundation's aggregation at 1039 and assert no Icelandic letter. The Icelandic Foundation fragments (Retryable row, conventions) are not rendered by Attachments; they come from Foundation if present.
+
 ### Fixed (2026-11-01) - Compiler callback regression fixture (#78)
 
 - Supply the native symbol-preparation fixture used by the compiler callback, preserve its single-package return assertion, and verify preparation failures stop compilation. This repairs tooling coverage; no AL objects or message contracts change.
