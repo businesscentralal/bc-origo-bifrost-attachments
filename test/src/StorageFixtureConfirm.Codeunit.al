@@ -1,3 +1,7 @@
+namespace Origo.Bifrost.Attachments.Test;
+
+using Origo.Bifrost;
+
 /// <summary>
 /// Test helper that adds Foundation's explicit single-subject confirmation to fixture calls of
 /// irreversible Attachments message types (#205).
