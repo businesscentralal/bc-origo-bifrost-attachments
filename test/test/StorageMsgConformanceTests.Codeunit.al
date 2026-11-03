@@ -628,9 +628,9 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Ordinal: Integer;
     begin
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            if (Ordinal >= 10035135) and (Ordinal <= 10035173) then
+            if (Ordinal >= 10035135) and (Ordinal <= 10035174) then
                 Ordinals.Add(Ordinal);
-        LibraryAssert.AreEqual(39, Ordinals.Count(), 'Bifröst Attachments declares 39 message types.');
+        LibraryAssert.AreEqual(40, Ordinals.Count(), 'Bifröst Attachments declares 40 message types.');
     end;
 
     local procedure AppOrdinals() Ordinals: List of [Integer]

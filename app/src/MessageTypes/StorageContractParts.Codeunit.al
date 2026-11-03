@@ -8,13 +8,13 @@ codeunit 10035183 "Storage Contract Parts ori"
     Access = Internal;
 
     var
-        StagingUploadIdLbl: Label 'The open upload session id returned by Storage.Upload.Begin. Only its creator can commit it.', Comment = 'is-IS=Auðkenni opinnar upphleðslulotu sem Storage.Upload.Begin skilaði. Aðeins stofnandi hennar getur staðfest hana.';
-        StagingFileNameLbl: Label 'Optional replacement leaf file name; defaults to the session file name.', Comment = 'is-IS=Valfrjálst skráarheiti án möppuslóðar; sjálfgefið er skráarheiti lotunnar.';
-        StagingContentTypeLbl: Label 'Optional MIME type; empty when not supplied.', Comment = 'is-IS=Valfrjáls MIME-gerð; tómt ef ekki gefið upp.';
-        StagingIdLbl: Label 'Foundation staging row id without braces. Pass it to a consuming message type as the same user in the same company.', Comment = 'is-IS=Auðkenni bráðabirgðafærslu í Bifröst-grunni án slaufusviga. Sendu það til móttökugerðar sem sami notandi í sama fyrirtæki.';
-        StagingNextStepLbl: Label 'How to hand the stagingId to a consuming message type.', Comment = 'is-IS=Hvernig afhenda á stagingId til móttökugerðar.';
-        StagingEffectLbl: Label 'Creates exactly one Foundation staging row, commits the upload session and releases its chunks within the caller transaction. No external storage write. A failure rolls back all writes.', Comment = 'is-IS=Stofnar nákvæmlega eina bráðabirgðafærslu í Bifröst-grunni, staðfestir upphleðslulotuna og losar búta hennar innan færslunnar. Engin skrif í ytri geymslu. Villa afturkallar allar skrifanir.';
-        StagingPreconditionsLbl: Label 'The upload session belongs to the caller, is open and contains all chunks with the declared size. No storage connection is needed.', Comment = 'is-IS=Upphleðslulotan tilheyrir notandanum, er opin og inniheldur alla búta með uppgefinni stærð. Engin geymslutenging er nauðsynleg.';
+        StagingUploadIdLbl: Label 'The open upload session id returned by Storage.Upload.Begin. Only its creator can commit it.', Locked = true;
+        StagingFileNameLbl: Label 'Optional replacement leaf file name; defaults to the session file name.', Locked = true;
+        StagingContentTypeLbl: Label 'Optional MIME type; empty when not supplied.', Locked = true;
+        StagingIdLbl: Label 'Foundation staging row id without braces. Pass it to a consuming message type as the same user in the same company.', Locked = true;
+        StagingNextStepLbl: Label 'How to hand the stagingId to a consuming message type.', Locked = true;
+        StagingEffectLbl: Label 'Creates exactly one Foundation staging row, commits the upload session and releases its chunks within the caller transaction. No external storage write. A failure rolls back all writes.', Locked = true;
+        StagingPreconditionsLbl: Label 'The upload session belongs to the caller, is open and contains all chunks with the declared size. No storage connection is needed.', Locked = true;
         EntityTypeLbl: Label 'Invoice or Credit Memo. Omission preserves the existing value; a new type defaults to Invoice.', Locked = true;
         EntityResponseLbl: Label 'The stable name Invoice or Credit Memo.', Locked = true;
         SourcePathLbl: Label 'The original file path.', Locked = true;

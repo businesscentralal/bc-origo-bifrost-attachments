@@ -165,7 +165,7 @@ codeunit 10035200 "Storage Upload Staging ori" implements "Msg Interface ori", "
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Assembles an open upload into one Foundation staging row. Returns stagingId and size, commits the session and releases its chunks. No storage connection is required.', Comment = 'is-IS=Sameinar opna upphleðslu í eina bráðabirgðafærslu í Bifröst-grunni. Skilar stagingId og size, staðfestir lotuna og losar bútana. Engin geymslutenging er nauðsynleg.';
+        OverviewLbl: Label 'Assembles an open upload into one Foundation staging row. Returns stagingId and size, commits the session and releases its chunks. No storage connection is required.', Locked = true;
     begin
         Overview := OverviewLbl;
         exit(true);
@@ -176,7 +176,7 @@ codeunit 10035200 "Storage Upload Staging ori" implements "Msg Interface ori", "
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Pass stagingId to a consuming message type as the same user in the same company. Take consumes the row; unconsumed rows follow Foundation retention. Foreign ids are indistinguishable from unknown ids. A failed commit rolls back every write and preserves the open session and chunks for retry.', Comment = 'is-IS=Sendu stagingId til móttökugerðar sem sami notandi í sama fyrirtæki. Take eyðir færslunni við móttöku; ónotaðar færslur fylgja varðveislureglum Bifröst-grunns. Auðkenni annarra notenda eru óaðgreinanleg frá óþekktum auðkennum. Misheppnuð staðfesting afturkallar allar skrifanir og varðveitir opna lotu og búta fyrir endurtekningu.';
+        NotesLbl: Label 'Pass stagingId to a consuming message type as the same user in the same company. Take consumes the row; unconsumed rows follow Foundation retention. Foreign ids are indistinguishable from unknown ids. A failed commit rolls back every write and preserves the open session and chunks for retry.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);
