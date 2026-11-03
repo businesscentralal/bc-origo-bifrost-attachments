@@ -12,7 +12,7 @@ codeunit 10035183 "Storage Contract Parts ori"
         StagingFileNameLbl: Label 'Optional replacement leaf file name; defaults to the session file name.', Locked = true;
         StagingContentTypeLbl: Label 'Optional MIME type; empty when not supplied.', Locked = true;
         StagingIdLbl: Label 'Foundation staging row id without braces. Pass it to a consuming message type as the same user in the same company.', Locked = true;
-        StagingNextStepLbl: Label 'How to hand the stagingId to a consuming message type.', Locked = true;
+        StagingHandoffDescriptionLbl: Label 'How to hand the stagingId to a consuming message type.', Locked = true;
         StagingEffectLbl: Label 'Creates exactly one Foundation staging row, commits the upload session and releases its chunks within the caller transaction. No external storage write. A failure rolls back all writes.', Locked = true;
         StagingPreconditionsLbl: Label 'The upload session belongs to the caller, is open and contains all chunks with the declared size. No storage connection is needed.', Locked = true;
         EntityTypeLbl: Label 'Invoice or Credit Memo. Omission preserves the existing value; a new type defaults to Invoice.', Locked = true;
@@ -849,7 +849,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('stagingId', 'string', StagingIdLbl));
                     Fields.Add(ContractMgt.ResponseField('size', 'integer', DeliveredLengthLbl));
                     Fields.Add(ContractMgt.ResponseField('fileName', 'string', UploadFileNameLbl));
-                    Fields.Add(ContractMgt.ResponseField('nextStep', 'string', StagingNextStepLbl));
+                    Fields.Add(ContractMgt.ResponseField('nextStep', 'string', StagingHandoffDescriptionLbl));
                 end;
             'Help.Storage.Get':
                 begin

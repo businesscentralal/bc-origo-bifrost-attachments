@@ -9,6 +9,10 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Added
 - `Storage.Upload.CommitToStaging` assembles an owned upload into one Foundation staging row, returning `stagingId` for a consuming app without external storage (#192). Uses public Foundation Create/Take/Exists and preserves creator isolation, retryable chunks and existing commit types. Objects: codeunit 10035200, enum value 10035174, upload manager 10035197 and help/contracts 10035182–10035183 and 10035199.
 
+### Fixed (2026-11-03) - Staging response help classification (#192)
+
+- Codeunit 10035183 names its help-only `nextStep` field description as `StagingHandoffDescriptionLbl`, so the mixed-language guard distinguishes it from runtime next-step guidance. English contract chapters remain locked; codeunit 10035197's actual returned next step retains its existing Icelandic translation. No wire text or message behavior changes.
+
 ### Fixed (2026-11-03) - Help chapters are English at every lcid (#196)
 
 - Following Gunnar's decision 02.11.2026 (help chapters are English in every app), every label of codeunit 10035183 `Storage Contract Parts ori` (envelope, target, parameters, response, errors, effect, related, examples) and the `OverviewLbl`/`NotesLbl` labels of codeunits `DataExch Def Delete Impl ori`, `DataExch Def Install Impl ori`, `DataExch Entry Delete Impl ori`, `DataExch Entry Proc Impl ori`, `DataExch Export Run Impl ori`, `DataExch Import Run Impl ori`, `DataExch Pay Export Impl ori`, `Storage Help Get Impl ori` and `Storage Upload Commit DX ori` are now `Locked = true`. `effect.changes` of `DataExchange.Entry.Delete`, `Import.Run`, `Entry.Process` and `Definition.Import` (`DataExchangeChangesLbl`) therefore reads English at lcid 1033 and 1039.
