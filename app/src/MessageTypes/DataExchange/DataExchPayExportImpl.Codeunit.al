@@ -176,7 +176,7 @@ codeunit 10035168 "DataExch Pay Export Impl ori" implements "Msg Interface ori",
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Runs the base-app payment export of the batch, as the Export action of the Payment Journal does: the lines get Exported to Payment File, a credit transfer register keeps the file, and the file is written to storage (storageCode with path or folderPath) and/or returned inline (at most 1 MB).', Comment = 'is-IS=Keyrir útflutning greiðslna grunnkerfisins fyrir keyrsluna eins og aðgerðin Flytja út í greiðslubókinni: línurnar fá merkið Flutt út í greiðsluskrá, millifærsluskrá geymir skrána og skráin er skrifuð í geymslu (storageCode með path eða folderPath) og/eða skilað innfellt (mest 1 MB).';
+        OverviewLbl: Label 'Runs the base-app payment export of the batch, as the Export action of the Payment Journal does: the lines get Exported to Payment File, a credit transfer register keeps the file, and the file is written to storage (storageCode with path or folderPath) and/or returned inline (at most 1 MB).', Locked = true;
     begin
         Overview := OverviewLbl;
         exit(true);
@@ -187,7 +187,7 @@ codeunit 10035168 "DataExch Pay Export Impl ori" implements "Msg Interface ori",
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'The base-app export commits its own steps, so the lines stay marked even when the later storage write fails; the file is then still on the credit transfer register. Lines already exported are exported again, as the journal action does after its confirmation. A processing codeunit that downloads the file in another way cannot be captured and is refused after the export.', Comment = 'is-IS=Útflutningur grunnkerfisins staðfestir eigin skref svo línurnar eru áfram merktar þótt síðari skrif í geymslu mistakist; skráin er þá samt í millifærsluskránni. Línur sem hafa þegar verið fluttar út eru fluttar út aftur, eins og aðgerðin í bókinni gerir eftir staðfestingu. Vinnslukóðaeiningu sem halar skránni niður á annan hátt er ekki hægt að grípa og henni er hafnað eftir útflutninginn.';
+        NotesLbl: Label 'The base-app export commits its own steps, so the lines stay marked even when the later storage write fails; the file is then still on the credit transfer register. Lines already exported are exported again, as the journal action does after its confirmation. A processing codeunit that downloads the file in another way cannot be captured and is refused after the export.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);

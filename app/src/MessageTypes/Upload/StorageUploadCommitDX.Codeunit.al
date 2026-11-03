@@ -167,7 +167,7 @@ codeunit 10035187 "Storage Upload Commit DX ori" implements "Msg Interface ori",
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Assembles the chunks of an open upload session, inserts a Data Exch. entry with the file and runs the definition reader. The session is committed. With keepFileInStorage the file is also written to the session path; with process the mappings run after the import is committed.', Comment = 'is-IS=Sameinar búta opinnar upphleðslulotu, stofnar gagnaskiptafærslu með skránni og keyrir lesara skilgreiningarinnar. Lotan er staðfest. Með keepFileInStorage er skráin líka skrifuð á slóð lotunnar; með process eru varpanirnar keyrðar eftir að innflutningurinn er staðfestur.';
+        OverviewLbl: Label 'Assembles the chunks of an open upload session, inserts a Data Exch. entry with the file and runs the definition reader. The session is committed. With keepFileInStorage the file is also written to the session path; with process the mappings run after the import is committed.', Locked = true;
     begin
         Overview := OverviewLbl;
         exit(true);
@@ -178,7 +178,7 @@ codeunit 10035187 "Storage Upload Commit DX ori" implements "Msg Interface ori",
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'A file the reader cannot read answers an error and leaves the session open with its chunks, so the upload can be retried. keepFileInStorage needs a session that was begun with a storageCode. Bank Statement Import and export definitions are refused.', Comment = 'is-IS=Skrá sem lesarinn getur ekki lesið skilar villu og lotan er áfram opin með bútunum svo reyna megi aftur. keepFileInStorage krefst lotu sem var hafin með storageCode. Skilgreiningum fyrir innflutning bankayfirlita og útflutningi er hafnað.';
+        NotesLbl: Label 'A file the reader cannot read answers an error and leaves the session open with its chunks, so the upload can be retried. keepFileInStorage needs a session that was begun with a storageCode. Bank Statement Import and export definitions are refused.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);
