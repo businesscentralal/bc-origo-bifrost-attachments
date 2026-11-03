@@ -196,7 +196,7 @@ codeunit 10035138 "Data Exchange Query ori"
         Rows: JsonArray;
     begin
         DataExchType.ReadIsolation := IsolationLevel::ReadCommitted;
-        DataExchType.SetLoadFields(Code, Description, "Data Exch. Def. Code");
+        DataExchType.SetLoadFields(Code, Description, "Data Exch. Def. Code", "Entity Type");
         if DataExchType.FindSet() then
             repeat
                 Rows.Add(TypeToJson(DataExchType));
@@ -454,6 +454,10 @@ codeunit 10035138 "Data Exchange Query ori"
         Row.Add('validationCodeunit', Validation);
         Row.Add('dataHandlingCodeunit', DataHandling);
         Row.Add('type', TypeName);
+        if DataExchType."Entity Type" = DataExchType."Entity Type"::"Credit Memo" then
+            Row.Add('entityType', 'Credit Memo')
+        else
+            Row.Add('entityType', 'Invoice');
     end;
 
     local procedure TypesUsingDefinition(DefCode: Code[20]) Codes: JsonArray
