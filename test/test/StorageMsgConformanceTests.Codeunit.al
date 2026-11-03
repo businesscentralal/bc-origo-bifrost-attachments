@@ -173,6 +173,105 @@ codeunit 96211 "Storage Msg Conformance Tests"
     end;
 
     [Test]
+    procedure Scenario_196_DataExchangeChanges_IsEnglishAtBothLcids()
+    var
+        Contract: Interface "Msg Contract ori";
+        Effect: JsonObject;
+        ChangesToken: JsonToken;
+        Expected: Text;
+        Actual1033: Text;
+        Actual1039: Text;
+        SavedLanguage: Integer;
+        Name: Text;
+    begin
+        // Issue #196, AC01 | Time: independent of Today()/WorkDate() | Risk: DataExchangeChangesLbl leaks Icelandic at the session language.
+        // [GIVEN] The four types that share DataExchangeChangesLbl.
+        SavedLanguage := GlobalLanguage();
+        Expected := 'Writes Data Exchange definitions, types, entries and parsed fields, and the business records of processed mappings, within the transaction of the call.';
+        foreach Name in 'DataExchange.Entry.Delete,DataExchange.Import.Run,DataExchange.Entry.Process,DataExchange.Definition.Import'.Split(',') do begin
+            Contract := Enum::"Message Type ori".FromInteger(OrdinalOf(Name));
+            // [WHEN] effect.changes is built under the English and the Icelandic session language.
+            GlobalLanguage(1033);
+            Clear(Effect);
+            Contract.GetEffect(Effect);
+            Effect.Get('changes', ChangesToken);
+            Actual1033 := ChangesToken.AsValue().AsText();
+            GlobalLanguage(1039);
+            Clear(Effect);
+            Contract.GetEffect(Effect);
+            Effect.Get('changes', ChangesToken);
+            Actual1039 := ChangesToken.AsValue().AsText();
+            GlobalLanguage(SavedLanguage);
+            // [THEN] Both are the English source text.
+            LibraryAssert.IsTrue(Actual1033.StartsWith(Expected), Name + ' effect.changes at 1033: ' + Actual1033);
+            LibraryAssert.AreEqual(Actual1033, Actual1039, Name + ' effect.changes is identical at 1039.');
+        end;
+    end;
+
+    [Test]
+    procedure Scenario_196_HelpChapters_HaveNoIcelandicTextAtLcid1039()
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: Interface "Msg Contract ori";
+        Chapter: JsonObject;
+        ChapterArray: JsonArray;
+        Aggregated: JsonObject;
+        Text1: Text;
+        Offenders: Text;
+        Ordinal: Integer;
+        SavedLanguage: Integer;
+    begin
+        // Issue #196, AC02/AC04 | Time: independent of Today()/WorkDate() | Risk: a chapter label renders in the session language.
+        // [GIVEN] Every Attachments type, read at the Icelandic session language.
+        SavedLanguage := GlobalLanguage();
+        GlobalLanguage(1039);
+        foreach Ordinal in AllAttachmentOrdinals() do begin
+            Contract := Enum::"Message Type ori".FromInteger(Ordinal);
+            // [WHEN] Each chapter is read directly from the implementation, not through an aggregation that could mask a leak.
+            Clear(Chapter);
+            if Contract.GetEnvelope(Chapter) then
+                Offenders += IcelandicObjectOffenders(Ordinal, 'envelope', Chapter);
+            Clear(ChapterArray);
+            if Contract.GetTarget(ChapterArray) then
+                Offenders += IcelandicArrayOffenders(Ordinal, 'target', ChapterArray);
+            Clear(ChapterArray);
+            if Contract.GetParameters(ChapterArray) then
+                Offenders += IcelandicArrayOffenders(Ordinal, 'parameters', ChapterArray);
+            Clear(Chapter);
+            if Contract.GetResponse(Chapter) then
+                Offenders += IcelandicObjectOffenders(Ordinal, 'response', Chapter);
+            Clear(ChapterArray);
+            if Contract.GetErrors(ChapterArray) then
+                Offenders += IcelandicArrayOffenders(Ordinal, 'errors', ChapterArray);
+            Clear(Chapter);
+            if Contract.GetEffect(Chapter) then
+                Offenders += IcelandicObjectOffenders(Ordinal, 'effect', Chapter);
+            Clear(ChapterArray);
+            if Contract.GetRelated(ChapterArray) then
+                Offenders += IcelandicArrayOffenders(Ordinal, 'related', ChapterArray);
+            Clear(Chapter);
+            if Contract.GetWorkflow(Chapter) then
+                Offenders += IcelandicObjectOffenders(Ordinal, 'workflow', Chapter);
+            Clear(ChapterArray);
+            if Contract.GetExamples(ChapterArray) then
+                Offenders += IcelandicArrayOffenders(Ordinal, 'examples', ChapterArray);
+            Clear(Text1);
+            if Contract.GetOverview(Text1) then
+                Offenders += IcelandicTextOffenders(Ordinal, 'overview', Text1);
+            Clear(Text1);
+            if Contract.GetNotes(Text1) then
+                Offenders += IcelandicTextOffenders(Ordinal, 'notes', Text1);
+            // [AND] The aggregated contract Foundation publishes is checked too.
+            Clear(Aggregated);
+            ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(Ordinal), Aggregated);
+            Offenders += IcelandicObjectOffenders(Ordinal, 'contract', Aggregated);
+        end;
+        GlobalLanguage(SavedLanguage);
+        // [THEN] No chapter holds an Icelandic letter. The catalogue description stays translated and is not read here.
+        LibraryAssert.AreEqual('', Offenders, 'Icelandic text in help chapters at 1039: ' + Offenders);
+    end;
+
+    [Test]
     procedure Scenario_AC04_MessageNames_StayThreePart()
     var
         Ordinal: Integer;
@@ -481,6 +580,57 @@ codeunit 96211 "Storage Msg Conformance Tests"
             if not Enum::"Message Type ori".Names().Contains(Candidate) then
                 Offenders += TypeName(Ordinal) + '|related ' + Candidate + ' ';
         end;
+    end;
+
+    local procedure IcelandicObjectOffenders(Ordinal: Integer; Chapter: Text; Value: JsonObject): Text
+    var
+        Serialized: Text;
+    begin
+        Value.WriteTo(Serialized);
+        exit(IcelandicTextOffenders(Ordinal, Chapter, Serialized));
+    end;
+
+    local procedure IcelandicArrayOffenders(Ordinal: Integer; Chapter: Text; Value: JsonArray): Text
+    var
+        Serialized: Text;
+    begin
+        Value.WriteTo(Serialized);
+        exit(IcelandicTextOffenders(Ordinal, Chapter, Serialized));
+    end;
+
+    local procedure IcelandicTextOffenders(Ordinal: Integer; Chapter: Text; Value: Text) Offenders: Text
+    var
+        Letters: Text;
+        Index: Integer;
+    begin
+        // The product name Bifröst is an English proper noun in help prose.
+        Value := Value.Replace('Bifröst', 'Bifrost');
+        Letters := 'þðæöáéíóúýÞÐÆÖÁÉÍÓÚÝ';
+        for Index := 1 to StrLen(Letters) do
+            if Value.Contains(CopyStr(Letters, Index, 1)) then begin
+                Offenders += TypeName(Ordinal) + '|' + Chapter + '|' + CopyStr(Letters, Index, 1) + ' ';
+                exit;
+            end;
+    end;
+
+    local procedure OrdinalOf(Name: Text): Integer
+    var
+        Ordinal: Integer;
+    begin
+        foreach Ordinal in AllAttachmentOrdinals() do
+            if TypeName(Ordinal) = Name then
+                exit(Ordinal);
+        LibraryAssert.Fail('Unknown message type ' + Name);
+    end;
+
+    local procedure AllAttachmentOrdinals() Ordinals: List of [Integer]
+    var
+        Ordinal: Integer;
+    begin
+        foreach Ordinal in Enum::"Message Type ori".Ordinals() do
+            if (Ordinal >= 10035135) and (Ordinal <= 10035173) then
+                Ordinals.Add(Ordinal);
+        LibraryAssert.AreEqual(39, Ordinals.Count(), 'Bifröst Attachments declares 39 message types.');
     end;
 
     local procedure AppOrdinals() Ordinals: List of [Integer]

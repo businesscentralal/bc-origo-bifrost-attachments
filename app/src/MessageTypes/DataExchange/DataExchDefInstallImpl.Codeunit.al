@@ -175,7 +175,7 @@ codeunit 10035158 "DataExch Def Install Impl ori" implements "Msg Interface ori"
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Reads the XML from storageCode and path, from contentBase64 (at most 1 MB) or from a complete chunked upload (uploadId, which is consumed), and installs it with the base XMLport Imp / Exp Data Exch Def & Map. newCode installs a single definition under another code.', Comment = 'is-IS=Les XML-skjalið úr storageCode og path, úr contentBase64 (mest 1 MB) eða úr fullgerðri upphleðslu í bútum (uploadId, sem er notuð upp) og setur það upp með XMLport grunnkerfisins Imp / Exp Data Exch Def & Map. newCode setur eina skilgreiningu upp undir öðrum kóða.';
+        OverviewLbl: Label 'Reads the XML from storageCode and path, from contentBase64 (at most 1 MB) or from a complete chunked upload (uploadId, which is consumed), and installs it with the base XMLport Imp / Exp Data Exch Def & Map. newCode installs a single definition under another code.', Locked = true;
     begin
         Overview := OverviewLbl;
         exit(true);
@@ -186,7 +186,7 @@ codeunit 10035158 "DataExch Def Install Impl ori" implements "Msg Interface ori"
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'An existing code is refused unless overwrite is true; overwrite deletes the existing definition with its lines and mappings first. Every code in the file is checked before anything is installed. Wire an import definition to incoming documents with DataExchange.Type.Set.', Comment = 'is-IS=Kóða sem er til er hafnað nema overwrite sé true; overwrite eyðir fyrst skilgreiningunni sem er til með línum hennar og vörpunum. Allir kóðar skrárinnar eru athugaðir áður en nokkuð er sett upp. Tengdu innflutningsskilgreiningu við skjöl í innleið með DataExchange.Type.Set.';
+        NotesLbl: Label 'An existing code is refused unless overwrite is true; overwrite deletes the existing definition with its lines and mappings first. Every code in the file is checked before anything is installed. Wire an import definition to incoming documents with DataExchange.Type.Set.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);
