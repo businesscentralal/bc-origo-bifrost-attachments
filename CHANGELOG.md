@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-03) - Reader-rollback test passes on localized market artifacts (#80)
+
+- Test codeunit 96256 `DataExch Format Tests ori`, `PostwriteReaderFailure_RetainsRollback`: the 1039 dispatch no longer expects the English Base Application reader error. On the IS sandbox artifact the Base Application translates "The imported file contains unexpected formatting." to Icelandic, so the test failed there (493 passed, 1 failed) while W1, DE and FR passed. The test now compares the dispatched error with the error that the same Base Application reader (`Data Exch.`.`ImportToDataExch`) raises in that language. At 1033 it still requires the English text. The rollback assertions are unchanged. No product objects or message contracts change.
+
 ### Fixed (2026-11-03) - Help chapters are English at every lcid (#196)
 
 - Following Gunnar's decision 02.11.2026 (help chapters are English in every app), every label of codeunit 10035183 `Storage Contract Parts ori` (envelope, target, parameters, response, errors, effect, related, examples) and the `OverviewLbl`/`NotesLbl` labels of codeunits `DataExch Def Delete Impl ori`, `DataExch Def Install Impl ori`, `DataExch Entry Delete Impl ori`, `DataExch Entry Proc Impl ori`, `DataExch Export Run Impl ori`, `DataExch Import Run Impl ori`, `DataExch Pay Export Impl ori`, `Storage Help Get Impl ori` and `Storage Upload Commit DX ori` are now `Locked = true`. `effect.changes` of `DataExchange.Entry.Delete`, `Import.Run`, `Entry.Process` and `Definition.Import` (`DataExchangeChangesLbl`) therefore reads English at lcid 1033 and 1039.

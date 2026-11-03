@@ -115,6 +115,7 @@ codeunit 96256 "DataExch Format Tests ori"
         DefCode: Code[20];
         FieldsBefore: Integer;
         LinksBefore: Integer;
+        ReaderError: Text;
     begin
         // [SCENARIO] Architect AC2 disposition: unexpected reader errors keep the Foundation shape and rollback.
         Fixture.InitializeStorage();
@@ -126,8 +127,12 @@ codeunit 96256 "DataExch Format Tests ori"
         Commit(); // Keep the fixture outside the failing import transaction.
         // The native AL boundary raises; the external API supplies BusinessCentralError.
         // Keep the actual reader error and prove rollback rather than swallowing it in a TryFunction.
+        ReaderError := NativeReaderError(DefCode, 'code,name,amount', LanguageId);
+        if LanguageId = 1033 then
+            LibraryAssert.IsTrue(ReaderError.Contains('The imported file contains unexpected formatting.'), 'The native reader raises its format error.');
         asserterror DispatchLocale("Message Type ori"::"DataExchange.Import.Run", Request, LanguageId);
-        LibraryAssert.ExpectedError('The imported file contains unexpected formatting.');
+        // The Base Application translates this error on localized artifacts (for example IS); compare with the native reader in the same language.
+        LibraryAssert.ExpectedError(ReaderError);
         DataExch.SetRange("Data Exch. Def Code", DefCode);
         LibraryAssert.AreEqual(0, DataExch.Count(), 'The failed reader leaves no entry.');
         LibraryAssert.AreEqual(FieldsBefore, DataExchField.Count(), 'Parsed fields are rolled back.');
@@ -344,6 +349,36 @@ codeunit 96256 "DataExch Format Tests ori"
         LibraryAssert.IsFalse(Serialized.Contains(Content), 'No file content in the refusal.');
         LibraryAssert.IsFalse(Serialized.Contains(Fixture.Encode(Content)), 'No encoded file content in the refusal.');
         LibraryAssert.IsFalse(Serialized.Contains('System.Xml'), 'No raw .NET parser text.');
+    end;
+
+    local procedure NativeReaderError(DefCode: Code[20]; Content: Text; LanguageId: Integer) ReaderError: Text
+    var
+        DataExch: Record "Data Exch.";
+        DataExchDef: Record "Data Exch. Def";
+        DataExchLineDef: Record "Data Exch. Line Def";
+        TempBlob: Codeunit "Temp Blob";
+        ContentStream: OutStream;
+        PreviousLanguage: Integer;
+    begin
+        // The same Base Application reader the import runs, in the requested language; asserterror rolls the entry back.
+        DataExchDef.Get(DefCode);
+        TempBlob.CreateOutStream(ContentStream, TextEncoding::UTF8);
+        ContentStream.WriteText(Content);
+        DataExch.Init();
+        DataExch."Data Exch. Def Code" := DefCode;
+        DataExchLineDef.SetRange("Data Exch. Def Code", DefCode);
+        if DataExchLineDef.FindFirst() then
+            DataExch."Data Exch. Line Def Code" := DataExchLineDef.Code;
+        DataExch.SetFileContentFromBlob(TempBlob);
+        PreviousLanguage := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        asserterror begin
+            DataExch.Insert(true);
+            DataExch.ImportToDataExch(DataExchDef);
+        end;
+        ReaderError := GetLastErrorText();
+        GlobalLanguage(PreviousLanguage);
+        LibraryAssert.AreNotEqual('', ReaderError, 'The native reader must refuse the file.');
     end;
 
     local procedure DispatchLocale(MessageType: Enum "Message Type ori"; Request: JsonObject; LanguageId: Integer) Response: JsonObject
