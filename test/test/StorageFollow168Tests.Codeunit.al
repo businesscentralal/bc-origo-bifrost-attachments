@@ -399,7 +399,8 @@ codeunit 96264 "Storage Follow168 Tests ori"
         MessageTypes.Add('Storage.Upload.CommitToRecord');
         foreach MessageType in MessageTypes do begin
             Effect := Contract.GetEffect(MessageType);
-            AssertLanguage(Fixture.ReadText(Effect, 'preconditions'), LanguageId, 'not for record-only uploads', 'ekki þegar hlaðið er upp eingöngu í færslu');
+            // Issue #196: help chapters are English at every lcid (Gunnar 02.11.2026); only refusals are translated.
+            LibraryAssert.IsTrue(Fixture.ReadText(Effect, 'preconditions').Contains('not for record-only uploads'), 'Expected English help chapter at ' + Format(LanguageId) + ': ' + Fixture.ReadText(Effect, 'preconditions'));
         end;
         GlobalLanguage(PreviousLanguage);
         // [THEN] Opening a session without storageCode actually succeeds.

@@ -118,7 +118,7 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
 
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Getting started: call Storage.Account.List, then use invoke_message_type and describe_message_type. Storage.Upload.Begin uses the bifrost-uploads/ default root.', Comment = 'is-IS=Fyrstu skref: kallaðu á Storage.Account.List og notaðu síðan invoke_message_type og describe_message_type. Storage.Upload.Begin notar sjálfgefnu rótina bifrost-uploads/.';
+        OverviewLbl: Label 'Getting started: call Storage.Account.List, then use invoke_message_type and describe_message_type. Storage.Upload.Begin uses the bifrost-uploads/ default root.', Locked = true;
     begin
         Overview := OverviewLbl;
         exit(true);

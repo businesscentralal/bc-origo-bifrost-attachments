@@ -176,7 +176,7 @@ codeunit 10035164 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Selects the records of the mapping source table with tableView or recordIds, runs the standard export steps of the definition (Export Mapping and the writer) and writes the file to storage (storageCode with path or folderPath) and/or returns it inline (at most 1 MB). The Data Exch. entry keeps the file.', Comment = 'is-IS=Velur færslur upprunatöflu vörpunarinnar með tableView eða recordIds, keyrir stöðluð útflutningsskref skilgreiningarinnar (Export Mapping og ritarann) og skrifar skrána í geymslu (storageCode með path eða folderPath) og/eða skilar henni innfellt (mest 1 MB). Gagnaskiptafærslan geymir skrána.';
+        OverviewLbl: Label 'Selects the records of the mapping source table with tableView or recordIds, runs the standard export steps of the definition (Export Mapping and the writer) and writes the file to storage (storageCode with path or folderPath) and/or returns it inline (at most 1 MB). The Data Exch. entry keeps the file.', Locked = true;
     begin
         Overview := OverviewLbl;
         exit(true);
@@ -187,7 +187,7 @@ codeunit 10035164 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Only Generic Export definitions are accepted; import definitions are refused and payment definitions point to DataExchange.PaymentExport.Run. tableId or tableName must be the mapping table. The external data handling step of the definition is replaced by the delivery. A file over 1 MB with inline true, or a failed storage write, rolls the whole export back.', Comment = 'is-IS=Aðeins skilgreiningar fyrir almennan útflutning eru leyfðar; innflutningsskilgreiningum er hafnað og greiðsluskilgreiningar vísa á DataExchange.PaymentExport.Run. tableId eða tableName verður að vera tafla vörpunarinnar. Afhendingin kemur í stað skrefs skilgreiningarinnar fyrir ytri gagnameðhöndlun. Skrá yfir 1 MB með inline true, eða misheppnuð skrif í geymslu, afturkalla allan útflutninginn.';
+        NotesLbl: Label 'Only Generic Export definitions are accepted; import definitions are refused and payment definitions point to DataExchange.PaymentExport.Run. tableId or tableName must be the mapping table. The external data handling step of the definition is replaced by the delivery. A file over 1 MB with inline true, or a failed storage write, rolls the whole export back.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);
