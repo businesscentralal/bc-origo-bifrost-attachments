@@ -174,6 +174,53 @@ codeunit 96213 "Data Exch Discovery Tests"
     end;
 
     [Test]
+    procedure TypeList_ReturnsEntityType_ForInvoiceAndCreditMemo()
+    var
+        DataExchType: Record "Data Exchange Type";
+        TempArgument: Record "Message Argument ori" temporary;
+        RequestJson: JsonObject;
+        Types: JsonArray;
+        Token: JsonToken;
+        Row: JsonObject;
+        Found: Integer;
+    begin
+        // Story #198, AC1/AC2/AC4 | Time: independent | Risk: List must agree with Type.Set on entityType
+        // [GIVEN] Two self-created types, one Invoice and one Credit Memo, in an otherwise empty table.
+        DataExchType.DeleteAll();
+        DataExchType.Init();
+        DataExchType.Code := Type1Tok;
+        DataExchType."Entity Type" := DataExchType."Entity Type"::Invoice;
+        DataExchType.Insert();
+        DataExchType.Init();
+        DataExchType.Code := Type2Tok;
+        DataExchType."Entity Type" := DataExchType."Entity Type"::"Credit Memo";
+        DataExchType.Insert();
+
+        // [WHEN] DataExchange.Type.List runs.
+        ExecuteType(TempArgument, TempArgument."Type"::"DataExchange.Type.List", RequestJson);
+
+        // [THEN] Every row carries the stable English entityType.
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Type.List should succeed.');
+        Types := ReadArray(ReadData(TempArgument.GetResponseJson()), 'types');
+        foreach Token in Types do begin
+            Row := Token.AsObject();
+            case ReadText(Row, 'code') of
+                Type1Tok:
+                    begin
+                        LibraryAssert.AreEqual('Invoice', ReadText(Row, 'entityType'), 'Invoice entityType');
+                        Found += 1;
+                    end;
+                Type2Tok:
+                    begin
+                        LibraryAssert.AreEqual('Credit Memo', ReadText(Row, 'entityType'), 'Credit Memo entityType');
+                        Found += 1;
+                    end;
+            end;
+        end;
+        LibraryAssert.AreEqual(2, Found, 'both seeded types are listed with entityType');
+    end;
+
+    [Test]
     procedure EntryGet_PagesFields_AndRefusesFileAboveOneMegabyte()
     var
         TempArgument: Record "Message Argument ori" temporary;
