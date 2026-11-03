@@ -127,6 +127,7 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
     local procedure Execute(MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         MessageVersion: Enum "Message Version ori";
@@ -137,6 +138,7 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
         MessageId: Guid;
         ResponseTime: Duration;
     begin
+        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         // Execute uses the configured default language; this public overload sets the processing language explicitly.

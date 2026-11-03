@@ -496,11 +496,13 @@ codeunit 96217 "Storage Native Fields Tests"
     local procedure DispatchOffloadResponse(Request: JsonObject) ResponseText: Text
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         RequestText: Text;
         ResponseContentType: Text[100];
     begin
+        FixtureConfirm.AddFixtureConfirmation("Message Type ori"::"Storage.Attachment.Offload", Request);
         Request.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
@@ -544,11 +546,13 @@ codeunit 96217 "Storage Native Fields Tests"
     local procedure DispatchNativeOffload(Request: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         RequestText: Text;
         ResponseContentType: Text[100];
     begin
+        FixtureConfirm.AddFixtureConfirmation("Message Type ori"::"Storage.Attachment.Offload", Request);
         Request.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);

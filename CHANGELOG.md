@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-03) - Test fixtures confirm irreversible calls with expectedCount (#205)
+
+- New test helper codeunit 96276 `Storage Fixture Confirm ori` adds `expectedCount` = 1 to fixture calls of the irreversible types (Storage.File.Create/Copy/Move/Delete, Storage.Directory.Create/Delete, Storage.Attachment.Offload/Restore, Storage.Upload.Commit, DataExchange.Definition.Export, DataExchange.PaymentExport.Run) on Foundation 28.0.11 and later, so the existing business-effect and refusal assertions run again against Foundation main. On older Foundation (pinned CI 28.0.10.632) it does nothing. No assertion is loosened and no product code changes; no Attachments type is reclassified.
+
 ### Fixed (2026-11-01) - Compiler callback regression fixture (#78)
 
 - Supply the native symbol-preparation fixture used by the compiler callback, preserve its single-package return assertion, and verify preparation failures stop compilation. This repairs tooling coverage; no AL objects or message contracts change.

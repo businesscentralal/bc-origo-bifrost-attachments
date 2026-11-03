@@ -614,6 +614,7 @@ codeunit 96212 "Storage Error Response Tests"
     local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         ResponseContentType: Text[100];
@@ -622,6 +623,7 @@ codeunit 96212 "Storage Error Response Tests"
         ResponseText: Text;
         ResponseJson: JsonObject;
     begin
+        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
@@ -637,6 +639,7 @@ codeunit 96212 "Storage Error Response Tests"
     local procedure ExecuteTypeWithRequestInLanguage(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer)
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         ResponseContentType: Text[100];
@@ -648,6 +651,7 @@ codeunit 96212 "Storage Error Response Tests"
         ResponseText: Text;
         ResponseJson: JsonObject;
     begin
+        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         // EnqueueAndProcess applies LanguageId. Execute resets the session to Foundation setup's default language.

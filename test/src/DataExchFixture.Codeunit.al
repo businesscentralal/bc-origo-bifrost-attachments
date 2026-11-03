@@ -189,12 +189,14 @@ codeunit 96241 "DataExch Fixture ori"
     procedure Dispatch(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) ResponseJson: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         ResponseContentType: Text[100];
         RequestText: Text;
         ResponseText: Text;
     begin
+        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);

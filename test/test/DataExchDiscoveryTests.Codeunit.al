@@ -543,6 +543,7 @@ codeunit 96213 "Data Exch Discovery Tests"
     local procedure ExecuteType(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer)
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         ResponseContentType: Text[100];
@@ -554,6 +555,7 @@ codeunit 96213 "Data Exch Discovery Tests"
         ResponseText: Text;
         ResponseJson: JsonObject;
     begin
+        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         if LanguageId = 0 then

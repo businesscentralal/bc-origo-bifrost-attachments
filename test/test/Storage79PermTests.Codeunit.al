@@ -1093,6 +1093,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
     local procedure Dispatch(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) ResponseJson: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         RequestText: Text;
@@ -1101,6 +1102,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         MessageVersion: Enum "Message Version ori";
     begin
         // Public dispatcher only. Do not insert or call internal Foundation argument objects.
+        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);

@@ -694,6 +694,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
     local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         ResponseContentType: Text[100];
@@ -702,6 +703,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         ResponseText: Text;
         ResponseJson: JsonObject;
     begin
+        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
         RequestJson.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);

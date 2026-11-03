@@ -394,6 +394,7 @@ codeunit 96274 "Attachments Build Tests ori"
     local procedure Execute(MessageType: Enum "Message Type ori"; Request: JsonObject) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         MessageVersion: Enum "Message Version ori";
@@ -401,6 +402,7 @@ codeunit 96274 "Attachments Build Tests ori"
         RequestText: Text;
         ResponseText: Text;
     begin
+        FixtureConfirm.AddFixtureConfirmation(MessageType, Request);
         Request.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ContentType);

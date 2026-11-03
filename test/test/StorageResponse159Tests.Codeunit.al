@@ -800,6 +800,7 @@ codeunit 96258 "Storage Response159 Tests ori"
     local procedure Dispatch(MessageType: Enum "Message Type ori"; Request: JsonObject; LanguageId: Integer) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         RequestText: Text;
@@ -809,6 +810,7 @@ codeunit 96258 "Storage Response159 Tests ori"
         MessageId: Guid;
         ResponseTime: Duration;
     begin
+        FixtureConfirm.AddFixtureConfirmation(MessageType, Request);
         Request.WriteTo(RequestText);
         RequestContent.AddText(RequestText);
         // The queued public route applies the requested LCID; Execute uses the setup default.
