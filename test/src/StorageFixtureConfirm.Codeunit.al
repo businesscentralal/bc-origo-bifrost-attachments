@@ -6,10 +6,31 @@ codeunit 96276 "Storage Fixture Confirm ori"
 {
     Access = Internal;
 
-    /// <summary>Adds <c>expectedCount</c> = 1 for an irreversible type on Foundation 28.0.11 and later.</summary>
+    /// <summary>Returns the request text, confirmed with <c>expectedCount</c> = 1 for an irreversible type on Foundation 28.0.11 and later.</summary>
     /// <param name="MessageType">The fixture operation whose original assertions must execute.</param>
-    /// <param name="RequestJson">Receives the confirmation only when the caller has not supplied one.</param>
-    procedure AddFixtureConfirmation(MessageType: Enum "Message Type ori"; var RequestJson: JsonObject)
+    /// <param name="RequestJson">The caller's request. It is never modified, because callers reuse it for later types that do not declare expectedCount.</param>
+    procedure ConfirmedText(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) RequestText: Text
+    var
+        ConfirmedJson: JsonObject;
+        Token: JsonToken;
+    begin
+        Token := RequestJson.Clone();
+        ConfirmedJson := Token.AsObject();
+        AddFixtureConfirmation(MessageType, ConfirmedJson);
+        ConfirmedJson.WriteTo(RequestText);
+    end;
+
+    /// <summary>Text overload of <c>ConfirmedText</c> for dispatch helpers that already serialized the request.</summary>
+    procedure ConfirmedPayload(MessageType: Enum "Message Type ori"; Payload: Text): Text
+    var
+        RequestJson: JsonObject;
+    begin
+        if not RequestJson.ReadFrom(Payload) then
+            exit(Payload);
+        exit(ConfirmedText(MessageType, RequestJson));
+    end;
+
+    local procedure AddFixtureConfirmation(MessageType: Enum "Message Type ori"; var RequestJson: JsonObject)
     var
         FoundationInfo: ModuleInfo;
         FoundationAppId: Guid;

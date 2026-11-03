@@ -798,8 +798,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         RequestText: Text;
         ResponseText: Text;
     begin
-        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
-        RequestJson.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText(MessageType, RequestJson);
         RequestContent.AddText(RequestText);
         // Raw storage writes are irreversible contracts; exercise their normal commit mode.
         // RequiredTestIsolation=Function restores all database fixtures after each test.

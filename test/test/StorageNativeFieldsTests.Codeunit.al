@@ -502,8 +502,7 @@ codeunit 96217 "Storage Native Fields Tests"
         RequestText: Text;
         ResponseContentType: Text[100];
     begin
-        FixtureConfirm.AddFixtureConfirmation("Message Type ori"::"Storage.Attachment.Offload", Request);
-        Request.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText("Message Type ori"::"Storage.Attachment.Offload", Request);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
         ResponseContent.GetSubText(ResponseText, 1);
@@ -552,8 +551,7 @@ codeunit 96217 "Storage Native Fields Tests"
         RequestText: Text;
         ResponseContentType: Text[100];
     begin
-        FixtureConfirm.AddFixtureConfirmation("Message Type ori"::"Storage.Attachment.Offload", Request);
-        Request.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText("Message Type ori"::"Storage.Attachment.Offload", Request);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
     end;

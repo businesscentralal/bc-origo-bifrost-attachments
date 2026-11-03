@@ -623,8 +623,7 @@ codeunit 96212 "Storage Error Response Tests"
         ResponseText: Text;
         ResponseJson: JsonObject;
     begin
-        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
-        RequestJson.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText(MessageType, RequestJson);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
         ResponseContent.GetSubText(ResponseText, 1);
@@ -651,8 +650,7 @@ codeunit 96212 "Storage Error Response Tests"
         ResponseText: Text;
         ResponseJson: JsonObject;
     begin
-        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
-        RequestJson.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText(MessageType, RequestJson);
         RequestContent.AddText(RequestText);
         // EnqueueAndProcess applies LanguageId. Execute resets the session to Foundation setup's default language.
         Commit();

@@ -1048,12 +1048,13 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     local procedure Dispatch(MessageType: Enum "Message Type ori"; Payload: Text) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         ResponseType: Text[100];
         ResponseText: Text;
     begin
-        RequestContent.AddText(Payload);
+        RequestContent.AddText(FixtureConfirm.ConfirmedPayload(MessageType, Payload));
         AllowDispatcherLanguageRead();
         Dispatcher.Execute(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseType);
         StopDispatcherLanguageRead();

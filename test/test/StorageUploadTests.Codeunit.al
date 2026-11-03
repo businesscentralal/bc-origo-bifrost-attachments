@@ -819,8 +819,7 @@ codeunit 96205 "Storage Upload Tests"
         ResponseText: Text;
         ResponseJson: JsonObject;
     begin
-        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
-        RequestJson.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText(MessageType, RequestJson);
         RequestContent.AddText(RequestText);
         if LanguageId = 0 then
             Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType)

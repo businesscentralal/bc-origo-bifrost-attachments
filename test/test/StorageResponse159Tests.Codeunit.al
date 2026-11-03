@@ -810,8 +810,7 @@ codeunit 96258 "Storage Response159 Tests ori"
         MessageId: Guid;
         ResponseTime: Duration;
     begin
-        FixtureConfirm.AddFixtureConfirmation(MessageType, Request);
-        Request.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText(MessageType, Request);
         RequestContent.AddText(RequestText);
         // The queued public route applies the requested LCID; Execute uses the setup default.
         Commit();

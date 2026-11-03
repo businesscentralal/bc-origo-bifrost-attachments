@@ -1102,8 +1102,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         MessageVersion: Enum "Message Version ori";
     begin
         // Public dispatcher only. Do not insert or call internal Foundation argument objects.
-        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
-        RequestJson.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText(MessageType, RequestJson);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
         ResponseContent.GetSubText(ResponseText, 1);

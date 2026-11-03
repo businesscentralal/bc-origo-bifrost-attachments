@@ -196,8 +196,7 @@ codeunit 96241 "DataExch Fixture ori"
         RequestText: Text;
         ResponseText: Text;
     begin
-        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
-        RequestJson.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText(MessageType, RequestJson);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
         ResponseContent.GetSubText(ResponseText, 1);

@@ -402,8 +402,7 @@ codeunit 96274 "Attachments Build Tests ori"
         RequestText: Text;
         ResponseText: Text;
     begin
-        FixtureConfirm.AddFixtureConfirmation(MessageType, Request);
-        Request.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText(MessageType, Request);
         RequestContent.AddText(RequestText);
         Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ContentType);
         ResponseContent.GetSubText(ResponseText, 1);

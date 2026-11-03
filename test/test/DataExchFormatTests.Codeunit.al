@@ -358,8 +358,7 @@ codeunit 96256 "DataExch Format Tests ori"
         ResponseType: Text[100];
         Payload: Text;
     begin
-        FixtureConfirm.AddFixtureConfirmation(MessageType, Request);
-        Request.WriteTo(Payload);
+        Payload := FixtureConfirm.ConfirmedText(MessageType, Request);
         RequestContent.AddText(Payload);
         Dispatcher.EnqueueAndProcess(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseType, ResponseTime);
         ResponseContent.GetSubText(Payload, 1);

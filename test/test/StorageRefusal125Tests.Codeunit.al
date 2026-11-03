@@ -138,8 +138,7 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
         MessageId: Guid;
         ResponseTime: Duration;
     begin
-        FixtureConfirm.AddFixtureConfirmation(MessageType, RequestJson);
-        RequestJson.WriteTo(RequestText);
+        RequestText := FixtureConfirm.ConfirmedText(MessageType, RequestJson);
         RequestContent.AddText(RequestText);
         // Execute uses the configured default language; this public overload sets the processing language explicitly.
         Dispatcher.EnqueueAndProcess(MessageType, MessageVersion, '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseContentType, ResponseTime);
