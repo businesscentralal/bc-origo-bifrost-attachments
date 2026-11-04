@@ -240,3 +240,5 @@ Key rules always in effect:
   The generator `make_report.py` and the type list `hnitbjorg_types.txt` are archived in
   `D:\Git\Private\_bifrost-migration-archive\hnitbjorg\`. The open defect list from the last
   run is in that report's "Defects and observations" section - fix from there.
+
+#197 test helper reservation (2026-11-04): codeunit **96276** `DataExch Type Switch Sim ori`; 96275 remains reserved to #192 staging. See the shared typed object reservation.

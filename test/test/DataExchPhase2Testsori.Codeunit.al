@@ -131,6 +131,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
         LibraryAssert.AreEqual(RequestedType, ReadDataText(TempArgument, 'requestedDataExchangeType'), '#197 AC01 requested type is the one sent.');
         LibraryAssert.AreEqual(AppliedType, ReadDataText(TempArgument, 'appliedDataExchangeType'), '#197 AC01 applied type is the one BC chose.');
+        LibraryAssert.AreEqual(AppliedType, ReadDataText(TempArgument, 'dataExchangeType'), '#197 AC01 legacy type reports the applied type.');
         IncomingDocument.Get(EntryNo);
         LibraryAssert.AreEqual(AppliedType, IncomingDocument."Data Exchange Type", '#197 AC01 stored type equals the applied type.');
     end;
