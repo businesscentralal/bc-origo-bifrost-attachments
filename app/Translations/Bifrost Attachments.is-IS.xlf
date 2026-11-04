@@ -1857,18 +1857,6 @@
           <note from="Developer" annotates="general" priority="2">is-IS=eyða gerð gagnaskipta</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 3767795981 - Method 3650283039 - NamedType 2344026547" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Irreversible: send expectedCount 1 (the preview names the type). Does not delete a type that an incoming document still uses; clear or change that reference first. Never deletes the linked Data Exchange definition; use DataExchange.Definition.Delete afterwards.</source>
-          <target>Óafturkræft: sendu expectedCount 1 (forskoðunin nefnir gerðina). Eyðir ekki gerð sem innkomið skjal notar enn; hreinsaðu eða breyttu þeirri tilvísun fyrst. Eyðir aldrei tengdu skilgreiningunni; notaðu DataExchange.Definition.Delete á eftir.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Óafturkræft: sendu expectedCount 1 (forskoðunin nefnir gerðina). Eyðir ekki gerð sem innkomið skjal notar enn; hreinsaðu eða breyttu þeirri tilvísun fyrst. Eyðir aldrei tengdu skilgreiningunni; notaðu DataExchange.Definition.Delete á eftir.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method GetNotes - NamedType NotesLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 3767795981 - Method 2340569551 - NamedType 3593894611" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Deletes one Data Exchange Type after a counted confirmation and a reference check. The linked definition is kept.</source>
-          <target>Eyðir einni gerð gagnaskipta eftir talda staðfestingu og athugun á tilvísunum. Tengda skilgreiningin er áfram.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir einni gerð gagnaskipta eftir talda staðfestingu og athugun á tilvísunum. Tengda skilgreiningin er áfram.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Type Delete Impl ori - Method GetOverview - NamedType OverviewLbl</note>
-        </trans-unit>
         <trans-unit id="Codeunit 3767795981 - Method 79446908 - NamedType 895773054" size-unit="char" translate="yes" xml:space="preserve">
           <source>Deletes one Data Exchange Type after a counted confirmation. Refuses a type that an incoming document uses. Never deletes the linked definition.</source>
           <target>Eyðir einni gerð gagnaskipta eftir talda staðfestingu. Hafnar gerð sem innkomið skjal notar. Eyðir aldrei tengdu skilgreiningunni.</target>

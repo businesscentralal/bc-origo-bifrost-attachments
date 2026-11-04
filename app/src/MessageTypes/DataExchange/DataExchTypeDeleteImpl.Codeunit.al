@@ -146,7 +146,7 @@ codeunit 10035200 "DataExch Type Delete Impl ori" implements "Msg Interface ori"
     /// <summary>Summarizes the operation.</summary>
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Deletes one Data Exchange Type after a counted confirmation and a reference check. The linked definition is kept.', Comment = 'is-IS=Eyðir einni gerð gagnaskipta eftir talda staðfestingu og athugun á tilvísunum. Tengda skilgreiningin er áfram.';
+        OverviewLbl: Label 'Deletes one Data Exchange Type after a counted confirmation and a reference check. The linked definition is kept.', Locked = true;
     begin
         Overview := OverviewLbl;
         exit(true);
@@ -155,7 +155,7 @@ codeunit 10035200 "DataExch Type Delete Impl ori" implements "Msg Interface ori"
     /// <summary>Explains operation restrictions.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Irreversible: send expectedCount 1 (the preview names the type). Does not delete a type that an incoming document still uses; clear or change that reference first. Never deletes the linked Data Exchange definition; use DataExchange.Definition.Delete afterwards.', Comment = 'is-IS=Óafturkræft: sendu expectedCount 1 (forskoðunin nefnir gerðina). Eyðir ekki gerð sem innkomið skjal notar enn; hreinsaðu eða breyttu þeirri tilvísun fyrst. Eyðir aldrei tengdu skilgreiningunni; notaðu DataExchange.Definition.Delete á eftir.';
+        NotesLbl: Label 'Irreversible: send expectedCount 1 (the preview names the type). Does not delete a type that an incoming document still uses; clear or change that reference first. Never deletes the linked Data Exchange definition; use DataExchange.Definition.Delete afterwards.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);

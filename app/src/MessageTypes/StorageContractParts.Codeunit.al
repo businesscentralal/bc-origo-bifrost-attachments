@@ -303,10 +303,10 @@ codeunit 10035183 "Storage Contract Parts ori"
             'DataExchange.Type.Delete':
                 begin
                     Examples.Add(ContractMgt.Example('A request refused before any change',
-                        '{"type":"DataExchange.Type.Delete","data":{"code":"X199-MISSING"},"lcid":1033}',
+                        '{"type":"DataExchange.Type.Delete","data":{"code":"X199-MISSING","expectedCount":1},"lcid":1033}',
                         '{"status":"Error","code":"RecordNotFound","error":"Data Exchange Type X199-MISSING was not found.","parameter":"code","received":"X199-MISSING","expected":"an existing Data Exchange Type","nextStep":"Call DataExchange.Type.List and use the exact type code.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Type.Delete\". Always read the help before retrying."}'));
                     Examples.Add(ContractMgt.Example('Refusal: required request data is missing',
-                        '{"type":"DataExchange.Type.Delete","data":{},"lcid":1033}',
+                        '{"type":"DataExchange.Type.Delete","data":{"expectedCount":1},"lcid":1033}',
                         '{"status":"Error","code":"MissingParameter","error":"Parameter \"code\" is required.","parameter":"code","received":"not supplied","expected":"a JSON string of at most 20 characters","nextStep":"Send \"code\" as a JSON string of at most 20 characters and retry.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Type.Delete\". Always read the help before retrying."}'));
                 end;
             'DataExchange.Definition.Delete':

@@ -150,6 +150,7 @@ codeunit 96275 "Storage TypeDel199 Tests ori"
         // [GIVEN] A type and its definition.
         CreateType(TypeCode, DefCode);
         DefRequest.Add('code', DefCode);
+        DefRequest.Add('expectedCount', 1);
         // [WHEN] The definition is deleted first.
         Response := Dispatch("Message Type ori"::"DataExchange.Definition.Delete", DefRequest, LanguageId);
         // [THEN] The type blocks it.

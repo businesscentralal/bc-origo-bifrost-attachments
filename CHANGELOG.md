@@ -16,6 +16,11 @@ Business Central release versioning (`major.minor.build.revision`).
 - Catalogue `description`, `selectionDescription` and keywords, and every refusal and error message, stay translated. The 128 now-locked trans-units are removed from `Bifrost Attachments.is-IS.xlf`.
 - Test codeunit 96211 `Storage Msg Conformance Tests` adds `Scenario_196_DataExchangeChanges_IsEnglishAtBothLcids` and `Scenario_196_HelpChapters_HaveNoIcelandicTextAtLcid1039`, which read every chapter of every Attachments type directly from its implementation and from Foundation's aggregation at 1039 and assert no Icelandic letter. The Icelandic Foundation fragments (Retryable row, conventions) are not rendered by Attachments; they come from Foundation if present.
 
+### Fixed (2026-11-04) - Data Exchange Type deletion acceptance (#199)
+
+- Test codeunit 96275 confirms `DataExchange.Definition.Delete` with `expectedCount` 1 before checking the reference refusal and the eventual cleanup. Codeunit 10035183 refusal examples for `DataExchange.Type.Delete` also confirm the count so they reach the documented missing-code and missing-record checks.
+- Codeunit 10035200 keeps Overview and Notes help chapters English in both locales, matching the help-language rule; catalogue and refusal labels remain translated. Removed the two obsolete Icelandic help translations.
+
 ### Added (2026-11-02) - DataExchange.Type.Delete (#199)
 
 - New message type `DataExchange.Type.Delete` (enum value 10035174, codeunit 10035200 `DataExch Type Delete Impl ori`, enum extension 10035201) deletes one Data Exchange Type by `code`. The contract declares an irreversible effect, so Foundation's counted-confirmation gate applies (`expectedCount` 1; without it the call is previewed with ConfirmationRequired and nothing is deleted).
