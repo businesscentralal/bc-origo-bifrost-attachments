@@ -790,20 +790,11 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
     local procedure Execute(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        MessageVersion: Enum "Message Version ori";
-        ResponseContentType: Text[100];
-        RequestText: Text;
-        ResponseText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
     begin
-        RequestJson.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
         // Raw storage writes are irreversible contracts; exercise their normal commit mode.
         // RequiredTestIsolation=Function restores all database fixtures after each test.
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
-        ResponseContent.GetSubText(ResponseText, 1);
-        Response.ReadFrom(ResponseText);
+        Response := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, true);
     end;
 
     local procedure AssertSuccess(Response: JsonObject)

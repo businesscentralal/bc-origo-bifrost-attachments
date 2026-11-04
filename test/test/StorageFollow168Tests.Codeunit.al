@@ -525,21 +525,8 @@ codeunit 96264 "Storage Follow168 Tests ori"
     local procedure Dispatch(MessageType: Enum "Message Type ori"; Request: JsonObject; LanguageId: Integer) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        RequestText: Text;
-        ResponseText: Text;
-        ContentType: Text[100];
-        TaskId: Guid;
-        MessageId: Guid;
-        ResponseTime: Duration;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
     begin
-        Request.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        // The queued public route applies the requested LCID; Execute uses the setup default.
-        Commit();
-        Dispatcher.EnqueueAndProcess(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ContentType, ResponseTime);
-        ResponseContent.GetSubText(ResponseText, 1);
-        LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'The public dispatcher returns JSON.');
+        Response := TestConfirmation.Dispatch(Dispatcher, MessageType, Request, LanguageId, false);
     end;
 }

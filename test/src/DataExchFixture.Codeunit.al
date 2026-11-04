@@ -189,16 +189,11 @@ codeunit 96241 "DataExch Fixture ori"
     procedure Dispatch(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) ResponseJson: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        ResponseContentType: Text[100];
-        RequestText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
         ResponseText: Text;
     begin
-        RequestJson.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
-        ResponseContent.GetSubText(ResponseText, 1);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, false);
+        ResponseJson.WriteTo(ResponseText);
         LibraryAssert.IsTrue(ResponseJson.ReadFrom(ResponseText), 'A dispatch must return JSON.');
     end;
 

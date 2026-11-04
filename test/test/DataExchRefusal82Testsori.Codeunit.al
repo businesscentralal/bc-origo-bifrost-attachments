@@ -1048,17 +1048,24 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     local procedure Dispatch(MessageType: Enum "Message Type ori"; Payload: Text) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
         RequestContent: BigText;
         ResponseContent: BigText;
-        ResponseType: Text[100];
+        RequestJson: JsonObject;
+        ResponseContentType: Text[100];
         ResponseText: Text;
+        MessageVersion: Enum "Message Version ori";
     begin
-        RequestContent.AddText(Payload);
         AllowDispatcherLanguageRead();
-        Dispatcher.Execute(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseType);
+        if RequestJson.ReadFrom(Payload) then
+            Response := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, false)
+        else begin
+            RequestContent.AddText(Payload);
+            Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
+            ResponseContent.GetSubText(ResponseText, 1);
+            LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'A real dispatch must return a JSON response.');
+        end;
         StopDispatcherLanguageRead();
-        ResponseContent.GetSubText(ResponseText, 1);
-        LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'A real dispatch must return a JSON response.');
     end;
 
     local procedure DispatchLocale(Payload: Text; LanguageId: Integer) Response: JsonObject

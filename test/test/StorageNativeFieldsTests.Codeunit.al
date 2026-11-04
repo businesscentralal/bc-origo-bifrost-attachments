@@ -496,15 +496,11 @@ codeunit 96217 "Storage Native Fields Tests"
     local procedure DispatchOffloadResponse(Request: JsonObject) ResponseText: Text
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        RequestText: Text;
-        ResponseContentType: Text[100];
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
+        ResponseJson: JsonObject;
     begin
-        Request.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
-        ResponseContent.GetSubText(ResponseText, 1);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, "Message Type ori"::"Storage.Attachment.Offload", Request, 0, true);
+        ResponseJson.WriteTo(ResponseText);
     end;
 
     local procedure StoredInternally(AttachmentId: Guid): Boolean
@@ -544,13 +540,9 @@ codeunit 96217 "Storage Native Fields Tests"
     local procedure DispatchNativeOffload(Request: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        RequestText: Text;
-        ResponseContentType: Text[100];
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
+        ResponseJson: JsonObject;
     begin
-        Request.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, "Message Type ori"::"Storage.Attachment.Offload", Request, 0, true);
     end;
 }
