@@ -37,6 +37,7 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Fixed (2026-10-23) - Restore overview (#166)
 
 - Correct the `Storage.Attachment.Restore` overview in `Storage Contract Parts ori` (codeunit 10035183): only stored files newly created by the attachment are deleted; pre-existing files and legacy links are preserved. Documentation only; restore behavior is unchanged.
+- Test codeunit 96219 `Storage Test Confirmation ori` sends native test dispatches through Foundation's counted-confirmation preview protocol and confirms only a returned no-write `ConfirmationRequired` preview. The storage, Data Exchange and build test codeunits use it; assertions are unchanged.
 
 ### Fixed (2026-10-28) - Foundation-compatible test contracts (#188)
 
