@@ -1,6 +1,7 @@
 namespace Origo.Bifrost.Attachments.Test;
 
 using Origo.Bifrost;
+using System.TestLibraries.Utilities;
 
 /// <summary>Runs test dispatches through Foundation's counted-confirmation preview protocol.</summary>
 codeunit 96219 "Storage Test Confirmation ori"
@@ -10,9 +11,10 @@ codeunit 96219 "Storage Test Confirmation ori"
     /// <param name="MessageType">The registered message type being dispatched.</param>
     /// <param name="RequestJson">The request payload to dispatch.</param>
     /// <param name="LanguageId">Optional queue language; zero uses direct dispatch.</param>
-    /// <param name="UseUncommittedExecute">Use the dispatcher's uncommitted Execute overload.</param>
-    procedure Dispatch(var Dispatcher: Codeunit "Dispatcher ori"; MessageType: Enum "Message Type ori"; var RequestJson: JsonObject; LanguageId: Integer; UseUncommittedExecute: Boolean) ResponseJson: JsonObject
+    /// <param name="UseCommittedExecute">True uses Execute with OmitCommit=false; false preserves the default uncommitted Execute overload.</param>
+    procedure Dispatch(var Dispatcher: Codeunit "Dispatcher ori"; MessageType: Enum "Message Type ori"; var RequestJson: JsonObject; LanguageId: Integer; UseCommittedExecute: Boolean) ResponseJson: JsonObject
     var
+        LibraryAssert: Codeunit "Library Assert";
         ResponseContent: BigText;
         ResponseContentType: Text[100];
         RequestText: Text;
@@ -21,9 +23,9 @@ codeunit 96219 "Storage Test Confirmation ori"
         ExpectedCount: Integer;
         ConfirmedRequestJson: JsonObject;
     begin
-        SendRequest(Dispatcher, MessageType, RequestJson, LanguageId, UseUncommittedExecute, ResponseContent, ResponseContentType);
+        SendRequest(Dispatcher, MessageType, RequestJson, LanguageId, UseCommittedExecute, ResponseContent, ResponseContentType);
         ResponseContent.GetSubText(ResponseText, 1);
-        ResponseJson.ReadFrom(ResponseText);
+        LibraryAssert.IsTrue(ResponseJson.ReadFrom(ResponseText), 'The public dispatcher must return JSON.');
         if RequestJson.Contains('expectedCount') then
             exit;
         if ReadText(ResponseJson, 'code') <> 'ConfirmationRequired' then
@@ -40,13 +42,13 @@ codeunit 96219 "Storage Test Confirmation ori"
         if not ConfirmedRequestJson.ReadFrom(RequestText) then
             exit;
         ConfirmedRequestJson.Add('expectedCount', ExpectedCount);
-        SendRequest(Dispatcher, MessageType, ConfirmedRequestJson, LanguageId, UseUncommittedExecute, ResponseContent, ResponseContentType);
+        SendRequest(Dispatcher, MessageType, ConfirmedRequestJson, LanguageId, UseCommittedExecute, ResponseContent, ResponseContentType);
         ResponseContent.GetSubText(ResponseText, 1);
         Clear(ResponseJson);
-        ResponseJson.ReadFrom(ResponseText);
+        LibraryAssert.IsTrue(ResponseJson.ReadFrom(ResponseText), 'The public dispatcher must return JSON.');
     end;
 
-    local procedure SendRequest(var Dispatcher: Codeunit "Dispatcher ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer; UseUncommittedExecute: Boolean; var ResponseContent: BigText; var ResponseContentType: Text[100])
+    local procedure SendRequest(var Dispatcher: Codeunit "Dispatcher ori"; MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer; UseCommittedExecute: Boolean; var ResponseContent: BigText; var ResponseContentType: Text[100])
     var
         RequestContent: BigText;
         RequestText: Text;
@@ -64,7 +66,7 @@ codeunit 96219 "Storage Test Confirmation ori"
             Dispatcher.EnqueueAndProcess(MessageType, MessageVersion, '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseContentType, ResponseTime);
             exit;
         end;
-        if UseUncommittedExecute then
+        if UseCommittedExecute then
             Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false)
         else
             Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);

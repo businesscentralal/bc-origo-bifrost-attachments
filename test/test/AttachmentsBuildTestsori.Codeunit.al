@@ -396,7 +396,7 @@ codeunit 96274 "Attachments Build Tests ori"
         Dispatcher: Codeunit "Dispatcher ori";
         TestConfirmation: Codeunit "Storage Test Confirmation ori";
     begin
-        Response := TestConfirmation.Dispatch(Dispatcher, MessageType, Request, 0, true);
+        Response := TestConfirmation.Dispatch(Dispatcher, MessageType, Request, 0, false);
     end;
 
     local procedure SuccessData(Response: JsonObject): JsonObject

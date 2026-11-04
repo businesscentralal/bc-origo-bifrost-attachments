@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-04) - Preserve dispatch JSON assertions (#166)
+
+- Test helper codeunit 96219 `Storage Test Confirmation ori` asserts that both the initial response and the confirmed response are valid JSON. Its `UseCommittedExecute` parameter now names the existing `OmitCommit=false` behavior accurately; codeunit 96274 `Attachments Build Tests ori` also returns to its original default `Execute` overload (`OmitCommit=true`). Other caller commit modes and all request assertions are preserved.
+
 ### Fixed (2026-11-02) - DataExchange.Type.List returns entityType (#198)
 
 - `Data Exchange Query ori` (10035138, `ListTypes`) adds the additive `entityType` field to every `DataExchange.Type.List` row, as the stable English name `Invoice` or `Credit Memo` accepted and returned by `DataExchange.Type.Set` (the table field is never empty). The Type.List response contract in `Storage Contract Parts ori` (10035183) documents the field. Test codeunit 96213 covers both values. No breaking change.
