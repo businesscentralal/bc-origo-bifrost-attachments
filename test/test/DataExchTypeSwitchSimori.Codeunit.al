@@ -6,7 +6,7 @@ using Microsoft.EServices.EDocument;
 /// Manual-bind subscriber that mimics Business Central's Data Exch. Type Selector, which replaces
 /// the Data Exchange Type of an incoming document when an attachment is inserted (#197).
 /// </summary>
-codeunit 96276 "DataExch Type Switch Sim ori"
+codeunit 96278 "DataExch Type Switch Sim ori"
 {
     EventSubscriberInstance = Manual;
 
