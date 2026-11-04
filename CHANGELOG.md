@@ -21,7 +21,7 @@ Business Central release versioning (`major.minor.build.revision`).
 - Codeunit 10035136 `Storage Attachment Mgt ori` (`CreateLinked`, `Upload.CommitToRecord` with an IncomingDocument target) now answers `requestedDataExchangeType` (the code sent) and `appliedDataExchangeType` (the type the Incoming Document has after Business Central's auto-detection and processing). `dataExchangeType` stays and carries the applied type. The message-type contract and help document the auto-detection and that `processed` is not Business Central's own Processed field.
 
 - Test helper codeunit 96278 `DataExch Type Switch Sim ori` uses a distinct allocation from the staging/type-deletion branches. Codeunit 96237 also asserts that legacy `dataExchangeType` reports the applied type after a simulated switch.
-- Codeunit 96256 `DataExch Format Tests ori` keeps the exact native reader-error check locale-aware when the official Icelandic language app is installed, preserving all rollback assertions (focused repair reused from PR #206 commit `4aece042`).
+- Codeunit 96256 `DataExch Format Tests ori` keeps the exact native reader-error check locale-aware for native IS images and the official Icelandic language app, preserving all rollback assertions (focused repair reused from PR #206 commit `4aece042`).
 
 ### Fixed (2026-11-01) - Compiler callback regression fixture (#78)
 

@@ -108,14 +108,13 @@ codeunit 96256 "DataExch Format Tests ori"
 
     local procedure ExpectedReaderFormattingError(LanguageId: Integer): Text
     var
-        IcelandicLanguageInfo: ModuleInfo;
-        IcelandicLanguageAppId: Guid;
+        IcelandicFormattingError: Text;
     begin
-        // The official language app supplies the native XMLport error on IS containers.
-        // W1 CI has no Icelandic base-app resources and correctly falls back to English.
-        IcelandicLanguageAppId := '2ed02040-0300-4d64-b8c5-a48d09dddfc6';
-        if (LanguageId = 1039) and NavApp.GetModuleInfo(IcelandicLanguageAppId, IcelandicLanguageInfo) then
-            exit('Skráin sem var flutt inn er á óvæntu sniði.');
+        // Native IS images and the optional language app both supply this exact error.
+        // W1 can still fall back to English; every other native error must fail the test.
+        IcelandicFormattingError := 'Skráin sem var flutt inn er á óvæntu sniði.';
+        if (LanguageId = 1039) and GetLastErrorText().StartsWith(IcelandicFormattingError) then
+            exit(IcelandicFormattingError);
         exit('The imported file contains unexpected formatting.');
     end;
 
