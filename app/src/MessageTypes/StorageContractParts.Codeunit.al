@@ -111,8 +111,8 @@ codeunit 10035183 "Storage Contract Parts ori"
         DataExchangeTypeParamLbl: Label 'Optional Data Exchange Type code for IncomingDocument. The type must already exist.', Locked = true;
         ProcessParamLbl: Label 'When true, run CreateDocumentWithDataExchange after the incoming document is created. Default false. The upload still succeeds when processing reports errors.', Locked = true;
         VendorNoParamLbl: Label 'Optional vendor number for a new incoming document.', Locked = true;
-        DataExchangeTypeResponseLbl: Label 'The Data Exchange Type applied to the incoming document.', Locked = true;
-        ProcessedResponseLbl: Label 'True when CreateDocumentWithDataExchange created a document.', Locked = true;
+        DataExchangeTypeResponseLbl: Label 'The Data Exchange Type the incoming document has after processing. Same value as appliedDataExchangeType.', Locked = true;
+        ProcessedResponseLbl: Label 'True when CreateDocumentWithDataExchange created a document. This is not the Processed field of the incoming document, which Business Central sets only when the document is posted.', Locked = true;
         CreatedDocumentResponseLbl: Label 'The created document type, number and systemId when processing succeeded.', Locked = true;
         IncomingStatusResponseLbl: Label 'Stable incoming document status name after processing, for example Failed or Created.', Locked = true;
         ProcessErrorsResponseLbl: Label 'Processing errors as objects containing code, message and nextStep; an empty array means no processing errors were reported.', Locked = true;
@@ -938,6 +938,8 @@ codeunit 10035183 "Storage Contract Parts ori"
                         Fields.Add(ContractMgt.ResponseField('path', 'string', 'The storage path of the source file. Only when the content came from a stored file.'));
                     end;
                     if MessageType in ['Storage.Attachment.CreateLinked', 'Storage.Upload.CommitToRecord'] then begin
+                        Fields.Add(ContractMgt.ResponseField('requestedDataExchangeType', 'string', 'The Data Exchange Type code sent in the request. Omitted when the request had none.'));
+                        Fields.Add(ContractMgt.ResponseField('appliedDataExchangeType', 'string', 'The Data Exchange Type the incoming document actually has and was processed with. Business Central can replace the requested type with a better match when the attachment is added.'));
                         Fields.Add(ContractMgt.ResponseField('dataExchangeType', 'string', DataExchangeTypeResponseLbl));
                         Fields.Add(ContractMgt.ResponseField('processed', 'boolean', ProcessedResponseLbl));
                         Fields.Add(WithChildren(ContractMgt.ResponseField('createdDocument', 'object', CreatedDocumentResponseLbl),
