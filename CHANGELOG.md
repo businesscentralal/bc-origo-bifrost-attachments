@@ -18,7 +18,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-11-04) - Data Exchange Type deletion acceptance (#199)
 
-- Test codeunit 96275 confirms `DataExchange.Definition.Delete` with `expectedCount` 1 before checking the reference refusal and the eventual cleanup. Codeunit 10035183 refusal examples for `DataExchange.Type.Delete` also confirm the count so they reach the documented missing-code and missing-record checks.
+- Codeunit 10035183 refusal examples for `DataExchange.Type.Delete` confirm the count so they reach the documented missing-code and missing-record checks. `DataExchange.Definition.Delete` retains its separate write contract and does not accept `expectedCount`.
 - Codeunit 10035200 keeps Overview and Notes help chapters English in both locales, matching the help-language rule; catalogue and refusal labels remain translated. Removed the two obsolete Icelandic help translations. Extended codeunit 96211 contract and help-language conformance to all 40 types, including the new delete type.
 
 ### Added (2026-11-02) - DataExchange.Type.Delete (#199)
