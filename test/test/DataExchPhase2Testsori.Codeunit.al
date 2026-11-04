@@ -704,11 +704,32 @@ codeunit 96237 "DataExch Phase2 Tests ori"
     local procedure CommitUpload(var TempArgument: Record "Message Argument ori" temporary; UploadId: Text)
     var
         CommitReq: JsonObject;
+        ResponseText: Text;
     begin
         Clear(TempArgument);
         CommitReq.Add('uploadId', UploadId);
+        AddCountedConfirmation(CommitReq);
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Commit", CommitReq);
-        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Commit should succeed.');
+        TempArgument.GetResponseJson().WriteTo(ResponseText);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Commit should succeed. Response: ' + ResponseText);
+    end;
+
+    /// <summary>
+    /// Foundation 28.0.11 and later requires an explicit counted confirmation (expectedCount = the one request subject) on the
+    /// irreversible Storage.Upload.Commit. Older Foundation versions do not declare the parameter, so it is only sent when
+    /// the installed Foundation declares it. The product's confirmation contract is not weakened.
+    /// </summary>
+    local procedure AddCountedConfirmation(var RequestJson: JsonObject)
+    var
+        FoundationInfo: ModuleInfo;
+    begin
+        if RequestJson.Contains('expectedCount') then
+            exit;
+        if not NavApp.GetModuleInfo('7505e808-6e52-4b96-a328-82573391297a', FoundationInfo) then
+            exit;
+        if FoundationInfo.AppVersion() < Version.Create(28, 0, 11, 0) then
+            exit;
+        RequestJson.Add('expectedCount', 1);
     end;
 
     local procedure ExecuteCommit(var TempArgument: Record "Message Argument ori" temporary; UploadId: Text; TypeCode: Code[20]; Process: Boolean; Description: Text)
