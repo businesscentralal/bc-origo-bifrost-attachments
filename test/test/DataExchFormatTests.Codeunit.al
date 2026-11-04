@@ -106,6 +106,19 @@ codeunit 96256 "DataExch Format Tests ori"
         CheckReaderRollback(1039);
     end;
 
+    local procedure ExpectedReaderFormattingError(LanguageId: Integer): Text
+    var
+        IcelandicLanguageInfo: ModuleInfo;
+        IcelandicLanguageAppId: Guid;
+    begin
+        // The official language app supplies the native XMLport error on IS containers.
+        // W1 CI has no Icelandic base-app resources and correctly falls back to English.
+        IcelandicLanguageAppId := '2ed02040-0300-4d64-b8c5-a48d09dddfc6';
+        if (LanguageId = 1039) and NavApp.GetModuleInfo(IcelandicLanguageAppId, IcelandicLanguageInfo) then
+            exit('Skráin sem var flutt inn er á óvæntu sniði.');
+        exit('The imported file contains unexpected formatting.');
+    end;
+
     local procedure CheckReaderRollback(LanguageId: Integer)
     var
         DataExch: Record "Data Exch.";
@@ -127,7 +140,7 @@ codeunit 96256 "DataExch Format Tests ori"
         // The native AL boundary raises; the external API supplies BusinessCentralError.
         // Keep the actual reader error and prove rollback rather than swallowing it in a TryFunction.
         asserterror DispatchLocale("Message Type ori"::"DataExchange.Import.Run", Request, LanguageId);
-        LibraryAssert.ExpectedError('The imported file contains unexpected formatting.');
+        LibraryAssert.ExpectedError(ExpectedReaderFormattingError(LanguageId));
         DataExch.SetRange("Data Exch. Def Code", DefCode);
         LibraryAssert.AreEqual(0, DataExch.Count(), 'The failed reader leaves no entry.');
         LibraryAssert.AreEqual(FieldsBefore, DataExchField.Count(), 'Parsed fields are rolled back.');
