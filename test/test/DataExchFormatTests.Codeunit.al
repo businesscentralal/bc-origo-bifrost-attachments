@@ -106,6 +106,18 @@ codeunit 96256 "DataExch Format Tests ori"
         CheckReaderRollback(1039);
     end;
 
+    local procedure ExpectedReaderFormattingError(LanguageId: Integer): Text
+    var
+        IcelandicFormattingError: Text;
+    begin
+        // Native IS images and the optional language app both supply this exact error.
+        // W1 can still fall back to English; every other native error must fail the test.
+        IcelandicFormattingError := 'Skráin sem var flutt inn er á óvæntu sniði.';
+        if (LanguageId = 1039) and GetLastErrorText().StartsWith(IcelandicFormattingError) then
+            exit(IcelandicFormattingError);
+        exit('The imported file contains unexpected formatting.');
+    end;
+
     local procedure CheckReaderRollback(LanguageId: Integer)
     var
         DataExch: Record "Data Exch.";
@@ -127,7 +139,7 @@ codeunit 96256 "DataExch Format Tests ori"
         // The native AL boundary raises; the external API supplies BusinessCentralError.
         // Keep the actual reader error and prove rollback rather than swallowing it in a TryFunction.
         asserterror DispatchLocale("Message Type ori"::"DataExchange.Import.Run", Request, LanguageId);
-        LibraryAssert.ExpectedError('The imported file contains unexpected formatting.');
+        LibraryAssert.ExpectedError(ExpectedReaderFormattingError(LanguageId));
         DataExch.SetRange("Data Exch. Def Code", DefCode);
         LibraryAssert.AreEqual(0, DataExch.Count(), 'The failed reader leaves no entry.');
         LibraryAssert.AreEqual(FieldsBefore, DataExchField.Count(), 'Parsed fields are rolled back.');
