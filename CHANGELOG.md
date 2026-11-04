@@ -18,6 +18,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-11-04) - Data Exchange Type deletion acceptance (#199)
 
+- Test codeunit `Storage TypeDel199 Tests ori` uses 96277, preserving the earlier 96275 reservation for #192 staging tests.
+
 - Permission set 10035136 `BIFROST DataExch ori` and extension 10035135 `Storage Full ori` explicitly grant execute on new codeunit 10035200, matching the existing type-write role. Data Exchange table write grants are unchanged.
 
 - Codeunit 10035183 refusal examples for `DataExchange.Type.Delete` confirm the count so they reach the documented missing-code and missing-record checks. `DataExchange.Definition.Delete` retains its separate write contract and does not accept `expectedCount`.
@@ -27,7 +29,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - New message type `DataExchange.Type.Delete` (enum value 10035174, codeunit 10035200 `DataExch Type Delete Impl ori`, enum extension 10035201) deletes one Data Exchange Type by `code`. The contract declares an irreversible effect, so Foundation's counted-confirmation gate applies (`expectedCount` 1; without it the call is previewed with ConfirmationRequired and nothing is deleted).
 - Refuses with PreconditionFailed, naming the number of incoming documents, when an incoming document still uses the type. The linked Data Exchange definition is never deleted; it keeps its own `DataExchange.Definition.Delete` reference checks, so after the type is gone the definition can be removed. Gated by the same `Data Exchange Type` write permission as `DataExchange.Type.Set`.
-- English and Icelandic catalogue, refusal, workflow, example and Help.DataExchange.Get texts; the generic-write hint for `Data Exchange Type` now names both `DataExchange.Type.Set` and `DataExchange.Type.Delete`. Test codeunit 96275 `Storage TypeDel199 Tests ori` covers AC1-AC3 and the refusals in 1033 and 1039. Counted confirmation needs a Foundation release that provides the gate (28.0.11 line); the test app requires 28.0.11.657.
+- English and Icelandic catalogue, refusal, workflow, example and Help.DataExchange.Get texts; the generic-write hint for `Data Exchange Type` now names both `DataExchange.Type.Set` and `DataExchange.Type.Delete`. Test codeunit 96277 `Storage TypeDel199 Tests ori` covers AC1-AC3 and the refusals in 1033 and 1039. Counted confirmation needs a Foundation release that provides the gate (28.0.11 line); the test app requires 28.0.11.657.
 
 ### Fixed (2026-11-02) - CommitToRecord and CreateLinked report the applied Data Exchange Type (#197)
 
