@@ -94,6 +94,8 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
         LibraryAssert.AreNotEqual(0, EntryNo, 'AC01 creates an incoming document.');
         LibraryAssert.AreEqual(TypeCode, ReadDataText(TempArgument, 'dataExchangeType'), 'AC01 echoes the type.');
+        LibraryAssert.AreEqual(TypeCode, ReadDataText(TempArgument, 'requestedDataExchangeType'), '#197 AC02 requested type.');
+        LibraryAssert.AreEqual(TypeCode, ReadDataText(TempArgument, 'appliedDataExchangeType'), '#197 AC02 no switch: applied equals requested.');
         LibraryAssert.AreEqual(false, ReadDataBool(TempArgument, 'processed'), 'AC01 processed is false.');
 
         IncomingDocument.Get(EntryNo);
@@ -101,6 +103,37 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         Evaluate(UploadGuid, UploadId);
         Session.Get(UploadGuid);
         LibraryAssert.AreEqual(Session.Status::Committed, Session.Status, 'AC01 session is committed.');
+    end;
+
+    [Test]
+    procedure Issue197_CommitToRecord_ReportsRequestedAndAppliedType_WhenBcSwitchesType()
+    var
+        IncomingDocument: Record "Incoming Document";
+        TempArgument: Record "Message Argument ori" temporary;
+        SwitchSim: Codeunit "DataExch Type Switch Sim ori";
+        RequestedType: Code[20];
+        AppliedType: Code[20];
+        UploadId: Text;
+        EntryNo: Integer;
+    begin
+        // [SCENARIO] #197 AC01: BC re-detects the type on attachment insert; the answer reports both the requested and the applied type.
+        Initialize();
+        RequestedType := SeedImportType();
+        AppliedType := SeedImportType();
+        BeginAndAppend(UploadId, 'issue197-ac01.csv', 'vendor,amount');
+        SwitchSim.SetSwitchToType(AppliedType);
+        BindSubscription(SwitchSim);
+
+        ExecuteCommit(TempArgument, UploadId, RequestedType, false, 'BIFT-197-AC01');
+        UnbindSubscription(SwitchSim);
+
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), '#197 AC01 status');
+        EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
+        LibraryAssert.AreEqual(RequestedType, ReadDataText(TempArgument, 'requestedDataExchangeType'), '#197 AC01 requested type is the one sent.');
+        LibraryAssert.AreEqual(AppliedType, ReadDataText(TempArgument, 'appliedDataExchangeType'), '#197 AC01 applied type is the one BC chose.');
+        LibraryAssert.AreEqual(AppliedType, ReadDataText(TempArgument, 'dataExchangeType'), '#197 AC01 legacy type reports the applied type.');
+        IncomingDocument.Get(EntryNo);
+        LibraryAssert.AreEqual(AppliedType, IncomingDocument."Data Exchange Type", '#197 AC01 stored type equals the applied type.');
     end;
 
     [Test]
@@ -671,11 +704,32 @@ codeunit 96237 "DataExch Phase2 Tests ori"
     local procedure CommitUpload(var TempArgument: Record "Message Argument ori" temporary; UploadId: Text)
     var
         CommitReq: JsonObject;
+        ResponseText: Text;
     begin
         Clear(TempArgument);
         CommitReq.Add('uploadId', UploadId);
+        AddCountedConfirmation(CommitReq);
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Upload.Commit", CommitReq);
-        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Commit should succeed.');
+        TempArgument.GetResponseJson().WriteTo(ResponseText);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Commit should succeed. Response: ' + ResponseText);
+    end;
+
+    /// <summary>
+    /// Foundation 28.0.11 and later requires an explicit counted confirmation (expectedCount = the one request subject) on the
+    /// irreversible Storage.Upload.Commit. Older Foundation versions do not declare the parameter, so it is only sent when
+    /// the installed Foundation declares it. The product's confirmation contract is not weakened.
+    /// </summary>
+    local procedure AddCountedConfirmation(var RequestJson: JsonObject)
+    var
+        FoundationInfo: ModuleInfo;
+    begin
+        if RequestJson.Contains('expectedCount') then
+            exit;
+        if not NavApp.GetModuleInfo('7505e808-6e52-4b96-a328-82573391297a', FoundationInfo) then
+            exit;
+        if FoundationInfo.AppVersion() < Version.Create(28, 0, 11, 0) then
+            exit;
+        RequestJson.Add('expectedCount', 1);
     end;
 
     local procedure ExecuteCommit(var TempArgument: Record "Message Argument ori" temporary; UploadId: Text; TypeCode: Code[20]; Process: Boolean; Description: Text)

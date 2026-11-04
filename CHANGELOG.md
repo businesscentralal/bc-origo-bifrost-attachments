@@ -19,6 +19,14 @@ Business Central release versioning (`major.minor.build.revision`).
 - Catalogue `description`, `selectionDescription` and keywords, and every refusal and error message, stay translated. The 128 now-locked trans-units are removed from `Bifrost Attachments.is-IS.xlf`.
 - Test codeunit 96211 `Storage Msg Conformance Tests` adds `Scenario_196_DataExchangeChanges_IsEnglishAtBothLcids` and `Scenario_196_HelpChapters_HaveNoIcelandicTextAtLcid1039`, which read every chapter of every Attachments type directly from its implementation and from Foundation's aggregation at 1039 and assert no Icelandic letter. The Icelandic Foundation fragments (Retryable row, conventions) are not rendered by Attachments; they come from Foundation if present.
 
+### Fixed (2026-11-02) - CommitToRecord and CreateLinked report the applied Data Exchange Type (#197)
+
+- Codeunit 10035136 `Storage Attachment Mgt ori` (`CreateLinked`, `Upload.CommitToRecord` with an IncomingDocument target) now answers `requestedDataExchangeType` (the code sent) and `appliedDataExchangeType` (the type the Incoming Document has after Business Central's auto-detection and processing). `dataExchangeType` stays and carries the applied type. The message-type contract and help document the auto-detection and that `processed` is not Business Central's own Processed field.
+
+- Test helper codeunit 96278 `DataExch Type Switch Sim ori` uses a distinct allocation from the staging/type-deletion branches. Codeunit 96237 also asserts that legacy `dataExchangeType` reports the applied type after a simulated switch.
+- Codeunit 96256 `DataExch Format Tests ori` keeps the exact native reader-error check locale-aware for native IS images and the official Icelandic language app, preserving all rollback assertions (focused repair reused from PR #206 commit `4aece042`).
+- Codeunit 96237 `DataExch Phase2 Tests ori` (`CommitUpload` fixture) sends Foundation's counted confirmation `expectedCount` = 1 on `Storage.Upload.Commit` when the installed Foundation is 28.0.11 or later, and prints the response when the commit is refused. Older Foundation versions do not declare the parameter, so nothing is sent there. Test-only; the product confirmation contract is unchanged.
+
 ### Fixed (2026-11-01) - Compiler callback regression fixture (#78)
 
 - Supply the native symbol-preparation fixture used by the compiler callback, preserve its single-package return assertion, and verify preparation failures stop compilation. This repairs tooling coverage; no AL objects or message contracts change.
