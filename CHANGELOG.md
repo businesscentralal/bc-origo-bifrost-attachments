@@ -27,6 +27,14 @@ Business Central release versioning (`major.minor.build.revision`).
 - Refuses with PreconditionFailed, naming the number of incoming documents, when an incoming document still uses the type. The linked Data Exchange definition is never deleted; it keeps its own `DataExchange.Definition.Delete` reference checks, so after the type is gone the definition can be removed. Gated by the same `Data Exchange Type` write permission as `DataExchange.Type.Set`.
 - English and Icelandic catalogue, refusal, workflow, example and Help.DataExchange.Get texts; the generic-write hint for `Data Exchange Type` now names both `DataExchange.Type.Set` and `DataExchange.Type.Delete`. Test codeunit 96275 `Storage TypeDel199 Tests ori` covers AC1-AC3 and the refusals in 1033 and 1039. Counted confirmation needs a Foundation release that provides the gate (28.0.11 line); the test app requires 28.0.11.657.
 
+### Fixed (2026-11-02) - CommitToRecord and CreateLinked report the applied Data Exchange Type (#197)
+
+- Codeunit 10035136 `Storage Attachment Mgt ori` (`CreateLinked`, `Upload.CommitToRecord` with an IncomingDocument target) now answers `requestedDataExchangeType` (the code sent) and `appliedDataExchangeType` (the type the Incoming Document has after Business Central's auto-detection and processing). `dataExchangeType` stays and carries the applied type. The message-type contract and help document the auto-detection and that `processed` is not Business Central's own Processed field.
+
+- Test helper codeunit 96278 `DataExch Type Switch Sim ori` uses a distinct allocation from the staging/type-deletion branches. Codeunit 96237 also asserts that legacy `dataExchangeType` reports the applied type after a simulated switch.
+- Codeunit 96256 `DataExch Format Tests ori` keeps the exact native reader-error check locale-aware for native IS images and the official Icelandic language app, preserving all rollback assertions (focused repair reused from PR #206 commit `4aece042`).
+- Codeunit 96237 `DataExch Phase2 Tests ori` (`CommitUpload` fixture) sends Foundation's counted confirmation `expectedCount` = 1 on `Storage.Upload.Commit` when the installed Foundation is 28.0.11 or later, and prints the response when the commit is refused. Older Foundation versions do not declare the parameter, so nothing is sent there. Test-only; the product confirmation contract is unchanged.
+
 ### Fixed (2026-11-01) - Compiler callback regression fixture (#78)
 
 - Supply the native symbol-preparation fixture used by the compiler callback, preserve its single-package return assertion, and verify preparation failures stop compilation. This repairs tooling coverage; no AL objects or message contracts change.
