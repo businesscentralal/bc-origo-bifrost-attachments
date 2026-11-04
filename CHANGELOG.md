@@ -18,6 +18,8 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-11-04) - Data Exchange Type deletion acceptance (#199)
 
+- Permission set 10035136 `BIFROST DataExch ori` and extension 10035135 `Storage Full ori` explicitly grant execute on new codeunit 10035200, matching the existing type-write role. Data Exchange table write grants are unchanged.
+
 - Codeunit 10035183 refusal examples for `DataExchange.Type.Delete` confirm the count so they reach the documented missing-code and missing-record checks. `DataExchange.Definition.Delete` retains its separate write contract and does not accept `expectedCount`.
 - Codeunit 10035200 keeps Overview and Notes help chapters English in both locales, matching the help-language rule; catalogue and refusal labels remain translated. Removed the two obsolete Icelandic help translations. Extended codeunit 96211 contract and help-language conformance to all 40 types, including the new delete type.
 

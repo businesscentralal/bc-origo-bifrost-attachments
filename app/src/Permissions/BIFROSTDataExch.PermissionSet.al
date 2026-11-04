@@ -51,6 +51,7 @@ permissionset 10035136 "BIFROST DataExch ori"
         codeunit "DataExch Pay Capture ori" = X,
         codeunit "DataExch Pay Export Impl ori" = X,
         codeunit "DataExch Process Worker ori" = X,
+        codeunit "DataExch Type Delete Impl ori" = X,
         codeunit "DataExch Type List Impl ori" = X,
         codeunit "DataExch Type Set Impl ori" = X,
         codeunit "DataExch View Filter ori" = X,

@@ -37,6 +37,7 @@ permissionsetextension 10035135 "Storage Full ori" extends "BIFROST Full ori"
         codeunit "DataExch Pay Capture ori" = X,
         codeunit "DataExch Pay Export Impl ori" = X,
         codeunit "DataExch Process Worker ori" = X,
+        codeunit "DataExch Type Delete Impl ori" = X,
         codeunit "DataExch Type List Impl ori" = X,
         codeunit "DataExch View Filter ori" = X,
         codeunit "Storage Account List Impl ori" = X,
