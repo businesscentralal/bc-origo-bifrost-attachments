@@ -747,64 +747,28 @@
           <note from="Developer" annotates="general" priority="2">%1 = type name||is-IS=Óþekkt gerð skilgreiningar gagnaskipta '%1'.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Data Exchange Query ori - NamedType UnknownTypeErr</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 2025968512" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Data Exchange entries still use definition %1. The definition was not deleted.</source>
-          <target>Gagnaskiptafærslur nota enn skilgreiningu %1. Skilgreiningunni var ekki eytt.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = definition code||is-IS=Gagnaskiptafærslur nota enn skilgreiningu %1. Skilgreiningunni var ekki eytt.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType EntriesExistErr</note>
+        <trans-unit id="Codeunit 2881381544 - Method 3571782927 - NamedType 3791449231" size-unit="char" translate="yes" xml:space="preserve">
+          <source>DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.</source>
+          <target>DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method ExecuteBifrostTask - NamedType DisabledErr</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 3167316371" size-unit="char" translate="yes" xml:space="preserve">
-          <source>a definition with no Data Exchange entries</source>
-          <target>skilgreining án gagnaskiptafærslna</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=skilgreining án gagnaskiptafærslna</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType NoEntriesLbl</note>
+        <trans-unit id="Codeunit 2881381544 - Method 3571782927 - NamedType 3479032888" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a message type that is enabled; DataExchange.Definition.Delete is disabled</source>
+          <target>virk skilaboðagerð; DataExchange.Definition.Delete er óvirk</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=virk skilaboðagerð; DataExchange.Definition.Delete er óvirk</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method ExecuteBifrostTask - NamedType DisabledExpectedLbl</note>
         </trans-unit>
-        <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 2636575339" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Use DataExchange.Entry.List to find the entries and DataExchange.Entry.Delete to delete them before retrying.</source>
-          <target>Notaðu DataExchange.Entry.List til að finna færslurnar og DataExchange.Entry.Delete til að eyða þeim áður en þú reynir aftur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Notaðu DataExchange.Entry.List til að finna færslurnar og DataExchange.Entry.Delete til að eyða þeim áður en þú reynir aftur.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType DeleteEntriesLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 3351274" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Data Exchange definition %1 was not found.</source>
-          <target>Skilgreining gagnaskipta %1 fannst ekki.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType NotFoundErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 360469590" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Data Exchange definition %1 is referenced and cannot be deleted.</source>
-          <target>Vísað er í skilgreiningu gagnaskipta %1 og ekki er hægt að eyða henni.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = definition code||is-IS=Vísað er í skilgreiningu gagnaskipta %1 og ekki er hægt að eyða henni.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType UsedErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 1310873299" size-unit="char" translate="yes" xml:space="preserve">
-          <source>an existing Data Exchange definition</source>
-          <target>fyrirliggjandi skilgreining gagnaskipta</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=fyrirliggjandi skilgreining gagnaskipta</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType DefinitionExpectedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 2535652492" size-unit="char" translate="yes" xml:space="preserve">
-          <source>a definition not used by a Data Exchange Type, a Bank Export/Import Setup (and so a bank account), the payroll import format of the General Ledger Setup or a currency exchange rate service</source>
-          <target>skilgreining sem er ekki notuð í gerð gagnaskipta, uppsetningu bankaútflutnings eða bankainnflutnings (og þar með bankareikningi), sniði launainnflutnings í fjárhagsgrunni eða gengisþjónustu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=skilgreining sem er ekki notuð í gerð gagnaskipta, uppsetningu bankaútflutnings eða bankainnflutnings (og þar með bankareikningi), sniði launainnflutnings í fjárhagsgrunni eða gengisþjónustu</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType UnreferencedExpectedLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 1372064105" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Call DataExchange.Definition.List and use the exact definition code.</source>
-          <target>Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningarinnar.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningarinnar.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType SelectDefinitionLbl</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 2881381544 - Method 4081640032 - NamedType 2323042833" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Review the Data Exchange Types, Bank Export/Import Setup, General Ledger Setup and currency exchange rate services that use this definition. Change those references before retrying deletion.</source>
-          <target>Farðu yfir gerðir gagnaskipta, uppsetningu bankaútflutnings eða bankainnflutnings, fjárhagsgrunn og gengisþjónustur sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Farðu yfir gerðir gagnaskipta, uppsetningu bankaútflutnings eða bankainnflutnings, fjárhagsgrunn og gengisþjónustur sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method DeleteDefinition - NamedType RemoveReferenceLbl</note>
+        <trans-unit id="Codeunit 2881381544 - Method 3571782927 - NamedType 584457273" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delete the Data Exchange definition in Business Central (page Data Exchange Definitions). Use DataExchange.Entry.Delete to delete entries.</source>
+          <target>Eyddu skilgreiningu gagnaskipta í Business Central (síðan Skilgreiningar gagnaskipta). Notaðu DataExchange.Entry.Delete til að eyða færslum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyddu skilgreiningu gagnaskipta í Business Central (síðan Skilgreiningar gagnaskipta). Notaðu DataExchange.Entry.Delete til að eyða færslum.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method ExecuteBifrostTask - NamedType DisabledNextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2881381544 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Deletes a Data Exchange definition that is not referenced.</source>
-          <target>Eyðir skilgreiningu gagnaskipta sem ekki er vísað í.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir skilgreiningu gagnaskipta sem ekki er vísað í.</note>
+          <source>Disabled. Delete Data Exchange definitions in Business Central.</source>
+          <target>Óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method GetDescription - NamedType DescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2881381544 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
@@ -814,9 +778,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2881381544 - Method 79446908 - NamedType 895773054" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Deletes a definition. Refuses a definition used by a Data Exchange Type or Bank Export/Import Setup.</source>
-          <target>Eyðir skilgreiningu. Hafnar skilgreiningu sem er notuð af gerð gagnaskipta eða uppsetningu bankaútflutnings eða innflutnings.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Eyðir skilgreiningu. Hafnar skilgreiningu sem er notuð af gerð gagnaskipta eða uppsetningu bankaútflutnings eða innflutnings.</note>
+          <source>Disabled; do not select. Always refused and deletes nothing. Delete Data Exchange definitions in Business Central.</source>
+          <target>Óvirkt; ekki velja. Er alltaf hafnað og eyðir engu. Eyddu skilgreiningum gagnaskipta í Business Central.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Óvirkt; ekki velja. Er alltaf hafnað og eyðir engu. Eyddu skilgreiningum gagnaskipta í Business Central.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method GetSelectionDescription - NamedType SelectionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1813886267 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">

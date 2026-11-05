@@ -12,6 +12,20 @@ Business Central release versioning (`major.minor.build.revision`).
 - #210: credential-free, persisted, company-local Mock storage through `Storage Connector ori`, with per-connection isolation, owned setup cleanup and dynamic selector visibility (table 10035141, codeunit 10035202, enum 10035136, page 10035137, role grants). Keep the test-only fault-injection backend separate. Regression codeunit 96279 covers bilingual refusals and the product Mock.
 
 
+### Fixed (2026-11-05) - Disabled definition-delete contract (#211 / PR #212)
+
+- Codeunit 10035183 excludes `DataExchange.Definition.Delete` from the common required `storageCode` parameter. The disabled type declares only its ignored `code`, preserving the typed refusal without requiring a storage connection. Codeunit 96280 verifies the exact parameter name as well as the single-parameter count.
+
+- Align the disabled refusal example with its request: a supplied `code` is echoed on parameter `code`, rather than claiming the envelope type was refused. Codeunit 96280 pins both response fields.
+- Preserve six raw-code Import.Run regressions in codeunit 96226 and both Definition.Export envelope checks in codeunit 96258. Only disabled-delete assertions are removed; the export checks delete their self-created definitions.
+
+### Changed (2026-11-05) - Disable DataExchange.Definition.Delete (#211)
+
+- `DataExchange.Definition.Delete` is disabled (Gunnar's decision 05.11.2026: "you set isenabled = false in the implementation and update the execution to trigger an error and update the contract to reflect that"). `DataExch Def Delete Impl ori` returns `IsEnabled() = false`, and executing the type raises a typed `PreconditionFailed` error on parameter `type` (1033: "DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.", 1039: "DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.") with a nextStep in both languages. No definition is read or deleted.
+- The contract (description, selection text, overview, notes, errors, effect, workflow, example) and the Data Exchange help chapters say the type is disabled and no longer document parameters, references or a success response. The write hint of the data restriction on the definition tables now names only `DataExchange.Definition.Import`.
+- The enum value `DataExchange.Definition.Delete` (10035171) is kept: removing it would be an AppSource breaking change. `DataExchange.Entry.Delete` and the Storage delete types are unchanged.
+- Tests: new codeunit 96280 `DataExch Def Del211 Tests ori` (IsEnabled false, refusal in 1033 and 1039 with the definition kept, disabled contract and discovery text). Tests that expected Definition.Delete to delete or to refuse referenced definitions were removed. The Icelandic translation file drops the labels of the removed delete logic and carries the new ones; no en-US file.
+
 ### Fixed (2026-11-05) - Confirm remaining storage test fixtures (#205)
 
 - Test codeunit 96237 `DataExch Phase2 Tests ori` uses the shared preview-and-confirm dispatcher helper 96219 for its remaining irreversible `Storage.Upload.Commit` fixture calls. Other storage fixtures use the same helper through merged #182. The preview's actual count is confirmed without modifying reused request JSON; refusal assertions and original commit modes remain unchanged. The earlier fixed-count helper 96276 is superseded by 96219. No product code or message classification changes.
