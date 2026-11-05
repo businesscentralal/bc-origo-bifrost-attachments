@@ -708,6 +708,7 @@ codeunit 96205 "Storage Upload Tests"
         RecordToken: JsonToken;
         PrimaryKeyToken: JsonToken;
         OriginalDescription: Text[100];
+        SetupViewTok: Label 'WHERE(Code=CONST(%1))', Locked = true;
     begin
         // [SCENARIO] S6 AC01 (#19): Data.Records.Set on Storage Setup ori returns an error.
         // Reading that table through Data.Records.Get still succeeds.
@@ -744,8 +745,7 @@ codeunit 96205 "Storage Upload Tests"
 
         // [WHEN] The same table is read through Data.Records.Get
         GetRequest.Add('tableName', 'Storage Setup ori');
-        StorageSetup.SetRecFilter();
-        GetRequest.Add('tableView', StorageSetup.GetView(false));
+        GetRequest.Add('tableView', StrSubstNo(SetupViewTok, MockCodeTok));
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Data.Records.Get", GetRequest);
 
         // [THEN] The read succeeds and returns the setup row
