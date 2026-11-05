@@ -187,7 +187,7 @@ codeunit 10035164 "DataExch Export Run Impl ori" implements "Msg Interface ori",
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Only Generic Export definitions are accepted; import definitions are refused and payment definitions point to DataExchange.PaymentExport.Run. tableId or tableName must be the mapping table. The external data handling step of the definition is replaced by the delivery. A file over 1 MB with inline true, or a failed storage write, rolls the whole export back.', Locked = true;
+        NotesLbl: Label 'Only Generic Export definitions are accepted; import definitions are refused and payment definitions point to DataExchange.PaymentExport.Run. tableId or tableName must be the mapping table. The external data handling step of the definition is replaced by the delivery. The standard CSV and fixed-width XMLport writers require an interactive client; background calls refuse with PreconditionFailed before writes. Use a background-safe writing codeunit or the Business Central export page. A file over 1 MB with inline true, or a failed storage write, rolls the whole export back.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);

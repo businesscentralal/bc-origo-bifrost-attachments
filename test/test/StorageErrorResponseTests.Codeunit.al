@@ -110,7 +110,7 @@ codeunit 96212 "Storage Error Response Tests"
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
 
         AssertErrorAnswer(TempArgument, 'InvalidParameterFormat', 'contentBase64');
-        LibraryAssert.AreEqual('', ReadText(TempArgument.GetResponseJson(), 'received'), 'The content must never be echoed back.');
+        LibraryAssert.AreEqual('@@ not base64 @@', ReadText(TempArgument.GetResponseJson(), 'received'), 'Malformed content identifies the bounded received value.');
     end;
 
     [Test]
@@ -568,7 +568,7 @@ codeunit 96212 "Storage Error Response Tests"
         StorageSetup.Init();
         StorageSetup."Code" := StorageCode;
         StorageSetup.Description := 'Mock storage connection';
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := IsEnabled;
         StorageSetup.Insert();
     end;

@@ -1285,7 +1285,17 @@ codeunit 10035136 "Storage Attachment Mgt ori"
     end;
 
     local procedure SameRegisteredAccount(FirstSetup: Record "Storage Setup ori"; SecondSetup: Record "Storage Setup ori"): Boolean
+    var
+        ConnectorImpl: Interface "Storage Connector ori";
+        NamespaceImpl: Interface "Storage Namespace ori";
     begin
+        if FirstSetup."Storage Type" <> SecondSetup."Storage Type" then
+            exit(false);
+        ConnectorImpl := FirstSetup."Storage Type";
+        if ConnectorImpl is "Storage Namespace ori" then begin
+            NamespaceImpl := ConnectorImpl as "Storage Namespace ori";
+            exit(NamespaceImpl.GetNamespace(FirstSetup) = NamespaceImpl.GetNamespace(SecondSetup));
+        end;
         exit((FirstSetup."Storage Type" = SecondSetup."Storage Type") and
              (FirstSetup.Connector = SecondSetup.Connector) and
              (FirstSetup."File Account Id" = SecondSetup."File Account Id"));

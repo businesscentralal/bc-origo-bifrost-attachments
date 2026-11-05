@@ -7,7 +7,7 @@ using Origo.Bifrost;
 /// Implementation of <c>DataExchange.PaymentExport.Run</c>. Exports a payment journal batch with the
 /// payment export format of its bank account and delivers the bank file to storage or inline.
 /// </summary>
-codeunit 10035168 "DataExch Pay Export Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035168 "DataExch Pay Export Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori", "Msg Confirm ori"
 {
     Access = Internal;
     TableNo = "Message Argument ori";
@@ -215,5 +215,32 @@ codeunit 10035168 "DataExch Pay Export Impl ori" implements "Msg Interface ori",
         end;
         // No Boolean return: an error after a write rolls back every write of the call.
         Codeunit.Run(Codeunit::"DataExch Pay Export Impl ori", Argument);
+    end;
+    /// <summary>Validates the required target before an irreversible confirmation preview.</summary>
+    /// <param name="Argument">The unmodified request and structured refusal carrier.</param>
+    /// <param name="Count">One export target, preserving the existing confirmation unit.</param>
+    /// <param name="Summary">The caller's named target.</param>
+    /// <returns>False after answering invalid target input.</returns>
+    procedure GetConfirmCount(var Argument: Record "Message Argument ori"; var Count: Integer; var Summary: Text): Boolean
+    var
+        Reader: Codeunit "Storage Request Reader ori";
+        Request: JsonObject;
+        TemplateName: Text;
+        BatchName: Text;
+    begin
+        if not Reader.ReadMutationRequest(Argument) then begin
+            Reader.RespondIfErrors(Argument);
+            exit(false);
+        end;
+        Request := Argument.GetRequestJson();
+        Reader.ReadMutationText(Argument, Request, 'journalTemplate', true, 10, TemplateName);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        Reader.ReadMutationText(Argument, Request, 'journalBatch', true, 10, BatchName);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        Count := 1;
+        Summary := TemplateName + '/' + BatchName;
+        exit(true);
     end;
 }
