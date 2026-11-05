@@ -764,19 +764,10 @@ codeunit 96237 "DataExch Phase2 Tests ori"
     local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        ResponseContentType: Text[100];
-        MessageVersion: Enum "Message Version ori";
-        RequestText: Text;
-        ResponseText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
         ResponseJson: JsonObject;
     begin
-        RequestJson.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
-        ResponseContent.GetSubText(ResponseText, 1);
-        ResponseJson.ReadFrom(ResponseText);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, false);
         Clear(TempArgument);
         TempArgument.Init();
         TempArgument."Type" := MessageType;

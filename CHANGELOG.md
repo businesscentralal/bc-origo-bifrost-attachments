@@ -26,6 +26,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - The enum value `DataExchange.Definition.Delete` (10035171) is kept: removing it would be an AppSource breaking change. `DataExchange.Entry.Delete` and the Storage delete types are unchanged.
 - Tests: new codeunit 96279 `DataExch Def Del211 Tests ori` (IsEnabled false, refusal in 1033 and 1039 with the definition kept, disabled contract and discovery text). Tests that expected Definition.Delete to delete or to refuse referenced definitions were removed. The Icelandic translation file drops the labels of the removed delete logic and carries the new ones; no en-US file.
 
+### Fixed (2026-11-05) - Confirm remaining storage test fixtures (#205)
+
+- Test codeunit 96237 `DataExch Phase2 Tests ori` uses the shared preview-and-confirm dispatcher helper 96219 for its remaining irreversible `Storage.Upload.Commit` fixture calls. Other storage fixtures use the same helper through merged #182. The preview's actual count is confirmed without modifying reused request JSON; refusal assertions and original commit modes remain unchanged. The earlier fixed-count helper 96276 is superseded by 96219. No product code or message classification changes.
+
 ### Fixed (2026-11-05) - Align Foundation release input contract (#209)
 
 - Pin the AppSource input gate and signed-package collision restoration to the authentic Foundation 28.0.11.669 release selected by CI. Preserve exact identity, package/archive hashes, source/build/compiler provenance, friend restrictions and historical staging profiles. No AL objects or dependency floors change. Gate regressions track the selected release and use the genuine generated fixture compiler stamp, preserving mismatch refusals.
