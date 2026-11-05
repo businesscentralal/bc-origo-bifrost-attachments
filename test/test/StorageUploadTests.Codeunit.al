@@ -24,6 +24,88 @@ codeunit 96205 "Storage Upload Tests"
         MockCodeTok: Label 'MOCK', Locked = true;
         TestCustNoTok: Label 'BIFTS-UPL-TST', Locked = true;
 
+    /// <summary>Historical X75 links without setups cannot break the next storage initializer.</summary>
+    [Test]
+    procedure InitializeRemovesHistoricalX75Fixtures()
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        Link: Record "Storage Attachment Link ori";
+        Session: Record "Storage Upload Session ori";
+        Chunk: Record "Storage Upload Chunk ori";
+        OtherSetup: Record "Storage Setup ori";
+        OtherLink: Record "Storage Attachment Link ori";
+        Fixture: Codeunit "DataExch Fixture ori";
+        MockState: Codeunit "Storage Mock State";
+        OwnedCode: Code[20];
+        OtherCode: Code[20];
+        UploadId: Text;
+        Path: Text;
+        Index: Integer;
+        OwnedUploadIds: List of [Guid];
+        OwnedUploadId: Guid;
+    begin
+        // [GIVEN] Five dangling test links, each with an upload session/chunk and mock file.
+        Initialize();
+        OtherCode := Fixture.NewCode('XOTHER');
+        OtherSetup.Code := OtherCode;
+        OtherSetup."Storage Type" := OtherSetup."Storage Type"::Mock;
+        OtherSetup.Enabled := true;
+        OtherSetup.Insert();
+        OtherLink."Table ID" := Database::"Incoming Document Attachment";
+        OtherLink."Record System Id" := CreateGuid();
+        OtherLink."Storage Code" := OtherCode;
+        OtherLink."Storage Path" := 'Xlegacy-unrelated.txt';
+        OtherLink.Insert();
+        for Index := 1 to 5 do begin
+            case Index of
+                1, 3:
+                    OwnedCode := 'X75';
+                2, 4:
+                    OwnedCode := 'X75READ';
+                5:
+                    OwnedCode := 'X75ALIAS';
+            end;
+            Link.Init();
+            Link."Table ID" := Database::"Incoming Document Attachment";
+            Link."Record System Id" := CreateGuid();
+            Link."Storage Code" := OwnedCode;
+            Link."Storage Path" := 'Xlegacy-owned-' + Format(Index) + '.txt';
+            Link.Insert();
+            MockState.PutFile(Link."Storage Path", Fixture.Encode('stale owned bytes'));
+            Session.Init();
+            Session."Upload Id" := CreateGuid();
+            Session."Storage Code" := OwnedCode;
+            Session.Insert();
+            OwnedUploadIds.Add(Session."Upload Id");
+            Chunk.Init();
+            Chunk."Upload Id" := Session."Upload Id";
+            Chunk."Sequence No." := 1;
+            Chunk.Insert();
+        end;
+        Commit();
+        // [WHEN] Any storage initializer resets its mock state, before X75's own tests run.
+        Initialize();
+        // [THEN] Only the reserved historical fixtures disappear, including their upload chunks.
+        Link.SetFilter("Storage Code", 'X75*');
+        Session.SetFilter("Storage Code", 'X75*');
+        LibraryAssert.IsTrue(Link.IsEmpty(), 'Initialization removes stale X75 links before resolving storage writes.');
+        LibraryAssert.IsTrue(Session.IsEmpty(), 'Initialization removes stale X75 upload sessions.');
+        foreach OwnedUploadId in OwnedUploadIds do
+            LibraryAssert.IsFalse(Chunk.Get(OwnedUploadId, 1), 'Deleting each owned session removes its chunk.');
+        for Index := 1 to 5 do
+            LibraryAssert.IsFalse(MockState.HasFile('Xlegacy-owned-' + Format(Index) + '.txt'), 'No stale owned mock file survives.');
+        LibraryAssert.IsTrue(OtherSetup.Get(OtherCode), 'Unrelated setup survives historical cleanup.');
+        LibraryAssert.IsTrue(OtherLink.Get(OtherLink."Table ID", OtherLink."Record System Id"), 'Unrelated link survives historical cleanup.');
+        BeginUpload('Xlegacy-recovered.txt', '', UploadId, Path);
+        AppendChunk(UploadId, 1, 'recovered');
+        CommitUpload(TempArgument, UploadId);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Recovered fixtures allow the public upload to commit.');
+        LibraryAssert.AreEqual('recovered', GetStoredText(Path), 'Recovered storage writes retain their bytes.');
+        OtherLink.Delete();
+        OtherSetup.Delete();
+        Fixture.CleanupStorage(MockCodeTok);
+    end;
+
     /// <summary>Resetting upload fixtures preserves another test's connection and attachment link.</summary>
     [Test]
     procedure InitializeDoesNotOrphanOtherLinks()

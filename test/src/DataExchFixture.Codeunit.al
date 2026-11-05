@@ -52,6 +52,7 @@ codeunit 96241 "DataExch Fixture ori"
         DocumentAttachment: Record "Document Attachment";
         IncomingAttachment: Record "Incoming Document Attachment";
         IncomingDocument: Record "Incoming Document";
+        MockState: Codeunit "Storage Mock State";
         RecordSystemId: Guid;
         TableId: Integer;
         IncomingNo: Integer;
@@ -62,6 +63,7 @@ codeunit 96241 "DataExch Fixture ori"
         while Link.FindFirst() do begin
             TableId := Link."Table ID";
             RecordSystemId := Link."Record System Id";
+            MockState.RemoveFile(Link."Storage Path");
             // Remove the test link first: deleting its attachment must not call a provider.
             Link.Delete();
             case TableId of
@@ -85,6 +87,41 @@ codeunit 96241 "DataExch Fixture ori"
         Session.DeleteAll(true);
         if StorageSetup.Get(OwnedStorageCode) then
             StorageSetup.Delete();
+    end;
+
+    /// <summary>Removes historical X75 test fixtures before another storage scenario can resolve their stale links.</summary>
+    procedure CleanupLegacyStorageFixtures()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        Link: Record "Storage Attachment Link ori";
+        Session: Record "Storage Upload Session ori";
+        OwnedCodes: List of [Code[20]];
+        OwnedCode: Code[20];
+    begin
+        // X75 is reserved by the integrity/native tests, including their old failed-run fixtures.
+        Link.ReadIsolation := IsolationLevel::ReadCommitted;
+        Session.ReadIsolation := IsolationLevel::ReadCommitted;
+        StorageSetup.ReadIsolation := IsolationLevel::ReadCommitted;
+        Link.SetFilter("Storage Code", 'X75*');
+        if Link.FindSet() then
+            repeat
+                if not OwnedCodes.Contains(Link."Storage Code") then
+                    OwnedCodes.Add(Link."Storage Code");
+            until Link.Next() = 0;
+        Session.SetFilter("Storage Code", 'X75*');
+        if Session.FindSet() then
+            repeat
+                if not OwnedCodes.Contains(Session."Storage Code") then
+                    OwnedCodes.Add(Session."Storage Code");
+            until Session.Next() = 0;
+        StorageSetup.SetFilter(Code, 'X75*');
+        if StorageSetup.FindSet() then
+            repeat
+                if not OwnedCodes.Contains(StorageSetup.Code) then
+                    OwnedCodes.Add(StorageSetup.Code);
+            until StorageSetup.Next() = 0;
+        foreach OwnedCode in OwnedCodes do
+            CleanupStorage(OwnedCode);
     end;
 
     /// <summary>The code of the Mock storage connection.</summary>

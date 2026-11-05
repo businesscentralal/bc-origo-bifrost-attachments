@@ -319,9 +319,9 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
             end else begin
                 AssertRefusal(Response, 'InvalidParameter');
                 LibraryAssert.IsFalse(MockState.HasFile(Path), 'An overlimit path must not be written.');
-                Cleanup();
-    end;
+            end;
         end;
+        Cleanup();
     end;
 
     /// <summary>Base path length contributes to the full address limit.</summary>
@@ -379,9 +379,9 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
             end else begin
                 AssertRefusal(Response, 'InvalidParameter');
                 LibraryAssert.AreEqual(BeforeCount, Session.Count(), 'An invalid name must not create a session.');
-                Cleanup();
-    end;
+            end;
         end;
+        Cleanup();
     end;
 
     /// <summary>Invalid traversal and root file paths fail without connector writes.</summary>

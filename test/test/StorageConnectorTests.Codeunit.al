@@ -378,13 +378,14 @@ codeunit 96204 "Storage Connector Tests"
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
         MoveJson: JsonObject;
+        AttachmentId: Guid;
     begin
         // [SCENARIO] Moving a linked storage file updates the Business Central attachment link to the new path.
         Initialize();
         RequestJson := PathRequest('linked/doc.txt');
         RequestJson.Add('contentBase64', Base64Convert.ToBase64('linked content'));
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
-        CreateLinkedIncomingAttachment('linked/doc.txt', 'doc.txt');
+        AttachmentId := CreateLinkedIncomingAttachment('linked/doc.txt', 'doc.txt');
 
         // [WHEN] The linked file is moved through Storage.File.Move
         MoveJson.Add('storageCode', MockCodeTok);
@@ -395,6 +396,8 @@ codeunit 96204 "Storage Connector Tests"
 
         // [THEN] The move succeeds and the link row follows the file
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Linked file move should succeed.');
+        Link.SetRange("Table ID", Database::"Incoming Document Attachment");
+        Link.SetRange("Record System Id", AttachmentId);
         Link.SetRange("Storage Code", MockCodeTok);
         Link.SetRange("Storage Path", 'linked/archive/doc.txt');
         LibraryAssert.IsTrue(Link.FindFirst(), 'The link should point to the moved file path.');
@@ -828,7 +831,7 @@ codeunit 96204 "Storage Connector Tests"
         RequestJson.Add('path', Path);
     end;
 
-    local procedure CreateLinkedIncomingAttachment(Path: Text; FileName: Text)
+    local procedure CreateLinkedIncomingAttachment(Path: Text; FileName: Text): Guid
     var
         TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
@@ -839,6 +842,15 @@ codeunit 96204 "Storage Connector Tests"
         RequestJson.Add('description', 'X linked attachment');
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'The linked incoming attachment should be created.');
+        exit(ReadDataGuid(TempArgument, 'systemId'));
+    end;
+
+    local procedure ReadDataGuid(TempArgument: Record "Message Argument ori" temporary; Name: Text): Guid
+    var
+        Value: Guid;
+    begin
+        Evaluate(Value, ReadText(ReadData(TempArgument.GetResponseJson()), Name));
+        exit(Value);
     end;
 
     local procedure MessageHelp(MessageType: Enum "Message Type ori") Result: Text

@@ -237,7 +237,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
         IncomingDocument.Get(EntryNo);
         LibraryAssert.AreEqual(TypeCode, IncomingDocument."Data Exchange Type", 'AC04 stored type.');
-        Link.SetRange("Inc. Doc. Entry No.", EntryNo);
+        FilterIncomingLink(Link, EntryNo);
         LibraryAssert.AreEqual(1, Link.Count(), 'AC04 keeps the storage link.');
         LibraryAssert.AreEqual(false, ReadDataBool(TempArgument, 'processed'), 'AC04 does not process unless asked.');
         AssertLinkedContentServed(EntryNo, 'vendor,amount');
@@ -280,7 +280,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         EntryNo := ReadDataInt(TempArgument, 'incomingDocumentEntryNo');
         LibraryAssert.IsTrue(IncomingDocument.Get(EntryNo), 'AC04 process keeps the incoming document.');
         LibraryAssert.AreEqual(TypeCode, IncomingDocument."Data Exchange Type", 'AC04 process keeps the type.');
-        Link.SetRange("Inc. Doc. Entry No.", EntryNo);
+        FilterIncomingLink(Link, EntryNo);
         LibraryAssert.AreEqual(1, Link.Count(), 'AC04 process keeps the storage link.');
         AssertLinkedContentServed(EntryNo, 'vendor,amount');
         DataObject := ReadData(ResponseJson);
@@ -616,6 +616,17 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         ContentBlob.CreateInStream(ContentInStream);
         ContentInStream.ReadText(ReadBack);
         LibraryAssert.AreEqual(Expected, ReadBack, 'AC04 served bytes match the stored file.');
+    end;
+
+    local procedure FilterIncomingLink(var Link: Record "Storage Attachment Link ori"; EntryNo: Integer)
+    var
+        Attachment: Record "Incoming Document Attachment";
+    begin
+        Attachment.SetRange("Incoming Document Entry No.", EntryNo);
+        LibraryAssert.IsTrue(Attachment.FindFirst(), 'The fixture owns an incoming attachment.');
+        Link.SetRange("Inc. Doc. Entry No.", EntryNo);
+        Link.SetRange("Table ID", Database::"Incoming Document Attachment");
+        Link.SetRange("Record System Id", Attachment.SystemId);
     end;
 
     local procedure Initialize()
