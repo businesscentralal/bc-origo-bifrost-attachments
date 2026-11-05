@@ -15,12 +15,24 @@ table 10035141 "Storage Mock Entry ori"
             Caption = 'Storage Code', Comment = 'is-IS=Geymslukóði';
             TableRelation = "Storage Setup ori";
         }
-        field(2; Path; Text[250]) { Caption = 'Path', Comment = 'is-IS=Slóð'; }
-        field(3; "Entry Type"; Enum "Ext. File Storage File Type") { Caption = 'Entry Type', Comment = 'is-IS=Færslugerð'; }
-        field(4; Content; Blob) { Caption = 'Content', Comment = 'is-IS=Innihald'; }
+        field(2; Path; Text[250])
+        {
+            Caption = 'Path', Comment = 'is-IS=Slóð';
+        }
+        field(3; "Entry Type"; Enum "Ext. File Storage File Type")
+        {
+            Caption = 'Entry Type', Comment = 'is-IS=Færslugerð';
+        }
+        field(4; Content; Blob)
+        {
+            Caption = 'Content', Comment = 'is-IS=Innihald';
+        }
     }
     keys
     {
-        key(PK; "Storage Code", Path) { Clustered = true; }
+        key(PK; "Storage Code", Path)
+        {
+            Clustered = true;
+        }
     }
 }

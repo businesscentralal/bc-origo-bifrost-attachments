@@ -120,6 +120,7 @@ codeunit 10035202 "Storage Mock Impl ori" implements "Storage Connector ori", "S
         DirectoryNotEmptyErr: Label 'The Mock directory is not empty.', Comment = 'is-IS=Prófunarmappan er ekki tóm.';
     begin
         GetEntry(StorageSetup, Path, Enum::"Ext. File Storage File Type"::Directory, Entry);
+        Child.ReadIsolation := IsolationLevel::ReadCommitted;
         Child.SetRange("Storage Code", StorageSetup.Code);
         if Child.FindSet() then
             repeat
