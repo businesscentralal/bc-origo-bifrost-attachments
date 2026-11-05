@@ -41,6 +41,14 @@ codeunit 96279 "Storage UAT210 Tests ori"
         AssertMappingRefusal(1039);
     end;
 
+    /// <summary>A no-table payroll codeunit cannot receive a Data Exchange record and is refused before execution.</summary>
+    [Test]
+    procedure NoTableMappingCodeunitRefusesBeforeRun()
+    begin
+        AssertNoTableMappingRefusal(1033);
+        AssertNoTableMappingRefusal(1039);
+    end;
+
     /// <summary>Unmapped root definitions and stale entry line context cannot open table zero.</summary>
     [Test]
     procedure MappedLinesIgnoreUnmappedRootAndStaleContext()
@@ -284,6 +292,32 @@ codeunit 96279 "Storage UAT210 Tests ori"
         LibraryAssert.IsTrue(ErrorText.Contains(DefCode), 'Refusal identifies the definition.');
         LibraryAssert.IsTrue(ErrorText.Contains(Mapping."Data Exch. Line Def Code"), 'Refusal identifies the line.');
         LibraryAssert.AreNotEqual('', NextStep, 'Mapping recovery guidance.');
+        GlobalLanguage(PriorLanguage);
+    end;
+
+    local procedure AssertNoTableMappingRefusal(LanguageId: Integer)
+    var
+        Entry: Record "Data Exch.";
+        Mapping: Record "Data Exch. Mapping";
+        ImportMgt: Codeunit "DataExch Import Mgt ori";
+        ErrorCode: Enum "Bifrost Error Code ori";
+        DefCode: Code[20];
+        ErrorText: Text;
+        Expected: Text;
+        NextStep: Text;
+        PriorLanguage: Integer;
+    begin
+        PriorLanguage := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        DefCode := Fixture.CreateImportDefinition(0);
+        Mapping.SetRange("Data Exch. Def Code", DefCode);
+        Mapping.FindFirst();
+        Mapping."Mapping Codeunit" := 8030;
+        Mapping.Modify();
+        Entry."Data Exch. Def Code" := DefCode;
+        LibraryAssert.IsTrue(ImportMgt.FindProcessBlocker(Entry, '', ErrorCode, ErrorText, Expected, NextStep), 'No-table codeunit is refused before Run with record.');
+        LibraryAssert.AreEqual(Enum::"Bifrost Error Code ori"::PreconditionFailed, ErrorCode, 'Typed no-table mapping refusal.');
+        LibraryAssert.IsTrue(ErrorText.Contains(DefCode) and ErrorText.Contains('8030') and ErrorText.Contains('LINES'), 'Refusal identifies the definition, codeunit and line.');
         GlobalLanguage(PriorLanguage);
     end;
 

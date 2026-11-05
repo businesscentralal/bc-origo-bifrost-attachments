@@ -511,13 +511,13 @@ codeunit 10035141 "DataExch Import Mgt ori"
     var
         CodeunitMetadata: Record "CodeUnit Metadata";
         IncompatibleErr: Label 'Codeunit %1 cannot process a Data Exchange entry. Nothing was changed.', Comment = '%1 = codeunit id||is-IS=Kóðaeining %1 getur ekki unnið gagnaskiptafærslu. Engu var breytt.';
-        ExpectedLbl: Label 'a codeunit that accepts Data Exch. (table 1220) or has no table requirement', Comment = 'is-IS=kóðaeining sem tekur við Data Exch. (tafla 1220) eða krefst engrar töflu';
+        ExpectedLbl: Label 'a codeunit that accepts Data Exch. (table 1220)', Comment = 'is-IS=kóðaeining sem tekur við Data Exch. (tafla 1220)';
         NextStepLbl: Label 'Use the Business Central page for this import, such as the payroll journal, or choose a mapping that accepts Data Exchange entries.', Comment = 'is-IS=Notaðu Business Central síðuna fyrir þennan innflutning, svo sem launabókina, eða veldu vörpun sem tekur við gagnaskiptafærslum.';
     begin
         if CodeunitId = 0 then
             exit(false);
         if CodeunitMetadata.Get(CodeunitId) then
-            if CodeunitMetadata.TableNo in [0, Database::"Data Exch."] then
+            if CodeunitMetadata.TableNo = Database::"Data Exch." then
                 exit(false);
         ErrorCode := "Bifrost Error Code ori"::PreconditionFailed;
         ErrorText := StrSubstNo(IncompatibleErr, CodeunitId);

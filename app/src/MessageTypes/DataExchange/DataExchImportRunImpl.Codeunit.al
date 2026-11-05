@@ -156,7 +156,7 @@ codeunit 10035166 "DataExch Import Run Impl ori" implements "Msg Interface ori",
     /// <summary>Explains operation restrictions.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Processing accepts only codeunits with no table requirement or Data Exch. (table 1220). Table-typed journal mappings, including payroll mappings, must be run from their Business Central page. Bank Statement Import definitions are refused; import bank statements with Finance.BankReconciliation.Create. Export definitions are refused. A file the reader cannot read answers an error and leaves no entry. With process true the import is committed first, so a processing error is reported in processResult.errors and the entry stays for DataExchange.Entry.Process. A successful call answers status Success with the import result in data.', Locked = true;
+        NotesLbl: Label 'Processing accepts only codeunits with Data Exch. (table 1220) as their table requirement. Codeunits without a table requirement are refused because they cannot receive the entry record. Table-typed journal mappings, including payroll mappings, must be run from their Business Central page. Bank Statement Import definitions are refused; import bank statements with Finance.BankReconciliation.Create. Export definitions are refused. A file the reader cannot read answers an error and leaves no entry. With process true the import is committed first, so a processing error is reported in processResult.errors and the entry stays for DataExchange.Entry.Process. A successful call answers status Success with the import result in data.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);
