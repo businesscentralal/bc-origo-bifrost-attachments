@@ -4,9 +4,16 @@ using System.ExternalFileStorage;
 using System.Utilities;
 
 /// <summary>Credential-free Mock connector. Persists company-local content and makes no HTTP requests.</summary>
-codeunit 10035202 "Storage Mock Impl ori" implements "Storage Connector ori", "Storage Linked Move ori"
+codeunit 10035202 "Storage Mock Impl ori" implements "Storage Connector ori", "Storage Linked Move ori", "Storage Namespace ori"
 {
     Access = Internal;
+
+    /// <summary>Identifies the company-local namespace of a Mock connection.</summary>
+    /// <returns>The connection code; separate codes never share Mock content.</returns>
+    procedure GetNamespace(StorageSetup: Record "Storage Setup ori"): Text
+    begin
+        exit(StorageSetup.Code);
+    end;
 
     /// <summary>All Mock move writes share the Business Central transaction.</summary>
     /// <returns>True; a failed transaction retains the source.</returns>
