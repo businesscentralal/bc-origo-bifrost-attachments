@@ -6,6 +6,13 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Changed (2026-11-05) - Disable DataExchange.Definition.Delete (#211)
+
+- `DataExchange.Definition.Delete` is disabled (Gunnar's decision 05.11.2026: "you set isenabled = false in the implementation and update the execution to trigger an error and update the contract to reflect that"). `DataExch Def Delete Impl ori` returns `IsEnabled() = false`, and executing the type raises a typed `PreconditionFailed` error on parameter `type` (1033: "DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.", 1039: "DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.") with a nextStep in both languages. No definition is read or deleted.
+- The contract (description, selection text, overview, notes, errors, effect, workflow, example) and the Data Exchange help chapters say the type is disabled and no longer document parameters, references or a success response. The write hint of the data restriction on the definition tables now names only `DataExchange.Definition.Import`.
+- The enum value `DataExchange.Definition.Delete` (10035171) is kept: removing it would be an AppSource breaking change. `DataExchange.Entry.Delete` and the Storage delete types are unchanged.
+- Tests: new codeunit 96279 `DataExch Def Del211 Tests ori` (IsEnabled false, refusal in 1033 and 1039 with the definition kept, disabled contract and discovery text). Tests that expected Definition.Delete to delete or to refuse referenced definitions were removed. The Icelandic translation file drops the labels of the removed delete logic and carries the new ones; no en-US file.
+
 ### Fixed (2026-11-05) - Align Foundation release input contract (#209)
 
 - Pin the AppSource input gate and signed-package collision restoration to the authentic Foundation 28.0.11.669 release selected by CI. Preserve exact identity, package/archive hashes, source/build/compiler provenance, friend restrictions and historical staging profiles. No AL objects or dependency floors change. Gate regressions track the selected release and use the genuine generated fixture compiler stamp, preserving mismatch refusals.

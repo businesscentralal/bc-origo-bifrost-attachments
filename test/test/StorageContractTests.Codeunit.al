@@ -374,13 +374,14 @@ codeunit 96265 "Storage Contract Tests ori"
     local procedure TargetNotApplicable(Name: Text): Boolean
     begin
         exit(Name in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'Storage.Upload.Begin',
-            'DataExchange.Definition.List', 'DataExchange.Entry.List', 'DataExchange.Type.List', 'DataExchange.Definition.Import']);
+            'DataExchange.Definition.List', 'DataExchange.Entry.List', 'DataExchange.Type.List', 'DataExchange.Definition.Import',
+            'DataExchange.Definition.Delete']);
     end;
 
     // Types whose request carries no data.
     local procedure ParametersNotApplicable(Name: Text): Boolean
     begin
-        exit(Name in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List']);
+        exit(Name in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List', 'DataExchange.Definition.Delete']);
     end;
 
     local procedure RowListFieldNames() Names: List of [Text]

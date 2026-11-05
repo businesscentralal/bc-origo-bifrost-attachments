@@ -156,132 +156,6 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid input must not write.');
     end;
 
-    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
-    [Test]
-    procedure Scenario_AC02_Lowercase_RefusesRawCode()
-    var
-        Response: JsonObject;
-        BeforeCount: Integer;
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A raw key that Code20 conversion would change.
-        BeforeCount := EntryCount('');
-        // [WHEN] It is used for all applicable code fields.
-        Response := DispatchImport('xlower', 'xlower', 'X82.csv');
-        // [THEN] Both independent code errors are collected, with original spelling.
-        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'xlower');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'xlower');
-        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
-        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
-        Response := DispatchDelete('xlower');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'xlower');
-    end;
-
-    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
-    [Test]
-    procedure Scenario_AC02_MixedCase_RefusesRawCode()
-    var
-        Response: JsonObject;
-        BeforeCount: Integer;
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A raw key that Code20 conversion would change.
-        BeforeCount := EntryCount('');
-        // [WHEN] It is used for all applicable code fields.
-        Response := DispatchImport('XmIxEd', 'XmIxEd', 'X82.csv');
-        // [THEN] Both independent code errors are collected, with original spelling.
-        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'XmIxEd');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'XmIxEd');
-        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
-        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
-        Response := DispatchDelete('XmIxEd');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'XmIxEd');
-    end;
-
-    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
-    [Test]
-    procedure Scenario_AC02_UnicodeCase_RefusesRawCode()
-    var
-        Response: JsonObject;
-        BeforeCount: Integer;
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A raw key that Code20 conversion would change.
-        BeforeCount := EntryCount('');
-        // [WHEN] It is used for all applicable code fields.
-        Response := DispatchImport('Xþór', 'Xþór', 'X82.csv');
-        // [THEN] Both independent code errors are collected, with original spelling.
-        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'Xþór');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'Xþór');
-        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
-        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
-        Response := DispatchDelete('Xþór');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'Xþór');
-    end;
-
-    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
-    [Test]
-    procedure Scenario_AC02_LeadingSpace_RefusesRawCode()
-    var
-        Response: JsonObject;
-        BeforeCount: Integer;
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A raw key that Code20 conversion would change.
-        BeforeCount := EntryCount('');
-        // [WHEN] It is used for all applicable code fields.
-        Response := DispatchImport(' XSPACE', ' XSPACE', 'X82.csv');
-        // [THEN] Both independent code errors are collected, with original spelling.
-        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', ' XSPACE');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', ' XSPACE');
-        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
-        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
-        Response := DispatchDelete(' XSPACE');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'code', ' XSPACE');
-    end;
-
-    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
-    [Test]
-    procedure Scenario_AC02_TrailingSpace_RefusesRawCode()
-    var
-        Response: JsonObject;
-        BeforeCount: Integer;
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A raw key that Code20 conversion would change.
-        BeforeCount := EntryCount('');
-        // [WHEN] It is used for all applicable code fields.
-        Response := DispatchImport('XSPACE ', 'XSPACE ', 'X82.csv');
-        // [THEN] Both independent code errors are collected, with original spelling.
-        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'XSPACE ');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'XSPACE ');
-        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
-        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
-        Response := DispatchDelete('XSPACE ');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'XSPACE ');
-    end;
-
-    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
-    [Test]
-    procedure Scenario_AC02_Overlong_RefusesRawCode()
-    var
-        Response: JsonObject;
-        BeforeCount: Integer;
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A raw key that Code20 conversion would change.
-        BeforeCount := EntryCount('');
-        // [WHEN] It is used for all applicable code fields.
-        Response := DispatchImport('X12345678901234567890', 'X12345678901234567890', 'X82.csv');
-        // [THEN] Both independent code errors are collected, with original spelling.
-        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'X12345678901234567890');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'X12345678901234567890');
-        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
-        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
-        Response := DispatchDelete('X12345678901234567890');
-        AssertRefusal(Response, 'InvalidParameterFormat', 'code', 'X12345678901234567890');
-    end;
-
     /// <summary>Exact Code20 and path2048 limits are accepted; only the unconfigured storage connection is refused.</summary>
     [Test]
     procedure Scenario_AC02_Code20AndPath2048_AcceptsExactBounds()
@@ -398,100 +272,6 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid definitions must not write.');
     end;
 
-    /// <summary>Successful definition deletion retains standard delete triggers.</summary>
-    [Test]
-    procedure Scenario_AC03_DeleteUnreferenced_DeletesChildren()
-    var
-        DataExchDef: Record "Data Exch. Def";
-        LineDef: Record "Data Exch. Line Def";
-        DefinitionCode: Code[20];
-        Response: JsonObject;
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] An unreferenced definition with one standard child.
-        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
-        CreateLine(DefinitionCode);
-        // [WHEN] The registered delete operation runs.
-        Response := DispatchDelete(DefinitionCode);
-        // [THEN] Success identifies the deleted key, and parent and child are absent.
-        AssertText(Response, 'status', 'Success');
-        AssertText(SuccessData(Response), 'code', DefinitionCode);
-        LibraryAssert.IsFalse(DataExchDef.Get(DefinitionCode), 'Definition must be deleted.');
-        LibraryAssert.IsFalse(LineDef.Get(DefinitionCode, 'XLINE'), 'Delete triggers must remove children.');
-    end;
-
-    /// <summary>Referenced definitions and children remain unchanged.</summary>
-    [Test]
-    procedure Scenario_AC01_DeleteTypeReferenced_PreservesTree()
-    var
-        DataExchDef: Record "Data Exch. Def";
-        LineDef: Record "Data Exch. Line Def";
-        DataExchangeType: Record "Data Exchange Type";
-        DefinitionCode: Code[20];
-        Response: JsonObject;
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A definition, child and existing type reference.
-        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
-        CreateLine(DefinitionCode);
-        DataExchangeType.Code := DefinitionCode;
-        DataExchangeType."Data Exch. Def. Code" := DefinitionCode;
-        DataExchangeType.Insert(true);
-        // [WHEN] Deletion is requested.
-        Response := DispatchDelete(DefinitionCode);
-        // [THEN] The reference refusal preserves all rows.
-        AssertRefusal(Response, 'PreconditionFailed', 'code', DefinitionCode);
-        LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'Definition must survive refusal.');
-        LibraryAssert.IsTrue(LineDef.Get(DefinitionCode, 'XLINE'), 'Child must survive refusal.');
-        LibraryAssert.IsTrue(DataExchangeType.Get(DefinitionCode), 'Reference must survive refusal.');
-        LibraryAssert.AreEqual(DefinitionCode, DataExchangeType."Data Exch. Def. Code", 'Reference must remain unchanged.');
-    end;
-
-    /// <summary>Referenced definitions and children remain unchanged.</summary>
-    [Test]
-    procedure Scenario_AC01_DeleteBankReferenced_PreservesTree()
-    var
-        DataExchDef: Record "Data Exch. Def";
-        LineDef: Record "Data Exch. Line Def";
-        BankSetup: Record "Bank Export/Import Setup";
-        DefinitionCode: Code[20];
-        Response: JsonObject;
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A definition, child and existing bank reference.
-        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
-        CreateLine(DefinitionCode);
-        BankSetup.Code := DefinitionCode;
-        BankSetup."Data Exch. Def. Code" := DefinitionCode;
-        BankSetup.Insert(true);
-        // [WHEN] Deletion is requested.
-        Response := DispatchDelete(DefinitionCode);
-        // [THEN] The reference refusal preserves all rows.
-        AssertRefusal(Response, 'PreconditionFailed', 'code', DefinitionCode);
-        LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'Definition must survive refusal.');
-        LibraryAssert.IsTrue(LineDef.Get(DefinitionCode, 'XLINE'), 'Child must survive refusal.');
-        LibraryAssert.IsTrue(BankSetup.Get(DefinitionCode), 'Reference must survive refusal.');
-        LibraryAssert.AreEqual(DefinitionCode, BankSetup."Data Exch. Def. Code", 'Reference must remain unchanged.');
-    end;
-
-    /// <summary>Deletion of an unknown definition reports RecordNotFound.</summary>
-    [Test]
-    procedure Scenario_AC01_DeleteMissing_ReportsCompleteError()
-    var
-        DataExchDef: Record "Data Exch. Def";
-        Response: JsonObject;
-        BeforeCount: Integer;
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] The current definition count.
-        BeforeCount := DataExchDef.Count();
-        // [WHEN] An unknown canonical key is deleted.
-        Response := DispatchDelete('X82-NOT-FOUND');
-        // [THEN] The complete error leaves the definitions unchanged.
-        AssertRefusal(Response, 'RecordNotFound', 'code', 'X82-NOT-FOUND');
-        LibraryAssert.AreEqual(BeforeCount, DataExchDef.Count(), 'Missing delete must not change data.');
-    end;
-
     /// <summary>Real orchestration selects English and Icelandic error text.</summary>
     [Test]
     [TransactionModel(TransactionModel::AutoCommit)]
@@ -539,67 +319,6 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'The failed insert must not persist.');
         LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'Definition must survive failed execution.');
         LibraryAssert.IsTrue(LineDef.Get(DefinitionCode, 'XLINE'), 'Child must survive failed execution.');
-        DataExchDef.Delete(true);
-        Commit();
-    end;
-
-    /// <summary>A real postwrite table event failure rolls back the affected tree.</summary>
-    [Test]
-    [TransactionModel(TransactionModel::AutoCommit)]
-    procedure Scenario_AC04_AfterDeleteFailure_RollsBack()
-    var
-        DataExchDef: Record "Data Exch. Def";
-        LineDef: Record "Data Exch. Line Def";
-        Faults: Codeunit "DataExch Refusal82 Tests ori";
-        DefinitionCode: Code[20];
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] Committed fixtures before the operation under test, and a targeted standard table-event failure.
-        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
-        CreateLine(DefinitionCode);
-        Commit();
-        Faults.ConfigureFailure(DefinitionCode, false, true);
-        BindSubscription(Faults);
-        // [WHEN] The operation mutates and the standard event subscriber raises.
-        asserterror FailOnReturnedResponse(DispatchDelete(DefinitionCode));
-        LibraryAssert.ExpectedError('X82 postwrite failure');
-        UnbindSubscription(Faults);
-        // [THEN] The mutation rolled back, including trigger-deleted children.
-        LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'The failed insert must not persist.');
-        LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'Definition must survive failed execution.');
-        LibraryAssert.IsTrue(LineDef.Get(DefinitionCode, 'XLINE'), 'Child must survive failed execution.');
-        DataExchDef.Delete(true);
-        Commit();
-    end;
-
-    /// <summary>A later failure rolls back a prior successful OmitCommit call.</summary>
-    [Test]
-    [TransactionModel(TransactionModel::AutoCommit)]
-    procedure Scenario_AC04_ChainedFailure_RollsBackEarlierImport()
-    var
-        DataExchDef: Record "Data Exch. Def";
-        Faults: Codeunit "DataExch Refusal82 Tests ori";
-        DefinitionCode: Code[20];
-        DeleteDefinitionCode: Code[20];
-    begin
-        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
-        // [GIVEN] A committed definition and a failure only on the later delete.
-        DefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
-        // #168 refuses deletion of a referenced definition. Fail on a separate unreferenced
-        // definition so this still proves rollback after a real later database write.
-        DeleteDefinitionCode := CreateDefinition(Enum::"Data Exchange Definition Type"::"Generic Import");
-        Commit();
-        Faults.ConfigureFailure(DeleteDefinitionCode, false, true);
-        BindSubscription(Faults);
-        // [WHEN] Two real default OmitCommit dispatches execute in one caller chain.
-        asserterror ImportThenDelete(DefinitionCode, DeleteDefinitionCode);
-        LibraryAssert.ExpectedError('X82 postwrite failure');
-        UnbindSubscription(Faults);
-        // [THEN] The earlier successful import was not implicitly committed.
-        LibraryAssert.AreEqual(0, EntryCount(DefinitionCode), 'An earlier chained write must roll back.');
-        LibraryAssert.IsTrue(DataExchDef.Get(DeleteDefinitionCode), 'The failed delete must roll back.');
-        DataExchDef.Delete(true);
-        LibraryAssert.IsTrue(DataExchDef.Get(DefinitionCode), 'The import definition survives.');
         DataExchDef.Delete(true);
         Commit();
     end;
@@ -971,16 +690,6 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
             Error(FailureErr);
     end;
 
-    local procedure ImportThenDelete(DefinitionCode: Code[20]; DeleteDefinitionCode: Code[20])
-    var
-        Response: JsonObject;
-    begin
-        Response := DispatchImportInline(DefinitionCode, 'X82,Row');
-        AssertText(Response, 'status', 'Success');
-        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'First call must actually write before the later failure.');
-        FailOnReturnedResponse(DispatchDelete(DeleteDefinitionCode));
-    end;
-
     local procedure CreateDefinition(DefinitionType: Enum "Data Exchange Definition Type"): Code[20]
     var
         DataExchDef: Record "Data Exch. Def";
@@ -1042,16 +751,6 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
                 if ParameterToken.AsValue().AsText() = ParameterName then
                     exit(true);
         exit(false);
-    end;
-
-    local procedure DispatchDelete(DefinitionCode: Text): JsonObject
-    var
-        Request: JsonObject;
-        Payload: Text;
-    begin
-        Request.Add('code', DefinitionCode);
-        Request.WriteTo(Payload);
-        exit(Dispatch("Message Type ori"::"DataExchange.Definition.Delete", Payload));
     end;
 
     local procedure Dispatch(MessageType: Enum "Message Type ori"; Payload: Text) Response: JsonObject

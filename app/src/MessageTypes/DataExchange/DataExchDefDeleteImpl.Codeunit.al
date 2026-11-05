@@ -1,28 +1,20 @@
 namespace Origo.Bifrost.Attachments;
 
-using Microsoft.Bank.Setup;
-using Microsoft.Finance.Currency;
-using Microsoft.Finance.GeneralLedger.Setup;
 using Origo.Bifrost;
 using System.IO;
 
-/// <summary>Refuses invalid or referenced definitions before deleting a Data Exchange definition.</summary>
+/// <summary>
+/// Disabled message type: Data Exchange definitions are deleted in Business Central itself (#211).
+/// The enum value stays so that no AppSource breaking change is made; every call is refused and deletes nothing.
+/// </summary>
 codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
 {
     Access = Internal;
-    TableNo = "Message Argument ori";
 
-    trigger OnRun()
-    begin
-        DeleteDefinition(Rec);
-    end;
-
-    /// <summary>Reports whether the caller can write the affected table.</summary>
+    /// <summary>Reports that this message type is disabled; it deletes nothing.</summary>
     procedure IsEnabled(): Boolean
-    var
-        DataExchDef: Record "Data Exch. Def";
     begin
-        exit(DataExchDef.WritePermission());
+        exit(false);
     end;
 
     /// <summary>Returns the table associated with this message type.</summary>
@@ -34,7 +26,7 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     /// <summary>Describes the current operation.</summary>
     procedure GetDescription(): Text[250]
     var
-        DescriptionLbl: Label 'Deletes a Data Exchange definition that is not referenced.', Comment = 'is-IS=Eyðir skilgreiningu gagnaskipta sem ekki er vísað í.';
+        DescriptionLbl: Label 'Disabled. Delete Data Exchange definitions in Business Central.', Comment = 'is-IS=Óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.';
     begin
         exit(DescriptionLbl);
     end;
@@ -50,7 +42,7 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     /// <summary>Explains when to select this message type.</summary>
     procedure GetSelectionDescription(): Text
     var
-        SelectionLbl: Label 'Deletes a definition. Refuses a definition used by a Data Exchange Type or Bank Export/Import Setup.', Comment = 'is-IS=Eyðir skilgreiningu. Hafnar skilgreiningu sem er notuð af gerð gagnaskipta eða uppsetningu bankaútflutnings eða innflutnings.';
+        SelectionLbl: Label 'Disabled; do not select. Always refused and deletes nothing. Delete Data Exchange definitions in Business Central.', Comment = 'is-IS=Óvirkt; ekki velja. Er alltaf hafnað og eyðir engu. Eyddu skilgreiningum gagnaskipta í Business Central.';
     begin
         exit(SelectionLbl);
     end;
@@ -121,8 +113,8 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        Related.Add(ContractMgt.RelatedEntry('DataExchange.Definition.Get', 'Read the definition before deleting it.'));
-        Related.Add(ContractMgt.RelatedEntry('DataExchange.Type.List', 'See which type still uses the definition.'));
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Definition.Get', 'Read a definition.'));
+        Related.Add(ContractMgt.RelatedEntry('DataExchange.Definition.List', 'Find a definition code.'));
         exit(true);
     end;
 
@@ -148,7 +140,7 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     /// <summary>Summarizes the operation.</summary>
     procedure GetOverview(var Overview: Text): Boolean
     var
-        OverviewLbl: Label 'Deletes one Data Exchange definition after checking references.', Locked = true;
+        OverviewLbl: Label 'Disabled. DataExchange.Definition.Delete is refused with PreconditionFailed and deletes nothing. Delete Data Exchange definitions in Business Central.', Locked = true;
     begin
         Overview := OverviewLbl;
         exit(true);
@@ -157,7 +149,7 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     /// <summary>Explains operation restrictions.</summary>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Does not delete a definition while Data Exchange entries reference it; delete those entries with DataExchange.Entry.Delete first. Does not delete a definition that a Data Exchange Type, a Bank Export/Import Setup (which bank accounts use as payment export, statement import or positive pay format), the payroll import format of the General Ledger Setup or a currency exchange rate service still uses.', Locked = true;
+        NotesLbl: Label 'Disabled since 05.11.2026 (#211): the platform does not provide message types that delete definitions. The message type stays registered so that existing callers get a typed refusal instead of an unknown-type error. Delete Data Exchange definitions in Business Central, or delete entries with DataExchange.Entry.Delete.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);
@@ -169,100 +161,18 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
         exit(Enum::"Msg Direction ori"::Inbound);
     end;
 
-    /// <summary>Validates the key and references before deleting; execution errors propagate in the caller transaction.</summary>
+    /// <summary>Refuses every call with a typed error; no definition is read or deleted.</summary>
     /// <param name="Argument">The licensed request and response.</param>
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         Reader: Codeunit "Storage Request Reader ori";
+        DisabledErr: Label 'DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.', Comment = 'is-IS=DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.';
+        DisabledExpectedLbl: Label 'a message type that is enabled; DataExchange.Definition.Delete is disabled', Comment = 'is-IS=virk skilaboðagerð; DataExchange.Definition.Delete er óvirk';
+        DisabledNextStepLbl: Label 'Delete the Data Exchange definition in Business Central (page Data Exchange Definitions). Use DataExchange.Entry.Delete to delete entries.', Comment = 'is-IS=Eyddu skilgreiningu gagnaskipta í Business Central (síðan Skilgreiningar gagnaskipta). Notaðu DataExchange.Entry.Delete til að eyða færslum.';
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
-        // A non-object request is refused here, before the worker reads it with GetRequestJson.
-        if not Reader.ReadMutationRequest(Argument) then begin
-            Reader.RespondIfErrors(Argument);
-            exit;
-        end;
-        // No Boolean return: retain the caller transaction and the existing Foundation exception boundary.
-        Codeunit.Run(Codeunit::"DataExch Def Delete Impl ori", Argument);
-    end;
-
-    local procedure DeleteDefinition(var Argument: Record "Message Argument ori")
-    var
-        DataExchDef: Record "Data Exch. Def";
-        DataExchType: Record "Data Exchange Type";
-        DataExch: Record "Data Exch.";
-        BankExportImportSetup: Record "Bank Export/Import Setup";
-        Reader: Codeunit "Storage Request Reader ori";
-        RequestMgt: Codeunit "Storage Request Mgt ori";
-        RequestJson: JsonObject;
-        ResponseJson: JsonObject;
-        DefCode: Code[20];
-        EntriesExistErr: Label 'Data Exchange entries still use definition %1. The definition was not deleted.', Comment = '%1 = definition code||is-IS=Gagnaskiptafærslur nota enn skilgreiningu %1. Skilgreiningunni var ekki eytt.';
-        NoEntriesLbl: Label 'a definition with no Data Exchange entries', Comment = 'is-IS=skilgreining án gagnaskiptafærslna';
-        DeleteEntriesLbl: Label 'Use DataExchange.Entry.List to find the entries and DataExchange.Entry.Delete to delete them before retrying.', Comment = 'is-IS=Notaðu DataExchange.Entry.List til að finna færslurnar og DataExchange.Entry.Delete til að eyða þeim áður en þú reynir aftur.';
-        NotFoundErr: Label 'Data Exchange definition %1 was not found.', Comment = '%1 = definition code||is-IS=Skilgreining gagnaskipta %1 fannst ekki.';
-        UsedErr: Label 'Data Exchange definition %1 is referenced and cannot be deleted.', Comment = '%1 = definition code||is-IS=Vísað er í skilgreiningu gagnaskipta %1 og ekki er hægt að eyða henni.';
-        DefinitionExpectedLbl: Label 'an existing Data Exchange definition', Comment = 'is-IS=fyrirliggjandi skilgreining gagnaskipta';
-        UnreferencedExpectedLbl: Label 'a definition not used by a Data Exchange Type, a Bank Export/Import Setup (and so a bank account), the payroll import format of the General Ledger Setup or a currency exchange rate service', Comment = 'is-IS=skilgreining sem er ekki notuð í gerð gagnaskipta, uppsetningu bankaútflutnings eða bankainnflutnings (og þar með bankareikningi), sniði launainnflutnings í fjárhagsgrunni eða gengisþjónustu';
-        SelectDefinitionLbl: Label 'Call DataExchange.Definition.List and use the exact definition code.', Comment = 'is-IS=Kallaðu á DataExchange.Definition.List og notaðu nákvæman kóða skilgreiningarinnar.';
-        RemoveReferenceLbl: Label 'Review the Data Exchange Types, Bank Export/Import Setup, General Ledger Setup and currency exchange rate services that use this definition. Change those references before retrying deletion.', Comment = 'is-IS=Farðu yfir gerðir gagnaskipta, uppsetningu bankaútflutnings eða bankainnflutnings, fjárhagsgrunn og gengisþjónustur sem nota skilgreininguna. Breyttu þeim tilvísunum áður en þú reynir að eyða aftur.';
-    begin
-        RequestJson := Argument.GetRequestJson();
-        Reader.ReadMutationCode(Argument, RequestJson, 'code', DefCode);
-        if Reader.RespondIfErrors(Argument) then
-            exit;
-        // Refuse missing caller grants before reference reads or the delete trigger can raise a platform error.
-        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Def", false) then
-            exit;
-        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Def", true) then
-            exit;
-        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exchange Type", false) then
-            exit;
-        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Bank Export/Import Setup", false) then
-            exit;
-        DataExchDef.ReadIsolation := IsolationLevel::UpdLock;
-        if not DataExchDef.Get(DefCode) then begin
-            Argument.AddError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(NotFoundErr, DefCode), 'code', DefCode, DefinitionExpectedLbl, SelectDefinitionLbl);
-            Reader.RespondIfErrors(Argument);
-            exit;
-        end;
-        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch.", false) then
-            exit;
-        DataExch.ReadIsolation := IsolationLevel::UpdLock;
-        DataExch.SetRange("Data Exch. Def Code", DefCode);
-        if not DataExch.IsEmpty() then
-            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(EntriesExistErr, DefCode), 'code', DefCode, NoEntriesLbl, DeleteEntriesLbl);
-        DataExchType.ReadIsolation := IsolationLevel::ReadCommitted;
-        DataExchType.SetRange("Data Exch. Def. Code", DefCode);
-        BankExportImportSetup.ReadIsolation := IsolationLevel::ReadCommitted;
-        BankExportImportSetup.SetRange("Data Exch. Def. Code", DefCode);
-        if not DataExchType.IsEmpty() or not BankExportImportSetup.IsEmpty() or UsedBySetup(DefCode) then
-            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(UsedErr, DefCode), 'code', DefCode, UnreferencedExpectedLbl, RemoveReferenceLbl);
-        if Reader.RespondIfErrors(Argument) then
-            exit;
-        DataExchDef.Delete(true);
-        ResponseJson.Add('code', DefCode);
-        RequestMgt.RespondSuccess(Argument, ResponseJson);
-    end;
-    // Bank accounts reach a definition through Bank Export/Import Setup, checked above. These setups
-    // name a definition directly; a caller who cannot read one of them cannot change it either.
-    local procedure UsedBySetup(DefCode: Code[20]): Boolean
-    var
-        GeneralLedgerSetup: Record "General Ledger Setup";
-        CurrExchRateUpdateSetup: Record "Curr. Exch. Rate Update Setup";
-    begin
-        if GeneralLedgerSetup.ReadPermission() then begin
-            GeneralLedgerSetup.ReadIsolation := IsolationLevel::ReadCommitted;
-            GeneralLedgerSetup.SetRange("Payroll Trans. Import Format", DefCode);
-            if not GeneralLedgerSetup.IsEmpty() then
-                exit(true);
-        end;
-        if CurrExchRateUpdateSetup.ReadPermission() then begin
-            CurrExchRateUpdateSetup.ReadIsolation := IsolationLevel::ReadCommitted;
-            CurrExchRateUpdateSetup.SetRange("Data Exch. Def Code", DefCode);
-            if not CurrExchRateUpdateSetup.IsEmpty() then
-                exit(true);
-        end;
-        exit(false);
+        Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, DisabledErr, 'type', 'DataExchange.Definition.Delete', DisabledExpectedLbl, DisabledNextStepLbl);
+        Reader.RespondIfErrors(Argument);
     end;
 }
