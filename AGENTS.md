@@ -105,8 +105,8 @@ codeunit's contract procedures delegate to it with the type's name.
 `Storage Type ori` is an extensible enum implementing `Storage Connector ori`. The single
 production value, *External File Storage*, is implemented by `Storage Ext File Impl ori`, which
 delegates to the BC External File Storage facade using the connector and file account registered
-on the `Storage Setup ori` row. The test app adds a `Mock` value backed by an in-memory file
-system, which is why almost every test runs without a live storage account.
+on the `Storage Setup ori` row. The product also includes a credential-free, company-local `Mock` value. The test app adds
+a separate `Test Mock` value backed by an in-memory file system for fault injection.
 
 ### Request Resolution
 

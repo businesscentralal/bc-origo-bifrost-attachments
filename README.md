@@ -117,6 +117,7 @@ caller ─► Bifröst Foundation (Queue → Task → Data)
         Interface "Storage Connector ori"          ("Storage Type ori" selects the implementation)
              │
              ├─ production: "Storage Ext File Impl ori" ──► BC External File Storage facade ──► Azure Blob / File Share / SharePoint
+             ├─ Mock:       "Storage Mock Impl ori"      ──► company-local storage, no HTTP
              └─ test:       "Storage Mock Impl"          ──► in-memory mock (test app only)
 ```
 
@@ -154,7 +155,7 @@ Supporting paths:
 | --- | --- |
 | `Code` | The `storageCode` callers pass in every message. |
 | `Description` | Free text shown in lists and returned by `Storage.Account.List`. |
-| `Storage Type` | Selects the `Storage Connector ori` implementation (production: *External File Storage*). |
+| `Storage Type` | Selects the `Storage Connector ori` implementation (*External File Storage* or credential-free *Mock*; partner extensions supported). |
 | `Connector` | The BC `Ext. File Storage Connector` to use. |
 | `File Account Id` / `File Account Name` | The registered File Account this connection resolves to. |
 | `Base Path` | Root all paths are resolved against. |

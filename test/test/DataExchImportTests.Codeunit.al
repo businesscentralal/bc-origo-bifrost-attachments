@@ -226,14 +226,14 @@ codeunit 96242 "DataExch Import Tests ori"
         UploadId: Text;
         UploadGuid: Guid;
     begin
-        // [SCENARIO] AC05: a malformed upload rolls back; the session stays open with its chunks for a retry.
+        // [SCENARIO] AC05: an unreadable upload refuses before writes and retains chunks for retry.
         Fixture.InitializeStorage();
         DefCode := Fixture.CreateImportDefinition(1);
         UploadId := BeginAndAppend('bad.csv', 'code,name,amount');
         // asserterror rolls back the open transaction; commit the session so only the commit attempt is undone.
         Commit();
 
-        asserterror CommitToDataExchange(UploadId, DefCode, false, false);
+        Fixture.AssertRefusal(CommitToDataExchange(UploadId, DefCode, false, false), 'InvalidParameterFormat', 'uploadId');
 
         LibraryAssert.AreEqual(0, EntryCount(DefCode), 'AC05 upload leaves no entry.');
         Evaluate(UploadGuid, UploadId);

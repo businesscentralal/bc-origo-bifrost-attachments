@@ -288,7 +288,7 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         MockState.Reset();
         StorageSetup.Init();
         StorageSetup.Code := NewCode();
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
     end;

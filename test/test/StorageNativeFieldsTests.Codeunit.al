@@ -179,7 +179,7 @@ codeunit 96217 "Storage Native Fields Tests"
             StorageSetup.Delete();
         StorageSetup.Init();
         StorageSetup.Code := MockCodeTok;
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
         TempBlob.CreateOutStream(ContentOut);
@@ -487,7 +487,7 @@ codeunit 96217 "Storage Native Fields Tests"
         MockState.Reset();
         StorageSetup.Init();
         StorageSetup.Code := MockCodeTok;
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
         TempBlob.CreateOutStream(ContentOut);

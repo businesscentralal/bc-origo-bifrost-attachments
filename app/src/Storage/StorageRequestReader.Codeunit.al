@@ -258,7 +258,7 @@ codeunit 10035194 "Storage Request Reader ori"
         if TryDecodeBase64(ContentBase64, TempBlob) then
             exit(true);
         Clear(TempBlob);
-        Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(NotBase64Err, ParameterName), ParameterName, '', Base64ExpectedLbl, SendBase64Lbl);
+        Argument.AddError("Bifrost Error Code ori"::InvalidParameterFormat, StrSubstNo(NotBase64Err, ParameterName), ParameterName, CopyStr(ContentBase64, 1, 250), Base64ExpectedLbl, SendBase64Lbl);
         exit(false);
     end;
 

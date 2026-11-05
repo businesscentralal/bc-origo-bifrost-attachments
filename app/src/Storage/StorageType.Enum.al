@@ -22,4 +22,10 @@ enum 10035136 "Storage Type ori" implements "Storage Connector ori"
         Caption = 'External File Storage', Comment = 'is-IS=Ytri skráageymsla';
         Implementation = "Storage Connector ori" = "Storage Ext File Impl ori";
     }
+    /// <summary>Company-local storage for verification without credentials or network requests.</summary>
+    value(1; Mock)
+    {
+        Caption = 'Mock', Comment = 'is-IS=Prófunargeymsla';
+        Implementation = "Storage Connector ori" = "Storage Mock Impl ori";
+    }
 }

@@ -45,6 +45,7 @@ page 10035137 "Storage Card ori"
                 field("Storage Type"; Rec."Storage Type")
                 {
                     ApplicationArea = All;
+                    Visible = ShowStorageType;
                 }
                 field(Connector; Rec.Connector)
                 {
@@ -108,6 +109,16 @@ page 10035137 "Storage Card ori"
             }
         }
     }
+
+    var
+        ShowStorageType: Boolean;
+
+    trigger OnOpenPage()
+    var
+        StorageType: Enum "Storage Type ori";
+    begin
+        ShowStorageType := StorageType.Names().Count() > 2;
+    end;
 
     /// <summary>Opens the account lookup for the chosen connector and stores the selection.</summary>
     local procedure LookupFileAccount()
