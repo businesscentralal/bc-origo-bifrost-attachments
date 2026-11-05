@@ -59,11 +59,8 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
 
     /// <summary>Reports that this operation has no envelope target.</summary>
     procedure GetTarget(var Target: JsonArray): Boolean
-    var
-        ContractParts: Codeunit "Storage Contract Parts ori";
     begin
-        Target := ContractParts.GetDataExchangeTarget('DataExchange.Definition.Delete');
-        exit(true);
+        exit(false);
     end;
 
     /// <summary>Describes the accepted request keys.</summary>

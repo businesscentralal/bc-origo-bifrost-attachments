@@ -81,7 +81,7 @@ codeunit 96279 "DataExch Def Del211 Tests ori"
         LibraryAssert.AreEqual(1, Errors.Count(), 'The disabled error is the only documented error.');
         Errors.Get(0, ErrorToken);
         LibraryAssert.AreEqual('PreconditionFailed', Fixture.ReadText(ErrorToken.AsObject(), 'code'), 'The documented error code.');
-        LibraryAssert.IsTrue(Fixture.ReadText(ErrorToken.AsObject(), 'nextStep').Contains('Business Central'), 'The next step names Business Central.');
+        LibraryAssert.IsTrue(Fixture.ReadText(ErrorToken.AsObject(), 'fix').Contains('Business Central'), 'The next step names Business Central.');
     end;
 
     /// <summary>AC3: the discovery text says the type is disabled in both languages.</summary>

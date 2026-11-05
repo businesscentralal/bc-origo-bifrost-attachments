@@ -717,6 +717,24 @@
           <note from="Developer" annotates="general" priority="2">%1 = type name||is-IS=Óþekkt gerð skilgreiningar gagnaskipta '%1'.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Data Exchange Query ori - NamedType UnknownTypeErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2881381544 - Method 3571782927 - NamedType 3791449231" size-unit="char" translate="yes" xml:space="preserve">
+          <source>DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.</source>
+          <target>DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method ExecuteBifrostTask - NamedType DisabledErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2881381544 - Method 3571782927 - NamedType 3479032888" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a message type that is enabled; DataExchange.Definition.Delete is disabled</source>
+          <target>virk skilaboðagerð; DataExchange.Definition.Delete er óvirk</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=virk skilaboðagerð; DataExchange.Definition.Delete er óvirk</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method ExecuteBifrostTask - NamedType DisabledExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2881381544 - Method 3571782927 - NamedType 584457273" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delete the Data Exchange definition in Business Central (page Data Exchange Definitions). Use DataExchange.Entry.Delete to delete entries.</source>
+          <target>Eyddu skilgreiningu gagnaskipta í Business Central (síðan Skilgreiningar gagnaskipta). Notaðu DataExchange.Entry.Delete til að eyða færslum.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Eyddu skilgreiningu gagnaskipta í Business Central (síðan Skilgreiningar gagnaskipta). Notaðu DataExchange.Entry.Delete til að eyða færslum.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Def Delete Impl ori - Method ExecuteBifrostTask - NamedType DisabledNextStepLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2881381544 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Disabled. Delete Data Exchange definitions in Business Central.</source>
           <target>Óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.</target>

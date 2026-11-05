@@ -405,9 +405,11 @@ codeunit 96265 "Storage Contract Tests ori"
         Ordinal: Integer;
     begin
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            if (Ordinal >= 10035135) and (Ordinal <= 10035173) then
+            // DataExchange.Definition.Delete (10035171) is disabled (#211): it has no target, parameters, response fields
+            // or success example. Its disabled contract is tested in "DataExch Def Del211 Tests ori".
+            if (Ordinal >= 10035135) and (Ordinal <= 10035173) and (Ordinal <> 10035171) then
                 Ordinals.Add(Ordinal);
-        LibraryAssert.AreEqual(39, Ordinals.Count(), 'Bifröst Attachments declares 39 message types.');
+        LibraryAssert.AreEqual(38, Ordinals.Count(), 'Bifröst Attachments declares 39 message types, 38 of them enabled.');
     end;
 
     local procedure TypeName(Ordinal: Integer): Text

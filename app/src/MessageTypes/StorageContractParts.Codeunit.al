@@ -1261,11 +1261,11 @@ codeunit 10035183 "Storage Contract Parts ori"
     procedure GetEffect(MessageType: Text) Effect: JsonObject
     var
         Changes: JsonToken;
-        DisabledChangesLbl: Label 'Disabled: nothing is read or changed. Every call is refused.', Locked = true;
+        DisabledChangesLbl: Label 'Disabled: nothing is deleted or changed. Every call is refused.', Locked = true;
         DisabledPreconditionsLbl: Label 'None. The message type is disabled; delete Data Exchange definitions in Business Central.', Locked = true;
     begin
         if MessageType = 'DataExchange.Definition.Delete' then begin
-            Effect.Add('effect', 'read');
+            Effect.Add('effect', 'write');
             Effect.Add('changes', DisabledChangesLbl);
             Effect.Add('idempotent', true);
             Effect.Add('permissionSet', 'BIFROST DataExch ori');
