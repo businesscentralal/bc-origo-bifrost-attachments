@@ -1744,9 +1744,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method FindCodeunitBlocker - NamedType IncompatibleErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2058621091 - Method 2914562212 - NamedType 4120398360" size-unit="char" translate="yes" xml:space="preserve">
-          <source>a codeunit that accepts Data Exch. (table 1220) or has no table requirement</source>
-          <target>kóðaeining sem tekur við Data Exch. (tafla 1220) eða krefst engrar töflu</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=kóðaeining sem tekur við Data Exch. (tafla 1220) eða krefst engrar töflu</note>
+          <source>a codeunit that accepts Data Exch. (table 1220)</source>
+          <target>kóðaeining sem tekur við Data Exch. (tafla 1220)</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=kóðaeining sem tekur við Data Exch. (tafla 1220)</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method FindCodeunitBlocker - NamedType ExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2058621091 - Method 2914562212 - NamedType 680257497" size-unit="char" translate="yes" xml:space="preserve">
