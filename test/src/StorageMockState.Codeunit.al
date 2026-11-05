@@ -21,9 +21,12 @@ codeunit 96201 "Storage Mock State"
         DeleteCalls: Integer;
         ListCalls: Integer;
 
-    /// <summary>Clears all mock files and directories.</summary>
+    /// <summary>Clears mock state and the reserved X75 fixtures left by historical storage tests.</summary>
     procedure Reset()
+    var
+        Fixture: Codeunit "DataExch Fixture ori";
     begin
+        Fixture.CleanupLegacyStorageFixtures();
         Clear(Files);
         Clear(Directories);
         RejectNextWrite := false;

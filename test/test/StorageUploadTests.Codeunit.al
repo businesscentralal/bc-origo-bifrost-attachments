@@ -24,6 +24,147 @@ codeunit 96205 "Storage Upload Tests"
         MockCodeTok: Label 'MOCK', Locked = true;
         TestCustNoTok: Label 'BIFTS-UPL-TST', Locked = true;
 
+    /// <summary>Historical X75 links without setups cannot break the next storage initializer.</summary>
+    [Test]
+    procedure InitializeRemovesHistoricalX75Fixtures()
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        Link: Record "Storage Attachment Link ori";
+        Session: Record "Storage Upload Session ori";
+        Chunk: Record "Storage Upload Chunk ori";
+        OtherSetup: Record "Storage Setup ori";
+        OtherLink: Record "Storage Attachment Link ori";
+        Fixture: Codeunit "DataExch Fixture ori";
+        MockState: Codeunit "Storage Mock State";
+        OwnedCode: Code[20];
+        OtherCode: Code[20];
+        UploadId: Text;
+        Path: Text;
+        Index: Integer;
+        OwnedUploadIds: List of [Guid];
+        OwnedUploadId: Guid;
+    begin
+        // PR #182 / issue #166 amendment: fixture initialization has no page action.
+        Link.ReadIsolation := IsolationLevel::ReadCommitted;
+        Session.ReadIsolation := IsolationLevel::ReadCommitted;
+        Chunk.ReadIsolation := IsolationLevel::ReadCommitted;
+        OtherSetup.ReadIsolation := IsolationLevel::ReadCommitted;
+        OtherLink.ReadIsolation := IsolationLevel::ReadCommitted;
+        // [GIVEN] Five dangling test links, each with an upload session/chunk and mock file.
+        Initialize();
+        OtherCode := Fixture.NewCode('XOTHER');
+        OtherSetup.Code := OtherCode;
+        OtherSetup."Storage Type" := OtherSetup."Storage Type"::Mock;
+        OtherSetup.Enabled := true;
+        OtherSetup.Insert();
+        OtherLink."Table ID" := Database::"Incoming Document Attachment";
+        OtherLink."Record System Id" := CreateGuid();
+        OtherLink."Storage Code" := OtherCode;
+        OtherLink."Storage Path" := 'Xlegacy-unrelated.txt';
+        OtherLink.Insert();
+        for Index := 1 to 5 do begin
+            case Index of
+                1, 3:
+                    OwnedCode := 'X75';
+                2, 4:
+                    OwnedCode := 'X75READ';
+                5:
+                    OwnedCode := 'X75ALIAS';
+            end;
+            Link.Init();
+            Link."Table ID" := Database::"Incoming Document Attachment";
+            Link."Record System Id" := CreateGuid();
+            Link."Storage Code" := OwnedCode;
+            Link."Storage Path" := 'Xlegacy-owned-' + Format(Index, 0, 9) + '.txt';
+            Link.Insert();
+            MockState.PutFile(Link."Storage Path", Fixture.Encode('stale owned bytes'));
+            Session.Init();
+            Session."Upload Id" := CreateGuid();
+            Session."Storage Code" := OwnedCode;
+            Session.Insert();
+            OwnedUploadIds.Add(Session."Upload Id");
+            Chunk.Init();
+            Chunk."Upload Id" := Session."Upload Id";
+            Chunk."Sequence No." := 1;
+            Chunk.Insert();
+        end;
+        Commit();
+        // [WHEN] Any storage initializer resets its mock state, before X75's own tests run.
+        Initialize();
+        // [THEN] Only the reserved historical fixtures disappear, including their upload chunks.
+        Link.SetFilter("Storage Code", 'X75*');
+        Session.SetFilter("Storage Code", 'X75*');
+        LibraryAssert.IsTrue(Link.IsEmpty(), 'Initialization removes stale X75 links before resolving storage writes.');
+        LibraryAssert.IsTrue(Session.IsEmpty(), 'Initialization removes stale X75 upload sessions.');
+        foreach OwnedUploadId in OwnedUploadIds do
+            LibraryAssert.IsFalse(Chunk.Get(OwnedUploadId, 1), 'Deleting each owned session removes its chunk.');
+        for Index := 1 to 5 do
+            LibraryAssert.IsFalse(MockState.HasFile('Xlegacy-owned-' + Format(Index, 0, 9) + '.txt'), 'No stale owned mock file survives.');
+        LibraryAssert.IsTrue(OtherSetup.Get(OtherCode), 'Unrelated setup survives historical cleanup.');
+        LibraryAssert.IsTrue(OtherLink.Get(OtherLink."Table ID", OtherLink."Record System Id"), 'Unrelated link survives historical cleanup.');
+        BeginUpload('Xlegacy-recovered.txt', '', UploadId, Path);
+        AppendChunk(UploadId, 1, 'recovered');
+        CommitUpload(TempArgument, UploadId);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Recovered fixtures allow the public upload to commit.');
+        LibraryAssert.AreEqual('recovered', GetStoredText(Path), 'Recovered storage writes retain their bytes.');
+        OtherLink.Delete();
+        OtherSetup.Delete();
+        Fixture.CleanupStorage(MockCodeTok);
+    end;
+
+    /// <summary>Resetting upload fixtures preserves another test's connection and attachment link.</summary>
+    [Test]
+    procedure InitializeDoesNotOrphanOtherLinks()
+    var
+        OtherSetup: Record "Storage Setup ori";
+        OtherLink: Record "Storage Attachment Link ori";
+        OwnedLink: Record "Storage Attachment Link ori";
+        Session: Record "Storage Upload Session ori";
+        Fixture: Codeunit "DataExch Fixture ori";
+        OtherCode: Code[20];
+        UploadGuid: Guid;
+        UploadId: Text;
+        Path: Text;
+    begin
+        // [GIVEN] A separately owned mock connection and an attachment link, as left by a preceding codeunit.
+        OtherCode := CopyStr('X' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(OtherCode));
+        OtherSetup.Code := OtherCode;
+        OtherSetup."Storage Type" := OtherSetup."Storage Type"::Mock;
+        OtherSetup.Enabled := true;
+        OtherSetup.Insert();
+        OtherLink."Table ID" := Database::"Incoming Document Attachment";
+        OtherLink."Record System Id" := CreateGuid();
+        OtherLink."Storage Code" := OtherCode;
+        OtherLink."Storage Path" := 'Xisolated-other-file.txt';
+        OtherLink.Insert();
+        // [WHEN] This codeunit prepares its own setup and begins a public upload.
+        Initialize();
+        LibraryAssert.IsTrue(OtherSetup.Get(OtherCode), 'Initialize must not delete another connection and orphan its links.');
+        LibraryAssert.IsTrue(OtherLink.Get(OtherLink."Table ID", OtherLink."Record System Id"), 'Initialize must preserve the unrelated link.');
+        BeginUpload('Xisolated-upload.txt', '', UploadId, Path);
+        LibraryAssert.AreNotEqual('', UploadId, 'Unrelated links must not prevent this test from beginning its upload.');
+        // The shared Data Exchange initializer must preserve the same unrelated fixtures.
+        Fixture.InitializeStorage();
+        LibraryAssert.IsTrue(OtherSetup.Get(OtherCode), 'Shared initialization must preserve another setup.');
+        LibraryAssert.IsTrue(OtherLink.Get(OtherLink."Table ID", OtherLink."Record System Id"), 'Shared initialization must preserve another link.');
+        OwnedLink."Table ID" := Database::"Incoming Document Attachment";
+        OwnedLink."Record System Id" := CreateGuid();
+        OwnedLink."Storage Code" := MockCodeTok;
+        OwnedLink."Storage Path" := 'Xisolated-owned-file.txt';
+        OwnedLink.Insert();
+        BeginUpload('Xisolated-cleanup.txt', '', UploadId, Path);
+        Evaluate(UploadGuid, UploadId);
+        LibraryAssert.IsTrue(Session.Get(UploadGuid), 'Cleanup regression owns an upload session.');
+        Fixture.CleanupStorage(MockCodeTok);
+        LibraryAssert.IsFalse(Session.Get(UploadGuid), 'Scoped cleanup removes its upload session and chunks.');
+        LibraryAssert.IsFalse(OwnedLink.Get(OwnedLink."Table ID", OwnedLink."Record System Id"), 'Scoped cleanup removes its own link.');
+        LibraryAssert.IsTrue(OtherSetup.Get(OtherCode), 'Scoped cleanup preserves another setup.');
+        LibraryAssert.IsTrue(OtherLink.Get(OtherLink."Table ID", OtherLink."Record System Id"), 'Scoped cleanup preserves another link.');
+        // [THEN] Only the fixtures created by this regression are explicitly removed.
+        OtherLink.Delete();
+        OtherSetup.Delete();
+    end;
+
     [Test]
     procedure BeginAppendCommit_TwoChunks_RoundtripsContent()
     var
@@ -553,6 +694,7 @@ codeunit 96205 "Storage Upload Tests"
     procedure DataRecordsSet_OnStorageSetup_ReturnsError()
     var
         StorageSetup: Record "Storage Setup ori";
+        OtherStorageSetup: Record "Storage Setup ori";
         TempArgument: Record "Message Argument ori" temporary;
         SetRequest: JsonObject;
         GetRequest: JsonObject;
@@ -566,12 +708,19 @@ codeunit 96205 "Storage Upload Tests"
         RecordToken: JsonToken;
         PrimaryKeyToken: JsonToken;
         OriginalDescription: Text[100];
+        SetupViewTok: Label 'WHERE(Code=CONST(%1))', Locked = true;
     begin
         // [SCENARIO] S6 AC01 (#19): Data.Records.Set on Storage Setup ori returns an error.
         // Reading that table through Data.Records.Get still succeeds.
         Initialize();
         StorageSetup.Get(MockCodeTok);
         OriginalDescription := StorageSetup.Description;
+
+        // [GIVEN] Another connection exists independently of this test's MOCK connection
+        OtherStorageSetup.Init();
+        OtherStorageSetup.Code := CopyStr('XSETUP' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(OtherStorageSetup.Code));
+        OtherStorageSetup.Description := 'Unrelated setup isolation fixture';
+        OtherStorageSetup.Insert();
 
         // [GIVEN] A generic write that would change the setup description
         PrimaryKey.Add('Code', MockCodeTok);
@@ -596,6 +745,7 @@ codeunit 96205 "Storage Upload Tests"
 
         // [WHEN] The same table is read through Data.Records.Get
         GetRequest.Add('tableName', 'Storage Setup ori');
+        GetRequest.Add('tableView', StrSubstNo(SetupViewTok, MockCodeTok));
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Data.Records.Get", GetRequest);
 
         // [THEN] The read succeeds and returns the setup row
@@ -608,6 +758,9 @@ codeunit 96205 "Storage Upload Tests"
         RecordObject := RecordToken.AsObject();
         LibraryAssert.IsTrue(RecordObject.Get('primaryKey', PrimaryKeyToken), 'The returned row should include its primary key.');
         LibraryAssert.AreEqual(MockCodeTok, ReadObjText(PrimaryKeyToken.AsObject(), 'Code'), 'The returned row should be the setup connection.');
+        LibraryAssert.IsTrue(OtherStorageSetup.Get(OtherStorageSetup.Code), 'The unrelated setup must survive the scoped read and rejected write.');
+        OtherStorageSetup.Delete();
+        StorageSetup.Delete();
     end;
 
     [Test]
@@ -715,7 +868,9 @@ codeunit 96205 "Storage Upload Tests"
     begin
         MockState.Reset();
         Session.DeleteAll(true);
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';
@@ -807,25 +962,10 @@ codeunit 96205 "Storage Upload Tests"
     local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer)
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        ResponseContentType: Text[100];
-        MessageVersion: Enum "Message Version ori";
-        RequestText: Text;
-        TaskId: Guid;
-        MessageId: Guid;
-        ResponseTime: Duration;
-        ResponseText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
         ResponseJson: JsonObject;
     begin
-        RequestJson.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        if LanguageId = 0 then
-            Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType)
-        else
-            Dispatcher.EnqueueAndProcess(MessageType, MessageVersion, '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseContentType, ResponseTime);
-        ResponseContent.GetSubText(ResponseText, 1);
-        ResponseJson.ReadFrom(ResponseText);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, LanguageId, false);
         // Clear PK before Insert: Init keeps ID; reuse after a prior Insert raises
         // "Message Argument ori already exists" (attachments#31 smoking gun).
         Clear(TempArgument);
