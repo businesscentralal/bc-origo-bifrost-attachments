@@ -836,22 +836,18 @@ codeunit 96204 "Storage Connector Tests"
     var
         TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        AttachmentId: Guid;
     begin
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('path', Path);
         RequestJson.Add('fileName', FileName);
         RequestJson.Add('description', 'X linked attachment');
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
-        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'The linked incoming attachment should be created.');
-        exit(ReadDataGuid(TempArgument, 'systemId'));
-    end;
-
-    local procedure ReadDataGuid(TempArgument: Record "Message Argument ori" temporary; PropertyName: Text): Guid
-    var
-        ParsedId: Guid;
-    begin
-        Evaluate(ParsedId, ReadText(ReadData(TempArgument.GetResponseJson()), PropertyName));
-        exit(ParsedId);
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'The linked incoming attachment should be created.');
+        Evaluate(AttachmentId, ReadText(ReadData(ResponseJson), 'systemId'));
+        exit(AttachmentId);
     end;
 
     local procedure MessageHelp(MessageType: Enum "Message Type ori") Result: Text
