@@ -56,6 +56,8 @@ codeunit 96241 "DataExch Fixture ori"
         TableId: Integer;
         IncomingNo: Integer;
     begin
+        Link.ReadIsolation := IsolationLevel::UpdLock;
+        IncomingAttachment.ReadIsolation := IsolationLevel::ReadCommitted;
         Link.SetRange("Storage Code", OwnedStorageCode);
         while Link.FindFirst() do begin
             TableId := Link."Table ID";
