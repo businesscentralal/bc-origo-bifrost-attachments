@@ -698,7 +698,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
     begin
         StorageSetup.Init();
         StorageSetup.Code := StorageCode;
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup."Base Path" := BasePath;
         StorageSetup.Enabled := Enabled;
         StorageSetup.Insert();
@@ -729,7 +729,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
     begin
         Cleanup();
         StorageSetup.Code := MockCodeTok;
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
     end;

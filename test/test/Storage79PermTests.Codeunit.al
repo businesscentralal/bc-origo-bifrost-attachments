@@ -974,7 +974,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         StorageSetup.Init();
         StorageSetup.Code := StorageCode;
         StorageSetup.Description := 'X79 original setup';
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup."Base Path" := 'X79-root';
         StorageSetup.Enabled := true;
         StorageSetup.Insert(false);
