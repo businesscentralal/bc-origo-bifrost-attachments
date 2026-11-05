@@ -609,7 +609,6 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         ReadBack: Text;
     begin
         Attachment.ReadIsolation := IsolationLevel::ReadCommitted;
-        Link.ReadIsolation := IsolationLevel::ReadCommitted;
         Attachment.SetRange("Incoming Document Entry No.", EntryNo);
         LibraryAssert.AreEqual(1, Attachment.Count(), 'AC04 has one incoming attachment.');
         Attachment.FindFirst();
