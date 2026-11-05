@@ -303,7 +303,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             'DataExchange.Definition.Delete':
                 Examples.Add(ContractMgt.Example('Refusal: the message type is disabled',
                     '{"type":"DataExchange.Definition.Delete","data":{"code":"INVOICES"},"lcid":1033}',
-                    '{"status":"Error","code":"PreconditionFailed","error":"DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.","parameter":"type","received":"DataExchange.Definition.Delete","expected":"a message type that is enabled; DataExchange.Definition.Delete is disabled","nextStep":"Delete the Data Exchange definition in Business Central (page Data Exchange Definitions). Use DataExchange.Entry.Delete to delete entries.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Definition.Delete\". Always read the help before calling a message type."}'));
+                    '{"status":"Error","code":"PreconditionFailed","error":"DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.","parameter":"code","received":"INVOICES","expected":"a message type that is enabled; DataExchange.Definition.Delete is disabled","nextStep":"Delete the Data Exchange definition in Business Central (page Data Exchange Definitions). Use DataExchange.Entry.Delete to delete entries.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.Definition.Delete\". Always read the help before calling a message type."}'));
             'DataExchange.Definition.Export':
                 begin
                     Examples.Add(ContractMgt.Example('A request refused before any change',

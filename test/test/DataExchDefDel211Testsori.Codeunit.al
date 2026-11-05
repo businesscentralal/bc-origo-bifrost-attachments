@@ -58,8 +58,11 @@ codeunit 96279 "DataExch Def Del211 Tests ori"
         Implementation: Codeunit "DataExch Def Delete Impl ori";
         Contract: Interface "Msg Contract ori";
         Errors: JsonArray;
+        Examples: JsonArray;
         Parameters: JsonArray;
         ErrorToken: JsonToken;
+        ExampleToken: JsonToken;
+        ExampleResponseToken: JsonToken;
         ParameterToken: JsonToken;
         Overview: Text;
         Notes: Text;
@@ -72,6 +75,7 @@ codeunit 96279 "DataExch Def Del211 Tests ori"
         Contract := Implementation;
         // [WHEN] The chapters are built.
         Contract.GetErrors(Errors);
+        Contract.GetExamples(Examples);
         Contract.GetParameters(Parameters);
         Contract.GetOverview(Overview);
         Contract.GetNotes(Notes);
@@ -86,6 +90,11 @@ codeunit 96279 "DataExch Def Del211 Tests ori"
         Errors.Get(0, ErrorToken);
         LibraryAssert.AreEqual('PreconditionFailed', Fixture.ReadText(ErrorToken.AsObject(), 'code'), 'The documented error code.');
         LibraryAssert.IsTrue(Fixture.ReadText(ErrorToken.AsObject(), 'fix').Contains('Business Central'), 'The next step names Business Central.');
+        LibraryAssert.AreEqual(1, Examples.Count(), 'Only the disabled refusal example is documented.');
+        Examples.Get(0, ExampleToken);
+        ExampleToken.AsObject().Get('response', ExampleResponseToken);
+        LibraryAssert.AreEqual('code', Fixture.ReadText(ExampleResponseToken.AsObject(), 'parameter'), 'The example refusal identifies the supplied code.');
+        LibraryAssert.AreEqual('INVOICES', Fixture.ReadText(ExampleResponseToken.AsObject(), 'received'), 'The example refusal echoes the supplied code.');
     end;
 
     /// <summary>AC3: the discovery text says the type is disabled in both languages.</summary>

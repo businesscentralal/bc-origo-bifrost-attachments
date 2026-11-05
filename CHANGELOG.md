@@ -10,6 +10,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - Codeunit 10035183 excludes `DataExchange.Definition.Delete` from the common required `storageCode` parameter. The disabled type declares only its ignored `code`, preserving the typed refusal without requiring a storage connection. Codeunit 96279 verifies the exact parameter name as well as the single-parameter count.
 
+- Align the disabled refusal example with its request: a supplied `code` is echoed on parameter `code`, rather than claiming the envelope type was refused. Codeunit 96279 pins both response fields.
 - Preserve six raw-code Import.Run regressions in codeunit 96226 and both Definition.Export envelope checks in codeunit 96258. Only disabled-delete assertions are removed; the export checks delete their self-created definitions.
 
 ### Changed (2026-11-05) - Disable DataExchange.Definition.Delete (#211)
