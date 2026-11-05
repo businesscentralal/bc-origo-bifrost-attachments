@@ -442,6 +442,10 @@ codeunit 10035141 "DataExch Import Mgt ori"
         DataExchDef: Record "Data Exch. Def";
         TargetMetadata: Record AllObjWithCaption;
         TargetRef: RecordRef;
+        RelatedRecordId: RecordId;
+        RelatedContextErr: Label 'This mapping requires the related Usage Data Import record; the entry has no related record.', Comment = 'is-IS=Þessi vörpun krefst tengdrar færslu fyrir innflutning notkunargagna; færslan hefur enga tengda færslu.';
+        RelatedContextExpectedLbl: Label 'a Data Exchange entry created by the Usage Data Import page with its related import record', Comment = 'is-IS=gagnaskiptafærsla búin til á síðu fyrir innflutning notkunargagna með tengdri innflutningsfærslu';
+        RelatedContextNextLbl: Label 'Run this definition from the Usage Data Import page in Subscription Billing, which supplies the related import record.', Comment = 'is-IS=Keyrðu þessa skilgreiningu á síðu fyrir innflutning notkunargagna í áskriftarinnheimtu, sem gefur tengda innflutningsfærslu.';
         BadMappingErr: Label 'Definition %1, line %2, mapping to table %3 with codeunit %4 cannot be processed: %5', Comment = '%1 = definition, %2 = line, %3 = table id, %4 = codeunit id, %5 = reason||is-IS=Ekki er hægt að vinna skilgreiningu %1, línu %2, vörpun í töflu %3 með kóðaeiningu %4: %5';
     begin
         DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
@@ -472,6 +476,16 @@ codeunit 10035141 "DataExch Import Mgt ori"
         end;
         DataExchMapping.FindSet();
         repeat
+            // BC's Generic Import Mappings (8030) opens Related Record as Usage Data Import before mapping table8018.
+            // Generic inline entries have no such page-owned context; refuse before its RecordRef.Get opens table0.
+            RelatedRecordId := DataExch."Related Record";
+            if (DataExchMapping."Table ID" = 8018) and (DataExchMapping."Mapping Codeunit" = 8030) and (RelatedRecordId.TableNo() = 0) then begin
+                ErrorCode := "Bifrost Error Code ori"::PreconditionFailed;
+                ErrorText := StrSubstNo(BadMappingErr, DataExchMapping."Data Exch. Def Code", DataExchMapping."Data Exch. Line Def Code", DataExchMapping."Table ID", DataExchMapping."Mapping Codeunit", RelatedContextErr);
+                Expected := RelatedContextExpectedLbl;
+                NextStep := RelatedContextNextLbl;
+                exit(true);
+            end;
             if DataExchMapping."Use as Intermediate Table" then begin
                 ErrorCode := "Bifrost Error Code ori"::PreconditionFailed;
                 ErrorText := StrSubstNo(IntermediateErr, DataExch."Data Exch. Def Code");
@@ -511,13 +525,13 @@ codeunit 10035141 "DataExch Import Mgt ori"
     var
         CodeunitMetadata: Record "CodeUnit Metadata";
         IncompatibleErr: Label 'Codeunit %1 cannot process a Data Exchange entry. Nothing was changed.', Comment = '%1 = codeunit id||is-IS=Kóðaeining %1 getur ekki unnið gagnaskiptafærslu. Engu var breytt.';
-        ExpectedLbl: Label 'a codeunit that accepts Data Exch. (table 1220)', Comment = 'is-IS=kóðaeining sem tekur við Data Exch. (tafla 1220)';
+        ExpectedLbl: Label 'a codeunit that accepts Data Exch. (table 1220) or has no table requirement', Comment = 'is-IS=kóðaeining sem tekur við Data Exch. (tafla 1220) eða krefst engrar töflu';
         NextStepLbl: Label 'Use the Business Central page for this import, such as the payroll journal, or choose a mapping that accepts Data Exchange entries.', Comment = 'is-IS=Notaðu Business Central síðuna fyrir þennan innflutning, svo sem launabókina, eða veldu vörpun sem tekur við gagnaskiptafærslum.';
     begin
         if CodeunitId = 0 then
             exit(false);
         if CodeunitMetadata.Get(CodeunitId) then
-            if CodeunitMetadata.TableNo = Database::"Data Exch." then
+            if CodeunitMetadata.TableNo in [0, Database::"Data Exch."] then
                 exit(false);
         ErrorCode := "Bifrost Error Code ori"::PreconditionFailed;
         ErrorText := StrSubstNo(IncompatibleErr, CodeunitId);

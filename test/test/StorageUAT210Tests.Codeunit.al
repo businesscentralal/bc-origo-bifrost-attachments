@@ -41,12 +41,12 @@ codeunit 96279 "Storage UAT210 Tests ori"
         AssertMappingRefusal(1039);
     end;
 
-    /// <summary>A no-table payroll codeunit cannot receive a Data Exchange record and is refused before execution.</summary>
+    /// <summary>Subscription Billing mappings require the page-owned related import record and refuse generic entries before execution.</summary>
     [Test]
-    procedure NoTableMappingCodeunitRefusesBeforeRun()
+    procedure RelatedRecordMappingRequiresContext()
     begin
-        AssertNoTableMappingRefusal(1033);
-        AssertNoTableMappingRefusal(1039);
+        AssertRelatedMappingRefusal(1033);
+        AssertRelatedMappingRefusal(1039);
     end;
 
     /// <summary>Unmapped root definitions and stale entry line context cannot open table zero.</summary>
@@ -295,7 +295,7 @@ codeunit 96279 "Storage UAT210 Tests ori"
         GlobalLanguage(PriorLanguage);
     end;
 
-    local procedure AssertNoTableMappingRefusal(LanguageId: Integer)
+    local procedure AssertRelatedMappingRefusal(LanguageId: Integer)
     var
         Entry: Record "Data Exch.";
         Mapping: Record "Data Exch. Mapping";
@@ -312,11 +312,13 @@ codeunit 96279 "Storage UAT210 Tests ori"
         DefCode := Fixture.CreateImportDefinition(0);
         Mapping.SetRange("Data Exch. Def Code", DefCode);
         Mapping.FindFirst();
+        Mapping.Delete();
+        Mapping."Table ID" := 8018;
         Mapping."Mapping Codeunit" := 8030;
-        Mapping.Modify();
+        Mapping.Insert();
         Entry."Data Exch. Def Code" := DefCode;
-        LibraryAssert.IsTrue(ImportMgt.FindProcessBlocker(Entry, '', ErrorCode, ErrorText, Expected, NextStep), 'No-table codeunit is refused before Run with record.');
-        LibraryAssert.AreEqual(Enum::"Bifrost Error Code ori"::PreconditionFailed, ErrorCode, 'Typed no-table mapping refusal.');
+        LibraryAssert.IsTrue(ImportMgt.FindProcessBlocker(Entry, '', ErrorCode, ErrorText, Expected, NextStep), 'Missing related import context refuses before mapping execution.');
+        LibraryAssert.AreEqual(Enum::"Bifrost Error Code ori"::PreconditionFailed, ErrorCode, 'Typed related-record mapping refusal.');
         LibraryAssert.IsTrue(ErrorText.Contains(DefCode) and ErrorText.Contains('8030') and ErrorText.Contains('LINES'), 'Refusal identifies the definition, codeunit and line.');
         GlobalLanguage(PriorLanguage);
     end;

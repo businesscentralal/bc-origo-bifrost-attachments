@@ -185,7 +185,7 @@ codeunit 10035163 "DataExch Entry Proc Impl ori" implements "Msg Interface ori",
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'Processing accepts only codeunits with Data Exch. (table 1220) as their table requirement. Codeunits without a table requirement are refused because they cannot receive the entry record. Table-typed journal mappings, including payroll mappings, must be run from their Business Central page. A mapping error rolls back the whole processing and is answered as an error; the entry stays for another attempt. An entry is processed once. Mappings to the intermediate table belong to the incoming document path (Storage.Upload.CommitToRecord with dataExchangeType). The counts compare the target tables before and after the run, so writes by other sessions at the same time can be counted too.', Locked = true;
+        NotesLbl: Label 'Processing accepts only codeunits with no table requirement or Data Exch. (table 1220). Table-typed journal mappings, including payroll mappings, must be run from their Business Central page. A mapping error rolls back the whole processing and is answered as an error; the entry stays for another attempt. An entry is processed once. Mappings to the intermediate table belong to the incoming document path (Storage.Upload.CommitToRecord with dataExchangeType). The counts compare the target tables before and after the run, so writes by other sessions at the same time can be counted too.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);
