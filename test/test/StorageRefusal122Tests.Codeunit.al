@@ -300,7 +300,6 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         StorageSetup: Record "Storage Setup ori";
         Dispatcher: Codeunit "Dispatcher ori";
         LowerPermissions: Codeunit "Library - Lower Permissions";
-        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         Request: JsonObject;
@@ -324,7 +323,7 @@ codeunit 96228 "Storage Refusal122 Tests ori"
         Request.Add('dataExchDefCode', Definition.Code);
         Request.Add('storageCode', UnknownStorageCode);
         Request.Add('path', 'X122/Xmissing.csv');
-        Payload := FixtureConfirm.ConfirmedText("Message Type ori"::"DataExchange.Import.Run", Request);
+        Request.WriteTo(Payload);
         RequestContent.AddText(Payload);
         // [WHEN] The registered handler receives the requested locale through the public queue path.
         LowerPermissions.StopLoggingNAVPermissions();

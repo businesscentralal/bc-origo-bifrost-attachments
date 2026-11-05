@@ -550,6 +550,7 @@ codeunit 96212 "Storage Error Response Tests"
         MockState: Codeunit "Storage Mock State";
     begin
         MockState.Reset();
+        StorageSetup.SetFilter(Code, '%1|%2', MockCodeTok, DisabledCodeTok);
         StorageSetup.DeleteAll();
         InsertSetup(MockCodeTok, true);
         InsertSetup(DisabledCodeTok, false);
@@ -614,20 +615,10 @@ codeunit 96212 "Storage Error Response Tests"
     local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        ResponseContentType: Text[100];
-        MessageVersion: Enum "Message Version ori";
-        RequestText: Text;
-        ResponseText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
         ResponseJson: JsonObject;
     begin
-        RequestText := FixtureConfirm.ConfirmedText(MessageType, RequestJson);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
-        ResponseContent.GetSubText(ResponseText, 1);
-        ResponseJson.ReadFrom(ResponseText);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, false);
         Clear(TempArgument);
         TempArgument.Init();
         TempArgument."Type" := MessageType;
@@ -638,25 +629,11 @@ codeunit 96212 "Storage Error Response Tests"
     local procedure ExecuteTypeWithRequestInLanguage(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer)
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        ResponseContentType: Text[100];
-        MessageVersion: Enum "Message Version ori";
-        EmptyTaskId: Guid;
-        MessageId: Guid;
-        ResponseTime: Duration;
-        RequestText: Text;
-        ResponseText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
         ResponseJson: JsonObject;
     begin
-        RequestText := FixtureConfirm.ConfirmedText(MessageType, RequestJson);
-        RequestContent.AddText(RequestText);
         // EnqueueAndProcess applies LanguageId. Execute resets the session to Foundation setup's default language.
-        Commit();
-        Dispatcher.EnqueueAndProcess(MessageType, MessageVersion, '', '', 'application/json', RequestContent, EmptyTaskId, LanguageId, MessageId, ResponseContent, ResponseContentType, ResponseTime);
-        ResponseContent.GetSubText(ResponseText, 1);
-        ResponseJson.ReadFrom(ResponseText);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, LanguageId, false);
         Clear(TempArgument);
         TempArgument.Init();
         TempArgument."Type" := MessageType;

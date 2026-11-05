@@ -6,9 +6,34 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
-### Fixed (2026-11-03) - Test fixtures confirm irreversible calls with expectedCount (#205)
+### Fixed (2026-11-05) - Confirm remaining storage test fixtures (#205)
 
-- New test helper codeunit 96276 `Storage Fixture Confirm ori` adds `expectedCount` = 1 to fixture calls of the irreversible types (Storage.File.Create/Copy/Move/Delete, Storage.Directory.Create/Delete, Storage.Attachment.Offload/Restore, Storage.Upload.Commit, DataExchange.Definition.Export, DataExchange.PaymentExport.Run) on Foundation 28.0.11 and later, so the existing business-effect and refusal assertions run again against Foundation main. On older Foundation (pinned CI 28.0.10.632) it does nothing. No assertion is loosened and no product code changes; no Attachments type is reclassified. The helper declares the test namespace `Origo.Bifrost.Attachments.Test`. The existing reader-rollback test checks the exact native error in Icelandic when the official language app is installed, while preserving the English W1 fallback and all rollback assertions.
+- Test codeunit 96237 `DataExch Phase2 Tests ori` uses the shared preview-and-confirm dispatcher helper 96219 for its remaining irreversible `Storage.Upload.Commit` fixture calls. Other storage fixtures use the same helper through merged #182. The preview's actual count is confirmed without modifying reused request JSON; refusal assertions and original commit modes remain unchanged. The earlier fixed-count helper 96276 is superseded by 96219. No product code or message classification changes.
+
+### Fixed (2026-11-05) - Isolate storage setup read regression (#166 / PR #182)
+
+- Codeunit 96205 scopes Data.Records.Get to its MOCK setup through the Code field filter, seeds an unrelated setup to prove independence from company data, verifies that row survives the refused write/read, and removes both owned fixtures.
+
+### Fixed (2026-11-05) - Recover historical X75 test fixtures (#166 / PR #182)
+
+- Fixture 96241 sweeps only reserved X75* test connections, links, upload sessions/chunks and mock files; mock reset 96201 invokes it before storage scenarios, including codeunits preceding 96217/96225. Regression 96205 seeds five dangling fixtures and checks recovery without deleting an unrelated setup/link.
+- Link assertions in 96204/96237 now filter by the fixture attachment's table ID and SystemId. Both 96225 boundary loops clean up after their loops. Unique definition codes, fresh customer/attachment names, dispatcher assertions and commit modes remain intact.
+
+### Fixed (2026-11-05) - Clean native storage fixtures after each scenario (#166 / PR #182)
+
+- Shared fixture 96241 scopes storage setup and upload-session deletion to MOCK; it preserves other connections and their links. Its scoped cleanup removes the caller's attachment links and linked records, upload sessions/chunks and setup in that order.
+- Integrity tests 96225 clean their X75/X75ALIAS fixtures after every scenario. Linked-read tests 96217 clean X75READ and copied attachments after their assertions; 96264 explicitly removes its own link before removing its setup. Mock files are reset by the owning tests.
+- Roundtrip 96204 deletes its fresh customer and restored attachment. Boundary/Unicode tests 96226 delete their fresh definitions and the Unicode entry after assertions. Original JSON assertions and dispatcher commit modes remain unchanged.
+
+### Fixed (2026-11-05) - Repeatable native test fixtures (#166 / PR #182)
+
+- Test initializers in codeunits 96203/96204/96205/96206/96207/96212/96237 now delete only their own storage setups and links, preserving unrelated X75/X75READ connections instead of leaving dangling links. Codeunit 96205 adds an upload regression with a separately owned setup/link.
+- Codeunit 96226 uses fresh exact-Code20 and canonical Unicode definition keys on each run. Codeunit 96204 uses a fresh customer for its Document Attachment roundtrip so repeat runs still assert the exact `attachments/customer/doc.txt` path. Production behavior, confirmation assertions and dispatcher commit modes are unchanged.
+
+### Fixed (2026-11-04) - Preserve dispatch JSON assertions (#166)
+
+- Test helper codeunit 96219 `Storage Test Confirmation ori` asserts that both the initial response and the confirmed response are valid JSON. Its `UseCommittedExecute` parameter now names the existing `OmitCommit=false` behavior accurately; codeunit 96274 `Attachments Build Tests ori` also returns to its original default `Execute` overload (`OmitCommit=true`). Other caller commit modes and all request assertions are preserved.
+
 ### Fixed (2026-11-02) - DataExchange.Type.List returns entityType (#198)
 
 - `Data Exchange Query ori` (10035138, `ListTypes`) adds the additive `entityType` field to every `DataExchange.Type.List` row, as the stable English name `Invoice` or `Credit Memo` accepted and returned by `DataExchange.Type.Set` (the table field is never empty). The Type.List response contract in `Storage Contract Parts ori` (10035183) documents the field. Test codeunit 96213 covers both values. No breaking change.
@@ -36,6 +61,11 @@ Business Central release versioning (`major.minor.build.revision`).
 - Pin test/CI Foundation inputs to released 28.0.10.632 for the restricted licence-admin setup regression (#190), retaining signed Apps and exact TestApps collision checks. Product minimum dependency stays unchanged.
 - Codeunit 10035191 `Attachments Registration ori` supplies inherent Execute permission and entitlement so Foundation can build the app registry when a restricted licence administrator opens Bifröst Setup.
 - Test codeunit 96268 `Storage Registration Tests ori` opens the real setup page under the exact licence-admin role in English and Icelandic, checks the Attachments registry target, and checks read-only setup and storage permissions. Test permission set 96268 supplies only the platform read baseline; it grants no Attachments Execute permission and performs no Sync, consent, trial or licensing-state writes.
+
+### Fixed (2026-10-23) - Restore overview (#166)
+
+- Correct the `Storage.Attachment.Restore` overview in `Storage Contract Parts ori` (codeunit 10035183): only stored files newly created by the attachment are deleted; pre-existing files and legacy links are preserved. Documentation only; restore behavior is unchanged.
+- Test codeunit 96219 `Storage Test Confirmation ori` sends native test dispatches through Foundation's counted-confirmation preview protocol and confirms only a returned no-write `ConfirmationRequired` preview. The storage, Data Exchange and build test codeunits use it; assertions are unchanged.
 
 ### Fixed (2026-10-28) - Foundation-compatible test contracts (#188)
 

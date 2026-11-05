@@ -292,7 +292,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     begin
         // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
         // [GIVEN] A 20-character canonical definition.
-        BoundaryCode := 'X1234567890123456789';
+        BoundaryCode := CopyStr('X' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(BoundaryCode));
         DataExchDef.Code := BoundaryCode;
         DataExchDef.Type := DataExchDef.Type::"Generic Import";
         DataExchDef.Insert(true);
@@ -305,6 +305,8 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         AssertText(Response, 'received', BoundaryCode);
         LibraryAssert.AreEqual(1, ErrorCount(Response), 'Only the unconfigured storage connection is refused, not a length.');
         LibraryAssert.AreEqual(0, EntryCount(BoundaryCode), 'A refused import creates no entry.');
+        DataExchDef.Get(BoundaryCode);
+        DataExchDef.Delete(true);
     end;
 
     /// <summary>An overlong path refuses without truncating it.</summary>
@@ -607,21 +609,28 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     procedure Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey()
     var
         DataExchDef: Record "Data Exch. Def";
+        DataExch: Record "Data Exch.";
         Response: JsonObject;
+        DefinitionCode: Code[20];
     begin
         // Story #82, AC02 | Time: none | Risk: Unicode BC Code rules.
         // [GIVEN] An already canonical Unicode definition.
-        DataExchDef.Code := 'XÞÓR';
+        DefinitionCode := CopyStr('XÞÓR' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(DefinitionCode));
+        DataExchDef.Code := DefinitionCode;
         DataExchDef.Type := DataExchDef.Type::"Generic Import";
         DataExchDef."File Type" := DataExchDef."File Type"::"Variable Text";
         DataExchDef."Reading/Writing XMLport" := Xmlport::"Data Exch. Import - CSV";
         DataExchDef.Insert(true);
         // [WHEN] The unchanged key reaches the registered handler.
-        Response := DispatchImportInline('XÞÓR', 'X82,Row');
+        Response := DispatchImportInline(DefinitionCode, 'X82,Row');
         // [THEN] It succeeds and persists the same key.
         AssertText(Response, 'status', 'Success');
-        AssertText(SuccessData(Response), 'dataExchDefCode', 'XÞÓR');
-        LibraryAssert.AreEqual(1, EntryCount('XÞÓR'), 'Canonical Unicode must be accepted.');
+        AssertText(SuccessData(Response), 'dataExchDefCode', DefinitionCode);
+        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Canonical Unicode must be accepted.');
+        DataExch.SetRange("Data Exch. Def Code", DefinitionCode);
+        DataExch.DeleteAll(true);
+        DataExchDef.Get(DefinitionCode);
+        DataExchDef.Delete(true);
     end;
 
     /// <summary>Whitespace-only input is invalid format and still has complete received detail.</summary>
@@ -1048,18 +1057,24 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     local procedure Dispatch(MessageType: Enum "Message Type ori"; Payload: Text) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
         RequestContent: BigText;
         ResponseContent: BigText;
-        ResponseType: Text[100];
+        RequestJson: JsonObject;
+        ResponseContentType: Text[100];
         ResponseText: Text;
+        MessageVersion: Enum "Message Version ori";
     begin
-        RequestContent.AddText(FixtureConfirm.ConfirmedPayload(MessageType, Payload));
         AllowDispatcherLanguageRead();
-        Dispatcher.Execute(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseType);
+        if RequestJson.ReadFrom(Payload) then
+            Response := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, false)
+        else begin
+            RequestContent.AddText(Payload);
+            Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
+            ResponseContent.GetSubText(ResponseText, 1);
+            LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'A real dispatch must return a JSON response.');
+        end;
         StopDispatcherLanguageRead();
-        ResponseContent.GetSubText(ResponseText, 1);
-        LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'A real dispatch must return a JSON response.');
     end;
 
     local procedure DispatchLocale(Payload: Text; LanguageId: Integer) Response: JsonObject

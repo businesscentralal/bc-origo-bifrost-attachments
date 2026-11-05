@@ -361,7 +361,6 @@ codeunit 96256 "DataExch Format Tests ori"
     local procedure DispatchLocale(MessageType: Enum "Message Type ori"; Request: JsonObject; LanguageId: Integer) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        FixtureConfirm: Codeunit "Storage Fixture Confirm ori";
         RequestContent: BigText;
         ResponseContent: BigText;
         TaskId: Guid;
@@ -370,7 +369,7 @@ codeunit 96256 "DataExch Format Tests ori"
         ResponseType: Text[100];
         Payload: Text;
     begin
-        Payload := FixtureConfirm.ConfirmedText(MessageType, Request);
+        Request.WriteTo(Payload);
         RequestContent.AddText(Payload);
         Dispatcher.EnqueueAndProcess(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseType, ResponseTime);
         ResponseContent.GetSubText(Payload, 1);
