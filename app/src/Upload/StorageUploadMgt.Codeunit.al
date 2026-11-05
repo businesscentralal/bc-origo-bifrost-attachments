@@ -334,7 +334,7 @@ codeunit 10035197 "Storage Upload Mgt ori"
         Session.Modify(true);
         DeleteChunks(UploadId);
         if KeepFile then
-            if not RequestMgt.TryWriteStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
+            if not RequestMgt.WriteStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
                 Argument.AddError("Bifrost Error Code ori"::BusinessCentralError, StrSubstNo(StorageWriteFailedErr, GetLastErrorText()), 'keepFileInStorage', 'true', '', StorageWriteNextStepLbl);
                 Argument.RaiseCollectedErrors("Bifrost Error Code ori"::BusinessCentralError, StrSubstNo(StorageWriteFailedErr, GetLastErrorText()));
             end;

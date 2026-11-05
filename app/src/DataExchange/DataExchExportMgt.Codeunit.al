@@ -440,7 +440,7 @@ codeunit 10035140 "DataExch Export Mgt ori"
             exit(FailDelivery(Argument, RaiseOnFailure, "Bifrost Error Code ori"::LimitExceeded, ErrorText));
         end;
         if HasStorage then
-            if not RequestMgt.TryWriteStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
+            if not RequestMgt.WriteStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
                 ErrorText := StrSubstNo(StorageWriteFailedErr, GetLastErrorText());
                 Argument.AddError("Bifrost Error Code ori"::BusinessCentralError, ErrorText, 'storageCode', StorageSetup.Code, '', StorageWriteNextStepLbl);
                 exit(FailDelivery(Argument, RaiseOnFailure, "Bifrost Error Code ori"::BusinessCentralError, ErrorText));

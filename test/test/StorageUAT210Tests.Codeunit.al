@@ -154,6 +154,24 @@ codeunit 96279 "Storage UAT210 Tests ori"
         SecondSetup.Delete(true);
     end;
 
+    /// <summary>Public dispatch can mutate the persistent Mock without database writes inside TryFunctions.</summary>
+    [Test]
+    procedure ProductMockDispatchWrites()
+    var
+        Setup: Record "Storage Setup ori";
+        Request: JsonObject;
+        Response: JsonObject;
+    begin
+        CreateMockSetup(Setup);
+        Request.Add('storageCode', Setup.Code);
+        Request.Add('path', 'X210-dispatch');
+        Response := Fixture.Dispatch("Message Type ori"::"Storage.Directory.Create", Request);
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'Transactional Mock directory dispatch. ' + Format(Response));
+        Response := Fixture.Dispatch("Message Type ori"::"Storage.Directory.Delete", Request);
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'Transactional Mock directory delete dispatch. ' + Format(Response));
+        Setup.Delete(true);
+    end;
+
     /// <summary>Deleting an owned connection removes its persisted Mock content.</summary>
     [Test]
     procedure ProductMockSetupCleanup()
