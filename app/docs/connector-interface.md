@@ -55,3 +55,16 @@ connector-ID dispatch, provider account introspection and specific connector dep
 The test app registers an arbitrary connector through Microsoft's interface to verify
 delegation, account isolation, error propagation and transfer refusal without installing
 a particular provider.
+
+## Credential-free Mock storage (#210)
+
+The product app includes `Storage Type ori::Mock` behind the same connector interface.
+It stores files and directories in company-local `Storage Mock Entry ori` rows, isolated
+by storage code and canonical base path. It needs no file account or credentials and
+makes no HTTP call. Use it for self-seeded verification; it does not certify any external
+provider. Deleting the connection removes its Mock rows. The existing test extension
+keeps its independent `Test Mock` fault-injection backend.
+
+The storage-type selector is hidden when only External File Storage and Mock are
+installed. A partner enum extension makes it visible. Set up Mock connections explicitly
+for testing; existing connections retain their selected implementation.

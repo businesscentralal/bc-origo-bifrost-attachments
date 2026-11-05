@@ -11,7 +11,7 @@ and safely.
 extension that exposes the standard BC **External File Storage** facade — Azure Blob Storage,
 Azure File Share and SharePoint — as **23 Bifröst message types**, so any external caller can
 read and write cloud storage through the same Queue → Task → Data pattern that Bifröst
-Foundation uses for everything else. The product Foundation dependency floor remains **28.0.3.530** (`app/app.json`). The test app requires **28.0.10.632**, and CI pins that released Foundation package so licence-admin setup regressions run with its permissions.
+Foundation uses for everything else. The product Foundation dependency floor remains **28.0.3.530** (`app/app.json`). The test app requires **28.0.10.632**, and CI selects released Foundation **28.0.11.669** with exact package/provenance pins and collision restoration so licence-admin setup regressions run with its permissions.
 
 On top of raw file access it adds three things the base platform does not have on the wire:
 **chunked uploads** (a large file delivered as a sequence of small base64 chunks), **attachment
@@ -105,8 +105,8 @@ codeunit's contract procedures delegate to it with the type's name.
 `Storage Type ori` is an extensible enum implementing `Storage Connector ori`. The single
 production value, *External File Storage*, is implemented by `Storage Ext File Impl ori`, which
 delegates to the BC External File Storage facade using the connector and file account registered
-on the `Storage Setup ori` row. The test app adds a `Mock` value backed by an in-memory file
-system, which is why almost every test runs without a live storage account.
+on the `Storage Setup ori` row. The product also includes a credential-free, company-local `Mock` value. The test app adds
+a separate `Test Mock` value backed by an in-memory file system for fault injection.
 
 ### Request Resolution
 

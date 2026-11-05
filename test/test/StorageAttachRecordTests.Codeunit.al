@@ -306,11 +306,13 @@ codeunit 96206 "Storage Attach Record Tests"
         MockState: Codeunit "Storage Mock State";
     begin
         MockState.Reset();
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
 
@@ -333,6 +335,7 @@ codeunit 96206 "Storage Attach Record Tests"
         DocAttachment.SetRange("Table ID", Database::"Fixed Asset");
         DocAttachment.SetRange("No.", TestFANoTok);
         DocAttachment.DeleteAll();
+        AttachmentLink.SetRange("Storage Code", MockCodeTok);
         AttachmentLink.DeleteAll();
     end;
 

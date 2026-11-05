@@ -64,14 +64,14 @@ FOUNDATION_CANDIDATE = {
         "id": "7505e808-6e52-4b96-a328-82573391297a",
         "publisher": "Origo",
         "name": "Bifrost Foundation",
-        "version": "28.0.10.632"
+        "version": "28.0.11.669"
     },
-    "sha256": "3a9ca4f48568ff5b99d2a9f352bdd752e81cae28a91d606fc2f184465b1ce220",
-    "sourceCommit": "130955cdc524cf7da3f162d1aeb10777fde55ab1",
-    "buildUrl": "https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/40668907792",
+    "sha256": "050cb3b6f2c77ee74ab155831664a96b790781e27890c3632e32c29837452c08",
+    "sourceCommit": "a99232fbbe8bba3d18d39a24b8cfa2a06ea3376e",
+    "buildUrl": "https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/41792278930",
     "compilerVersion": "18.1.44.47295",
-    "artifactId": 12808162029,
-    "archiveSha256": "e9bbad2cea79fffb3d87c7fa30ce836928566e25235e6fdfbc1d940eec262771"
+    "artifactId": 13306109485,
+    "archiveSha256": "597e7707533c0ce41897fecc65e4b64aa13c5107da2dcb7bf4798c820687d016"
 }
 
 SYMBOL_POLICIES = {
@@ -410,7 +410,7 @@ def check_foundation_candidate(info):
         require(info[key] == FOUNDATION_CANDIDATE[key], "Unapproved Foundation candidate " + key)
     require(info["friends"] == [] and info["signatureTailBytes"] > 0,
             "Foundation candidate friend/signature-content mismatch")
-    return {"candidate": "candidate632", "artifactId": FOUNDATION_CANDIDATE["artifactId"],
+    return {"candidate": "candidate669", "artifactId": FOUNDATION_CANDIDATE["artifactId"],
             "archiveSha256": FOUNDATION_CANDIDATE["archiveSha256"], "signatureTrustVerified": False,
             "runnerInputEqualityVerified": False}
 

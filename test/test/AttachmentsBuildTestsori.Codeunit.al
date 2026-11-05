@@ -394,18 +394,9 @@ codeunit 96274 "Attachments Build Tests ori"
     local procedure Execute(MessageType: Enum "Message Type ori"; Request: JsonObject) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        MessageVersion: Enum "Message Version ori";
-        ContentType: Text[100];
-        RequestText: Text;
-        ResponseText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
     begin
-        Request.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ContentType);
-        ResponseContent.GetSubText(ResponseText, 1);
-        LibraryAssert.IsTrue(Response.ReadFrom(ResponseText), 'Dispatcher must return JSON.');
+        Response := TestConfirmation.Dispatch(Dispatcher, MessageType, Request, 0, false);
     end;
 
     local procedure SuccessData(Response: JsonObject): JsonObject

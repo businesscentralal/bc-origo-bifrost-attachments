@@ -329,7 +329,10 @@ codeunit 10035193 "Storage Request Mgt ori"
             exit;
         if not CheckWriteDestination(Argument, StorageSetup, Connector, Path, 'path', Existing) then
             exit;
-        if not TryCreateFile(StorageSetup, Connector, Path, TempBlob) then begin
+        if WritesInTransaction(Connector) then
+            Connector.CreateFile(StorageSetup, Path, TempBlob)
+        else
+            if not TryCreateFile(StorageSetup, Connector, Path, TempBlob) then begin
             Argument.RespondWithLastError();
             exit;
         end;
@@ -353,6 +356,11 @@ codeunit 10035193 "Storage Request Mgt ori"
             Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(LinkedFileDeleteErr, Path), 'path', Path, UnlinkedExpectedLbl, LinkedDeleteNextStepLbl);
             exit;
         end;
+        if WritesInTransaction(Connector) then begin
+            Connector.DeleteFile(StorageSetup, Path);
+            RespondPath(Argument, Path);
+            exit;
+        end;
         if TryDeleteFile(StorageSetup, Connector, Path) then
             RespondPath(Argument, Path)
         else
@@ -368,6 +376,11 @@ codeunit 10035193 "Storage Request Mgt ori"
     begin
         if not CheckOperationPath(Argument, StorageSetup, 'path', Path, true) then
             exit;
+        if WritesInTransaction(Connector) then begin
+            Connector.CreateDirectory(StorageSetup, Path);
+            RespondPath(Argument, Path);
+            exit;
+        end;
         if TryCreateDirectory(StorageSetup, Connector, Path) then
             RespondPath(Argument, Path)
         else
@@ -398,6 +411,11 @@ codeunit 10035193 "Storage Request Mgt ori"
             Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(DirectoryNotEmptyErr, Path), 'path', Path, EmptyDirectoryExpectedLbl, EmptyDirectoryNextStepLbl);
             exit;
         end;
+        if WritesInTransaction(Connector) then begin
+            Connector.DeleteDirectory(StorageSetup, Path);
+            RespondPath(Argument, Path);
+            exit;
+        end;
         if TryDeleteDirectory(StorageSetup, Connector, Path) then
             RespondPath(Argument, Path)
         else
@@ -418,6 +436,11 @@ codeunit 10035193 "Storage Request Mgt ori"
             exit;
         if not CheckUnlinkedDestination(Argument, StorageSetup.Code, TargetPath, 'targetPath') then
             exit;
+        if WritesInTransaction(Connector) then begin
+            Connector.CopyFile(StorageSetup, SourcePath, TargetPath);
+            RespondTransfer(Argument, SourcePath, TargetPath);
+            exit;
+        end;
         if TryCopyFile(StorageSetup, Connector, SourcePath, TargetPath) then
             RespondTransfer(Argument, SourcePath, TargetPath)
         else
@@ -623,6 +646,27 @@ codeunit 10035193 "Storage Request Mgt ori"
     internal procedure TryWriteStorageFile(StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; var TempBlob: Codeunit "Temp Blob")
     begin
         Connector.CreateFile(StorageSetup, Path, TempBlob);
+    end;
+
+    /// <summary>Writes transactional connectors directly; preserves existing provider error handling otherwise.</summary>
+    /// <returns>True after a write; transactional failures propagate and roll back the caller.</returns>
+    internal procedure WriteStorageFile(StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; var TempBlob: Codeunit "Temp Blob"): Boolean
+    begin
+        if WritesInTransaction(Connector) then begin
+            Connector.CreateFile(StorageSetup, Path, TempBlob);
+            exit(true);
+        end;
+        exit(TryWriteStorageFile(StorageSetup, Connector, Path, TempBlob));
+    end;
+
+    local procedure WritesInTransaction(Connector: Interface "Storage Connector ori"): Boolean
+    var
+        TransactionImpl: Interface "Storage Transaction ori";
+    begin
+        if not (Connector is "Storage Transaction ori") then
+            exit(false);
+        TransactionImpl := Connector as "Storage Transaction ori";
+        exit(TransactionImpl.WritesInTransaction());
     end;
 
     /// <summary>Returns the last segment of a storage path.</summary>

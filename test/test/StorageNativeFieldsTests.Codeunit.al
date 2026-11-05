@@ -179,7 +179,7 @@ codeunit 96217 "Storage Native Fields Tests"
             StorageSetup.Delete();
         StorageSetup.Init();
         StorageSetup.Code := MockCodeTok;
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
         TempBlob.CreateOutStream(ContentOut);
@@ -270,6 +270,7 @@ codeunit 96217 "Storage Native Fields Tests"
         LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'Modify after a read must not persist Stored Internally.');
         LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'Stored Externally stays set.');
         LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The external path stays unchanged.');
+        CleanupLinkedRead();
     end;
 
     [Test]
@@ -296,6 +297,7 @@ codeunit 96217 "Storage Native Fields Tests"
         LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'Modify(false) must not persist Stored Internally.');
         LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'Stored Externally stays set.');
         LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The external path stays unchanged.');
+        CleanupLinkedRead();
     end;
 
     [Test]
@@ -331,6 +333,9 @@ codeunit 96217 "Storage Native Fields Tests"
         LibraryAssert.IsFalse(StoredInternally(AttachmentId), 'The source row stays unchanged.');
         LibraryAssert.IsTrue(StoredExternally(AttachmentId), 'The source Stored Externally stays set.');
         LibraryAssert.AreEqual(ExpectedPath, NativePath(AttachmentId), 'The source path stays unchanged.');
+        CopyAttachment.GetBySystemId(CopyId);
+        CopyAttachment.Delete(true);
+        CleanupLinkedRead();
     end;
 
     [Test]
@@ -366,6 +371,9 @@ codeunit 96217 "Storage Native Fields Tests"
         CopyId := CopyAttachment.SystemId;
         LibraryAssert.AreEqual(VariantPath, NativePath(CopyId), 'The slash variant path is stored as written.');
         LibraryAssert.IsFalse(StoredInternally(CopyId), 'A slash variant of the linked path must not persist Stored Internally.');
+        CopyAttachment.GetBySystemId(CopyId);
+        CopyAttachment.Delete(true);
+        CleanupLinkedRead();
     end;
 
     [Test]
@@ -452,6 +460,15 @@ codeunit 96217 "Storage Native Fields Tests"
         RecRef.Close();
     end;
 
+    local procedure CleanupLinkedRead()
+    var
+        Fixture: Codeunit "DataExch Fixture ori";
+        MockState: Codeunit "Storage Mock State";
+    begin
+        Fixture.CleanupStorage('X75READ');
+        MockState.Reset();
+    end;
+
     local procedure OffloadLeafAttachment(FileName: Text; Content: Text): Guid
     var
         DocumentAttachment: Record "Document Attachment";
@@ -466,12 +483,11 @@ codeunit 96217 "Storage Native Fields Tests"
         Token: JsonToken;
         MockCodeTok: Label 'X75READ', Locked = true;
     begin
+        CleanupLinkedRead();
         MockState.Reset();
-        if StorageSetup.Get(MockCodeTok) then
-            StorageSetup.Delete();
         StorageSetup.Init();
         StorageSetup.Code := MockCodeTok;
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
         TempBlob.CreateOutStream(ContentOut);
@@ -496,15 +512,11 @@ codeunit 96217 "Storage Native Fields Tests"
     local procedure DispatchOffloadResponse(Request: JsonObject) ResponseText: Text
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        RequestText: Text;
-        ResponseContentType: Text[100];
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
+        ResponseJson: JsonObject;
     begin
-        Request.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
-        ResponseContent.GetSubText(ResponseText, 1);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, "Message Type ori"::"Storage.Attachment.Offload", Request, 0, true);
+        ResponseJson.WriteTo(ResponseText);
     end;
 
     local procedure StoredInternally(AttachmentId: Guid): Boolean
@@ -544,13 +556,9 @@ codeunit 96217 "Storage Native Fields Tests"
     local procedure DispatchNativeOffload(Request: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        RequestText: Text;
-        ResponseContentType: Text[100];
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
+        ResponseJson: JsonObject;
     begin
-        Request.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute("Message Type ori"::"Storage.Attachment.Offload", "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, "Message Type ori"::"Storage.Attachment.Offload", Request, 0, true);
     end;
 }

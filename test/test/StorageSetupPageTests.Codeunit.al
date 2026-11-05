@@ -148,10 +148,15 @@ codeunit 96207 "Storage Setup Page Tests"
     /// <summary>Checks the connection-test action refuses a missing account in either locale.</summary>
     [Test]
     procedure Scenario_AC02_NoAccount_BilingualPageRefusal()
+    var
+        StorageSetup: Record "Storage Setup ori";
     begin
         // [SCENARIO] The setup action shows localized prose before any connector call.
         Initialize();
         InsertStorageConnection();
+        StorageSetup.Get(MockCodeTok);
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
+        StorageSetup.Modify();
         AssertMissingAccountAction(1033, 'Select a file account before testing the connection.');
         AssertMissingAccountAction(1039, 'Veldu skráareikning áður en tengingin er prófuð.');
     end;
@@ -167,7 +172,7 @@ codeunit 96207 "Storage Setup Page Tests"
         Initialize();
         InsertStorageConnection();
         StorageSetup.Get(MockCodeTok);
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup."File Account Id" := CreateGuid();
         StorageSetup.Modify();
         // [WHEN/THEN] The real action produces the harvested Icelandic and English messages.
@@ -229,7 +234,9 @@ codeunit 96207 "Storage Setup Page Tests"
     begin
         UploadChunk.DeleteAll(true);
         UploadSession.DeleteAll(true);
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
     end;
 
     local procedure InsertStorageConnection()
@@ -239,7 +246,7 @@ codeunit 96207 "Storage Setup Page Tests"
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Setup page test connection';
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
     end;

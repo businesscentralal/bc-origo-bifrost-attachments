@@ -998,7 +998,7 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         StorageSetup.Init();
         StorageSetup.Code := StorageCode;
         StorageSetup.Description := 'X79 original setup';
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup."Base Path" := 'X79-root';
         StorageSetup.Enabled := true;
         StorageSetup.Insert(false);
@@ -1093,19 +1093,10 @@ codeunit 96218 "Storage 79 Perm Tests ori"
     local procedure Dispatch(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) ResponseJson: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        RequestText: Text;
-        ResponseText: Text;
-        ResponseContentType: Text[100];
-        MessageVersion: Enum "Message Version ori";
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
     begin
         // Public dispatcher only. Do not insert or call internal Foundation argument objects.
-        RequestJson.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
-        ResponseContent.GetSubText(ResponseText, 1);
-        LibraryAssert.IsTrue(ResponseJson.ReadFrom(ResponseText), 'The dispatcher must return JSON.');
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, false);
     end;
 
     local procedure AssertSuccess(ResponseJson: JsonObject)

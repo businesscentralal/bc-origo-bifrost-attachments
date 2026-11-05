@@ -236,11 +236,13 @@ codeunit 96203 "Storage Attachment Field Tests"
         MockState: Codeunit "Storage Mock State";
     begin
         MockState.Reset();
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
 
@@ -253,6 +255,7 @@ codeunit 96203 "Storage Attachment Field Tests"
         DocAttachment.SetRange("Table ID", Database::Customer);
         DocAttachment.SetRange("No.", TestCustNoTok);
         DocAttachment.DeleteAll();
+        AttachmentLink.SetRange("Storage Code", MockCodeTok);
         AttachmentLink.DeleteAll();
     end;
 
@@ -333,19 +336,10 @@ codeunit 96203 "Storage Attachment Field Tests"
     local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        ResponseContentType: Text[100];
-        MessageVersion: Enum "Message Version ori";
-        RequestText: Text;
-        ResponseText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
         ResponseJson: JsonObject;
     begin
-        RequestJson.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
-        ResponseContent.GetSubText(ResponseText, 1);
-        ResponseJson.ReadFrom(ResponseText);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, false);
         // Clear PK before Insert: Init keeps ID; reuse after a prior Insert raises
         // "Message Argument ori already exists" (attachments#31 smoking gun).
         Clear(TempArgument);

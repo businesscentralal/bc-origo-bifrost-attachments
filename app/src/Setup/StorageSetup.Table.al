@@ -84,6 +84,14 @@ table 10035137 "Storage Setup ori"
         fieldgroup(DropDown; "Code", Description, "File Account Name") { }
     }
 
+    trigger OnDelete()
+    var
+        MockEntry: Record "Storage Mock Entry ori";
+    begin
+        MockEntry.SetRange("Storage Code", Code);
+        MockEntry.DeleteAll(true);
+    end;
+
     /// <summary>Clears the selected file account when the connector changes.</summary>
     internal procedure ClearFileAccount()
     begin
@@ -105,7 +113,7 @@ table 10035137 "Storage Setup ori"
         ConnectionOkMsg: Label 'The storage connection ''%1'' is reachable.', Comment = '%1 = storage code||is-IS=Hægt er að ná sambandi við geymslutenginguna ''%1''.';
     begin
         TestField("Code");
-        if not HasFileAccount() then
+        if ("Storage Type" = "Storage Type"::"External File Storage") and not HasFileAccount() then
             Error(NoAccountErr);
         StorageConnector := "Storage Type";
         StorageConnector.TestConnection(Rec);

@@ -336,6 +336,8 @@ codeunit 10035197 "Storage Upload Mgt ori"
         KeepFile: Boolean;
         Existing: Boolean;
         Path: Text;
+        ReadableUploadLbl: Label 'a file readable by the selected Data Exchange definition', Comment = 'is-IS=skrá sem valin gagnaskiptaskilgreining getur lesið';
+        UploadReadNextStepLbl: Label 'Inspect DataExchange.Definition.Get, correct the uploaded file and retry the open uploadId. Nothing was committed.', Comment = 'is-IS=Skoðaðu DataExchange.Definition.Get, leiðréttu upphlöðnu skrána og reyndu aftur með opna uploadId. Ekkert var staðfest.';
         StorageWriteFailedErr: Label 'The file could not be written to storage, so the import was rolled back: %1', Comment = '%1 = connector error||is-IS=Ekki tókst að skrifa skrána í geymslu og því var innflutningurinn afturkallaður: %1';
         StorageWriteNextStepLbl: Label 'Check the storage connection and retry with the same uploadId, or omit keepFileInStorage.', Comment = 'is-IS=Athugaðu geymslutenginguna og reyndu aftur með sama uploadId, eða slepptu keepFileInStorage.';
     begin
@@ -381,8 +383,13 @@ codeunit 10035197 "Storage Upload Mgt ori"
         ImportMgt.CheckFileFormat(Argument, DefCode, TempBlob, 'uploadId', Session."File Name");
         if Reader.RespondIfErrors(Argument) then
             exit(false);
+        ImportMgt.CheckUploadReadability(Argument, DefCode, TempBlob, Session."File Name");
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
         // A reader error is raised and rolls back the entry, its fields and the session change.
+        Argument.SetErrorContext('uploadId', ReadableUploadLbl, UploadReadNextStepLbl);
         ImportMgt.ImportFile(DefCode, Session."File Name", TempBlob, UploadId, 'Storage.Upload.CommitToDataExchange', StorageSetup.Code, Path, DataExch);
+        Argument.ClearErrorContext();
         Session.Status := Session.Status::Committed;
         Session."Received Size" := TempBlob.Length();
         if KeepFile then
@@ -390,7 +397,7 @@ codeunit 10035197 "Storage Upload Mgt ori"
         Session.Modify(true);
         DeleteChunks(UploadId);
         if KeepFile then
-            if not RequestMgt.TryWriteStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
+            if not RequestMgt.WriteStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
                 Argument.AddError("Bifrost Error Code ori"::BusinessCentralError, StrSubstNo(StorageWriteFailedErr, GetLastErrorText()), 'keepFileInStorage', 'true', '', StorageWriteNextStepLbl);
                 Argument.RaiseCollectedErrors("Bifrost Error Code ori"::BusinessCentralError, StrSubstNo(StorageWriteFailedErr, GetLastErrorText()));
             end;

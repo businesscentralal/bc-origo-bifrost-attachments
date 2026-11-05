@@ -108,7 +108,7 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
             StorageSetup.Delete();
         StorageSetup.Init();
         StorageSetup.Code := MockCodeTok;
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
     end;
@@ -127,22 +127,9 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
     local procedure Execute(MessageType: Enum "Message Type ori"; RequestJson: JsonObject; LanguageId: Integer) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        MessageVersion: Enum "Message Version ori";
-        ResponseContentType: Text[100];
-        RequestText: Text;
-        ResponseText: Text;
-        TaskId: Guid;
-        MessageId: Guid;
-        ResponseTime: Duration;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
     begin
-        RequestJson.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        // Execute uses the configured default language; this public overload sets the processing language explicitly.
-        Dispatcher.EnqueueAndProcess(MessageType, MessageVersion, '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseContentType, ResponseTime);
-        ResponseContent.GetSubText(ResponseText, 1);
-        Response.ReadFrom(ResponseText);
+        Response := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, LanguageId, false);
     end;
 
     local procedure AssertRootRefusal(Response: JsonObject; Received: Text)

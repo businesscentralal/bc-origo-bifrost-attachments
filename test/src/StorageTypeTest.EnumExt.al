@@ -9,7 +9,7 @@ using Origo.Bifrost.Attachments;
 enumextension 96200 "Storage Type Test" extends "Storage Type ori"
 {
     /// <summary>In-memory test backend backed by <c>Bifrost Storage Mock State</c>.</summary>
-    value(96200; Mock)
+    value(96200; "Test Mock")
     {
         Caption = 'Mock', Locked = true;
         Implementation = "Storage Connector ori" = "Storage Mock Impl";

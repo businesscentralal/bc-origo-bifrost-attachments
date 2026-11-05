@@ -36,6 +36,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.IsTrue(AttachmentMgt.IsStorageFileLinked(AliasSetup.Code, '/Xfile.txt/'), 'The same registered account and complete logical path must protect the link.');
         LibraryAssert.IsTrue(AttachmentMgt.IsStorageDirectoryLinked(AliasSetup.Code, '/'), 'The alias directory contains the linked file.');
         LibraryAssert.IsFalse(AttachmentMgt.IsStorageFileLinked(AliasSetup.Code, 'other.txt'), 'Another logical path is not the linked file.');
+        Cleanup();
     end;
 
     /// <summary>Separate account registrations are outside the supported attachment identity boundary.</summary>
@@ -53,6 +54,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         RegisterLogicalSetup(OtherSetup, 'X75ALIAS', CreateGuid(), '');
         LibraryAssert.IsFalse(AttachmentMgt.IsStorageFileLinked(OtherSetup.Code, 'Xdir/Xfile.txt'), 'A separate registered account must not inherit link identity from another account.');
         LibraryAssert.IsTrue(AttachmentMgt.IsStorageFileLinked(SelectedSetup.Code, 'Xdir/Xfile.txt'), 'The owning registered account remains protected.');
+        Cleanup();
     end;
 
     /// <summary>Logical path spelling stays opaque; connector-specific case and URL rules are not inferred.</summary>
@@ -73,6 +75,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.IsFalse(AttachmentMgt.IsStorageFileLinked(AliasSetup.Code, 'Xdir/XFILE.txt'), 'The app must not invent provider case rules.');
         LibraryAssert.IsFalse(AttachmentMgt.IsStorageFileLinked(AliasSetup.Code, 'Xdir/%58file.txt'), 'The app must not URL-decode opaque file names for link identity.');
         LibraryAssert.IsTrue(AttachmentMgt.IsStorageFileLinked(AliasSetup.Code, 'Xdir/Xfile.txt'), 'The exact logical path remains protected.');
+        Cleanup();
     end;
 
     /// <summary>Moved links retain paths relative to each setup on the same registered account.</summary>
@@ -112,6 +115,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         Link.Get(Database::"Incoming Document Attachment", AttachmentId);
         LibraryAssert.AreEqual(AliasSetup.Code, Link."Storage Code", 'Retain the link setup.');
         LibraryAssert.AreEqual('archive/New%20File.txt', Link."Storage Path", 'Retain the opaque destination relative to the link setup base.');
+        Cleanup();
     end;
 
     local procedure RegisterLogicalSetup(var StorageSetup: Record "Storage Setup ori"; StorageCode: Code[20]; AccountId: Guid; BasePath: Text[250])
@@ -153,6 +157,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         AssertRefusal(Response, 'InvalidParameter');
         // [THEN] The original attachment still serves the original bytes and its link is unchanged.
         AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
+        Cleanup();
     end;
 
     /// <summary>Canonical comparisons also protect existing noncanonical stored links.</summary>
@@ -176,6 +181,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [THEN] Both persisted spelling and served content survive rejection.
         AssertRefusal(Response, 'PreconditionFailed');
         AssertLinkedContent(AttachmentId, '/Xdir/Xfile.txt/');
+        Cleanup();
     end;
 
     /// <summary>Raw create cannot overwrite an attachment through a slash alias.</summary>
@@ -197,6 +203,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [THEN] The response is actionable and the attachment remains intact.
         AssertRefusal(Response, 'PreconditionFailed');
         AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
+        Cleanup();
     end;
 
     /// <summary>Copy and move reject linked destinations before changing either file.</summary>
@@ -220,6 +227,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [THEN] Source and target bytes, link and native attachment content are unchanged.
         LibraryAssert.AreEqual('source', StoredText('Xsource.txt'), 'Rejected transfers must preserve the source.');
         AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
+        Cleanup();
     end;
 
     /// <summary>Upload commit rechecks links created after Begin and preserves the reusable session.</summary>
@@ -261,6 +269,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.AreEqual(1, Session."Chunk Count", 'The chunk count must remain unchanged.');
         LibraryAssert.AreEqual(11, Session."Received Size", 'The received size must remain unchanged.');
         LibraryAssert.IsTrue(Chunk.Get(UploadId, 1), 'The chunk must remain available for retry.');
+        Cleanup();
     end;
 
     /// <summary>A legal slash-spelled source move updates only the matching link and preserves content.</summary>
@@ -283,6 +292,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         AssertSuccess(Response);
         AssertLinkedContent(AttachmentId, 'Xarchive/Xfile.txt');
         AssertLinkedContent(OtherAttachmentId, 'Xdir/Xother.txt');
+        Cleanup();
     end;
 
     /// <summary>Stored path boundaries are explicit, and the overlimit request writes nothing.</summary>
@@ -311,6 +321,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
                 LibraryAssert.IsFalse(MockState.HasFile(Path), 'An overlimit path must not be written.');
             end;
         end;
+        Cleanup();
     end;
 
     /// <summary>Base path length contributes to the full address limit.</summary>
@@ -333,6 +344,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [THEN] No remote file was created.
         AssertRefusal(Response, 'InvalidParameter');
         LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'Full-address validation must precede writes.');
+        Cleanup();
     end;
 
     /// <summary>Upload filename limits reject complete overlength names instead of truncating them.</summary>
@@ -369,6 +381,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
                 LibraryAssert.AreEqual(BeforeCount, Session.Count(), 'An invalid name must not create a session.');
             end;
         end;
+        Cleanup();
     end;
 
     /// <summary>Invalid traversal and root file paths fail without connector writes.</summary>
@@ -388,6 +401,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         AssertRefusal(Response, 'InvalidParameter');
         // [THEN] No connector file was written.
         LibraryAssert.AreEqual(0, MockState.FilePaths().Count(), 'Unsafe file paths must not reach the connector.');
+        Cleanup();
     end;
 
     /// <summary>Inner double slashes, backslashes and dot segments are refused before any connector call.</summary>
@@ -423,6 +437,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.AreEqual(FileCountBefore, MockState.FilePaths().Count(), 'Unsafe paths must not reach the connector.');
         LibraryAssert.IsTrue(Link.Get(Database::"Incoming Document Attachment", AttachmentId), 'The link must remain.');
         LibraryAssert.AreEqual('Xdir/Xfile.txt', Link."Storage Path", 'The link path must be unchanged.');
+        Cleanup();
     end;
 
     /// <summary>A generated overlength offload path is refused while the only content remains local.</summary>
@@ -474,6 +489,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         TempBlob.CreateInStream(ContentIn);
         ContentIn.ReadText(ContentText);
         LibraryAssert.AreEqual('original', ContentText, 'Rejected offload must preserve every byte.');
+        Cleanup();
     end;
 
     /// <summary>A failed remote move rolls back the prepared link updates.</summary>
@@ -495,6 +511,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.ExpectedError('Injected storage write failure.');
         AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
         LibraryAssert.IsFalse(MockState.HasFile('Xnew.txt'), 'A rejected provider write must leave no orphan.');
+        Cleanup();
     end;
 
     /// <summary>A self move through a slash alias is refused without deleting the unlinked source.</summary>
@@ -513,6 +530,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [THEN] The operation is refused before copy or deletion.
         AssertRefusal(Response, 'InvalidParameter');
         LibraryAssert.AreEqual('original', StoredText('Xfile.txt'), 'Self move must not remove the source.');
+        Cleanup();
     end;
 
     /// <summary>A canonical relative path addresses the same file under a slash-spelled base root.</summary>
@@ -538,6 +556,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         // [THEN] The linked file and its canonical relative address survive.
         AssertRefusal(Response, 'InvalidParameter');
         AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
+        Cleanup();
     end;
 
     /// <summary>Disabled aliases with different bases still protect the same file from all raw destinations.</summary>
@@ -572,6 +591,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.AreEqual('/Xfile.txt/', Link."Storage Path", 'Refusal preserves legacy spelling.');
         StorageSetup.Get('X75ALIAS');
         LibraryAssert.IsFalse(StorageSetup.Enabled, 'Protection must not enable an existing disabled setup.');
+        Cleanup();
     end;
 
     /// <summary>A source move retains the aliased storage code and derives its own relative destination.</summary>
@@ -598,6 +618,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.AreEqual('X75ALIAS', Link."Storage Code", 'Move must not change the link owner code.');
         LibraryAssert.AreEqual('Xarchive/Xfile.txt', Link."Storage Path", 'Use the alias-relative destination.');
         LibraryAssert.AreEqual('original', StoredText('Xroot/Xarchive/Xfile.txt'), 'Moved bytes must be readable.');
+        Cleanup();
     end;
 
     /// <summary>A move outside an aliased root fails before metadata or provider mutation.</summary>
@@ -625,6 +646,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.AreEqual(BeforeCalls, MockState.GetWriteCalls(), 'No remote move may start.');
         LibraryAssert.AreEqual('original', StoredText('Xroot/Xfile.txt'), 'The source must remain readable.');
         LibraryAssert.IsFalse(MockState.HasFile('Xoutside.txt'), 'No destination may be created.');
+        Cleanup();
     end;
 
     /// <summary>Ordinal identity keeps case-distinct and Unicode-distinct keys and literal filter characters separate.</summary>
@@ -644,6 +666,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         AssertLinkedContent(AttachmentId, 'Xdir/XÁ*.txt');
         AssertRefusal(Execute(Enum::"Message Type ori"::"Storage.File.Create", ContentRequest('/Xdir/XÁ*.txt/', 'bad')), 'PreconditionFailed');
         AssertLinkedContent(AttachmentId, 'Xdir/XÁ*.txt');
+        Cleanup();
     end;
 
     /// <summary>A copy-stage failure rolls back links while retaining source readability and exposing the duplicate.</summary>
@@ -666,6 +689,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         AssertSuccess(Execute(Enum::"Message Type ori"::"Storage.File.Delete", PathRequest('Xcopy.txt')));
         LibraryAssert.IsFalse(MockState.HasFile('Xcopy.txt'), 'Explicit cleanup removes the test-owned duplicate.');
         AssertLinkedContent(AttachmentId, 'Xfile.txt');
+        Cleanup();
     end;
 
     local procedure InsertAlias(StorageCode: Code[20]; BasePath: Text[250]; Enabled: Boolean)
@@ -674,7 +698,7 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
     begin
         StorageSetup.Init();
         StorageSetup.Code := StorageCode;
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup."Base Path" := BasePath;
         StorageSetup.Enabled := Enabled;
         StorageSetup.Insert();
@@ -696,26 +720,28 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
         LibraryAssert.AreNotEqual('', GetLastErrorText(), 'Overlong path must raise an actionable refusal.');
         AssertCaughtRefusal('InvalidParameter');
         AssertLinkedContent(AttachmentId, 'Xdir/Xfile.txt');
+        Cleanup();
     end;
 
     local procedure Initialize()
     var
         StorageSetup: Record "Storage Setup ori";
-        Link: Record "Storage Attachment Link ori";
-        MockState: Codeunit "Storage Mock State";
     begin
-        MockState.Reset();
-        Link.SetFilter("Storage Code", '%1|%2', MockCodeTok, 'X75ALIAS');
-        Link.DeleteAll();
-        if StorageSetup.Get('X75ALIAS') then
-            StorageSetup.Delete();
-        if StorageSetup.Get(MockCodeTok) then
-            StorageSetup.Delete();
-        StorageSetup.Init();
+        Cleanup();
         StorageSetup.Code := MockCodeTok;
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
+    end;
+
+    local procedure Cleanup()
+    var
+        Fixture: Codeunit "DataExch Fixture ori";
+        MockState: Codeunit "Storage Mock State";
+    begin
+        Fixture.CleanupStorage(MockCodeTok);
+        Fixture.CleanupStorage('X75ALIAS');
+        MockState.Reset();
     end;
 
     local procedure CreateLinked(Path: Text) AttachmentId: Guid
@@ -790,20 +816,11 @@ codeunit 96225 "Storage Integrity 75 Tests ori"
     local procedure Execute(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        MessageVersion: Enum "Message Version ori";
-        ResponseContentType: Text[100];
-        RequestText: Text;
-        ResponseText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
     begin
-        RequestJson.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
         // Raw storage writes are irreversible contracts; exercise their normal commit mode.
         // RequiredTestIsolation=Function restores all database fixtures after each test.
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType, false);
-        ResponseContent.GetSubText(ResponseText, 1);
-        Response.ReadFrom(ResponseText);
+        Response := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, true);
     end;
 
     local procedure AssertSuccess(Response: JsonObject)

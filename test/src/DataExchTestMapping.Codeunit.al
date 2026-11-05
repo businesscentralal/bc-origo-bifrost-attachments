@@ -13,11 +13,16 @@ codeunit 96240 "DataExch Test Mapping ori"
     trigger OnRun()
     var
         Target: Record "DataExch Test Target ori";
+        LineDef: Record "Data Exch. Line Def";
         ProcessDataExch: Codeunit "Process Data Exch.";
         TargetRef: RecordRef;
     begin
         Target."Data Exch. No." := Rec."Entry No.";
         TargetRef.GetTable(Target);
-        ProcessDataExch.ProcessAllLinesColumnMapping(Rec, TargetRef);
+        if Rec."Data Exch. Line Def Code" <> '' then begin
+            LineDef.Get(Rec."Data Exch. Def Code", Rec."Data Exch. Line Def Code");
+            ProcessDataExch.ProcessColumnMapping(Rec, LineDef, TargetRef);
+        end else
+            ProcessDataExch.ProcessAllLinesColumnMapping(Rec, TargetRef);
     end;
 }
