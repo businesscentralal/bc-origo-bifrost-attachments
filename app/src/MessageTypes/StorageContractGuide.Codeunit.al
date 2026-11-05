@@ -22,6 +22,8 @@ codeunit 10035199 "Storage Contract Guide ori"
     begin
         Clear(Target);
         case MessageType of
+            'Storage.Upload.CommitToStaging':
+                Target.Add(ContractMgt.TargetEntry('data.uploadId', 'upload session id (GUID)', 'The complete open session owned by the calling user.'));
             'Storage.File.Get', 'Storage.File.Exists', 'Storage.File.Delete', 'Storage.File.Create':
                 begin
                     Target.Add(ContractMgt.TargetEntry('data.storageCode', 'storage connection code', 'The connection the file is in. Resolve it with Storage.Account.List.'));
@@ -91,6 +93,13 @@ codeunit 10035199 "Storage Contract Guide ori"
     begin
         Clear(Workflow);
         case MessageType of
+            'Storage.Upload.CommitToStaging':
+                begin
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.Upload.Begin', 'Open a session without storageCode.'));
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.Upload.Append', 'Send numbered base64 chunks.'));
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.Upload.CommitToStaging', 'Store the assembled bytes and receive stagingId.'));
+                    Explanation := 'Pass stagingId to the consuming message type as the same user in the same company. Its Take consumes the row; otherwise Foundation retention removes it. No storage connection is needed. Data.Records cannot access staging rows.';
+                end;
             'Storage.Account.List', 'Storage.File.List', 'Storage.File.Get', 'Storage.File.Exists':
                 begin
                     Steps.Add(ContractMgt.WorkflowStep('Storage.Account.List', 'Find the storageCode of an enabled connection.'));
@@ -146,7 +155,7 @@ codeunit 10035199 "Storage Contract Guide ori"
                     Steps.Add(ContractMgt.WorkflowStep('Storage.Upload.Append', 'Send each chunk with its sequence number.'));
                     Steps.Add(ContractMgt.WorkflowStep('Storage.Upload.Status', 'Check the received size and chunk count.'));
                     Steps.Add(ContractMgt.WorkflowStep('Storage.Upload.Commit', 'Write the assembled file to storage.'));
-                    Explanation := 'Storage.Upload.Abort discards an open session instead of committing it. To keep the file in Business Central, end with Storage.Upload.CommitToRecord; to read it with a Data Exchange definition, end with Storage.Upload.CommitToDataExchange.';
+                    Explanation := 'Storage.Upload.Abort discards an open session instead of committing it. To keep the file in Business Central, end with Storage.Upload.CommitToRecord; to read it with a Data Exchange definition, end with Storage.Upload.CommitToDataExchange; to hand the bytes to another app by id, end with Storage.Upload.CommitToStaging.';
                 end;
             'Storage.Upload.CommitToRecord':
                 begin
@@ -328,7 +337,7 @@ codeunit 10035199 "Storage Contract Guide ori"
                     '- The caller needs read permission on the host table and write permission on Document Attachment; a table without an attachment key is refused with PreconditionFailed.');
             'Storage.Upload.Begin':
                 exit('- The default root is bifrost-uploads/. fileName must be a file name without folders; use path or folderPath for directories.' + Lf() +
-                    '- `storageCode` is optional. A session without it can only end in Storage.Upload.CommitToRecord or Storage.Upload.CommitToDataExchange; Storage.Upload.Commit refuses it with PreconditionFailed.' + Lf() +
+                    '- `storageCode` is optional. A session without it can end in Storage.Upload.CommitToRecord, Storage.Upload.CommitToDataExchange or Storage.Upload.CommitToStaging; Storage.Upload.Commit refuses it with PreconditionFailed.' + Lf() +
                     '- With a `storageCode` the destination is `path`, else `folderPath` and `fileName`, else the folder `bifrost-uploads` and `fileName`. It is fixed when the session begins and returned as `path`; without a `storageCode`, `path` is empty.' + Lf() +
                     '- `fileName` is a name only: a folder or relative segment is refused with InvalidParameter.' + Lf() +
                     '- When `declaredSize` is above 0, a commit is refused unless the received size equals it.' + Lf() +
@@ -459,6 +468,8 @@ codeunit 10035199 "Storage Contract Guide ori"
                 Pair(MessageType, '"uploadId":"' + Guid + '"', '{"uploadId":"' + Guid + '","storageCode":"ARCHIVE","fileName":"big.pdf","path":"incoming/big.pdf","status":"Open","declaredSize":10,"received":5,"chunkCount":1}', RequestText, ResponseText);
             'Storage.Upload.CommitToRecord':
                 Pair(MessageType, '"uploadId":"' + Guid + '","tableId":18,"no":"10000"', '{"target":"DocumentAttachment","tableId":18,"no":"10000","documentType":"Quote","lineNo":0,"attachmentId":4,"systemId":"' + Guid + '","fileName":"big.pdf","contentLength":10,"offloaded":false}', RequestText, ResponseText);
+            'Storage.Upload.CommitToStaging':
+                Pair(MessageType, '"uploadId":"' + Guid + '"', '{"stagingId":"' + Guid + '","size":3145728,"fileName":"layout.docx","nextStep":"Pass stagingId to the consuming message type as the same user in the same company. Its take consumes the staged file."}', RequestText, ResponseText);
             'Storage.Upload.CommitToDataExchange':
                 Pair(MessageType, '"uploadId":"' + Guid + '","dataExchDefCode":"INVOICES"', '{"uploadId":"' + Guid + '","entryNo":12,"dataExchDefCode":"INVOICES","fileName":"invoices.csv","lineCount":2,"fieldCount":8,"processed":false}', RequestText, ResponseText);
             'DataExchange.Definition.Get':

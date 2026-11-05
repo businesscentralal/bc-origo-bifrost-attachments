@@ -245,6 +245,69 @@ codeunit 10035197 "Storage Upload Mgt ori"
         exit(true);
     end;
 
+    /// <summary>Stages a complete upload through Foundation's public façade in the caller's transaction.</summary>
+    /// <param name="Argument">The upload id and optional fileName/contentType; receives validation errors.</param>
+    /// <param name="ResultData">Returns stagingId, size, fileName and the consumer next step.</param>
+    /// <returns>True after staging; false when validation refused the request before any write.</returns>
+    procedure CommitToStaging(var Argument: Record "Message Argument ori"; var ResultData: JsonObject): Boolean
+    var
+        Session: Record "Storage Upload Session ori";
+        Staging: Codeunit "Blob Staging ori";
+        TempBlob: Codeunit "Temp Blob";
+        Reader: Codeunit "Storage Request Reader ori";
+        RequestJson: JsonObject;
+        ContentInStream: InStream;
+        UploadId: Guid;
+        StagingId: Guid;
+        FileName: Text;
+        ContentType: Text;
+        NextStepLbl: Label 'Pass stagingId to the consuming message type as the same user in the same company. Its take consumes the staged file.', Comment = 'is-IS=Sendu stagingId til móttökugerðar sem sami notandi í sama fyrirtæki. Take-aðgerð hennar eyðir bráðabirgðaskránni við móttöku.';
+    begin
+        RequestJson := Argument.GetRequestJson();
+        Reader.ReadGuid(Argument, RequestJson, 'uploadId', true, UploadId);
+        if Reader.ReadText(Argument, RequestJson, 'fileName', false, FileName) and (FileName <> '') then
+            Reader.CheckFileName(Argument, FileName);
+        Reader.ReadText(Argument, RequestJson, 'contentType', false, ContentType);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        if not FindOpenSession(Argument, UploadId, Session) then
+            exit(false);
+        if not CheckReadyToCommit(Argument, Session) then
+            exit(false);
+        if FileName = '' then
+            FileName := Session."File Name";
+
+        // Serialize competing commit attempts before creating a staging row. Any error below
+        // propagates to the caller and rolls back staging, session status and chunk deletion.
+        Session.LockTable();
+        // Keep the existing creator/id filters and the locking read: Reset would reset
+        // record read isolation. Re-read before deciding whether this commit may write.
+        if not Session.FindFirst() then begin
+            RespondUploadNotFound(Argument, UploadId);
+            exit(false);
+        end;
+        if Session.Status <> Session.Status::Open then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(NotOpenErr, StatusCaption(Session.Status)), 'uploadId',
+                Format(UploadId, 0, 4), OpenExpectedLbl, NotOpenNextStepLbl);
+            exit(false);
+        end;
+        if not CheckReadyToCommit(Argument, Session) then
+            exit(false);
+        AssembleChunks(UploadId, TempBlob);
+        TempBlob.CreateInStream(ContentInStream);
+        StagingId := Staging.Create(ContentInStream, FileName, ContentType, 'Storage.Upload.CommitToStaging');
+        Session.Status := Session.Status::Committed;
+        Session."Received Size" := TempBlob.Length();
+        Session.Modify(true);
+        DeleteChunks(UploadId);
+
+        ResultData.Add('stagingId', Format(StagingId, 0, 4));
+        ResultData.Add('size', TempBlob.Length());
+        ResultData.Add('fileName', FileName);
+        ResultData.Add('nextStep', NextStepLbl);
+        exit(true);
+    end;
+
     /// <summary>
     /// Assembles an open session's chunks into a new Data Exch. entry and parses it with an import
     /// definition. With <c>keepFileInStorage</c> the file is also written to the session's storage path,
