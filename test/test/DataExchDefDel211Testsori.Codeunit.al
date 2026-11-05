@@ -9,7 +9,7 @@ using System.TestLibraries.Utilities;
 /// Issue 211: DataExchange.Definition.Delete is disabled. It reports IsEnabled false, every call is refused with a
 /// typed error in 1033 and 1039, no definition is deleted, and the contract says so.
 /// </summary>
-codeunit 96279 "DataExch Def Del211 Tests ori"
+codeunit 96280 "DataExch Def Del211 Tests ori"
 {
     Subtype = Test;
     TestPermissions = Disabled;

@@ -241,6 +241,6 @@ Key rules always in effect:
   `D:\Git\Private\_bifrost-migration-archive\hnitbjorg\`. The open defect list from the last
   run is in that report's "Defects and observations" section - fix from there.
 
-#211 test reservation (2026-11-05): codeunit **96279** `DataExch Def Del211 Tests ori` (DataExchange.Definition.Delete disabled).
+#211 test reservation (2026-11-05, renumbered from 96279 after the #210 merge took it): codeunit **96280** `DataExch Def Del211 Tests ori` (DataExchange.Definition.Delete disabled).
 
 #197 test helper reservation (2026-11-04): codeunit **96278** `DataExch Type Switch Sim ori`; 96275 remains reserved to #192 staging. See the shared typed object reservation.

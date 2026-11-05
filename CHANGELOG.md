@@ -14,9 +14,9 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-11-05) - Disabled definition-delete contract (#211 / PR #212)
 
-- Codeunit 10035183 excludes `DataExchange.Definition.Delete` from the common required `storageCode` parameter. The disabled type declares only its ignored `code`, preserving the typed refusal without requiring a storage connection. Codeunit 96279 verifies the exact parameter name as well as the single-parameter count.
+- Codeunit 10035183 excludes `DataExchange.Definition.Delete` from the common required `storageCode` parameter. The disabled type declares only its ignored `code`, preserving the typed refusal without requiring a storage connection. Codeunit 96280 verifies the exact parameter name as well as the single-parameter count.
 
-- Align the disabled refusal example with its request: a supplied `code` is echoed on parameter `code`, rather than claiming the envelope type was refused. Codeunit 96279 pins both response fields.
+- Align the disabled refusal example with its request: a supplied `code` is echoed on parameter `code`, rather than claiming the envelope type was refused. Codeunit 96280 pins both response fields.
 - Preserve six raw-code Import.Run regressions in codeunit 96226 and both Definition.Export envelope checks in codeunit 96258. Only disabled-delete assertions are removed; the export checks delete their self-created definitions.
 
 ### Changed (2026-11-05) - Disable DataExchange.Definition.Delete (#211)
@@ -24,7 +24,7 @@ Business Central release versioning (`major.minor.build.revision`).
 - `DataExchange.Definition.Delete` is disabled (Gunnar's decision 05.11.2026: "you set isenabled = false in the implementation and update the execution to trigger an error and update the contract to reflect that"). `DataExch Def Delete Impl ori` returns `IsEnabled() = false`, and executing the type raises a typed `PreconditionFailed` error on parameter `type` (1033: "DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.", 1039: "DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.") with a nextStep in both languages. No definition is read or deleted.
 - The contract (description, selection text, overview, notes, errors, effect, workflow, example) and the Data Exchange help chapters say the type is disabled and no longer document parameters, references or a success response. The write hint of the data restriction on the definition tables now names only `DataExchange.Definition.Import`.
 - The enum value `DataExchange.Definition.Delete` (10035171) is kept: removing it would be an AppSource breaking change. `DataExchange.Entry.Delete` and the Storage delete types are unchanged.
-- Tests: new codeunit 96279 `DataExch Def Del211 Tests ori` (IsEnabled false, refusal in 1033 and 1039 with the definition kept, disabled contract and discovery text). Tests that expected Definition.Delete to delete or to refuse referenced definitions were removed. The Icelandic translation file drops the labels of the removed delete logic and carries the new ones; no en-US file.
+- Tests: new codeunit 96280 `DataExch Def Del211 Tests ori` (IsEnabled false, refusal in 1033 and 1039 with the definition kept, disabled contract and discovery text). Tests that expected Definition.Delete to delete or to refuse referenced definitions were removed. The Icelandic translation file drops the labels of the removed delete logic and carries the new ones; no en-US file.
 
 ### Fixed (2026-11-05) - Align Foundation release input contract (#209)
 
