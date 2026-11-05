@@ -1744,9 +1744,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method FindCodeunitBlocker - NamedType IncompatibleErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2058621091 - Method 2914562212 - NamedType 4120398360" size-unit="char" translate="yes" xml:space="preserve">
-          <source>a codeunit that accepts Data Exch. (table 1220)</source>
-          <target>kóðaeining sem tekur við Data Exch. (tafla 1220)</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=kóðaeining sem tekur við Data Exch. (tafla 1220)</note>
+          <source>a codeunit that accepts Data Exch. (table 1220) or has no table requirement</source>
+          <target>kóðaeining sem tekur við Data Exch. (tafla 1220) eða krefst engrar töflu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=kóðaeining sem tekur við Data Exch. (tafla 1220) eða krefst engrar töflu</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method FindCodeunitBlocker - NamedType ExpectedLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2058621091 - Method 2914562212 - NamedType 680257497" size-unit="char" translate="yes" xml:space="preserve">
@@ -1754,6 +1754,24 @@
           <target>Notaðu Business Central síðuna fyrir þennan innflutning, svo sem launabókina, eða veldu vörpun sem tekur við gagnaskiptafærslum.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Notaðu Business Central síðuna fyrir þennan innflutning, svo sem launabókina, eða veldu vörpun sem tekur við gagnaskiptafærslum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method FindCodeunitBlocker - NamedType NextStepLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 3081878204 - NamedType 1005540343" size-unit="char" translate="yes" xml:space="preserve">
+          <source>This mapping requires the related Usage Data Import record; the entry has no related record.</source>
+          <target>Þessi vörpun krefst tengdrar færslu fyrir innflutning notkunargagna; færslan hefur enga tengda færslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Þessi vörpun krefst tengdrar færslu fyrir innflutning notkunargagna; færslan hefur enga tengda færslu.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method FindProcessBlocker - NamedType RelatedContextErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 3081878204 - NamedType 1782583920" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a Data Exchange entry created by the Usage Data Import page with its related import record</source>
+          <target>gagnaskiptafærsla búin til á síðu fyrir innflutning notkunargagna með tengdri innflutningsfærslu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=gagnaskiptafærsla búin til á síðu fyrir innflutning notkunargagna með tengdri innflutningsfærslu</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method FindProcessBlocker - NamedType RelatedContextExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 3081878204 - NamedType 3570565103" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run this definition from the Usage Data Import page in Subscription Billing, which supplies the related import record.</source>
+          <target>Keyrðu þessa skilgreiningu á síðu fyrir innflutning notkunargagna í áskriftarinnheimtu, sem gefur tengda innflutningsfærslu.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Keyrðu þessa skilgreiningu á síðu fyrir innflutning notkunargagna í áskriftarinnheimtu, sem gefur tengda innflutningsfærslu.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method FindProcessBlocker - NamedType RelatedContextNextLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2058621091 - Method 3081878204 - NamedType 1521162898" size-unit="char" translate="yes" xml:space="preserve">
           <source>Definition %1, line %2, mapping to table %3 with codeunit %4 cannot be processed: %5</source>
