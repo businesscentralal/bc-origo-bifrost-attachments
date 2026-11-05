@@ -10,6 +10,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 - Test codeunit 96237 `DataExch Phase2 Tests ori` uses the shared preview-and-confirm dispatcher helper 96219 for its remaining irreversible `Storage.Upload.Commit` fixture calls. Other storage fixtures use the same helper through merged #182. The preview's actual count is confirmed without modifying reused request JSON; refusal assertions and original commit modes remain unchanged. The earlier fixed-count helper 96276 is superseded by 96219. No product code or message classification changes.
 
+### Fixed (2026-11-05) - Align Foundation release input contract (#209)
+
+- Pin the AppSource input gate and signed-package collision restoration to the authentic Foundation 28.0.11.669 release selected by CI. Preserve exact identity, package/archive hashes, source/build/compiler provenance, friend restrictions and historical staging profiles. No AL objects or dependency floors change. Gate regressions track the selected release and use the genuine generated fixture compiler stamp, preserving mismatch refusals.
+
 ### Fixed (2026-11-05) - Isolate storage setup read regression (#166 / PR #182)
 
 - Codeunit 96205 scopes Data.Records.Get to its MOCK setup through the Code field filter, seeds an unrelated setup to prove independence from company data, verifies that row survives the refused write/read, and removes both owned fixtures.

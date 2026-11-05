@@ -18,8 +18,15 @@ G = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(G)
 
 
+def fixture_compiler_version():
+    # The fixture generator accepts the actual installed compiler. Its genuine
+    # package stamp, rather than a hardcoded preview version, drives the receipt.
+    fixtures = os.environ.get("APPSOURCE_GATE_FIXTURES")
+    return G.package_info(Path(fixtures) / "default.app")["compilerVersion"] if fixtures else "30.0.42.60748"
+
+
 def log(project="Gate Fixture ori", count=1):
-    return ("Microsoft (R) AL Compiler version 30.0.42.60748\n"
+    return (f"Microsoft (R) AL Compiler version {fixture_compiler_version()}\n"
             f"Compilation started for project '{project}' containing '{count}' files at '09:50:29.018'.\n"
             "Compilation ended at '09:50:30.981'.\n")
 
@@ -28,7 +35,7 @@ def params():
     # Explicit unit fixture for the collector contract, not analyzer invocation proof.
     return dict(enableCodeCop=True, enableUICop=True, enableAppSourceCop=True, failOn="warning",
                 escapeFromCops=False, workspaceCompilation=False, rulesetValidated=True,
-                compilerVersion="30.0.42.60748", tools={n: {"sha256": "a" * 64} for n in
+                compilerVersion=fixture_compiler_version(), tools={n: {"sha256": "a" * 64} for n in
                 ("compiler", "CodeCop", "UICop", "AppSourceCop", "Analyzers.Common", "helper", "alpacaOverride")})
 
 
@@ -85,7 +92,7 @@ class Parameters(unittest.TestCase):
         self.assertEqual(1, len(foundation_probing))
         self.assertEqual("https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core", foundation_probing[0]["repo"])
         self.assertEqual("release", foundation_probing[0]["release_status"])
-        self.assertEqual("28.0.10", foundation_probing[0]["version"])
+        self.assertEqual("28.0.11", foundation_probing[0]["version"])
         for key in ("enableCodeCop", "enableUICop", "enableCodeAnalyzersOnTestApps"):
             self.assertIs(True, settings[key])
         self.assertEqual("warning", settings["failOn"])
@@ -610,14 +617,14 @@ class GenuinePackages(unittest.TestCase):
         self.state()
         folder = self.root / "compiler-symbols"
         shutil.copy2(self.foundation_candidate, folder / "Foundation.app")
-        shutil.copy2(self.foundation_candidate, folder / "Foundation_28.0.10.632.app")
+        shutil.copy2(self.foundation_candidate, folder / "Foundation_28.0.11.669.app")
         snapshot = G.before_compile(self.root, self.rejection_request())
         foundation_id = "7505e808-6e52-4b96-a328-82573391297a"
         compiler = [s for s in snapshot["compilerSymbols"] if s["identity"]["id"] == foundation_id]
         self.assertEqual(1, len(compiler))
         self.assertEqual(1, len(list(folder.glob("*.app"))))
         self.assertEqual(1, len(snapshot["compilerAliasRemovals"]))
-        self.assertTrue((folder / "Foundation_28.0.10.632.app").is_file())
+        self.assertTrue((folder / "Foundation_28.0.11.669.app").is_file())
         self.assertFalse((folder / "Foundation.app").is_file())
 
     def test_conflicting_compiler_versions_preserve_both_disk_hashes(self):

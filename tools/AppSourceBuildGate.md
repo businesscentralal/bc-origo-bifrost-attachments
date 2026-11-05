@@ -31,7 +31,7 @@ The separate controlled523 Foundation fixture is main
 `Origo_Bifrost Foundation_28.0.2.523.app`, SHA256
 `5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f`.
 The controlled fixture retains these exact bytes. Current actual precompile inventory
-requires the internally approved exact candidate530 below, with zero product self-app inputs. Test must use the exact just-built product. Changing the approved
+requires the exact released candidate669 below, with zero product self-app inputs. Test must use the exact just-built product. Changing the approved
 input requires a reviewed tooling change; the app dependency floor is
 **28.0.3.530**, the approved candidate. Symbol inventories are independent of the donated manifest guard.
 
@@ -42,6 +42,27 @@ the manifest's compiled-source commit is checked independently. Existing receipt
 cannot be reused. Missing/displaced hooks, truncated later logs, disabled cops,
 fallbacks, workspace compilation and unsupported compiler collection fail closed.
 Container-only compilation needs a supported identity collector before acceptance.
+
+## Current Foundation release input (#209)
+
+The probe selects Foundation release `28.0.11`, package `28.0.11.669`.
+The gate and default collision-restore/staging profile are `candidate669`:
+
+- Source: `a99232fbbe8bba3d18d39a24b8cfa2a06ea3376e`.
+- Successful build: [41792278930, attempt 2](https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/41792278930).
+- Compiler: `18.1.44.47295`.
+- Apps artifact `13306109485`, archive SHA256 `597e7707533c0ce41897fecc65e4b64aa13c5107da2dcb7bf4798c820687d016`.
+- Signed Apps package SHA256 `050cb3b6f2c77ee74ab155831664a96b790781e27890c3632e32c29837452c08`, no friends.
+- TestApps artifact `13307999926`, archive SHA256 `ce66b4b27bdd90e71ae28fbd5cbf0d90c8b6c4572c5864f0725e2cd21ea028d6`.
+- Only replace its exact same-filename Foundation collision, SHA256 `47e6da5b1137898c712d36c3287922568b73e8276e876a1d546a0b37f231936d`, with its existing Foundation test friend.
+
+Release asset digests match the corresponding build artifact archives. The NAVX
+manifest supplies the exact source, build and compiler identity; these are checked
+alongside the package hashes. Signature-tail content does not certify Windows
+signature trust. Unknown cache content still fails before download or replacement;
+already approved content remains untouched. Historical `controlled523`,
+`candidate530` and `candidate632` profiles retain their original bytes and remain
+explicit historical inputs. Product/test dependency floors remain unchanged.
 
 ## Infrastructure and acceptance holds
 
