@@ -232,22 +232,22 @@ class Staging(unittest.TestCase):
         self.assertTrue((self.root/'stage-rejected.json').exists())
 
 
-class Candidate632(unittest.TestCase):
+class Candidate669(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        self.config = S.PROFILES['candidate632']
+        self.config = S.PROFILES['candidate669']
         inputs = Path(os.environ['FOUNDATION_CANDIDATE_ARTIFACTS'])
         context = dict(run='1234', attempt='1', sourceCommit='3' * 40, checkoutSha='4' * 40, mode='Default')
         artifacts = {}
         for kind, (artifact, sha) in self.config['artifacts'].items():
-            archive = inputs / f'foundation632-{artifact}.zip'
+            archive = inputs / f'foundation669-{artifact}.zip'
             self.assertEqual(sha, G.file_hash(archive))
             artifacts[kind] = dict(archive=str(archive), provenance=dict(repository='OrigoSoftwareSolutions/bc-origo-bifrost-core',
                 sourceSha=self.config['source'], run=self.config['run'], attempt=self.config['attempt'],
                 artifactId=artifact, archiveSha256=sha, expired=False, conclusion='success'))
-        # The current production profile is candidate632; controlled523 stays an explicit historical fixture.
+        # The current production profile is candidate669; controlled523 stays an explicit historical fixture.
         self.request = dict(context=context, artifacts=artifacts)
 
     def test_actual_candidate_staging_retains_signed_apps_and_excludes_only_exact_test_collision(self):
@@ -257,7 +257,7 @@ class Candidate632(unittest.TestCase):
         info = G.package_info(arrays['installApps'][0])
         G.check_foundation_candidate(info)
         receipt = S.validate(self.root / 'stage/selection.json', self.request['context'], arrays['installApps'], arrays['installTestApps'])
-        self.assertEqual('candidate632', receipt['profile'])
+        self.assertEqual('candidate669', receipt['profile'])
         self.assertFalse(receipt['signatureTrustVerified'])
         self.assertEqual(self.config['testPin'], receipt['selection']['excluded'][0]['sha256'])
         self.assertEqual([S.TEST_FRIEND], receipt['selection']['excluded'][0]['friends'])
@@ -271,10 +271,43 @@ class Candidate632(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises(G.GateError): S.stage(request, self.root / change)
             self.assertFalse((self.root / change).exists())
 
+    def test_probe_gate_and_restore_use_the_same_immutable_release(self):
+        settings = json.loads((Path(__file__).parents[2] / '.AL-Go/settings.json').read_text())
+        probe = next(item for item in settings['appDependencyProbingPaths'] if item['repo'].endswith('/bc-origo-bifrost-core'))
+        self.assertEqual(probe['version'], '.'.join(self.config['identity']['version'].split('.')[:3]))
+        for field, value in [('identity', self.config['identity']), ('sha256', self.config['pin']),
+                             ('sourceCommit', self.config['source']), ('buildUrl', self.config['buildUrl']),
+                             ('artifactId', self.config['artifacts']['Apps'][0]),
+                             ('archiveSha256', self.config['artifacts']['Apps'][1])]:
+            with self.subTest(field=field):
+                self.assertEqual(value, G.FOUNDATION_CANDIDATE[field])
+
+    def test_current_release_restores_only_exact_testapps_collision(self):
+        dependencies = self.root / '.dependencies'
+        dependencies.mkdir()
+        test_archive = Path(self.request['artifacts']['TestApps']['archive'])
+        S.extract_archive(test_archive, dependencies)
+        collision = next(dependencies.glob('*.app'))
+        self.assertEqual(self.config['testPin'], G.file_hash(collision))
+        calls = []
+
+        def fetch(destination):
+            calls.append(destination)
+            shutil.copyfile(self.request['artifacts']['Apps']['archive'], destination)
+            return destination
+
+        restored = S.restore_overwritten_foundation(self.root, fetch)
+        self.assertEqual('restored', restored['action'])
+        self.assertEqual([str(collision)], restored['restored'])
+        self.assertEqual(1, len(calls))
+        G.check_foundation_candidate(G.package_info(collision))
+        self.assertEqual('already-approved', S.restore_overwritten_foundation(self.root, fetch)['action'])
+        self.assertEqual(1, len(calls), 'An approved package must not be downloaded again')
+
     def test_test_candidate_cannot_be_swapped_into_apps_or_mutated_after_staging(self):
         arrays = S.stage(self.request, self.root / 'stage')
         excluded = json.loads((self.root / 'stage/selection.json').read_text())['selection']['excluded'][0]['path']
-        with self.assertRaises(G.GateError): S.select([excluded], [excluded], 'candidate632')
+        with self.assertRaises(G.GateError): S.select([excluded], [excluded], 'candidate669')
         with open(arrays['installApps'][0], 'ab') as out: out.write(b'mutated-tail')
         with self.assertRaises(G.GateError):
             S.validate(self.root / 'stage/selection.json', self.request['context'], arrays['installApps'], arrays['installTestApps'])
