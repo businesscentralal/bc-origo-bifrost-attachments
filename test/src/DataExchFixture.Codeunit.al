@@ -1,5 +1,7 @@
 namespace Origo.Bifrost.Attachments.Test;
 
+using Microsoft.EServices.EDocument;
+using Microsoft.Foundation.Attachment;
 using Microsoft.Sales.Customer;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
@@ -27,14 +29,99 @@ codeunit 96241 "DataExch Fixture ori"
         MockState: Codeunit "Storage Mock State";
     begin
         MockState.Reset();
+        Session.SetRange("Storage Code", MockCodeTok);
         Session.DeleteAll(true);
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';
         StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
+    end;
+
+    /// <summary>Removes only a test-owned connection and its linked records before deleting the setup.</summary>
+    /// <param name="OwnedStorageCode">The connection code owned by the calling test.</param>
+    procedure CleanupStorage(OwnedStorageCode: Code[20])
+    var
+        StorageSetup: Record "Storage Setup ori";
+        Link: Record "Storage Attachment Link ori";
+        Session: Record "Storage Upload Session ori";
+        DocumentAttachment: Record "Document Attachment";
+        IncomingAttachment: Record "Incoming Document Attachment";
+        IncomingDocument: Record "Incoming Document";
+        MockState: Codeunit "Storage Mock State";
+        RecordSystemId: Guid;
+        TableId: Integer;
+        IncomingNo: Integer;
+    begin
+        Link.ReadIsolation := IsolationLevel::UpdLock;
+        IncomingAttachment.ReadIsolation := IsolationLevel::ReadCommitted;
+        Link.SetRange("Storage Code", OwnedStorageCode);
+        while Link.FindFirst() do begin
+            TableId := Link."Table ID";
+            RecordSystemId := Link."Record System Id";
+            MockState.RemoveFile(Link."Storage Path");
+            // Remove the test link first: deleting its attachment must not call a provider.
+            Link.Delete();
+            case TableId of
+                Database::"Document Attachment":
+                    if DocumentAttachment.GetBySystemId(RecordSystemId) then
+                        DocumentAttachment.Delete(true);
+                Database::"Incoming Document Attachment":
+                    if IncomingAttachment.GetBySystemId(RecordSystemId) then begin
+                        IncomingNo := IncomingAttachment."Incoming Document Entry No.";
+                        IncomingAttachment.Delete(true);
+                        if IncomingDocument.Get(IncomingNo) then begin
+                            IncomingAttachment.SetRange("Incoming Document Entry No.", IncomingNo);
+                            if IncomingAttachment.IsEmpty() then
+                                IncomingDocument.Delete(true);
+                            IncomingAttachment.Reset();
+                        end;
+                    end;
+            end;
+        end;
+        Session.SetRange("Storage Code", OwnedStorageCode);
+        Session.DeleteAll(true);
+        if StorageSetup.Get(OwnedStorageCode) then
+            StorageSetup.Delete();
+    end;
+
+    /// <summary>Removes historical X75 test fixtures before another storage scenario can resolve their stale links.</summary>
+    procedure CleanupLegacyStorageFixtures()
+    var
+        StorageSetup: Record "Storage Setup ori";
+        Link: Record "Storage Attachment Link ori";
+        Session: Record "Storage Upload Session ori";
+        OwnedCodes: List of [Code[20]];
+        OwnedCode: Code[20];
+    begin
+        // X75 is reserved by the integrity/native tests, including their old failed-run fixtures.
+        Link.ReadIsolation := IsolationLevel::ReadCommitted;
+        Session.ReadIsolation := IsolationLevel::ReadCommitted;
+        StorageSetup.ReadIsolation := IsolationLevel::ReadCommitted;
+        Link.SetFilter("Storage Code", 'X75*');
+        if Link.FindSet() then
+            repeat
+                if not OwnedCodes.Contains(Link."Storage Code") then
+                    OwnedCodes.Add(Link."Storage Code");
+            until Link.Next() = 0;
+        Session.SetFilter("Storage Code", 'X75*');
+        if Session.FindSet() then
+            repeat
+                if not OwnedCodes.Contains(Session."Storage Code") then
+                    OwnedCodes.Add(Session."Storage Code");
+            until Session.Next() = 0;
+        StorageSetup.SetFilter(Code, 'X75*');
+        if StorageSetup.FindSet() then
+            repeat
+                if not OwnedCodes.Contains(StorageSetup.Code) then
+                    OwnedCodes.Add(StorageSetup.Code);
+            until StorageSetup.Next() = 0;
+        foreach OwnedCode in OwnedCodes do
+            CleanupStorage(OwnedCode);
     end;
 
     /// <summary>The code of the Mock storage connection.</summary>
@@ -189,16 +276,11 @@ codeunit 96241 "DataExch Fixture ori"
     procedure Dispatch(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) ResponseJson: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        ResponseContentType: Text[100];
-        RequestText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
         ResponseText: Text;
     begin
-        RequestJson.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
-        ResponseContent.GetSubText(ResponseText, 1);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, false);
+        ResponseJson.WriteTo(ResponseText);
         LibraryAssert.IsTrue(ResponseJson.ReadFrom(ResponseText), 'A dispatch must return JSON.');
     end;
 

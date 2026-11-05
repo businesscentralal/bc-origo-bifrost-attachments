@@ -229,7 +229,9 @@ codeunit 96207 "Storage Setup Page Tests"
     begin
         UploadChunk.DeleteAll(true);
         UploadSession.DeleteAll(true);
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
     end;
 
     local procedure InsertStorageConnection()

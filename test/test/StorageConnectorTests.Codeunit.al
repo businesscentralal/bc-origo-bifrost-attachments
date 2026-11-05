@@ -378,13 +378,14 @@ codeunit 96204 "Storage Connector Tests"
         Base64Convert: Codeunit "Base64 Convert";
         RequestJson: JsonObject;
         MoveJson: JsonObject;
+        AttachmentId: Guid;
     begin
         // [SCENARIO] Moving a linked storage file updates the Business Central attachment link to the new path.
         Initialize();
         RequestJson := PathRequest('linked/doc.txt');
         RequestJson.Add('contentBase64', Base64Convert.ToBase64('linked content'));
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.File.Create", RequestJson);
-        CreateLinkedIncomingAttachment('linked/doc.txt', 'doc.txt');
+        AttachmentId := CreateLinkedIncomingAttachment('linked/doc.txt', 'doc.txt');
 
         // [WHEN] The linked file is moved through Storage.File.Move
         MoveJson.Add('storageCode', MockCodeTok);
@@ -395,6 +396,9 @@ codeunit 96204 "Storage Connector Tests"
 
         // [THEN] The move succeeds and the link row follows the file
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Linked file move should succeed.');
+        Link.ReadIsolation := IsolationLevel::ReadCommitted;
+        Link.SetRange("Table ID", Database::"Incoming Document Attachment");
+        Link.SetRange("Record System Id", AttachmentId);
         Link.SetRange("Storage Code", MockCodeTok);
         Link.SetRange("Storage Path", 'linked/archive/doc.txt');
         LibraryAssert.IsTrue(Link.FindFirst(), 'The link should point to the moved file path.');
@@ -635,10 +639,10 @@ codeunit 96204 "Storage Connector Tests"
         ExpectedContent: Text;
         ReadBack: Text;
     begin
-        // [GIVEN] A mock storage connection and a Document Attachment holding a small file
+        // [GIVEN] A mock connection and a fresh customer so repeated runs keep the exact doc.txt filename.
         Initialize();
         Customer.Init();
-        Customer."No." := 'BIFTS-ATT-CUST';
+        Customer."No." := CopyStr('X' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(Customer."No."));
         if not Customer.Insert() then
             Customer.Get(Customer."No.");
         ExpectedContent := 'Hello attachment payload';
@@ -684,6 +688,8 @@ codeunit 96204 "Storage Connector Tests"
         // [THEN] The media is back in the database
         DocumentAttachment.GetBySystemId(SystemIdGuid);
         LibraryAssert.IsTrue(DocumentAttachment."Document Reference ID".HasValue(), 'Media should be restored to the database.');
+        DocumentAttachment.Delete(true);
+        Customer.Delete(true);
     end;
 
     [Test]
@@ -807,8 +813,11 @@ codeunit 96204 "Storage Connector Tests"
         MockState: Codeunit "Storage Mock State";
     begin
         MockState.Reset();
+        AttachmentLink.SetRange("Storage Code", MockCodeTok);
         AttachmentLink.DeleteAll();
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';
@@ -823,17 +832,22 @@ codeunit 96204 "Storage Connector Tests"
         RequestJson.Add('path', Path);
     end;
 
-    local procedure CreateLinkedIncomingAttachment(Path: Text; FileName: Text)
+    local procedure CreateLinkedIncomingAttachment(Path: Text; FileName: Text): Guid
     var
         TempArgument: Record "Message Argument ori" temporary;
         RequestJson: JsonObject;
+        ResponseJson: JsonObject;
+        AttachmentId: Guid;
     begin
         RequestJson.Add('storageCode', MockCodeTok);
         RequestJson.Add('path', Path);
         RequestJson.Add('fileName', FileName);
         RequestJson.Add('description', 'X linked attachment');
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Storage.Attachment.CreateLinked", RequestJson);
-        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'The linked incoming attachment should be created.');
+        ResponseJson := TempArgument.GetResponseJson();
+        LibraryAssert.AreEqual('Success', ReadText(ResponseJson, 'status'), 'The linked incoming attachment should be created.');
+        Evaluate(AttachmentId, ReadText(ReadData(ResponseJson), 'systemId'));
+        exit(AttachmentId);
     end;
 
     local procedure MessageHelp(MessageType: Enum "Message Type ori") Result: Text
@@ -937,19 +951,10 @@ codeunit 96204 "Storage Connector Tests"
     local procedure ExecuteTypeWithRequest(var TempArgument: Record "Message Argument ori" temporary; MessageType: Enum "Message Type ori"; RequestJson: JsonObject)
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        ResponseContentType: Text[100];
-        MessageVersion: Enum "Message Version ori";
-        RequestText: Text;
-        ResponseText: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
         ResponseJson: JsonObject;
     begin
-        RequestJson.WriteTo(RequestText);
-        RequestContent.AddText(RequestText);
-        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
-        ResponseContent.GetSubText(ResponseText, 1);
-        ResponseJson.ReadFrom(ResponseText);
+        ResponseJson := TestConfirmation.Dispatch(Dispatcher, MessageType, RequestJson, 0, false);
         // Clear PK before Insert: Init keeps ID; reuse after a prior Insert raises
         // "Message Argument ori already exists" (attachments#31 smoking gun).
         Clear(TempArgument);
