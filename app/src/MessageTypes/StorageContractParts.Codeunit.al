@@ -543,7 +543,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             'DataExchange.Definition.Export', 'DataExchange.Export.Run', 'DataExchange.PaymentExport.Run', 'Storage.Upload.CommitToDataExchange'] then
             Parameters.Add(ContractMgt.Parameter('overwrite', 'boolean', false, StorageOverwriteLbl));
         if not (MessageType in ['Storage.Attachment.Restore', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.Status', 'DataExchange.Definition.Get', 'DataExchange.Entry.Get', 'DataExchange.Definition.List', 'DataExchange.Entry.List', 'DataExchange.Type.Set', 'DataExchange.Definition.Export', 'DataExchange.Import.Run', 'DataExchange.Export.Run', 'Storage.Upload.Begin', 'Storage.Upload.CommitToRecord',
-            'Storage.Upload.CommitToDataExchange', 'DataExchange.Entry.Process', 'DataExchange.Entry.Delete', 'DataExchange.Definition.Import', 'DataExchange.PaymentExport.Run']) then
+            'Storage.Upload.CommitToDataExchange', 'DataExchange.Entry.Process', 'DataExchange.Entry.Delete', 'DataExchange.Definition.Delete', 'DataExchange.Definition.Import', 'DataExchange.PaymentExport.Run']) then
             Parameters.Add(ContractMgt.Parameter('storageCode', 'string', true, 'The configured storage connection code. Resolve it with Storage.Account.List.'));
         case MessageType of
             'Storage.File.List', 'Storage.Directory.List':

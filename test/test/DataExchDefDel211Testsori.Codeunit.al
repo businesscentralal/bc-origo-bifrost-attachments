@@ -60,10 +60,12 @@ codeunit 96279 "DataExch Def Del211 Tests ori"
         Errors: JsonArray;
         Parameters: JsonArray;
         ErrorToken: JsonToken;
+        ParameterToken: JsonToken;
         Overview: Text;
         Notes: Text;
         SavedLanguageId: Integer;
     begin
+        // Story #211, AC03 | Time: independent of Today()/WorkDate() | Risk: shared parameter defaults
         // [GIVEN] The contract chapters read in English.
         SavedLanguageId := GlobalLanguage();
         GlobalLanguage(1033);
@@ -74,10 +76,12 @@ codeunit 96279 "DataExch Def Del211 Tests ori"
         Contract.GetOverview(Overview);
         Contract.GetNotes(Notes);
         GlobalLanguage(SavedLanguageId);
-        // [THEN] The overview and notes say disabled, no parameter is declared and the one error is PreconditionFailed.
+        // [THEN] The overview and notes say disabled, only the ignored code is declared and the one error is PreconditionFailed.
         LibraryAssert.IsTrue(Overview.StartsWith('Disabled.'), 'The overview states the disabled state.');
         LibraryAssert.IsTrue(Notes.Contains('Disabled'), 'The notes state the disabled state.');
         LibraryAssert.AreEqual(1, Parameters.Count(), 'Only the ignored code is declared.');
+        Parameters.Get(0, ParameterToken);
+        LibraryAssert.AreEqual('code', Fixture.ReadText(ParameterToken.AsObject(), 'name'), 'The disabled operation must not require a storage connection.');
         LibraryAssert.AreEqual(1, Errors.Count(), 'The disabled error is the only documented error.');
         Errors.Get(0, ErrorToken);
         LibraryAssert.AreEqual('PreconditionFailed', Fixture.ReadText(ErrorToken.AsObject(), 'code'), 'The documented error code.');

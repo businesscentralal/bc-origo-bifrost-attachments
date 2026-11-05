@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-05) - Disabled definition-delete contract (#211 / PR #212)
+
+- Codeunit 10035183 excludes `DataExchange.Definition.Delete` from the common required `storageCode` parameter. The disabled type declares only its ignored `code`, preserving the typed refusal without requiring a storage connection. Codeunit 96279 verifies the exact parameter name as well as the single-parameter count.
+
 ### Changed (2026-11-05) - Disable DataExchange.Definition.Delete (#211)
 
 - `DataExchange.Definition.Delete` is disabled (Gunnar's decision 05.11.2026: "you set isenabled = false in the implementation and update the execution to trigger an error and update the contract to reflect that"). `DataExch Def Delete Impl ori` returns `IsEnabled() = false`, and executing the type raises a typed `PreconditionFailed` error on parameter `type` (1033: "DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.", 1039: "DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.") with a nextStep in both languages. No definition is read or deleted.
