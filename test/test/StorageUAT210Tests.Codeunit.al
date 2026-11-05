@@ -275,7 +275,9 @@ codeunit 96279 "Storage UAT210 Tests ori"
         Mapping.FindFirst();
         FieldMapping.SetRange("Data Exch. Def Code", DefCode);
         FieldMapping.DeleteAll();
-        Mapping.Rename(DefCode, Mapping."Data Exch. Line Def Code", 0);
+        Mapping.Delete();
+        Mapping."Table ID" := 0;
+        Mapping.Insert();
         Entry."Data Exch. Def Code" := DefCode;
         LibraryAssert.IsTrue(ImportMgt.FindProcessBlocker(Entry, '', ErrorCode, ErrorText, Expected, NextStep), 'Zero table is blocked.');
         LibraryAssert.AreEqual(Enum::"Bifrost Error Code ori"::PreconditionFailed, ErrorCode, 'Typed mapping refusal.');
