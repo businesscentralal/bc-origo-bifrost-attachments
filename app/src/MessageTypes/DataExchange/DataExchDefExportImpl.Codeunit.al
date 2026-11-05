@@ -176,10 +176,10 @@ codeunit 10035156 "DataExch Def Export Impl ori" implements "Msg Interface ori",
     /// <returns>False after refusing missing or malformed code.</returns>
     procedure GetConfirmCount(var Argument: Record "Message Argument ori"; var Count: Integer; var Summary: Text): Boolean
     var
-        Reader: Codeunit "Storage Request Reader ori";
-        DefinitionCode: Code[20];
         StorageSetup: Record "Storage Setup ori";
+        Reader: Codeunit "Storage Request Reader ori";
         ExportMgt: Codeunit "DataExch Export Mgt ori";
+        DefinitionCode: Code[20];
         Connector: Interface "Storage Connector ori";
         RequestJson: JsonObject;
         Path: Text;
