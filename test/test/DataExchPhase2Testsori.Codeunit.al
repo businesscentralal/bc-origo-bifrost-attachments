@@ -608,6 +608,8 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         ContentInStream: InStream;
         ReadBack: Text;
     begin
+        Attachment.ReadIsolation := IsolationLevel::ReadCommitted;
+        Link.ReadIsolation := IsolationLevel::ReadCommitted;
         Attachment.SetRange("Incoming Document Entry No.", EntryNo);
         LibraryAssert.AreEqual(1, Attachment.Count(), 'AC04 has one incoming attachment.');
         Attachment.FindFirst();
@@ -622,6 +624,8 @@ codeunit 96237 "DataExch Phase2 Tests ori"
     var
         Attachment: Record "Incoming Document Attachment";
     begin
+        Attachment.ReadIsolation := IsolationLevel::ReadCommitted;
+        Link.ReadIsolation := IsolationLevel::ReadCommitted;
         Attachment.SetRange("Incoming Document Entry No.", EntryNo);
         LibraryAssert.IsTrue(Attachment.FindFirst(), 'The fixture owns an incoming attachment.');
         Link.SetRange("Inc. Doc. Entry No.", EntryNo);

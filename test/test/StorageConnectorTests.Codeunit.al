@@ -396,6 +396,7 @@ codeunit 96204 "Storage Connector Tests"
 
         // [THEN] The move succeeds and the link row follows the file
         LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Linked file move should succeed.');
+        Link.ReadIsolation := IsolationLevel::ReadCommitted;
         Link.SetRange("Table ID", Database::"Incoming Document Attachment");
         Link.SetRange("Record System Id", AttachmentId);
         Link.SetRange("Storage Code", MockCodeTok);
@@ -845,12 +846,12 @@ codeunit 96204 "Storage Connector Tests"
         exit(ReadDataGuid(TempArgument, 'systemId'));
     end;
 
-    local procedure ReadDataGuid(TempArgument: Record "Message Argument ori" temporary; Name: Text): Guid
+    local procedure ReadDataGuid(TempArgument: Record "Message Argument ori" temporary; PropertyName: Text): Guid
     var
-        Value: Guid;
+        ParsedId: Guid;
     begin
-        Evaluate(Value, ReadText(ReadData(TempArgument.GetResponseJson()), Name));
-        exit(Value);
+        Evaluate(ParsedId, ReadText(ReadData(TempArgument.GetResponseJson()), PropertyName));
+        exit(ParsedId);
     end;
 
     local procedure MessageHelp(MessageType: Enum "Message Type ori") Result: Text

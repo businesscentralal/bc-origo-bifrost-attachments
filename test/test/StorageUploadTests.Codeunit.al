@@ -44,6 +44,12 @@ codeunit 96205 "Storage Upload Tests"
         OwnedUploadIds: List of [Guid];
         OwnedUploadId: Guid;
     begin
+        // PR #182 / issue #166 amendment: fixture initialization has no page action.
+        Link.ReadIsolation := IsolationLevel::ReadCommitted;
+        Session.ReadIsolation := IsolationLevel::ReadCommitted;
+        Chunk.ReadIsolation := IsolationLevel::ReadCommitted;
+        OtherSetup.ReadIsolation := IsolationLevel::ReadCommitted;
+        OtherLink.ReadIsolation := IsolationLevel::ReadCommitted;
         // [GIVEN] Five dangling test links, each with an upload session/chunk and mock file.
         Initialize();
         OtherCode := Fixture.NewCode('XOTHER');
@@ -69,7 +75,7 @@ codeunit 96205 "Storage Upload Tests"
             Link."Table ID" := Database::"Incoming Document Attachment";
             Link."Record System Id" := CreateGuid();
             Link."Storage Code" := OwnedCode;
-            Link."Storage Path" := 'Xlegacy-owned-' + Format(Index) + '.txt';
+            Link."Storage Path" := 'Xlegacy-owned-' + Format(Index, 0, 9) + '.txt';
             Link.Insert();
             MockState.PutFile(Link."Storage Path", Fixture.Encode('stale owned bytes'));
             Session.Init();
@@ -93,7 +99,7 @@ codeunit 96205 "Storage Upload Tests"
         foreach OwnedUploadId in OwnedUploadIds do
             LibraryAssert.IsFalse(Chunk.Get(OwnedUploadId, 1), 'Deleting each owned session removes its chunk.');
         for Index := 1 to 5 do
-            LibraryAssert.IsFalse(MockState.HasFile('Xlegacy-owned-' + Format(Index) + '.txt'), 'No stale owned mock file survives.');
+            LibraryAssert.IsFalse(MockState.HasFile('Xlegacy-owned-' + Format(Index, 0, 9) + '.txt'), 'No stale owned mock file survives.');
         LibraryAssert.IsTrue(OtherSetup.Get(OtherCode), 'Unrelated setup survives historical cleanup.');
         LibraryAssert.IsTrue(OtherLink.Get(OtherLink."Table ID", OtherLink."Record System Id"), 'Unrelated link survives historical cleanup.');
         BeginUpload('Xlegacy-recovered.txt', '', UploadId, Path);
