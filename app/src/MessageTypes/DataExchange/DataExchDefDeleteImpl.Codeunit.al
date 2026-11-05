@@ -163,13 +163,26 @@ codeunit 10035155 "DataExch Def Delete Impl ori" implements "Msg Interface ori",
     procedure ExecuteBifrostTask(var Argument: Record "Message Argument ori")
     var
         Reader: Codeunit "Storage Request Reader ori";
+        RequestJson: JsonObject;
+        CodeToken: JsonToken;
+        ParameterName: Text;
+        Received: Text;
         DisabledErr: Label 'DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.', Comment = 'is-IS=DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.';
         DisabledExpectedLbl: Label 'a message type that is enabled; DataExchange.Definition.Delete is disabled', Comment = 'is-IS=virk skilaboðagerð; DataExchange.Definition.Delete er óvirk';
         DisabledNextStepLbl: Label 'Delete the Data Exchange definition in Business Central (page Data Exchange Definitions). Use DataExchange.Entry.Delete to delete entries.', Comment = 'is-IS=Eyddu skilgreiningu gagnaskipta í Business Central (síðan Skilgreiningar gagnaskipta). Notaðu DataExchange.Entry.Delete til að eyða færslum.';
     begin
         Argument.AssertVersion1();
         Argument.AssertIsLicensed();
-        Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, DisabledErr, 'type', 'DataExchange.Definition.Delete', DisabledExpectedLbl, DisabledNextStepLbl);
+        // A caller that still sends the definition code gets the refusal on that code; the code is only echoed, never used.
+        ParameterName := 'type';
+        Received := 'DataExchange.Definition.Delete';
+        RequestJson := Argument.GetRequestJson();
+        if RequestJson.Get('code', CodeToken) then
+            if CodeToken.IsValue() then begin
+                ParameterName := 'code';
+                Received := CodeToken.AsValue().AsText();
+            end;
+        Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, DisabledErr, ParameterName, Received, DisabledExpectedLbl, DisabledNextStepLbl);
         Reader.RespondIfErrors(Argument);
     end;
 }

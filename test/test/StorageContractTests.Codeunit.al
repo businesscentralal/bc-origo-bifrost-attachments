@@ -381,7 +381,7 @@ codeunit 96265 "Storage Contract Tests ori"
     // Types whose request carries no data.
     local procedure ParametersNotApplicable(Name: Text): Boolean
     begin
-        exit(Name in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List', 'DataExchange.Definition.Delete']);
+        exit(Name in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List']);
     end;
 
     local procedure RowListFieldNames() Names: List of [Text]
@@ -405,7 +405,7 @@ codeunit 96265 "Storage Contract Tests ori"
         Ordinal: Integer;
     begin
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            // DataExchange.Definition.Delete (10035171) is disabled (#211): it has no target, parameters, response fields
+            // DataExchange.Definition.Delete (10035171) is disabled (#211): it has no target, response fields
             // or success example. Its disabled contract is tested in "DataExch Def Del211 Tests ori".
             if (Ordinal >= 10035135) and (Ordinal <= 10035173) and (Ordinal <> 10035171) then
                 Ordinals.Add(Ordinal);

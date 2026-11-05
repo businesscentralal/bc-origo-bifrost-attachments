@@ -16,7 +16,7 @@ codeunit 10035183 "Storage Contract Parts ori"
         RecordUploadPreconditionsLbl: Label 'Upload.Begin needs a file name; Append, Status, Abort and CommitToRecord need an existing upload session. A storage connection is only required when writing a file to storage, not for record-only uploads.', Locked = true;
         LinkedMoveRefusalLbl: Label 'The file is linked to an attachment and cannot be moved directly.', Locked = true;
         LinkedMoveNextLbl: Label 'Restore the attachment first, then move the file.', Locked = true;
-        DefinitionDeleteDisabledLbl: Label 'DataExchange.Definition.Delete is disabled and refuses every call with PreconditionFailed on parameter type; nothing is deleted.', Locked = true;
+        DefinitionDeleteDisabledLbl: Label 'DataExchange.Definition.Delete is disabled and refuses every call with PreconditionFailed on parameter code (the value sent) or type; nothing is deleted.', Locked = true;
         DefinitionDeleteDisabledNextLbl: Label 'Delete the Data Exchange definition in Business Central (page Data Exchange Definitions). Use DataExchange.Entry.Delete to delete entries.', Locked = true;
         MappingTableLbl: Label 'A processing codeunit requires a record other than Data Exch. (table 1220).', Locked = true;
         MappingTableNextLbl: Label 'Run table-typed journal mappings from their Business Central page, or select a mapping that accepts Data Exchange entries.', Locked = true;
@@ -536,7 +536,7 @@ codeunit 10035183 "Storage Contract Parts ori"
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        if MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List', 'DataExchange.Definition.Delete'] then
+        if MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List'] then
             exit;
 
         if MessageType in ['Storage.File.Create', 'Storage.Attachment.Offload', 'Storage.Upload.Commit',
@@ -631,6 +631,8 @@ codeunit 10035183 "Storage Contract Parts ori"
                     Parameters.Add(ContractMgt.Parameter('type', 'string', false, 'Optional definition type filter.'));
                     Parameters.Add(ContractMgt.Parameter('direction', 'string', false, 'Import or Export.'));
                 end;
+            'DataExchange.Definition.Delete':
+                Parameters.Add(ContractMgt.Parameter('code', 'string', false, 'Ignored: the message type is disabled and deletes nothing. Delete Data Exchange definitions in Business Central.'));
             'DataExchange.Definition.Get':
                 Parameters.Add(ContractMgt.Parameter('code', 'string', true, DefinitionCodeLbl));
             'DataExchange.Definition.Export':

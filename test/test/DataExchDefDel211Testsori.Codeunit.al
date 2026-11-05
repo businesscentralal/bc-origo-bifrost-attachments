@@ -77,7 +77,7 @@ codeunit 96279 "DataExch Def Del211 Tests ori"
         // [THEN] The overview and notes say disabled, no parameter is declared and the one error is PreconditionFailed.
         LibraryAssert.IsTrue(Overview.StartsWith('Disabled.'), 'The overview states the disabled state.');
         LibraryAssert.IsTrue(Notes.Contains('Disabled'), 'The notes state the disabled state.');
-        LibraryAssert.AreEqual(0, Parameters.Count(), 'A disabled type reads no parameter.');
+        LibraryAssert.AreEqual(1, Parameters.Count(), 'Only the ignored code is declared.');
         LibraryAssert.AreEqual(1, Errors.Count(), 'The disabled error is the only documented error.');
         Errors.Get(0, ErrorToken);
         LibraryAssert.AreEqual('PreconditionFailed', Fixture.ReadText(ErrorToken.AsObject(), 'code'), 'The documented error code.');
@@ -122,7 +122,8 @@ codeunit 96279 "DataExch Def Del211 Tests ori"
         // [WHEN] Deletion is requested through the public dispatcher in the given language.
         Response := Dispatch(Request, LanguageId);
         // [THEN] The call is refused with the typed disabled error and the definition still exists.
-        Fixture.AssertRefusal(Response, 'PreconditionFailed', 'type');
+        Fixture.AssertRefusal(Response, 'PreconditionFailed', 'code');
+        LibraryAssert.AreEqual(DefCode, Fixture.ReadText(Response, 'received'), 'The refusal echoes the code that was sent.');
         if LanguageId = 1039 then
             LibraryAssert.AreEqual('DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.', Fixture.ReadText(Response, 'error'), 'Icelandic refusal text.')
         else
