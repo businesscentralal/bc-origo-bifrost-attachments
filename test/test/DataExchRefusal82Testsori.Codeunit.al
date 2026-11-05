@@ -156,6 +156,120 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid input must not write.');
     end;
 
+    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
+    [Test]
+    procedure Scenario_AC02_Lowercase_RefusesRawCode()
+    var
+        Response: JsonObject;
+        BeforeCount: Integer;
+    begin
+        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
+        // [GIVEN] A raw key that Code20 conversion would change.
+        BeforeCount := EntryCount('');
+        // [WHEN] It is used for all applicable code fields.
+        Response := DispatchImport('xlower', 'xlower', 'X82.csv');
+        // [THEN] Both independent code errors are collected, with original spelling.
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'xlower');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'xlower');
+        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
+        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
+    end;
+
+    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
+    [Test]
+    procedure Scenario_AC02_MixedCase_RefusesRawCode()
+    var
+        Response: JsonObject;
+        BeforeCount: Integer;
+    begin
+        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
+        // [GIVEN] A raw key that Code20 conversion would change.
+        BeforeCount := EntryCount('');
+        // [WHEN] It is used for all applicable code fields.
+        Response := DispatchImport('XmIxEd', 'XmIxEd', 'X82.csv');
+        // [THEN] Both independent code errors are collected, with original spelling.
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'XmIxEd');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'XmIxEd');
+        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
+        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
+    end;
+
+    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
+    [Test]
+    procedure Scenario_AC02_UnicodeCase_RefusesRawCode()
+    var
+        Response: JsonObject;
+        BeforeCount: Integer;
+    begin
+        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
+        // [GIVEN] A raw key that Code20 conversion would change.
+        BeforeCount := EntryCount('');
+        // [WHEN] It is used for all applicable code fields.
+        Response := DispatchImport('Xþór', 'Xþór', 'X82.csv');
+        // [THEN] Both independent code errors are collected, with original spelling.
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'Xþór');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'Xþór');
+        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
+        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
+    end;
+
+    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
+    [Test]
+    procedure Scenario_AC02_LeadingSpace_RefusesRawCode()
+    var
+        Response: JsonObject;
+        BeforeCount: Integer;
+    begin
+        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
+        // [GIVEN] A raw key that Code20 conversion would change.
+        BeforeCount := EntryCount('');
+        // [WHEN] It is used for all applicable code fields.
+        Response := DispatchImport(' XSPACE', ' XSPACE', 'X82.csv');
+        // [THEN] Both independent code errors are collected, with original spelling.
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', ' XSPACE');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', ' XSPACE');
+        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
+        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
+    end;
+
+    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
+    [Test]
+    procedure Scenario_AC02_TrailingSpace_RefusesRawCode()
+    var
+        Response: JsonObject;
+        BeforeCount: Integer;
+    begin
+        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
+        // [GIVEN] A raw key that Code20 conversion would change.
+        BeforeCount := EntryCount('');
+        // [WHEN] It is used for all applicable code fields.
+        Response := DispatchImport('XSPACE ', 'XSPACE ', 'X82.csv');
+        // [THEN] Both independent code errors are collected, with original spelling.
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'XSPACE ');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'XSPACE ');
+        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
+        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
+    end;
+
+    /// <summary>Noncanonical or overlong codes refuse before normalization.</summary>
+    [Test]
+    procedure Scenario_AC02_Overlong_RefusesRawCode()
+    var
+        Response: JsonObject;
+        BeforeCount: Integer;
+    begin
+        // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
+        // [GIVEN] A raw key that Code20 conversion would change.
+        BeforeCount := EntryCount('');
+        // [WHEN] It is used for all applicable code fields.
+        Response := DispatchImport('X12345678901234567890', 'X12345678901234567890', 'X82.csv');
+        // [THEN] Both independent code errors are collected, with original spelling.
+        AssertRefusal(Response, 'InvalidParameterFormat', 'dataExchDefCode', 'X12345678901234567890');
+        AssertRefusal(Response, 'InvalidParameterFormat', 'storageCode', 'X12345678901234567890');
+        LibraryAssert.AreEqual(2, ErrorCount(Response), 'Both codes must refuse.');
+        LibraryAssert.AreEqual(BeforeCount, EntryCount(''), 'Invalid codes must not write.');
+    end;
+
     /// <summary>Exact Code20 and path2048 limits are accepted; only the unconfigured storage connection is refused.</summary>
     [Test]
     procedure Scenario_AC02_Code20AndPath2048_AcceptsExactBounds()

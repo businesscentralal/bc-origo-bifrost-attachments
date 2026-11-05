@@ -366,6 +366,40 @@ codeunit 96258 "Storage Response159 Tests ori"
             LibraryAssert.IsTrue(Fixture.ReadText(Response, 'error').Contains('was not found'), 'The refusal is English in 1033.');
     end;
 
+    /// <summary>UniformHeader: the public message contract in LCID 1033.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure UniformHeader_1033()
+    begin
+        CheckUniformHeader(1033);
+    end;
+
+    /// <summary>UniformHeader: the public message contract in LCID 1039.</summary>
+    [Test]
+    [TransactionModel(TransactionModel::AutoCommit)]
+    procedure UniformHeader_1039()
+    begin
+        CheckUniformHeader(1039);
+    end;
+
+    local procedure CheckUniformHeader(LanguageId: Integer)
+    var
+        Definition: Record "Data Exch. Def";
+        Request: JsonObject;
+        Response: JsonObject;
+        DefCode: Code[20];
+    begin
+        // Story #159, response envelope | Time: independent of Today()/WorkDate() | Risk: disabled Definition.Delete excluded
+        DefCode := Fixture.CreateImportDefinition(0);
+        Request.Add('code', DefCode);
+        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Export", Request, LanguageId);
+        AssertEnvelope(Response);
+        LibraryAssert.AreEqual(DefCode, Fixture.ReadText(Fixture.Data(Response), 'code'), 'Header is under data.');
+        LibraryAssert.IsFalse(Response.Contains('code'), 'No flat duplicate code.');
+        Definition.Get(DefCode);
+        Definition.Delete(true);
+    end;
+
     /// <summary>TypeSetEnvelope: the public message contract in LCID 1033.</summary>
     [Test]
     [TransactionModel(TransactionModel::AutoCommit)]
