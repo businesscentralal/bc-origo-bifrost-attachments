@@ -470,6 +470,8 @@ codeunit 96264 "Storage Follow168 Tests ori"
         LibraryAssert.AreEqual(Fixture.Encode('owned'), MockState.GetFileContent('X168-linked.txt'), 'Source bytes preserved.');
         LibraryAssert.IsFalse(MockState.HasFile('X168-moved.txt'), 'No target.');
         Attachment.Delete(true);
+        if Link.Get(Database::"Incoming Document Attachment", AttachmentId) then
+            Link.Delete();
         IncomingDocument.Get(IncomingNo);
         IncomingDocument.Delete(true);
         MockState.Reset();

@@ -1,5 +1,7 @@
 namespace Origo.Bifrost.Attachments.Test;
 
+using Microsoft.EServices.EDocument;
+using Microsoft.Foundation.Attachment;
 using Microsoft.Sales.Customer;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
@@ -27,14 +29,60 @@ codeunit 96241 "DataExch Fixture ori"
         MockState: Codeunit "Storage Mock State";
     begin
         MockState.Reset();
+        Session.SetRange("Storage Code", MockCodeTok);
         Session.DeleteAll(true);
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';
         StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
+    end;
+
+    /// <summary>Removes only a test-owned connection and its linked records before deleting the setup.</summary>
+    /// <param name="OwnedStorageCode">The connection code owned by the calling test.</param>
+    procedure CleanupStorage(OwnedStorageCode: Code[20])
+    var
+        StorageSetup: Record "Storage Setup ori";
+        Link: Record "Storage Attachment Link ori";
+        Session: Record "Storage Upload Session ori";
+        DocumentAttachment: Record "Document Attachment";
+        IncomingAttachment: Record "Incoming Document Attachment";
+        IncomingDocument: Record "Incoming Document";
+        RecordSystemId: Guid;
+        TableId: Integer;
+        IncomingNo: Integer;
+    begin
+        Link.SetRange("Storage Code", OwnedStorageCode);
+        while Link.FindFirst() do begin
+            TableId := Link."Table ID";
+            RecordSystemId := Link."Record System Id";
+            // Remove the test link first: deleting its attachment must not call a provider.
+            Link.Delete();
+            case TableId of
+                Database::"Document Attachment":
+                    if DocumentAttachment.GetBySystemId(RecordSystemId) then
+                        DocumentAttachment.Delete(true);
+                Database::"Incoming Document Attachment":
+                    if IncomingAttachment.GetBySystemId(RecordSystemId) then begin
+                        IncomingNo := IncomingAttachment."Incoming Document Entry No.";
+                        IncomingAttachment.Delete(true);
+                        if IncomingDocument.Get(IncomingNo) then begin
+                            IncomingAttachment.SetRange("Incoming Document Entry No.", IncomingNo);
+                            if IncomingAttachment.IsEmpty() then
+                                IncomingDocument.Delete(true);
+                            IncomingAttachment.Reset();
+                        end;
+                    end;
+            end;
+        end;
+        Session.SetRange("Storage Code", OwnedStorageCode);
+        Session.DeleteAll(true);
+        if StorageSetup.Get(OwnedStorageCode) then
+            StorageSetup.Delete();
     end;
 
     /// <summary>The code of the Mock storage connection.</summary>

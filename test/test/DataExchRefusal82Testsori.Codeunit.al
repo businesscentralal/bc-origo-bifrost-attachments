@@ -305,6 +305,8 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         AssertText(Response, 'received', BoundaryCode);
         LibraryAssert.AreEqual(1, ErrorCount(Response), 'Only the unconfigured storage connection is refused, not a length.');
         LibraryAssert.AreEqual(0, EntryCount(BoundaryCode), 'A refused import creates no entry.');
+        DataExchDef.Get(BoundaryCode);
+        DataExchDef.Delete(true);
     end;
 
     /// <summary>An overlong path refuses without truncating it.</summary>
@@ -607,6 +609,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     procedure Scenario_AC02_CanonicalUnicode_AcceptsUnchangedKey()
     var
         DataExchDef: Record "Data Exch. Def";
+        DataExch: Record "Data Exch.";
         Response: JsonObject;
         DefinitionCode: Code[20];
     begin
@@ -624,6 +627,10 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
         AssertText(Response, 'status', 'Success');
         AssertText(SuccessData(Response), 'dataExchDefCode', DefinitionCode);
         LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Canonical Unicode must be accepted.');
+        DataExch.SetRange("Data Exch. Def Code", DefinitionCode);
+        DataExch.DeleteAll(true);
+        DataExchDef.Get(DefinitionCode);
+        DataExchDef.Delete(true);
     end;
 
     /// <summary>Whitespace-only input is invalid format and still has complete received detail.</summary>

@@ -6,9 +6,15 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-05) - Clean native storage fixtures after each scenario (#166 / PR #182)
+
+- Shared fixture 96241 scopes storage setup and upload-session deletion to MOCK; it preserves other connections and their links. Its scoped cleanup removes the caller's attachment links and linked records, upload sessions/chunks and setup in that order.
+- Integrity tests 96225 clean their X75/X75ALIAS fixtures after every scenario. Linked-read tests 96217 clean X75READ and copied attachments after their assertions; 96264 explicitly removes its own link before removing its setup. Mock files are reset by the owning tests.
+- Roundtrip 96204 deletes its fresh customer and restored attachment. Boundary/Unicode tests 96226 delete their fresh definitions and the Unicode entry after assertions. Original JSON assertions and dispatcher commit modes remain unchanged.
+
 ### Fixed (2026-11-05) - Repeatable native test fixtures (#166 / PR #182)
 
-- Test initializers in codeunits 96204/96205/96206/96207/96212/96218/96237 now delete only their own storage setups and links, preserving unrelated X75/X75READ connections instead of leaving dangling links. Codeunit 96205 adds an upload regression with a separately owned setup/link.
+- Test initializers in codeunits 96203/96204/96205/96206/96207/96212/96237 now delete only their own storage setups and links, preserving unrelated X75/X75READ connections instead of leaving dangling links. Codeunit 96205 adds an upload regression with a separately owned setup/link.
 - Codeunit 96226 uses fresh exact-Code20 and canonical Unicode definition keys on each run. Codeunit 96204 uses a fresh customer for its Document Attachment roundtrip so repeat runs still assert the exact `attachments/customer/doc.txt` path. Production behavior, confirmation assertions and dispatcher commit modes are unchanged.
 
 ### Fixed (2026-11-04) - Preserve dispatch JSON assertions (#166)

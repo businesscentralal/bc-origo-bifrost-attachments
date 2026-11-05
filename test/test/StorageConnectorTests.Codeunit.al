@@ -684,6 +684,8 @@ codeunit 96204 "Storage Connector Tests"
         // [THEN] The media is back in the database
         DocumentAttachment.GetBySystemId(SystemIdGuid);
         LibraryAssert.IsTrue(DocumentAttachment."Document Reference ID".HasValue(), 'Media should be restored to the database.');
+        DocumentAttachment.Delete(true);
+        Customer.Delete(true);
     end;
 
     [Test]

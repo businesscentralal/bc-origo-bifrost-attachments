@@ -30,7 +30,11 @@ codeunit 96205 "Storage Upload Tests"
     var
         OtherSetup: Record "Storage Setup ori";
         OtherLink: Record "Storage Attachment Link ori";
+        OwnedLink: Record "Storage Attachment Link ori";
+        Session: Record "Storage Upload Session ori";
+        Fixture: Codeunit "DataExch Fixture ori";
         OtherCode: Code[20];
+        UploadGuid: Guid;
         UploadId: Text;
         Path: Text;
     begin
@@ -51,6 +55,23 @@ codeunit 96205 "Storage Upload Tests"
         LibraryAssert.IsTrue(OtherLink.Get(OtherLink."Table ID", OtherLink."Record System Id"), 'Initialize must preserve the unrelated link.');
         BeginUpload('Xisolated-upload.txt', '', UploadId, Path);
         LibraryAssert.AreNotEqual('', UploadId, 'Unrelated links must not prevent this test from beginning its upload.');
+        // The shared Data Exchange initializer must preserve the same unrelated fixtures.
+        Fixture.InitializeStorage();
+        LibraryAssert.IsTrue(OtherSetup.Get(OtherCode), 'Shared initialization must preserve another setup.');
+        LibraryAssert.IsTrue(OtherLink.Get(OtherLink."Table ID", OtherLink."Record System Id"), 'Shared initialization must preserve another link.');
+        OwnedLink."Table ID" := Database::"Incoming Document Attachment";
+        OwnedLink."Record System Id" := CreateGuid();
+        OwnedLink."Storage Code" := MockCodeTok;
+        OwnedLink."Storage Path" := 'Xisolated-owned-file.txt';
+        OwnedLink.Insert();
+        BeginUpload('Xisolated-cleanup.txt', '', UploadId, Path);
+        Evaluate(UploadGuid, UploadId);
+        LibraryAssert.IsTrue(Session.Get(UploadGuid), 'Cleanup regression owns an upload session.');
+        Fixture.CleanupStorage(MockCodeTok);
+        LibraryAssert.IsFalse(Session.Get(UploadGuid), 'Scoped cleanup removes its upload session and chunks.');
+        LibraryAssert.IsFalse(OwnedLink.Get(OwnedLink."Table ID", OwnedLink."Record System Id"), 'Scoped cleanup removes its own link.');
+        LibraryAssert.IsTrue(OtherSetup.Get(OtherCode), 'Scoped cleanup preserves another setup.');
+        LibraryAssert.IsTrue(OtherLink.Get(OtherLink."Table ID", OtherLink."Record System Id"), 'Scoped cleanup preserves another link.');
         // [THEN] Only the fixtures created by this regression are explicitly removed.
         OtherLink.Delete();
         OtherSetup.Delete();
