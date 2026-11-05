@@ -65,7 +65,7 @@ codeunit 96279 "Storage UAT210 Tests ori"
         DefCode := Fixture.CreateImportDefinition(0);
         LineDef.Init();
         LineDef."Data Exch. Def Code" := DefCode;
-        LineDef.Code := 'AUNMAPPED';
+        LineDef.Code := 'ZUNMAPPED';
         LineDef.Name := 'Unmapped root';
         LineDef.Insert();
         Request.Add('dataExchDefCode', DefCode);
@@ -79,7 +79,7 @@ codeunit 96279 "Storage UAT210 Tests ori"
         EntryNo := Fixture.ReadInt(Fixture.Data(Response), 'entryNo');
         if not ProcessDuringImport then begin
             Entry.Get(EntryNo);
-            Entry."Data Exch. Line Def Code" := 'AUNMAPPED';
+            Entry."Data Exch. Line Def Code" := 'ZUNMAPPED';
             Entry.Modify();
             Clear(Request);
             Request.Add('entryNo', EntryNo);
