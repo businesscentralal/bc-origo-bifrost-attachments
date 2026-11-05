@@ -528,8 +528,8 @@ codeunit 10035141 "DataExch Import Mgt ori"
 
     /// <summary>
     /// Applies the mappings of the entry's definition, as the base application's Process Data Exch.
-    /// step does. Without a line definition the definition's own <c>ProcessDataExchange</c> runs; with
-    /// one only that line definition's mappings run. Errors are raised.
+    /// step does. Each mapping receives its declared line definition; an optional line limits the mappings.
+    /// Errors are raised.
     /// </summary>
     /// <param name="DataExch">The entry.</param>
     /// <param name="LineDefCode">An optional line definition to process alone.</param>

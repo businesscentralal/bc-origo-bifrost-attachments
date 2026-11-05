@@ -207,6 +207,7 @@ codeunit 96279 "Storage UAT210 Tests ori"
         Request.Add('dataExchDefCode', DefCode);
         TempArgument.Init();
         TempArgument.Type := "Message Type ori"::"Storage.Upload.CommitToDataExchange";
+        TempArgument.Insert(true);
         TempArgument.SetRequestJson(Request);
         PriorLanguage := GlobalLanguage();
         GlobalLanguage(LanguageId);
@@ -240,6 +241,7 @@ codeunit 96279 "Storage UAT210 Tests ori"
         GlobalLanguage(LanguageId);
         TempArgument.Init();
         TempArgument.Type := MessageType;
+        TempArgument.Insert(true);
         TempArgument.SetRequestJson(Request);
         Counter := MessageType;
         LibraryAssert.IsFalse(Counter.GetConfirmCount(TempArgument, Count, Summary), 'Missing target must refuse before confirmation.');
@@ -257,6 +259,7 @@ codeunit 96279 "Storage UAT210 Tests ori"
     var
         Entry: Record "Data Exch.";
         Mapping: Record "Data Exch. Mapping";
+        FieldMapping: Record "Data Exch. Field Mapping";
         ImportMgt: Codeunit "DataExch Import Mgt ori";
         ErrorCode: Enum "Bifrost Error Code ori";
         DefCode: Code[20];
@@ -270,6 +273,8 @@ codeunit 96279 "Storage UAT210 Tests ori"
         DefCode := Fixture.CreateImportDefinition(0);
         Mapping.SetRange("Data Exch. Def Code", DefCode);
         Mapping.FindFirst();
+        FieldMapping.SetRange("Data Exch. Def Code", DefCode);
+        FieldMapping.DeleteAll();
         Mapping.Rename(DefCode, Mapping."Data Exch. Line Def Code", 0);
         Entry."Data Exch. Def Code" := DefCode;
         LibraryAssert.IsTrue(ImportMgt.FindProcessBlocker(Entry, '', ErrorCode, ErrorText, Expected, NextStep), 'Zero table is blocked.');
@@ -292,6 +297,8 @@ codeunit 96279 "Storage UAT210 Tests ori"
     begin
         PriorLanguage := GlobalLanguage();
         GlobalLanguage(LanguageId);
+        TempArgument.Init();
+        TempArgument.Insert(true);
         InvalidContent := PadStr('!', 300, '!');
         Request.Add('contentBase64', InvalidContent);
         LibraryAssert.IsFalse(Reader.ReadBase64Content(TempArgument, Request, 'contentBase64', true, Content), 'Invalid base64.');

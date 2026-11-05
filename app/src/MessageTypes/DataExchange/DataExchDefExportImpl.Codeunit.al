@@ -178,12 +178,23 @@ codeunit 10035156 "DataExch Def Export Impl ori" implements "Msg Interface ori",
     var
         Reader: Codeunit "Storage Request Reader ori";
         DefinitionCode: Code[20];
+        StorageSetup: Record "Storage Setup ori";
+        ExportMgt: Codeunit "DataExch Export Mgt ori";
+        Connector: Interface "Storage Connector ori";
+        RequestJson: JsonObject;
+        Path: Text;
+        FolderPath: Text;
+        HasStorage: Boolean;
+        Inline: Boolean;
     begin
         if not Reader.ReadMutationRequest(Argument) then begin
             Reader.RespondIfErrors(Argument);
             exit(false);
         end;
-        Reader.ReadMutationCode(Argument, Argument.GetRequestJson(), 'code', DefinitionCode);
+        RequestJson := Argument.GetRequestJson();
+        Reader.ReadMutationCode(Argument, RequestJson, 'code', DefinitionCode);
+        if RequestJson.Contains('storageCode') or RequestJson.Contains('inline') or RequestJson.Contains('path') or RequestJson.Contains('folderPath') then
+            ExportMgt.ReadDelivery(Argument, RequestJson, DefinitionCode + '.xml', StorageSetup, Connector, Path, HasStorage, Inline, FolderPath);
         if Reader.RespondIfErrors(Argument) then
             exit(false);
         Count := 1;

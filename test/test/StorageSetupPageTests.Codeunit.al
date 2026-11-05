@@ -148,10 +148,15 @@ codeunit 96207 "Storage Setup Page Tests"
     /// <summary>Checks the connection-test action refuses a missing account in either locale.</summary>
     [Test]
     procedure Scenario_AC02_NoAccount_BilingualPageRefusal()
+    var
+        StorageSetup: Record "Storage Setup ori";
     begin
         // [SCENARIO] The setup action shows localized prose before any connector call.
         Initialize();
         InsertStorageConnection();
+        StorageSetup.Get(MockCodeTok);
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"External File Storage";
+        StorageSetup.Modify();
         AssertMissingAccountAction(1033, 'Select a file account before testing the connection.');
         AssertMissingAccountAction(1039, 'Veldu skráareikning áður en tengingin er prófuð.');
     end;
