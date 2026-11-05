@@ -24,6 +24,38 @@ codeunit 96205 "Storage Upload Tests"
         MockCodeTok: Label 'MOCK', Locked = true;
         TestCustNoTok: Label 'BIFTS-UPL-TST', Locked = true;
 
+    /// <summary>Resetting upload fixtures preserves another test's connection and attachment link.</summary>
+    [Test]
+    procedure InitializeDoesNotOrphanOtherLinks()
+    var
+        OtherSetup: Record "Storage Setup ori";
+        OtherLink: Record "Storage Attachment Link ori";
+        OtherCode: Code[20];
+        UploadId: Text;
+        Path: Text;
+    begin
+        // [GIVEN] A separately owned mock connection and an attachment link, as left by a preceding codeunit.
+        OtherCode := CopyStr('X' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(OtherCode));
+        OtherSetup.Code := OtherCode;
+        OtherSetup."Storage Type" := OtherSetup."Storage Type"::Mock;
+        OtherSetup.Enabled := true;
+        OtherSetup.Insert();
+        OtherLink."Table ID" := Database::"Incoming Document Attachment";
+        OtherLink."Record System Id" := CreateGuid();
+        OtherLink."Storage Code" := OtherCode;
+        OtherLink."Storage Path" := 'Xisolated-other-file.txt';
+        OtherLink.Insert();
+        // [WHEN] This codeunit prepares its own setup and begins a public upload.
+        Initialize();
+        LibraryAssert.IsTrue(OtherSetup.Get(OtherCode), 'Initialize must not delete another connection and orphan its links.');
+        LibraryAssert.IsTrue(OtherLink.Get(OtherLink."Table ID", OtherLink."Record System Id"), 'Initialize must preserve the unrelated link.');
+        BeginUpload('Xisolated-upload.txt', '', UploadId, Path);
+        LibraryAssert.AreNotEqual('', UploadId, 'Unrelated links must not prevent this test from beginning its upload.');
+        // [THEN] Only the fixtures created by this regression are explicitly removed.
+        OtherLink.Delete();
+        OtherSetup.Delete();
+    end;
+
     [Test]
     procedure BeginAppendCommit_TwoChunks_RoundtripsContent()
     var
@@ -715,7 +747,9 @@ codeunit 96205 "Storage Upload Tests"
     begin
         MockState.Reset();
         Session.DeleteAll(true);
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';

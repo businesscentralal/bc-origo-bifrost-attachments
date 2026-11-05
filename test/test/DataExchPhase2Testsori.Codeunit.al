@@ -626,7 +626,9 @@ codeunit 96237 "DataExch Phase2 Tests ori"
     begin
         MockState.Reset();
         Session.DeleteAll(true);
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';

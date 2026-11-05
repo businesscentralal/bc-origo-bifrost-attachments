@@ -6,6 +6,11 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-05) - Repeatable native test fixtures (#166 / PR #182)
+
+- Test initializers in codeunits 96204/96205/96206/96207/96212/96218/96237 now delete only their own storage setups and links, preserving unrelated X75/X75READ connections instead of leaving dangling links. Codeunit 96205 adds an upload regression with a separately owned setup/link.
+- Codeunit 96226 uses fresh exact-Code20 and canonical Unicode definition keys on each run. Codeunit 96204 uses a fresh customer for its Document Attachment roundtrip so repeat runs still assert the exact `attachments/customer/doc.txt` path. Production behavior, confirmation assertions and dispatcher commit modes are unchanged.
+
 ### Fixed (2026-11-04) - Preserve dispatch JSON assertions (#166)
 
 - Test helper codeunit 96219 `Storage Test Confirmation ori` asserts that both the initial response and the confirmed response are valid JSON. Its `UseCommittedExecute` parameter now names the existing `OmitCommit=false` behavior accurately; codeunit 96274 `Attachments Build Tests ori` also returns to its original default `Execute` overload (`OmitCommit=true`). Other caller commit modes and all request assertions are preserved.

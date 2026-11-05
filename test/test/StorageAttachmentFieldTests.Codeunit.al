@@ -236,7 +236,9 @@ codeunit 96203 "Storage Attachment Field Tests"
         MockState: Codeunit "Storage Mock State";
     begin
         MockState.Reset();
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';
@@ -253,6 +255,7 @@ codeunit 96203 "Storage Attachment Field Tests"
         DocAttachment.SetRange("Table ID", Database::Customer);
         DocAttachment.SetRange("No.", TestCustNoTok);
         DocAttachment.DeleteAll();
+        AttachmentLink.SetRange("Storage Code", MockCodeTok);
         AttachmentLink.DeleteAll();
     end;
 

@@ -635,10 +635,10 @@ codeunit 96204 "Storage Connector Tests"
         ExpectedContent: Text;
         ReadBack: Text;
     begin
-        // [GIVEN] A mock storage connection and a Document Attachment holding a small file
+        // [GIVEN] A mock connection and a fresh customer so repeated runs keep the exact doc.txt filename.
         Initialize();
         Customer.Init();
-        Customer."No." := 'BIFTS-ATT-CUST';
+        Customer."No." := CopyStr('X' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(Customer."No."));
         if not Customer.Insert() then
             Customer.Get(Customer."No.");
         ExpectedContent := 'Hello attachment payload';
@@ -807,8 +807,11 @@ codeunit 96204 "Storage Connector Tests"
         MockState: Codeunit "Storage Mock State";
     begin
         MockState.Reset();
+        AttachmentLink.SetRange("Storage Code", MockCodeTok);
         AttachmentLink.DeleteAll();
+        StorageSetup.SetRange(Code, MockCodeTok);
         StorageSetup.DeleteAll();
+        StorageSetup.Reset();
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';

@@ -292,7 +292,7 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     begin
         // Story #82 | Time: independent of Today and WorkDate | Risk: requires canonical PR84 and real Foundation dispatch.
         // [GIVEN] A 20-character canonical definition.
-        BoundaryCode := 'X1234567890123456789';
+        BoundaryCode := CopyStr('X' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(BoundaryCode));
         DataExchDef.Code := BoundaryCode;
         DataExchDef.Type := DataExchDef.Type::"Generic Import";
         DataExchDef.Insert(true);
@@ -608,20 +608,22 @@ codeunit 96226 "DataExch Refusal82 Tests ori"
     var
         DataExchDef: Record "Data Exch. Def";
         Response: JsonObject;
+        DefinitionCode: Code[20];
     begin
         // Story #82, AC02 | Time: none | Risk: Unicode BC Code rules.
         // [GIVEN] An already canonical Unicode definition.
-        DataExchDef.Code := 'XÞÓR';
+        DefinitionCode := CopyStr('XÞÓR' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(DefinitionCode));
+        DataExchDef.Code := DefinitionCode;
         DataExchDef.Type := DataExchDef.Type::"Generic Import";
         DataExchDef."File Type" := DataExchDef."File Type"::"Variable Text";
         DataExchDef."Reading/Writing XMLport" := Xmlport::"Data Exch. Import - CSV";
         DataExchDef.Insert(true);
         // [WHEN] The unchanged key reaches the registered handler.
-        Response := DispatchImportInline('XÞÓR', 'X82,Row');
+        Response := DispatchImportInline(DefinitionCode, 'X82,Row');
         // [THEN] It succeeds and persists the same key.
         AssertText(Response, 'status', 'Success');
-        AssertText(SuccessData(Response), 'dataExchDefCode', 'XÞÓR');
-        LibraryAssert.AreEqual(1, EntryCount('XÞÓR'), 'Canonical Unicode must be accepted.');
+        AssertText(SuccessData(Response), 'dataExchDefCode', DefinitionCode);
+        LibraryAssert.AreEqual(1, EntryCount(DefinitionCode), 'Canonical Unicode must be accepted.');
     end;
 
     /// <summary>Whitespace-only input is invalid format and still has complete received detail.</summary>

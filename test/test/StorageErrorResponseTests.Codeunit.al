@@ -550,6 +550,7 @@ codeunit 96212 "Storage Error Response Tests"
         MockState: Codeunit "Storage Mock State";
     begin
         MockState.Reset();
+        StorageSetup.SetFilter(Code, '%1|%2', MockCodeTok, DisabledCodeTok);
         StorageSetup.DeleteAll();
         InsertSetup(MockCodeTok, true);
         InsertSetup(DisabledCodeTok, false);
