@@ -167,7 +167,7 @@ codeunit 96207 "Storage Setup Page Tests"
         Initialize();
         InsertStorageConnection();
         StorageSetup.Get(MockCodeTok);
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup."File Account Id" := CreateGuid();
         StorageSetup.Modify();
         // [WHEN/THEN] The real action produces the harvested Icelandic and English messages.
@@ -241,7 +241,7 @@ codeunit 96207 "Storage Setup Page Tests"
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Setup page test connection';
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
     end;

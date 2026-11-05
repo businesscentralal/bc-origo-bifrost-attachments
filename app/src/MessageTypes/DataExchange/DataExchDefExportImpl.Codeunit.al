@@ -4,7 +4,7 @@ using Origo.Bifrost;
 using System.IO;
 
 /// <summary>Returns a Data Exchange definition header and optionally its XML inline or in storage.</summary>
-codeunit 10035156 "DataExch Def Export Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori"
+codeunit 10035156 "DataExch Def Export Impl ori" implements "Msg Interface ori", "Msg Discovery ori", "Msg Contract ori", "Msg Confirm ori"
 {
     Access = Internal;
 
@@ -168,5 +168,26 @@ codeunit 10035156 "DataExch Def Export Impl ori" implements "Msg Interface ori",
         if Reader.RespondIfTablePermissionDenied(Argument, Database::"Data Exch. Def", false) then
             exit;
         DataExchangeQuery.ExportDefinition(Argument);
+    end;
+    /// <summary>Validates the definition code before a confirmation preview.</summary>
+    /// <param name="Argument">Request and refusal carrier.</param>
+    /// <param name="Count">One definition export, preserving the existing confirmation unit.</param>
+    /// <param name="Summary">The requested definition.</param>
+    /// <returns>False after refusing missing or malformed code.</returns>
+    procedure GetConfirmCount(var Argument: Record "Message Argument ori"; var Count: Integer; var Summary: Text): Boolean
+    var
+        Reader: Codeunit "Storage Request Reader ori";
+        DefinitionCode: Code[20];
+    begin
+        if not Reader.ReadMutationRequest(Argument) then begin
+            Reader.RespondIfErrors(Argument);
+            exit(false);
+        end;
+        Reader.ReadMutationCode(Argument, Argument.GetRequestJson(), 'code', DefinitionCode);
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        Count := 1;
+        Summary := DefinitionCode;
+        exit(true);
     end;
 }

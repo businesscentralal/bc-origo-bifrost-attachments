@@ -1286,6 +1286,9 @@ codeunit 10035136 "Storage Attachment Mgt ori"
 
     local procedure SameRegisteredAccount(FirstSetup: Record "Storage Setup ori"; SecondSetup: Record "Storage Setup ori"): Boolean
     begin
+        // Unregistered backends have a connection-local namespace, not a shared empty account.
+        if IsNullGuid(FirstSetup."File Account Id") or IsNullGuid(SecondSetup."File Account Id") then
+            exit(FirstSetup.Code = SecondSetup.Code);
         exit((FirstSetup."Storage Type" = SecondSetup."Storage Type") and
              (FirstSetup.Connector = SecondSetup.Connector) and
              (FirstSetup."File Account Id" = SecondSetup."File Account Id"));

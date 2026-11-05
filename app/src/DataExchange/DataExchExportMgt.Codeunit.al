@@ -116,6 +116,9 @@ codeunit 10035140 "DataExch Export Mgt ori"
         HasStorage: Boolean;
         Inline: Boolean;
         EmptyGuid: Guid;
+        InteractiveWriterErr: Label 'Definition %1 uses XMLport %2, which requires an interactive Business Central client.', Comment = '%1 = definition code, %2 = writer id||is-IS=Skilgreining %1 notar XMLport %2 sem krefst gagnvirks Business Central biðlara.';
+        HeadlessWriterLbl: Label 'a writer that supports background execution', Comment = 'is-IS=skriftaraðgerð sem styður keyrslu í bakgrunni';
+        HeadlessWriterNextLbl: Label 'Export this definition from the Business Central page, or configure a writer that does not open client dialogs.', Comment = 'is-IS=Flyttu skilgreininguna út af Business Central síðu eða stilltu skriftaraðgerð sem opnar ekki glugga í biðlara.';
     begin
         RequestJson := Argument.GetRequestJson();
         // Phase 1: the definition and the file name.
@@ -155,6 +158,11 @@ codeunit 10035140 "DataExch Export Mgt ori"
                 StrSubstNo(TableMismatchExpectedLbl, DataExchMapping."Table ID"), TableMismatchNextStepLbl);
         if (DataExchDef."Reading/Writing Codeunit" = 0) and (DataExchDef."Reading/Writing XMLport" = 0) then
             Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(NoWriterErr, DefCode), 'dataExchDefCode', DefCode, WriterExpectedLbl, CompleteDefinitionLbl);
+        if (not GuiAllowed()) and (DataExchDef."Reading/Writing Codeunit" = 0) and
+           (DataExchDef."Reading/Writing XMLport" in [Xmlport::"Export Generic CSV", Xmlport::"Export Generic Fixed Width"])
+        then
+            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(InteractiveWriterErr, DefCode, DataExchDef."Reading/Writing XMLport"),
+                'dataExchDefCode', DefCode, HeadlessWriterLbl, HeadlessWriterNextLbl);
         if Reader.RespondIfErrors(Argument) then
             exit;
         if Reader.RespondIfTablePermissionDenied(Argument, DataExchMapping."Table ID", false) then

@@ -219,6 +219,36 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Töflukenni</note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Storage Attachment Link ori - Field Table ID - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3341545773 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mock Storage Entry</source>
+          <target>Færsla prófunargeymslu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Færsla prófunargeymslu</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Storage Mock Entry ori - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3341545773 - Field 2166181827 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Content</source>
+          <target>Innihald</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Innihald</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Storage Mock Entry ori - Field Content - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3341545773 - Field 149522872 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry Type</source>
+          <target>Færslugerð</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Færslugerð</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Storage Mock Entry ori - Field Entry Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3341545773 - Field 2206733951 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Path</source>
+          <target>Slóð</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Slóð</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Storage Mock Entry ori - Field Path - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3341545773 - Field 3920437672 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Storage Code</source>
+          <target>Geymslukóði</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Geymslukóði</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Storage Mock Entry ori - Field Storage Code - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3959677966 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bifrost Storage Setup</source>
           <target>Uppsetning Bifröst geymslu</target>
@@ -1479,6 +1509,24 @@
           <note from="Developer" annotates="general" priority="2">%1 = storage path||is-IS=Áfangastaður útflutnings "%1" er ekki tiltækur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - Method CompletePath - NamedType DestinationErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2395862116 - Method 4199409272 - NamedType 2240294918" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Definition %1 uses XMLport %2, which requires an interactive Business Central client.</source>
+          <target>Skilgreining %1 notar XMLport %2 sem krefst gagnvirks Business Central biðlara.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = definition code, %2 = writer id||is-IS=Skilgreining %1 notar XMLport %2 sem krefst gagnvirks Business Central biðlara.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - Method RunGenericExport - NamedType InteractiveWriterErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2395862116 - Method 4199409272 - NamedType 2046900680" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a writer that supports background execution</source>
+          <target>skriftaraðgerð sem styður keyrslu í bakgrunni</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=skriftaraðgerð sem styður keyrslu í bakgrunni</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - Method RunGenericExport - NamedType HeadlessWriterLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2395862116 - Method 4199409272 - NamedType 396189341" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Export this definition from the Business Central page, or configure a writer that does not open client dialogs.</source>
+          <target>Flyttu skilgreininguna út af Business Central síðu eða stilltu skriftaraðgerð sem opnar ekki glugga í biðlara.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Flyttu skilgreininguna út af Business Central síðu eða stilltu skriftaraðgerð sem opnar ekki glugga í biðlara.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - Method RunGenericExport - NamedType HeadlessWriterNextLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 3322002649 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Exports records with a Generic Export definition and writes the file to storage or returns it inline.</source>
           <target>Flytur út færslur með skilgreiningu fyrir almennan útflutning og skrifar skrána í geymslu eða skilar henni innfellt.</target>
@@ -1706,6 +1754,12 @@
           <target>Notaðu Business Central síðuna fyrir þennan innflutning, svo sem launabókina, eða veldu vörpun sem tekur við gagnaskiptafærslum.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Notaðu Business Central síðuna fyrir þennan innflutning, svo sem launabókina, eða veldu vörpun sem tekur við gagnaskiptafærslum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method FindCodeunitBlocker - NamedType NextStepLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2058621091 - Method 3081878204 - NamedType 1521162898" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Definition %1, line %2, mapping to table %3 with codeunit %4 cannot be processed: %5</source>
+          <target>Ekki er hægt að vinna skilgreiningu %1, línu %2, vörpun í töflu %3 með kóðaeiningu %4: %5</target>
+          <note from="Developer" annotates="general" priority="2">%1 = definition, %2 = line, %3 = table id, %4 = codeunit id, %5 = reason||is-IS=Ekki er hægt að vinna skilgreiningu %1, línu %2, vörpun í töflu %3 með kóðaeiningu %4: %5</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Import Mgt ori - Method FindProcessBlocker - NamedType BadMappingErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2058621091 - Method 4008332335 - NamedType 1340493656" size-unit="char" translate="yes" xml:space="preserve">
           <source>Business Central could not read the file from storage.</source>
@@ -2625,6 +2679,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Setja upp Bifröst viðhengi</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Install ori - NamedType SetupWizardTitleTok</note>
         </trans-unit>
+        <trans-unit id="Codeunit 3666356617 - Method 1029762372 - NamedType 1545897752" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Mock directory is not empty.</source>
+          <target>Prófunarmappan er ekki tóm.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Prófunarmappan er ekki tóm.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Mock Impl ori - Method DeleteDirectory - NamedType DirectoryNotEmptyErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3666356617 - Method 845924603 - NamedType 1361799667" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The Mock storage path is invalid or longer than 250 characters.</source>
+          <target>Slóð prófunargeymslu er ógild eða lengri en 250 stafir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Slóð prófunargeymslu er ógild eða lengri en 250 stafir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Mock Impl ori - Method ResolvePath - NamedType InvalidPathErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 223275718 - NamedType 2684945297" size-unit="char" translate="yes" xml:space="preserve">
           <source>The storage destination could not be checked.</source>
           <target>Ekki tókst að athuga áfangastað í geymslu.</target>
@@ -3345,6 +3411,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Byrjaðu nýja upphleðslu með Storage.Upload.Begin. Aðeins notandinn sem byrjaði lotuna getur notað hana.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - NamedType UploadNotFoundNextStepLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 987128476 - Method 4153419635 - NamedType 1161341603" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a file readable by the selected Data Exchange definition</source>
+          <target>skrá sem valin gagnaskiptaskilgreining getur lesið</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=skrá sem valin gagnaskiptaskilgreining getur lesið</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - Method CommitToDataExchange - NamedType ReadableUploadLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 987128476 - Method 4153419635 - NamedType 3025240530" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inspect DataExchange.Definition.Get, correct the uploaded file and retry the open uploadId. Nothing was committed.</source>
+          <target>Skoðaðu DataExchange.Definition.Get, leiðréttu upphlöðnu skrána og reyndu aftur með opna uploadId. Ekkert var staðfest.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skoðaðu DataExchange.Definition.Get, leiðréttu upphlöðnu skrána og reyndu aftur með opna uploadId. Ekkert var staðfest.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - Method CommitToDataExchange - NamedType UploadReadNextStepLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 987128476 - Method 4153419635 - NamedType 356421334" size-unit="char" translate="yes" xml:space="preserve">
           <source>The file could not be written to storage, so the import was rolled back: %1</source>
           <target>Ekki tókst að skrifa skrána í geymslu og því var innflutningurinn afturkallaður: %1</target>
@@ -3758,6 +3836,12 @@
           <target>Ytri skráageymsla</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Ytri skráageymsla</note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum Storage Type ori - EnumValue External File Storage - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 726434471 - EnumValue 1417814126 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mock</source>
+          <target>Prófunargeymsla</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Prófunargeymsla</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Storage Type ori - EnumValue Mock - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 3753360862 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Bifrost Storage Upload Status</source>

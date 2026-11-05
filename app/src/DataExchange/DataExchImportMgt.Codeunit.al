@@ -142,6 +142,7 @@ codeunit 10035141 "DataExch Import Mgt ori"
     var
         DataExchDef: Record "Data Exch. Def";
         DataExchLineDef: Record "Data Exch. Line Def";
+        Content: InStream;
         EntryNo: Integer;
     begin
         DataExchDef.Get(DefCode);
@@ -158,7 +159,18 @@ codeunit 10035141 "DataExch Import Mgt ori"
         EntryNo := DataExch."Entry No.";
         InsertLink(EntryNo, UploadId, MessageTypeName, StorageCode, Path);
 
-        DataExch.ImportToDataExch(DataExchDef);
+        if GuiAllowed() then
+            DataExch.ImportToDataExch(DataExchDef)
+        else begin
+            // The base wrapper opens a progress dialog unconditionally. Run the same reader without that UI.
+            DataExch.SetRange("Entry No.", EntryNo);
+            if DataExchDef."Reading/Writing Codeunit" <> 0 then
+                Codeunit.Run(DataExchDef."Reading/Writing Codeunit", DataExch)
+            else begin
+                DataExch."File Content".CreateInStream(Content);
+                Xmlport.Import(DataExchDef."Reading/Writing XMLport", Content, DataExch);
+            end;
+        end;
         DataExch.Reset();
         DataExch.Get(EntryNo);
     end;
@@ -204,6 +216,60 @@ codeunit 10035141 "DataExch Import Mgt ori"
             exit(true);
         AddFileFormatError(Argument, ParameterName, FileName, TempBlob.Length(), Expected);
         exit(false);
+    end;
+
+    /// <summary>Refuses standard CSV uploads with no data rows before creating an entry.</summary>
+    /// <param name="Argument">The request collecting a typed file refusal.</param>
+    /// <param name="DefCode">The checked definition code.</param>
+    /// <param name="TempBlob">Uploaded bytes, never written by this check.</param>
+    /// <param name="FileName">Safe file metadata for the refusal.</param>
+    internal procedure CheckUploadReadability(var Argument: Record "Message Argument ori"; DefCode: Code[20]; var TempBlob: Codeunit "Temp Blob"; FileName: Text)
+    var
+        Definition: Record "Data Exch. Def";
+        HasDataLine: Boolean;
+    begin
+        Definition.ReadIsolation := IsolationLevel::ReadCommitted;
+        Definition.Get(DefCode);
+        if (Definition."Reading/Writing Codeunit" <> 0) or
+           (Definition."Reading/Writing XMLport" <> Xmlport::"Data Exch. Import - CSV")
+        then
+            exit;
+        if TryFindUploadDataLine(Definition, TempBlob, HasDataLine) then
+            if HasDataLine then
+                exit;
+        AddFileFormatError(Argument, 'uploadId', FileName, TempBlob.Length(), 'CSV');
+    end;
+
+    [TryFunction]
+    local procedure TryFindUploadDataLine(Definition: Record "Data Exch. Def"; var TempBlob: Codeunit "Temp Blob"; var HasDataLine: Boolean)
+    var
+        Content: InStream;
+        Line: Text;
+        LineNo: Integer;
+        Encoding: TextEncoding;
+    begin
+        case Definition."File Encoding" of
+            Definition."File Encoding"::"UTF-8":
+                Encoding := TextEncoding::UTF8;
+            Definition."File Encoding"::"UTF-16":
+                Encoding := TextEncoding::UTF16;
+            Definition."File Encoding"::"MS-DOS":
+                Encoding := TextEncoding::MSDos;
+            else
+                Encoding := TextEncoding::Windows;
+        end;
+        TempBlob.CreateInStream(Content, Encoding);
+        while not Content.EOS() do begin
+            Content.ReadText(Line);
+            LineNo += 1;
+            if (LineNo > Definition."Header Lines") and (Line.Trim() <> '') then
+                if not (((Definition."Header Tag" <> '') and Line.StartsWith(Definition."Header Tag")) or
+                        ((Definition."Footer Tag" <> '') and Line.StartsWith(Definition."Footer Tag")))
+                then begin
+                    HasDataLine := true;
+                    exit;
+                end;
+        end;
     end;
 
     /// <summary>Adds a localized format refusal with file metadata only.</summary>
@@ -374,7 +440,9 @@ codeunit 10035141 "DataExch Import Mgt ori"
     var
         DataExchMapping: Record "Data Exch. Mapping";
         DataExchDef: Record "Data Exch. Def";
+        TargetMetadata: Record AllObjWithCaption;
         TargetRef: RecordRef;
+        BadMappingErr: Label 'Definition %1, line %2, mapping to table %3 with codeunit %4 cannot be processed: %5', Comment = '%1 = definition, %2 = line, %3 = table id, %4 = codeunit id, %5 = reason||is-IS=Ekki er hægt að vinna skilgreiningu %1, línu %2, vörpun í töflu %3 með kóðaeiningu %4: %5';
     begin
         DataExchDef.ReadIsolation := IsolationLevel::ReadCommitted;
         DataExchDef.SetLoadFields(Code, "Data Handling Codeunit");
@@ -414,8 +482,17 @@ codeunit 10035141 "DataExch Import Mgt ori"
             if FindCodeunitBlocker(DataExchMapping."Pre-Mapping Codeunit", ErrorCode, ErrorText, Expected, NextStep) or
                FindCodeunitBlocker(DataExchMapping."Mapping Codeunit", ErrorCode, ErrorText, Expected, NextStep) or
                FindCodeunitBlocker(DataExchMapping."Post-Mapping Codeunit", ErrorCode, ErrorText, Expected, NextStep)
-            then
+            then begin
+                ErrorText := StrSubstNo(BadMappingErr, DataExchMapping."Data Exch. Def Code", DataExchMapping."Data Exch. Line Def Code", DataExchMapping."Table ID", DataExchMapping."Mapping Codeunit", ErrorText);
                 exit(true);
+            end;
+            if not TargetMetadata.Get(TargetMetadata."Object Type"::Table, DataExchMapping."Table ID") then begin
+                ErrorCode := "Bifrost Error Code ori"::PreconditionFailed;
+                ErrorText := StrSubstNo(BadMappingErr, DataExchMapping."Data Exch. Def Code", DataExchMapping."Data Exch. Line Def Code", DataExchMapping."Table ID", DataExchMapping."Mapping Codeunit", MappingExpectedLbl);
+                Expected := MappingExpectedLbl;
+                NextStep := AddMappingLbl;
+                exit(true);
+            end;
             TargetRef.Open(DataExchMapping."Table ID");
             if not (TargetRef.ReadPermission() and TargetRef.WritePermission()) then begin
                 ErrorCode := "Bifrost Error Code ori"::PermissionDenied;
@@ -462,16 +539,15 @@ codeunit 10035141 "DataExch Import Mgt ori"
         DataExchMapping: Record "Data Exch. Mapping";
     begin
         DataExchDef.Get(DataExch."Data Exch. Def Code");
-        if LineDefCode = '' then begin
-            DataExchDef.ProcessDataExchange(DataExch);
-            exit;
-        end;
         if DataExchDef."Data Handling Codeunit" <> 0 then
             Codeunit.Run(DataExchDef."Data Handling Codeunit", DataExch);
         DataExchMapping.SetRange("Data Exch. Def Code", DataExch."Data Exch. Def Code");
-        DataExchMapping.SetRange("Data Exch. Line Def Code", LineDefCode);
-        DataExchMapping.FindSet();
+        if LineDefCode <> '' then
+            DataExchMapping.SetRange("Data Exch. Line Def Code", LineDefCode);
+        if not DataExchMapping.FindSet() then
+            exit;
         repeat
+            DataExch."Data Exch. Line Def Code" := DataExchMapping."Data Exch. Line Def Code";
             if DataExchMapping."Pre-Mapping Codeunit" <> 0 then
                 Codeunit.Run(DataExchMapping."Pre-Mapping Codeunit", DataExch);
             if DataExchMapping."Mapping Codeunit" <> 0 then

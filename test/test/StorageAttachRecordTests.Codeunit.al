@@ -312,7 +312,7 @@ codeunit 96206 "Storage Attach Record Tests"
         StorageSetup.Init();
         StorageSetup."Code" := MockCodeTok;
         StorageSetup.Description := 'Mock storage connection';
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
 

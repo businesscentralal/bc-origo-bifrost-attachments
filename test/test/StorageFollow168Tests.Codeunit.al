@@ -486,7 +486,7 @@ codeunit 96264 "Storage Follow168 Tests ori"
     begin
         MockState.Reset();
         Setup.Code := Fixture.NewCode('X168');
-        Setup."Storage Type" := Setup."Storage Type"::Mock;
+        Setup."Storage Type" := Setup."Storage Type"::"Test Mock";
         Setup.Enabled := true;
         Setup.Insert();
         exit(Setup.Code);

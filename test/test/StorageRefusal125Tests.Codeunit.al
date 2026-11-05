@@ -108,7 +108,7 @@ codeunit 96238 "Storage Refusal 125 Tests ori"
             StorageSetup.Delete();
         StorageSetup.Init();
         StorageSetup.Code := MockCodeTok;
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := true;
         StorageSetup.Insert();
     end;

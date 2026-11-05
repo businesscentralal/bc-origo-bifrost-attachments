@@ -568,7 +568,7 @@ codeunit 96212 "Storage Error Response Tests"
         StorageSetup.Init();
         StorageSetup."Code" := StorageCode;
         StorageSetup.Description := 'Mock storage connection';
-        StorageSetup."Storage Type" := StorageSetup."Storage Type"::Mock;
+        StorageSetup."Storage Type" := StorageSetup."Storage Type"::"Test Mock";
         StorageSetup.Enabled := IsEnabled;
         StorageSetup.Insert();
     end;

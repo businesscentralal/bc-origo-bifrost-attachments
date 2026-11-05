@@ -38,6 +38,6 @@ enumextension 10035140 "DataExch Pipeline MsgType ori" extends "Message Type ori
     value(10035173; "DataExchange.PaymentExport.Run")
     {
         Caption = 'DataExchange.PaymentExport.Run', Locked = true;
-        Implementation = "Msg Interface ori" = "DataExch Pay Export Impl ori", "Msg Discovery ori" = "DataExch Pay Export Impl ori", "Msg Contract ori" = "DataExch Pay Export Impl ori";
+        Implementation = "Msg Interface ori" = "DataExch Pay Export Impl ori", "Msg Discovery ori" = "DataExch Pay Export Impl ori", "Msg Contract ori" = "DataExch Pay Export Impl ori", "Msg Confirm ori" = "DataExch Pay Export Impl ori";
     }
 }
