@@ -8,7 +8,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ### Fixed (2026-11-05) - Align Foundation release input contract (#209)
 
-- Pin the AppSource input gate and signed-package collision restoration to the authentic Foundation 28.0.11.669 release selected by CI. Preserve exact identity, package/archive hashes, source/build/compiler provenance, friend restrictions and historical staging profiles. No AL objects or dependency floors change.
+- Pin the AppSource input gate and signed-package collision restoration to the authentic Foundation 28.0.11.669 release selected by CI. Preserve exact identity, package/archive hashes, source/build/compiler provenance, friend restrictions and historical staging profiles. No AL objects or dependency floors change. Gate regressions track the selected release and use the genuine generated fixture compiler stamp, preserving mismatch refusals.
 
 ### Fixed (2026-11-05) - Isolate storage setup read regression (#166 / PR #182)
 
