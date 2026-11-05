@@ -694,6 +694,7 @@ codeunit 96205 "Storage Upload Tests"
     procedure DataRecordsSet_OnStorageSetup_ReturnsError()
     var
         StorageSetup: Record "Storage Setup ori";
+        OtherStorageSetup: Record "Storage Setup ori";
         TempArgument: Record "Message Argument ori" temporary;
         SetRequest: JsonObject;
         GetRequest: JsonObject;
@@ -713,6 +714,12 @@ codeunit 96205 "Storage Upload Tests"
         Initialize();
         StorageSetup.Get(MockCodeTok);
         OriginalDescription := StorageSetup.Description;
+
+        // [GIVEN] Another connection exists independently of this test's MOCK connection
+        OtherStorageSetup.Init();
+        OtherStorageSetup.Code := CopyStr('XSETUP' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(OtherStorageSetup.Code));
+        OtherStorageSetup.Description := 'Unrelated setup isolation fixture';
+        OtherStorageSetup.Insert();
 
         // [GIVEN] A generic write that would change the setup description
         PrimaryKey.Add('Code', MockCodeTok);
@@ -737,6 +744,8 @@ codeunit 96205 "Storage Upload Tests"
 
         // [WHEN] The same table is read through Data.Records.Get
         GetRequest.Add('tableName', 'Storage Setup ori');
+        StorageSetup.SetRecFilter();
+        GetRequest.Add('tableView', StorageSetup.GetView(false));
         ExecuteTypeWithRequest(TempArgument, TempArgument."Type"::"Data.Records.Get", GetRequest);
 
         // [THEN] The read succeeds and returns the setup row
@@ -749,6 +758,9 @@ codeunit 96205 "Storage Upload Tests"
         RecordObject := RecordToken.AsObject();
         LibraryAssert.IsTrue(RecordObject.Get('primaryKey', PrimaryKeyToken), 'The returned row should include its primary key.');
         LibraryAssert.AreEqual(MockCodeTok, ReadObjText(PrimaryKeyToken.AsObject(), 'Code'), 'The returned row should be the setup connection.');
+        LibraryAssert.IsTrue(OtherStorageSetup.Get(OtherStorageSetup.Code), 'The unrelated setup must survive the scoped read and rejected write.');
+        OtherStorageSetup.Delete();
+        StorageSetup.Delete();
     end;
 
     [Test]

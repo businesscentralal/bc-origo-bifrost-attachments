@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Fixed (2026-11-05) - Isolate storage setup read regression (#166 / PR #182)
+
+- Codeunit 96205 scopes Data.Records.Get to its MOCK setup through a numeric-field table view, seeds an unrelated setup to prove independence from company data, verifies that row survives the refused write/read, and removes both owned fixtures.
+
 ### Fixed (2026-11-05) - Recover historical X75 test fixtures (#166 / PR #182)
 
 - Fixture 96241 sweeps only reserved X75* test connections, links, upload sessions/chunks and mock files; mock reset 96201 invokes it before storage scenarios, including codeunits preceding 96217/96225. Regression 96205 seeds five dangling fixtures and checks recovery without deleting an unrelated setup/link.
