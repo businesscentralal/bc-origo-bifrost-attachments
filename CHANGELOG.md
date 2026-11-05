@@ -12,6 +12,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - #210: credential-free, persisted, company-local Mock storage through `Storage Connector ori`, with per-connection isolation, owned setup cleanup and dynamic selector visibility (table 10035141, codeunit 10035202, enum 10035136, page 10035137, role grants). Keep the test-only fault-injection backend separate. Regression codeunit 96279 covers bilingual refusals and the product Mock.
 
 
+### Fixed (2026-11-05) - Confirm remaining storage test fixtures (#205)
+
+- Test codeunit 96237 `DataExch Phase2 Tests ori` uses the shared preview-and-confirm dispatcher helper 96219 for its remaining irreversible `Storage.Upload.Commit` fixture calls. Other storage fixtures use the same helper through merged #182. The preview's actual count is confirmed without modifying reused request JSON; refusal assertions and original commit modes remain unchanged. The earlier fixed-count helper 96276 is superseded by 96219. No product code or message classification changes.
+
 ### Fixed (2026-11-05) - Align Foundation release input contract (#209)
 
 - Pin the AppSource input gate and signed-package collision restoration to the authentic Foundation 28.0.11.669 release selected by CI. Preserve exact identity, package/archive hashes, source/build/compiler provenance, friend restrictions and historical staging profiles. No AL objects or dependency floors change. Gate regressions track the selected release and use the genuine generated fixture compiler stamp, preserving mismatch refusals.
