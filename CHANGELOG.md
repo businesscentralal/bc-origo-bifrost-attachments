@@ -6,6 +6,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 ### Fixed
+- #80: test codeunit 96237 `Scenario_AC06_LinkedCsv_CreatesPurchaseInvoice` gives its self-created vendor self-created payment terms, so the ES Base Application accepts the purchase invoice (ES full suite was 507/1/0 on main 842f44e). Test-only; no product change.
 - #210: validate Data Exchange export targets before confirmation; name invalid mappings before opening their table; run the selected mapping line; refuse interactive CSV/fixed-width export writers in background calls before writes; refuse header-only standard CSV uploads before writes and preserve unexpected upload-reader `uploadId`/recovery context through rollback and bound invalid base64 `received` to 250 characters. Requires Foundation 28.0.11.669 for its public confirmation/context interfaces (codeunits 10035140, 10035141, 10035156, 10035168, 10035194, 10035197 and related enum bindings).
 
 ### Added
