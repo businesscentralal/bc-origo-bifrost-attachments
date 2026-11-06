@@ -57,6 +57,7 @@ permissionsetextension 10035135 "Storage Full ori" extends "BIFROST Full ori"
         codeunit "Storage Ext File Impl ori" = X,
         codeunit "Storage Mock Impl ori" = X,
         codeunit "Storage File Copy Impl ori" = X,
+        codeunit "Storage File CopyToStaging ori" = X,
         codeunit "Storage File Create Impl ori" = X,
         codeunit "Storage File Delete Impl ori" = X,
         codeunit "Storage File Exists Impl ori" = X,

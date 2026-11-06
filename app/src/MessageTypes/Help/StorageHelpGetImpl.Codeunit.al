@@ -177,6 +177,7 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         Guide.AppendLine('| Files | `Storage.File.Exists` | Tells whether a file exists. |');
         Guide.AppendLine('| Files | `Storage.File.Create` | Writes a file from base64 content. |');
         Guide.AppendLine('| Files | `Storage.File.Copy` | Copies a file to a new path. |');
+        Guide.AppendLine('| Files | `Storage.File.CopyToStaging` | Copies a file into one Foundation staging row and returns its stagingId. |');
         Guide.AppendLine('| Files | `Storage.File.Move` | Moves or renames a file; a linked file keeps its attachment link. |');
         Guide.AppendLine('| Files | `Storage.File.Delete` | Deletes a file that no attachment uses. |');
         Guide.AppendLine('| Directories | `Storage.Directory.List` | Lists the subfolders of a folder. |');
