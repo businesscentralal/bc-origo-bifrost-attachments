@@ -149,4 +149,10 @@ enumextension 10035142 "Storage Msg Type ori" extends "Message Type ori"
         Caption = 'Storage.Upload.CommitToRecord', Locked = true;
         Implementation = "Msg Interface ori" = "Storage Upload Commit Rec ori", "Msg Discovery ori" = "Storage Upload Commit Rec ori", "Msg Contract ori" = "Storage Upload Commit Rec ori";
     }
+    /// <summary>Copies one storage file into one Foundation staging row.</summary>
+    value(10035175; "Storage.File.CopyToStaging")
+    {
+        Caption = 'Storage.File.CopyToStaging', Locked = true;
+        Implementation = "Msg Interface ori" = "Storage File CopyToStaging ori", "Msg Discovery ori" = "Storage File CopyToStaging ori", "Msg Contract ori" = "Storage File CopyToStaging ori";
+    }
 }

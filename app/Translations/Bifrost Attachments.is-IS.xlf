@@ -2553,6 +2553,24 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Afritar skrá á aðra slóð innan sömu geymslutengingar og heldur upprunalegu skránni; notaðu skilaboðategundina fyrir færslu skráa til að færa hana.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File Copy Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 550643024 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Copies a file from a storage connection into one Foundation staging row and returns its stagingId.</source>
+          <target>Afritar skrá úr geymslutengingu í eina bráðabirgðafærslu í Bifröst-grunni og skilar stagingId hennar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Afritar skrá úr geymslutengingu í eina bráðabirgðafærslu í Bifröst-grunni og skilar stagingId hennar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File CopyToStaging ori - Method GetDescription - NamedType DescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 550643024 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>stage the stored file, copy storage file to staging, file to staging id, hand stored file to prompt, use stored file in report layout, read from storage into staging</source>
+          <target>geyma geymda skrá tímabundið, afrita geymsluskrá í bráðabirgðageymslu, skrá í stagingId, afhenda geymda skrá til fyrirspurnar, nota geymda skrá í skýrslusniði, lesa úr geymslu í bráðabirgðageymslu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=geyma geymda skrá tímabundið, afrita geymsluskrá í bráðabirgðageymslu, skrá í stagingId, afhenda geymda skrá til fyrirspurnar, nota geymda skrá í skýrslusniði, lesa úr geymslu í bráðabirgðageymslu</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File CopyToStaging ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 550643024 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Copies one existing storage file into one Foundation staging row and returns stagingId for a consuming message type; the storage file is unchanged, and Storage.File.Get is the type that returns the content as base64 instead.</source>
+          <target>Afritar eina skrá úr geymslu í eina bráðabirgðafærslu í Bifröst-grunni og skilar stagingId fyrir móttökugerð; geymsluskráin breytist ekki, en Storage.File.Get skilar innihaldinu sem base64.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Afritar eina skrá úr geymslu í eina bráðabirgðafærslu í Bifröst-grunni og skilar stagingId fyrir móttökugerð; geymsluskráin breytist ekki, en Storage.File.Get skilar innihaldinu sem base64.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File CopyToStaging ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 3778398321 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Uploads a base64 file of up to 240 MiB to a path in one call. For larger files, use Storage.Upload.Begin, Append and Commit.</source>
           <target>Hleður base64-skrá allt að 240 MiB á slóð í einu kalli. Fyrir stærri skrár skal nota Storage.Upload.Begin, Append og Commit.</target>
@@ -2888,6 +2906,30 @@
           <target>Slóðin „%1“ er ekki leyfð: enginn hluti slóðarinnar má vera „.“ eða „..“.</target>
           <note from="Developer" annotates="general" priority="2">%1 = the rejected path||is-IS=Slóðin „%1“ er ekki leyfð: enginn hluti slóðarinnar má vera „.“ eða „..“.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - NamedType UnsafePathErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 1458650324 - NamedType 2296006256" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The storage file "%1" is %2 bytes, more than the %3 bytes that can be staged. Nothing was staged.</source>
+          <target>Geymsluskráin "%1" er %2 bæti, meira en þau %3 bæti sem hægt er að vista tímabundið. Engu var komið fyrir.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = path, %2 = file size, %3 = limit||is-IS=Geymsluskráin "%1" er %2 bæti, meira en þau %3 bæti sem hægt er að vista tímabundið. Engu var komið fyrir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method ExecuteCopyToStaging - NamedType TooLargeErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 1458650324 - NamedType 287181847" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a file of at most %1 bytes</source>
+          <target>skrá sem er í mesta lagi %1 bæti</target>
+          <note from="Developer" annotates="general" priority="2">%1 = limit||is-IS=skrá sem er í mesta lagi %1 bæti</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method ExecuteCopyToStaging - NamedType TooLargeExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 1458650324 - NamedType 628724792" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Choose a smaller file.</source>
+          <target>Veldu minni skrá.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Veldu minni skrá.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method ExecuteCopyToStaging - NamedType TooLargeNextLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 1458650324 - NamedType 680257497" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Pass stagingId to LLM.Prompt.Ask, LLM.Prompt.Complete, Dashboard.Page.Set, Memory.*.Set or ReportLayout.Set as the same user in the same company. Its take consumes the staged file.</source>
+          <target>Sendu stagingId til LLM.Prompt.Ask, LLM.Prompt.Complete, Dashboard.Page.Set, Memory.*.Set eða ReportLayout.Set sem sami notandi í sama fyrirtæki. Take-aðgerð hennar eyðir bráðabirgðaskránni við móttöku.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu stagingId til LLM.Prompt.Ask, LLM.Prompt.Complete, Dashboard.Page.Set, Memory.*.Set eða ReportLayout.Set sem sami notandi í sama fyrirtæki. Take-aðgerð hennar eyðir bráðabirgðaskránni við móttöku.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method ExecuteCopyToStaging - NamedType NextStepLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 223275718 - Method 4087107588 - NamedType 1830439019" size-unit="char" translate="yes" xml:space="preserve">
           <source>The storage file or folder "%1" was not found.</source>
