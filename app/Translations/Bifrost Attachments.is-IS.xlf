@@ -2566,9 +2566,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File CopyToStaging ori - Method GetKeywords - NamedType KeywordsLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 550643024 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Copies one existing storage file into one Foundation staging row and returns stagingId for a consuming message type; the storage file is unchanged, and Storage.File.Get is the type that returns the content as base64 instead.</source>
-          <target>Afritar eina skrá úr geymslu í eina bráðabirgðafærslu í Bifröst-grunni og skilar stagingId fyrir móttökugerð; geymsluskráin breytist ekki, en Storage.File.Get skilar innihaldinu sem base64.</target>
-          <note from="Developer" annotates="general" priority="2">is-IS=Afritar eina skrá úr geymslu í eina bráðabirgðafærslu í Bifröst-grunni og skilar stagingId fyrir móttökugerð; geymsluskráin breytist ekki, en Storage.File.Get skilar innihaldinu sem base64.</note>
+          <source>Copies one storage file into one Foundation staging row and returns stagingId; the file is unchanged. Storage.File.Get returns base64 instead.</source>
+          <target>Afritar eina skrá úr geymslu í eina bráðabirgðafærslu í Bifröst-grunni og skilar stagingId; skráin breytist ekki. Storage.File.Get skilar base64.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Afritar eina skrá úr geymslu í eina bráðabirgðafærslu í Bifröst-grunni og skilar stagingId; skráin breytist ekki. Storage.File.Get skilar base64.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File CopyToStaging ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 3778398321 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">

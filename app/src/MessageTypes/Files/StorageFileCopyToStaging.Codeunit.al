@@ -45,7 +45,7 @@ codeunit 10035203 "Storage File CopyToStaging ori" implements "Msg Interface ori
     /// <returns>One sentence.</returns>
     procedure GetSelectionDescription(): Text
     var
-        SelectionDescriptionLbl: Label 'Copies one existing storage file into one Foundation staging row and returns stagingId for a consuming message type; the storage file is unchanged, and Storage.File.Get is the type that returns the content as base64 instead.', Comment = 'is-IS=Afritar eina skrá úr geymslu í eina bráðabirgðafærslu í Bifröst-grunni og skilar stagingId fyrir móttökugerð; geymsluskráin breytist ekki, en Storage.File.Get skilar innihaldinu sem base64.';
+        SelectionDescriptionLbl: Label 'Copies one storage file into one Foundation staging row and returns stagingId; the file is unchanged. Storage.File.Get returns base64 instead.', Comment = 'is-IS=Afritar eina skrá úr geymslu í eina bráðabirgðafærslu í Bifröst-grunni og skilar stagingId; skráin breytist ekki. Storage.File.Get skilar base64.';
     begin
         exit(SelectionDescriptionLbl);
     end;
