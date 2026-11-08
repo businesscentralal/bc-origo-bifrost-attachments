@@ -8,6 +8,13 @@ codeunit 10035183 "Storage Contract Parts ori"
     Access = Internal;
 
     var
+        StagingUploadIdLbl: Label 'The open upload session id returned by Storage.Upload.Begin. Only its creator can commit it.', Locked = true;
+        StagingFileNameLbl: Label 'Optional replacement leaf file name; defaults to the session file name.', Locked = true;
+        StagingContentTypeLbl: Label 'Optional MIME type; empty when not supplied.', Locked = true;
+        StagingIdLbl: Label 'Foundation staging row id without braces. Pass it to a consuming message type as the same user in the same company.', Locked = true;
+        StagingHandoffDescriptionLbl: Label 'How to hand the stagingId to a consuming message type.', Locked = true;
+        StagingEffectLbl: Label 'Creates exactly one Foundation staging row, commits the upload session and releases its chunks within the caller transaction. No external storage write. A failure rolls back all writes.', Locked = true;
+        StagingPreconditionsLbl: Label 'The upload session belongs to the caller, is open and contains all chunks with the declared size. No storage connection is needed.', Locked = true;
         EntityTypeLbl: Label 'Invoice or Credit Memo. Omission preserves the existing value; a new type defaults to Invoice.', Locked = true;
         EntityResponseLbl: Label 'The stable name Invoice or Credit Memo.', Locked = true;
         SourcePathLbl: Label 'The original file path.', Locked = true;
@@ -121,6 +128,10 @@ codeunit 10035183 "Storage Contract Parts ori"
         // Recorded from the owned COSMO W1 runtime. Exact source/version and
         // per-example bc28-w1 verification status are retained with the PR evidence.
         case MessageType of
+            'Storage.Upload.CommitToStaging':
+                Examples.Add(ContractMgt.Example('Missing uploadId is refused before any write',
+                    '{"type":"Storage.Upload.CommitToStaging","data":{},"lcid":1033}',
+                    '{"status":"Error","code":"MissingParameter","parameter":"uploadId","error":"Required parameter \"uploadId\" is missing.","nextStep":"Provide \"uploadId\" and send the request again."}'));
             'Help.Storage.Get':
                 Examples.Add(ContractMgt.Example('Inspect the response with no configured prerequisites',
                         '{"type":"Help.Storage.Get","data":{},"lcid":1033}',
@@ -462,7 +473,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             'Storage.Attachment.Restore':
                 exit('Restores an offloaded IncomingDocument or DocumentAttachment to Business Central. Deletes only a stored file newly created by that attachment; pre-existing files and legacy links are preserved. Any external deletion cannot be rolled back with the Business Central transaction.');
             'Storage.Upload.Begin':
-                exit('Opens a chunked upload and returns its uploadId. Append numbered base64 chunks, then choose Commit, CommitToRecord or CommitToDataExchange; use Abort to discard an open session.');
+                exit('Opens a chunked upload and returns its uploadId. Append numbered base64 chunks, then choose Commit, CommitToRecord, CommitToDataExchange or CommitToStaging; use Abort to discard an open session.');
             'Storage.Upload.Append':
                 exit('Stores one numbered base64 chunk in an open upload session. Repeating the same sequence number replaces that chunk; use Storage.Upload.Status to inspect progress.');
             'Storage.Upload.Commit':
@@ -536,6 +547,12 @@ codeunit 10035183 "Storage Contract Parts ori"
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
+        if MessageType = 'Storage.Upload.CommitToStaging' then begin
+            Parameters.Add(ContractMgt.Parameter('uploadId', 'string', true, StagingUploadIdLbl));
+            Parameters.Add(ContractMgt.Parameter('fileName', 'string', false, StagingFileNameLbl));
+            Parameters.Add(ContractMgt.Parameter('contentType', 'string', false, StagingContentTypeLbl));
+            exit;
+        end;
         if MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List'] then
             exit;
 
@@ -824,6 +841,13 @@ codeunit 10035183 "Storage Contract Parts ori"
         Response.Add('status', 'Success');
         Response.Add('payloadPath', 'data');
         case MessageType of
+            'Storage.Upload.CommitToStaging':
+                begin
+                    Fields.Add(ContractMgt.ResponseField('stagingId', 'string', StagingIdLbl));
+                    Fields.Add(ContractMgt.ResponseField('size', 'integer', DeliveredLengthLbl));
+                    Fields.Add(ContractMgt.ResponseField('fileName', 'string', UploadFileNameLbl));
+                    Fields.Add(ContractMgt.ResponseField('nextStep', 'string', StagingHandoffDescriptionLbl));
+                end;
             'Help.Storage.Get':
                 begin
                     Fields.Add(ContractMgt.ResponseField('format', 'string', 'Always markdown.'));
@@ -1190,11 +1214,11 @@ codeunit 10035183 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, LinkedMoveRefusalLbl, LinkedMoveNextLbl));
         if MessageType = 'Storage.Directory.Delete' then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The directory is not empty.', 'List its files and subdirectories, remove those entries, then retry.'));
-        if MessageType in ['Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.Status', 'Storage.Upload.CommitToRecord', 'Storage.Upload.CommitToDataExchange', 'DataExchange.Definition.Import'] then
+        if MessageType in ['Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.Status', 'Storage.Upload.CommitToRecord', 'Storage.Upload.CommitToDataExchange', 'Storage.Upload.CommitToStaging', 'DataExchange.Definition.Import'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'No upload session exists for the uploadId, or the session was begun by another user.', 'Send the uploadId that Storage.Upload.Begin returned, as the user who began the session, or begin a new session.'));
-        if MessageType in ['Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord', 'Storage.Upload.CommitToDataExchange', 'DataExchange.Definition.Import'] then
+        if MessageType in ['Storage.Upload.Append', 'Storage.Upload.Commit', 'Storage.Upload.Abort', 'Storage.Upload.CommitToRecord', 'Storage.Upload.CommitToDataExchange', 'Storage.Upload.CommitToStaging', 'DataExchange.Definition.Import'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The upload session is no longer open (already committed or aborted).', 'Begin a new session and send the file again.'));
-        if MessageType in ['Storage.Upload.Commit', 'Storage.Upload.CommitToRecord', 'Storage.Upload.CommitToDataExchange', 'DataExchange.Definition.Import'] then
+        if MessageType in ['Storage.Upload.Commit', 'Storage.Upload.CommitToRecord', 'Storage.Upload.CommitToDataExchange', 'Storage.Upload.CommitToStaging', 'DataExchange.Definition.Import'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The session has no chunks, its sequence numbers are not contiguous, or the received size differs from declaredSize.', 'Call Storage.Upload.Status, append the missing or wrong chunks, then commit again.'));
         if MessageType in ['DataExchange.Definition.Get'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The definition code does not exist.', 'Use DataExchange.Definition.List first.'));
@@ -1272,6 +1296,14 @@ codeunit 10035183 "Storage Contract Parts ori"
             Effect.Add('idempotent', true);
             Effect.Add('permissionSet', 'BIFROST DataExch ori');
             Effect.Add('preconditions', DisabledPreconditionsLbl);
+            exit;
+        end;
+        if MessageType = 'Storage.Upload.CommitToStaging' then begin
+            Effect.Add('effect', 'write');
+            Effect.Add('changes', StagingEffectLbl);
+            Effect.Add('idempotent', false);
+            Effect.Add('permissionSet', 'BIFROST Attach ori');
+            Effect.Add('preconditions', StagingPreconditionsLbl);
             exit;
         end;
         case true of
@@ -1352,6 +1384,13 @@ codeunit 10035183 "Storage Contract Parts ori"
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
+        if MessageType = 'Storage.Upload.CommitToStaging' then begin
+            Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Begin', 'Open an upload session without storageCode.'));
+            Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Append', 'Send numbered binary chunks.'));
+            Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Status', 'Inspect missing chunks before retrying.'));
+            Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Abort', 'Discard an open session.'));
+            exit;
+        end;
         case MessageType of
             'Help.Storage.Get':
                 begin

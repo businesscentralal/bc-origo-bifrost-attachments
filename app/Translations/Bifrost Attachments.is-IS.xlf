@@ -3417,6 +3417,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu geymslutenginguna og reyndu aftur með sama uploadId, eða slepptu keepFileInStorage.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - Method CommitToDataExchange - NamedType StorageWriteNextStepLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 987128476 - Method 3466005949 - NamedType 680257497" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Pass stagingId to the consuming message type as the same user in the same company. Its take consumes the staged file.</source>
+          <target>Sendu stagingId til móttökugerðar sem sami notandi í sama fyrirtæki. Take-aðgerð hennar eyðir bráðabirgðaskránni við móttöku.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu stagingId til móttökugerðar sem sami notandi í sama fyrirtæki. Take-aðgerð hennar eyðir bráðabirgðaskránni við móttöku.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Mgt ori - Method CommitToStaging - NamedType NextStepLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 987128476 - Method 2861375614 - NamedType 4013669850" size-unit="char" translate="yes" xml:space="preserve">
           <source>Open</source>
           <target>opin</target>
@@ -3440,6 +3446,24 @@
           <target>Hreinsaði %1 upphleðslulotu/-lotur og %2 búta.</target>
           <note from="Developer" annotates="general" priority="2">%1 = session count, %2 = chunk count||is-IS=Hreinsaði %1 upphleðslulotu/-lotur og %2 búta.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Purge ori - NamedType PurgedMsg</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3906095545 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Assembles uploaded chunks into a Foundation staging row and returns its stagingId.</source>
+          <target>Sameinar upphlaðna búta í bráðabirgðafærslu í Bifröst-grunni og skilar stagingId hennar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sameinar upphlaðna búta í bráðabirgðafærslu í Bifröst-grunni og skilar stagingId hennar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Staging ori - Method GetDescription - NamedType DescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3906095545 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>stage upload, chunked binary upload, staging id, hand off large file</source>
+          <target>geyma upphleðslu tímabundið, tvíundarupphleðsla í bútum, bráðabirgðaauðkenni, afhenda stóra skrá</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=geyma upphleðslu tímabundið, tvíundarupphleðsla í bútum, bráðabirgðaauðkenni, afhenda stóra skrá</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Staging ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3906095545 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Hands a complete upload to a consuming message type by stagingId without external storage or an attachment.</source>
+          <target>Afhendir fullbúna upphleðslu til móttökugerðar með stagingId án ytri geymslu eða viðhengis.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Afhendir fullbúna upphleðslu til móttökugerðar með stagingId án ytri geymslu eða viðhengis.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Upload Staging ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 1103596966 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Reports the progress and state of an upload session.</source>
