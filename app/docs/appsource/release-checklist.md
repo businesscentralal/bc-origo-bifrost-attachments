@@ -7,42 +7,51 @@ locale: en-US
 
 # Collect Attachments release evidence
 
-Current technical receipt: [build113 evidence](candidate-2026-10-20.json), source `c30c2254bf953ed2e6f90fdf080dfb216bea799f`, existing CI **365/365/0/0**. This is preparation evidence; final #80 QA and certification remain pending. [Run the executable preparation/receipt checker](validator-evidence-format.md).
+Inspected source: [`842f44e4934227b8f272b289eeb5959e2e6888c7`](https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/842f44e4934227b8f272b289eeb5959e2e6888c7). See the [8 November preparation reconciliation](preparation-2026-11-08.md) for current manifest, offer configuration and acceptance gaps. No final QA candidate is certified. [Build113](candidate-2026-10-20.json) remains historical evidence for its own bytes only.
 
 **Preparation, not release certification.** Source observations are recorded in [source-inventory.json](source-inventory.json). Final release evidence must identify one accepted signed candidate; a merged PR, compile pass or successful deployment alone does not close #81.
 
 ## Select and prove the candidate
 
-- [ ] Architect freezes the exact integrated release candidate. The inspected source is `c30c2254bf953ed2e6f90fdf080dfb216bea799f`; PR144–155 are merged. Build87/b66d1f2 is excluded. Confirm no newer accepted source or signing artifact before formalization.
-- [x] Inspected main Default and Test are green with nonzero tests and no failures/skips. [CI39298155811](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39298155811) ran **365/365/0/0**. [The receipt](candidate-2026-10-20.json) records all eight verified ZIP digests, Default artifact12211715204/package28.0.0.113/hash, complete clean compiler spans, source/build metadata and no friend grants. This closes the technical build evidence row only; manual Windows Valid/HashMismatch proof is recorded below; broader certification stays open.
-- [x] #78 exact Default113 Windows trust/tamper evidence: root reports `Valid`, Origo hf signer/DigiCert timestamp and `HashMismatch` for a tampered copy; signed hash `e68e79c6450d9c666b928b91022905cf78fccd35466a86db769c3e6476e950a6`. [Sanitized receipt](candidate-2026-10-20.json) preserves raw-report hash and pre-sign/content reconciliation. This applies only to artifact12211715204.
+- [ ] Architect freezes the exact integrated release candidate. The current source observation is `842f44e4934227b8f272b289eeb5959e2e6888c7`; this is not an Architect nomination. Build87/b66d1f2 is excluded. Confirm no newer accepted source or signing artifact before formalization.
+- [x] Historical build113 Default and Test are green with nonzero tests and no failures/skips. [CI39298155811](https://github.com/businesscentralal/bc-origo-bifrost-attachments/actions/runs/39298155811) ran **365/365/0/0**. [The receipt](candidate-2026-10-20.json) records all eight verified ZIP digests, Default artifact12211715204/package28.0.0.113/hash, complete clean compiler spans, source/build metadata and no friend grants. This closes the technical build evidence row only; manual Windows Valid/HashMismatch proof is recorded below; broader certification stays open.
+- [x] #81 historical Default113 Windows trust/tamper evidence: root reports `Valid`, Origo hf signer/DigiCert timestamp and `HashMismatch` for a tampered copy; signed hash `e68e79c6450d9c666b928b91022905cf78fccd35466a86db769c3e6476e950a6`. [Sanitized receipt](candidate-2026-10-20.json) preserves raw-report hash and pre-sign/content reconciliation. This applies only to artifact12211715204.
 - [ ] #78/#80 reconcile the actually installed Foundation variant/hash against accepted input. CI39298155811’s deployment log reports an already installed Foundation28.0.8.607 in UAT, higher than declared minimum28.0.3.530; this is a dated log observation, not a current live UAT readback or pinned530 runtime proof. Compiler success or matching package size is insufficient. Architect/Gunnar retains release/certificate-owner disposition and every AppSource publication approval.
-- [ ] #80 / Þráinn records the exact acceptance matrix: 14 markets, 36 provider cases, 10 lifecycle cases, Web Client UI and public MCP in LCIDs1033/1039; retain actual counts and sanitized evidence. No mocks or other candidates' receipts substitute for this.
+- [ ] #80 retained QA owner records the exact acceptance matrix: 14 markets, 36 provider cases, 10 lifecycle cases, Web Client UI and public MCP in LCIDs1033/1039; retain actual counts and sanitized evidence. No mocks or other candidates' receipts substitute for this.
 
-Historical [build87 receipt](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6222103811) at `b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005` reports app/test compile 0 errors/0 warnings and 280 executed/280 passed/0 failed/0 skipped, package 28.0.0.87. Existing Test-lane suppressions are disclosed there; this is not a no-suppression certification. It is historical input, not evidence for the current candidate. PR127, PR128 and PR129 have merged; the current candidate's receipts are the run 39276099802 values above, and #80 QA on that SHA is still pending.
+Historical [build87 receipt](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6222103811) at `b66d1f21370e7cd4c54edfc23fd4ff9a6b6d6005` reports app/test compile 0 errors/0 warnings and 280 executed/280 passed/0 failed/0 skipped, package 28.0.0.87. Existing Test-lane suppressions are disclosed there; this is not a no-suppression certification. It is historical input, not evidence for the current candidate. PR127, PR128 and PR129 have merged; neither those receipts nor build113 prove the current source or a new signed artifact.
+
+## Record the signed package before submission
+
+- [ ] Select the exact AppSource **Apps** artifact for the nominated full SHA; record run ID, artifact ID, filename, packaged version, size and SHA256.
+- [ ] Record signer subject, issuer, certificate validity dates and thumbprint from those exact bytes.
+- [ ] On an approved owned Windows verification host, retain `Get-AuthenticodeSignature` **Valid** for the original and **HashMismatch** for a tampered copy; preserve original bytes and remove the owned tampered copy after verification.
+- [ ] Link the raw sanitized receipt. A certificate extracted from the package, a Linux cryptographic check, and a Windows NAVX trust verdict are distinct evidence. Do not reuse build113 or build136 results for another artifact.
+
+This check belongs to #81 per [Gunnar's 3 November disposition](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/81#issuecomment-6610613002). [Build136's recorded signer/thumbprint](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/81#issuecomment-6612490143) remains historical; its Windows check was not run. No pipeline enforcement or signing configuration is changed here.
 
 ## Confirm identity, markets and dependencies
 
 | Item | Source evidence | Required release evidence / owner |
 |---|---|---|
 | Identity | Bifrost Attachments; Origo; `672df32a-a0c5-4a22-b591-0efa38023e95` | #80: signed manifest and listing agree |
-| Version | Source28.0.0.4 | #80: actual packaged and deployed version, never inferred from source |
+| Version | Source 28.3.2.0 at the inspected SHA | #80: actual packaged and deployed version, never inferred from source |
 | BC floor | Application 28.3.0.0, platform 28.0.0.0, runtime 17.0, Cloud | #80 / Architect: actual supported build/country matrix on 28.3 or later in every market |
-| Foundation | `7505e808-6e52-4b96-a328-82573391297a`, Origo, minimum 28.0.3.530 in source and in the 28.0.0.113 package; AL-Go takes it from the core GitHub release 28.0.3 (PR151) | #78/#80: accepted package hash/source, actual runtime hash; build113 Default signature trust is recorded above, while the automated Signed gate remains deferred by PR149; historical 523 is not the active pin |
+| Foundation | `7505e808-6e52-4b96-a328-82573391297a`, Origo; product minimum 28.0.11.669, test minimum 28.0.10.632 | #80: exact compiler input and installed version/hash on the nominated candidate. Older 530/523 and build113 receipts do not prove this dependency |
 | Connectors | Production External File Storage interface and registered File Accounts only. The package declares no connector app dependency: PR118 removed the exact connector-version pin and PR144 removed connector id/version logic | #80 / provider owner: the Microsoft connector apps (Azure Blob Storage, Azure File Share, SharePoint) the tenant installs, their availability in every market and real-provider results. The approved scope stays these three providers |
 | Markets | IS,GB,DK,NO,SE,FI,DE,FR,NL,AT,CH,IE,PT,ES | #80: [14-row evidence plan](market-evidence-plan.md); Gunnar/offer owner: separately authorized Partner Center comparison |
 | Languages | en-US/is-IS | #80: actual UI and public MCP 1033/1039 at candidate; #72/PR129 (merged) behavior reflected without promising unshipped behavior |
 | Registered suffix and range | `ori`;10035135–10035234 (single block) | Gunnar / designated registration owner via Architect: authoritative allocation/registration evidence. Current evidence: allocation workbook, sheet Solution Allocations, "Bifrost Attachments 10035135-10035234, CONFIRMED 20.10.2026 by Gunnar"; Partner Center registration evidence still owed; #77 source audit alone is insufficient |
 | Historical validation baseline | Not established by the no-offer decision | Gunnar / designated publisher owner: baseline identity and applicable validation history, or explicit no-baseline evidence |
-| New offer and genuine ID | 6October no-offer decision; `deliverToAppSource` unconfigured | Gunnar / offer owner: future separately authorized creation and genuine app/offer mapping. Never invent/copy an ID or create an offer under #81 |
+| Offer configuration and genuine mapping | PR176 merged: `ae26bc25-7547-42ec-a1b7-c55e3b830569`, `continuousDelivery: false` in `.AL-Go/settings.json` | Gunnar / offer owner: confirm the current app-to-offer mapping and market/listing state. Configuration does not authorize submission; retain the 5 November hold |
 
 ## Collect operator materials and access
 
 | Material | Working input | Acceptance / named owner |
 |---|---|---|
 | Listing | Manifest describes Azure Blob Storage, Azure File Share, SharePoint, uploads and offloading | Offer owner: approve name, summary, description, categories and languages matching proven shipping capabilities |
-| Logo | Source250×250 PNG; SHA256 `0f9185810ff29e9c77c7258d7b7bd3a51f5fcaa2bed0bcbf4288fd673fc0cc60` | Offer owner: actual rights/branding and current required asset variants |
-| Screenshots | Manifest has no screenshots | #80 provides exact-candidate EN/IS synthetic-data captures; offer owner approves rights/captions; remove secrets and personal identifiers |
+| Logo | Source250×250 PNG plus `listing/logo-216.png`; SHA256 `0f9185810ff29e9c77c7258d7b7bd3a51f5fcaa2bed0bcbf4288fd673fc0cc60` | Offer owner: actual rights/branding and current required asset variants |
+| Screenshots | Manifest list is empty; three historical PNGs exist under `listing/screenshots/` | #80 provides exact-candidate EN/IS synthetic-data captures; offer owner approves rights/captions; remove secrets and personal identifiers |
 | Help | Manifest product URL `https://docs.bifrost.origo.is/en-us/attachments/`; context pattern `https://docs.bifrost.origo.is/{0}/help/attachments/` | Documentation owners / Architect: current candidate's page routes, translations, redirects/accessibility and publication receipt. The13October404 observation is historical, not a current outage claim. #81 does not edit their site |
 | Legal | Manifest EULA/privacy use shared `/en-us/licensing/eula/` and `/en-us/licensing/privacy/` routes | Gunnar / legal owner: actual Attachments and external-file-processing coverage, accepted revision and accessibility; HTTP status alone is insufficient |
 | Support | Manifest publisher website `https://www.origo.is/` | Gunnar / support owner: approved contact/URL, response process and dependency guidance |
@@ -52,7 +61,7 @@ Historical [build87 receipt](https://github.com/businesscentralal/bc-origo-bifro
 
 ## Deliver scenarios and close acceptance
 
-- [ ] Reginn completes preparation now; after #80 passing candidate QA, generates independently executable `AppSource-UserScenarios.md` and freezes tested payloads/UI expectations. Each feature and installation/permission/error/uninstall category gets Setup/Steps/Expected Results/Cleanup.
+- [ ] The retained #81 developer completes preparation now; after #80 passing candidate QA, generates independently executable `AppSource-UserScenarios.md` and freezes tested payloads/UI expectations. Each feature and installation/permission/error/uninstall category gets Setup/Steps/Expected Results/Cleanup.
 - [ ] Execute [validator smoke](validator-smoke-script.md) on validator-owned sandbox with self-created fixtures, exact app/dependency provenance and independent readback; retain actual executed/passed/failed/skipped counts. Dry-run remains0executed until performed.
 - [ ] Developer-owned fixture cleanup verified after each scenario, including failure paths. Record development container name/id; retain same container for amendments until Tester postdeploy UAT and issue closure, then verify owned deletion. Do not request UAT data cleanup.
 - [ ] Any new candidate compiles product and test0errors/0warnings before compiled verification-only publication. Read back branch/fullSHA/immutable commit using `verify-github-candidate.cjs`. Publication is not PR readiness.
@@ -60,6 +69,6 @@ Historical [build87 receipt](https://github.com/businesscentralal/bc-origo-bifro
 - [ ] Claude current-head independent verification on its assigned bc28-w1, no open amendments; Grok Reviewer current-fullSHA clearance; eligible non-author approval; meaningful green required checks. Use canonical guarded green-pr-handoff when genuinely ready. No retired internal-review gate.
 - [ ] Architect alone merges with merge commit and controls same-SHA deployment; Bifröst Tester alone performs postdeploy UAT. Preserve delivery tracking after auto-close/merge until actual acceptance and owned-container closure.
 - [ ] Secretary genuine START/STOP and ACK retained; posting/process exit is not acknowledgement or delivery.
-- [ ] Offer/listing/legal/support/registration/dependency evidence accepted by named owners; genuine ID mapping supplied only after separately authorized creation. Gunnar approval before every publish. Nothing here submits or publishes the offer.
+- [ ] Offer/listing/legal/support/registration/dependency evidence accepted by named owners; configured ID mapping checked against genuine current operator evidence. Gunnar approval before every publish. Nothing here submits or publishes the offer.
 
 The internal working location is approved; external help stays with its owners. Foundation is an evidence-discipline reference, never a source of Attachments identity, credentials or release approval. Optional parked roadmap #21/#23–#26 and historical personal cleanup #20 remain outside this scope.

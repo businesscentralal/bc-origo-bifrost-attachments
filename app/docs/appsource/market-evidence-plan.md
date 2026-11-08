@@ -7,28 +7,28 @@ locale: en-US
 
 # Prepare Attachments market evidence
 
-Current technical receipt: [build113 evidence](candidate-2026-10-20.json), source `c30c2254bf953ed2e6f90fdf080dfb216bea799f`, existing CI **365/365/0/0**. This is preparation evidence; final #80 QA and certification remain pending. [Run the executable preparation/receipt checker](validator-evidence-format.md).
+Inspected source: [`842f44e4934227b8f272b289eeb5959e2e6888c7`](https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/842f44e4934227b8f272b289eeb5959e2e6888c7). See the [8 November preparation reconciliation](preparation-2026-11-08.md) for current manifest, offer configuration and acceptance gaps. No final QA candidate is certified. [Build113](candidate-2026-10-20.json) remains historical evidence for its own bytes only.
 
 **Fourteen source-declared countries, zero countries certified by this document.** Codes match `app/AppSourceCop.json` and [partner-center-markets.csv](partner-center-markets.csv). Locales1033/1039 are language checks, not a substitute for market coverage. W1 or one provider run cannot certify the other countries.
 
-The inspected source is main `c30c2254bf953ed2e6f90fdf080dfb216bea799f` (CI39298155811, package28.0.0.113, one dependency: Bifrost Foundation28.0.3.530). Its signed artifact hash and exact Windows Valid/HashMismatch receipt are recorded in the linked build113 receipt. Installed Foundation runtime identity/hash, the connector apps installed per country remain pending current-candidate #78/#80 evidence and Architect’s release-candidate confirmation. Build87 is excluded by decision1792179827. Do not populate this matrix with historical or foreign fixture passes.
+The inspected source is `842f44e4934227b8f272b289eeb5959e2e6888c7`, version 28.3.2.0, with product Foundation minimum 28.0.11.669. It is not a nominated or certified release candidate. Historical build113 signature and test results remain in their immutable receipt. The [partial country compile matrix](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6619184813) used a different unsigned source/dependency and supplies no current-candidate market pass. #80's [4 November verify-close check](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6626908886) leaves final QA incomplete.
 
 | Code | Country | Candidate/build/dependency evidence | Provider/lifecycle/UI/MCP result | Owner / status |
 |---|---|---|---|---|
-| IS | Iceland | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| GB | United Kingdom | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| DK | Denmark | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| NO | Norway | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| SE | Sweden | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| FI | Finland | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| DE | Germany | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| FR | France | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| NL | Netherlands | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| AT | Austria | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| CH | Switzerland | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| IE | Ireland | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| PT | Portugal | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
-| ES | Spain | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 / worker-8; operator availability input pending |
+| IS | Iceland | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| GB | United Kingdom | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| DK | Denmark | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| NO | Norway | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| SE | Sweden | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| FI | Finland | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| DE | Germany | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| FR | France | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| NL | Netherlands | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| AT | Austria | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| CH | Switzerland | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| IE | Ireland | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| PT | Portugal | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
+| ES | Spain | Pending accepted SHA and country-specific build/resolution receipt | Not executed; no pass claimed | #80 retained QA owner; operator availability input pending |
 
 ## Complete every country row after candidate selection
 

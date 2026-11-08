@@ -5,6 +5,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+### Documentation
+- #81: reconcile submission preparation with the inspected source version, Foundation dependency, configured offer and existing listing assets; preserve historical receipts and add the per-artifact signed-package/thumbprint checklist. Formal scenarios and validator dry-run remain gated on final-candidate QA. No AL objects changed.
+
 ### Fixed
 - #210: validate Data Exchange export targets before confirmation; name invalid mappings before opening their table; run the selected mapping line; refuse interactive CSV/fixed-width export writers in background calls before writes; refuse header-only standard CSV uploads before writes and preserve unexpected upload-reader `uploadId`/recovery context through rollback and bound invalid base64 `received` to 250 characters. Requires Foundation 28.0.11.669 for its public confirmation/context interfaces (codeunits 10035140, 10035141, 10035156, 10035168, 10035194, 10035197 and related enum bindings).
 
