@@ -14,6 +14,7 @@ permissionset 10035135 "BIFROST Attach ori"
     Caption = 'Bifrost Storage', Comment = 'is-IS=Bifröst geymsla';
 
     Permissions =
+        codeunit "Storage Upload Staging ori" = X,
         tabledata "Incoming Document" = RM,
         tabledata "Incoming Document Attachment" = RIMD,
         tabledata "Storage Attachment Link ori" = RIMD,
