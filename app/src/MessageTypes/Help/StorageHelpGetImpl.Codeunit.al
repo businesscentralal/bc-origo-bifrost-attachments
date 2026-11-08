@@ -193,12 +193,14 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         Guide.AppendLine('| Uploads | `Storage.Upload.Commit` | Assembles the chunks and writes the file to storage. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.CommitToRecord` | Assembles the chunks and attaches the file to a record or incoming document. IncomingDocument accepts `dataExchangeType`, `process` and `vendorNo`. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.CommitToDataExchange` | Assembles the chunks into a parsed Data Exch. entry of an import definition; optional `process` and `keepFileInStorage`. See `Help.DataExchange.Get`. |');
+        Guide.AppendLine('| Uploads | `Storage.Upload.CommitToStaging` | Assembles chunks into one Foundation staging row and returns stagingId for a consuming message type. No storage connection is needed. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.Abort` | Discards an open session and its chunks. |');
         Guide.AppendLine();
         Guide.AppendLine('## Chunked uploads');
         Guide.AppendLine();
-        Guide.AppendLine('Use an upload session when a file is larger than one request can carry: `Storage.Upload.Begin`, then `Storage.Upload.Append` once per chunk in order, then `Storage.Upload.Commit`, `Storage.Upload.CommitToRecord` or `Storage.Upload.CommitToDataExchange`. `Storage.Upload.Begin` returns `chunkSizeHint` and `maxChunkBytes`. Files are written under the `bifrost-uploads/` root unless the request names a folder. A session belongs to the user who opened it.');
+        Guide.AppendLine('Use an upload session when a file is larger than one request can carry: `Storage.Upload.Begin`, then `Storage.Upload.Append` once per chunk in order, then `Storage.Upload.Commit`, `Storage.Upload.CommitToRecord`, `Storage.Upload.CommitToDataExchange` or `Storage.Upload.CommitToStaging`. `Storage.Upload.Begin` returns `chunkSizeHint` and `maxChunkBytes`. Files are written under the `bifrost-uploads/` root unless the request names a folder. A session belongs to the user who opened it.');
         Guide.AppendLine();
+        Guide.AppendLine('For a staging handoff, begin without storageCode and end with Storage.Upload.CommitToStaging. Pass its stagingId to the consuming message type as the same user in the same company. Foundation Take consumes the row; otherwise its retention policy removes it. Data.Records cannot read or write staging rows.');
         Guide.AppendLine('To feed an incoming document: `Storage.Upload.Begin` → `Storage.Upload.Append` → `Storage.Upload.CommitToRecord` with `target` IncomingDocument and optional `dataExchangeType`, `process` and `vendorNo`. Wire the type first with `DataExchange.Type.Set`. Processing errors stay on the incoming document as `processErrors`; the commit still returns Success. A file already in storage uses `Storage.Attachment.CreateLinked` with the same parameters.');
         Guide.AppendLine();
         Guide.AppendLine('## Linked files');
