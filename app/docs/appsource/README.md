@@ -9,7 +9,7 @@ locale: en-US
 
 ## Current source preparation — 8 November 2026
 
-Inspected source: [`842f44e4934227b8f272b289eeb5959e2e6888c7`](https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/842f44e4934227b8f272b289eeb5959e2e6888c7). See the [8 November preparation reconciliation](preparation-2026-11-08.md) for current manifest, offer configuration and acceptance gaps. No final QA candidate is certified. [Build113](candidate-2026-10-20.json) remains historical evidence for its own bytes only.
+Inspected source: [`b7310c3308e5cb216b6aa5ff0db2ca5645607d6b`](https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/b7310c3308e5cb216b6aa5ff0db2ca5645607d6b). See the [8 November preparation reconciliation](preparation-2026-11-08.md) for current manifest, offer configuration and acceptance gaps. No final QA candidate is certified. [Build113](candidate-2026-10-20.json) remains historical evidence for its own bytes only.
 
 ## Historical technical receipt — 20 October 2026
 
@@ -33,7 +33,7 @@ The 6 October no-offer decision is historical. Merged [PR176](https://github.com
 | [market-evidence-plan.md](market-evidence-plan.md) | Per-market acceptance fields and owner handoff |
 | [validator-evidence-format.md](validator-evidence-format.md) | Executable local preparation/preflight and actual smoke receipt format |
 | [candidate-2026-10-20.json](candidate-2026-10-20.json) | Immutable build113 technical evidence; external certification pending |
-| [source-inventory.json](source-inventory.json) | Committed source/manifest hashes and 39 declared wire types |
+| [source-inventory.json](source-inventory.json) | Committed source/manifest hashes and 40 declared wire types |
 
 ## Prepare now; formalize after candidate QA
 
@@ -49,6 +49,6 @@ After passing QA, regenerate the inventory, bind the signed app and every instal
 
 Generate the source inventory with `python3 tools/generate_source_inventory.py --ref <full-source-sha>` and check it with `--check`. It inventories committed bytes and preserves curated fields, which must also be reconciled manually. The local standards snapshot metadata records `52ba4754cfd614e4a7c50af87b30149b18b313e3`, captured 2 November and synced 3 November. This preparation does not claim a fresh synchronization. Apply current operator rules over superseded snapshot instructions.
 
-Foundation 523 and build113 are historical evidence only. The current product manifest requires Foundation 28.0.11.669; the test manifest declares 28.0.10.632. Record the actual compatible installed version and package hash separately. Installed-runtime Foundation hash reconciliation stays open under #78/#80. Build113 Default Windows signature trust and tamper evidence is recorded above; a differently signed artifact needs fresh evidence. Use the exact accepted candidate dependency and the connector apps actually installed in each market. No credentials belong in these files.
+Foundation 523 and build113 are historical evidence only. The current product manifest requires Foundation 28.0.11.669; the test manifest declares 28.0.11.0. Record the actual compatible installed version and package hash separately. Installed-runtime Foundation hash reconciliation stays open under #78/#80. Build113 Default Windows signature trust and tamper evidence is recorded above; a differently signed artifact needs fresh evidence. Use the exact accepted candidate dependency and the connector apps actually installed in each market. No credentials belong in these files.
 
 Clean developer-owned test data after each scenario and verify it. Record the development container name/id, restart that same container for amendments, and retain it until Bifröst Tester passes post-deployment UAT and the issue closes under rule1792155806. Then delete only the owned resource and retain deletion readback. UAT has no test-data cleanup requirement; Claude verifies only on its own assigned environment. Record actual environment IDs and execution status in the acceptance receipt; this working document supplies no runtime pass.

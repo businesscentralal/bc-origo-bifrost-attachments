@@ -7,11 +7,11 @@ locale: en-US
 
 # Prepare Attachments market evidence
 
-Inspected source: [`842f44e4934227b8f272b289eeb5959e2e6888c7`](https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/842f44e4934227b8f272b289eeb5959e2e6888c7). See the [8 November preparation reconciliation](preparation-2026-11-08.md) for current manifest, offer configuration and acceptance gaps. No final QA candidate is certified. [Build113](candidate-2026-10-20.json) remains historical evidence for its own bytes only.
+Inspected source: [`b7310c3308e5cb216b6aa5ff0db2ca5645607d6b`](https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/b7310c3308e5cb216b6aa5ff0db2ca5645607d6b). See the [8 November preparation reconciliation](preparation-2026-11-08.md) for current manifest, offer configuration and acceptance gaps. No final QA candidate is certified. [Build113](candidate-2026-10-20.json) remains historical evidence for its own bytes only.
 
 **Fourteen source-declared countries, zero countries certified by this document.** Codes match `app/AppSourceCop.json` and [partner-center-markets.csv](partner-center-markets.csv). Locales1033/1039 are language checks, not a substitute for market coverage. W1 or one provider run cannot certify the other countries.
 
-The inspected source is `842f44e4934227b8f272b289eeb5959e2e6888c7`, version 28.3.2.0, with product Foundation minimum 28.0.11.669. It is not a nominated or certified release candidate. Historical build113 signature and test results remain in their immutable receipt. The [partial country compile matrix](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6619184813) used a different unsigned source/dependency and supplies no current-candidate market pass. #80's [4 November verify-close check](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6626908886) leaves final QA incomplete.
+The inspected source is `b7310c3308e5cb216b6aa5ff0db2ca5645607d6b`, version 28.3.2.0, with product Foundation minimum 28.0.11.669. It is not a nominated or certified release candidate. Historical build113 signature and test results remain in their immutable receipt. The [partial country compile matrix](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6619184813) used a different unsigned source/dependency and supplies no current-candidate market pass. #80's [4 November verify-close check](https://github.com/businesscentralal/bc-origo-bifrost-attachments/issues/80#issuecomment-6626908886) leaves final QA incomplete.
 
 | Code | Country | Candidate/build/dependency evidence | Provider/lifecycle/UI/MCP result | Owner / status |
 |---|---|---|---|---|
