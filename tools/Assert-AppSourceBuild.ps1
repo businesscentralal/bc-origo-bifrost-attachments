@@ -147,41 +147,23 @@ function Test-AppFolderUntouched {
 
 function Get-BaselineProductReuseEvidence {
     param([string] $RepositoryRoot)
-    $logPath = Join-Path $RepositoryRoot 'BuildOutput.txt'
-    if (-not (Test-Path -LiteralPath $logPath -PathType Leaf)) {
-        return $null
-    }
-    $bytes = [IO.File]::ReadAllBytes($logPath)
-    if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
-        $text = [Text.Encoding]::Unicode.GetString($bytes)
-    }
-    elseif ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFE -and $bytes[1] -eq 0xFF) {
-        $text = [Text.Encoding]::BigEndianUnicode.GetString($bytes)
-    }
-    else {
-        $text = [Text.UTF8Encoding]::new($true).GetString($bytes)
-    }
-    if ($text -notmatch 'Get unmodified apps from baseline workflow run') {
-        return $null
-    }
-    $artifact = $null
-    $artifactMatch = [regex]::Match($text, 'Downloading artifact (\S+-Apps-\S+)')
-    if ($artifactMatch.Success) {
-        $artifact = $artifactMatch.Groups[1].Value
-    }
+    # AL-Go prints "Get unmodified apps from baseline workflow run" to job stdout,
+    # not BuildOutput.txt. Finalize evidence is the baseline env + Apps package.
     $baselineRun = [string]$env:_baselineWorkflowRunId
     if (-not $baselineRun) { $baselineRun = [string]$env:baselineWorkflowRunId }
-    $apps = @(Get-ChildItem -LiteralPath (Join-Path $RepositoryRoot '.buildartifacts/Apps') -Filter '*.app' -File -ErrorAction SilentlyContinue)
-    if ($apps.Count -ne 1) {
+    $baselineSha = [string]$env:_baselineWorkflowSHA
+    if (-not $baselineSha) { $baselineSha = [string]$env:baselineWorkflowSHA }
+    if ($baselineRun -notmatch '^[0-9]+$' -or $baselineSha -notmatch '^[a-f0-9]{40}$') {
         return $null
     }
-    if (-not $artifact -and -not $baselineRun) {
+    $apps = @(Get-ChildItem -LiteralPath (Join-Path $RepositoryRoot '.buildartifacts/Apps') -Filter '*.app' -File -ErrorAction SilentlyContinue)
+    if ($apps.Count -ne 1) {
         return $null
     }
     $relative = $apps[0].FullName.Substring((Resolve-Path -LiteralPath $RepositoryRoot).Path.Length).TrimStart('\', '/')
     return @{
         baselineWorkflowRunId = $baselineRun
-        artifact = $artifact
+        baselineWorkflowSHA = $baselineSha.ToLowerInvariant()
         packageFile = $relative.Replace('\', '/')
         packageSha256 = (Get-FileHash -LiteralPath $apps[0].FullName -Algorithm SHA256).Hash.ToLowerInvariant()
     }
@@ -203,15 +185,15 @@ function Get-ProductReuseRequest {
     }
     $evidence = Get-BaselineProductReuseEvidence -RepositoryRoot $RepositoryRoot
     if ($null -eq $evidence) {
-        throw 'Product compile receipt missing and baseline product reuse could not be verified from BuildOutput/Apps; AppSource gate fails closed.'
+        throw 'Product compile receipt missing and baseline product reuse could not be verified from baseline env/Apps; AppSource gate fails closed.'
     }
-    Write-Host ("AppSource gate: accepting baseline-reused product package (app/ untouched; baselineRun={0}; artifact={1})." -f $evidence.baselineWorkflowRunId, $evidence.artifact)
+    Write-Host ("AppSource gate: accepting baseline-reused product package (app/ untouched; baselineRun={0}; baselineSHA={1})." -f $evidence.baselineWorkflowRunId, $evidence.baselineWorkflowSHA)
     return @{
         allowed = $true
         appFolderUntouched = $true
         changedPaths = @($changed)
         baselineWorkflowRunId = $evidence.baselineWorkflowRunId
-        artifact = $evidence.artifact
+        baselineWorkflowSHA = $evidence.baselineWorkflowSHA
         packageFile = $evidence.packageFile
         packageSha256 = $evidence.packageSha256
     }

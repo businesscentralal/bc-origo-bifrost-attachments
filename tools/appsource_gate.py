@@ -769,7 +769,13 @@ def _before_compile(root, request):
         if symbol["identity"]["id"].lower() == foundation[0]["identity"]["id"].lower():
             require(symbol["sha256"] == foundation[0]["sha256"], "Unapproved compiler-folder Foundation bytes")
         if app_type == "testApp" and symbol["identity"]["id"].lower() == product["id"].lower():
-            require(symbol["sha256"] == state["receipts"]["app"]["package"]["sha256"], "Wrong compiler-folder Test product")
+            if "app" in state["receipts"]:
+                expected_sha = state["receipts"]["app"]["package"]["sha256"]
+            else:
+                reuse = request.get("productReuse")
+                require(_product_reuse_allowed(reuse), "Test compile before product receipt")
+                expected_sha = reuse["packageSha256"]
+            require(symbol["sha256"] == expected_sha, "Wrong compiler-folder Test product")
     snapshot = {"context": context, "kind": request["kind"], "appType": app_type, "symbols": symbols,
                 "symbolsFolder": str(Path(request["symbolsFolder"]).resolve()),
                 "compilerSymbolsFolder": str(Path(request["compilerSymbolsFolder"]).resolve()),
@@ -929,8 +935,12 @@ def _product_reuse_allowed(product_reuse):
         return False
     require(product_reuse.get("appFolderUntouched") is True,
             "Product reuse requires an untouched app/ tree in the PR diff")
-    require(product_reuse.get("baselineWorkflowRunId") or product_reuse.get("artifact"),
-            "Product reuse missing baseline run id or Apps artifact identity")
+    run_id = str(product_reuse.get("baselineWorkflowRunId") or "")
+    require(run_id.isdigit(),
+            "Product reuse missing numeric baseline workflow run id")
+    sha = str(product_reuse.get("baselineWorkflowSHA") or "").lower()
+    require(re.fullmatch(r"[a-f0-9]{40}", sha) is not None,
+            "Product reuse missing baseline workflow SHA")
     require(product_reuse.get("packageFile") and product_reuse.get("packageSha256"),
             "Product reuse missing package path/hash")
     return True
@@ -959,6 +969,8 @@ def reconcile(root, context, stage, signature=None, product_reuse=None):
             info = package_info(package_path)
             require(info["identity"]["id"] == product["id"],
                     "Baseline-reused package is not the product app")
+            require(info["sourceCommit"] == str(product_reuse["baselineWorkflowSHA"]).lower(),
+                    "Baseline-reused package sourceCommit does not match baseline workflow SHA")
             reuse_app = True
             receipts = receipts | {"app"}
         else:
