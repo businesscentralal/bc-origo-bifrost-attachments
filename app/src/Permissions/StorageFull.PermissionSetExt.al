@@ -11,6 +11,7 @@ using Origo.Bifrost;
 permissionsetextension 10035135 "Storage Full ori" extends "BIFROST Full ori"
 {
     Permissions =
+        codeunit "Storage Upload Staging ori" = X,
         tabledata "DataExch Entry Link ori" = RIMD,
         tabledata "Storage Attachment Link ori" = RIMD,
         tabledata "Storage Setup ori" = RIMD,
