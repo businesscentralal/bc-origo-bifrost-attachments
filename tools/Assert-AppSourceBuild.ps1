@@ -333,11 +333,18 @@ if ($Stage -eq 'BeforeCompile') {
         compilerSymbolsFolder = (Join-Path $CompilationParams.compilerFolder 'symbols')
     }
     if ($context.mode -eq 'Test') {
+        # Only the testApp BeforeCompile may need a baseline-reused product. The
+        # product BeforeCompile has no app receipt yet by definition; seeking
+        # reuse there false-fails when tools/** forces a full Test rebuild.
         $statePath = Join-Path $directory 'state.json'
         if (Test-Path -LiteralPath $statePath -PathType Leaf) {
-            $state = Get-Content -LiteralPath $statePath -Raw -Encoding UTF8 | ConvertFrom-Json
-            $reuse = Get-ProductReuseRequest -RepositoryRoot $Root -State $state
-            if ($null -ne $reuse) { $beforeRequest.productReuse = $reuse }
+            $productManifest = Get-Content -LiteralPath (Join-Path $Root 'app/app.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+            $compileManifest = Get-Content -LiteralPath (Join-Path $CompilationParams.appProjectFolder 'app.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+            if ([string]$compileManifest.id -cne [string]$productManifest.id) {
+                $state = Get-Content -LiteralPath $statePath -Raw -Encoding UTF8 | ConvertFrom-Json
+                $reuse = Get-ProductReuseRequest -RepositoryRoot $Root -State $state
+                if ($null -ne $reuse) { $beforeRequest.productReuse = $reuse }
+            }
         }
     }
     Invoke-Gate 'before' $beforeRequest
