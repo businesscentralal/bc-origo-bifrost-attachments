@@ -705,3 +705,78 @@ class GenuinePackages(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ProductReuse(unittest.TestCase):
+    """Baseline product reuse when the PR does not touch app/ (#gate incremental)."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.root = Path(self.tmp)
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+        context = dict(run="fixture", attempt="1", job="reuse-fixture", sourceCommit="1" * 40,
+                       checkoutSha="1" * 40, mode="Default", project=".",
+                       buildUrl="https://example.invalid/reuse-fixture")
+        self.context = context
+        directory = self.root / ".buildartifacts/AppSourceGate/Default"
+        directory.mkdir(parents=True)
+        (self.root / "BuildOutput.txt").write_text("Get unmodified apps from baseline workflow run\n")
+        state = dict(context=context, startedNs=0, logBytes=0,
+                     logPrefixSha256=G.file_hash(self.root / "BuildOutput.txt"),
+                     receipts={}, hookHashes={})
+        (directory / "state.json").write_text(json.dumps(state))
+        (self.root / "app").mkdir()
+        (self.root / "app/app.json").write_text(json.dumps({
+            "id": "672df32a-a0c5-4a22-b591-0efa38023e95", "name": "Bifrost Attachments",
+            "publisher": "Origo", "version": "28.3.2.0"
+        }))
+        apps = self.root / ".buildartifacts/Apps"
+        apps.mkdir(parents=True)
+        self.package = apps / "product.app"
+        self.package.write_bytes(b"baseline-reused-product-bytes")
+        self.package_sha = G.file_hash(self.package)
+
+    def reuse(self, **overrides):
+        payload = dict(allowed=True, appFolderUntouched=True, baselineWorkflowRunId="42526647727",
+                       artifact="bc-origo-bifrost-attachments-main-Apps-1.0.2.144",
+                       packageFile=".buildartifacts/Apps/product.app",
+                       packageSha256=self.package_sha, changedPaths=["test/x.al", "CHANGELOG.md"])
+        payload.update(overrides)
+        return payload
+
+    def test_finalize_accepts_baseline_reused_product_when_app_untouched(self):
+        identity = {"id": "672df32a-a0c5-4a22-b591-0efa38023e95", "publisher": "Origo",
+                    "name": "Bifrost Attachments", "version": "28.3.2.0"}
+        info = {"identity": identity, "sha256": self.package_sha, "contentSha256": "c" * 64,
+                "friends": [], "sourceCommit": "e" * 40, "compilerVersion": "18.0.0.0",
+                "buildUrl": "https://example.invalid/baseline"}
+        with patch.object(G, "package_info", return_value=info):
+            result = G.reconcile(self.root, self.context, "finalize", product_reuse=self.reuse())
+        self.assertTrue(result["outputs"][0]["productReuse"])
+
+    def test_finalize_still_requires_compile_when_app_touched_or_reuse_unverified(self):
+        with self.assertRaises(G.GateError):
+            G.reconcile(self.root, self.context, "finalize")
+        with self.assertRaises(G.GateError):
+            G.reconcile(self.root, self.context, "finalize",
+                        product_reuse=self.reuse(appFolderUntouched=False))
+        with self.assertRaises(G.GateError):
+            G.reconcile(self.root, self.context, "finalize",
+                        product_reuse=self.reuse(allowed=False))
+        with self.assertRaises(G.GateError):
+            G.reconcile(self.root, self.context, "finalize",
+                        product_reuse=self.reuse(baselineWorkflowRunId="", artifact=""))
+
+    def test_signed_rejects_baseline_reuse(self):
+        identity = {"id": "672df32a-a0c5-4a22-b591-0efa38023e95", "publisher": "Origo",
+                    "name": "Bifrost Attachments", "version": "28.3.2.0"}
+        info = {"identity": identity, "sha256": self.package_sha, "contentSha256": "c" * 64,
+                "friends": [], "sourceCommit": "e" * 40, "compilerVersion": "18.0.0.0",
+                "buildUrl": "https://example.invalid/baseline"}
+        with patch.object(G, "package_info", return_value=info):
+            with self.assertRaises(G.GateError):
+                G.reconcile(self.root, self.context, "signed",
+                            signature={"status": "Valid", "signerThumbprint": "ab",
+                                       "provider": "Windows Get-AuthenticodeSignature",
+                                       "sha256": self.package_sha},
+                            product_reuse=self.reuse())
