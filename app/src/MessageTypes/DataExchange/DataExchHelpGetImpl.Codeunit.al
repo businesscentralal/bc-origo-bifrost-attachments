@@ -160,7 +160,7 @@ codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
         Guide.AppendLine('3. **Inspect** the parsed fields: `DataExchange.Entry.Get` (`entryNo`, paged `fields`), `DataExchange.Entry.List` for older entries.');
         Guide.AppendLine('4. **Process** the entry: `DataExchange.Entry.Process` runs the definition mappings and returns `targets[]` (table, inserted and modified counts, record SystemIds). Or send `process: true` on the import to do both in one call; the import is then committed first, and a processing error is returned in `processResult.errors` while the entry stays.');
         Guide.AppendLine('5. **Export**: `DataExchange.Export.Run` runs a Generic Export definition over `tableId`/`tableName` with `tableView`, or over `recordIds`, and delivers the file to storage (`storageCode` + `path` or `folderPath`) and/or `inline` (up to 1 MB). `DataExchange.PaymentExport.Run` exports a payment journal batch (`journalTemplate`, `journalBatch`) with the payment export format of its bank account, marks the lines as exported and delivers the bank file.');
-        Guide.AppendLine('6. **Clean up**: `DataExchange.Entry.Delete` deletes an entry and its fields. Delete referencing entries before `DataExchange.Definition.Delete`; otherwise deletion is refused with PreconditionFailed. Entries created by these types are also removed by the retention policy on Bifrost Data Exchange Entry (30 days by default).');
+        Guide.AppendLine('6. **Clean up**: `DataExchange.Entry.Delete` deletes an entry and its fields. `DataExchange.Definition.Delete` is disabled and refuses every call with PreconditionFailed; delete Data Exchange definitions in Business Central. Entries created by these types are also removed by the retention policy on Bifrost Data Exchange Entry (30 days by default).');
         Guide.AppendLine();
         Guide.AppendLine('Incoming documents are the other import path: wire a Generic Import definition that maps to the intermediate table with `DataExchange.Type.Set` (optional `entityType`: Invoice or Credit Memo; omission preserves an existing value), then send the file with `Storage.Upload.CommitToRecord` or `Storage.Attachment.CreateLinked` (`target` IncomingDocument, `dataExchangeType`, `process`). `DataExchange.Entry.Process` refuses intermediate-table mappings and points there. Bank statements are imported with `Finance.BankReconciliation.Create`.');
         Guide.AppendLine();
@@ -172,7 +172,7 @@ codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
         Guide.AppendLine('| See how a definition maps columns to fields | `DataExchange.Definition.Get` |');
         Guide.AppendLine('| Install a definition from its XML | `DataExchange.Definition.Import` |');
         Guide.AppendLine('| Get a definition as XML, or only its header | `DataExchange.Definition.Export` |');
-        Guide.AppendLine('| Remove a definition nothing uses | `DataExchange.Definition.Delete` |');
+        Guide.AppendLine('| Remove a definition | Not available: `DataExchange.Definition.Delete` is disabled; delete it in Business Central |');
         Guide.AppendLine('| See which Data Exchange Types exist | `DataExchange.Type.List` |');
         Guide.AppendLine('| Bind a Data Exchange Type to an import definition | `DataExchange.Type.Set` |');
         Guide.AppendLine('| Import a stored file or small inline content | `DataExchange.Import.Run` |');
@@ -184,7 +184,7 @@ codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
         Guide.AppendLine();
         Guide.AppendLine('## Chaining');
         Guide.AppendLine();
-        Guide.AppendLine('Every code a list returns is the exact value the next call expects: `code` from `DataExchange.Definition.List` or `codes[]` from `DataExchange.Definition.Import` goes into `code` of `DataExchange.Definition.Get`, `DataExchange.Definition.Export` and `DataExchange.Definition.Delete`, and into `dataExchDefCode` of `DataExchange.Type.Set`, `DataExchange.Import.Run`, `Storage.Upload.CommitToDataExchange`, `DataExchange.Export.Run` and `DataExchange.Entry.List`. `entryNo` from an import, an export or `DataExchange.Entry.List` goes into `DataExchange.Entry.Get`, `DataExchange.Entry.Process` and `DataExchange.Entry.Delete`. `storageCode` and `path` of an export go into `Storage.File.Get`. Codes are never trimmed, upper-cased or shortened; send them exactly as returned.');
+        Guide.AppendLine('Every code a list returns is the exact value the next call expects: `code` from `DataExchange.Definition.List` or `codes[]` from `DataExchange.Definition.Import` goes into `code` of `DataExchange.Definition.Get` and `DataExchange.Definition.Export`, and into `dataExchDefCode` of `DataExchange.Type.Set`, `DataExchange.Import.Run`, `Storage.Upload.CommitToDataExchange`, `DataExchange.Export.Run` and `DataExchange.Entry.List`. `entryNo` from an import, an export or `DataExchange.Entry.List` goes into `DataExchange.Entry.Get`, `DataExchange.Entry.Process` and `DataExchange.Entry.Delete`. `storageCode` and `path` of an export go into `Storage.File.Get`. Codes are never trimmed, upper-cased or shortened; send them exactly as returned.');
         Guide.AppendLine();
         Guide.AppendLine('## Errors');
         Guide.AppendLine();
@@ -193,7 +193,7 @@ codeunit 10035165 "DataExch Help Get Impl ori" implements "Msg Interface ori", "
         Guide.AppendLine('## Permissions');
         Guide.AppendLine();
         Guide.AppendLine('Assign `BIFROST DataExch ori` with the Foundation API baseline. This role grants table read access, including the definition read by `DataExchange.Definition.Export`; it does not grant table writes. Definition.Export is registered Inbound because its optional storage output writes an external file; the storage connector also requires its own permissions.');
-        Guide.AppendLine('The write types additionally require the standard Business Central permissions of the tables they write: Data Exch. and Data Exch. Field for imports and exports, the definition tables for `DataExchange.Definition.Import` and `DataExchange.Definition.Delete`, the target tables of the mappings for processing, and Gen. Journal Line and Credit Transfer Register for payment exports. Types with `storageCode` also use the storage connection. `BIFROST Attach ori` does not grant these Data Exchange table permissions.');
+        Guide.AppendLine('The write types additionally require the standard Business Central permissions of the tables they write: Data Exch. and Data Exch. Field for imports and exports, the definition tables for `DataExchange.Definition.Import`, the target tables of the mappings for processing, and Gen. Journal Line and Credit Transfer Register for payment exports. Types with `storageCode` also use the storage connection. `BIFROST Attach ori` does not grant these Data Exchange table permissions.');
         exit(Guide.ToText());
     end;
 }
