@@ -5,11 +5,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+### Documentation
+- #81: reconcile submission preparation with the inspected source version, Foundation dependency, configured offer and existing listing assets; preserve historical receipts and add the per-artifact signed-package/thumbprint checklist. Formal scenarios and validator dry-run remain gated on final-candidate QA. No AL objects changed.
+
 ### Added
 - `Storage.File.CopyToStaging` copies one file from an Attachments storage connection into one Foundation staging row and answers `stagingId`, `size`, `contentType`, `fileName` and a `nextStep`, so the file can feed `LLM.Prompt.Ask`/`Complete`, `Dashboard.Page.Set`, `Memory.*.Set` or `ReportLayout.Set` without a download and re-upload (#214, Gunnar decision d-20261106-mt-attachments-copytostaging). Reads through the storage connector interface and writes through the public Foundation `Blob Staging ori` facade only; the storage file is never changed; a missing file is `RecordNotFound`, a file over 240 MiB is `LimitExceeded` with no row. Objects: codeunit 10035203, enum value 10035175, `Storage Request Mgt ori` ExecuteCopyToStaging; tests codeunit 96280.
 ### Fixed
 - #211: move `DataExch Def Del211 Tests ori` to codeunit 96281 after merging #214, preserving main's CopyToStaging tests at 96280 and every regression assertion.
 - #210: validate Data Exchange export targets before confirmation; name invalid mappings before opening their table; run the selected mapping line; refuse interactive CSV/fixed-width export writers in background calls before writes; refuse header-only standard CSV uploads before writes and preserve unexpected upload-reader `uploadId`/recovery context through rollback and bound invalid base64 `received` to 250 characters. Requires Foundation 28.0.11.669 for its public confirmation/context interfaces (codeunits 10035140, 10035141, 10035156, 10035168, 10035194, 10035197 and related enum bindings).
+
+### Documentation (2026-11-08)
+
+- Refresh submission preparation after the PR216 main merge: include all 40 message types, the staging handoff scenario family and the current test Foundation floor. Historical QA receipts retain their original candidate scope (#81).
 
 ### Added
 - #210: credential-free, persisted, company-local Mock storage through `Storage Connector ori`, with per-connection isolation, owned setup cleanup and dynamic selector visibility (table 10035141, codeunit 10035202, enum 10035136, page 10035137, role grants). Keep the test-only fault-injection backend separate. Regression codeunit 96279 covers bilingual refusals and the product Mock.
