@@ -334,7 +334,7 @@ codeunit 96211 "Storage Msg Conformance Tests"
         // #160 AC1/AC2: check actual aggregated chapters, including all ten newer types.
         // Time: no date dependency. Risk: a stub can return true without supplying content.
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            if (Ordinal >= 10035135) and (Ordinal <= 10035174) then begin
+            if (Ordinal >= 10035135) and (Ordinal <= 10035175) then begin
                 Count += 1;
                 MessageType := Enum::"Message Type ori".FromInteger(Ordinal);
                 Clear(Contract);
@@ -378,7 +378,7 @@ codeunit 96211 "Storage Msg Conformance Tests"
                             Offenders += TypeName(Ordinal) + '|write refusal missing ';
                 end;
             end;
-        LibraryAssert.AreEqual(40, Count, 'All 40 Attachments message types must be checked.');
+        LibraryAssert.AreEqual(41, Count, 'All 41 Attachments message types must be checked.');
         LibraryAssert.AreEqual('', Offenders, 'First-call help chapters: ' + Offenders);
     end;
 
@@ -628,9 +628,9 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Ordinal: Integer;
     begin
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            if (Ordinal >= 10035135) and (Ordinal <= 10035174) then
+            if (Ordinal >= 10035135) and (Ordinal <= 10035175) then
                 Ordinals.Add(Ordinal);
-        LibraryAssert.AreEqual(40, Ordinals.Count(), 'Bifröst Attachments declares 40 message types.');
+        LibraryAssert.AreEqual(41, Ordinals.Count(), 'Bifröst Attachments declares 41 message types.');
     end;
 
     local procedure AppOrdinals() Ordinals: List of [Integer]
@@ -638,9 +638,9 @@ codeunit 96211 "Storage Msg Conformance Tests"
         Ordinal: Integer;
     begin
         foreach Ordinal in Enum::"Message Type ori".Ordinals() do
-            if ((Ordinal >= FirstOrdinal) and (Ordinal <= LastOrdinal)) or ((Ordinal >= 10035158) and (Ordinal <= 10035163)) or (Ordinal = 10035174) then
+            if ((Ordinal >= FirstOrdinal) and (Ordinal <= LastOrdinal)) or ((Ordinal >= 10035158) and (Ordinal <= 10035163)) or (Ordinal = 10035174) or (Ordinal = 10035175) then
                 Ordinals.Add(Ordinal);
-        LibraryAssert.AreEqual(30, Ordinals.Count(), 'Bifröst Attachments declares 30 message types.');
+        LibraryAssert.AreEqual(31, Ordinals.Count(), 'Bifröst Attachments declares 31 message types.');
     end;
 
     local procedure TypeName(Ordinal: Integer): Text

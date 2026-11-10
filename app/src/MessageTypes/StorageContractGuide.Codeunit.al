@@ -39,6 +39,11 @@ codeunit 10035199 "Storage Contract Guide ori"
                     Target.Add(ContractMgt.TargetEntry('data.storageCode', 'storage connection code', 'The connection the directory is in. Resolve it with Storage.Account.List.'));
                     Target.Add(ContractMgt.TargetEntry('data.path', 'relative storage path', 'The directory, relative to the base path of the connection.'));
                 end;
+            'Storage.File.CopyToStaging':
+                begin
+                    Target.Add(ContractMgt.TargetEntry('data.storageCode', 'storage connection code', 'The connection the file is in. Resolve it with Storage.Account.List.'));
+                    Target.Add(ContractMgt.TargetEntry('data.path', 'relative storage path', 'The file that is copied into staging. It stays in storage.'));
+                end;
             'Storage.File.Copy', 'Storage.File.Move':
                 begin
                     Target.Add(ContractMgt.TargetEntry('data.storageCode', 'storage connection code', 'The connection both paths belong to. Resolve it with Storage.Account.List.'));
@@ -232,6 +237,13 @@ codeunit 10035199 "Storage Contract Guide ori"
                     Steps.Add(ContractMgt.WorkflowStep('Storage.File.Get', 'Read the file back from storage.'));
                     Explanation := 'Send storageCode with path or folderPath to write the file to storage, or inline true to receive it in the answer.';
                 end;
+            'Storage.File.CopyToStaging':
+                begin
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.Account.List', 'Find the storageCode of an enabled connection.'));
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.File.List', 'List the files of a directory to find the path.'));
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.File.CopyToStaging', 'Copy the file into one staging row and receive stagingId.'));
+                    Explanation := 'Pass stagingId to the consuming message type (LLM.Prompt.Ask, LLM.Prompt.Complete, Dashboard.Page.Set, Memory.*.Set or ReportLayout.Set) as the same user in the same company. The storage file is not changed. Foundation Take consumes the row; otherwise its retention policy removes it.';
+                end;
             else
                 exit(false);
         end;
@@ -280,6 +292,10 @@ codeunit 10035199 "Storage Contract Guide ori"
                     '- `contentBase64` carries at most 251,658,240 bytes (240 MiB) decoded in one call; more is refused with LimitExceeded. Send larger files with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.' + Lf() +
                     '- The path must name a file; the connection root is refused. ' + PathRules() + '' + Lf() +
                     '- ' + ExternalWriteRule());
+            'Storage.File.CopyToStaging':
+                exit('- The storage file is read and left unchanged; exactly one staging row is created. A missing file is answered RecordNotFound on `path`. ' + PathRules() + '' + Lf() +
+                    '- A file larger than 251,658,240 bytes (240 MiB) is refused with LimitExceeded and nothing is staged.' + Lf() +
+                    '- `contentType` is optional and is recorded on the staging row as sent. Pass the answered `stagingId` to a consuming message type as the same user in the same company; Foundation Take consumes the row, otherwise its retention policy removes it.');
             'Storage.File.Copy':
                 exit('- The source stays where it is. The target must not exist: there is no overwrite option, and an existing target is refused with PreconditionFailed before anything is written.' + Lf() +
                     '- The source and the target must differ, and a target that backs a Business Central attachment is refused. The copy is a plain file; it is not linked to any attachment.' + Lf() +
@@ -494,6 +510,8 @@ codeunit 10035199 "Storage Contract Guide ori"
                 Pair(MessageType, '"dataExchDefCode":"CUSTEXPORT","tableId":18,"storageCode":"ARCHIVE","path":"export/customers.csv"', '{"entryNo":13,"fileName":"customers.csv","dataExchDefCode":"CUSTEXPORT","recordCount":3,"storageCode":"ARCHIVE","path":"export/customers.csv","contentLength":120}', RequestText, ResponseText);
             'DataExchange.PaymentExport.Run':
                 Pair(MessageType, '"journalTemplate":"PAYMENT","journalBatch":"BANK","storageCode":"ARCHIVE","path":"export/payments.xml"', '{"journalTemplate":"PAYMENT","journalBatch":"BANK","bankAccountNo":"OPERATING","paymentExportFormat":"SEPACT","lineCount":3,"exportedLineCount":3,"creditTransferRegisterNo":5,"fileName":"payments.xml","storageCode":"ARCHIVE","path":"export/payments.xml","contentLength":2048}', RequestText, ResponseText);
+            'Storage.File.CopyToStaging':
+                Pair(MessageType, '"storageCode":"ARCHIVE","path":"incoming/layout.docx"', '{"stagingId":"' + Guid + '","size":3145728,"contentType":"application/vnd.openxmlformats-officedocument.wordprocessingml.document","fileName":"layout.docx","nextStep":"Pass stagingId to the consuming message type as the same user in the same company. Its take consumes the staged file."}', RequestText, ResponseText);
             else
                 exit(false);
         end;
