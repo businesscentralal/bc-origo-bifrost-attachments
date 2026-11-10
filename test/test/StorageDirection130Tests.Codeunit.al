@@ -114,13 +114,13 @@ codeunit 96229 "Storage Direction130 Tests ori"
             if not (EffectName in ['read', 'write', 'irreversible']) then
                 Problems += TypeName + ' unknown effect ' + EffectName + '; ';
         end;
-        // #24 and #192 add the Data Exchange and staging upload endings.
-        if StorageWrites <> 17 then
+        // #24, #192 and #214 add the Data Exchange and staging endings.
+        if StorageWrites <> 18 then
             Problems += 'storage write count ' + Format(StorageWrites) + '; ';
         if NamedWrites <> 6 then
             Problems += 'named storage write count ' + Format(NamedWrites) + '; ';
-        // #192 adds CommitToStaging to the complete Attachments catalogue.
-        if (not StorageWritesOnly) and (Checked <> 40) then
+        // #192 adds CommitToStaging and #214 adds Storage.File.CopyToStaging to the complete Attachments catalogue.
+        if (not StorageWritesOnly) and (Checked <> 41) then
             Problems += 'attachments type count ' + Format(Checked) + '; ';
     end;
 

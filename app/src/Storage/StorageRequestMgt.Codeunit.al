@@ -314,6 +314,54 @@ codeunit 10035193 "Storage Request Mgt ori"
         RespondSuccess(Argument, DataObject);
     end;
 
+    /// <summary>
+    /// Copies one storage file into exactly one Foundation staging row through the public staging
+    /// facade and responds with the staging id. The storage file is only read, never changed.
+    /// A file over <paramref name="MaxBytes"/> is refused with LimitExceeded before any row is created.
+    /// </summary>
+    /// <param name="Argument">The Bifrost argument that receives the response.</param>
+    /// <param name="StorageSetup">The resolved storage setup row.</param>
+    /// <param name="Connector">The resolved connector implementation.</param>
+    /// <param name="Path">The source file path.</param>
+    /// <param name="ContentType">Optional MIME type recorded on the staging row.</param>
+    /// <param name="MaxBytes">The largest file size that is staged.</param>
+    internal procedure ExecuteCopyToStaging(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; ContentType: Text; MaxBytes: BigInteger)
+    var
+        Staging: Codeunit "Blob Staging ori";
+        TempBlob: Codeunit "Temp Blob";
+        DataObject: JsonObject;
+        ContentInStream: InStream;
+        StagingId: Guid;
+        FileName: Text;
+        TooLargeErr: Label 'The storage file "%1" is %2 bytes, more than the %3 bytes that can be staged. Nothing was staged.', Comment = '%1 = path, %2 = file size, %3 = limit||is-IS=Geymsluskráin "%1" er %2 bæti, meira en þau %3 bæti sem hægt er að vista tímabundið. Engu var komið fyrir.';
+        TooLargeExpectedLbl: Label 'a file of at most %1 bytes', Comment = '%1 = limit||is-IS=skrá sem er í mesta lagi %1 bæti';
+        TooLargeNextLbl: Label 'Choose a smaller file.', Comment = 'is-IS=Veldu minni skrá.';
+        NextStepLbl: Label 'Pass stagingId to LLM.Prompt.Ask, LLM.Prompt.Complete, Dashboard.Page.Set, Memory.*.Set or ReportLayout.Set as the same user in the same company. Its take consumes the staged file.', Comment = 'is-IS=Sendu stagingId til LLM.Prompt.Ask, LLM.Prompt.Complete, Dashboard.Page.Set, Memory.*.Set eða ReportLayout.Set sem sami notandi í sama fyrirtæki. Take-aðgerð hennar eyðir bráðabirgðaskránni við móttöku.';
+    begin
+        if not CheckOperationPath(Argument, StorageSetup, 'path', Path, false) then
+            exit;
+        if not TryGetFile(StorageSetup, Connector, Path, TempBlob) then begin
+            RespondStorageFailure(Argument, StorageSetup, Connector, Path, 'path', Enum::"Ext. File Storage File Type"::File);
+            exit;
+        end;
+        if TempBlob.Length() > MaxBytes then begin
+            Argument.RespondWithError("Bifrost Error Code ori"::LimitExceeded, StrSubstNo(TooLargeErr, Path, Format(TempBlob.Length(), 0, 9), Format(MaxBytes, 0, 9)),
+                'path', Path, StrSubstNo(TooLargeExpectedLbl, Format(MaxBytes, 0, 9)), TooLargeNextLbl);
+            exit;
+        end;
+        FileName := Path;
+        if FileName.Contains('/') then
+            FileName := FileName.Substring(FileName.LastIndexOf('/') + 1);
+        TempBlob.CreateInStream(ContentInStream);
+        StagingId := Staging.Create(ContentInStream, FileName, ContentType, 'Storage.File.CopyToStaging');
+        DataObject.Add('stagingId', Format(StagingId, 0, 4));
+        DataObject.Add('size', TempBlob.Length());
+        DataObject.Add('contentType', ContentType);
+        DataObject.Add('fileName', FileName);
+        DataObject.Add('nextStep', NextStepLbl);
+        RespondSuccess(Argument, DataObject);
+    end;
+
     /// <summary>Uploads decoded content to a file path and responds with the stored size.</summary>
     /// <param name="Argument">The Bifrost argument that receives the response.</param>
     /// <param name="StorageSetup">The resolved storage setup row.</param>
