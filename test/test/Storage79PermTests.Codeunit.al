@@ -558,30 +558,6 @@ codeunit 96218 "Storage 79 Perm Tests ori"
         LibraryAssert.AreEqual(Format(Database::"Data Exch. Def", 0, 9), ReadText(ResponseJson, 'received'), 'The denial must identify the omitted definition read.');
     end;
 
-    [Test]
-    /// <summary>Definition deletion refuses the read-only role before reference reads and preserves every graph row.</summary>
-    procedure Scenario_AC02_ReadOnlyDefinitionDelete_PreservesGraph()
-    var
-        DataExchDef: Record "Data Exch. Def";
-        EntryNo: Integer;
-        RequestJson: JsonObject;
-        ResponseJson: JsonObject;
-        MessageType: Enum "Message Type ori";
-    begin
-        // Story79 AC02 | Time: none | Risk: a bank-table or trigger exception must not replace the mutation denial.
-        Initialize();
-        EntryNo := SeedDataExchange();
-        LowerActor('BIFROST DataExch ori');
-        AssertDiscoveryReads(0);
-        LibraryAssert.IsFalse(DataExchDef.WritePermission(), 'The actor must lack definition mutation.');
-        RequestJson.Add('code', DefinitionCode);
-        ResponseJson := Dispatch(MessageType::"DataExchange.Definition.Delete", RequestJson);
-        Observe();
-        AssertDataExchangeUnchanged(EntryNo);
-        AssertStructuredError(ResponseJson, 'PermissionDenied');
-        LibraryAssert.AreEqual(Format(Database::"Data Exch. Def", 0, 9), ReadText(ResponseJson, 'received'), 'The denial must reach the missing definition mutation before reference checks.');
-    end;
-
     // Each omission exercises the real seeded query graph, not an IsEnabled helper.
     [Test]
     /// <summary>Entry read omission preserves the seeded entry and its content.</summary>

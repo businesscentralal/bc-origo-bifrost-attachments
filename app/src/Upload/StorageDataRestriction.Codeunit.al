@@ -24,8 +24,7 @@ using System.IO;
 /// <c>Storage.Upload.CommitToDataExchange</c>, which the write hint names.
 ///
 /// The definition tables (<c>Data Exch. Def</c>, line, column, mapping and field mapping) are
-/// write-restricted and point at <c>DataExchange.Definition.Import</c> and
-/// <c>DataExchange.Definition.Delete</c>. <c>DataExch Entry Link ori</c> is written only by the Data
+/// write-restricted and point at <c>DataExchange.Definition.Import</c>. <c>DataExch Entry Link ori</c> is written only by the Data
 /// Exchange types and points at <c>DataExchange.Entry.Delete</c>.
 ///
 /// <c>Storage Attachment Link ori</c> is write-restricted the same way. Reads stay allowed
@@ -46,7 +45,7 @@ codeunit 10035195 "Storage Data Restriction ori"
         LinkWriteHintTxt: Label 'Storage.Attachment.Offload / Storage.Attachment.CreateLinked / Storage.Attachment.CreateForRecord', Locked = true;
         TypeSetHintTxt: Label 'DataExchange.Type.Set', Locked = true;
         IncomingTypeFieldHintTxt: Label 'Storage.Upload.CommitToRecord / DataExchange.Type.Set', Locked = true;
-        DefinitionWriteHintTxt: Label 'DataExchange.Definition.Import / DataExchange.Definition.Delete', Locked = true;
+        DefinitionWriteHintTxt: Label 'DataExchange.Definition.Import', Locked = true;
         EntryLinkWriteHintTxt: Label 'DataExchange.Entry.Delete', Locked = true;
 
     [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnAfterIsTableReadRestrictedForDataRecords', '', false, false)]

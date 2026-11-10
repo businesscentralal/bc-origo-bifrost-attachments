@@ -14,7 +14,7 @@ python3 tools/validate_submission.py
 ```
 
 It checks the committed source inventory, source-declared market CSV, twelve
-scenario families, local submission links and unconfigured offer delivery. Exit
+scenario families, local submission links and the offer-configuration approval boundary. The current repository has an offer mapping, so the checker intentionally reports `offer mapping/delivery configured; separate operator approval required`. Preserve that gap until the release owner supplies the required disposition; do not remove the mapping or weaken the checker to obtain exit 0. Exit
 0 means those preparation checks are consistent; it does **not** mean QA,
 certificate trust, a sandbox smoke run or release acceptance passed. Exit 1 means
 malformed/unavailable input; exit 2 identifies acceptance gaps. No network,

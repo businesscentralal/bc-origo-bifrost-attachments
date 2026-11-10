@@ -360,7 +360,7 @@ object carries the mandatory ` ori` affix.
 
 `DataExchange.Export.Run` accepts Generic Export definitions only (import definitions are refused, payment definitions point to `DataExchange.PaymentExport.Run`), `tableId`/`tableName` must be the mapping table, and the `tableView` is validated by Foundation like `Data.Records.Get`.
 
-`DataExchange.Definition.Delete` applies the same strict code rule to `code` and refuses a definition referenced by a Data Exchange Type, a Bank Export/Import Setup (and so a bank account), the payroll import format of the General Ledger Setup or a currency exchange rate service. Successful deletion still runs the standard delete triggers. `DataExchange.Definition.Import` refuses an existing code unless `overwrite` is true.
+`DataExchange.Definition.Delete` is disabled (#211, Gunnar's decision 05.11.2026): `IsEnabled` is false and every call is refused with `PreconditionFailed` (parameter `type`) in 1033 and 1039 without deleting anything; delete Data Exchange definitions in Business Central. The enum value is kept, so there is no breaking change. `DataExchange.Definition.Import` refuses an existing code unless `overwrite` is true.
 
 Input problems are collected before any write with Foundation error codes and `parameter`, `received`, `expected` and `nextStep`. Multiple problems use `errors[]`. Database execution failures propagate through Foundation in the caller transaction; an `OmitCommit` chain must roll back as a unit. Only `process: true` commits, after the import and before the mappings run, so a processing error keeps the imported entry. `DataExchange.PaymentExport.Run` runs the base-app payment export, which commits its own steps.
 

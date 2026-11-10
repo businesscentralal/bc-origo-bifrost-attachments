@@ -214,12 +214,11 @@ codeunit 10035199 "Storage Contract Guide ori"
                     Steps.Add(ContractMgt.WorkflowStep('DataExchange.Type.List', 'Check the result.'));
                     Explanation := 'A type is what Incoming Documents use to find their import definition.';
                 end;
-            'DataExchange.Definition.Import', 'DataExchange.Definition.Export', 'DataExchange.Definition.Delete':
+            'DataExchange.Definition.Import', 'DataExchange.Definition.Export':
                 begin
                     Steps.Add(ContractMgt.WorkflowStep('DataExchange.Definition.Export', 'Write an existing definition as XML.'));
                     Steps.Add(ContractMgt.WorkflowStep('DataExchange.Definition.Import', 'Install or replace definitions from XML.'));
                     Steps.Add(ContractMgt.WorkflowStep('DataExchange.Definition.Get', 'Check the installed definition.'));
-                    Steps.Add(ContractMgt.WorkflowStep('DataExchange.Definition.Delete', 'Remove a definition that is no longer used.'));
                     Explanation := 'Export and Import use the same XML format as the Business Central actions of the same name, so a definition can move between environments.';
                 end;
             'DataExchange.Import.Run', 'DataExchange.Entry.Get', 'DataExchange.Entry.List', 'DataExchange.Entry.Process', 'DataExchange.Entry.Delete':
@@ -229,6 +228,12 @@ codeunit 10035199 "Storage Contract Guide ori"
                     Steps.Add(ContractMgt.WorkflowStep('DataExchange.Entry.Process', 'Write them to the business tables.'));
                     Steps.Add(ContractMgt.WorkflowStep('DataExchange.Entry.Delete', 'Remove the entry when it is no longer needed.'));
                     Explanation := 'An entry is processed once. DataExchange.Entry.List finds older entries.';
+                end;
+            'DataExchange.Definition.Delete':
+                begin
+                    Steps.Add(ContractMgt.WorkflowStep('DataExchange.Definition.List', 'Find the definition code.'));
+                    Steps.Add(ContractMgt.WorkflowStep('DataExchange.Definition.Get', 'Read the definition before deleting it in Business Central.'));
+                    Explanation := 'DataExchange.Definition.Delete is disabled and deletes nothing. Delete Data Exchange definitions in Business Central.';
                 end;
             'DataExchange.Export.Run', 'DataExchange.PaymentExport.Run':
                 begin
@@ -494,8 +499,6 @@ codeunit 10035199 "Storage Contract Guide ori"
                 Pair(MessageType, '"entryNo":12,"take":1', '{"entryNo":12,"dataExchDefCode":"INVOICES","dataExchLineDefCode":"","fileName":"invoices.csv","createdAt":"2026-10-21T09:15:00.000Z","hasFileContent":true,"fieldCount":8,"incomingEntryNo":0,"relatedRecord":"","skip":0,"take":1,"fields":[{"lineNo":1,"columnNo":1,"columnName":"Number","value":"INV-001","dataExchLineDefCode":"INVOICE"}]}', RequestText, ResponseText);
             'DataExchange.Type.Set':
                 Pair(MessageType, '"code":"INVOICES","dataExchDefCode":"INVOICES","description":"Invoice import"', '{"code":"INVOICES","dataExchDefCode":"INVOICES"}', RequestText, ResponseText);
-            'DataExchange.Definition.Delete':
-                Pair(MessageType, '"code":"INVOICES"', '{"code":"INVOICES"}', RequestText, ResponseText);
             'DataExchange.Definition.Export':
                 Pair(MessageType, '"code":"INVOICES"', '{"code":"INVOICES","name":"Invoice import","type":"Generic Import"}', RequestText, ResponseText);
             'DataExchange.Definition.Import':
