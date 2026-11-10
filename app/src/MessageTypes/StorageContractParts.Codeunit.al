@@ -173,6 +173,15 @@ codeunit 10035183 "Storage Contract Parts ori"
                         '{"type":"Storage.File.Delete","data":{},"lcid":1033}',
                         '{"status":"Error","code":"MultipleErrors","error":"2 problems in the request. Nothing was changed.","errors":[{"code":"MissingParameter","error":"Required parameter \"storageCode\" is missing.","parameter":"storageCode","received":"(missing)","expected":"a value for \"storageCode\"","nextStep":"Provide \"storageCode\" and send the request again."},{"code":"MissingParameter","error":"Required parameter \"path\" is missing.","parameter":"path","received":"(missing)","expected":"a value for \"path\"","nextStep":"Provide \"path\" and send the request again."}],"hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Delete\". Always read the help before calling a message type."}'));
                 end;
+            'Storage.File.CopyToStaging':
+                begin
+                    Examples.Add(ContractMgt.Example('A request refused before any change',
+                        '{"type":"Storage.File.CopyToStaging","data":{"storageCode":"X160-NOT-CONFIGURED","path":"X160-help/example.txt"},"lcid":1033}',
+                        '{"status":"Error","code":"RecordNotFound","error":"No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".","parameter":"storageCode","received":"X160-NOT-CONFIGURED","nextStep":"Call Storage.Account.List to see the configured storage codes.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.CopyToStaging\". Always read the help before calling a message type."}'));
+                    Examples.Add(ContractMgt.Example('Refusal: required request data is missing',
+                        '{"type":"Storage.File.CopyToStaging","data":{},"lcid":1033}',
+                        '{"status":"Error","code":"MultipleErrors","error":"2 problems in the request. Nothing was changed.","errors":[{"code":"MissingParameter","error":"Required parameter \"storageCode\" is missing.","parameter":"storageCode","received":"(missing)","expected":"a value for \"storageCode\"","nextStep":"Provide \"storageCode\" and send the request again."},{"code":"MissingParameter","error":"Required parameter \"path\" is missing.","parameter":"path","received":"(missing)","expected":"a value for \"path\"","nextStep":"Provide \"path\" and send the request again."}],"hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.CopyToStaging\". Always read the help before calling a message type."}'));
+                end;
             'Storage.File.Copy':
                 begin
                     Examples.Add(ContractMgt.Example('A request refused before any change',
@@ -450,6 +459,8 @@ codeunit 10035183 "Storage Contract Parts ori"
                 exit('Lists files below a directory relative to the selected connection. Use the returned relative paths with Storage.File.Get; this call does not download file content.');
             'Storage.File.Get':
                 exit('Downloads one file from the selected connection and returns its content as base64. The path is relative to the connection; the file stays in storage.');
+            'Storage.File.CopyToStaging':
+                exit('Copies one file from the selected storage connection into one Foundation staging row and returns its stagingId. The storage file stays unchanged; pass the stagingId to a consuming message type.');
             'Storage.File.Create':
                 exit('Decodes contentBase64 and writes a file to the selected connection at a relative path. This external write is outside the Business Central transaction.');
             'Storage.File.Delete':
@@ -555,6 +566,13 @@ codeunit 10035183 "Storage Contract Parts ori"
         end;
         if MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List'] then
             exit;
+
+        if MessageType = 'Storage.File.CopyToStaging' then begin
+            Parameters.Add(ContractMgt.Parameter('storageCode', 'string', true, 'The configured storage connection code. Resolve it with Storage.Account.List.'));
+            Parameters.Add(ContractMgt.Parameter('path', 'string', true, 'The file path relative to the connection base path.'));
+            Parameters.Add(ContractMgt.Parameter('contentType', 'string', false, 'Optional MIME type recorded on the staging row; empty when not supplied.'));
+            exit;
+        end;
 
         if MessageType in ['Storage.File.Create', 'Storage.Attachment.Offload', 'Storage.Upload.Commit',
             'DataExchange.Definition.Export', 'DataExchange.Export.Run', 'DataExchange.PaymentExport.Run', 'Storage.Upload.CommitToDataExchange'] then
@@ -873,6 +891,14 @@ codeunit 10035183 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', DeliveredLengthLbl));
                     Fields.Add(ContractMgt.ResponseField('contentBase64', 'string', 'The file content encoded as base64.'));
                 end;
+            'Storage.File.CopyToStaging':
+                begin
+                    Fields.Add(ContractMgt.ResponseField('stagingId', 'string', 'Foundation staging row id without braces. Pass it to a consuming message type as the same user in the same company.'));
+                    Fields.Add(ContractMgt.ResponseField('size', 'integer', 'The staged content size in bytes.'));
+                    Fields.Add(ContractMgt.ResponseField('contentType', 'string', 'The MIME type recorded on the staging row; empty when none was supplied.'));
+                    Fields.Add(ContractMgt.ResponseField('fileName', 'string', 'The leaf file name of the storage file.'));
+                    Fields.Add(ContractMgt.ResponseField('nextStep', 'string', 'Names the message types that consume the stagingId.'));
+                end;
             'Storage.File.Exists', 'Storage.Directory.Exists':
                 begin
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The checked path.'));
@@ -1162,7 +1188,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, DefinitionDeleteDisabledLbl, DefinitionDeleteDisabledNextLbl));
             exit;
         end;
-        if MessageType in ['Storage.File.Get', 'Storage.File.Copy', 'Storage.File.Delete', 'Storage.Directory.Delete', 'Storage.Attachment.CreateLinked', 'DataExchange.Definition.Import'] then
+        if MessageType in ['Storage.File.Get', 'Storage.File.Copy', 'Storage.File.CopyToStaging', 'Storage.File.Delete', 'Storage.Directory.Delete', 'Storage.Attachment.CreateLinked', 'DataExchange.Definition.Import'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, MissingPathLbl, MissingPathNextLbl));
         if MessageType in ['Storage.Attachment.CreateLinked', 'Storage.Upload.CommitToRecord'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, ProcessFailureLbl, ProcessNextLbl));
@@ -1202,6 +1228,8 @@ codeunit 10035183 "Storage Contract Parts ori"
         AddAttachmentErrors(MessageType, Errors);
         if MessageType = 'Storage.Directory.Delete' then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameter, 'The path names the connection root.', 'Name a directory below the root to delete.'));
+        if MessageType = 'Storage.File.CopyToStaging' then
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::LimitExceeded, 'The file is larger than the 251,658,240 bytes (240 MiB) that one staging row accepts from this message type. Nothing was staged.', 'Choose a smaller file.'));
         if MessageType in ['Storage.File.Create', 'Storage.Upload.Append'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameterFormat, 'The contentBase64 value is not valid base64.', 'Send valid base64 content.'));
         if MessageType in ['Storage.File.Delete', 'Storage.Directory.Delete'] then
@@ -1224,7 +1252,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The definition code does not exist.', 'Use DataExchange.Definition.List first.'));
         if MessageType in ['DataExchange.Entry.Get'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The entry number does not exist.', 'Use DataExchange.Entry.List first.'));
-        if MessageType in ['Storage.File.Get', 'Storage.File.Copy', 'Storage.File.Delete', 'Storage.Directory.Delete', 'Storage.Attachment.CreateLinked', 'DataExchange.Definition.Import'] then
+        if MessageType in ['Storage.File.Get', 'Storage.File.Copy', 'Storage.File.CopyToStaging', 'Storage.File.Delete', 'Storage.Directory.Delete', 'Storage.Attachment.CreateLinked', 'DataExchange.Definition.Import'] then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, ProviderFailureLbl, ProviderNextLbl))
         else
         if MessageType in ['DataExchange.Import.Run', 'DataExchange.Definition.Import', 'Storage.Upload.CommitToDataExchange'] then
@@ -1277,7 +1305,7 @@ codeunit 10035183 "Storage Contract Parts ori"
 
     local procedure UsesStorageCode(MessageType: Text): Boolean
     begin
-        exit(MessageType in ['Storage.File.List', 'Storage.File.Get', 'Storage.File.Exists', 'Storage.File.Create', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.File.Delete',
+        exit(MessageType in ['Storage.File.List', 'Storage.File.Get', 'Storage.File.CopyToStaging', 'Storage.File.Exists', 'Storage.File.Create', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.File.Delete',
             'Storage.Directory.List', 'Storage.Directory.Exists', 'Storage.Directory.Create', 'Storage.Directory.Delete',
             'Storage.Attachment.Offload', 'Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Begin',
             'DataExchange.Import.Run', 'DataExchange.Export.Run', 'DataExchange.Definition.Import', 'DataExchange.Definition.Export', 'DataExchange.PaymentExport.Run']);
@@ -1304,6 +1332,14 @@ codeunit 10035183 "Storage Contract Parts ori"
             Effect.Add('idempotent', false);
             Effect.Add('permissionSet', 'BIFROST Attach ori');
             Effect.Add('preconditions', StagingPreconditionsLbl);
+            exit;
+        end;
+        if MessageType = 'Storage.File.CopyToStaging' then begin
+            Effect.Add('effect', 'write');
+            Effect.Add('changes', 'Creates exactly one Foundation staging row with the content of the storage file, within the caller transaction. The storage file is not changed or removed.');
+            Effect.Add('idempotent', false);
+            Effect.Add('permissionSet', 'BIFROST Attach ori');
+            Effect.Add('preconditions', 'The storage connection is enabled and the file exists below its base path.');
             exit;
         end;
         case true of
@@ -1389,6 +1425,12 @@ codeunit 10035183 "Storage Contract Parts ori"
             Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Append', 'Send numbered binary chunks.'));
             Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Status', 'Inspect missing chunks before retrying.'));
             Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Abort', 'Discard an open session.'));
+            exit;
+        end;
+        if MessageType = 'Storage.File.CopyToStaging' then begin
+            Related.Add(ContractMgt.RelatedEntry('Storage.File.List', 'Find the path of the file to stage.'));
+            Related.Add(ContractMgt.RelatedEntry('Storage.File.Get', 'Read the file as base64 instead of staging it.'));
+            Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Begin', 'Stage a file that is not in storage yet.'));
             exit;
         end;
         case MessageType of
