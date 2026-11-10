@@ -6,6 +6,7 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 ### Documentation
+- #81: bring the scenario plan in line with main `c9395bb`: P02 discovers all 41 declared types with `DataExchange.Definition.Delete` disabled (#211), P09 expects its refusal instead of a delete, and P13 adds `Storage.File.CopyToStaging` (#214) with its cleanup. Regenerate `source-inventory.json` (41 types). Documentation only; no application, test, workflow or offer change.
 - #81: reconcile submission preparation with the inspected source version, Foundation dependency, configured offer and existing listing assets; preserve historical receipts and add the per-artifact signed-package/thumbprint checklist. Formal scenarios and validator dry-run remain gated on final-candidate QA. No AL objects changed.
 
 ### Added
