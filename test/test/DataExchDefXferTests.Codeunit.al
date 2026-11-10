@@ -1,6 +1,5 @@
 namespace Origo.Bifrost.Attachments.Test;
 
-using Microsoft.Finance.GeneralLedger.Setup;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
 using System.IO;
@@ -8,8 +7,8 @@ using System.TestLibraries.Utilities;
 
 /// <summary>
 /// Phase 4 (#26): DataExchange.Definition.Import installs the standard definition XML from storage,
-/// inline content or an upload; DataExchange.Definition.Export writes it to storage or inline;
-/// DataExchange.Definition.Delete refuses referenced definitions.
+/// inline content or an upload; DataExchange.Definition.Export writes it to storage or inline.
+/// DataExchange.Definition.Delete is disabled (#211) and is tested in "DataExch Def Del211 Tests ori".
 /// </summary>
 codeunit 96244 "DataExch Def Xfer Tests ori"
 {
@@ -298,26 +297,6 @@ codeunit 96244 "DataExch Def Xfer Tests ori"
         LibraryAssert.IsTrue(ParametersText.Contains('Omit all delivery parameters for the header only'), 'Parameters permit the shipped header-only request.');
         LibraryAssert.IsTrue(ResponseText.Contains('omitted for header-only or inline-only requests'), 'Response describes optional storage output.');
         LibraryAssert.IsFalse(ParametersText.Contains('Send it, or inline true, or both'), 'Parameters do not falsely require XML delivery.');
-    end;
-
-    [Test]
-    procedure DefinitionDelete_RefusedForPayrollImportFormat()
-    var
-        DataExchDef: Record "Data Exch. Def";
-        GeneralLedgerSetup: Record "General Ledger Setup";
-        Request: JsonObject;
-        DefCode: Code[20];
-    begin
-        // [SCENARIO] AC04: a definition that the General Ledger Setup names as payroll import format cannot be deleted.
-        DefCode := Fixture.CreateBareDefinition("Data Exchange Definition Type"::"Payroll Import");
-        if not GeneralLedgerSetup.Get() then
-            GeneralLedgerSetup.Insert();
-        GeneralLedgerSetup."Payroll Trans. Import Format" := DefCode;
-        GeneralLedgerSetup.Modify();
-        Request.Add('code', DefCode);
-
-        Fixture.AssertRefusal(Fixture.Dispatch("Message Type ori"::"DataExchange.Definition.Delete", Request), 'PreconditionFailed', 'code');
-        LibraryAssert.IsTrue(DataExchDef.Get(DefCode), 'The definition stays.');
     end;
 
     [Test]

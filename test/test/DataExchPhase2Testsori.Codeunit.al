@@ -4,6 +4,7 @@ using Microsoft.EServices.EDocument;
 using Microsoft.Finance.GeneralLedger.Setup;
 using Microsoft.Finance.Currency;
 using Microsoft.Finance.VAT.Setup;
+using Microsoft.Foundation.PaymentTerms;
 using Microsoft.Purchases.Document;
 using Microsoft.Purchases.Vendor;
 using Origo.Bifrost;
@@ -398,6 +399,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         GeneralBusinessGroup: Record "Gen. Business Posting Group";
         VendorPostingGroup: Record "Vendor Posting Group";
         VatBusinessGroup: Record "VAT Business Posting Group";
+        PaymentTerms: Record "Payment Terms";
         PurchaseHeader: Record "Purchase Header";
         IncomingDocument: Record "Incoming Document";
         ExchangeType: Record "Data Exchange Type";
@@ -426,6 +428,10 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         VendorPostingGroup.Insert();
         VatBusinessGroup.Code := NewFixtureCode();
         VatBusinessGroup.Insert();
+        // Localized Base Applications (for example ES) refuse a purchase document for a vendor without payment terms.
+        PaymentTerms.Code := CopyStr(NewFixtureCode(), 1, MaxStrLen(PaymentTerms.Code));
+        Evaluate(PaymentTerms."Due Date Calculation", '<0D>');
+        PaymentTerms.Insert();
         Currency.Code := CopyStr(NewFixtureCode(), 1, MaxStrLen(Currency.Code));
         Currency."Amount Rounding Precision" := 0.01;
         Currency."Unit-Amount Rounding Precision" := 0.00001;
@@ -444,6 +450,7 @@ codeunit 96237 "DataExch Phase2 Tests ori"
         Vendor."Gen. Bus. Posting Group" := GeneralBusinessGroup.Code;
         Vendor."Vendor Posting Group" := VendorPostingGroup.Code;
         Vendor."VAT Bus. Posting Group" := VatBusinessGroup.Code;
+        Vendor."Payment Terms Code" := PaymentTerms.Code;
         Vendor.Insert(true);
         DefinitionCode := Fixture.CreateImportDefinition(0);
         ColumnDefinition.Get(DefinitionCode, 'LINES', 3);
