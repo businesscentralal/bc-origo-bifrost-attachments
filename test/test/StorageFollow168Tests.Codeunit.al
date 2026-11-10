@@ -48,22 +48,6 @@ codeunit 96264 "Storage Follow168 Tests ori"
         CheckImportMapping(1039);
     end;
 
-    /// <summary>AC1/AC2: DefinitionEntries with explicit caller language 1033.</summary>
-    [Test]
-    [TransactionModel(TransactionModel::AutoCommit)]
-    procedure Scenario_AC01_DefinitionEntries_1033()
-    begin
-        CheckDefinitionEntries(1033);
-    end;
-
-    /// <summary>AC1/AC2: DefinitionEntries with explicit caller language 1039.</summary>
-    [Test]
-    [TransactionModel(TransactionModel::AutoCommit)]
-    procedure Scenario_AC01_DefinitionEntries_1039()
-    begin
-        CheckDefinitionEntries(1039);
-    end;
-
     /// <summary>AC1/AC2: EntityType with explicit caller language 1033.</summary>
     [Test]
     [TransactionModel(TransactionModel::AutoCommit)]
@@ -244,34 +228,6 @@ codeunit 96264 "Storage Follow168 Tests ori"
         DataExch.Delete(true);
         Definition.Get(DefCode);
         Definition.Delete(true);
-    end;
-
-    local procedure CheckDefinitionEntries(LanguageId: Integer)
-    var
-        Definition: Record "Data Exch. Def";
-        Entry: Record "Data Exch.";
-        Request: JsonObject;
-        DeleteEntry: JsonObject;
-        Response: JsonObject;
-        DefCode: Code[20];
-    begin
-        // [GIVEN] A definition is referenced by a persisted entry.
-        DefCode := Fixture.CreateImportDefinition(0);
-        Entry."Data Exch. Def Code" := DefCode;
-        Entry.Insert(true);
-        Request.Add('code', DefCode);
-        // [WHEN] Deletion is requested before cleanup.
-        Response := Dispatch("Message Type ori"::"DataExchange.Definition.Delete", Request, LanguageId);
-        // [THEN] Both records survive; following the documented recovery permits deletion.
-        AssertRefusal(Response, 'PreconditionFailed');
-        LibraryAssert.IsTrue(Fixture.ReadText(Response, 'nextStep').Contains('DataExchange.Entry.Delete'), 'Name the cleanup operation.');
-        AssertLanguage(Fixture.ReadText(Response, 'error'), LanguageId, 'still use definition', 'nota enn skilgreiningu');
-        LibraryAssert.IsTrue(Definition.Get(DefCode), 'Definition survives.');
-        LibraryAssert.IsTrue(Entry.Get(Entry."Entry No."), 'Entry survives.');
-        DeleteEntry.Add('entryNo', Entry."Entry No.");
-        AssertSuccess(Dispatch("Message Type ori"::"DataExchange.Entry.Delete", DeleteEntry, LanguageId));
-        AssertSuccess(Dispatch("Message Type ori"::"DataExchange.Definition.Delete", Request, LanguageId));
-        LibraryAssert.IsFalse(Definition.Get(DefCode), 'Unreferenced definition deleted.');
     end;
 
     local procedure CheckEntityType(LanguageId: Integer)

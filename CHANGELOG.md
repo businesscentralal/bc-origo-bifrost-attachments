@@ -8,11 +8,26 @@ Business Central release versioning (`major.minor.build.revision`).
 ### Added
 - `Storage.File.CopyToStaging` copies one file from an Attachments storage connection into one Foundation staging row and answers `stagingId`, `size`, `contentType`, `fileName` and a `nextStep`, so the file can feed `LLM.Prompt.Ask`/`Complete`, `Dashboard.Page.Set`, `Memory.*.Set` or `ReportLayout.Set` without a download and re-upload (#214, Gunnar decision d-20261106-mt-attachments-copytostaging). Reads through the storage connector interface and writes through the public Foundation `Blob Staging ori` facade only; the storage file is never changed; a missing file is `RecordNotFound`, a file over 240 MiB is `LimitExceeded` with no row. Objects: codeunit 10035203, enum value 10035175, `Storage Request Mgt ori` ExecuteCopyToStaging; tests codeunit 96280.
 ### Fixed
+- #211: move `DataExch Def Del211 Tests ori` to codeunit 96281 after merging #214, preserving main's CopyToStaging tests at 96280 and every regression assertion.
 - #210: validate Data Exchange export targets before confirmation; name invalid mappings before opening their table; run the selected mapping line; refuse interactive CSV/fixed-width export writers in background calls before writes; refuse header-only standard CSV uploads before writes and preserve unexpected upload-reader `uploadId`/recovery context through rollback and bound invalid base64 `received` to 250 characters. Requires Foundation 28.0.11.669 for its public confirmation/context interfaces (codeunits 10035140, 10035141, 10035156, 10035168, 10035194, 10035197 and related enum bindings).
 
 ### Added
 - #210: credential-free, persisted, company-local Mock storage through `Storage Connector ori`, with per-connection isolation, owned setup cleanup and dynamic selector visibility (table 10035141, codeunit 10035202, enum 10035136, page 10035137, role grants). Keep the test-only fault-injection backend separate. Regression codeunit 96279 covers bilingual refusals and the product Mock.
 
+
+### Fixed (2026-11-05) - Disabled definition-delete contract (#211 / PR #212)
+
+- Codeunit 10035183 excludes `DataExchange.Definition.Delete` from the common required `storageCode` parameter. The disabled type declares only its ignored `code`, preserving the typed refusal without requiring a storage connection. Codeunit 96281 verifies the exact parameter name as well as the single-parameter count.
+
+- Align the disabled refusal example with its request: a supplied `code` is echoed on parameter `code`, rather than claiming the envelope type was refused. Codeunit 96281 pins both response fields.
+- Preserve six raw-code Import.Run regressions in codeunit 96226 and both Definition.Export envelope checks in codeunit 96258. Only disabled-delete assertions are removed; the export checks delete their self-created definitions.
+
+### Changed (2026-11-05) - Disable DataExchange.Definition.Delete (#211)
+
+- `DataExchange.Definition.Delete` is disabled (Gunnar's decision 05.11.2026: "you set isenabled = false in the implementation and update the execution to trigger an error and update the contract to reflect that"). `DataExch Def Delete Impl ori` returns `IsEnabled() = false`, and executing the type raises a typed `PreconditionFailed` error on parameter `type` (1033: "DataExchange.Definition.Delete is disabled. Delete Data Exchange Definitions in Business Central.", 1039: "DataExchange.Definition.Delete er óvirkt. Eyddu skilgreiningum gagnaskipta í Business Central.") with a nextStep in both languages. No definition is read or deleted.
+- The contract (description, selection text, overview, notes, errors, effect, workflow, example) and the Data Exchange help chapters say the type is disabled and no longer document parameters, references or a success response. The write hint of the data restriction on the definition tables now names only `DataExchange.Definition.Import`.
+- The enum value `DataExchange.Definition.Delete` (10035171) is kept: removing it would be an AppSource breaking change. `DataExchange.Entry.Delete` and the Storage delete types are unchanged.
+- Tests: new codeunit 96281 `DataExch Def Del211 Tests ori` (IsEnabled false, refusal in 1033 and 1039 with the definition kept, disabled contract and discovery text). Tests that expected Definition.Delete to delete or to refuse referenced definitions were removed. The Icelandic translation file drops the labels of the removed delete logic and carries the new ones; no en-US file.
 
 ### Fixed (2026-11-05) - Confirm remaining storage test fixtures (#205)
 
