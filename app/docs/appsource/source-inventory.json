@@ -1,12 +1,12 @@
 {
   "status": "source-inventory-only-not-certified",
-  "sourceSha": "c9395bbbc2c208f9c425a92457876234d54c1a3b",
+  "sourceSha": "dc81655b6ce9368635e8d899348ca2247e94c54d",
   "standardsSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "app": {
     "id": "672df32a-a0c5-4a22-b591-0efa38023e95",
     "name": "Bifrost Attachments",
     "publisher": "Origo",
-    "version": "28.3.2.0",
+    "version": "28.3.3.0",
     "application": "28.3.0.0",
     "platform": "28.0.0.0",
     "runtime": "17.0",
@@ -264,10 +264,10 @@
     }
   ],
   "files": {
-    "app/app.json": "88f0cab395f9fa34c3417e486d25565789792fe9589dd8753f83a2ca414c06e0",
+    "app/app.json": "5053b35cf48ddc21ed568364d5fc75bfa7d237b6b256e481e955f47a2cbfe7a6",
     "app/AppSourceCop.json": "3693ee0c9ff2b18b8528d8b9bc2ecb80610346762766e2d9c209e0742885f2e8",
-    ".AL-Go/settings.json": "1bf4987b65f4381c4b03cd46f1456b664a16f9601fb4ead647c54b25f1934e9c",
-    "test/app.json": "cb9aa39a6a8ff82e98d5dc190a9045cdb30beccfba1b16111fca82afb8924e2a",
+    ".AL-Go/settings.json": "1fda3b3c5a426a974e7c304696780943fd637bbd8f5b792d7065053e7f2d7529",
+    "test/app.json": "ae892f1f831797c3a72bc7f2119480830462651336df82f7d6619681c5356c26",
     "app/assets/Logo250x250.png": "0f9185810ff29e9c77c7258d7b7bd3a51f5fcaa2bed0bcbf4288fd673fc0cc60"
   },
   "offerPlan": {
@@ -285,9 +285,9 @@
   },
   "historicalStandardsComparisonSha": "52ba4754cfd614e4a7c50af87b30149b18b313e3",
   "historicalFoundationComparisonSha": "0fb78c0be538bd77c482c70eddbbef451f697cc9",
-  "refreshedAt": "2026-11-10T16:27:14.307235+00:00",
-  "inventoryPreparedFromDocumentationHead": "c9395bbbc2c208f9c425a92457876234d54c1a3b",
-  "productSourceBaselineUnchanged": false,
+  "refreshedAt": "2026-11-11T20:52:56.840372+00:00",
+  "inventoryPreparedFromDocumentationHead": "dc81655b6ce9368635e8d899348ca2247e94c54d",
+  "productSourceBaselineUnchanged": true,
   "submissionLocationDecision": {
     "status": "approved-with-conditions",
     "id": "attachments81-worker6-submission-location-20261006",

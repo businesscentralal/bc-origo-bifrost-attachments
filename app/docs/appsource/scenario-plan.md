@@ -7,6 +7,8 @@ locale: en-US
 
 # Plan independent Attachments validation coverage
 
+> Current disposition: the [11 November reconciliation](preparation-2026-11-11.md) supersedes the historical #80-pending statements below. #80 closed on actual 28.3.2 validation/release; #81 remains open. Bind formal scenarios and the dry run to their exact proven candidate. Submission remains on hold.
+
 Inspected source: [`b7310c3308e5cb216b6aa5ff0db2ca5645607d6b`](https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/b7310c3308e5cb216b6aa5ff0db2ca5645607d6b). See the [8 November preparation reconciliation](preparation-2026-11-08.md) for current manifest, offer configuration and acceptance gaps. No final QA candidate is certified. [Build113](candidate-2026-10-20.json) remains historical evidence for its own bytes only.
 
 **Planning only — none of these flows has been executed or certified by this artifact.** Issue #80 owns final internal QA; formal Microsoft-format documents follow its passing immutable evidence on the Architect-defined integrated candidate. The [source inventory](source-inventory.json) records the current declared wire types; declarations are not proven behaviors. PR150 added the Data Exchange import, processing, export and definition types that older context files omit. #69/#82 must reconcile their actual request/error contracts before exact examples and expected responses are frozen.
