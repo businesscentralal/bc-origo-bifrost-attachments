@@ -33,7 +33,7 @@ The 6 October no-offer decision is historical. Merged [PR176](https://github.com
 | [market-evidence-plan.md](market-evidence-plan.md) | Per-market acceptance fields and owner handoff |
 | [validator-evidence-format.md](validator-evidence-format.md) | Executable local preparation/preflight and actual smoke receipt format |
 | [candidate-2026-10-20.json](candidate-2026-10-20.json) | Immutable build113 technical evidence; external certification pending |
-| [source-inventory.json](source-inventory.json) | Committed source/manifest hashes and 40 declared wire types |
+| [source-inventory.json](source-inventory.json) | Committed source/manifest hashes and 41 declared wire types (one disabled) |
 
 ## Prepare now; formalize after candidate QA
 
