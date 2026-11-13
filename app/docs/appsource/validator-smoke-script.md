@@ -7,6 +7,8 @@ locale: en-US
 
 # Run the gated Attachments validator sandbox smoke script
 
+> Current disposition: the [11 November reconciliation](preparation-2026-11-11.md) supersedes the historical #80-pending statements below. #80 closed on actual 28.3.2 validation/release; #81 remains open. Bind formal scenarios and the dry run to their exact proven candidate. Submission remains on hold.
+
 **Manual test script; not executed.** Run only after the exact candidate passes internal QA on the Architect-defined integrated SHA, with formal scenarios derived from that evidence. This script contains no executable network or publication command. Stop at the first failed prerequisite; do not interpret a stopped run as a pass.
 
 The [executable preparation and receipt checker](validator-evidence-format.md)

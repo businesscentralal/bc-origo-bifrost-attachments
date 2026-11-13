@@ -7,7 +7,11 @@ locale: en-US
 
 # Prepare the Attachments submission package
 
-## Current source preparation — 8 November 2026
+## Current evidence — 11 November 2026
+
+Read the [11 November reconciliation](preparation-2026-11-11.md) first. Architect closed #80 using the actual 28.3.2 AppSource validation and release, then explicitly reopened #81 with AC01–AC04 still incomplete. Current main declares 28.3.3.0. Released source, later preparation source and per-artifact receipts are separate; the historical QA-pending statements below describe their original dates. Formal scenarios and the validator dry run still need their exact-candidate inputs. Submission remains on hold.
+
+## Historical source preparation — 8 November 2026
 
 Inspected source: [`b7310c3308e5cb216b6aa5ff0db2ca5645607d6b`](https://github.com/businesscentralal/bc-origo-bifrost-attachments/commit/b7310c3308e5cb216b6aa5ff0db2ca5645607d6b). See the [8 November preparation reconciliation](preparation-2026-11-08.md) for current manifest, offer configuration and acceptance gaps. No final QA candidate is certified. [Build113](candidate-2026-10-20.json) remains historical evidence for its own bytes only.
 
@@ -25,6 +29,7 @@ The 6 October no-offer decision is historical. Merged [PR176](https://github.com
 
 | Artifact | Purpose |
 |---|---|
+| [preparation-2026-11-11.md](preparation-2026-11-11.md) | Current release/QA disposition, exact-source boundaries and remaining #81 actions |
 | [preparation-2026-11-08.md](preparation-2026-11-08.md) | Current source facts, historical receipt boundaries and named acceptance dependencies |
 | [release-checklist.md](release-checklist.md) | Source evidence, release inputs and named owners |
 | [scenario-plan.md](scenario-plan.md) | Coverage and independent fixtures; not formal validator scenarios |
