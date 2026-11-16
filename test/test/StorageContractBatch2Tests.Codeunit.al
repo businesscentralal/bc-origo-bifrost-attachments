@@ -32,11 +32,12 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Response := Token.AsObject();
         Response.Get('fields', Token);
         Fields := Token.AsArray();
-        LibraryAssert.AreEqual(2, Fields.Count(), 'Type.List returns count and types.');
         foreach Token in Fields do begin
             ResponseField := Token.AsObject();
             LibraryAssert.IsTrue(JsonText(ResponseField, 'description') <> '', 'Response field description required.');
             case JsonText(ResponseField, 'name') of
+                'status', 'code':
+                    ; // Foundation 28.0.13 appends the universal envelope fields status and code to every merged contract.
                 'count':
                     begin
                         CountFields += 1;
@@ -53,6 +54,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         end;
         LibraryAssert.AreEqual(1, CountFields, 'Count must be declared once.');
         LibraryAssert.AreEqual(1, TypesFields, 'Types must be declared once.');
+        LibraryAssert.IsTrue(Fields.Count() >= 2, 'Type.List returns count and types.');
     end;
 
     /// <summary>A parameterless Type.List returns integer zero and an empty array for no rows.</summary>

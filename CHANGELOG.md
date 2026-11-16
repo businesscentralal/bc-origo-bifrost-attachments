@@ -5,6 +5,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+### Fixed
+- #228: test codeunit 96216 (`TypeList_Contract_DeclaresCountAndTypesOnce` and the two tests that call it) no longer asserts that the merged `DataExchange.Type.List` response contract has exactly two fields. Foundation 28.0.13 appends the envelope fields `status` and `code` to every merged contract; the test now accepts them and still requires `count` and `types` exactly once. No object added, no product code changed.
+
 ### Documentation
 - #81: reconcile the 11 November #80 closure and #81 reopening with released 28.3.2, later 28.3.3 preparation and artifact-specific signature evidence; refresh the committed source inventory after the version increment. Formal scenarios, validator dry-run and operator approvals remain incomplete. No AL objects changed.
 - #81: bring the scenario plan in line with main `c9395bb`: P02 discovers all 41 declared types with `DataExchange.Definition.Delete` disabled (#211), P09 expects its refusal instead of a delete, and P13 adds `Storage.File.CopyToStaging` (#214) with its cleanup. Regenerate `source-inventory.json` (41 types). Documentation only; no application, test, workflow or offer change.
