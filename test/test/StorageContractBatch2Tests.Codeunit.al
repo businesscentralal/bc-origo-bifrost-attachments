@@ -1,6 +1,9 @@
 namespace Origo.Bifrost.Attachments.Test;
 
+using Microsoft.Foundation.Attachment;
+using Microsoft.Sales.Customer;
 using Origo.Bifrost;
+using Origo.Bifrost.Attachments;
 using System.IO;
 
 /// <summary>Verifies the message contracts delivered in the storage Batch 2 rollout.</summary>
@@ -562,6 +565,85 @@ codeunit 96216 "Storage Contract Batch2 Tests"
             AssertChangesContain(TypeName, 'without expectedCount');
             AssertCountParameterNamesUnit(TypeName, 'Counts one ');
         end;
+    end;
+
+    /// <summary>Attachment previews and mismatched counts preserve the blob and storage link in both languages.</summary>
+    [Test]
+    procedure Scenario_Audit224_AttachmentCounts_PreserveState()
+    var
+        Customer: Record Customer;
+        Attachment: Record "Document Attachment";
+        Link: Record "Storage Attachment Link ori";
+        Fixture: Codeunit "DataExch Fixture ori";
+        CustomerNos: List of [Code[20]];
+        Languages: List of [Integer];
+        Request: JsonObject;
+        Response: JsonObject;
+        Token: JsonToken;
+        AttachmentId: Guid;
+        LanguageId: Integer;
+    begin
+        // Story #224, AC03 | Time: None | Risk: Confirmation enabled in the isolated test company
+        // [GIVEN] An owned attachment with database content and a mock storage connection.
+        Fixture.InitializeStorage();
+        CustomerNos := Fixture.CreateCustomers(1, 'X224 count');
+        Request.Add('tableId', Database::Customer);
+        Request.Add('no', CustomerNos.Get(1));
+        Request.Add('fileName', 'count224.txt');
+        Request.Add('contentBase64', 'SGVsbG8=');
+        Response := Dispatch('Storage.Attachment.CreateForRecord', Request, 1033);
+        LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'The attachment fixture is created.');
+        Response.Get('data', Token);
+        Evaluate(AttachmentId, JsonText(Token.AsObject(), 'systemId'), 9);
+        Clear(Request);
+        Request.Add('target', 'DocumentAttachment');
+        Request.Add('systemId', Format(AttachmentId, 0, 4));
+        Request.Add('storageCode', Fixture.StorageCode());
+        Languages.Add(1033);
+        Languages.Add(1039);
+        // [WHEN] Preview and mismatch calls use the real Foundation dispatcher in both languages.
+        foreach LanguageId in Languages do begin
+            AssertAttachmentCountRefusals('Storage.Attachment.Offload', Request, LanguageId);
+            // [THEN] Neither refusal changes the database content or creates a storage link.
+            Attachment.GetBySystemId(AttachmentId);
+            LibraryAssert.IsTrue(Attachment."Document Reference ID".HasValue(), 'Offload refusal preserves database content.');
+            LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'Offload refusal creates no link.');
+        end;
+        Request.Add('expectedCount', 1);
+        Response := Dispatch('Storage.Attachment.Offload', Request, 1033);
+        LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'Confirmed offload runs.');
+        LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Confirmed offload creates the link.');
+        Request.Remove('expectedCount');
+        Request.Remove('storageCode');
+        foreach LanguageId in Languages do begin
+            AssertAttachmentCountRefusals('Storage.Attachment.Restore', Request, LanguageId);
+            Attachment.GetBySystemId(AttachmentId);
+            LibraryAssert.IsFalse(Attachment."Document Reference ID".HasValue(), 'Restore refusal leaves content in storage.');
+            LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Restore refusal preserves the link.');
+        end;
+        Request.Add('expectedCount', 1);
+        Response := Dispatch('Storage.Attachment.Restore', Request, 1033);
+        LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'Confirmed restore runs.');
+        Attachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsTrue(Attachment."Document Reference ID".HasValue(), 'Confirmed restore returns the content.');
+        LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'Confirmed restore removes the link.');
+        Attachment.Delete(true);
+        Customer.Get(CustomerNos.Get(1));
+        Customer.Delete(true);
+        Fixture.CleanupStorage('MOCK');
+    end;
+
+    local procedure AssertAttachmentCountRefusals(TypeName: Text; Request: JsonObject; LanguageId: Integer)
+    var
+        Response: JsonObject;
+    begin
+        Response := Dispatch(TypeName, Request, LanguageId);
+        LibraryAssert.AreEqual('ConfirmationRequired', JsonText(Response, 'code'), 'A named attachment previews before mutation.');
+        LibraryAssert.AreEqual('1', JsonText(Response, 'expected'), 'The preview counts one attachment.');
+        Request.Add('expectedCount', 7);
+        Response := Dispatch(TypeName, Request, LanguageId);
+        LibraryAssert.AreEqual('ConfirmationMismatch', JsonText(Response, 'code'), 'A mismatched attachment count is refused.');
+        Request.Remove('expectedCount');
     end;
 
     /// <summary>Read and write-only types do not take expectedCount and name no count unit (#224, invalid input).</summary>

@@ -829,7 +829,7 @@ codeunit 10035183 "Storage Contract Parts ori"
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        Target.Add(ContractMgt.TargetEntry('data.target + data.systemId', 'attachment record', 'The attachment table and SystemId identify the attachment.'));
+        Target.Add(ContractMgt.TargetEntry('data.systemId', 'attachment record', 'The attachment table and SystemId identify the attachment.'));
     end;
 
     /// <summary>Describes the existing record addressed by a shipped Data Exchange operation.</summary>
