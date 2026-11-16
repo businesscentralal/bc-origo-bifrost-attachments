@@ -495,6 +495,95 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Commit(); // Restore original company rows before evaluating assertions.
     end;
 
+    /// <summary>The audited types declare their real effect (#224, AC01); no type is weaker than its real effect.</summary>
+    [Test]
+    procedure Scenario_Audit224_EffectsMatchRealEffect()
+    begin
+        // Story #224, AC01 | Time: None | Risk: Registered Foundation contract dispatch
+        AssertEffect('Storage.Upload.CommitToDataExchange', 'irreversible');
+        AssertEffect('DataExchange.Export.Run', 'irreversible');
+        AssertEffect('DataExchange.Definition.Export', 'irreversible');
+        AssertEffect('DataExchange.PaymentExport.Run', 'irreversible');
+        // Types that only create or modify BC records stay write; they wait for Gunnar's decision.
+        AssertEffect('DataExchange.Import.Run', 'write');
+        AssertEffect('DataExchange.Entry.Process', 'write');
+        AssertEffect('Storage.Attachment.CreateLinked', 'write');
+    end;
+
+    /// <summary>Every irreversible type names its count unit in effect.changes and on expectedCount (#224, AC02/AC03).</summary>
+    [Test]
+    procedure Scenario_Audit224_IrreversibleTypesNameCountUnit()
+    var
+        TypeName: Text;
+        Types: List of [Text];
+    begin
+        // Story #224, AC02/AC03 | Time: None | Risk: Registered Foundation contract dispatch
+        Types.Add('Storage.File.Create');
+        Types.Add('Storage.File.Delete');
+        Types.Add('Storage.File.Copy');
+        Types.Add('Storage.File.Move');
+        Types.Add('Storage.Directory.Create');
+        Types.Add('Storage.Directory.Delete');
+        Types.Add('Storage.Attachment.Offload');
+        Types.Add('Storage.Attachment.Restore');
+        Types.Add('Storage.Upload.Commit');
+        Types.Add('Storage.Upload.CommitToDataExchange');
+        Types.Add('DataExchange.Definition.Export');
+        Types.Add('DataExchange.PaymentExport.Run');
+        Types.Add('DataExchange.Export.Run');
+        foreach TypeName in Types do begin
+            AssertEffect(TypeName, 'irreversible');
+            AssertChangesContain(TypeName, 'expectedCount counts one ');
+            AssertChangesContain(TypeName, '(always 1)');
+            AssertChangesContain(TypeName, 'without expectedCount');
+            AssertCountParameterNamesUnit(TypeName, 'Counts one ');
+        end;
+    end;
+
+    /// <summary>Read and write-only types do not take expectedCount and name no count unit (#224, invalid input).</summary>
+    [Test]
+    procedure Scenario_Audit224_NonIrreversibleTypesHaveNoCountParameter()
+    var
+        Token: JsonToken;
+        TypeName: Text;
+        Types: List of [Text];
+    begin
+        // Story #224, AC03 | Time: None | Risk: Registered Foundation contract dispatch
+        Types.Add('Storage.File.Get');
+        Types.Add('DataExchange.Import.Run');
+        Types.Add('Storage.Upload.CommitToRecord');
+        foreach TypeName in Types do
+            foreach Token in ContractParameters(TypeName) do
+                LibraryAssert.AreNotEqual('expectedCount', JsonText(Token.AsObject(), 'name'), TypeName + ' declares no expectedCount.');
+    end;
+
+    local procedure AssertChangesContain(TypeName: Text; Fragment: Text)
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        Effect: JsonObject;
+        Token: JsonToken;
+    begin
+        ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName)), Contract);
+        Contract.Get('effect', Token);
+        Effect := Token.AsObject();
+        Effect.Get('changes', Token);
+        LibraryAssert.IsTrue(Token.AsValue().AsText().Contains(Fragment), TypeName + ' effect.changes names: ' + Fragment);
+    end;
+
+    local procedure AssertCountParameterNamesUnit(TypeName: Text; Unit: Text)
+    var
+        Token: JsonToken;
+        Found: Integer;
+    begin
+        foreach Token in ContractParameters(TypeName) do
+            if JsonText(Token.AsObject(), 'name') = 'expectedCount' then begin
+                Found += 1;
+                LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains(Unit), TypeName + ' expectedCount description names the unit.');
+            end;
+        LibraryAssert.AreEqual(1, Found, TypeName + ' declares expectedCount exactly once.');
+    end;
+
     local procedure ContractParameters(TypeName: Text) Parameters: JsonArray
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
@@ -504,6 +593,16 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         LibraryAssert.IsTrue(ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName)), Contract), 'Registered contract is required.');
         if Contract.Get('parameters', Token) then
             Parameters := Token.AsArray();
+    end;
+
+    /// <summary>Counts the own parameters without the counted confirmation, which irreversible types now declare themselves (#224).</summary>
+    local procedure OwnParameterCountWithoutConfirmation(TypeName: Text) Count: Integer
+    var
+        Token: JsonToken;
+    begin
+        foreach Token in OwnContractParameters(TypeName) do
+            if JsonText(Token.AsObject(), 'name') <> 'expectedCount' then
+                Count += 1;
     end;
 
     local procedure OwnContractParameters(TypeName: Text) Parameters: JsonArray
@@ -561,7 +660,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     begin
         Parameters := ContractParameters(TypeName);
         // #188: Foundation may append its confirmation parameter to irreversible contracts.
-        LibraryAssert.AreEqual(ExpectedCount, OwnContractParameters(TypeName).Count(), TypeName + ' exact own parameter count.');
+        LibraryAssert.AreEqual(ExpectedCount, OwnParameterCountWithoutConfirmation(TypeName), TypeName + ' exact own parameter count.');
         AssertRegisteredParameterCount(TypeName, Parameters, ExpectedCount);
         AssertParameter(TypeName, ParameterName, Required);
         foreach Token in Parameters do begin

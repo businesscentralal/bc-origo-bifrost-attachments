@@ -5,6 +5,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+### Changed
+- #224 (core#1365 D1/D2): `Storage.Upload.CommitToDataExchange` and `DataExchange.Export.Run` now declare the effect `irreversible` (was `write`), because they can write a file to external storage. The 11 other irreversible types (`Storage.File.Create/Delete/Copy/Move`, `Storage.Directory.Create/Delete`, `Storage.Attachment.Offload/Restore`, `Storage.Upload.Commit`, `DataExchange.Definition.Export`, `DataExchange.PaymentExport.Run`) and the two above now name the unit `expectedCount` counts (always one subject) in `effect.changes` and in their own `expectedCount` parameter, plus how to preview without side effects. Contract chapters stay locked English by design, so no XLF unit changes. Codeunit 10035183 only; no new objects.
+- Tests: 96216 asserts the real effects, the count unit and the single `expectedCount` per type; 96243 covers the export preview/confirm/wrong-count gate; 96256 confirms the upload commit through the shared confirmation helper. No new object IDs.
 ### Documentation
 - #81: reconcile the 11 November #80 closure and #81 reopening with released 28.3.2, later 28.3.3 preparation and artifact-specific signature evidence; refresh the committed source inventory after the version increment. Formal scenarios, validator dry-run and operator approvals remain incomplete. No AL objects changed.
 - #81: bring the scenario plan in line with main `c9395bb`: P02 discovers all 41 declared types with `DataExchange.Definition.Delete` disabled (#211), P09 expects its refusal instead of a delete, and P13 adds `Storage.File.CopyToStaging` (#214) with its cleanup. Regenerate `source-inventory.json` (41 types). Documentation only; no application, test, workflow or offer change.
