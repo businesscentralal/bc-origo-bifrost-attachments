@@ -8,8 +8,9 @@ codeunit 10035183 "Storage Contract Parts ori"
     Access = Internal;
 
     var
-        DataExchangeIrreversibleLbl: Label 'With storageCode, or keepFileInStorage on an upload commit, the file is written to external storage outside the Business Central transaction and cannot be rolled back with it. The call is irreversible.', Locked = true;
-        CountPreviewLbl: Label 'To get the count without side effects, send the request without expectedCount: Foundation answers ConfirmationRequired with the expected count and changes nothing. These types act on one subject, so no @preview or Max Count cap applies.', Locked = true;
+        DataExchangeExportIrreversibleLbl: Label 'With storageCode, the export file is written to external storage outside the Business Central transaction and cannot be rolled back with it. The call is irreversible.', Locked = true;
+        DataExchangeUploadIrreversibleLbl: Label 'With keepFileInStorage, the uploaded file is written to external storage outside the Business Central transaction and cannot be rolled back with it. The call is irreversible.', Locked = true;
+        CountPreviewLbl: Label 'When Require Confirmation for Irreversible Messages is enabled in Bifrost Setup, send the request without expectedCount to preview the count: Foundation answers ConfirmationRequired with the expected count and changes nothing. When disabled, omitting expectedCount runs the operation. These types act on one subject, so no @preview or Max Count cap applies.', Locked = true;
         StagingUploadIdLbl: Label 'The open upload session id returned by Storage.Upload.Begin. Only its creator can commit it.', Locked = true;
         StagingFileNameLbl: Label 'Optional replacement leaf file name; defaults to the session file name.', Locked = true;
         StagingContentTypeLbl: Label 'Optional MIME type; empty when not supplied.', Locked = true;
@@ -1366,7 +1367,7 @@ codeunit 10035183 "Storage Contract Parts ori"
 
     local procedure CountParameterText(MessageType: Text): Text
     var
-        CountParameterLbl: Label 'Counts %1. Always checked when sent; send the count from the preview. Call without it to preview the count without side effects. Required only when Require Confirmation for Irreversible Messages is enabled in Bifrost Setup.', Locked = true;
+        CountParameterLbl: Label 'Counts %1. Always checked when sent; send the count from the preview. Required only when Require Confirmation for Irreversible Messages is enabled in Bifrost Setup. When enabled, call without expectedCount to preview the count without side effects. When disabled, omitting expectedCount runs the operation.', Locked = true;
     begin
         exit(StrSubstNo(CountParameterLbl, CountUnit(MessageType)));
     end;
@@ -1403,10 +1404,15 @@ codeunit 10035183 "Storage Contract Parts ori"
             exit;
         end;
         case true of
-            MessageType in ['DataExchange.Export.Run', 'Storage.Upload.CommitToDataExchange']:
+            MessageType = 'DataExchange.Export.Run':
                 begin
                     Effect.Add('effect', 'irreversible');
-                    Effect.Add('changes', DataExchangeChangesLbl + ' ' + DataExchangeIrreversibleLbl);
+                    Effect.Add('changes', DataExchangeChangesLbl + ' ' + DataExchangeExportIrreversibleLbl);
+                end;
+            MessageType = 'Storage.Upload.CommitToDataExchange':
+                begin
+                    Effect.Add('effect', 'irreversible');
+                    Effect.Add('changes', DataExchangeChangesLbl + ' ' + DataExchangeUploadIrreversibleLbl);
                 end;
             MessageType in ['DataExchange.Type.Set', 'DataExchange.Import.Run',
                 'DataExchange.Entry.Process', 'DataExchange.Entry.Delete', 'DataExchange.Definition.Import']:

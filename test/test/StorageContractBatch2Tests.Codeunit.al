@@ -17,6 +17,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     procedure TypeList_Contract_DeclaresCountAndTypesOnce()
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
+        ContractInterface: Interface "Msg Contract ori";
         Contract: JsonObject;
         Response: JsonObject;
         ResponseField: JsonObject;
@@ -24,15 +25,20 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Fields: JsonArray;
         CountFields: Integer;
         TypesFields: Integer;
+        StatusFields: Integer;
+        CodeFields: Integer;
     begin
         // Story #69, AC02 | Time: None | Risk: Registered Foundation contract dispatch
-        // [SCENARIO] The merged contract describes the complete query result without duplicate fields.
+        // [SCENARIO] The app declares exactly two payload fields; Foundation may add its envelope descriptors.
+        ContractInterface := Enum::"Message Type ori".FromInteger(OrdinalOf('DataExchange.Type.List'));
+        LibraryAssert.IsTrue(ContractInterface.GetResponse(Response), 'The app response chapter must be available.');
+        Response.Get('fields', Token);
+        LibraryAssert.AreEqual(2, Token.AsArray().Count(), 'The app declares exactly count and types.');
         LibraryAssert.IsTrue(ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(OrdinalOf('DataExchange.Type.List')), Contract), 'The registered contract must be available.');
         Contract.Get('response', Token);
         Response := Token.AsObject();
         Response.Get('fields', Token);
         Fields := Token.AsArray();
-        LibraryAssert.AreEqual(2, Fields.Count(), 'Type.List returns count and types.');
         foreach Token in Fields do begin
             ResponseField := Token.AsObject();
             LibraryAssert.IsTrue(JsonText(ResponseField, 'description') <> '', 'Response field description required.');
@@ -47,12 +53,26 @@ codeunit 96216 "Storage Contract Batch2 Tests"
                         TypesFields += 1;
                         LibraryAssert.AreEqual('array', JsonText(ResponseField, 'type'), 'Types is an array.');
                     end;
+                'status':
+                    begin
+                        StatusFields += 1;
+                        LibraryAssert.AreEqual('string', JsonText(ResponseField, 'type'), 'Envelope status is a string.');
+                    end;
+                'code':
+                    begin
+                        CodeFields += 1;
+                        LibraryAssert.AreEqual('string', JsonText(ResponseField, 'type'), 'Envelope code is a string.');
+                    end;
                 else
                     LibraryAssert.Fail('Unexpected Type.List response field.');
             end;
         end;
         LibraryAssert.AreEqual(1, CountFields, 'Count must be declared once.');
         LibraryAssert.AreEqual(1, TypesFields, 'Types must be declared once.');
+        // Released Foundation omits these descriptors; current Foundation adds both exactly once.
+        LibraryAssert.IsTrue(StatusFields in [0, 1], 'Envelope status must not be duplicated.');
+        LibraryAssert.AreEqual(StatusFields, CodeFields, 'Foundation envelope descriptors must occur together once.');
+        LibraryAssert.AreEqual(2 + StatusFields + CodeFields, Fields.Count(), 'Only two payload fields and the Foundation envelope are allowed.');
     end;
 
     /// <summary>A parameterless Type.List returns integer zero and an empty array for no rows.</summary>
@@ -504,6 +524,8 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         AssertEffect('DataExchange.Export.Run', 'irreversible');
         AssertEffect('DataExchange.Definition.Export', 'irreversible');
         AssertEffect('DataExchange.PaymentExport.Run', 'irreversible');
+        AssertStorageCondition('DataExchange.Export.Run', 'storageCode', 'keepFileInStorage');
+        AssertStorageCondition('Storage.Upload.CommitToDataExchange', 'keepFileInStorage', 'storageCode');
         // Types that only create or modify BC records stay write; they wait for Gunnar's decision.
         AssertEffect('DataExchange.Import.Run', 'write');
         AssertEffect('DataExchange.Entry.Process', 'write');
@@ -535,6 +557,8 @@ codeunit 96216 "Storage Contract Batch2 Tests"
             AssertEffect(TypeName, 'irreversible');
             AssertChangesContain(TypeName, 'expectedCount counts one ');
             AssertChangesContain(TypeName, '(always 1)');
+            AssertChangesContain(TypeName, 'When Require Confirmation for Irreversible Messages is enabled in Bifrost Setup');
+            AssertChangesContain(TypeName, 'When disabled, omitting expectedCount runs the operation.');
             AssertChangesContain(TypeName, 'without expectedCount');
             AssertCountParameterNamesUnit(TypeName, 'Counts one ');
         end;
@@ -555,6 +579,19 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         foreach TypeName in Types do
             foreach Token in ContractParameters(TypeName) do
                 LibraryAssert.AreNotEqual('expectedCount', JsonText(Token.AsObject(), 'name'), TypeName + ' declares no expectedCount.');
+    end;
+
+    local procedure AssertStorageCondition(TypeName: Text; OwnParameter: Text; OtherParameter: Text)
+    var
+        ContractInterface: Interface "Msg Contract ori";
+        Effect: JsonObject;
+        Changes: Text;
+    begin
+        ContractInterface := Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName));
+        LibraryAssert.IsTrue(ContractInterface.GetEffect(Effect), 'The app effect chapter must be available.');
+        Changes := JsonText(Effect, 'changes');
+        LibraryAssert.IsTrue(Changes.Contains('With ' + OwnParameter + ','), TypeName + ' describes its own storage condition.');
+        LibraryAssert.IsFalse(Changes.Contains(OtherParameter), TypeName + ' must not name the other operation parameter.');
     end;
 
     local procedure AssertChangesContain(TypeName: Text; Fragment: Text)
@@ -580,6 +617,8 @@ codeunit 96216 "Storage Contract Batch2 Tests"
             if JsonText(Token.AsObject(), 'name') = 'expectedCount' then begin
                 Found += 1;
                 LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains(Unit), TypeName + ' expectedCount description names the unit.');
+                LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains('When enabled, call without expectedCount'), TypeName + ' preview requires the setup option.');
+                LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains('When disabled, omitting expectedCount runs the operation.'), TypeName + ' documents the disabled confirmation option.');
             end;
         LibraryAssert.AreEqual(1, Found, TypeName + ' declares expectedCount exactly once.');
     end;
