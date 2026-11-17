@@ -214,6 +214,10 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         Guide.AppendLine();
         Guide.AppendLine('`Storage.Directory.Delete` refuses the connection root path with `InvalidParameter` before the connector is called; name a folder below the root to delete.');
         Guide.AppendLine();
+        Guide.AppendLine('## Setup mode');
+        Guide.AppendLine();
+        Guide.AppendLine('While Foundation setup mode is active for your approved session source, `Data.Records.Set` may write these Attachments setup/configuration tables: `Data Exchange Type`, `Data Exch. Def`, `Data Exch. Line Def`, `Data Exch. Column Def`, `Data Exch. Mapping` and `Data Exch. Field Mapping`. Each allowed write is logged. Everything else stays refused in setup mode: `Storage Setup ori` (connector, account, base path), upload sessions and chunks, `Data Exch.`, `Data Exch. Field`, `Storage Attachment Link ori`, `DataExch Entry Link ori`, and the Document Attachment and Incoming Document storage fields.');
+        Guide.AppendLine();
         Guide.AppendLine('## Permissions');
         Guide.AppendLine();
         Guide.AppendLine('Assign the `BIFROST Attach ori` permission set. The Data Exchange message types are described by `Help.DataExchange.Get` and need `BIFROST DataExch ori`.');
