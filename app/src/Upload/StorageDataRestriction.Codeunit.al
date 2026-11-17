@@ -75,10 +75,10 @@ codeunit 10035195 "Storage Data Restriction ori"
         // Setup mode (Foundation facade) opens only this app's setup/configuration tables.
         // Protected tables above never open. The write is logged because this subscriber allows it.
         if IsSetupConfigurationTable(TableNo) then
-            if IsRestricted and IsSetupModeActive() then begin
-                IsRestricted := false;
-                SetupMode.LogWrite(TableNo);
-            end;
+            if IsSetupModeActive() then
+                SetupMode.LogWrite(TableNo)
+            else
+                IsRestricted := true;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnGetDedicatedMessageTypeHintForWrite', '', false, false)]
