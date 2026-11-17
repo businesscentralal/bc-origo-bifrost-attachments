@@ -938,6 +938,8 @@ function Find-Offenders([string]$AppFolder) {
             $found.Add("$typeName|unsupported-analysis|$diagnostic")
         }
         foreach ($key in ($declared | Sort-Object)) {
+            # expectedCount is read by Foundation's confirmation gate before the implementation runs; irreversible types may declare it to name their count unit (#224).
+            if ($key -eq 'expectedCount') { continue }
             if (-not $reads.Contains($key)) { $found.Add("$typeName|declared-not-read|$key") }
         }
         foreach ($key in ($reads | Sort-Object)) {

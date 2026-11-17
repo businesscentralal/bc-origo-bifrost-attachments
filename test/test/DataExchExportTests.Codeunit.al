@@ -339,6 +339,81 @@ codeunit 96243 "DataExch Export Tests ori"
         exit(DataExch.Count());
     end;
 
+    /// <summary>#224 AC03: Export.Run is irreversible; without expectedCount it previews and writes nothing, with it the export runs.</summary>
+    [Test]
+    procedure Audit224_ExportRun_RequiresCountedConfirmation()
+    var
+        MockState: Codeunit "Storage Mock State";
+        CustomerNos: List of [Code[20]];
+        Request: JsonObject;
+        Preview: JsonObject;
+        Confirmed: JsonObject;
+        DefCode: Code[20];
+    begin
+        Fixture.InitializeStorage();
+        DefCode := Fixture.CreateExportDefinition();
+        CustomerNos := Fixture.CreateCustomers(1, 'DXE 224');
+        Request.Add('dataExchDefCode', DefCode);
+        Request.Add('tableId', Database::Customer);
+        Request.Add('tableView', StrSubstNo(OneCustomerViewTok, CustomerNos.Get(1)));
+        Request.Add('storageCode', Fixture.StorageCode());
+        Request.Add('path', 'out/audit224.csv');
+
+        Preview := DispatchRaw("Message Type ori"::"DataExchange.Export.Run", Request);
+
+        LibraryAssert.AreEqual('ConfirmationRequired', Fixture.ReadText(Preview, 'code'), 'Without expectedCount the export only previews.');
+        LibraryAssert.IsFalse(MockState.HasFile('out/audit224.csv'), 'The preview writes no file.');
+
+        Request.Add('expectedCount', 1);
+        Confirmed := DispatchRaw("Message Type ori"::"DataExchange.Export.Run", Request);
+
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Confirmed, 'status'), 'The confirmed export runs. ' + Fixture.ReadText(Confirmed, 'error'));
+        LibraryAssert.IsTrue(MockState.HasFile('out/audit224.csv'), 'The confirmed export writes the file.');
+    end;
+
+    /// <summary>#224 AC03: a wrong expectedCount is refused and writes nothing.</summary>
+    [Test]
+    procedure Audit224_ExportRun_WrongCount_WritesNothing()
+    var
+        MockState: Codeunit "Storage Mock State";
+        CustomerNos: List of [Code[20]];
+        Request: JsonObject;
+        Response: JsonObject;
+        DefCode: Code[20];
+    begin
+        Fixture.InitializeStorage();
+        DefCode := Fixture.CreateExportDefinition();
+        CustomerNos := Fixture.CreateCustomers(1, 'DXE 224B');
+        Request.Add('dataExchDefCode', DefCode);
+        Request.Add('tableId', Database::Customer);
+        Request.Add('tableView', StrSubstNo(OneCustomerViewTok, CustomerNos.Get(1)));
+        Request.Add('storageCode', Fixture.StorageCode());
+        Request.Add('path', 'out/audit224b.csv');
+        Request.Add('expectedCount', 7);
+
+        Response := DispatchRaw("Message Type ori"::"DataExchange.Export.Run", Request);
+
+        LibraryAssert.AreNotEqual('Success', Fixture.ReadText(Response, 'status'), 'A wrong count is not a success.');
+        LibraryAssert.IsFalse(MockState.HasFile('out/audit224b.csv'), 'A wrong count writes no file.');
+    end;
+
+    local procedure DispatchRaw(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) ResponseJson: JsonObject
+    var
+        Dispatcher: Codeunit "Dispatcher ori";
+        RequestContent: BigText;
+        ResponseContent: BigText;
+        ResponseContentType: Text[100];
+        MessageVersion: Enum "Message Version ori";
+        RequestText: Text;
+        ResponseText: Text;
+    begin
+        RequestJson.WriteTo(RequestText);
+        RequestContent.AddText(RequestText);
+        Dispatcher.Execute(MessageType, MessageVersion, '', '', 'application/json', RequestContent, ResponseContent, ResponseContentType);
+        ResponseContent.GetSubText(ResponseText, 1);
+        LibraryAssert.IsTrue(ResponseJson.ReadFrom(ResponseText), 'The public dispatcher must return JSON.');
+    end;
+
     local procedure LineBreak(): Text
     var
         Lf: Text[1];
