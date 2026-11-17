@@ -8,6 +8,9 @@ codeunit 10035183 "Storage Contract Parts ori"
     Access = Internal;
 
     var
+        DataExchangeExportIrreversibleLbl: Label 'With storageCode, the export file is written to external storage outside the Business Central transaction and cannot be rolled back with it. The call is irreversible.', Locked = true;
+        DataExchangeUploadIrreversibleLbl: Label 'With keepFileInStorage, the uploaded file is written to external storage outside the Business Central transaction and cannot be rolled back with it. The call is irreversible.', Locked = true;
+        CountPreviewLbl: Label 'When Require Confirmation for Irreversible Messages is enabled in Bifrost Setup, send the request without expectedCount to preview the count: Foundation answers ConfirmationRequired with the expected count and changes nothing. When disabled, omitting expectedCount runs the operation. These types act on one subject, so no @preview or Max Count cap applies.', Locked = true;
         StagingUploadIdLbl: Label 'The open upload session id returned by Storage.Upload.Begin. Only its creator can commit it.', Locked = true;
         StagingFileNameLbl: Label 'Optional replacement leaf file name; defaults to the session file name.', Locked = true;
         StagingContentTypeLbl: Label 'Optional MIME type; empty when not supplied.', Locked = true;
@@ -750,6 +753,8 @@ codeunit 10035183 "Storage Contract Parts ori"
                 end;
 
         end;
+        if IsCountedIrreversible(MessageType) then
+            Parameters.Add(ContractMgt.Parameter('expectedCount', 'integer', false, CountParameterText(MessageType)));
         AddParameterFacts(Parameters);
     end;
 
@@ -824,7 +829,7 @@ codeunit 10035183 "Storage Contract Parts ori"
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
     begin
-        Target.Add(ContractMgt.TargetEntry('data.target + data.systemId', 'attachment record', 'The attachment table and SystemId identify the attachment.'));
+        Target.Add(ContractMgt.TargetEntry('data.systemId', 'attachment record', 'The attachment table and SystemId identify the attachment.'));
     end;
 
     /// <summary>Describes the existing record addressed by a shipped Data Exchange operation.</summary>
@@ -1311,6 +1316,62 @@ codeunit 10035183 "Storage Contract Parts ori"
             'DataExchange.Import.Run', 'DataExchange.Export.Run', 'DataExchange.Definition.Import', 'DataExchange.Definition.Export', 'DataExchange.PaymentExport.Run']);
     end;
 
+    /// <summary>True for the types that declare the irreversible effect and therefore take expectedCount.</summary>
+    procedure IsCountedIrreversible(MessageType: Text): Boolean
+    begin
+        exit(MessageType in ['Storage.File.Create', 'Storage.File.Delete', 'Storage.File.Copy', 'Storage.File.Move',
+            'Storage.Directory.Create', 'Storage.Directory.Delete', 'Storage.Attachment.Offload', 'Storage.Attachment.Restore',
+            'Storage.Upload.Commit', 'Storage.Upload.CommitToDataExchange', 'DataExchange.Definition.Export',
+            'DataExchange.PaymentExport.Run', 'DataExchange.Export.Run']);
+    end;
+
+    /// <summary>The unit that expectedCount counts for one irreversible type.</summary>
+    procedure CountUnit(MessageType: Text): Text
+    begin
+        case MessageType of
+            'Storage.File.Create':
+                exit('one file written to storage (always 1)');
+            'Storage.File.Delete':
+                exit('one file deleted from storage (always 1)');
+            'Storage.File.Copy':
+                exit('one file created at the target path (always 1)');
+            'Storage.File.Move':
+                exit('one file moved, written at the target path and removed from the source path (always 1)');
+            'Storage.Directory.Create':
+                exit('one directory created in storage (always 1)');
+            'Storage.Directory.Delete':
+                exit('one directory deleted from storage (always 1); the files inside it are not counted');
+            'Storage.Attachment.Offload':
+                exit('one attachment offloaded to storage (always 1)');
+            'Storage.Attachment.Restore':
+                exit('one attachment restored from storage (always 1)');
+            'Storage.Upload.Commit':
+                exit('one upload session committed into one storage file (always 1); the chunks are not counted');
+            'Storage.Upload.CommitToDataExchange':
+                exit('one upload session imported into one Data Exchange entry (always 1); the lines are not counted');
+            'DataExchange.Definition.Export':
+                exit('one definition exported as one XML file (always 1)');
+            'DataExchange.PaymentExport.Run':
+                exit('one payment journal batch exported as one bank file (always 1); the journal lines are not counted');
+            'DataExchange.Export.Run':
+                exit('one export file produced by one definition run (always 1); the exported records are not counted');
+        end;
+    end;
+
+    local procedure CountEffectText(MessageType: Text): Text
+    var
+        CountEffectLbl: Label 'expectedCount counts %1. %2', Locked = true;
+    begin
+        exit(StrSubstNo(CountEffectLbl, CountUnit(MessageType), CountPreviewLbl));
+    end;
+
+    local procedure CountParameterText(MessageType: Text): Text
+    var
+        CountParameterLbl: Label 'Counts %1. Always checked when sent; send the count from the preview. Required only when Require Confirmation for Irreversible Messages is enabled in Bifrost Setup. When enabled, call without expectedCount to preview the count without side effects. When disabled, omitting expectedCount runs the operation.', Locked = true;
+    begin
+        exit(StrSubstNo(CountParameterLbl, CountUnit(MessageType)));
+    end;
+
     /// <summary>Builds the operation effect for one message type.</summary>
     procedure GetEffect(MessageType: Text) Effect: JsonObject
     var
@@ -1343,7 +1404,17 @@ codeunit 10035183 "Storage Contract Parts ori"
             exit;
         end;
         case true of
-            MessageType in ['DataExchange.Type.Set', 'DataExchange.Import.Run', 'DataExchange.Export.Run', 'Storage.Upload.CommitToDataExchange',
+            MessageType = 'DataExchange.Export.Run':
+                begin
+                    Effect.Add('effect', 'irreversible');
+                    Effect.Add('changes', DataExchangeChangesLbl + ' ' + DataExchangeExportIrreversibleLbl);
+                end;
+            MessageType = 'Storage.Upload.CommitToDataExchange':
+                begin
+                    Effect.Add('effect', 'irreversible');
+                    Effect.Add('changes', DataExchangeChangesLbl + ' ' + DataExchangeUploadIrreversibleLbl);
+                end;
+            MessageType in ['DataExchange.Type.Set', 'DataExchange.Import.Run',
                 'DataExchange.Entry.Process', 'DataExchange.Entry.Delete', 'DataExchange.Definition.Import']:
                 begin
                     Effect.Add('effect', 'write');
@@ -1400,6 +1471,10 @@ codeunit 10035183 "Storage Contract Parts ori"
         end;
         if MessageType in ['Storage.Attachment.CreateForRecord', 'Storage.Attachment.CreateLinked'] then
             Effect.Replace('changes', LinkedSourceEffectLbl);
+        if IsCountedIrreversible(MessageType) then begin
+            Effect.Get('changes', Changes);
+            Effect.Replace('changes', Changes.AsValue().AsText() + ' ' + CountEffectText(MessageType));
+        end;
         Effect.Add('idempotent', MessageType in ['Storage.Account.List', 'Storage.File.List', 'Storage.File.Get', 'Storage.File.Exists', 'Storage.Directory.List', 'Storage.Directory.Exists', 'Storage.Upload.Status', 'DataExchange.Definition.List', 'DataExchange.Definition.Get', 'DataExchange.Type.List', 'DataExchange.Entry.List', 'DataExchange.Entry.Get']);
         // The Data Exchange tables are granted by BIFROST DataExch ori only; BIFROST Attach ori does not include them.
         if IsDataExchangeType(MessageType) or (MessageType = 'Storage.Upload.CommitToDataExchange') then

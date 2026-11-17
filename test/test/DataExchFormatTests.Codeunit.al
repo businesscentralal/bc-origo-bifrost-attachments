@@ -361,18 +361,9 @@ codeunit 96256 "DataExch Format Tests ori"
     local procedure DispatchLocale(MessageType: Enum "Message Type ori"; Request: JsonObject; LanguageId: Integer) Response: JsonObject
     var
         Dispatcher: Codeunit "Dispatcher ori";
-        RequestContent: BigText;
-        ResponseContent: BigText;
-        TaskId: Guid;
-        MessageId: Guid;
-        ResponseTime: Duration;
-        ResponseType: Text[100];
-        Payload: Text;
+        TestConfirmation: Codeunit "Storage Test Confirmation ori";
     begin
-        Request.WriteTo(Payload);
-        RequestContent.AddText(Payload);
-        Dispatcher.EnqueueAndProcess(MessageType, "Message Version ori"::"1.0", '', '', 'application/json', RequestContent, TaskId, LanguageId, MessageId, ResponseContent, ResponseType, ResponseTime);
-        ResponseContent.GetSubText(Payload, 1);
-        LibraryAssert.IsTrue(Response.ReadFrom(Payload), 'Real queue response must be JSON.');
+        // Irreversible types answer a counted-confirmation preview first (#224); the helper confirms and returns the real response.
+        Response := TestConfirmation.Dispatch(Dispatcher, MessageType, Request, LanguageId, false);
     end;
 }
