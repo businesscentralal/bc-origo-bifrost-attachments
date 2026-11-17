@@ -147,10 +147,12 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         RequestMgt.RespondSuccess(Argument, DataObject);
     end;
 
-    // The guide is a machine-facing contract document in English, like Foundation's Help.Bifrost.Get overview.
+    // Existing contract text remains in English; setup-mode guidance follows the session language.
     local procedure BuildGuide(): Text
     var
         Guide: TextBuilder;
+        SetupModeHeadingLbl: Label '## Setup mode', Comment = 'is-IS=## Uppsetningarhamur';
+        SetupModeGuidanceLbl: Label 'While Foundation setup mode is active for your approved session source, `Data.Records.Set` may write these Attachments setup/configuration tables: `Data Exchange Type`, `Data Exch. Def`, `Data Exch. Line Def`, `Data Exch. Column Def`, `Data Exch. Mapping` and `Data Exch. Field Mapping`. Each allowed write is logged. Everything else stays refused in setup mode: `Storage Setup ori` (connector, account, base path), upload sessions and chunks, `Data Exch.`, `Data Exch. Field`, `Storage Attachment Link ori`, `DataExch Entry Link ori`, and the Document Attachment and Incoming Document storage fields.', Comment = 'is-IS=Meðan uppsetningarhamur Bifröst er virkur fyrir samþykktan uppruna setu má `Data.Records.Set` skrifa í þessar uppsetningar- og stillingatöflur viðhengja: `Data Exchange Type`, `Data Exch. Def`, `Data Exch. Line Def`, `Data Exch. Column Def`, `Data Exch. Mapping` og `Data Exch. Field Mapping`. Öll leyfð skrif eru skráð. Allt annað er áfram lokað í uppsetningarham: `Storage Setup ori` (tengill, reikningur, grunnslóð), upphleðslusetur og bútar, `Data Exch.`, `Data Exch. Field`, `Storage Attachment Link ori`, `DataExch Entry Link ori` og geymslureitir Document Attachment og Incoming Document.';
     begin
         Guide.AppendLine('# Bifrost Attachments - storage message types');
         Guide.AppendLine();
@@ -214,9 +216,9 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         Guide.AppendLine();
         Guide.AppendLine('`Storage.Directory.Delete` refuses the connection root path with `InvalidParameter` before the connector is called; name a folder below the root to delete.');
         Guide.AppendLine();
-        Guide.AppendLine('## Setup mode');
+        Guide.AppendLine(SetupModeHeadingLbl);
         Guide.AppendLine();
-        Guide.AppendLine('While Foundation setup mode is active for your approved session source, `Data.Records.Set` may write these Attachments setup/configuration tables: `Data Exchange Type`, `Data Exch. Def`, `Data Exch. Line Def`, `Data Exch. Column Def`, `Data Exch. Mapping` and `Data Exch. Field Mapping`. Each allowed write is logged. Everything else stays refused in setup mode: `Storage Setup ori` (connector, account, base path), upload sessions and chunks, `Data Exch.`, `Data Exch. Field`, `Storage Attachment Link ori`, `DataExch Entry Link ori`, and the Document Attachment and Incoming Document storage fields.');
+        Guide.AppendLine(SetupModeGuidanceLbl);
         Guide.AppendLine();
         Guide.AppendLine('## Permissions');
         Guide.AppendLine();

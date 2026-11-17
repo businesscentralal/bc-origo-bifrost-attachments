@@ -5,6 +5,7 @@ using Microsoft.Foundation.Attachment;
 using Microsoft.Sales.Customer;
 using Origo.Bifrost;
 using Origo.Bifrost.Attachments;
+using System.Diagnostics;
 using System.IO;
 
 /// <summary>
@@ -86,8 +87,9 @@ codeunit 96282 "Storage Setup Mode 232 Tests"
         Seam: Codeunit "Storage Setup Mode Seam 232";
         TypeCode: Code[20];
     begin
-        // [SCENARIO] AC04 Data.Records.Set refuses the setup table as restricted when off. When on the restriction no longer
-        // applies; the change log write guard is a separate gate that Foundation test tools open in the MCP evidence.
+        // [SCENARIO] AC04 Data.Records.Set refuses the table when off and persists the requested values when on.
+        // Cover the field with Change Log without weakening the write guard. The test runner rolls setup back.
+        EnableTypeChangeLog();
         TypeCode := CopyStr('X232' + DelChr(Format(CreateGuid(), 0, 4), '=', '-'), 1, MaxStrLen(TypeCode));
         BindSubscription(Seam);
         Seam.SetActive(false);
@@ -98,10 +100,69 @@ codeunit 96282 "Storage Setup Mode 232 Tests"
 
         Seam.SetActive(true);
         ExecuteSet(TempArgument, TypeCode);
-        LibraryAssert.IsFalse(ReadText(TempArgument.GetResponseJson(), 'error').Contains('cannot be written'), 'Not refused as a restricted table while on: ' + ResponseText(TempArgument));
-        if DataExchangeType.Get(TypeCode) then
-            DataExchangeType.Delete();
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Write succeeds while on: ' + ResponseText(TempArgument));
+        LibraryAssert.IsTrue(DataExchangeType.Get(TypeCode), 'The successful write must persist a row.');
+        LibraryAssert.AreEqual(TypeCode, DataExchangeType.Code, 'The requested primary key is persisted.');
+        LibraryAssert.AreEqual('Setup mode test', DataExchangeType.Description, 'The requested description is persisted.');
+        DataExchangeType.Delete();
         UnbindSubscription(Seam);
+    end;
+
+    [Test]
+    procedure SetupModeHelp_English_ExplainsAccessAndLogging()
+    begin
+        AssertSetupModeHelp(1033, '## Setup mode', 'Each allowed write is logged.');
+    end;
+
+    [Test]
+    procedure SetupModeHelp_Icelandic_ExplainsAccessAndLogging()
+    begin
+        AssertSetupModeHelp(1039, '## Uppsetningarhamur', 'Öll leyfð skrif eru skráð.');
+    end;
+
+    local procedure AssertSetupModeHelp(LanguageId: Integer; ExpectedHeading: Text; ExpectedLogging: Text)
+    var
+        TempArgument: Record "Message Argument ori" temporary;
+        HelpImpl: Codeunit "Storage Help Get Impl ori";
+        DataToken: JsonToken;
+        Markdown: Text;
+        PreviousLanguage: Integer;
+    begin
+        // [SCENARIO] AC05 Both supported languages explain setup mode through the help response.
+        PreviousLanguage := GlobalLanguage();
+        GlobalLanguage(LanguageId);
+        TempArgument.Init();
+        TempArgument."Type" := TempArgument."Type"::"Help.Storage.Get";
+        TempArgument.Insert();
+        HelpImpl.ExecuteBifrostTask(TempArgument);
+        GlobalLanguage(PreviousLanguage);
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Help succeeds.');
+        TempArgument.GetResponseJson().Get('data', DataToken);
+        Markdown := ReadText(DataToken.AsObject(), 'markdown');
+        LibraryAssert.IsTrue(Markdown.Contains(ExpectedHeading), 'The setup heading follows the requested language.');
+        LibraryAssert.IsTrue(Markdown.Contains(ExpectedLogging), 'The setup guidance explains write logging in the requested language.');
+        LibraryAssert.IsTrue(Markdown.Contains('`Data Exch. Field Mapping`'), 'The allowed setup tables are named.');
+        LibraryAssert.IsTrue(Markdown.Contains('`Storage Setup ori`'), 'The protected connector setup is named.');
+    end;
+
+    local procedure EnableTypeChangeLog()
+    var
+        ChangeLogSetup: Record "Change Log Setup";
+        ChangeLogSetupTable: Record "Change Log Setup (Table)";
+    begin
+        if not ChangeLogSetup.Get() then begin
+            ChangeLogSetup.Init();
+            ChangeLogSetup.Insert();
+        end;
+        ChangeLogSetup."Change Log Activated" := true;
+        ChangeLogSetup.Modify();
+        if not ChangeLogSetupTable.Get(Database::"Data Exchange Type") then begin
+            ChangeLogSetupTable.Init();
+            ChangeLogSetupTable."Table No." := Database::"Data Exchange Type";
+            ChangeLogSetupTable.Insert();
+        end;
+        ChangeLogSetupTable."Log Modification" := ChangeLogSetupTable."Log Modification"::"All Fields";
+        ChangeLogSetupTable.Modify();
     end;
 
     local procedure ExecuteSet(var TempArgument: Record "Message Argument ori" temporary; TypeCode: Code[20])
