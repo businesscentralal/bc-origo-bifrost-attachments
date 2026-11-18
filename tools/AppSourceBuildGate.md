@@ -31,7 +31,7 @@ The separate controlled523 Foundation fixture is main
 `Origo_Bifrost Foundation_28.0.2.523.app`, SHA256
 `5901bebe66b44e91ed6110620e62ee45d122ba9e0378dcfda4aeef4d00d3ae0f`.
 The controlled fixture retains these exact bytes. Current actual precompile inventory
-requires the exact released candidate669 below, with zero product self-app inputs. Test must use the exact just-built product, except when a PR does not touch `app/` and AL-Go incremental builds place a baseline-reused product under `.buildartifacts/Apps` (see Baseline product reuse below). Changing the approved
+requires the exact released candidate741 below, with zero product self-app inputs. Test must use the exact just-built product, except when a PR does not touch `app/` and AL-Go incremental builds place a baseline-reused product under `.buildartifacts/Apps` (see Baseline product reuse below). Changing the approved
 input requires a reviewed tooling change; the app dependency floor is
 **28.0.3.530**, the approved candidate. Symbol inventories are independent of the donated manifest guard.
 
@@ -63,26 +63,28 @@ consume the exact reused product bytes (`packageSha256`). **Signed** builds stil
 a current-run product compile receipt; baseline reuse is refused there. Diffs that touch
 `app/`, or missing/invalid baseline env or package binding, fail closed.
 
-## Current Foundation release input (#209)
+## Current Foundation release input (28.0.13)
 
-The probe selects Foundation release `28.0.11`, package `28.0.11.669`.
-The gate and default collision-restore/staging profile are `candidate669`:
+The probe selects Foundation release `28.0.13`, package `28.0.13.741`.
+The gate and default collision-restore/staging profile are `candidate741`:
 
-- Source: `a99232fbbe8bba3d18d39a24b8cfa2a06ea3376e`.
-- Successful build: [41792278930, attempt 2](https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/41792278930).
+- Source: `4458b145846907595b32a1866e5d3e262ca7e8b5`.
+- Successful build: [44188373403, attempt 2](https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/44188373403).
 - Compiler: `18.1.44.47295`.
-- Apps artifact `13306109485`, archive SHA256 `597e7707533c0ce41897fecc65e4b64aa13c5107da2dcb7bf4798c820687d016`.
-- Signed Apps package SHA256 `050cb3b6f2c77ee74ab155831664a96b790781e27890c3632e32c29837452c08`, no friends.
-- TestApps artifact `13307999926`, archive SHA256 `ce66b4b27bdd90e71ae28fbd5cbf0d90c8b6c4572c5864f0725e2cd21ea028d6`.
-- Only replace its exact same-filename Foundation collision, SHA256 `47e6da5b1137898c712d36c3287922568b73e8276e876a1d546a0b37f231936d`, with its existing Foundation test friend.
+- Apps artifact `14379711228` (release asset `761125618`), archive SHA256 `80082508b0cbbc5746b8479281fa467159dbbfb84e58e34f70e03fea81bd03e9`.
+- Signed Apps package SHA256 `5dfe8df26f725e8185d3583dc9558ef5e87cca4341c9959a58c5a6f7219e0a57`, no friends.
+- TestApps artifact `14381133953` (release asset `761125901`), archive SHA256 `2aefe1b306efc4a62a8886c29a01a9c09f833d62f80400f90860f1d69714cb91`.
+- Only replace its exact same-filename Foundation collision, SHA256 `549a9665ba6d983e41ad8ec35897d9d2c0c995b9d667228f4f70d870958c7639`, with its existing Foundation test friend.
 
-Release asset digests match the corresponding build artifact archives. The NAVX
-manifest supplies the exact source, build and compiler identity; these are checked
+Release asset digests match the corresponding build artifact archives. The build
+artifacts expire on 15 February 2027; restoration downloads the Apps artifact by id.
+The NAVX manifest supplies the exact source, build and compiler identity; these are checked
 alongside the package hashes. Signature-tail content does not certify Windows
 signature trust. Unknown cache content still fails before download or replacement;
 already approved content remains untouched. Historical `controlled523`,
-`candidate530` and `candidate632` profiles retain their original bytes and remain
-explicit historical inputs. Product/test dependency floors remain unchanged.
+`candidate530`, `candidate632` and `candidate669` (release `28.0.11`, #209) profiles
+retain their original bytes and remain explicit historical inputs. Product/test
+dependency floors remain unchanged.
 
 ## Infrastructure and acceptance holds
 
