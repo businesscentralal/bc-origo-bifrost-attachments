@@ -37,8 +37,8 @@ using System.IO;
 /// stays writable through the generic data types.
 ///
 /// Setup mode (Foundation <c>Bifrost Setup Mode ori</c> facade, read-only): while <c>IsActive()</c>
-/// is true, only the setup/configuration tables are write-unrestricted and every allowed write calls
-/// <c>LogWrite</c>. Setup/configuration: <c>Data Exchange Type</c>, <c>Data Exch. Def</c>,
+/// is true, only the setup/configuration tables are write-unrestricted. Foundation logs successful
+/// <c>Data.Records.Set</c> writes; permission checks must not log writes. Setup/configuration: <c>Data Exchange Type</c>, <c>Data Exch. Def</c>,
 /// <c>Data Exch. Line Def</c>, <c>Data Exch. Column Def</c>, <c>Data Exch. Mapping</c> and
 /// <c>Data Exch. Field Mapping</c>. Protected (never open): <c>Storage Setup ori</c> (connector, account,
 /// base path), upload sessions/chunks, <c>Data Exch.</c>, <c>Data Exch. Field</c>, <c>Storage Attachment Link ori</c>,
@@ -73,11 +73,10 @@ codeunit 10035195 "Storage Data Restriction ori"
             exit;
         end;
         // Setup mode (Foundation facade) opens only this app's setup/configuration tables.
-        // Protected tables above never open. The write is logged because this subscriber allows it.
+        // Foundation logs successful Data.Records.Set writes. This permission check must not log
+        // a duplicate write or report a write that later fails validation (#232, AC03 clarification).
         if IsSetupConfigurationTable(TableNo) then
-            if IsSetupModeActive() then
-                SetupMode.LogWrite(TableNo)
-            else
+            if not IsSetupModeActive() then
                 IsRestricted := true;
     end;
 
