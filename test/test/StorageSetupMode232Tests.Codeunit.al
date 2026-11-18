@@ -100,7 +100,7 @@ codeunit 96282 "Storage Setup Mode 232 Tests"
 
         Seam.SetActive(true);
         ExecuteSet(TempArgument, TypeCode);
-        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Write succeeds while on: ' + ResponseText(TempArgument));
+        LibraryAssert.AreEqual('Success', ReadText(TempArgument.GetResponseJson(), 'status'), 'Write succeeds while on: ' + GetResponseText(TempArgument));
         LibraryAssert.IsTrue(DataExchangeType.Get(TypeCode), 'The successful write must persist a row.');
         LibraryAssert.AreEqual(TypeCode, DataExchangeType.Code, 'The requested primary key is persisted.');
         LibraryAssert.AreEqual('Setup mode test', DataExchangeType.Description, 'The requested description is persisted.');
@@ -168,14 +168,14 @@ codeunit 96282 "Storage Setup Mode 232 Tests"
     local procedure ExecuteSet(var TempArgument: Record "Message Argument ori" temporary; TypeCode: Code[20])
     var
         Dispatcher: Codeunit "Dispatcher ori";
+        RequestContent: BigText;
+        ResponseContent: BigText;
         MessageVersion: Enum "Message Version ori";
         Request: JsonObject;
         RecordObject: JsonObject;
         PrimaryKey: JsonObject;
         Fields: JsonObject;
         DataArray: JsonArray;
-        RequestContent: BigText;
-        ResponseContent: BigText;
         ResponseContentType: Text[100];
         RequestText: Text;
         ResponseText: Text;
@@ -200,7 +200,7 @@ codeunit 96282 "Storage Setup Mode 232 Tests"
         TempArgument.SetResponseJson(ResponseJson);
     end;
 
-    local procedure ResponseText(var TempArgument: Record "Message Argument ori" temporary): Text
+    local procedure GetResponseText(var TempArgument: Record "Message Argument ori" temporary): Text
     var
         Text: Text;
     begin
