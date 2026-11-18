@@ -63,6 +63,15 @@ PROFILES = {
         pin='050cb3b6f2c77ee74ab155831664a96b790781e27890c3632e32c29837452c08',
         testPin='47e6da5b1137898c712d36c3287922568b73e8276e876a1d546a0b37f231936d',
         buildUrl='https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/41792278930'),
+    'candidate741': dict(source='4458b145846907595b32a1866e5d3e262ca7e8b5', run=44188373403, attempt=2,
+        artifacts={
+            'Apps': (14379711228, '80082508b0cbbc5746b8479281fa467159dbbfb84e58e34f70e03fea81bd03e9'),
+            'TestApps': (14381133953, '2aefe1b306efc4a62a8886c29a01a9c09f833d62f80400f90860f1d69714cb91'),
+        },
+        identity=dict(id=FOUNDATION, publisher='Origo', name='Bifrost Foundation', version='28.0.13.741'),
+        pin='5dfe8df26f725e8185d3583dc9558ef5e87cca4341c9959a58c5a6f7219e0a57',
+        testPin='549a9665ba6d983e41ad8ec35897d9d2c0c995b9d667228f4f70d870958c7639',
+        buildUrl='https://github.com/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/runs/44188373403'),
 }
 
 
@@ -175,7 +184,7 @@ def validate(receipt_path, context, install_apps, install_tests, symbols=None):
 
 def stage(request, destination):
     """Use immutable archives and a fresh directory. Never delete another input."""
-    profile = request.get('profile', 'candidate669')
+    profile = request.get('profile', 'candidate741')
     profile_config(profile)
     context = request['context']
     context_check(context)
@@ -211,7 +220,7 @@ def _foundation_filename(identity):
     return f"{identity['publisher']}_{identity['name']}_{identity['version']}.app"
 
 
-def restore_overwritten_foundation(root, fetch_archive, profile="candidate669", symbols=None):
+def restore_overwritten_foundation(root, fetch_archive, profile="candidate741", symbols=None):
     """Put the approved Apps package back when TestApps extracted over the same filename.
 
     AL-Go writes both artifacts into `.dependencies` as `Publisher_Name_Version.app`.
@@ -390,7 +399,7 @@ def _download_url(url, token, destination):
         time.sleep(attempt + 1)
 
 
-def download_apps_archive(destination, profile="candidate669"):
+def download_apps_archive(destination, profile="candidate741"):
     config = profile_config(profile)
     artifact_id = config["artifacts"]["Apps"][0]
     url = ("https://api.github.com/repos/OrigoSoftwareSolutions/bc-origo-bifrost-core/actions/artifacts/"
