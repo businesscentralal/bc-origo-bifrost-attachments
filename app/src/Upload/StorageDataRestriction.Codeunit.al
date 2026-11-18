@@ -35,12 +35,21 @@ using System.IO;
 /// <c>Incoming Document."Data Exchange Type"</c> is field-restricted and points at
 /// <c>Storage.Upload.CommitToRecord / DataExchange.Type.Set</c>. The rest of Incoming Document
 /// stays writable through the generic data types.
+///
+/// Setup mode (Foundation <c>Bifrost Setup Mode ori</c> facade, read-only): while <c>IsActive()</c>
+/// is true, only the setup/configuration tables are write-unrestricted. Foundation logs successful
+/// <c>Data.Records.Set</c> writes; permission checks must not log writes. Setup/configuration: <c>Data Exchange Type</c>, <c>Data Exch. Def</c>,
+/// <c>Data Exch. Line Def</c>, <c>Data Exch. Column Def</c>, <c>Data Exch. Mapping</c> and
+/// <c>Data Exch. Field Mapping</c>. Protected (never open): <c>Storage Setup ori</c> (connector, account,
+/// base path), upload sessions/chunks, <c>Data Exch.</c>, <c>Data Exch. Field</c>, <c>Storage Attachment Link ori</c>,
+/// <c>DataExch Entry Link ori</c>, and the <c>Document Attachment</c> / <c>Incoming Document</c> field restrictions.
 /// </summary>
 codeunit 10035195 "Storage Data Restriction ori"
 {
     Access = Internal;
 
     var
+        SetupMode: Codeunit "Bifrost Setup Mode ori";
         DataExchWriteHintTxt: Label 'DataExchange.Import.Run / Storage.Upload.CommitToDataExchange', Locked = true;
         LinkWriteHintTxt: Label 'Storage.Attachment.Offload / Storage.Attachment.CreateLinked / Storage.Attachment.CreateForRecord', Locked = true;
         TypeSetHintTxt: Label 'DataExchange.Type.Set', Locked = true;
@@ -59,11 +68,16 @@ codeunit 10035195 "Storage Data Restriction ori"
     local procedure RestrictUploadTablesFromWrite(TableNo: Integer; Force: Boolean; var IsRestricted: Boolean)
     begin
         // Foundation 28.0.3.530 passes Force. A permission-granted force does not reopen these tables.
-        if IsProtectedTable(TableNo) then
-            IsRestricted := true
-        else
-            if Force then
-                exit;
+        if IsProtectedTable(TableNo) then begin
+            IsRestricted := true;
+            exit;
+        end;
+        // Setup mode (Foundation facade) opens only this app's setup/configuration tables.
+        // Foundation logs successful Data.Records.Set writes. This permission check must not log
+        // a duplicate write or report a write that later fails validation (#232, AC03 clarification).
+        if IsSetupConfigurationTable(TableNo) then
+            if not IsSetupModeActive() then
+                IsRestricted := true;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Message Argument ori", 'OnGetDedicatedMessageTypeHintForWrite', '', false, false)]
@@ -115,10 +129,32 @@ codeunit 10035195 "Storage Data Restriction ori"
             IsRestricted := true;
     end;
 
+    local procedure IsSetupModeActive(): Boolean
+    var
+        Active: Boolean;
+        Handled: Boolean;
+    begin
+        OnBeforeIsSetupModeActive(Active, Handled);
+        if Handled then
+            exit(Active);
+        exit(SetupMode.IsActive());
+    end;
+
+    /// <summary>Test seam: the test app cannot start Foundation setup mode (internal), so it overrides the answer here.</summary>
+    [InternalEvent(false)]
+    internal procedure OnBeforeIsSetupModeActive(var Active: Boolean; var Handled: Boolean)
+    begin
+    end;
+
     local procedure IsProtectedTable(TableNo: Integer): Boolean
     begin
-        exit(IsUploadTable(TableNo) or IsStorageSetupTable(TableNo) or IsDataExchTable(TableNo) or IsAttachmentLinkTable(TableNo) or IsDataExchangeTypeTable(TableNo) or
-            IsDefinitionTable(TableNo) or (TableNo = Database::"DataExch Entry Link ori"));
+        exit(IsUploadTable(TableNo) or IsStorageSetupTable(TableNo) or IsDataExchTable(TableNo) or IsAttachmentLinkTable(TableNo) or
+            (TableNo = Database::"DataExch Entry Link ori"));
+    end;
+
+    local procedure IsSetupConfigurationTable(TableNo: Integer): Boolean
+    begin
+        exit(IsDataExchangeTypeTable(TableNo) or IsDefinitionTable(TableNo));
     end;
 
     local procedure IsUploadTable(TableNo: Integer): Boolean
