@@ -1,6 +1,9 @@
 namespace Origo.Bifrost.Attachments.Test;
 
+using Microsoft.Foundation.Attachment;
+using Microsoft.Sales.Customer;
 using Origo.Bifrost;
+using Origo.Bifrost.Attachments;
 using System.IO;
 
 /// <summary>Verifies the message contracts delivered in the storage Batch 2 rollout.</summary>
@@ -17,6 +20,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     procedure TypeList_Contract_DeclaresCountAndTypesOnce()
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
+        ContractInterface: Interface "Msg Contract ori";
         Contract: JsonObject;
         Response: JsonObject;
         ResponseField: JsonObject;
@@ -24,9 +28,15 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Fields: JsonArray;
         CountFields: Integer;
         TypesFields: Integer;
+        StatusFields: Integer;
+        CodeFields: Integer;
     begin
         // Story #69, AC02 | Time: None | Risk: Registered Foundation contract dispatch
-        // [SCENARIO] The merged contract describes the complete query result without duplicate fields.
+        // [SCENARIO] The app declares exactly two payload fields; Foundation may add its envelope descriptors.
+        ContractInterface := Enum::"Message Type ori".FromInteger(OrdinalOf('DataExchange.Type.List'));
+        LibraryAssert.IsTrue(ContractInterface.GetResponse(Response), 'The app response chapter must be available.');
+        Response.Get('fields', Token);
+        LibraryAssert.AreEqual(2, Token.AsArray().Count(), 'The app declares exactly count and types.');
         LibraryAssert.IsTrue(ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(OrdinalOf('DataExchange.Type.List')), Contract), 'The registered contract must be available.');
         Contract.Get('response', Token);
         Response := Token.AsObject();
@@ -36,8 +46,6 @@ codeunit 96216 "Storage Contract Batch2 Tests"
             ResponseField := Token.AsObject();
             LibraryAssert.IsTrue(JsonText(ResponseField, 'description') <> '', 'Response field description required.');
             case JsonText(ResponseField, 'name') of
-                'status', 'code':
-                    ; // Foundation 28.0.13 appends the universal envelope fields status and code to every merged contract.
                 'count':
                     begin
                         CountFields += 1;
@@ -48,13 +56,26 @@ codeunit 96216 "Storage Contract Batch2 Tests"
                         TypesFields += 1;
                         LibraryAssert.AreEqual('array', JsonText(ResponseField, 'type'), 'Types is an array.');
                     end;
+                'status':
+                    begin
+                        StatusFields += 1;
+                        LibraryAssert.AreEqual('string', JsonText(ResponseField, 'type'), 'Envelope status is a string.');
+                    end;
+                'code':
+                    begin
+                        CodeFields += 1;
+                        LibraryAssert.AreEqual('string', JsonText(ResponseField, 'type'), 'Envelope code is a string.');
+                    end;
                 else
                     LibraryAssert.Fail('Unexpected Type.List response field.');
             end;
         end;
         LibraryAssert.AreEqual(1, CountFields, 'Count must be declared once.');
         LibraryAssert.AreEqual(1, TypesFields, 'Types must be declared once.');
-        LibraryAssert.IsTrue(Fields.Count() >= 2, 'Type.List returns count and types.');
+        // Released Foundation omits these descriptors; current Foundation adds both exactly once.
+        LibraryAssert.IsTrue(StatusFields in [0, 1], 'Envelope status must not be duplicated.');
+        LibraryAssert.AreEqual(StatusFields, CodeFields, 'Foundation envelope descriptors must occur together once.');
+        LibraryAssert.AreEqual(2 + StatusFields + CodeFields, Fields.Count(), 'Only two payload fields and the Foundation envelope are allowed.');
     end;
 
     /// <summary>A parameterless Type.List returns integer zero and an empty array for no rows.</summary>
@@ -497,6 +518,193 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Commit(); // Restore original company rows before evaluating assertions.
     end;
 
+    /// <summary>The audited types declare their real effect (#224, AC01); no type is weaker than its real effect.</summary>
+    [Test]
+    procedure Scenario_Audit224_EffectsMatchRealEffect()
+    begin
+        // Story #224, AC01 | Time: None | Risk: Registered Foundation contract dispatch
+        AssertEffect('Storage.Upload.CommitToDataExchange', 'irreversible');
+        AssertEffect('DataExchange.Export.Run', 'irreversible');
+        AssertEffect('DataExchange.Definition.Export', 'irreversible');
+        AssertEffect('DataExchange.PaymentExport.Run', 'irreversible');
+        AssertStorageCondition('DataExchange.Export.Run', 'storageCode', 'keepFileInStorage');
+        AssertStorageCondition('Storage.Upload.CommitToDataExchange', 'keepFileInStorage', 'storageCode');
+        // Types that only create or modify BC records stay write; they wait for Gunnar's decision.
+        AssertEffect('DataExchange.Import.Run', 'write');
+        AssertEffect('DataExchange.Entry.Process', 'write');
+        AssertEffect('Storage.Attachment.CreateLinked', 'write');
+    end;
+
+    /// <summary>Every irreversible type names its count unit in effect.changes and on expectedCount (#224, AC02/AC03).</summary>
+    [Test]
+    procedure Scenario_Audit224_IrreversibleTypesNameCountUnit()
+    var
+        TypeName: Text;
+        Types: List of [Text];
+    begin
+        // Story #224, AC02/AC03 | Time: None | Risk: Registered Foundation contract dispatch
+        Types.Add('Storage.File.Create');
+        Types.Add('Storage.File.Delete');
+        Types.Add('Storage.File.Copy');
+        Types.Add('Storage.File.Move');
+        Types.Add('Storage.Directory.Create');
+        Types.Add('Storage.Directory.Delete');
+        Types.Add('Storage.Attachment.Offload');
+        Types.Add('Storage.Attachment.Restore');
+        Types.Add('Storage.Upload.Commit');
+        Types.Add('Storage.Upload.CommitToDataExchange');
+        Types.Add('DataExchange.Definition.Export');
+        Types.Add('DataExchange.PaymentExport.Run');
+        Types.Add('DataExchange.Export.Run');
+        foreach TypeName in Types do begin
+            AssertEffect(TypeName, 'irreversible');
+            AssertChangesContain(TypeName, 'expectedCount counts one ');
+            AssertChangesContain(TypeName, '(always 1)');
+            AssertChangesContain(TypeName, 'When Require Confirmation for Irreversible Messages is enabled in Bifrost Setup');
+            AssertChangesContain(TypeName, 'When disabled, omitting expectedCount runs the operation.');
+            AssertChangesContain(TypeName, 'without expectedCount');
+            AssertCountParameterNamesUnit(TypeName, 'Counts one ');
+        end;
+    end;
+
+    /// <summary>Attachment previews and mismatched counts preserve the blob and storage link in both languages.</summary>
+    [Test]
+    procedure Scenario_Audit224_AttachmentCounts_PreserveState()
+    var
+        Customer: Record Customer;
+        Attachment: Record "Document Attachment";
+        Link: Record "Storage Attachment Link ori";
+        Fixture: Codeunit "DataExch Fixture ori";
+        CustomerNos: List of [Code[20]];
+        Languages: List of [Integer];
+        Request: JsonObject;
+        Response: JsonObject;
+        Token: JsonToken;
+        AttachmentId: Guid;
+        LanguageId: Integer;
+    begin
+        // Story #224, AC03 | Time: None | Risk: Confirmation enabled in the isolated test company
+        // [GIVEN] An owned attachment with database content and a mock storage connection.
+        Fixture.InitializeStorage();
+        CustomerNos := Fixture.CreateCustomers(1, 'X224 count');
+        Request.Add('tableId', Database::Customer);
+        Request.Add('no', CustomerNos.Get(1));
+        Request.Add('fileName', 'count224.txt');
+        Request.Add('contentBase64', 'SGVsbG8=');
+        Response := Dispatch('Storage.Attachment.CreateForRecord', Request, 1033);
+        LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'The attachment fixture is created.');
+        Response.Get('data', Token);
+        Evaluate(AttachmentId, JsonText(Token.AsObject(), 'systemId'), 9);
+        Clear(Request);
+        Request.Add('target', 'DocumentAttachment');
+        Request.Add('systemId', Format(AttachmentId, 0, 4));
+        Request.Add('storageCode', Fixture.StorageCode());
+        Languages.Add(1033);
+        Languages.Add(1039);
+        // [WHEN] Preview and mismatch calls use the real Foundation dispatcher in both languages.
+        foreach LanguageId in Languages do begin
+            AssertAttachmentCountRefusals('Storage.Attachment.Offload', Request, LanguageId);
+            // [THEN] Neither refusal changes the database content or creates a storage link.
+            Attachment.GetBySystemId(AttachmentId);
+            LibraryAssert.IsTrue(Attachment."Document Reference ID".HasValue(), 'Offload refusal preserves database content.');
+            LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'Offload refusal creates no link.');
+        end;
+        Request.Add('expectedCount', 1);
+        Response := Dispatch('Storage.Attachment.Offload', Request, 1033);
+        LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'Confirmed offload runs.');
+        LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Confirmed offload creates the link.');
+        Request.Remove('expectedCount');
+        Request.Remove('storageCode');
+        foreach LanguageId in Languages do begin
+            AssertAttachmentCountRefusals('Storage.Attachment.Restore', Request, LanguageId);
+            Attachment.GetBySystemId(AttachmentId);
+            LibraryAssert.IsFalse(Attachment."Document Reference ID".HasValue(), 'Restore refusal leaves content in storage.');
+            LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Restore refusal preserves the link.');
+        end;
+        Request.Add('expectedCount', 1);
+        Response := Dispatch('Storage.Attachment.Restore', Request, 1033);
+        LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'Confirmed restore runs.');
+        Attachment.GetBySystemId(AttachmentId);
+        LibraryAssert.IsTrue(Attachment."Document Reference ID".HasValue(), 'Confirmed restore returns the content.');
+        LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'Confirmed restore removes the link.');
+        Attachment.Delete(true);
+        Customer.Get(CustomerNos.Get(1));
+        Customer.Delete(true);
+        Fixture.CleanupStorage('MOCK');
+    end;
+
+    local procedure AssertAttachmentCountRefusals(TypeName: Text; Request: JsonObject; LanguageId: Integer)
+    var
+        Response: JsonObject;
+    begin
+        Response := Dispatch(TypeName, Request, LanguageId);
+        LibraryAssert.AreEqual('ConfirmationRequired', JsonText(Response, 'code'), 'A named attachment previews before mutation.');
+        LibraryAssert.AreEqual('1', JsonText(Response, 'expected'), 'The preview counts one attachment.');
+        Request.Add('expectedCount', 7);
+        Response := Dispatch(TypeName, Request, LanguageId);
+        LibraryAssert.AreEqual('ConfirmationMismatch', JsonText(Response, 'code'), 'A mismatched attachment count is refused.');
+        Request.Remove('expectedCount');
+    end;
+
+    /// <summary>Read and write-only types do not take expectedCount and name no count unit (#224, invalid input).</summary>
+    [Test]
+    procedure Scenario_Audit224_NonIrreversibleTypesHaveNoCountParameter()
+    var
+        Token: JsonToken;
+        TypeName: Text;
+        Types: List of [Text];
+    begin
+        // Story #224, AC03 | Time: None | Risk: Registered Foundation contract dispatch
+        Types.Add('Storage.File.Get');
+        Types.Add('DataExchange.Import.Run');
+        Types.Add('Storage.Upload.CommitToRecord');
+        foreach TypeName in Types do
+            foreach Token in ContractParameters(TypeName) do
+                LibraryAssert.AreNotEqual('expectedCount', JsonText(Token.AsObject(), 'name'), TypeName + ' declares no expectedCount.');
+    end;
+
+    local procedure AssertStorageCondition(TypeName: Text; OwnParameter: Text; OtherParameter: Text)
+    var
+        ContractInterface: Interface "Msg Contract ori";
+        Effect: JsonObject;
+        Changes: Text;
+    begin
+        ContractInterface := Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName));
+        LibraryAssert.IsTrue(ContractInterface.GetEffect(Effect), 'The app effect chapter must be available.');
+        Changes := JsonText(Effect, 'changes');
+        LibraryAssert.IsTrue(Changes.Contains('With ' + OwnParameter + ','), TypeName + ' describes its own storage condition.');
+        LibraryAssert.IsFalse(Changes.Contains(OtherParameter), TypeName + ' must not name the other operation parameter.');
+    end;
+
+    local procedure AssertChangesContain(TypeName: Text; Fragment: Text)
+    var
+        ContractMgt: Codeunit "Msg Contract Mgt ori";
+        Contract: JsonObject;
+        Effect: JsonObject;
+        Token: JsonToken;
+    begin
+        ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName)), Contract);
+        Contract.Get('effect', Token);
+        Effect := Token.AsObject();
+        Effect.Get('changes', Token);
+        LibraryAssert.IsTrue(Token.AsValue().AsText().Contains(Fragment), TypeName + ' effect.changes names: ' + Fragment);
+    end;
+
+    local procedure AssertCountParameterNamesUnit(TypeName: Text; Unit: Text)
+    var
+        Token: JsonToken;
+        Found: Integer;
+    begin
+        foreach Token in ContractParameters(TypeName) do
+            if JsonText(Token.AsObject(), 'name') = 'expectedCount' then begin
+                Found += 1;
+                LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains(Unit), TypeName + ' expectedCount description names the unit.');
+                LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains('When enabled, call without expectedCount'), TypeName + ' preview requires the setup option.');
+                LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains('When disabled, omitting expectedCount runs the operation.'), TypeName + ' documents the disabled confirmation option.');
+            end;
+        LibraryAssert.AreEqual(1, Found, TypeName + ' declares expectedCount exactly once.');
+    end;
+
     local procedure ContractParameters(TypeName: Text) Parameters: JsonArray
     var
         ContractMgt: Codeunit "Msg Contract Mgt ori";
@@ -506,6 +714,16 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         LibraryAssert.IsTrue(ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName)), Contract), 'Registered contract is required.');
         if Contract.Get('parameters', Token) then
             Parameters := Token.AsArray();
+    end;
+
+    /// <summary>Counts the own parameters without the counted confirmation, which irreversible types now declare themselves (#224).</summary>
+    local procedure OwnParameterCountWithoutConfirmation(TypeName: Text) Count: Integer
+    var
+        Token: JsonToken;
+    begin
+        foreach Token in OwnContractParameters(TypeName) do
+            if JsonText(Token.AsObject(), 'name') <> 'expectedCount' then
+                Count += 1;
     end;
 
     local procedure OwnContractParameters(TypeName: Text) Parameters: JsonArray
@@ -563,7 +781,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     begin
         Parameters := ContractParameters(TypeName);
         // #188: Foundation may append its confirmation parameter to irreversible contracts.
-        LibraryAssert.AreEqual(ExpectedCount, OwnContractParameters(TypeName).Count(), TypeName + ' exact own parameter count.');
+        LibraryAssert.AreEqual(ExpectedCount, OwnParameterCountWithoutConfirmation(TypeName), TypeName + ' exact own parameter count.');
         AssertRegisteredParameterCount(TypeName, Parameters, ExpectedCount);
         AssertParameter(TypeName, ParameterName, Required);
         foreach Token in Parameters do begin

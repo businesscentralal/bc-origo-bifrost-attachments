@@ -127,6 +127,7 @@ Supporting paths:
   `Storage Upload Chunk ori`; `Storage Upload Purge ori` and `Storage Reten. Policy ori` clean them
   up. `Storage Data Restriction ori` blocks both tables from the generic `Data.Records.*` message
   types so callers must use the dedicated `Storage.Upload.*` types.
+  While Foundation setup mode is active (public facade `Bifrost Setup Mode ori`), the same codeunit opens only the Data Exchange setup/configuration tables (`Data Exchange Type` and the `Data Exch. Def`, line, column, mapping and field-mapping tables). Foundation logs successful `Data.Records.Set` writes; the restriction checks do not emit duplicate or premature write events. All other restricted tables stay closed (#232). `Help.Storage.Get` explains setup mode in English and Icelandic.
 - **Attachments** — `Storage Attachment Mgt ori` owns offload/restore and the
   `Storage Attachment Link ori` table; `Storage Attachment Subscr ori` serves offloaded content back
   to the standard BC pages through event subscribers.
