@@ -5,6 +5,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+### Changed - CI probes Foundation 28.0.13
+- `.AL-Go/settings.json` probes the published Foundation release `28.0.13` (package 28.0.13.741, source `4458b14`, build 44188373403) instead of `28.0.11`. The AppSource gate candidate (`tools/appsource_gate.py`) and the default collision-restore/staging profile `candidate741` (`tools/stage_foundation_inputs.py`) pin its exact Apps/TestApps archives, package hashes, source, build and compiler. `candidate669` stays an explicit historical profile. Product/test Foundation floors are unchanged. No AL objects change.
+
 ### Changed
 - #224 (core#1365 D1/D2): `Storage.Upload.CommitToDataExchange` and `DataExchange.Export.Run` now declare the effect `irreversible` (was `write`), because they can write a file to external storage. The 11 other irreversible types (`Storage.File.Create/Delete/Copy/Move`, `Storage.Directory.Create/Delete`, `Storage.Attachment.Offload/Restore`, `Storage.Upload.Commit`, `DataExchange.Definition.Export`, `DataExchange.PaymentExport.Run`) and the two above now name the unit `expectedCount` counts (always one subject) in `effect.changes` and in their own `expectedCount` parameter, plus how to preview without side effects. Contract chapters stay locked English by design, so no XLF unit changes. Codeunit 10035183 only; no new objects.
 - Tests: 96216 asserts the real effects, the count unit and the single `expectedCount` per type; 96243 covers the export preview/confirm/wrong-count gate; 96256 confirms the upload commit through the shared confirmation helper. No new object IDs.
