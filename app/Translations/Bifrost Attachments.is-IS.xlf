@@ -2643,6 +2643,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Færir eða endurnefnir skrá innan sömu geymslutengingar þannig að upprunalega slóðin sé ekki lengur til; notaðu afritun til að halda upprunalegu skránni.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File Move Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 149655982 - Method 4159831688 - NamedType 1361873666" size-unit="char" translate="yes" xml:space="preserve">
+          <source>## Setup mode</source>
+          <target>## Uppsetningarhamur</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=## Uppsetningarhamur</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Help Get Impl ori - Method BuildGuide - NamedType SetupModeHeadingLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 149655982 - Method 4159831688 - NamedType 321393708" size-unit="char" translate="yes" xml:space="preserve">
+          <source>While Foundation setup mode is active for your approved session source, `Data.Records.Set` may write these Attachments setup/configuration tables: `Data Exchange Type`, `Data Exch. Def`, `Data Exch. Line Def`, `Data Exch. Column Def`, `Data Exch. Mapping` and `Data Exch. Field Mapping`. Each allowed write is logged. Everything else stays refused in setup mode: `Storage Setup ori` (connector, account, base path), upload sessions and chunks, `Data Exch.`, `Data Exch. Field`, `Storage Attachment Link ori`, `DataExch Entry Link ori`, and the Document Attachment and Incoming Document storage fields.</source>
+          <target>Meðan uppsetningarhamur Bifröst er virkur fyrir samþykktan uppruna setu má `Data.Records.Set` skrifa í þessar uppsetningar- og stillingatöflur viðhengja: `Data Exchange Type`, `Data Exch. Def`, `Data Exch. Line Def`, `Data Exch. Column Def`, `Data Exch. Mapping` og `Data Exch. Field Mapping`. Öll leyfð skrif eru skráð. Allt annað er áfram lokað í uppsetningarham: `Storage Setup ori` (tengill, reikningur, grunnslóð), upphleðslusetur og bútar, `Data Exch.`, `Data Exch. Field`, `Storage Attachment Link ori`, `DataExch Entry Link ori` og geymslureitir Document Attachment og Incoming Document.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Meðan uppsetningarhamur Bifröst er virkur fyrir samþykktan uppruna setu má `Data.Records.Set` skrifa í þessar uppsetningar- og stillingatöflur viðhengja: `Data Exchange Type`, `Data Exch. Def`, `Data Exch. Line Def`, `Data Exch. Column Def`, `Data Exch. Mapping` og `Data Exch. Field Mapping`. Öll leyfð skrif eru skráð. Allt annað er áfram lokað í uppsetningarham: `Storage Setup ori` (tengill, reikningur, grunnslóð), upphleðslusetur og bútar, `Data Exch.`, `Data Exch. Field`, `Storage Attachment Link ori`, `DataExch Entry Link ori` og geymslureitir Document Attachment og Incoming Document.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Help Get Impl ori - Method BuildGuide - NamedType SetupModeGuidanceLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 149655982 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Returns a Markdown overview of the storage connector and all its message types. No request body is required.</source>
           <target>Skilar Markdown-yfirliti yfir geymslutengilinn og allar skilaboðategundir hans. Enginn meginmálshluti beiðni er nauðsynlegur.</target>

@@ -5,6 +5,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+### Added (#232)
+- Attachments follows Foundation setup mode (core#1408/#1410 public facade `Bifrost Setup Mode ori`). While `IsActive()` is true, `Storage Data Restriction ori` (10035195) lifts the write restriction only on the Data Exchange setup/configuration tables: `Data Exchange Type`, `Data Exch. Def`, `Data Exch. Line Def`, `Data Exch. Column Def`, `Data Exch. Mapping`, `Data Exch. Field Mapping`. Foundation logs successful `Data.Records.Set` writes; the restriction subscriber does not duplicate that telemetry or log permission probes and failed writes (AC03 clarification). Protected tables stay restricted exactly as before: `Storage Setup ori` (connector, account, base path), upload sessions/chunks, `Data Exch.`, `Data Exch. Field`, `Storage Attachment Link ori`, `DataExch Entry Link ori`, and the Document Attachment / Incoming Document field restrictions. `Help.Storage.Get` has a Setup mode section translated for en-US and is-IS, including the opened tables, protected tables and write logging. Foundation dependency raised to 28.0.13.741. Tests: codeunits 96282 and 96283. No new product objects.
+
 ### Changed - CI probes Foundation 28.0.13
 - `.AL-Go/settings.json` probes the published Foundation release `28.0.13` (package 28.0.13.741, source `4458b14`, build 44188373403) instead of `28.0.11`. The AppSource gate candidate (`tools/appsource_gate.py`) and the default collision-restore/staging profile `candidate741` (`tools/stage_foundation_inputs.py`) pin its exact Apps/TestApps archives, package hashes, source, build and compiler. `candidate669` stays an explicit historical profile. Product/test Foundation floors are unchanged. No AL objects change.
 
