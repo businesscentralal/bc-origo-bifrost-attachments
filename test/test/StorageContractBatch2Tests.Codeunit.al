@@ -598,7 +598,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Languages.Add(1039);
         // [WHEN] Offload runs with a wrong expectedCount, then Restore runs without one.
         Request.Add('expectedCount', 7);
-        foreach LanguageId in Languages do begin
+        foreach LanguageId in Languages do
             if LanguageId = 1039 then begin
                 Request.Remove('storageCode');
                 Response := Dispatch('Storage.Attachment.Restore', Request, LanguageId);
@@ -611,7 +611,6 @@ codeunit 96216 "Storage Contract Batch2 Tests"
                 LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'A wrong expectedCount is ignored.');
                 LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Offload creates the link.');
             end;
-        end;
         Attachment.Delete(true);
         Customer.Get(CustomerNos.Get(1));
         Customer.Delete(true);
@@ -646,20 +645,6 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Changes := JsonText(Effect, 'changes');
         LibraryAssert.IsTrue(Changes.Contains('With ' + OwnParameter + ','), TypeName + ' describes its own storage condition.');
         LibraryAssert.IsFalse(Changes.Contains(OtherParameter), TypeName + ' must not name the other operation parameter.');
-    end;
-
-    local procedure AssertChangesContain(TypeName: Text; Fragment: Text)
-    var
-        ContractMgt: Codeunit "Msg Contract Mgt ori";
-        Contract: JsonObject;
-        Effect: JsonObject;
-        Token: JsonToken;
-    begin
-        ContractMgt.GetContract(Enum::"Message Type ori".FromInteger(OrdinalOf(TypeName)), Contract);
-        Contract.Get('effect', Token);
-        Effect := Token.AsObject();
-        Effect.Get('changes', Token);
-        LibraryAssert.IsTrue(Token.AsValue().AsText().Contains(Fragment), TypeName + ' effect.changes names: ' + Fragment);
     end;
 
     local procedure AssertCountParameterNamesUnit(TypeName: Text; Unit: Text)
