@@ -261,7 +261,7 @@ codeunit 96244 "DataExch Def Xfer Tests ori"
         LibraryAssert.AreEqual(1, MockState.GetWriteCalls(), 'Exactly one connector write occurs.');
     end;
 
-    /// <summary>Discovery classifies the storage-capable type as Inbound with irreversible writes and an optional header-only mode.</summary>
+    /// <summary>Discovery classifies the storage-capable type as Inbound with write effect and an optional header-only mode.</summary>
     [Test]
     procedure DefinitionExport_ContractDescribesAllModesAndEffects()
     var
@@ -287,7 +287,7 @@ codeunit 96244 "DataExch Def Xfer Tests ori"
         GlobalLanguage(SavedLanguageId);
 
         LibraryAssert.AreEqual("Msg Direction ori"::Inbound, Implementation.GetMessageDirection(), 'The type can write external storage.');
-        LibraryAssert.AreEqual('irreversible', Fixture.ReadText(Effect, 'effect'), 'The strongest supported effect includes overwrites.');
+        LibraryAssert.AreEqual('write', Fixture.ReadText(Effect, 'effect'), 'Exporting to storage is a write; it is not a posting action.');
         LibraryAssert.IsTrue(Fixture.ReadText(Effect, 'changes').Contains('refuses an existing file unless overwrite is true'), 'The overwrite effect is explicit.');
         LibraryAssert.IsTrue(Fixture.ReadText(Effect, 'changes').Contains('Header-only and inline-only requests read'), 'Read-only modes are explicit.');
         LibraryAssert.IsTrue(Overview.Contains('by default') and Overview.Contains('contentBase64') and Overview.Contains('storageCode'), 'Overview covers all three modes.');

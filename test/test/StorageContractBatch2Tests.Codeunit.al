@@ -181,15 +181,15 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         AssertEffect('DataExchange.Entry.List', 'read');
         AssertEffect('DataExchange.Entry.Get', 'read');
         AssertEffect('Storage.Upload.Status', 'read');
-        AssertEffect('Storage.Attachment.Offload', 'irreversible');
+        AssertEffect('Storage.Attachment.Offload', 'write');
         AssertEffect('Storage.Attachment.CreateLinked', 'write');
         AssertEffect('Storage.Attachment.CreateForRecord', 'write');
         AssertEffect('Storage.Upload.Begin', 'write');
         AssertEffect('Storage.Upload.Append', 'write');
-        AssertEffect('Storage.Upload.Commit', 'irreversible');
+        AssertEffect('Storage.Upload.Commit', 'write');
         AssertEffect('Storage.Upload.CommitToRecord', 'write');
         AssertEffect('Storage.Upload.Abort', 'write');
-        AssertEffect('Storage.Attachment.Restore', 'irreversible');
+        AssertEffect('Storage.Attachment.Restore', 'write');
     end;
 
 
@@ -523,10 +523,10 @@ codeunit 96216 "Storage Contract Batch2 Tests"
     procedure Scenario_Audit224_EffectsMatchRealEffect()
     begin
         // Story #224, AC01 | Time: None | Risk: Registered Foundation contract dispatch
-        AssertEffect('Storage.Upload.CommitToDataExchange', 'irreversible');
-        AssertEffect('DataExchange.Export.Run', 'irreversible');
-        AssertEffect('DataExchange.Definition.Export', 'irreversible');
-        AssertEffect('DataExchange.PaymentExport.Run', 'irreversible');
+        AssertEffect('Storage.Upload.CommitToDataExchange', 'write');
+        AssertEffect('DataExchange.Export.Run', 'write');
+        AssertEffect('DataExchange.Definition.Export', 'write');
+        AssertEffect('DataExchange.PaymentExport.Run', 'write');
         AssertStorageCondition('DataExchange.Export.Run', 'storageCode', 'keepFileInStorage');
         AssertStorageCondition('Storage.Upload.CommitToDataExchange', 'keepFileInStorage', 'storageCode');
         // Types that only create or modify BC records stay write; they wait for Gunnar's decision.

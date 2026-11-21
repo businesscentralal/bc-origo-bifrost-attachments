@@ -339,14 +339,13 @@ codeunit 96243 "DataExch Export Tests ori"
         exit(DataExch.Count());
     end;
 
-    /// <summary>#224 AC03: Export.Run is irreversible; without expectedCount it previews and writes nothing, with it the export runs.</summary>
+    /// <summary>#241 AC02: Export.Run is a write; it runs without expectedCount and without a confirmation preview.</summary>
     [Test]
-    procedure Audit224_ExportRun_RequiresCountedConfirmation()
+    procedure Audit241_ExportRun_NeedsNoConfirmation()
     var
         MockState: Codeunit "Storage Mock State";
         CustomerNos: List of [Code[20]];
         Request: JsonObject;
-        Preview: JsonObject;
         Confirmed: JsonObject;
         DefCode: Code[20];
     begin
@@ -359,21 +358,15 @@ codeunit 96243 "DataExch Export Tests ori"
         Request.Add('storageCode', Fixture.StorageCode());
         Request.Add('path', 'out/audit224.csv');
 
-        Preview := DispatchRaw("Message Type ori"::"DataExchange.Export.Run", Request);
-
-        LibraryAssert.AreEqual('ConfirmationRequired', Fixture.ReadText(Preview, 'code'), 'Without expectedCount the export only previews.');
-        LibraryAssert.IsFalse(MockState.HasFile('out/audit224.csv'), 'The preview writes no file.');
-
-        Request.Add('expectedCount', 1);
         Confirmed := DispatchRaw("Message Type ori"::"DataExchange.Export.Run", Request);
 
-        LibraryAssert.AreEqual('Success', Fixture.ReadText(Confirmed, 'status'), 'The confirmed export runs. ' + Fixture.ReadText(Confirmed, 'error'));
-        LibraryAssert.IsTrue(MockState.HasFile('out/audit224.csv'), 'The confirmed export writes the file.');
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Confirmed, 'status'), 'The export runs without a count. ' + Fixture.ReadText(Confirmed, 'error'));
+        LibraryAssert.IsTrue(MockState.HasFile('out/audit224.csv'), 'The export writes the file.');
     end;
 
-    /// <summary>#224 AC03: a wrong expectedCount is refused and writes nothing.</summary>
+    /// <summary>#241 AC02: a wrong expectedCount is accepted and ignored; the export runs.</summary>
     [Test]
-    procedure Audit224_ExportRun_WrongCount_WritesNothing()
+    procedure Audit241_ExportRun_WrongCount_IsIgnored()
     var
         MockState: Codeunit "Storage Mock State";
         CustomerNos: List of [Code[20]];
@@ -393,8 +386,8 @@ codeunit 96243 "DataExch Export Tests ori"
 
         Response := DispatchRaw("Message Type ori"::"DataExchange.Export.Run", Request);
 
-        LibraryAssert.AreNotEqual('Success', Fixture.ReadText(Response, 'status'), 'A wrong count is not a success.');
-        LibraryAssert.IsFalse(MockState.HasFile('out/audit224b.csv'), 'A wrong count writes no file.');
+        LibraryAssert.AreEqual('Success', Fixture.ReadText(Response, 'status'), 'A wrong count is ignored, not refused. ' + Fixture.ReadText(Response, 'error'));
+        LibraryAssert.IsTrue(MockState.HasFile('out/audit224b.csv'), 'The export ran despite the wrong count.');
     end;
 
     local procedure DispatchRaw(MessageType: Enum "Message Type ori"; RequestJson: JsonObject) ResponseJson: JsonObject
