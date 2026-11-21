@@ -535,9 +535,9 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         AssertEffect('Storage.Attachment.CreateLinked', 'write');
     end;
 
-    /// <summary>Every irreversible type names its count unit in effect.changes and on expectedCount (#224, AC02/AC03).</summary>
+    /// <summary>Every former irreversible type is a write and still declares expectedCount once, as ignored (#241, AC01/AC02).</summary>
     [Test]
-    procedure Scenario_Audit224_IrreversibleTypesNameCountUnit()
+    procedure Scenario_Audit241_FormerIrreversibleTypesAreWrite()
     var
         TypeName: Text;
         Types: List of [Text];
@@ -557,19 +557,14 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Types.Add('DataExchange.PaymentExport.Run');
         Types.Add('DataExchange.Export.Run');
         foreach TypeName in Types do begin
-            AssertEffect(TypeName, 'irreversible');
-            AssertChangesContain(TypeName, 'expectedCount counts one ');
-            AssertChangesContain(TypeName, '(always 1)');
-            AssertChangesContain(TypeName, 'When Require Confirmation for Irreversible Messages is enabled in Bifrost Setup');
-            AssertChangesContain(TypeName, 'When disabled, omitting expectedCount runs the operation.');
-            AssertChangesContain(TypeName, 'without expectedCount');
-            AssertCountParameterNamesUnit(TypeName, 'Counts one ');
+            AssertEffect(TypeName, 'write');
+            AssertCountParameterNamesUnit(TypeName, '(it counts one ');
         end;
     end;
 
     /// <summary>Attachment previews and mismatched counts preserve the blob and storage link in both languages.</summary>
     [Test]
-    procedure Scenario_Audit224_AttachmentCounts_PreserveState()
+    procedure Scenario_Audit241_AttachmentCount_IsIgnored()
     var
         Customer: Record Customer;
         Attachment: Record "Document Attachment";
@@ -601,49 +596,26 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         Request.Add('storageCode', Fixture.StorageCode());
         Languages.Add(1033);
         Languages.Add(1039);
-        // [WHEN] Preview and mismatch calls use the real Foundation dispatcher in both languages.
+        // [WHEN] Offload runs with a wrong expectedCount, then Restore runs without one.
+        Request.Add('expectedCount', 7);
         foreach LanguageId in Languages do begin
-            AssertAttachmentCountRefusals('Storage.Attachment.Offload', Request, LanguageId);
-            // [THEN] Neither refusal changes the database content or creates a storage link.
-            Attachment.GetBySystemId(AttachmentId);
-            LibraryAssert.IsTrue(Attachment."Document Reference ID".HasValue(), 'Offload refusal preserves database content.');
-            LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'Offload refusal creates no link.');
+            if LanguageId = 1039 then begin
+                Request.Remove('storageCode');
+                Response := Dispatch('Storage.Attachment.Restore', Request, LanguageId);
+                LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'Restore needs no confirmation.');
+                Attachment.GetBySystemId(AttachmentId);
+                LibraryAssert.IsTrue(Attachment."Document Reference ID".HasValue(), 'Restore returns the content.');
+                LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'Restore removes the link.');
+            end else begin
+                Response := Dispatch('Storage.Attachment.Offload', Request, LanguageId);
+                LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'A wrong expectedCount is ignored.');
+                LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Offload creates the link.');
+            end;
         end;
-        Request.Add('expectedCount', 1);
-        Response := Dispatch('Storage.Attachment.Offload', Request, 1033);
-        LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'Confirmed offload runs.');
-        LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Confirmed offload creates the link.');
-        Request.Remove('expectedCount');
-        Request.Remove('storageCode');
-        foreach LanguageId in Languages do begin
-            AssertAttachmentCountRefusals('Storage.Attachment.Restore', Request, LanguageId);
-            Attachment.GetBySystemId(AttachmentId);
-            LibraryAssert.IsFalse(Attachment."Document Reference ID".HasValue(), 'Restore refusal leaves content in storage.');
-            LibraryAssert.IsTrue(Link.Get(Database::"Document Attachment", AttachmentId), 'Restore refusal preserves the link.');
-        end;
-        Request.Add('expectedCount', 1);
-        Response := Dispatch('Storage.Attachment.Restore', Request, 1033);
-        LibraryAssert.AreEqual('Success', JsonText(Response, 'status'), 'Confirmed restore runs.');
-        Attachment.GetBySystemId(AttachmentId);
-        LibraryAssert.IsTrue(Attachment."Document Reference ID".HasValue(), 'Confirmed restore returns the content.');
-        LibraryAssert.IsFalse(Link.Get(Database::"Document Attachment", AttachmentId), 'Confirmed restore removes the link.');
         Attachment.Delete(true);
         Customer.Get(CustomerNos.Get(1));
         Customer.Delete(true);
         Fixture.CleanupStorage('MOCK');
-    end;
-
-    local procedure AssertAttachmentCountRefusals(TypeName: Text; Request: JsonObject; LanguageId: Integer)
-    var
-        Response: JsonObject;
-    begin
-        Response := Dispatch(TypeName, Request, LanguageId);
-        LibraryAssert.AreEqual('ConfirmationRequired', JsonText(Response, 'code'), 'A named attachment previews before mutation.');
-        LibraryAssert.AreEqual('1', JsonText(Response, 'expected'), 'The preview counts one attachment.');
-        Request.Add('expectedCount', 7);
-        Response := Dispatch(TypeName, Request, LanguageId);
-        LibraryAssert.AreEqual('ConfirmationMismatch', JsonText(Response, 'code'), 'A mismatched attachment count is refused.');
-        Request.Remove('expectedCount');
     end;
 
     /// <summary>Read and write-only types do not take expectedCount and name no count unit (#224, invalid input).</summary>
@@ -699,8 +671,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
             if JsonText(Token.AsObject(), 'name') = 'expectedCount' then begin
                 Found += 1;
                 LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains(Unit), TypeName + ' expectedCount description names the unit.');
-                LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains('When enabled, call without expectedCount'), TypeName + ' preview requires the setup option.');
-                LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains('When disabled, omitting expectedCount runs the operation.'), TypeName + ' documents the disabled confirmation option.');
+                LibraryAssert.IsTrue(JsonText(Token.AsObject(), 'description').Contains('ignored'), TypeName + ' documents that expectedCount is ignored.');
             end;
         LibraryAssert.AreEqual(1, Found, TypeName + ' declares expectedCount exactly once.');
     end;
@@ -744,7 +715,7 @@ codeunit 96216 "Storage Contract Batch2 Tests"
         foreach Token in Parameters do
             if JsonText(Token.AsObject(), 'name') = 'expectedCount' then begin
                 ConfirmationCount += 1;
-                AssertEffect(TypeName, 'irreversible');
+                AssertEffect(TypeName, 'write');
                 LibraryAssert.AreEqual('integer', JsonText(Token.AsObject(), 'type'), 'Foundation confirmation is an integer.');
             end;
         LibraryAssert.IsTrue(ConfirmationCount <= 1, TypeName + ' must not duplicate expectedCount.');
