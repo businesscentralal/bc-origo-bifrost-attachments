@@ -105,6 +105,37 @@ codeunit 96265 "Storage Contract Tests ori"
     end;
 
     [Test]
+    procedure Issue241_NoTypeIsIrreversible_AllLanguages()
+    var
+        Contract: Interface "Msg Contract ori";
+        Effect: JsonObject;
+        Ordinal: Integer;
+        LanguageId: Integer;
+        LanguageIds: List of [Integer];
+        SavedLanguageId: Integer;
+        Offenders: Text;
+    begin
+        // [SCENARIO] #241 AC01/AC03: the app posts nothing, so no type is irreversible and no effect text uses the word, in 1033 and 1039.
+        SavedLanguageId := GlobalLanguage();
+        LanguageIds.Add(1033);
+        LanguageIds.Add(1039);
+        foreach LanguageId in LanguageIds do begin
+            GlobalLanguage(LanguageId);
+            foreach Ordinal in AppOrdinals() do begin
+                Contract := Enum::"Message Type ori".FromInteger(Ordinal);
+                Clear(Effect);
+                Contract.GetEffect(Effect);
+                if ReadText(Effect, 'effect') = 'irreversible' then
+                    Offenders += TypeName(Ordinal) + ' ';
+                if ReadText(Effect, 'changes').ToLower().Contains('irreversible') or ReadText(Effect, 'changes').ToLower().Contains('óafturkræf') then
+                    Offenders += TypeName(Ordinal) + '|wording ';
+            end;
+        end;
+        GlobalLanguage(SavedLanguageId);
+        LibraryAssert.AreEqual('', Offenders, 'Irreversible types: ' + Offenders);
+    end;
+
+    [Test]
     procedure EveryType_ResponseFieldsAreDescribed()
     var
         Contract: Interface "Msg Contract ori";
