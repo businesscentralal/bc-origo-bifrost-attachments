@@ -363,7 +363,7 @@ codeunit 96256 "DataExch Format Tests ori"
         Dispatcher: Codeunit "Dispatcher ori";
         TestConfirmation: Codeunit "Storage Test Confirmation ori";
     begin
-        // Irreversible types answer a counted-confirmation preview first (#224); the helper confirms and returns the real response.
+        // The helper dispatches through the shared confirmation wrapper; write types need no confirmation (#241).
         Response := TestConfirmation.Dispatch(Dispatcher, MessageType, Request, LanguageId, false);
     end;
 }
