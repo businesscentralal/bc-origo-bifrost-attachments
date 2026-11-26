@@ -38,7 +38,7 @@ This check belongs to #81 per [Gunnar's 3 November disposition](https://github.c
 |---|---|---|
 | Identity | Bifrost Attachments; Origo; `672df32a-a0c5-4a22-b591-0efa38023e95` | #80: signed manifest and listing agree |
 | Version | Source 28.3.2.0 at the inspected SHA | #80: actual packaged and deployed version, never inferred from source |
-| BC floor | Application 28.3.0.0, platform 28.0.0.0, runtime 17.0, Cloud | #80 / Architect: actual supported build/country matrix on 28.3 or later in every market |
+| BC floor | Application 28.0.0.0, platform 28.0.0.0, runtime 17.0, Cloud | #80 / Architect: actual supported build/country matrix on 28.0 or later in every market |
 | Foundation | `7505e808-6e52-4b96-a328-82573391297a`, Origo; product minimum 28.0.11.669, test minimum 28.0.11.0 | #80: exact compiler input and installed version/hash on the nominated candidate. Older 530/523 and build113 receipts do not prove this dependency |
 | Connectors | Production External File Storage interface and registered File Accounts only. The package declares no connector app dependency: PR118 removed the exact connector-version pin and PR144 removed connector id/version logic | #80 / provider owner: the Microsoft connector apps (Azure Blob Storage, Azure File Share, SharePoint) the tenant installs, their availability in every market and real-provider results. The approved scope stays these three providers |
 | Markets | IS,GB,DK,NO,SE,FI,DE,FR,NL,AT,CH,IE,PT,ES | #80: [14-row evidence plan](market-evidence-plan.md); Gunnar/offer owner: separately authorized Partner Center comparison |
