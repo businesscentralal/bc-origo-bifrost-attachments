@@ -175,6 +175,14 @@ codeunit 10035183 "Storage Contract Parts ori"
                         '{"type":"Storage.File.Delete","data":{},"lcid":1033}',
                         '{"status":"Error","code":"MultipleErrors","error":"2 problems in the request. Nothing was changed.","errors":[{"code":"MissingParameter","error":"Required parameter \"storageCode\" is missing.","parameter":"storageCode","received":"(missing)","expected":"a value for \"storageCode\"","nextStep":"Provide \"storageCode\" and send the request again."},{"code":"MissingParameter","error":"Required parameter \"path\" is missing.","parameter":"path","received":"(missing)","expected":"a value for \"path\"","nextStep":"Provide \"path\" and send the request again."}],"hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.Delete\". Always read the help before calling a message type."}'));
                 end;
+            'Storage.Attachment.CreateFromStaging':
+                Examples.Add(ContractMgt.Example('A request refused before any change',
+                        '{"type":"Storage.Attachment.CreateFromStaging","data":{"storageCode":"X160-NOT-CONFIGURED","stagingId":"6f1c0d5e-2a3b-4c4d-8e9f-0a1b2c3d4e5f","target":"IncomingDocument"},"lcid":1033}',
+                        '{"status":"Error","code":"RecordNotFound","error":"No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".","parameter":"storageCode","received":"X160-NOT-CONFIGURED","nextStep":"Call Storage.Account.List to see the configured storage codes.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.Attachment.CreateFromStaging\". Always read the help before calling a message type."}'));
+            'Storage.File.CreateFromStaging':
+                Examples.Add(ContractMgt.Example('A request refused before any change',
+                        '{"type":"Storage.File.CreateFromStaging","data":{"storageCode":"X160-NOT-CONFIGURED","path":"X160-help/example.txt","stagingId":"6f1c0d5e-2a3b-4c4d-8e9f-0a1b2c3d4e5f"},"lcid":1033}',
+                        '{"status":"Error","code":"RecordNotFound","error":"No storage connection is configured for storageCode \"X160-NOT-CONFIGURED\".","parameter":"storageCode","received":"X160-NOT-CONFIGURED","nextStep":"Call Storage.Account.List to see the configured storage codes.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"Storage.File.CreateFromStaging\". Always read the help before calling a message type."}'));
             'Storage.File.CopyToStaging':
                 begin
                     Examples.Add(ContractMgt.Example('A request refused before any change',
@@ -461,6 +469,10 @@ codeunit 10035183 "Storage Contract Parts ori"
                 exit('Lists files below a directory relative to the selected connection. Use the returned relative paths with Storage.File.Get; this call does not download file content.');
             'Storage.File.Get':
                 exit('Downloads one file from the selected connection and returns its content as base64. The path is relative to the connection; the file stays in storage.');
+            'Storage.Attachment.CreateFromStaging':
+                exit('Creates a document attachment on a record, or an incoming document attachment, from one Foundation staging row, stores its content in the selected connection (offloaded) and consumes the row (Take). On any failure the row is kept.');
+            'Storage.File.CreateFromStaging':
+                exit('Writes the content of one Foundation staging row to a file path in the selected connection and consumes the row (Take). The row must belong to the caller in the same company; on any failure it is kept.');
             'Storage.File.CopyToStaging':
                 exit('Copies one file from the selected storage connection into one Foundation staging row and returns its stagingId. The storage file stays unchanged; pass the stagingId to a consuming message type.');
             'Storage.File.Create':
@@ -568,6 +580,32 @@ codeunit 10035183 "Storage Contract Parts ori"
         end;
         if MessageType in ['Storage.Account.List', 'Help.Storage.Get', 'Help.DataExchange.Get', 'DataExchange.Type.List'] then
             exit;
+
+        if MessageType = 'Storage.Attachment.CreateFromStaging' then begin
+            Parameters.Add(ContractMgt.Parameter('storageCode', 'string', true, 'The configured storage connection code. Resolve it with Storage.Account.List.'));
+            Parameters.Add(ContractMgt.Parameter('stagingId', 'string', true, 'The Foundation staging row id from Storage.Upload.CommitToStaging or Storage.File.CopyToStaging, created by the same user in the same company.'));
+            Parameters.Add(ContractMgt.Parameter('target', 'string', false, 'DocumentAttachment (default) or IncomingDocument.'));
+            Parameters.Add(ContractMgt.Parameter('tableId', 'integer', false, 'DocumentAttachment target: the table of the record, or send tableName.'));
+            Parameters.Add(ContractMgt.Parameter('tableName', 'string', false, 'DocumentAttachment target: the table name, instead of tableId.'));
+            Parameters.Add(ContractMgt.Parameter('recordSystemId', 'string', false, 'DocumentAttachment target: the SystemId of the record, or send no.'));
+            Parameters.Add(ContractMgt.Parameter('no', 'string', false, 'DocumentAttachment target: the No. of a master record with a single code key.'));
+            Parameters.Add(ContractMgt.Parameter('incomingDocumentEntryNo', 'integer', false, 'IncomingDocument target: an existing incoming document; omitted, a new one is created.'));
+            Parameters.Add(ContractMgt.Parameter('description', 'string', false, 'IncomingDocument target: description of a new incoming document; defaults to the file name.'));
+            Parameters.Add(ContractMgt.Parameter('fileName', 'string', false, 'Optional file name override; defaults to the sanitised file name recorded on the staging row.'));
+            Parameters.Add(ContractMgt.Parameter('folderPath', 'string', false, 'Optional storage folder for the file; defaults to the generated attachment path.'));
+            Parameters.Add(ContractMgt.Parameter('overwrite', 'boolean', false, StorageOverwriteLbl));
+            Parameters.Add(ContractMgt.Parameter('expectedCount', 'integer', false, 'Optional write confirmation. When sent it must be 1, the number of attachments created.'));
+            exit;
+        end;
+
+        if MessageType = 'Storage.File.CreateFromStaging' then begin
+            Parameters.Add(ContractMgt.Parameter('storageCode', 'string', true, 'The configured storage connection code. Resolve it with Storage.Account.List.'));
+            Parameters.Add(ContractMgt.Parameter('path', 'string', true, 'The destination file path relative to the connection base path.'));
+            Parameters.Add(ContractMgt.Parameter('stagingId', 'string', true, 'The Foundation staging row id from Storage.Upload.CommitToStaging or Storage.File.CopyToStaging, created by the same user in the same company.'));
+            Parameters.Add(ContractMgt.Parameter('overwrite', 'boolean', false, StorageOverwriteLbl));
+            Parameters.Add(ContractMgt.Parameter('expectedCount', 'integer', false, 'Optional write confirmation. When sent it must be 1, the number of files written.'));
+            exit;
+        end;
 
         if MessageType = 'Storage.File.CopyToStaging' then begin
             Parameters.Add(ContractMgt.Parameter('storageCode', 'string', true, 'The configured storage connection code. Resolve it with Storage.Account.List.'));
@@ -894,6 +932,24 @@ codeunit 10035183 "Storage Contract Parts ori"
                     Fields.Add(ContractMgt.ResponseField('path', 'string', 'The downloaded file path.'));
                     Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', DeliveredLengthLbl));
                     Fields.Add(ContractMgt.ResponseField('contentBase64', 'string', 'The file content encoded as base64.'));
+                end;
+            'Storage.Attachment.CreateFromStaging':
+                begin
+                    Fields.Add(ContractMgt.ResponseField('target', 'string', 'DocumentAttachment or IncomingDocument.'));
+                    Fields.Add(ContractMgt.ResponseField('systemId', 'string', 'SystemId of the new attachment row.'));
+                    Fields.Add(ContractMgt.ResponseField('fileName', 'string', 'The attachment file name.'));
+                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The stored content size in bytes.'));
+                    Fields.Add(ContractMgt.ResponseField('offloaded', 'boolean', 'Always true: the content is in external storage.'));
+                    Fields.Add(ContractMgt.ResponseField('storageCode', 'string', 'The storage connection holding the content.'));
+                    Fields.Add(ContractMgt.ResponseField('path', 'string', 'The storage path of the content.'));
+                    Fields.Add(ContractMgt.ResponseField('stagingId', 'string', 'The consumed staging row id; it no longer exists.'));
+                end;
+            'Storage.File.CreateFromStaging':
+                begin
+                    Fields.Add(ContractMgt.ResponseField('path', 'string', 'The written file path.'));
+                    Fields.Add(ContractMgt.ResponseField('contentLength', 'integer', 'The written content size in bytes.'));
+                    Fields.Add(ContractMgt.ResponseField('stagingId', 'string', 'The consumed staging row id; it no longer exists.'));
+                    Fields.Add(ContractMgt.ResponseField('overwritten', 'boolean', 'True when an existing unlinked file was replaced because overwrite was true.'));
                 end;
             'Storage.File.CopyToStaging':
                 begin
@@ -1232,6 +1288,12 @@ codeunit 10035183 "Storage Contract Parts ori"
         AddAttachmentErrors(MessageType, Errors);
         if MessageType = 'Storage.Directory.Delete' then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameter, 'The path names the connection root.', 'Name a directory below the root to delete.'));
+        if MessageType in ['Storage.File.CreateFromStaging', 'Storage.Attachment.CreateFromStaging'] then begin
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'No staging row with this stagingId is available to the caller in this company (unknown, consumed, or owned by another user or company).', 'Stage the file again as the same user in the same company.'));
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The staging row holds no content, or the destination exists without overwrite true, or it backs a Business Central attachment.', 'Stage a file with content, choose another path or send overwrite true; linked files are never overwritten.'));
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::InvalidParameter, 'expectedCount is not 1.', 'Send expectedCount 1 or omit it.'));
+            Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::BusinessCentralError, 'The storage provider could not write the file; the staging row is kept.', 'Check the storage connection, then retry with the same stagingId.'));
+        end;
         if MessageType = 'Storage.File.CopyToStaging' then
             Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::LimitExceeded, 'The file is larger than the 251,658,240 bytes (240 MiB) that one staging row accepts from this message type. Nothing was staged.', 'Choose a smaller file.'));
         if MessageType in ['Storage.File.Create', 'Storage.Upload.Append'] then
@@ -1309,7 +1371,7 @@ codeunit 10035183 "Storage Contract Parts ori"
 
     local procedure UsesStorageCode(MessageType: Text): Boolean
     begin
-        exit(MessageType in ['Storage.File.List', 'Storage.File.Get', 'Storage.File.CopyToStaging', 'Storage.File.Exists', 'Storage.File.Create', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.File.Delete',
+        exit(MessageType in ['Storage.File.List', 'Storage.File.Get', 'Storage.File.CopyToStaging', 'Storage.File.CreateFromStaging', 'Storage.Attachment.CreateFromStaging', 'Storage.File.Exists', 'Storage.File.Create', 'Storage.File.Copy', 'Storage.File.Move', 'Storage.File.Delete',
             'Storage.Directory.List', 'Storage.Directory.Exists', 'Storage.Directory.Create', 'Storage.Directory.Delete',
             'Storage.Attachment.Offload', 'Storage.Attachment.CreateLinked', 'Storage.Attachment.CreateForRecord', 'Storage.Upload.Begin',
             'DataExchange.Import.Run', 'DataExchange.Export.Run', 'DataExchange.Definition.Import', 'DataExchange.Definition.Export', 'DataExchange.PaymentExport.Run']);
@@ -1385,6 +1447,22 @@ codeunit 10035183 "Storage Contract Parts ori"
             Effect.Add('idempotent', false);
             Effect.Add('permissionSet', 'BIFROST Attach ori');
             Effect.Add('preconditions', StagingPreconditionsLbl);
+            exit;
+        end;
+        if MessageType = 'Storage.Attachment.CreateFromStaging' then begin
+            Effect.Add('effect', 'write');
+            Effect.Add('changes', 'Creates one attachment row (and a new incoming document when none is named), its storage link, writes one file to the storage connection and deletes the consumed Foundation staging row. On any failure everything rolls back and the staging row is kept.');
+            Effect.Add('idempotent', false);
+            Effect.Add('permissionSet', 'BIFROST Attach ori');
+            Effect.Add('preconditions', 'The storage connection is enabled, the staging row belongs to the caller in this company and has content, the target record exists, and the destination is new or overwrite is true and it backs no attachment.');
+            exit;
+        end;
+        if MessageType = 'Storage.File.CreateFromStaging' then begin
+            Effect.Add('effect', 'write');
+            Effect.Add('changes', 'Writes one file to the storage connection and deletes the consumed Foundation staging row. On any failure the staging row is kept.');
+            Effect.Add('idempotent', false);
+            Effect.Add('permissionSet', 'BIFROST Attach ori');
+            Effect.Add('preconditions', 'The storage connection is enabled, the staging row belongs to the caller in this company and has content, and the destination is new or overwrite is true and it backs no attachment.');
             exit;
         end;
         if MessageType = 'Storage.File.CopyToStaging' then begin
@@ -1488,6 +1566,18 @@ codeunit 10035183 "Storage Contract Parts ori"
             Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Append', 'Send numbered binary chunks.'));
             Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Status', 'Inspect missing chunks before retrying.'));
             Related.Add(ContractMgt.RelatedEntry('Storage.Upload.Abort', 'Discard an open session.'));
+            exit;
+        end;
+        if MessageType = 'Storage.Attachment.CreateFromStaging' then begin
+            Related.Add(ContractMgt.RelatedEntry('Storage.Upload.CommitToStaging', 'Stage a file in chunks and receive stagingId.'));
+            Related.Add(ContractMgt.RelatedEntry('Storage.Upload.CommitToRecord', 'Attach uploaded chunks and keep the content in Business Central.'));
+            Related.Add(ContractMgt.RelatedEntry('Storage.Attachment.Restore', 'Bring the content back into Business Central.'));
+            exit;
+        end;
+        if MessageType = 'Storage.File.CreateFromStaging' then begin
+            Related.Add(ContractMgt.RelatedEntry('Storage.Upload.CommitToStaging', 'Stage a file in chunks and receive stagingId.'));
+            Related.Add(ContractMgt.RelatedEntry('Storage.File.CopyToStaging', 'Stage a stored file and receive stagingId.'));
+            Related.Add(ContractMgt.RelatedEntry('Storage.File.Create', 'Write base64 content instead of a staging row.'));
             exit;
         end;
         if MessageType = 'Storage.File.CopyToStaging' then begin

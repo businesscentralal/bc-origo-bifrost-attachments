@@ -1941,6 +1941,24 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Listar uppsettar geymslutengingar við Azure Blob Storage, Azure File Share eða SharePoint svo kallandi geti valið geymslukóða; les engar skrár.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Account List Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4271816260 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Creates an offloaded attachment on a record or incoming document from a Foundation staging row and consumes the row.</source>
+          <target>Býr til útvistað viðhengi á færslu eða innsendu skjali úr bráðabirgðafærslu í Bifröst-grunni og eyðir færslunni.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Býr til útvistað viðhengi á færslu eða innsendu skjali úr bráðabirgðafærslu í Bifröst-grunni og eyðir færslunni.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Att. CreateFromStg ori - Method GetDescription - NamedType DescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4271816260 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>attach staged file to record, staging id to attachment, attach staged pdf to invoice, staged file to incoming document, offloaded attachment from staging, store staged attachment in cloud</source>
+          <target>hengja bráðabirgðaskrá við færslu, stagingId í viðhengi, hengja bráðabirgða-pdf við reikning, bráðabirgðaskrá í innsent skjal, útvistað viðhengi úr bráðabirgðageymslu, geyma bráðabirgðaviðhengi í skýinu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=hengja bráðabirgðaskrá við færslu, stagingId í viðhengi, hengja bráðabirgða-pdf við reikning, bráðabirgðaskrá í innsent skjal, útvistað viðhengi úr bráðabirgðageymslu, geyma bráðabirgðaviðhengi í skýinu</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Att. CreateFromStg ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4271816260 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Turns one Foundation staging row, by stagingId, into an attachment stored in external storage and consumes the row; Storage.Upload.CommitToRecord keeps the content in Business Central.</source>
+          <target>Breytir einni bráðabirgðafærslu úr Bifröst-grunni, eftir stagingId, í viðhengi sem er geymt í ytri geymslu og eyðir færslunni; Storage.Upload.CommitToRecord geymir efnið í Business Central.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Breytir einni bráðabirgðafærslu úr Bifröst-grunni, eftir stagingId, í viðhengi sem er geymt í ytri geymslu og eyðir færslunni; Storage.Upload.CommitToRecord geymir efnið í Business Central.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Att. CreateFromStg ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 3983261765 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Offloads an attachment's file to a storage connection and clears it from the database, keeping it transparently available.</source>
           <target>Flytur skrá viðhengis í geymslutengingu og fjarlægir hana úr gagnagrunninum en heldur henni aðgengilegri.</target>
@@ -2391,6 +2409,12 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Úrvinnsla skjals í innleið mistókst. Skoðaðu skjalið í innleið til að fá nánari upplýsingar.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - Method CollectProcessErrors - NamedType FailedErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 4170002622 - Method 4270914037 - NamedType 1151992720" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The attachment could not be created. Nothing was written and the staging row is kept.</source>
+          <target>Ekki tókst að búa til viðhengið. Ekkert var skrifað og bráðabirgðafærslan er óbreytt.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Ekki tókst að búa til viðhengið. Ekkert var skrifað og bráðabirgðafærslan er óbreytt.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Attachment Mgt ori - Method CreateFromStaging - NamedType RefusedAfterTakeErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 4170002622 - Method 496511085 - NamedType 1067445849" size-unit="char" translate="yes" xml:space="preserve">
           <source>The destination path exceeds the attachment link capacity.</source>
           <target>Áfangaslóðin er lengri en viðhengjatengingin leyfir.</target>
@@ -2552,6 +2576,24 @@
           <target>Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu skilaboðategundir fyrir bútaupphleðslu fyrir stærri skrár eða skrár sendar í bútum.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Hleður heilli skrá allt að 240 MiB á geymsluslóð í einu kalli; notaðu skilaboðategundir fyrir bútaupphleðslu fyrir stærri skrár eða skrár sendar í bútum.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File Create Impl ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2109426699 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Writes a Foundation staging row to a file path in a storage connection and consumes the row.</source>
+          <target>Skrifar bráðabirgðafærslu úr Bifröst-grunni á skráarslóð í geymslutengingu og eyðir færslunni.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skrifar bráðabirgðafærslu úr Bifröst-grunni á skráarslóð í geymslutengingu og eyðir færslunni.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File CreateFromStg ori - Method GetDescription - NamedType DescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2109426699 - Method 1027590672 - NamedType 1290244428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>save staged file to storage, store the staging id, write staging to cloud folder, staged upload to storage path, put staged file in sharepoint, move staging into blob storage</source>
+          <target>vista bráðabirgðaskrá í geymslu, geyma stagingId, skrifa bráðabirgðaskrá í skýjamöppu, bráðabirgðaupphleðsla á geymsluslóð, setja bráðabirgðaskrá í sharepoint, færa bráðabirgðaskrá í blob-geymslu</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=vista bráðabirgðaskrá í geymslu, geyma stagingId, skrifa bráðabirgðaskrá í skýjamöppu, bráðabirgðaupphleðsla á geymsluslóð, setja bráðabirgðaskrá í sharepoint, færa bráðabirgðaskrá í blob-geymslu</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File CreateFromStg ori - Method GetKeywords - NamedType KeywordsLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2109426699 - Method 79446908 - NamedType 3491368912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Writes one Foundation staging row, by stagingId, to a storage file path and consumes the row; Storage.File.Create takes base64 instead.</source>
+          <target>Skrifar eina bráðabirgðafærslu úr Bifröst-grunni, eftir stagingId, á skráarslóð í geymslu og eyðir færslunni; Storage.File.Create tekur við base64.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Skrifar eina bráðabirgðafærslu úr Bifröst-grunni, eftir stagingId, á skráarslóð í geymslu og eyðir færslunni; Storage.File.Create tekur við base64.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage File CreateFromStg ori - Method GetSelectionDescription - NamedType SelectionDescriptionLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 2990831086 - Method 4077369804 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
           <source>Deletes a file from the configured storage connection.</source>
@@ -2907,6 +2949,54 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Sendu stagingId til LLM.Prompt.Ask, LLM.Prompt.Complete, Dashboard.Page.Set, Memory.*.Set eða ReportLayout.Set sem sami notandi í sama fyrirtæki. Take-aðgerð hennar eyðir bráðabirgðaskránni við móttöku.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method ExecuteCopyToStaging - NamedType NextStepLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 3265534168 - NamedType 3077505077" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The storage provider could not write the file. Nothing was written and the staging row is kept.</source>
+          <target>Geymsluveitan gat ekki skrifað skrána. Ekkert var skrifað og bráðabirgðafærslan er óbreytt.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Geymsluveitan gat ekki skrifað skrána. Ekkert var skrifað og bráðabirgðafærslan er óbreytt.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method ExecuteCreateFromStaging - NamedType WriteFailedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 3265534168 - NamedType 3147918349" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check the storage connection and provider permissions, then retry with the same stagingId.</source>
+          <target>Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur með sama stagingId.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur með sama stagingId.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method ExecuteCreateFromStaging - NamedType WriteFailedNextLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 275231551 - NamedType 251673366" size-unit="char" translate="yes" xml:space="preserve">
+          <source>expectedCount is %1, but this request writes exactly 1 file. Nothing was written.</source>
+          <target>expectedCount er %1 en þessi beiðni skrifar nákvæmlega 1 skrá. Ekkert var skrifað.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = the received count||is-IS=expectedCount er %1 en þessi beiðni skrifar nákvæmlega 1 skrá. Ekkert var skrifað.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method ReadExpectedSingleCount - NamedType CountMismatchErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 275231551 - NamedType 390865673" size-unit="char" translate="yes" xml:space="preserve">
+          <source>1, or omit expectedCount</source>
+          <target>1, eða slepptu expectedCount</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=1, eða slepptu expectedCount</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method ReadExpectedSingleCount - NamedType CountExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 275231551 - NamedType 364205578" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Send expectedCount 1 to confirm the single write.</source>
+          <target>Sendu expectedCount 1 til að staðfesta eina skrift.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Sendu expectedCount 1 til að staðfesta eina skrift.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method ReadExpectedSingleCount - NamedType CountNextLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 4196616045 - NamedType 3810363753" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No staging row %1 is available to you in this company.</source>
+          <target>Engin bráðabirgðafærsla %1 er tiltæk þér í þessu fyrirtæki.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = stagingId||is-IS=Engin bráðabirgðafærsla %1 er tiltæk þér í þessu fyrirtæki.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method RespondStagingNotFound - NamedType StagingNotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 4196616045 - NamedType 1058232983" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a stagingId created by you in this company and not yet consumed</source>
+          <target>stagingId sem þú bjóst til í þessu fyrirtæki og hefur ekki verið notað</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=stagingId sem þú bjóst til í þessu fyrirtæki og hefur ekki verið notað</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method RespondStagingNotFound - NamedType StagingExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 4196616045 - NamedType 4177367736" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stage the file again with Storage.Upload.CommitToStaging or Storage.File.CopyToStaging as the same user in the same company.</source>
+          <target>Settu skrána aftur í bráðabirgðageymslu með Storage.Upload.CommitToStaging eða Storage.File.CopyToStaging sem sami notandi í sama fyrirtæki.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Settu skrána aftur í bráðabirgðageymslu með Storage.Upload.CommitToStaging eða Storage.File.CopyToStaging sem sami notandi í sama fyrirtæki.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method RespondStagingNotFound - NamedType StagingNextLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 223275718 - Method 4087107588 - NamedType 1830439019" size-unit="char" translate="yes" xml:space="preserve">
           <source>The storage file or folder "%1" was not found.</source>
           <target>Geymsluskráin eða mappan "%1" fannst ekki.</target>
@@ -2936,6 +3026,18 @@
           <target>Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur.</target>
           <note from="Developer" annotates="general" priority="2">is-IS=Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method RespondStorageFailure - NamedType ProviderNextLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 3602021742 - NamedType 129080107" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Staging row %1 holds no content. Nothing was written and the staging row is kept.</source>
+          <target>Bráðabirgðafærsla %1 inniheldur ekkert efni. Ekkert var skrifað og bráðabirgðafærslan er óbreytt.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = stagingId||is-IS=Bráðabirgðafærsla %1 inniheldur ekkert efni. Ekkert var skrifað og bráðabirgðafærslan er óbreytt.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method TakeStaging - NamedType EmptyStagingErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 223275718 - Method 3602021742 - NamedType 3716969315" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stage a file that has content, then retry with its stagingId.</source>
+          <target>Settu skrá með efni í bráðabirgðageymslu og reyndu aftur með stagingId hennar.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Settu skrá með efni í bráðabirgðageymslu og reyndu aftur með stagingId hennar.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Storage Request Mgt ori - Method TakeStaging - NamedType EmptyStagingNextLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 617437907 - NamedType 2940235957" size-unit="char" translate="yes" xml:space="preserve">
           <source>base64 content</source>

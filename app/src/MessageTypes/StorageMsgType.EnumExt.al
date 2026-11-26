@@ -161,4 +161,16 @@ enumextension 10035142 "Storage Msg Type ori" extends "Message Type ori"
         Caption = 'Storage.File.CopyToStaging', Locked = true;
         Implementation = "Msg Interface ori" = "Storage File CopyToStaging ori", "Msg Discovery ori" = "Storage File CopyToStaging ori", "Msg Contract ori" = "Storage File CopyToStaging ori";
     }
+    /// <summary>Writes one Foundation staging row to a storage file and consumes the row.</summary>
+    value(10035176; "Storage.File.CreateFromStaging")
+    {
+        Caption = 'Storage.File.CreateFromStaging', Locked = true;
+        Implementation = "Msg Interface ori" = "Storage File CreateFromStg ori", "Msg Discovery ori" = "Storage File CreateFromStg ori", "Msg Contract ori" = "Storage File CreateFromStg ori";
+    }
+    /// <summary>Creates an offloaded attachment from one Foundation staging row and consumes the row.</summary>
+    value(10035177; "Storage.Attachment.CreateFromStaging")
+    {
+        Caption = 'Storage.Attachment.CreateFromStaging', Locked = true;
+        Implementation = "Msg Interface ori" = "Storage Att. CreateFromStg ori", "Msg Discovery ori" = "Storage Att. CreateFromStg ori", "Msg Contract ori" = "Storage Att. CreateFromStg ori";
+    }
 }
