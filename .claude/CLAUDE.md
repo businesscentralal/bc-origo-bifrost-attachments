@@ -244,3 +244,5 @@ Key rules always in effect:
 #211 test reservation (2026-11-10, renumbered from 96279 after #210 and from 96280 after #214): codeunit **96281** `DataExch Def Del211 Tests ori` (DataExchange.Definition.Delete disabled).
 
 #197 test helper reservation (2026-11-04): codeunit **96278** `DataExch Type Switch Sim ori`; 96275 remains reserved to #192 staging. See the shared typed object reservation.
+
+#244 (26.11.2026, worker-36): message-type ordinals **10035176** `Storage.File.CreateFromStaging` and **10035177** `Storage.Attachment.CreateFromStaging` (next free ordinal 10035178); codeunits **10035201** `Storage File CreateFromStg ori` and **10035204** `Storage Att. CreateFromStg ori`; test codeunit **96284** `Storage FromStaging 244 ori`. Conformance 96211 now counts 43 types (33 app ordinals), Direction130 20 storage writes.

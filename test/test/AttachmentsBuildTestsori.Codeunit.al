@@ -117,6 +117,8 @@ codeunit 96274 "Attachments Build Tests ori"
         LibraryAssert.AreEqual(10035167, Enum::"Message Type ori"::"DataExchange.Export.Run".AsInteger(), 'Export.Run ordinal');
         LibraryAssert.AreEqual(10035171, Enum::"Message Type ori"::"DataExchange.Definition.Delete".AsInteger(), 'Definition.Delete ordinal');
         LibraryAssert.AreEqual(10035169, Enum::"Message Type ori"::"DataExchange.Definition.Export".AsInteger(), 'Definition.Export ordinal');
+        LibraryAssert.AreEqual(10035176, Enum::"Message Type ori"::"Storage.File.CreateFromStaging".AsInteger(), 'File.CreateFromStaging ordinal (#244)');
+        LibraryAssert.AreEqual(10035177, Enum::"Message Type ori"::"Storage.Attachment.CreateFromStaging".AsInteger(), 'Attachment.CreateFromStaging ordinal (#244)');
         AssertContract(Enum::"Message Type ori"::"DataExchange.Type.Set", 'DataExchange.Type.Set');
         AssertContract(Enum::"Message Type ori"::"DataExchange.Import.Run", 'DataExchange.Import.Run');
         AssertContract(Enum::"Message Type ori"::"DataExchange.Export.Run", 'DataExchange.Export.Run');

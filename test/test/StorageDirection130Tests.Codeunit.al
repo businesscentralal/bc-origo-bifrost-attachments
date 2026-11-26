@@ -115,12 +115,12 @@ codeunit 96229 "Storage Direction130 Tests ori"
                 Problems += TypeName + ' unknown effect ' + EffectName + '; ';
         end;
         // #24, #192 and #214 add the Data Exchange and staging endings.
-        if StorageWrites <> 18 then
+        if StorageWrites <> 20 then
             Problems += 'storage write count ' + Format(StorageWrites) + '; ';
         if NamedWrites <> 6 then
             Problems += 'named storage write count ' + Format(NamedWrites) + '; ';
-        // #192 adds CommitToStaging and #214 adds Storage.File.CopyToStaging to the complete Attachments catalogue.
-        if (not StorageWritesOnly) and (Checked <> 41) then
+        // #192 adds CommitToStaging, #214 Storage.File.CopyToStaging and #244 the two CreateFromStaging types.
+        if (not StorageWritesOnly) and (Checked <> 43) then
             Problems += 'attachments type count ' + Format(Checked) + '; ';
     end;
 

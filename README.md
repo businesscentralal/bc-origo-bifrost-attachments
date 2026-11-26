@@ -56,6 +56,10 @@ For uploads destined for a record, omit `storageCode` in `Storage.Upload.Begin` 
    chapters of any message type.
 3. **Work with files and directories.** `Storage.File.*` and `Storage.Directory.*` list, read,
    write, copy, move, delete and probe entries under the connection's base path.
+   **From staging (#244):** `Storage.File.CreateFromStaging` writes a Foundation staging row (`stagingId` from
+   `Storage.Upload.CommitToStaging` or `Storage.File.CopyToStaging`) to a storage path, and
+   `Storage.Attachment.CreateFromStaging` turns it into an offloaded attachment on a record or incoming document.
+   Both consume the staging row only on success; any refusal or failure keeps it.
 4. **Upload large files in chunks.** `Storage.Upload.Begin` opens a session, `Storage.Upload.Append`
    adds base64 chunks, `Storage.Upload.Status` reports progress, and `Storage.Upload.Commit`
    assembles the chunks and writes the finished file to storage. `Storage.Upload.Abort` discards a
@@ -317,6 +321,8 @@ object carries the mandatory ` ori` affix.
 | 10035196 | `Storage Reten. Policy ori` | Registers the retention policy for spent upload sessions. |
 | 10035197 | `Storage Upload Mgt ori` | Owns the chunked-upload lifecycle and chunk assembly. |
 | 10035198 | `Storage Upload Purge ori` | Purges spent upload sessions and their chunks. |
+| 10035201 | `Storage File CreateFromStg ori` | `Storage.File.CreateFromStaging` (#244). |
+| 10035204 | `Storage Att. CreateFromStg ori` | `Storage.Attachment.CreateFromStaging` (#244). |
 
 ### Data Exchange objects
 
