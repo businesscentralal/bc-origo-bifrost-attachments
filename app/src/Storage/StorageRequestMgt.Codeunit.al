@@ -362,6 +362,108 @@ codeunit 10035193 "Storage Request Mgt ori"
         RespondSuccess(Argument, DataObject);
     end;
 
+    /// <summary>Reads the optional write confirmation <c>expectedCount</c>; a single-file write only accepts 1.</summary>
+    /// <param name="Argument">The message argument that collects the problem.</param>
+    /// <param name="RequestJson">The request JSON.</param>
+    internal procedure ReadExpectedSingleCount(var Argument: Record "Message Argument ori"; RequestJson: JsonObject)
+    var
+        Reader: Codeunit "Storage Request Reader ori";
+        ExpectedCount: Integer;
+        CountMismatchErr: Label 'expectedCount is %1, but this request writes exactly 1 file. Nothing was written.', Comment = '%1 = the received count||is-IS=expectedCount er %1 en þessi beiðni skrifar nákvæmlega 1 skrá. Ekkert var skrifað.';
+        CountExpectedLbl: Label '1, or omit expectedCount', Comment = 'is-IS=1, eða slepptu expectedCount';
+        CountNextLbl: Label 'Send expectedCount 1 to confirm the single write.', Comment = 'is-IS=Sendu expectedCount 1 til að staðfesta eina skrift.';
+    begin
+        if not RequestJson.Contains('expectedCount') then
+            exit;
+        if not Reader.ReadInteger(Argument, RequestJson, 'expectedCount', false, ExpectedCount) then
+            exit;
+        if ExpectedCount <> 1 then
+            Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(CountMismatchErr, Format(ExpectedCount, 0, 9)), 'expectedCount', Format(ExpectedCount, 0, 9), CountExpectedLbl, CountNextLbl);
+    end;
+
+    /// <summary>
+    /// Answers RecordNotFound for a stagingId that is unknown, consumed or owned by another user or company.
+    /// The answer is the same in every case, so it does not reveal whether a foreign row exists.
+    /// </summary>
+    /// <param name="Argument">The message argument that receives the answer.</param>
+    /// <param name="StagingId">The requested staging id.</param>
+    internal procedure RespondStagingNotFound(var Argument: Record "Message Argument ori"; StagingId: Guid)
+    var
+        StagingNotFoundErr: Label 'No staging row %1 is available to you in this company.', Comment = '%1 = stagingId||is-IS=Engin bráðabirgðafærsla %1 er tiltæk þér í þessu fyrirtæki.';
+        StagingExpectedLbl: Label 'a stagingId created by you in this company and not yet consumed', Comment = 'is-IS=stagingId sem þú bjóst til í þessu fyrirtæki og hefur ekki verið notað';
+        StagingNextLbl: Label 'Stage the file again with Storage.Upload.CommitToStaging or Storage.File.CopyToStaging as the same user in the same company.', Comment = 'is-IS=Settu skrána aftur í bráðabirgðageymslu með Storage.Upload.CommitToStaging eða Storage.File.CopyToStaging sem sami notandi í sama fyrirtæki.';
+    begin
+        Argument.RespondWithError("Bifrost Error Code ori"::RecordNotFound, StrSubstNo(StagingNotFoundErr, Format(StagingId, 0, 4)), 'stagingId', Format(StagingId, 0, 4), StagingExpectedLbl, StagingNextLbl);
+    end;
+
+    /// <summary>
+    /// Takes (consumes) the caller's staging row inside the current transaction. Empty content is raised as a
+    /// collected error, so the Take rolls back and the staging row is kept.
+    /// </summary>
+    /// <param name="Argument">The message argument that receives the answer.</param>
+    /// <param name="StagingId">The staging id to consume.</param>
+    /// <param name="TempBlob">Receives the staged bytes.</param>
+    /// <param name="FileName">Receives the untrusted file name recorded on the staging row.</param>
+    /// <returns>True when the row was taken and holds content; false when a not-found answer was written.</returns>
+    internal procedure TakeStaging(var Argument: Record "Message Argument ori"; StagingId: Guid; var TempBlob: Codeunit "Temp Blob"; var FileName: Text): Boolean
+    var
+        Staging: Codeunit "Blob Staging ori";
+        ContentType: Text;
+        EmptyStagingErr: Label 'Staging row %1 holds no content. Nothing was written and the staging row is kept.', Comment = '%1 = stagingId||is-IS=Bráðabirgðafærsla %1 inniheldur ekkert efni. Ekkert var skrifað og bráðabirgðafærslan er óbreytt.';
+        EmptyStagingNextLbl: Label 'Stage a file that has content, then retry with its stagingId.', Comment = 'is-IS=Settu skrá með efni í bráðabirgðageymslu og reyndu aftur með stagingId hennar.';
+    begin
+        if not Staging.Take(StagingId, TempBlob, ContentType, FileName) then begin
+            RespondStagingNotFound(Argument, StagingId);
+            exit(false);
+        end;
+        if TempBlob.Length() = 0 then begin
+            Argument.AddError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(EmptyStagingErr, Format(StagingId, 0, 4)), 'stagingId', Format(StagingId, 0, 4), '', EmptyStagingNextLbl);
+            Argument.RaiseCollectedErrors("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(EmptyStagingErr, Format(StagingId, 0, 4)));
+        end;
+        exit(true);
+    end;
+
+    /// <summary>
+    /// Writes the caller's staging row to a file path and consumes the row. Every refusal is answered before the
+    /// Take; a failure after the Take is raised, so the transaction rolls back and the staging row is kept.
+    /// </summary>
+    /// <param name="Argument">The Bifrost argument that receives the response.</param>
+    /// <param name="StorageSetup">The resolved storage setup row.</param>
+    /// <param name="Connector">The resolved connector implementation.</param>
+    /// <param name="Path">The destination file path.</param>
+    /// <param name="StagingId">The staging row to consume.</param>
+    internal procedure ExecuteCreateFromStaging(var Argument: Record "Message Argument ori"; StorageSetup: Record "Storage Setup ori"; Connector: Interface "Storage Connector ori"; Path: Text; StagingId: Guid)
+    var
+        Staging: Codeunit "Blob Staging ori";
+        TempBlob: Codeunit "Temp Blob";
+        DataObject: JsonObject;
+        Existing: Boolean;
+        FileName: Text;
+        WriteFailedErr: Label 'The storage provider could not write the file. Nothing was written and the staging row is kept.', Comment = 'is-IS=Geymsluveitan gat ekki skrifað skrána. Ekkert var skrifað og bráðabirgðafærslan er óbreytt.';
+        WriteFailedNextLbl: Label 'Check the storage connection and provider permissions, then retry with the same stagingId.', Comment = 'is-IS=Athugaðu geymslutenginguna og heimildir hjá geymsluveitunni og reyndu aftur með sama stagingId.';
+    begin
+        if not CheckOperationPath(Argument, StorageSetup, 'path', Path, false) then
+            exit;
+        if not Staging.Exists(StagingId) then begin
+            RespondStagingNotFound(Argument, StagingId);
+            exit;
+        end;
+        if not CheckWriteDestination(Argument, StorageSetup, Connector, Path, 'path', Existing) then
+            exit;
+        if not TakeStaging(Argument, StagingId, TempBlob, FileName) then
+            exit;
+        if not WriteStorageFile(StorageSetup, Connector, Path, TempBlob) then begin
+            ClearLastError();
+            Argument.AddError("Bifrost Error Code ori"::BusinessCentralError, WriteFailedErr, 'path', Path, '', WriteFailedNextLbl);
+            Argument.RaiseCollectedErrors("Bifrost Error Code ori"::BusinessCentralError, WriteFailedErr);
+        end;
+        DataObject.Add('path', Path);
+        DataObject.Add('contentLength', TempBlob.Length());
+        DataObject.Add('stagingId', Format(StagingId, 0, 4));
+        DataObject.Add('overwritten', Existing);
+        RespondSuccess(Argument, DataObject);
+    end;
+
     /// <summary>Uploads decoded content to a file path and responds with the stored size.</summary>
     /// <param name="Argument">The Bifrost argument that receives the response.</param>
     /// <param name="StorageSetup">The resolved storage setup row.</param>

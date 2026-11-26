@@ -39,6 +39,18 @@ codeunit 10035199 "Storage Contract Guide ori"
                     Target.Add(ContractMgt.TargetEntry('data.storageCode', 'storage connection code', 'The connection the directory is in. Resolve it with Storage.Account.List.'));
                     Target.Add(ContractMgt.TargetEntry('data.path', 'relative storage path', 'The directory, relative to the base path of the connection.'));
                 end;
+            'Storage.Attachment.CreateFromStaging':
+                begin
+                    Target.Add(ContractMgt.TargetEntry('data.stagingId', 'staging row id (GUID)', 'The staging row that becomes the attachment content and is consumed. It must belong to the caller in this company.'));
+                    Target.Add(ContractMgt.TargetEntry('data.tableId + data.recordSystemId (or data.no)', 'record address', 'DocumentAttachment target: the record the attachment is added to.'));
+                    Target.Add(ContractMgt.TargetEntry('data.incomingDocumentEntryNo', 'incoming document entry number', 'IncomingDocument target: the incoming document; omitted, a new one is created.'));
+                end;
+            'Storage.File.CreateFromStaging':
+                begin
+                    Target.Add(ContractMgt.TargetEntry('data.stagingId', 'staging row id (GUID)', 'The staging row that is written and consumed. It must belong to the caller in this company.'));
+                    Target.Add(ContractMgt.TargetEntry('data.storageCode', 'storage connection code', 'The connection the file is written to. Resolve it with Storage.Account.List.'));
+                    Target.Add(ContractMgt.TargetEntry('data.path', 'relative storage path', 'The destination file, relative to the base path of the connection.'));
+                end;
             'Storage.File.CopyToStaging':
                 begin
                     Target.Add(ContractMgt.TargetEntry('data.storageCode', 'storage connection code', 'The connection the file is in. Resolve it with Storage.Account.List.'));
@@ -242,6 +254,20 @@ codeunit 10035199 "Storage Contract Guide ori"
                     Steps.Add(ContractMgt.WorkflowStep('Storage.File.Get', 'Read the file back from storage.'));
                     Explanation := 'Send storageCode with path or folderPath to write the file to storage, or inline true to receive it in the answer.';
                 end;
+            'Storage.Attachment.CreateFromStaging':
+                begin
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.Upload.CommitToStaging', 'Stage the file and receive stagingId (or Storage.File.CopyToStaging).'));
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.Account.List', 'Find the storageCode of an enabled connection.'));
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.Attachment.CreateFromStaging', 'Create the offloaded attachment; the staging row is consumed.'));
+                    Explanation := 'Call it as the same user in the same company that staged the file. On success the staging row no longer exists and the attachment content lives in storage; Storage.Attachment.Restore brings it back.';
+                end;
+            'Storage.File.CreateFromStaging':
+                begin
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.Upload.CommitToStaging', 'Stage the file and receive stagingId (or Storage.File.CopyToStaging).'));
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.Account.List', 'Find the storageCode of an enabled connection.'));
+                    Steps.Add(ContractMgt.WorkflowStep('Storage.File.CreateFromStaging', 'Write the staged content to the path; the staging row is consumed.'));
+                    Explanation := 'Call it as the same user in the same company that staged the file. On success the staging row no longer exists; on any refusal or failure it is kept, so the call can be retried with the same stagingId.';
+                end;
             'Storage.File.CopyToStaging':
                 begin
                     Steps.Add(ContractMgt.WorkflowStep('Storage.Account.List', 'Find the storageCode of an enabled connection.'));
@@ -296,6 +322,16 @@ codeunit 10035199 "Storage Contract Guide ori"
                 exit('- An existing destination is refused with PreconditionFailed unless `overwrite` is true. A file that backs a Business Central attachment is never overwritten, even with `overwrite` true.' + Lf() +
                     '- `contentBase64` carries at most 251,658,240 bytes (240 MiB) decoded in one call; more is refused with LimitExceeded. Send larger files with Storage.Upload.Begin, Storage.Upload.Append and Storage.Upload.Commit.' + Lf() +
                     '- The path must name a file; the connection root is refused. ' + PathRules() + '' + Lf() +
+                    '- ' + ExternalWriteRule());
+            'Storage.Attachment.CreateFromStaging':
+                exit('- The staging row is consumed (Take) only when the attachment was created and stored; on any refusal or failure everything rolls back and it is kept. A stagingId that is unknown, consumed or owned by another user or company gets the same RecordNotFound answer.' + Lf() +
+                    '- The storage path is generated like Storage.Attachment.Offload (or folderPath + file name). An existing destination is refused with PreconditionFailed unless `overwrite` is true; a file that backs another attachment is never overwritten. Empty staged content is refused.' + Lf() +
+                    '- `fileName` defaults to the sanitised name recorded on the staging row. `expectedCount`, when sent, must be 1.' + Lf() +
+                    '- ' + ExternalWriteRule());
+            'Storage.File.CreateFromStaging':
+                exit('- The staging row is consumed (Take) only when the file was written; on any refusal or failure it is kept. A stagingId that is unknown, consumed or owned by another user or company gets the same RecordNotFound answer.' + Lf() +
+                    '- An existing destination is refused with PreconditionFailed unless `overwrite` is true. A file that backs a Business Central attachment is never overwritten, even with `overwrite` true. Empty staged content is refused.' + Lf() +
+                    '- `expectedCount`, when sent, must be 1. The path must name a file; the connection root is refused. ' + PathRules() + '' + Lf() +
                     '- ' + ExternalWriteRule());
             'Storage.File.CopyToStaging':
                 exit('- The storage file is read and left unchanged; exactly one staging row is created. A missing file is answered RecordNotFound on `path`. ' + PathRules() + '' + Lf() +
@@ -513,6 +549,10 @@ codeunit 10035199 "Storage Contract Guide ori"
                 Pair(MessageType, '"dataExchDefCode":"CUSTEXPORT","tableId":18,"storageCode":"ARCHIVE","path":"export/customers.csv"', '{"entryNo":13,"fileName":"customers.csv","dataExchDefCode":"CUSTEXPORT","recordCount":3,"storageCode":"ARCHIVE","path":"export/customers.csv","contentLength":120}', RequestText, ResponseText);
             'DataExchange.PaymentExport.Run':
                 Pair(MessageType, '"journalTemplate":"PAYMENT","journalBatch":"BANK","storageCode":"ARCHIVE","path":"export/payments.xml"', '{"journalTemplate":"PAYMENT","journalBatch":"BANK","bankAccountNo":"OPERATING","paymentExportFormat":"SEPACT","lineCount":3,"exportedLineCount":3,"creditTransferRegisterNo":5,"fileName":"payments.xml","storageCode":"ARCHIVE","path":"export/payments.xml","contentLength":2048}', RequestText, ResponseText);
+            'Storage.Attachment.CreateFromStaging':
+                Pair(MessageType, '"storageCode":"ARCHIVE","stagingId":"' + Guid + '","target":"IncomingDocument","expectedCount":1', '{"target":"IncomingDocument","incomingDocumentEntryNo":42,"lineNo":10000,"systemId":"' + Guid + '","fileName":"invoice.pdf","contentLength":52144,"offloaded":true,"storageCode":"ARCHIVE","path":"bifrost/incoming/2026/42/invoice.pdf","stagingId":"' + Guid + '"}', RequestText, ResponseText);
+            'Storage.File.CreateFromStaging':
+                Pair(MessageType, '"storageCode":"ARCHIVE","path":"incoming/layout.docx","stagingId":"' + Guid + '","expectedCount":1', '{"path":"incoming/layout.docx","contentLength":3145728,"stagingId":"' + Guid + '","overwritten":false}', RequestText, ResponseText);
             'Storage.File.CopyToStaging':
                 Pair(MessageType, '"storageCode":"ARCHIVE","path":"incoming/layout.docx"', '{"stagingId":"' + Guid + '","size":3145728,"contentType":"application/vnd.openxmlformats-officedocument.wordprocessingml.document","fileName":"layout.docx","nextStep":"Pass stagingId to the consuming message type as the same user in the same company. Its take consumes the staged file."}', RequestText, ResponseText);
             else

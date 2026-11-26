@@ -180,6 +180,7 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         Guide.AppendLine('| Files | `Storage.File.Create` | Writes a file from base64 content. |');
         Guide.AppendLine('| Files | `Storage.File.Copy` | Copies a file to a new path. |');
         Guide.AppendLine('| Files | `Storage.File.CopyToStaging` | Copies a file into one Foundation staging row and returns its stagingId. |');
+        Guide.AppendLine('| Files | `Storage.File.CreateFromStaging` | Writes one Foundation staging row to a storage file and consumes the row. |');
         Guide.AppendLine('| Files | `Storage.File.Move` | Moves or renames a file; a linked file keeps its attachment link. |');
         Guide.AppendLine('| Files | `Storage.File.Delete` | Deletes a file that no attachment uses. |');
         Guide.AppendLine('| Directories | `Storage.Directory.List` | Lists the subfolders of a folder. |');
@@ -190,6 +191,7 @@ codeunit 10035182 "Storage Help Get Impl ori" implements "Msg Interface ori", "M
         Guide.AppendLine('| Attachments | `Storage.Attachment.Restore` | Writes linked content back into the attachment. Deletes only a file newly created by that attachment; pre-existing files and legacy links are preserved. |');
         Guide.AppendLine('| Attachments | `Storage.Attachment.CreateLinked` | Attaches a stored file to a new or existing incoming document. Optional `dataExchangeType`, `process` and `vendorNo`. |');
         Guide.AppendLine('| Attachments | `Storage.Attachment.CreateForRecord` | Creates an attachment on a record from base64 content. |');
+        Guide.AppendLine('| Attachments | `Storage.Attachment.CreateFromStaging` | Creates an offloaded attachment from one Foundation staging row and consumes the row. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.Begin` | Opens a chunked upload session. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.Append` | Adds the next chunk to an open session. |');
         Guide.AppendLine('| Uploads | `Storage.Upload.Status` | Returns the state of a session. |');

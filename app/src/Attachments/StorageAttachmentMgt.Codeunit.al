@@ -552,6 +552,169 @@ codeunit 10035136 "Storage Attachment Mgt ori"
         exit(true);
     end;
 
+    /// <summary>
+    /// Creates a document or incoming-document attachment from the caller's Foundation staging row and offloads
+    /// it to storage in one call (Storage.Attachment.CreateFromStaging). Request problems are answered before the
+    /// staging row is taken; every problem after the Take is raised, so the transaction rolls back and the
+    /// staging row is kept.
+    /// </summary>
+    /// <param name="Argument">The message argument carrying the request; receives the error response.</param>
+    /// <param name="ResultData">Out: the success payload describing the new offloaded attachment.</param>
+    /// <returns>True when the attachment was created and offloaded; false when an error response was written.</returns>
+    procedure CreateFromStaging(var Argument: Record "Message Argument ori"; var ResultData: JsonObject): Boolean
+    var
+        DocumentAttachment: Record "Document Attachment";
+        IncomingDocument: Record "Incoming Document";
+        IncomingDocumentAttachment: Record "Incoming Document Attachment";
+        Link: Record "Storage Attachment Link ori";
+        StorageSetup: Record "Storage Setup ori";
+        Staging: Codeunit "Blob Staging ori";
+        TempBlob: Codeunit "Temp Blob";
+        Reader: Codeunit "Storage Request Reader ori";
+        RequestMgt: Codeunit "Storage Request Mgt ori";
+        RecordRef: RecordRef;
+        Connector: Interface "Storage Connector ori";
+        Target: Enum "Storage Attachment Target ori";
+        RequestJson: JsonObject;
+        ContentInStream: InStream;
+        StagingId: Guid;
+        RecSystemId: Guid;
+        NoContentTypes: List of [Text];
+        TargetText: Text;
+        FileName: Text;
+        StagedFileName: Text;
+        StagedContentType: Text;
+        FolderPath: Text;
+        Description: Text;
+        Path: Text;
+        TableId: Integer;
+        EntryNo: Integer;
+        LineNo: Integer;
+        Existing: Boolean;
+        RecordOpen: Boolean;
+        RefusedAfterTakeErr: Label 'The attachment could not be created. Nothing was written and the staging row is kept.', Comment = 'is-IS=Ekki tókst að búa til viðhengið. Ekkert var skrifað og bráðabirgðafærslan er óbreytt.';
+    begin
+        RequestJson := Argument.GetRequestJson();
+        RequestMgt.ReadSetup(Argument, RequestJson, StorageSetup, Connector);
+        Reader.ReadGuid(Argument, RequestJson, 'stagingId', true, StagingId);
+        Reader.ReadText(Argument, RequestJson, 'target', false, TargetText);
+        case TargetText of
+            '', DocumentAttachmentTok:
+                Target := Target::DocumentAttachment;
+            IncomingDocumentTok:
+                Target := Target::IncomingDocument;
+            else
+                Argument.AddError("Bifrost Error Code ori"::InvalidParameter, StrSubstNo(UnknownTargetErr, 'target', TargetText), 'target', TargetText, TargetExpectedLbl, TargetNextStepLbl);
+        end;
+        Reader.ReadPath(Argument, RequestJson, 'folderPath', false, FolderPath);
+        Reader.ReadText(Argument, RequestJson, 'fileName', false, FileName);
+        if FileName <> '' then
+            CheckAttachmentFileName(Argument, FileName);
+        RequestMgt.ReadExpectedSingleCount(Argument, RequestJson);
+        if Target = Target::DocumentAttachment then
+            RecordOpen := ReadRecordAddress(Argument, RequestJson, RecordRef)
+        else begin
+            Reader.ReadText(Argument, RequestJson, 'description', false, Description);
+            Reader.ReadNonNegativeInteger(Argument, RequestJson, 'incomingDocumentEntryNo', false, EntryNo);
+        end;
+        if Reader.RespondIfErrors(Argument) then
+            exit(false);
+        TableId := TableIdForTarget(Target);
+        if Target = Target::IncomingDocument then begin
+            if Reader.RespondIfTablePermissionDenied(Argument, Database::"Incoming Document", true) then
+                exit(false);
+            if EntryNo <> 0 then
+                if not IncomingDocument.Get(EntryNo) then begin
+                    RespondRecordNotFound(Argument, Database::"Incoming Document", Format(EntryNo, 0, 9), 'incomingDocumentEntryNo');
+                    exit(false);
+                end;
+        end;
+        if Reader.RespondIfTablePermissionDenied(Argument, TableId, true) then
+            exit(false);
+        if Reader.RespondIfTablePermissionDenied(Argument, Database::"Storage Attachment Link ori", true) then
+            exit(false);
+        if not Staging.Exists(StagingId) then begin
+            RequestMgt.RespondStagingNotFound(Argument, StagingId);
+            exit(false);
+        end;
+
+        // From here every refusal is raised, so the Take and all database writes roll back.
+        if not RequestMgt.TakeStaging(Argument, StagingId, TempBlob, StagedFileName) then
+            exit(false);
+        if FileName = '' then begin
+            Staging.NormalizeMetadata(StagedContentType, StagedFileName, NoContentTypes);
+            FileName := StagedFileName;
+            CheckAttachmentFileName(Argument, FileName);
+            if Argument.HasCollectedErrors() then
+                Argument.RaiseCollectedErrors("Bifrost Error Code ori"::InvalidParameter, RefusedAfterTakeErr);
+        end;
+
+        TempBlob.CreateInStream(ContentInStream);
+        if Target = Target::DocumentAttachment then begin
+            DocumentAttachment.Init();
+            DocumentAttachment.SaveAttachmentFromStream(ContentInStream, RecordRef, FileName);
+            RaiseIfNoAttachmentKey(Argument, DocumentAttachment, RecordRef.Number());
+            RecSystemId := DocumentAttachment.SystemId;
+        end else begin
+            if EntryNo = 0 then begin
+                if Description = '' then
+                    Description := FileName;
+                EntryNo := IncomingDocument.CreateIncomingDocument(CopyStr(Description, 1, 100), '');
+                IncomingDocument.Get(EntryNo);
+            end;
+            IncomingDocument.AddAttachmentFromStream(IncomingDocumentAttachment, FileName, FileExtensionOf(FileName), ContentInStream);
+            RecSystemId := IncomingDocumentAttachment.SystemId;
+            LineNo := IncomingDocumentAttachment."Line No.";
+        end;
+        if RecordOpen then
+            RecordRef.Close();
+
+        Path := BuildPath(Target, TableId, RecSystemId, FileName, EntryNo, FolderPath);
+        Reader.CheckStoragePath(Argument, StorageSetup, 'path', Path, false);
+        CheckNativePathLength(Argument, TableId, StorageSetup.Code, Path, 'path');
+        if not Argument.HasCollectedErrors() then
+            RequestMgt.CollectWriteDestinationErrors(Argument, StorageSetup, Connector, Path, 'path', Existing);
+        if Argument.HasCollectedErrors() then
+            Argument.RaiseCollectedErrors("Bifrost Error Code ori"::PreconditionFailed, RefusedAfterTakeErr);
+
+        // Database writes first, the external upload last: a failed upload rolls back the link, the
+        // attachment and the Take, so the staging row is kept and no attachment is left behind.
+        Link.Init();
+        Link."Table ID" := TableId;
+        Link."Record System Id" := RecSystemId;
+        Link."Storage Code" := StorageSetup."Code";
+        Link."Storage Path" := CopyStr(Path, 1, MaxStrLen(Link."Storage Path"));
+        Link."File Name" := CopyStr(FileName, 1, MaxStrLen(Link."File Name"));
+        Link."Content Size" := TempBlob.Length();
+        Link."Created Storage File" := not Existing;
+        Link."Inc. Doc. Entry No." := EntryNo;
+        Link."Inc. Doc. Line No." := LineNo;
+        Link."Offloaded At" := CurrentDateTime();
+        Link."Offloaded By" := UserSecurityId();
+        Link.Insert(true);
+
+        ClearAttachment(Target, RecSystemId);
+        if Target = Target::DocumentAttachment then
+            SetNativeExternalStorageFields(RecSystemId, StorageSetup.Code, Path);
+        Connector.CreateFile(StorageSetup, Path, TempBlob);
+
+        if Target = Target::DocumentAttachment then
+            AddDocumentAttachmentResult(DocumentAttachment, TempBlob, true, ResultData)
+        else begin
+            ResultData.Add('target', IncomingDocumentTok);
+            ResultData.Add('incomingDocumentEntryNo', EntryNo);
+            ResultData.Add('lineNo', LineNo);
+            ResultData.Add('systemId', Format(RecSystemId, 0, 4));
+            ResultData.Add('fileName', FileName);
+            ResultData.Add('contentLength', TempBlob.Length());
+            ResultData.Add('offloaded', true);
+        end;
+        ResultData.Add('storageCode', StorageSetup."Code");
+        ResultData.Add('path', Path);
+        ResultData.Add('stagingId', Format(StagingId, 0, 4));
+        exit(true);
+    end;
+
     local procedure ReadDataExchangeRequest(var Argument: Record "Message Argument ori"; RequestJson: JsonObject; var DataExchangeTypeCode: Code[20]; var Process: Boolean; var VendorNo: Code[20])
     var
         DataExchangeType: Record "Data Exchange Type";
