@@ -187,7 +187,7 @@ codeunit 10035168 "DataExch Pay Export Impl ori" implements "Msg Interface ori",
     /// <returns>True; the chapter was supplied.</returns>
     procedure GetNotes(var Notes: Text): Boolean
     var
-        NotesLbl: Label 'The base-app export commits its own steps, so the lines stay marked even when the later storage write fails; the file is then still on the credit transfer register. Lines already exported are exported again, as the journal action does after its confirmation. A processing codeunit that downloads the file in another way cannot be captured and is refused after the export.', Locked = true;
+        NotesLbl: Label 'The base-app export commits its own steps, so the lines stay marked even when the later storage write fails; the file is then still on the credit transfer register. A batch with a line already exported to a payment file is refused with PreconditionFailed on parameter reExport, naming the line numbers, before anything is exported; send reExport true to export it again and create a new file, as the journal action does after its confirmation (the base-app events OnExportPaymentFileOnBeforeRunExport and OnExportPaymentFileOnAfterRunExport are not raised on a re-export). A processing codeunit that downloads the file in another way cannot be captured and is refused after the export.', Locked = true;
     begin
         Notes := NotesLbl;
         exit(true);

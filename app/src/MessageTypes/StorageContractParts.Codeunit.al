@@ -78,6 +78,7 @@ codeunit 10035183 "Storage Contract Parts ori"
         NewCodeLbl: Label 'Optional code to install a file with one definition under, for example to copy a definition.', Locked = true;
         JournalTemplateLbl: Label 'The payment journal template name, exactly as stored.', Locked = true;
         JournalBatchLbl: Label 'The payment journal batch name, exactly as stored.', Locked = true;
+        PaymentReExportLbl: Label 'Optional, default false. Send true to export a batch whose lines are already exported to a payment file; a new file is created. Without it such a batch is refused with PreconditionFailed naming the line numbers.', Locked = true;
         PaymentFileNameLbl: Label 'Optional file name. Default: the name the payment export chooses, for example the credit transfer identifier.', Locked = true;
         ImportResultLbl: Label 'Parsed result: lines and fields read by the definition reader.', Locked = true;
         ProcessResultLbl: Label 'When process is true: processed, targets, warnings and errors of the mapping run. Each warning is an object with code and message.', Locked = true;
@@ -440,6 +441,12 @@ codeunit 10035183 "Storage Contract Parts ori"
                         '{"type":"DataExchange.PaymentExport.Run","data":{"journalTemplate":"X160-MISSING","journalBatch":"X160-MISSING","inline":true},"lcid":1033}',
                         '{"status":"Error","code":"MultipleErrors","error":"2 problems in the request. Nothing was changed.","errors":[{"code":"InvalidParameterFormat","error":"Parameter \"journalTemplate\" exceeds the maximum of 10 characters.","parameter":"journalTemplate","received":"X160-MISSING","expected":"a JSON string of at most 10 characters","nextStep":"Send \"journalTemplate\" as a JSON string of at most 10 characters and retry."},{"code":"InvalidParameterFormat","error":"Parameter \"journalBatch\" exceeds the maximum of 10 characters.","parameter":"journalBatch","received":"X160-MISSING","expected":"a JSON string of at most 10 characters","nextStep":"Send \"journalBatch\" as a JSON string of at most 10 characters and retry."}],"hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.PaymentExport.Run\". Always read the help before calling a message type'
                     + '."}'));
+                    Examples.Add(ContractMgt.Example('Refusal: a line is already exported and reExport is not true',
+                        '{"type":"DataExchange.PaymentExport.Run","data":{"journalTemplate":"ZZMCP251","journalBatch":"RE251","inline":true},"lcid":1033}',
+                        '{"status":"Error","code":"PreconditionFailed","error":"Journal batch ZZMCP251 RE251 is already exported to a payment file: line no. 20000. Nothing was exported.","parameter":"reExport","received":"false","expected":"reExport true to export lines that are already exported","nextStep":"Set reExport=true to export again; a new payment file is created. Check first that the bank has not received the earlier file.","hint":"For usage details, call the \"Help.Implementation.Get\" message type with subject \"DataExchange.PaymentExport.Run\". Always read the help before calling a message type."}'));
+                    Examples.Add(ContractMgt.Example('Export the same batch again with reExport true',
+                        '{"type":"DataExchange.PaymentExport.Run","data":{"journalTemplate":"ZZMCP251","journalBatch":"RE251","inline":true,"reExport":true},"lcid":1033}',
+                        '{"status":"Success","data":{"journalTemplate":"ZZMCP251","journalBatch":"RE251","bankAccountNo":"ZZMCP251","paymentExportFormat":"ZZMCP251","lineCount":2,"exportedLineCount":2,"entryNo":202,"fileName":"ZZPAY251 .txt","contentLength":60,"contentBase64":"UEFZMjUxO1paTUNQMjUxO1JFMjUxO3swNDI2MTg3MC1DN0M1LTQ0NzAtQkZDMS0zQUM2RDg0MjYxRjJ9"}}'));
                     Examples.Add(ContractMgt.Example('Refusal: required request data is missing',
                         '{"type":"DataExchange.PaymentExport.Run","data":{},"lcid":1033}',
                         '{"status":"Error","code":"MultipleErrors","error":"3 problems in the request. Nothing was changed.","errors":[{"code":"MissingParameter","error":"Parameter \"journalTemplate\" is required.","parameter":"journalTemplate","received":"not supplied","expected":"a JSON string of at most 10 characters","nextStep":"Send \"journalTemplate\" as a JSON string of at most 10 characters and retry."},{"code":"MissingParameter","error":"Parameter \"journalBatch\" is required.","parameter":"journalBatch","received":"not supplied","expected":"a JSON string of at most 10 characters","nextStep":"Send \"journalBatch\" as a JSON string of at most 10 characters and retry."},{"code":"MissingParameter","error":"Choose where the file goes: storageCode with path or folderPath, or inline true.","parameter":"storageCode","received":"(missing)","expected":"storageCode, or inline true","nextStep":"Send storageCode (f'
@@ -743,6 +750,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                     Parameters.Add(ContractMgt.Parameter('journalTemplate', 'string', true, JournalTemplateLbl));
                     Parameters.Add(ContractMgt.Parameter('journalBatch', 'string', true, JournalBatchLbl));
                     Parameters.Add(ContractMgt.Parameter('fileName', 'string', false, PaymentFileNameLbl));
+                    Parameters.Add(ContractMgt.Parameter('reExport', 'boolean', false, PaymentReExportLbl));
                     AddDeliveryParameters(Parameters, MessageType = 'DataExchange.Definition.Export');
                 end;
             'DataExchange.Entry.List':
@@ -1273,6 +1281,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             if MessageType = 'DataExchange.PaymentExport.Run' then begin
                 Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The journal batch does not exist.', 'Send the exact template and batch names.'));
                 Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The batch has no lines, its balancing bank account has no payment export format, or the export file could not be captured.', 'Follow nextStep and retry.'));
+                Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'A line of the batch is already exported to a payment file and reExport is not true (parameter reExport; the error names the line numbers). Nothing was exported.', 'Set reExport=true to export again; a new payment file is created.'));
             end;
             if MessageType = 'DataExchange.Entry.Get' then
                 Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::LimitExceeded, InlineLimitLbl, OmitInlineLbl));

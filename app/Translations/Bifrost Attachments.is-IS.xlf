@@ -1119,6 +1119,24 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Bættu vörpun við skilgreininguna eða kallaðu á DataExchange.Definition.Get til að sjá línuskilgreiningar hennar og varpanir.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - NamedType AddExportMappingLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2395862116 - NamedType 2817089746" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Journal batch %1 %2 is already exported to a payment file: line no. %3. Nothing was exported.</source>
+          <target>Bókarkeyrsla %1 %2 hefur þegar verið flutt út í greiðsluskrá: línunr. %3. Ekkert var flutt út.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = template name, %2 = batch name, %3 = journal line numbers||is-IS=Bókarkeyrsla %1 %2 hefur þegar verið flutt út í greiðsluskrá: línunr. %3. Ekkert var flutt út.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - NamedType AlreadyExportedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2395862116 - NamedType 1188253817" size-unit="char" translate="yes" xml:space="preserve">
+          <source>reExport true to export lines that are already exported</source>
+          <target>reExport true til að flytja út línur sem þegar hafa verið fluttar út</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=reExport true til að flytja út línur sem þegar hafa verið fluttar út</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - NamedType AlreadyExportedExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2395862116 - NamedType 436194152" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Set reExport=true to export again; a new payment file is created. Check first that the bank has not received the earlier file.</source>
+          <target>Stilltu reExport=true til að flytja út aftur; ný greiðsluskrá verður til. Gakktu fyrst úr skugga um að bankinn hafi ekki fengið fyrri skrána.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Stilltu reExport=true til að flytja út aftur; ný greiðsluskrá verður til. Gakktu fyrst úr skugga um að bankinn hafi ekki fengið fyrri skrána.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit DataExch Export Mgt ori - NamedType AlreadyExportedNextStepLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2395862116 - NamedType 3414665390" size-unit="char" translate="yes" xml:space="preserve">
           <source>a balancing bank account with Payment Export Format</source>
           <target>mótbankareikningur með sniði fyrir útflutning greiðslna (Payment Export Format)</target>
