@@ -6,6 +6,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Added (#255)
+- Requires Foundation 28.0.17.0 for the extensible Bifröst page (10077942) and its `BifrostSetup` navigation action.
+- Page extension 10035136 `Bifrost Ext. ori` adds **Bifrost Attachments Setup** immediately after **Bifrost Setup** in the Bifröst page’s Related menu, with English and Icelandic captions and tooltips. It opens the existing setup page with its existing permissions. Test codeunit 96285 `Storage Nav255 Tests ori` invokes the action in both languages, including an empty connection list.
+
 - Requires Business Central 28.0 or later (was 28.3): `application` is `28.0.0.0` in `app/app.json` and `test/app.json` (Gunnar 26.11.2026, #246). No AL objects change.
 - Released 28.3.3.161 to AppSource on 2026-11-22 (submission 1152921505800031352, go-live): the effect-fix release (#241, only posting is irreversible). Entries below this line that predate it are included in that release unless a later version heading says otherwise.
 ### Added (#244)
@@ -351,6 +355,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
+
+### Added (#255)
+- Requires Foundation 28.0.17.0 for the extensible Bifröst page (10077942) and its `BifrostSetup` navigation action.
+- Page extension 10035136 `Bifrost Ext. ori` adds **Bifrost Attachments Setup** immediately after **Bifrost Setup** in the Bifröst page’s Related menu, with English and Icelandic captions and tooltips. It opens the existing setup page with its existing permissions. Test codeunit 96285 `Storage Nav255 Tests ori` invokes the action in both languages, including an empty connection list.
 
 ### Added (2026-10-16) - Data Exchange Phase 2 incoming documents (#23)
 
@@ -916,6 +924,10 @@ Business Central release versioning (`major.minor.build.revision`).
 
 ## [Unreleased]
 
+### Added (#255)
+- Requires Foundation 28.0.17.0 for the extensible Bifröst page (10077942) and its `BifrostSetup` navigation action.
+- Page extension 10035136 `Bifrost Ext. ori` adds **Bifrost Attachments Setup** immediately after **Bifrost Setup** in the Bifröst page’s Related menu, with English and Icelandic captions and tooltips. It opens the existing setup page with its existing permissions. Test codeunit 96285 `Storage Nav255 Tests ori` invokes the action in both languages, including an empty connection list.
+
 ### Fixed (2026-10-16) - storage write direction (#130)
 
 - External storage writes were declared Outbound, so they used the read path and skipped the write gate. `Storage.File.Create` (10035649), `Storage.File.Delete` (10035650), `Storage.File.Copy` (10035648), `Storage.File.Move` (10035654), `Storage.Directory.Create` (10035644) and `Storage.Directory.Delete` (10035645) now report message direction Inbound. Read types stay Outbound. Contract effects are unchanged.
@@ -939,6 +951,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.
 - Attachments help pages are published through businesscentralal/bifrost PR100. At docs main `af179cc00f2842a15d8ea9bace890ae51031c171`, the unmodified `Test-HelpLinks.ps1` checks 7 pages with 0 problems in both locale trees; the 10 EN/IS help and landing URLs return HTTP 200. These are help checks, separate from native/UI/MCP acceptance.
 ## [Unreleased]
+
+### Added (#255)
+- Requires Foundation 28.0.17.0 for the extensible Bifröst page (10077942) and its `BifrostSetup` navigation action.
+- Page extension 10035136 `Bifrost Ext. ori` adds **Bifrost Attachments Setup** immediately after **Bifrost Setup** in the Bifröst page’s Related menu, with English and Icelandic captions and tooltips. It opens the existing setup page with its existing permissions. Test codeunit 96285 `Storage Nav255 Tests ori` invokes the action in both languages, including an empty connection list.
 
 ### Fixed (2026-10-16) - provider path preflight (#122)
 
@@ -968,6 +984,10 @@ Business Central release versioning (`major.minor.build.revision`).
 - `DataExch Refusal82 Tests ori` (96226) includes bounded response status/code and collected-error counts in failed response assertions. Rollback checks, including the later delete in the chained import/delete case, report an unexpected returned response while still requiring the exact injected fault and unchanged state readback. `Storage 79 Perm Tests ori` (96218) reports the refusal code when its real-dispatch role canary fails. No assertion, permission or licensing requirement is relaxed; the retained 268/212/56/0 owned result remains failed until a supported exact-tip rerun.
 - Attachments help pages are published through businesscentralal/bifrost PR100. At docs main `af179cc00f2842a15d8ea9bace890ae51031c171`, the unmodified `Test-HelpLinks.ps1` checks 7 pages with 0 problems in both locale trees; the 10 EN/IS help and landing URLs return HTTP 200. These are help checks, separate from native/UI/MCP acceptance.
 ## [Unreleased]
+
+### Added (#255)
+- Requires Foundation 28.0.17.0 for the extensible Bifröst page (10077942) and its `BifrostSetup` navigation action.
+- Page extension 10035136 `Bifrost Ext. ori` adds **Bifrost Attachments Setup** immediately after **Bifrost Setup** in the Bifröst page’s Related menu, with English and Icelandic captions and tooltips. It opens the existing setup page with its existing permissions. Test codeunit 96285 `Storage Nav255 Tests ori` invokes the action in both languages, including an empty connection list.
 
 ### Fixed (2026-10-18) - connection root refusal for Storage.Directory.Delete (#125)
 

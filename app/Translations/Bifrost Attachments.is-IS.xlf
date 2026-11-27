@@ -3933,6 +3933,18 @@
           <note from="Developer" annotates="general" priority="2">is-IS=Staðfesta</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Storage Setup Wizard ori - Action ActionRefreshHttp - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 853273088 - Action 2692177247 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 859178725">
+          <source>Open the setup page of Bifrost Attachments, where storage connections and file accounts are configured.</source>
+          <target>Opna uppsetningarsíðu Bifröst viðhengja þar sem geymslutengingar og skráareikningar eru stilltir.</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Opna uppsetningarsíðu Bifröst viðhengja þar sem geymslutengingar og skráareikningar eru stilltir.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bifrost Ext. ori - Action AttachmentsSetup - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 853273088 - Action 2692177247 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 859178725">
+          <source>Bifrost Attachments Setup</source>
+          <target>Uppsetning Bifröst viðhengja</target>
+          <note from="Developer" annotates="general" priority="2">is-IS=Uppsetning Bifröst viðhengja</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bifrost Ext. ori - Action AttachmentsSetup - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 1024008208 - Action 2692177247 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1243421685">
           <source>Open the setup page of Bifrost Attachments, where storage connections and file accounts are configured.</source>
           <target>Opna uppsetningarsíðu Bifröst viðhengja þar sem geymslutengingar og skráareikningar eru stilltir.</target>
