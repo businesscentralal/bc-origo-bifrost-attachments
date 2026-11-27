@@ -1,7 +1,9 @@
 namespace Origo.Bifrost.Attachments;
 
+using Microsoft.Bank.BankAccount;
 using Microsoft.Bank.DirectDebit;
 using Microsoft.Bank.Payment;
+using Microsoft.Finance.GeneralLedger.Journal;
 using System.IO;
 using System.Utilities;
 
@@ -21,6 +23,14 @@ codeunit 10035142 "DataExch Pay Capture ori"
         CapturedBlob: Codeunit "Temp Blob";
         CapturedFileName: Text;
         HasCapture: Boolean;
+        ReExportApproved: Boolean;
+
+    /// <summary>Records that the caller sent reExport true, so the export runs without the base-app question to export again.</summary>
+    /// <param name="NewReExport">True when the caller asked to export already exported lines again.</param>
+    procedure SetReExport(NewReExport: Boolean)
+    begin
+        ReExportApproved := NewReExport;
+    end;
 
     /// <summary>Returns the captured payment file.</summary>
     /// <param name="TempBlob">Returns the file content.</param>
@@ -54,5 +64,33 @@ codeunit 10035142 "DataExch Pay Capture ori"
         CapturedFileName := FileName;
         HasCapture := true;
         Handled := true;
+    end;
+
+    /// <summary>
+    /// With reExport true, runs the steps of the base-app ExportPaymentFile without its question to export
+    /// again: the checks on Check Printed, the document numbers and the balancing bank account, then the
+    /// payment export codeunit of the bank account (or Exp. Launcher Gen. Jnl.). The base-app events
+    /// OnExportPaymentFileOnBeforeRunExport and OnExportPaymentFileOnAfterRunExport are local and are not raised on this path.
+    /// </summary>
+    [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnBeforeExportPaymentFile', '', false, false)]
+    local procedure ExportAgainWithoutQuestion(var GenJournalLine: Record "Gen. Journal Line"; var IsHandled: Boolean)
+    var
+        BankAccount: Record "Bank Account";
+    begin
+        if IsHandled or not ReExportApproved then
+            exit;
+        if not GenJournalLine.FindSet() then
+            exit;
+        GenJournalLine.SetRange("Journal Template Name", GenJournalLine."Journal Template Name");
+        GenJournalLine.SetRange("Journal Batch Name", GenJournalLine."Journal Batch Name");
+        GenJournalLine.TestField("Check Printed", false);
+        GenJournalLine.CheckDocNoOnLines();
+        GenJournalLine.TestField("Bal. Account Type", GenJournalLine."Bal. Account Type"::"Bank Account");
+        BankAccount.Get(GenJournalLine."Bal. Account No.");
+        if BankAccount.GetPaymentExportCodeunitID() > 0 then
+            Codeunit.Run(BankAccount.GetPaymentExportCodeunitID(), GenJournalLine)
+        else
+            Codeunit.Run(Codeunit::"Exp. Launcher Gen. Jnl.", GenJournalLine);
+        IsHandled := true;
     end;
 }

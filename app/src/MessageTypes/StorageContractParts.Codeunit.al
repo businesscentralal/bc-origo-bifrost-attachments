@@ -78,6 +78,7 @@ codeunit 10035183 "Storage Contract Parts ori"
         NewCodeLbl: Label 'Optional code to install a file with one definition under, for example to copy a definition.', Locked = true;
         JournalTemplateLbl: Label 'The payment journal template name, exactly as stored.', Locked = true;
         JournalBatchLbl: Label 'The payment journal batch name, exactly as stored.', Locked = true;
+        PaymentReExportLbl: Label 'Optional, default false. Send true to export a batch whose lines are already exported to a payment file; a new file is created. Without it such a batch is refused with PreconditionFailed naming the line numbers.', Locked = true;
         PaymentFileNameLbl: Label 'Optional file name. Default: the name the payment export chooses, for example the credit transfer identifier.', Locked = true;
         ImportResultLbl: Label 'Parsed result: lines and fields read by the definition reader.', Locked = true;
         ProcessResultLbl: Label 'When process is true: processed, targets, warnings and errors of the mapping run. Each warning is an object with code and message.', Locked = true;
@@ -743,6 +744,7 @@ codeunit 10035183 "Storage Contract Parts ori"
                     Parameters.Add(ContractMgt.Parameter('journalTemplate', 'string', true, JournalTemplateLbl));
                     Parameters.Add(ContractMgt.Parameter('journalBatch', 'string', true, JournalBatchLbl));
                     Parameters.Add(ContractMgt.Parameter('fileName', 'string', false, PaymentFileNameLbl));
+                    Parameters.Add(ContractMgt.Parameter('reExport', 'boolean', false, PaymentReExportLbl));
                     AddDeliveryParameters(Parameters, MessageType = 'DataExchange.Definition.Export');
                 end;
             'DataExchange.Entry.List':
@@ -1273,6 +1275,7 @@ codeunit 10035183 "Storage Contract Parts ori"
             if MessageType = 'DataExchange.PaymentExport.Run' then begin
                 Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::RecordNotFound, 'The journal batch does not exist.', 'Send the exact template and batch names.'));
                 Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'The batch has no lines, its balancing bank account has no payment export format, or the export file could not be captured.', 'Follow nextStep and retry.'));
+                Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::PreconditionFailed, 'A line of the batch is already exported to a payment file and reExport is not true (parameter reExport; the error names the line numbers). Nothing was exported.', 'Set reExport=true to export again; a new payment file is created.'));
             end;
             if MessageType = 'DataExchange.Entry.Get' then
                 Errors.Add(ContractMgt.ErrorEntry("Bifrost Error Code ori"::LimitExceeded, InlineLimitLbl, OmitInlineLbl));

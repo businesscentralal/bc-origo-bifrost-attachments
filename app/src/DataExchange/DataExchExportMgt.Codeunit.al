@@ -78,6 +78,10 @@ codeunit 10035140 "DataExch Export Mgt ori"
         LinesExpectedLbl: Label 'a batch with payment lines', Comment = 'is-IS=keyrsla með greiðslulínum';
         LinesNextStepLbl: Label 'Create the payment lines, for example with Suggest Vendor Payments, then retry.', Comment = 'is-IS=Búðu til greiðslulínurnar, til dæmis með Leggja til greiðslur lánardrottna, og reyndu svo aftur.';
         BankRequiredErr: Label 'The lines of journal batch %1 %2 must have a bank account as balancing account with a payment export format.', Comment = '%1 = template name, %2 = batch name||is-IS=Línur bókarkeyrslu %1 %2 verða að hafa bankareikning sem mótreikning með sniði fyrir útflutning greiðslna.';
+        AlreadyExportedErr: Label 'Journal batch %1 %2 is already exported to a payment file: line no. %3. Nothing was exported.', Comment = '%1 = template name, %2 = batch name, %3 = journal line numbers||is-IS=Bókarkeyrsla %1 %2 hefur þegar verið flutt út í greiðsluskrá: línunr. %3. Ekkert var flutt út.';
+        AlreadyExportedExpectedLbl: Label 'reExport true to export lines that are already exported', Comment = 'is-IS=reExport true til að flytja út línur sem þegar hafa verið fluttar út';
+        AlreadyExportedNextStepLbl: Label 'Set reExport=true to export again; a new payment file is created. Check first that the bank has not received the earlier file.', Comment = 'is-IS=Stilltu reExport=true til að flytja út aftur; ný greiðsluskrá verður til. Gakktu fyrst úr skugga um að bankinn hafi ekki fengið fyrri skrána.';
+        MoreLinesTok: Label ', +%1', Comment = '%1 = number of further lines', Locked = true;
         BankExpectedLbl: Label 'a balancing bank account with Payment Export Format', Comment = 'is-IS=mótbankareikningur með sniði fyrir útflutning greiðslna (Payment Export Format)';
         BankNextStepLbl: Label 'Set Bal. Account Type Bank Account on the lines and a Payment Export Format on the bank account, then retry.', Comment = 'is-IS=Settu mótreikningsgerðina Bankareikningur á línurnar og snið fyrir útflutning greiðslna á bankareikninginn og reyndu svo aftur.';
         NoPaymentFileErr: Label 'The payment export of bank account %1 did not hand a file over. Its export codeunit writes the file in a way Bifröst cannot capture.', Comment = '%1 = bank account no.||is-IS=Útflutningur greiðslna bankareiknings %1 skilaði engri skrá. Útflutningskóðaeining hans skrifar skrána á hátt sem Bifröst getur ekki gripið.';
@@ -222,8 +226,10 @@ codeunit 10035140 "DataExch Export Mgt ori"
         CapturedFileName: Text;
         Path: Text;
         FolderPath: Text;
+        ExportedLineNos: Text;
         HasStorage: Boolean;
         Inline: Boolean;
+        ReExport: Boolean;
         LineCount: Integer;
         ExportedCount: Integer;
         DataExchEntryNo: Integer;
@@ -235,6 +241,7 @@ codeunit 10035140 "DataExch Export Mgt ori"
         if Reader.ReadMutationText(Argument, RequestJson, 'fileName', false, 250, FileName) then
             if FileName <> '' then
                 Reader.CheckFileName(Argument, FileName);
+        Reader.ReadBoolean(Argument, RequestJson, 'reExport', false, ReExport);
         ReadDelivery(Argument, RequestJson, FileName, StorageSetup, Connector, Path, HasStorage, Inline, FolderPath);
         if Reader.RespondIfErrors(Argument) then
             exit;
@@ -262,6 +269,12 @@ codeunit 10035140 "DataExch Export Mgt ori"
             Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(BankRequiredErr, TemplateName, BatchName), 'journalBatch', BatchName, BankExpectedLbl, BankNextStepLbl);
             exit;
         end;
+        // Without reExport an exported batch is refused before any write, so a payment file is never produced twice by accident.
+        if not ReExport then
+            if FindExportedLines(TemplateName, BatchName, ExportedLineNos) then begin
+                Argument.RespondWithError("Bifrost Error Code ori"::PreconditionFailed, StrSubstNo(AlreadyExportedErr, TemplateName, BatchName, ExportedLineNos), 'reExport', Format(ReExport, 0, 9), AlreadyExportedExpectedLbl, AlreadyExportedNextStepLbl);
+                exit;
+            end;
         if HasStorage and (Path <> '') then
             if not CheckDestination(Argument, StorageSetup, Path) then
                 exit;
@@ -273,6 +286,9 @@ codeunit 10035140 "DataExch Export Mgt ori"
         GenJournalLine.SetRange("Journal Template Name", TemplateName);
         GenJournalLine.SetRange("Journal Batch Name", BatchName);
         GenJournalLine.FindFirst();
+        // Only a batch that would ask to export again leaves the base-app ExportPaymentFile path.
+        if ReExport then
+            Capture.SetReExport(FindExportedLines(TemplateName, BatchName, ExportedLineNos));
         BindSubscription(Capture);
         GenJournalLine.ExportPaymentFile();
         UnbindSubscription(Capture);
@@ -690,6 +706,38 @@ codeunit 10035140 "DataExch Export Mgt ori"
             exit;
         end;
         JournalName := CopyStr(RawText, 1, MaxStrLen(JournalName));
+    end;
+
+    /// <summary>
+    /// Finds the lines of a batch the base-app export would ask to export again: lines marked Exported to
+    /// Payment File, and lines applied to a vendor ledger entry that is already exported.
+    /// </summary>
+    /// <param name="TemplateName">The journal template.</param>
+    /// <param name="BatchName">The journal batch.</param>
+    /// <param name="LineNos">Returns the line numbers, comma separated; at most 20 are named.</param>
+    /// <returns>True when at least one line is already exported.</returns>
+    local procedure FindExportedLines(TemplateName: Code[10]; BatchName: Code[10]; var LineNos: Text): Boolean
+    var
+        GenJournalLine: Record "Gen. Journal Line";
+        Found: Integer;
+    begin
+        LineNos := '';
+        GenJournalLine.SetRange("Journal Template Name", TemplateName);
+        GenJournalLine.SetRange("Journal Batch Name", BatchName);
+        if GenJournalLine.FindSet() then
+            repeat
+                if GenJournalLine."Exported to Payment File" or GenJournalLine.IsAppliedToVendorLedgerEntryExported() then begin
+                    Found += 1;
+                    if Found <= 20 then begin
+                        if LineNos <> '' then
+                            LineNos += ', ';
+                        LineNos += Format(GenJournalLine."Line No.", 0, 9);
+                    end;
+                end;
+            until GenJournalLine.Next() = 0;
+        if Found > 20 then
+            LineNos += StrSubstNo(MoreLinesTok, Found - 20);
+        exit(Found > 0);
     end;
 
     local procedure EntryIsLinked(EntryNo: Integer): Boolean
