@@ -4,7 +4,11 @@ All notable changes to Bifrost Attachments are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
 Business Central release versioning (`major.minor.build.revision`).
 
-## [Unreleased]
+## [Unreleased] — source [28.3.4.0]
+
+### Added (#255)
+- Requires Foundation 28.0.17.0 for the extensible Bifröst page (10077942) and its `BifrostSetup` navigation action.
+- Page extension 10035136 `Bifrost Ext. ori` adds **Bifrost Attachments Setup** immediately after **Bifrost Setup** in the Bifröst page’s Related menu, with English and Icelandic captions and tooltips. It opens the existing setup page with its existing permissions. Test codeunit 96285 `Storage Nav255 Tests ori` invokes the action in both languages, including an empty connection list.
 
 - Requires Business Central 28.0 or later (was 28.3): `application` is `28.0.0.0` in `app/app.json` and `test/app.json` (Gunnar 26.11.2026, #246). No AL objects change.
 - Released 28.3.3.161 to AppSource on 2026-11-22 (submission 1152921505800031352, go-live): the effect-fix release (#241, only posting is irreversible). Entries below this line that predate it are included in that release unless a later version heading says otherwise.

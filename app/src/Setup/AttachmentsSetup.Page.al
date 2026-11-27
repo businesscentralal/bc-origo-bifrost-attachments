@@ -5,7 +5,7 @@ using System.ExternalFileStorage;
 
 /// <summary>
 /// Setup page of the Bifrost Attachments application. It is opened from the Apps group on the
-/// Bifröst Setup page and gathers everything an administrator needs for this module: the list
+/// Bifröst Setup page or Related on the Bifröst page and gathers everything an administrator needs for this module: the list
 /// of configured storage connections, the standard file account setup, and the housekeeping
 /// action that removes abandoned upload sessions. It raises no setup notification of its own -
 /// those belong to the shared Bifröst Setup page, which reaches this app through

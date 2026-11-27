@@ -1,7 +1,7 @@
 # Bifrost Attachments
 
 **App name:** Bifrost Attachments (display form *Bifröst viðhengi*)  
-**Publisher:** Origo — **Version:** 28.0.0.4 in source (CI package 28.0.0.109 at main `304a1c2`) — **Target:** Cloud (BC 28.3 or later, runtime 17.0) — **Requires:** Bifrost Foundation 28.0.3.530  
+**Publisher:** Origo — **Version:** 28.3.4.0 in source (AL-Go supplies the build revision) — **Target:** Cloud (BC 28.0 or later, runtime 17.0) — **Requires:** Bifrost Foundation 28.0.17.0  
 **App ID:** `672df32a-a0c5-4a22-b591-0efa38023e95` — **Test app ID:** `7cdb530b-b74b-446b-9ece-80e2b911bfb3`  
 **Object ID range:** 10035135–10035234 (tests 96200–96299) — **Namespace:** `Origo.Bifrost.Attachments`  
 **Environments:** Business Central online (SaaS) and the COSMO Alpaca development containers `bc28-is` (CRONUS IS) and `bc28-w1` (CRONUS International Ltd.)
@@ -150,7 +150,7 @@ Supporting paths:
 | --- | --- | --- |
 | 1 | Extension Management (page 2500) | Enable **Allow HttpClient Requests** for Bifrost Attachments. The shared **Bifröst Setup** page notifies the administrator when it is off — this app registers itself with Foundation's `App Registry ori` so that notification can name it and offer *Start setup wizard*. |
 | 2 | Business Central **File Accounts** | Register and configure the storage account in the Azure Blob Storage, Azure File Share or SharePoint connector app. That app owns the credentials. |
-| 3 | **Bifröst Setup** → *Apps* → **Bifröst viðhengi** | Open `Attachments Setup ori` (page 10035135), the single place this module is configured. |
+| 3 | **Bifröst** → **Related** → **Bifrost Attachments Setup**, or **Bifröst Setup** → *Apps* → **Bifröst viðhengi** | Open `Attachments Setup ori` (page 10035135), the single place this module is configured. |
 | 4 | `Storage Conn. Part ori` on that page | Add one row per connection. |
 | 5 | `Storage Card ori` | Fill in the connection and test it. |
 
@@ -256,6 +256,7 @@ object carries the mandatory ` ori` affix.
 | ID | Name | Extends | Purpose |
 | --- | --- | --- | --- |
 | 10035135 | `Setup Ext. ori` | `Setup ori` (Foundation) | Adds exactly one *Apps* action pointing at `Attachments Setup ori`. |
+| 10035136 | `Bifrost Ext. ori` | `Bifrost ori` (Foundation) | Adds **Bifrost Attachments Setup** immediately after **Bifrost Setup** in **Related**. |
 
 ### Enums
 
