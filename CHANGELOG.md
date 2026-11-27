@@ -4,7 +4,7 @@ All notable changes to Bifrost Attachments are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this app uses
 Business Central release versioning (`major.minor.build.revision`).
 
-## [Unreleased]
+## [Unreleased] — source [28.3.4.0]
 
 ### Added (#255)
 - Requires Foundation 28.0.17.0 for the extensible Bifröst page (10077942) and its `BifrostSetup` navigation action.

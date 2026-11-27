@@ -1,7 +1,7 @@
 # Bifrost Attachments
 
 **App name:** Bifrost Attachments (display form *Bifröst viðhengi*)  
-**Publisher:** Origo — **Version:** 28.0.0.4 in source (CI package 28.0.0.109 at main `304a1c2`) — **Target:** Cloud (BC 28.0 or later, runtime 17.0) — **Requires:** Bifrost Foundation 28.0.17.0  
+**Publisher:** Origo — **Version:** 28.3.4.0 in source (AL-Go supplies the build revision) — **Target:** Cloud (BC 28.0 or later, runtime 17.0) — **Requires:** Bifrost Foundation 28.0.17.0  
 **App ID:** `672df32a-a0c5-4a22-b591-0efa38023e95` — **Test app ID:** `7cdb530b-b74b-446b-9ece-80e2b911bfb3`  
 **Object ID range:** 10035135–10035234 (tests 96200–96299) — **Namespace:** `Origo.Bifrost.Attachments`  
 **Environments:** Business Central online (SaaS) and the COSMO Alpaca development containers `bc28-is` (CRONUS IS) and `bc28-w1` (CRONUS International Ltd.)
